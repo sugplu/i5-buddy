@@ -245,6 +245,7 @@ function render() {
   renderRibbon(); renderZone(); renderNext();
   $("toggleNarr").setAttribute("aria-pressed", S.narr); $("toggleNarr").textContent = S.narr ? "Narration on" : "Narration off";
   if (tab === "ahead") renderAhead();
+  if (tab === "map") renderMapYou();
 }
 
 let ribbonBuilt = false;
@@ -346,6 +347,82 @@ function renderAhead() {
   }
 }
 
+/* ---------- Map ---------- */
+const CITIES = [[0, "Mexico"], [16, "San Diego"], [77, "Irvine"], [135, "Los Angeles"], [215, "Grapevine"], [309, "Kettleman City"], [403, "Los Banos"], [473, "Stockton"], [519, "Sacramento"], [649, "Red Bluff"], [677, "Redding"], [738, "Mt. Shasta"], [797, "Oregon"]];
+let mapBuilt = false, mapProj = null, mapSel = null, mapZ = 1, mapVB = null;
+function mapView() {
+  if (!mapBuilt) return;
+  const svg = $("map"), [W, H] = mapVB;
+  svg.style.setProperty("--z", mapZ);
+  if (mapZ === 1) { svg.setAttribute("viewBox", `0 0 ${W} ${H}`); return; }
+  const focus = mapSel ? mapSel.mi : S.mile != null ? S.mile : 400;
+  const [cx, cy] = mapProj(...coordAt(focus));
+  const w = W / mapZ, h = H / mapZ;
+  svg.setAttribute("viewBox", `${(cx - w / 2).toFixed(1)} ${(cy - h / 2).toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`);
+}
+function renderMap() {
+  const svg = $("map"), NS = "http://www.w3.org/2000/svg";
+  const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+  if (!mapBuilt) {
+    const lats = R.map(r => r[1]), lons = R.map(r => r[2]);
+    const la0 = Math.min(...lats), la1 = Math.max(...lats), lo0 = Math.min(...lons), lo1 = Math.max(...lons);
+    const k = Math.cos((la0 + la1) / 2 * Math.PI / 180);
+    const H = 1000, W = Math.round((lo1 - lo0) * k / (la1 - la0) * H), pad = 120;
+    mapProj = (la, lo) => [pad + (lo - lo0) * k / (la1 - la0) * H, 40 + (la1 - la) / (la1 - la0) * H];
+    mapVB = [W + pad * 2, H + 80];
+    svg.setAttribute("viewBox", `0 0 ${mapVB[0]} ${mapVB[1]}`);
+    document.querySelectorAll(".zoom [data-z]").forEach(b => b.onclick = () => {
+      mapZ = +b.dataset.z; document.querySelectorAll(".zoom [data-z]").forEach(x => x.setAttribute("aria-pressed", x === b)); mapView();
+    });
+    const pts = R.map(r => mapProj(r[1], r[2]).map(v => v.toFixed(1)).join(",")).join(" ");
+    svg.append(mk("polyline", {points: pts, class: "road-glow"}), mk("polyline", {points: pts, class: "road"}), mk("polyline", {points: pts, class: "road-dash"}));
+    for (const [mi, name] of CITIES) {
+      const [x, y] = mapProj(...coordAt(mi));
+      const g = mk("g", {class: "city"});
+      g.append(mk("circle", {cx: x, cy: y, r: 6}));
+      const right = mi < 200 || mi > 640;
+      const t = mk("text", {x: right ? x + 14 : x - 14, y: y + 5, "text-anchor": right ? "start" : "end"}); t.textContent = name;
+      g.append(t); svg.append(g);
+    }
+    const dots = mk("g", {id: "mapDots"});
+    for (const p of placesBy) {
+      const [x, y] = mapProj(...coordAt(p.mi));
+      const off = p.side === "E" ? 9 : p.side === "W" ? -9 : 0;
+      const c = mk("circle", {cx: x + off, cy: y, r: 5.5, class: "dot " + p.cat, "data-id": p.id, tabindex: 0});
+      c.addEventListener("click", () => selectMapPlace(p));
+      c.addEventListener("keydown", e => { if (e.key === "Enter") selectMapPlace(p); });
+      dots.append(c);
+    }
+    svg.append(dots);
+    const you = mk("g", {id: "mapYou"});
+    you.append(mk("circle", {r: 22, class: "you-pulse"}), mk("circle", {r: 10, class: "you-dot"}));
+    svg.append(you);
+    const lg = $("legend");
+    for (const [k2, v] of Object.entries(CATS)) { const s2 = el("span", "chip " + k2); s2.append(el("i"), document.createTextNode(v)); lg.append(s2); }
+    mapBuilt = true;
+  }
+  for (const c of svg.querySelectorAll(".dot")) c.classList.toggle("got", !!S.stamps[c.dataset.id]);
+  const got = placesBy.filter(p => S.stamps[p.id]).length;
+  $("mapLede").textContent = `${placesBy.length} stops · ${got} stamped · tap a dot`;
+  renderMapYou();
+}
+function renderMapYou() {
+  if (!mapBuilt) return;
+  const y = $("mapYou");
+  y.style.display = S.mile == null ? "none" : "";
+  if (S.mile != null) { const [px, py] = mapProj(...coordAt(S.mile)); y.setAttribute("transform", `translate(${px.toFixed(1)} ${py.toFixed(1)}) scale(${(1 / Math.sqrt(mapZ)).toFixed(3)})`); }
+  if (mapZ > 1 && !mapSel) mapView();
+}
+function selectMapPlace(p) {
+  mapSel = p;
+  for (const c of $("map").querySelectorAll(".dot")) c.classList.toggle("sel", c.dataset.id === p.id);
+  const card = $("mapCard"); card.hidden = false; card.className = "map-card " + p.cat; card.innerHTML = "";
+  const close = el("button", "x", "×"); close.setAttribute("aria-label", "Close"); close.onclick = () => { card.hidden = true; mapSel = null; for (const c of $("map").querySelectorAll(".dot.sel")) c.classList.remove("sel"); mapView(); };
+  if (mapZ > 1) mapView();
+  const hear = el("button", "link", "Hear it"); hear.onclick = () => say(`${p.name}. ${p.text}`, {now: true});
+  card.append(close, el("div", "m", `${CATS[p.cat]} · exit ${p.mi}${S.stamps[p.id] ? " · stamped" : ""}`), el("b", null, p.name), el("p", null, p.text), hear);
+}
+
 /* ---------- Passport ---------- */
 function renderPassport() {
   const got = placesBy.filter(p => S.stamps[p.id]).length;
@@ -441,6 +518,7 @@ function go(name) {
   document.querySelectorAll(".tabs button").forEach(b => b.dataset.go === name ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
   if (name === "ahead") renderAhead();
   if (name === "passport") renderPassport();
+  if (name === "map") renderMap();
   if (name === "play") { renderBingo(); renderTrivia(); }
   window.scrollTo(0, 0);
 }

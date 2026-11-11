@@ -37,7 +37,7 @@
     </div>
     <div class="mile-row">
       <div><small>MILE</small><output id="mile">--</output></div>
-      <div class="near"><small>PASSING</small><span id="nearText">Start below</span></div>
+      <div class="near"><small>PASSING</small><span id="nearText">Ready when you are</span></div>
     </div>
     <div class="ribbon" id="ribbon" aria-hidden="true"></div>
   </div>
@@ -80,6 +80,22 @@
   <ol class="ahead" id="aheadList"></ol>
 </section>
 
+<!-- MAP -->
+<section class="view" id="view-map" data-view="map" hidden>
+  <div class="map-head">
+    <h2 class="view-title">The whole road</h2>
+    <span class="lede" id="mapLede"></span>
+  </div>
+  <div class="map-wrap">
+    <svg id="map" role="img" aria-label="Map of I-5 through California with every landmark"></svg>
+    <div class="zoom seg" role="group" aria-label="Zoom">
+      <button data-z="1" aria-pressed="true">Whole road</button><button data-z="3">Region</button><button data-z="8">Close up</button>
+    </div>
+  </div>
+  <article class="map-card" id="mapCard" hidden></article>
+  <div class="legend" id="legend"></div>
+</section>
+
 <!-- PASSPORT -->
 <section class="view" id="view-passport" data-view="passport" hidden>
   <h2 class="view-title">Passport</h2>
@@ -111,6 +127,7 @@
 <nav class="tabs" aria-label="Sections">
   <button data-go="drive" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 2 4 22l8-4 8 4L12 2Z" fill="currentColor"/></svg>Drive</button>
   <button data-go="ahead"><svg viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z" fill="currentColor"/></svg>Ahead</button>
+  <button data-go="map"><svg viewBox="0 0 24 24"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2Zm0 2.2 6 2v13.6l-6-2V5.2Z" fill="currentColor"/></svg>Map</button>
   <button data-go="passport"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>Passport</button>
   <button data-go="play"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg>Play</button>
 </nav>

@@ -1,5 +1,5 @@
 // Offline support: the whole app is cached so it keeps working in dead zones.
-const VERSION = "i5b-v2";
+const VERSION = "i5b-v4";
 const FILES = ["./", "index.html", "app.css", "app.js", "data/i5.js", "manifest.webmanifest",
   "fonts/overpass.woff2", "fonts/overpass-mono.woff2", "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES))); self.skipWaiting(); });

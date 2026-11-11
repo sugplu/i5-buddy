@@ -1,12 +1,12 @@
 <!doctype html><meta charset="utf-8">
+<!-- Three phone-sized views for eyeballing the UI: welcome, map with stamps, demo drive. -->
 <style>body{margin:0;display:flex;gap:8px;background:#444}iframe{width:390px;height:844px;border:0;background:#000}</style>
 <iframe id="a" src="../index.html"></iframe><iframe id="b" src="../index.html"></iframe><iframe id="c" src="../index.html"></iframe>
 <script>
-const q=(f,id)=>document.getElementById(f).contentDocument.getElementById(id);
-window.onload=()=>{
-  for (const f of ["a","b","c"]) { const w=document.getElementById(f).contentWindow; try{w.localStorage.clear();}catch(e){} }
-  // a: welcome state. b: demo drive running. c: settings manual mile 330 then Ahead tab
-  setTimeout(()=>{ q("b","startDemo").click(); }, 300);
-  setTimeout(()=>{ const d=document.getElementById("c").contentDocument; const m=q("c","manual"); m.value=700; m.dispatchEvent(new Event("input")); d.querySelector('[data-go="ahead"]').click(); }, 300);
+const W=f=>document.getElementById(f).contentWindow, Dc=f=>document.getElementById(f).contentDocument;
+onload=()=>{
+  try{W("a").localStorage.clear()}catch(e){}
+  setTimeout(()=>{ const s={}; W("b").I5DATA.places.filter(p=>p.mi<480).forEach(p=>s[p.id]=1); W("b").localStorage.setItem("i5b:stamps",JSON.stringify(s)); W("b").localStorage.setItem("i5b:mile","480"); W("b").location.reload(); },200);
+  setTimeout(()=>{ Dc("b").querySelector('[data-go="map"]').click(); const d=Dc("b").querySelectorAll("#map .dot")[150]; d && d.dispatchEvent(new Event("click")); Dc("b").querySelector("[data-z=\"3\"]").click(); Dc("c").getElementById("startDemo").click(); },1500);
 };
 </script>
