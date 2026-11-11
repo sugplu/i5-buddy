@@ -45,6 +45,8 @@ When you change any app file, bump `VERSION` in `sw.js` so installed phones pick
 
 ## Putting it on a phone
 
+Live at **https://sugplu.github.io/i5-buddy/** (GitHub Pages from `main`; push to deploy).
+
 GPS in a browser only works over HTTPS, so it has to be hosted (any static host works: GitHub Pages,
 Cloudflare Pages, Netlify). Then on the phone: open the link, then Share > Add to Home Screen (iPhone) or
 Install app (Android).
