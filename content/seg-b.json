@@ -1,0 +1,744 @@
+{
+  "places": [
+    {
+      "mi": 210,
+      "name": "Fort Tejon",
+      "cat": "hist",
+      "side": "W",
+      "visible": true,
+      "where": "Exit 210, Fort Tejon / Lebec Road",
+      "text": "Those old buildings beside the freeway are Fort Tejon, an Army post founded in 1854 and abandoned ten years later. Starting in 1858 it was the western end of the Army's experiment with camels as pack animals. In January 1857 one of the biggest earthquakes in California history, about magnitude 7.9, was named after this fort.",
+      "src": "https://en.wikipedia.org/wiki/Fort_Tejon"
+    },
+    {
+      "mi": 210,
+      "name": "Peter Lebeck's oak",
+      "cat": "odd",
+      "side": "W",
+      "visible": false,
+      "where": "Fort Tejon State Historic Park",
+      "text": "On the fort grounds stands an oak with a strange story. In 1837 someone carved into it that Peter Lebeck had been killed by an X bear, most likely a California grizzly, and he was buried beneath it. Almost nothing else is known about him, but the nearby town of Lebec carries his name.",
+      "src": "https://en.wikipedia.org/wiki/Peter_Lebeck"
+    },
+    {
+      "mi": 212,
+      "name": "The Grapevine grade",
+      "cat": "nature",
+      "side": null,
+      "visible": true,
+      "where": "I-5 between Lebec and Grapevine",
+      "text": "Back at Tejon Pass, I-5 reaches 4,144 feet, its highest point anywhere in California. From there the road drops to about 1,500 feet at Grapevine, a long, steep grade that is famous for overheating engines on the climb. Watch for the runaway truck ramps, built for big rigs whose brakes give out on the way down.",
+      "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+    },
+    {
+      "mi": 214,
+      "name": "Ridge Route to eight lanes",
+      "cat": "hist",
+      "side": null,
+      "visible": false,
+      "where": "Grapevine Canyon",
+      "text": "Cars first crossed these mountains on the Ridge Route, built around 1910. It was replaced by a three-lane road in 1933, a four-lane expressway in 1947, and finally the eight-lane freeway you're on in 1970. A notorious bend in Lebec called Dead Man's Curve was straightened out back in 1935.",
+      "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+    },
+    {
+      "mi": 215,
+      "name": "Why it's called the Grapevine",
+      "cat": "nature",
+      "side": null,
+      "visible": true,
+      "where": "Exit 215, Grapevine",
+      "text": "Spanish travelers called this canyon La Cañada de las Uvas, the Ravine of the Grapes, for the wild grapevines growing here. The road took the English version of that name, and wild grapes still grow along the original road. So every time someone says the Grapevine, they're naming a plant.",
+      "src": "https://en.wikipedia.org/wiki/Grapevine_Canyon"
+    },
+    {
+      "mi": 218,
+      "name": "Tejon Ranch",
+      "cat": "farm",
+      "side": null,
+      "visible": true,
+      "where": "Both sides, Grapevine to Wheeler Ridge",
+      "text": "Much of the land around the bottom of the grade belongs to Tejon Ranch, about 270,000 acres, described as the largest stretch of private land in one piece in California. That's roughly the size of the City of Los Angeles. The name Tejon means badger. A Spanish priest recorded it in 1806 after a dead badger was found at the mouth of a canyon.",
+      "src": "https://www.tejonconservancy.org/whoweare"
+    },
+    {
+      "mi": 220,
+      "name": "Water climbing the mountains",
+      "cat": "odd",
+      "side": "E",
+      "visible": false,
+      "where": "Toward the Tehachapi Mountains, east of Wheeler Ridge",
+      "text": "Off toward the mountains to the east, water from Northern California gets lifted over the Tehachapis in steps. The last and biggest step, the Edmonston Pumping Plant, pushes water 1,926 feet straight uphill with fourteen enormous pumps. People driving by often mistake a smaller plant nearer the freeway, called Wind Gap, for the big one.",
+      "src": "https://en.wikipedia.org/wiki/Edmonston_Pumping_Plant"
+    },
+    {
+      "mi": 221,
+      "name": "Wheeler Ridge split",
+      "cat": "hist",
+      "side": null,
+      "visible": true,
+      "where": "Exit 221, Highway 99 to Bakersfield",
+      "text": "Here Highway 99 peels off toward Bakersfield and Fresno, and I-5 becomes the West Side Freeway. It was built in big pieces: the Tracy to Los Banos stretch by 1967, the run down to here by 1972, and the last link to Sacramento in 1979.",
+      "src": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+    },
+    {
+      "mi": 225,
+      "name": "Wind Wolves Preserve",
+      "cat": "nature",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 225, Highway 166 west",
+      "text": "West along Highway 166 lies Wind Wolves Preserve, about 93,000 acres of hills and canyons, the largest nonprofit nature preserve on the West Coast. In 1998 nineteen tule elk were brought here. Today more than 500 roam the preserve.",
+      "src": "https://wildlandsconservancy.org/rewilding-tule-elk/"
+    },
+    {
+      "mi": 225,
+      "name": "Lakeview Gusher",
+      "cat": "hist",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 225, Highway 166 toward Maricopa",
+      "text": "Out past Maricopa, in March 1910, an oil well called Lakeview Number One blew out and would not stop. It gushed for about 18 months and spilled roughly 9 million barrels of oil, the largest accidental oil spill in U.S. history. Amazingly, it never caught fire.",
+      "src": "https://en.wikipedia.org/wiki/Lakeview_Gusher"
+    },
+    {
+      "mi": 234,
+      "name": "Vanished Buena Vista Lake",
+      "cat": "nature",
+      "side": null,
+      "visible": false,
+      "where": "Near Old River Road",
+      "text": "This flat farmland was once Buena Vista Lake, a shallow lake fed by the Kern River that could spread over 150 square miles in wet years. A Yokuts village called Tulamniu stood on its southern shore. Today it's nearly all fields, except two small lakes kept for boating and fishing.",
+      "src": "https://en.wikipedia.org/wiki/Buena_Vista_Lake"
+    },
+    {
+      "mi": 239,
+      "name": "Kern County nut country",
+      "cat": "farm",
+      "side": null,
+      "visible": true,
+      "where": "Orchards both sides",
+      "text": "Those neat rows of trees are mostly almonds and pistachios. In 2020, Kern County alone grew about 410 million pounds of pistachios, roughly 40 percent of the whole U.S. crop. In 2016 pistachios helped make Kern the top farm county in the entire country.",
+      "src": "https://www.farmprogress.com/crops/pistachios-push-kern-county-crop-values-to-no-1"
+    },
+    {
+      "mi": 250,
+      "name": "Elk Hills oil reserve",
+      "cat": "hist",
+      "side": "W",
+      "visible": true,
+      "where": "Low hills west of the freeway",
+      "text": "The low hills to the west are Elk Hills, once Naval Petroleum Reserve Number One, an oil field kept by the government for the Navy. In 1998 the government sold its share to Occidental Petroleum for 3.65 billion dollars. It was the largest sale of federal property in U.S. history.",
+      "src": "https://www.energy.gov/hgeo/opr/sale-elk-hills-naval-petroleum-reserve"
+    },
+    {
+      "mi": 253,
+      "name": "Tule Elk State Natural Reserve",
+      "cat": "nature",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 253, Stockdale Highway, about 3 miles southwest",
+      "text": "Just a few miles southwest of here, a state reserve looks after a small herd of tule elk. Tule elk were once in danger of extinction. If you have time, the reserve is only a short drive off the freeway.",
+      "src": "https://www.parks.ca.gov/?page_id=584"
+    },
+    {
+      "mi": 255,
+      "name": "Kern Water Bank",
+      "cat": "nature",
+      "side": "E",
+      "visible": false,
+      "where": "Along Stockdale Highway toward Bakersfield",
+      "text": "East of here is the Kern Water Bank, about 20,000 acres where water is spread into shallow ponds in wet years so it soaks down and is saved underground. When the ponds are full they turn into wetlands. One survey counted as many as 35,000 water birds there at once.",
+      "src": "https://www.turnto23.com/news/23abc-in-depth/heavy-water-year-lets-wildlife-thrive-on-kern-water-bank-grounds"
+    },
+    {
+      "mi": 257,
+      "name": "The Buttonwillow tree",
+      "cat": "hist",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 257, Highway 58 to Buttonwillow",
+      "text": "The town of Buttonwillow is named for a single tree that isn't a willow at all. It's a buttonbush, and it stood out for miles as a landmark on an old trail across the valley and a Yokuts meeting place. Later, ranch workers reportedly left notes for each other in it, like a tiny post office.",
+      "src": "https://ohp.parks.ca.gov/ListedResources/Detail/492"
+    },
+    {
+      "mi": 262,
+      "name": "Henry Miller, the Cattle King",
+      "cat": "hist",
+      "side": null,
+      "visible": false,
+      "where": "West side of the valley, Buttonwillow to Gustine",
+      "text": "Much of this valley once belonged to one company, Miller and Lux. Henry Miller, a German immigrant butcher in San Francisco, teamed up with Charles Lux in 1858, and together they came to own well over a million acres. You'll pass places tied to him all the way up to Gustine.",
+      "src": "https://en.wikipedia.org/wiki/Henry_Miller_(rancher)"
+    },
+    {
+      "mi": 275,
+      "name": "Lost Hills oil field",
+      "cat": "hist",
+      "side": "W",
+      "visible": true,
+      "where": "About 4 miles west of I-5",
+      "text": "In July 1910 two drillers out here were digging a water well for livestock. At about 530 feet down they hit oil instead, and the Lost Hills oil field was born. So much oil has been pumped out since that parts of the hills above it have sunk as much as 8 feet.",
+      "src": "https://en.wikipedia.org/wiki/Lost_Hills_Oil_Field"
+    },
+    {
+      "mi": 276,
+      "name": "The 1998 well fire",
+      "cat": "odd",
+      "side": null,
+      "visible": false,
+      "where": "Northeast edge of the Lost Hills field",
+      "text": "In November 1998 a deep test well near Lost Hills hit high-pressure gas and caught fire. The flames rose about 340 feet, burned for fourteen days, and could be seen more than 40 miles away. Crews finally sealed it by drilling a second, slanted hole to meet the first one underground.",
+      "src": "https://en.wikipedia.org/wiki/Lost_Hills_Oil_Field"
+    },
+    {
+      "mi": 278,
+      "name": "Lost Hills pistachios",
+      "cat": "town",
+      "side": null,
+      "visible": true,
+      "where": "Exit 278, Highway 46, Lost Hills",
+      "text": "Lost Hills is a town of about 2,400 people, and many of them work for the Wonderful Company, which roasts and packs pistachios in a huge plant here. Almost all American pistachios, about 99 percent, are grown in California. Pistachio trees come as boys and girls, and only the female trees grow nuts.",
+      "src": "https://www.nbcbayarea.com/news/california/california-farmers-pistachio-boom-china/3705208/"
+    },
+    {
+      "mi": 278,
+      "name": "Wasco, rose town",
+      "cat": "farm",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 278, Highway 46 east",
+      "text": "About 20 miles east on Highway 46 is Wasco, which calls itself the Rose Capital of the World. Around 55 percent of the rose plants grown in the United States come from in or around Wasco. So the rose bush in somebody's garden back home may well have started here.",
+      "src": "https://en.wikipedia.org/wiki/Wasco,_California"
+    },
+    {
+      "mi": 285,
+      "name": "San Joaquin kit fox",
+      "cat": "nature",
+      "side": null,
+      "visible": false,
+      "where": "Grasslands and orchard edges near Lost Hills",
+      "text": "This dry corner of the valley is home to the San Joaquin kit fox, endangered since 1967. Near Lost Hills, a conservation project has built artificial dens in fields and orchards so the little foxes have somewhere to hide from coyotes.",
+      "src": "https://nfwf.org/grants/grants-library/profile?egid=8804"
+    },
+    {
+      "mi": 300,
+      "name": "Kettleman Hills",
+      "cat": "hist",
+      "side": "W",
+      "visible": true,
+      "where": "Hills west of the freeway",
+      "text": "These bare rolling hills are named, with a spelling change, for Dave Kettelman, who grazed sheep and cattle here in the 1860s. In October 1928 a well blew in out of control and revealed a giant oil and gas field underneath. By the early 1930s it was one of the most productive oil fields in the country.",
+      "src": "https://en.wikipedia.org/wiki/Kettleman_North_Dome_Oil_Field"
+    },
+    {
+      "mi": 305,
+      "name": "Ghost of Tulare Lake",
+      "cat": "nature",
+      "side": "E",
+      "visible": false,
+      "where": "Valley floor east of Kettleman City",
+      "text": "Out to the east was once Tulare Lake, the largest freshwater lake west of the Mississippi, more than 100 miles long in the 1800s. It was drained for farming, but in 2023 huge storms brought it back, flooding about 100,000 acres of fields. Kettleman City sits near its old shoreline.",
+      "src": "https://news.northeastern.edu/2024/02/05/tulare-lake-reappearance"
+    },
+    {
+      "mi": 309,
+      "name": "Kettleman City, halfway",
+      "cat": "stop",
+      "side": null,
+      "visible": true,
+      "where": "Exit 309, Highway 41",
+      "text": "Kettleman City is close to the halfway point between Los Angeles and San Francisco or Sacramento, which is why this exit is so busy. In 2017 Tesla opened a 40-stall charging station here with its first lounge, at the time the biggest it had built. The town itself began in 1929, right after oil was found in the hills.",
+      "src": "https://en.wikipedia.org/wiki/Kettleman_City,_California"
+    },
+    {
+      "mi": 315,
+      "name": "The California Aqueduct",
+      "cat": "odd",
+      "side": null,
+      "visible": true,
+      "where": "Canal running alongside the freeway",
+      "text": "That wide concrete river you keep seeing is the California Aqueduct, carrying water from the Delta to Southern California. A typical stretch is about 40 feet wide at the bottom and 30 feet deep. Counting its long branch to the east, it runs about 444 miles.",
+      "src": "https://www.britannica.com/topic/California-Aqueduct"
+    },
+    {
+      "mi": 319,
+      "name": "Avenal",
+      "cat": "town",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 319, Lassen Avenue",
+      "text": "The town of Avenal, up against the hills to the west, has a name that means oat field in Spanish. Early Spanish travelers found the plains here covered in wild oats. Later the town grew up with the oil boom in the Kettleman Hills.",
+      "src": "https://en.wikipedia.org/wiki/Avenal,_California"
+    },
+    {
+      "mi": 322,
+      "name": "Garlic country",
+      "cat": "farm",
+      "side": "E",
+      "visible": false,
+      "where": "Fields toward Huron and Five Points",
+      "text": "Fresno County grows more garlic than anywhere else in the country, around three quarters of the U.S. supply. Much of it now grows on this west side, around little towns like Huron and Five Points, after production moved south from Gilroy.",
+      "src": "https://abc30.com/archive/6917658/"
+    },
+    {
+      "mi": 334,
+      "name": "Harris Ranch feedlot",
+      "cat": "farm",
+      "side": null,
+      "visible": true,
+      "where": "Exit 334, Highway 198",
+      "text": "You'll probably smell this one before you see it. Harris Ranch's feedlot covers about 800 acres and can hold more than 100,000 cattle at a time, making it California's largest beef producer. Jack and Teresa Harris started the ranch in 1937 on desert land nobody had farmed before.",
+      "src": "https://en.wikipedia.org/wiki/Harris_Ranch"
+    },
+    {
+      "mi": 334,
+      "name": "Navy jets overhead",
+      "cat": "odd",
+      "side": "E",
+      "visible": false,
+      "where": "Highway 198 east toward Lemoore",
+      "text": "East of here, past Lemoore, is Naval Air Station Lemoore, the Navy's largest jet base. More than half of the Navy's Super Hornet fighters live there, and it's the only Navy base with F-35C stealth jets. If you hear a roar overhead, look up.",
+      "src": "https://cnrsw.cnic.navy.mil/Installations/NAS-Lemoore/About/"
+    },
+    {
+      "mi": 337,
+      "name": "Coalinga's name",
+      "cat": "town",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 337, Highway 33 south",
+      "text": "Coalinga started in 1888 as a Southern Pacific railroad stop called Coaling Station A, where trains loaded coal. Squash Coaling and A together and you get Coalinga. Nobody is quite sure who did the squashing, and there are several competing stories.",
+      "src": "https://en.wikipedia.org/wiki/Coalinga,_California"
+    },
+    {
+      "mi": 337,
+      "name": "The Iron Zoo",
+      "cat": "odd",
+      "side": "W",
+      "visible": false,
+      "where": "Oil fields around Coalinga",
+      "text": "In the early 1970s a local motel owner named Jean Dakessian Jones started painting the nodding oil pumps around Coalinga to look like animals. At its peak the Iron Zoo had more than fifty, including zebras, giraffes and a rhino, and it made it into Ripley's Believe It or Not. Only a few painted pumps are left today.",
+      "src": "https://www.atlasobscura.com/places/iron-zoo"
+    },
+    {
+      "mi": 337,
+      "name": "Coalinga earthquake of 1983",
+      "cat": "hist",
+      "side": "W",
+      "visible": false,
+      "where": "Downtown Coalinga",
+      "text": "On May 2, 1983, at about twenty to five in the afternoon, a magnitude 6.2 earthquake hit Coalinga. The eight-block downtown, full of old brick buildings, was almost completely destroyed. Remarkably, no one was killed.",
+      "src": "https://en.wikipedia.org/wiki/1983_Coalinga_earthquake"
+    },
+    {
+      "mi": 337,
+      "name": "Arroyo de Cantua",
+      "cat": "hist",
+      "side": "W",
+      "visible": false,
+      "where": "Highway 198 near Highway 33, toward Coalinga",
+      "text": "A state landmark out near Coalinga marks Arroyo de Cantua, said to be the hideout of the famous bandit Joaquin Murrieta. According to the marker, he was killed there on July 25, 1853, by a posse of state rangers led by Captain Harry Love. How much of his legend is true is still argued about.",
+      "src": "https://ohp.parks.ca.gov/ListedResources/Detail/344"
+    },
+    {
+      "mi": 342,
+      "name": "The 1991 dust storm",
+      "cat": "hist",
+      "side": null,
+      "visible": false,
+      "where": "I-5 north of Coalinga",
+      "text": "On November 29, 1991, a sudden dust storm blew across this stretch north of Coalinga and dropped visibility to almost nothing. About 104 vehicles crashed, 17 people died, and around 150 were hurt. It's a good reminder to slow way down whenever dust or fog rolls in.",
+      "src": "https://en.wikipedia.org/wiki/1991_Interstate_5_dust_storm"
+    },
+    {
+      "mi": 349,
+      "name": "Mendota, cantaloupe town",
+      "cat": "town",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 349, Highway 33 north",
+      "text": "Up Highway 33 is Mendota, which calls itself the Cantaloupe Center of the World. The west side's hot, dry summers are great for melons. If it's summertime, some of the cantaloupes in your grocery store may have grown in these fields.",
+      "src": "https://en.wikipedia.org/wiki/Mendota,_California"
+    },
+    {
+      "mi": 355,
+      "name": "Westlands Water District",
+      "cat": "farm",
+      "side": null,
+      "visible": true,
+      "where": "Farmland along both sides",
+      "text": "Much of the farmland you've been passing is in Westlands Water District, the largest farm water district in the country, covering more than 1,000 square miles. It formed in 1952. How much water this land should get is one of California's longest running arguments.",
+      "src": "https://wwd.ca.gov/about-westlands/history/"
+    },
+    {
+      "mi": 362,
+      "name": "The Diablo Range",
+      "cat": "nature",
+      "side": "W",
+      "visible": true,
+      "where": "Mountains to the west",
+      "text": "The mountains to the west are the Diablo Range, part of California's Coast Ranges. They run about 180 miles, from near the Carquinez Strait down to Polonio Pass. The highest point is San Benito Mountain, at more than 5,200 feet.",
+      "src": "https://en.wikipedia.org/wiki/Diablo_Range"
+    },
+    {
+      "mi": 370,
+      "name": "Panoche Hills",
+      "cat": "nature",
+      "side": "W",
+      "visible": true,
+      "where": "Near Panoche Road and Little Panoche Road",
+      "text": "The crumpled, grassy foothills to the west are the Panoche Hills, which the Bureau of Land Management describes as badlands. They shelter rare animals like the San Joaquin kit fox, the giant kangaroo rat, and the blunt-nosed leopard lizard. They turn green in spring and golden the rest of the year.",
+      "src": "https://www.npshistory.com/brochures/blm/ca/panoche-griswold-tumey-hills-2009.pdf"
+    },
+    {
+      "mi": 385,
+      "name": "Firebaugh's Ferry",
+      "cat": "hist",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 385, Nees Avenue",
+      "text": "East of here is the town of Firebaugh, named for Andrew Firebaugh, who started a ferry across the San Joaquin River in 1854. His crossing became a stop on the Butterfield Overland stagecoach line. He also built a toll road over Pacheco Pass, the route Highway 152 follows today.",
+      "src": "https://www.hmdb.org/m.asp?m=28015"
+    },
+    {
+      "mi": 386,
+      "name": "John Erreca Rest Area",
+      "cat": "stop",
+      "side": null,
+      "visible": true,
+      "where": "Rest areas on both sides, Merced County",
+      "text": "This rest stop was completely rebuilt, reopening northbound in August 2025 and southbound in May 2026. It's one of the greenest rest areas Caltrans has built: it recycles water for flushing toilets and its artwork honors the region's Basque history. It's named for Chuck Erreca, a state highway commissioner who championed roadside rest stops.",
+      "src": "https://concretepavements.org/2024/01/18/concrete-sustainability-the-john-chuck-erreca-rest-area-sets-a-strong-foundation-for-the-future"
+    },
+    {
+      "mi": 391,
+      "name": "Dos Amigos Pumping Plant",
+      "cat": "odd",
+      "side": null,
+      "visible": true,
+      "where": "Along I-5, about 10 miles south of Los Banos",
+      "text": "Near here the Dos Amigos Pumping Plant lifts the aqueduct's water about 118 feet. After that boost, gravity carries it all the way south toward Kettleman City. It's one of several giant steps that move water the length of the state.",
+      "src": "https://en.wikipedia.org/wiki/Dos_Amigos_Pumping_Plant"
+    },
+    {
+      "mi": 395,
+      "name": "Los Banos, the baths",
+      "cat": "town",
+      "side": "E",
+      "visible": false,
+      "where": "Exits 391 and 403, Los Banos",
+      "text": "Los Banos means the baths in Spanish. The name comes from pools in the hills where padres from Mission San Juan Bautista liked to bathe on their trips into the valley, a spot visited as early as 1805. The creek kept the name, and so did the town.",
+      "src": "https://ohp.parks.ca.gov/ListedResources/Detail/550"
+    },
+    {
+      "mi": 400,
+      "name": "Grassland wetlands",
+      "cat": "nature",
+      "side": "E",
+      "visible": false,
+      "where": "East of Los Banos and Gustine",
+      "text": "East of the freeway lie about 250 square miles of wetlands and grasslands along the San Joaquin River. They sit on the Pacific Flyway, the great bird migration route. They're important habitat for migrating water birds.",
+      "src": "https://en.wikipedia.org/wiki/Grassland_Ecological_Area"
+    },
+    {
+      "mi": 403,
+      "name": "San Luis Reservoir",
+      "cat": "nature",
+      "side": "W",
+      "visible": false,
+      "where": "Exit 403, Highway 152 west",
+      "text": "A few miles west up Highway 152 is B.F. Sisk Dam, 382 feet high and more than three miles long, holding back San Luis Reservoir. It's the largest reservoir in the country that isn't on a river: every drop is pumped in from canals.",
+      "src": "https://www.usbr.gov/mp/sccao/sisk/index.html"
+    },
+    {
+      "mi": 404,
+      "name": "A giant water battery",
+      "cat": "odd",
+      "side": "W",
+      "visible": false,
+      "where": "Base of San Luis Dam",
+      "text": "At the foot of the dam, the Gianelli plant pumps water uphill into the reservoir when there's water to spare. When it's let back down, the same machines spin as generators and make electricity. About 70 percent of the energy used to pump it up comes back out.",
+      "src": "https://en.wikipedia.org/wiki/San_Luis_Dam"
+    },
+    {
+      "mi": 407,
+      "name": "Pea Soup Andersen's",
+      "cat": "stop",
+      "side": null,
+      "visible": true,
+      "where": "Exit 407, Santa Nella",
+      "text": "Pea Soup Andersen's started in 1924 in Buellton, near Santa Barbara, opened by a Danish immigrant named Anton Andersen. This Santa Nella restaurant opened on December 6, 1976. The Buellton original closed in 2024, so this is now the last one still serving.",
+      "src": "https://www.westsideconnect.com/news/community-news/the-last-ladle-standing-in-santa-nella/"
+    },
+    {
+      "mi": 407,
+      "name": "Santa Nella's name",
+      "cat": "town",
+      "side": null,
+      "visible": true,
+      "where": "Exit 407, Highway 33",
+      "text": "Santa Nella sounds like a saint, but there's no Saint Nella. The name is a mangled version of the Spanish word centinela, meaning sentinel, from an old adobe nearby. Today it's mostly a crossroads of gas stations and restaurants.",
+      "src": "https://en.wikipedia.org/wiki/Santa_Nella,_California"
+    },
+    {
+      "mi": 412,
+      "name": "Two canals side by side",
+      "cat": "odd",
+      "side": null,
+      "visible": true,
+      "where": "Between Santa Nella and Tracy",
+      "text": "Between here and Tracy, two big canals run through the foothills: the state's California Aqueduct and the federal Delta-Mendota Canal. The Delta-Mendota begins at a pumping plant near Tracy, built between 1947 and 1951, that lifts water 197 feet. From there it flows nearly 120 miles south to Mendota.",
+      "src": "https://www.usbr.gov/mp/mpr-news/docs/factsheets/jones-pumping-plant.pdf"
+    },
+    {
+      "mi": 418,
+      "name": "Gustine",
+      "cat": "town",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 418, Highway 140",
+      "text": "The town of Gustine is named for Sarah Alice Miller, nicknamed Gussie, the daughter of cattle king Henry Miller. She died in 1879, at about age 8, after being thrown from her horse. The town grew up later as a railroad stop and became a city in 1915.",
+      "src": "https://en.wikipedia.org/wiki/Gustine,_California"
+    },
+    {
+      "mi": 428,
+      "name": "Crows Landing airfield",
+      "cat": "hist",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 428, Fink Road",
+      "text": "East of here is an old airfield the Navy built during World War Two, starting in late 1942, to support its air station in Alameda. Later NASA's Ames Research Center used it for flight testing.",
+      "src": "https://www.bracpmo.navy.mil/BRAC-Bases/California/Former-Naval-Auxiliary-Landing-Field-NALF-Crows-Landing"
+    },
+    {
+      "mi": 434,
+      "name": "Patterson",
+      "cat": "town",
+      "side": "E",
+      "visible": false,
+      "where": "Exit 434, Sperry Avenue",
+      "text": "Patterson's founder, Thomas Patterson, wanted his town to look different, so he based its center on Washington, D.C., and Paris, with circles and streets spreading out like spokes. In 1971 it took the title Apricot Capital of the World. Every first weekend of June it throws an Apricot Fiesta.",
+      "src": "https://en.wikipedia.org/wiki/Patterson,_California"
+    },
+    {
+      "mi": 441,
+      "name": "Westley tire fire",
+      "cat": "odd",
+      "side": null,
+      "visible": false,
+      "where": "Exit 441, Howard Road, Westley",
+      "text": "In September 1999 lightning struck a giant pile of about six million old tires near Westley. The fire burned for 34 days and melted the tires into at least 250,000 gallons of oily goo. Cleaning it up was expected to cost more than 20 million dollars.",
+      "src": "https://www.oag.ca.gov/news/press-releases/state-sues-owners-operators-waste-tire-haulers-cleanup-abatement-removal-wastes"
+    },
+    {
+      "mi": 444,
+      "name": "Mount Diablo",
+      "cat": "nature",
+      "side": "W",
+      "visible": true,
+      "where": "Northwest horizon on clear days",
+      "text": "On a clear day, look northwest for a lone peak standing above the hills. That's Mount Diablo, 3,849 feet tall. In 1851 a surveyor set a starting point on its summit, and land across about two thirds of California is still measured from that spot.",
+      "src": "https://en.wikipedia.org/wiki/Mount_Diablo_meridian"
+    },
+    {
+      "mi": 446,
+      "name": "The I-580 split",
+      "cat": "hist",
+      "side": "W",
+      "visible": true,
+      "where": "Exit 446, I-580 west to Tracy and San Francisco",
+      "text": "Here I-580 splits off toward the Bay Area. In early plans, that route was going to be its own branch of I-5, called I-5W, and signs for it went up along the road to Oakland. In 1964 the state dropped the idea and gave it a separate number.",
+      "src": "https://gribblenation.org/2019/12/interstate-5-west-side-freeway.html"
+    }
+  ],
+  "zones": [
+    {
+      "from": 210,
+      "to": 221,
+      "label": "Down the Grapevine",
+      "text": "A steep, winding drop through Grapevine Canyon, with oak-dotted hills of Tejon Ranch on both sides. In winter the grade sometimes closes for ice and snow."
+    },
+    {
+      "from": 221,
+      "to": 240,
+      "label": "Valley floor and water lifts",
+      "text": "The road flattens into the southern tip of the San Joaquin Valley, with orchards and the Tehachapi Mountains behind you. From November to February, watch for tule fog, a thick ground fog that can drop visibility to a few hundred feet."
+    },
+    {
+      "from": 240,
+      "to": 262,
+      "label": "Elk Hills and the Kern River",
+      "text": "Oil country rises to the west in the Elk Hills while irrigated farmland spreads east toward Bakersfield. The Kern River once fed lakes and marshes here; now it's water banks and fields."
+    },
+    {
+      "from": 262,
+      "to": 290,
+      "label": "Lost Hills oil and pistachios",
+      "text": "Pumpjacks nod in the hills to the west and pistachio orchards line the road. Pistachio harvest starts in late August, when machines shake the nuts off the trees."
+    },
+    {
+      "from": 290,
+      "to": 312,
+      "label": "Kettleman Hills",
+      "text": "Bare, rounded hills rise to the west, sitting on top of one of the great oil fields of the 1930s. East is the old bed of Tulare Lake, which came back for a while in 2023."
+    },
+    {
+      "from": 312,
+      "to": 340,
+      "label": "Coalinga plains",
+      "text": "Wide-open farmland with the Diablo Range to the west and the aqueduct alongside. In summer, processing tomatoes are harvested from about July through the end of August, and the big feedlot near Coalinga announces itself by smell."
+    },
+    {
+      "from": 340,
+      "to": 368,
+      "label": "Westlands heartland",
+      "text": "This is the heart of the west side's big farms: almonds, pistachios, melons, garlic and tomatoes. In February, almond orchards burst into white bloom and beekeepers truck in hives, usually about two per acre, to pollinate them."
+    },
+    {
+      "from": 368,
+      "to": 391,
+      "label": "Panoche badlands",
+      "text": "The foothills crowd closer on the west, wrinkled and treeless, green in spring and gold by summer. This is rare-animal country for kit foxes and kangaroo rats."
+    },
+    {
+      "from": 391,
+      "to": 410,
+      "label": "San Luis water crossroads",
+      "text": "Canals, pumping plants and the giant San Luis Reservoir make this the plumbing hub of California's water system. Highway 152 heads west over Pacheco Pass toward the coast."
+    },
+    {
+      "from": 410,
+      "to": 434,
+      "label": "Westside Stanislaus orchards",
+      "text": "Twin canals run along the foothills while orchards and row crops fill the valley to the east. Look for almond blossoms in February and shaking machines at harvest."
+    },
+    {
+      "from": 434,
+      "to": 446,
+      "label": "Toward the Delta",
+      "text": "The hills get closer, and on clear days Mount Diablo appears on the northwest horizon. The Delta, where Northern California's rivers meet, lies just ahead."
+    }
+  ],
+  "trivia": [
+    {
+      "mi": 210,
+      "q": "Starting in 1858, which unusual animals did the Army test at Fort Tejon?",
+      "choices": [
+        "Camels",
+        "Elephants",
+        "Llamas",
+        "Ostriches"
+      ],
+      "answer": 0,
+      "why": "Fort Tejon was the western end of the Army's experimental Camel Corps."
+    },
+    {
+      "mi": 215,
+      "q": "Where does the name Grapevine come from?",
+      "choices": [
+        "A winery",
+        "Wild grapes in the canyon",
+        "A twisty road shaped like a vine",
+        "A ranch owner named Grape"
+      ],
+      "answer": 1,
+      "why": "Spanish travelers named the canyon La Cañada de las Uvas for its wild grapevines."
+    },
+    {
+      "mi": 220,
+      "q": "How high does the Edmonston Pumping Plant lift water over the Tehachapi Mountains?",
+      "choices": [
+        "192 feet",
+        "926 feet",
+        "1,926 feet",
+        "4,144 feet"
+      ],
+      "answer": 2,
+      "why": "Edmonston pushes water 1,926 feet uphill on its way to Southern California."
+    },
+    {
+      "mi": 225,
+      "q": "How long did the 1910 Lakeview Gusher keep spilling oil?",
+      "choices": [
+        "18 days",
+        "18 weeks",
+        "18 months",
+        "18 years"
+      ],
+      "answer": 2,
+      "why": "It flowed for about 18 months and released roughly 9 million barrels."
+    },
+    {
+      "mi": 257,
+      "q": "The famous Buttonwillow tree that named the town is actually what kind of plant?",
+      "choices": [
+        "A willow",
+        "A buttonbush",
+        "An oak",
+        "A palm"
+      ],
+      "answer": 1,
+      "why": "Despite the name, it's a buttonbush, not a willow."
+    },
+    {
+      "mi": 275,
+      "q": "What were the drillers looking for when they found the Lost Hills oil field in 1910?",
+      "choices": [
+        "Gold",
+        "Water",
+        "Natural gas",
+        "Fossils"
+      ],
+      "answer": 1,
+      "why": "They were drilling a water well for livestock and hit oil instead."
+    },
+    {
+      "mi": 309,
+      "q": "Kettleman City is close to the halfway point between Los Angeles and which city?",
+      "choices": [
+        "San Diego",
+        "Las Vegas",
+        "San Francisco",
+        "Portland"
+      ],
+      "answer": 2,
+      "why": "Exit 309 sits near the halfway mark between LA and San Francisco or Sacramento."
+    },
+    {
+      "mi": 337,
+      "q": "Coalinga got its name from what?",
+      "choices": [
+        "A Native word for hill",
+        "A railroad stop called Coaling Station A",
+        "A coal mine owner named Linga",
+        "A Spanish saint"
+      ],
+      "answer": 1,
+      "why": "The Southern Pacific stop was called Coaling Station A, which became Coalinga."
+    },
+    {
+      "mi": 395,
+      "q": "What does Los Banos mean in Spanish?",
+      "choices": [
+        "The farms",
+        "The bridges",
+        "The baths",
+        "The bells"
+      ],
+      "answer": 2,
+      "why": "It's named for pools where mission padres liked to bathe."
+    },
+    {
+      "mi": 403,
+      "q": "What makes San Luis Reservoir special?",
+      "choices": [
+        "It's the deepest lake in the U.S.",
+        "It's the largest U.S. reservoir not on a river",
+        "It's saltwater",
+        "It freezes every winter"
+      ],
+      "answer": 1,
+      "why": "It's the largest offstream reservoir in the country, filled entirely by pumping."
+    }
+  ]
+}

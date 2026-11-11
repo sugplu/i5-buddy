@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8">
+<style>body{margin:0;display:flex;gap:8px;background:#444}iframe{width:390px;height:844px;border:0;background:#000}</style>
+<iframe id="a" src="../index.html"></iframe><iframe id="b" src="../index.html"></iframe><iframe id="c" src="../index.html"></iframe>
+<script>
+const q=(f,id)=>document.getElementById(f).contentDocument.getElementById(id);
+window.onload=()=>{
+  for (const f of ["a","b","c"]) { const w=document.getElementById(f).contentWindow; try{w.localStorage.clear();}catch(e){} }
+  // a: welcome state. b: demo drive running. c: settings manual mile 330 then Ahead tab
+  setTimeout(()=>{ q("b","startDemo").click(); }, 300);
+  setTimeout(()=>{ const d=document.getElementById("c").contentDocument; const m=q("c","manual"); m.value=700; m.dispatchEvent(new Event("input")); d.querySelector('[data-go="ahead"]').click(); }, 300);
+};
+</script>

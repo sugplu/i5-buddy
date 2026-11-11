@@ -1,0 +1,8834 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-10T23:14:12Z",
+    "timestamp_areas_base": "2026-11-10T17:18:09Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 653772,
+  "lat": 34.0511029,
+  "lon": -118.2139046,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "135C",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3511"
+  }
+},
+{
+  "type": "node",
+  "id": 10683747,
+  "lat": 34.3200490,
+  "lon": -118.4948720,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "161A"
+  }
+},
+{
+  "type": "node",
+  "id": 14806184,
+  "lat": 34.4406357,
+  "lon": -118.6001923,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "172",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3673"
+  }
+},
+{
+  "type": "node",
+  "id": 14840394,
+  "lat": 33.7611323,
+  "lon": -117.8636516,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "105A"
+  }
+},
+{
+  "type": "node",
+  "id": 14840398,
+  "lat": 33.7353994,
+  "lon": -117.8186491,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "101B"
+  }
+},
+{
+  "type": "node",
+  "id": 14840399,
+  "lat": 33.7136929,
+  "lon": -117.7869491,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "99"
+  }
+},
+{
+  "type": "node",
+  "id": 14995402,
+  "lat": 34.0915116,
+  "lon": -118.2397004,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "138",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3532"
+  }
+},
+{
+  "type": "node",
+  "id": 19344824,
+  "lat": 33.8173609,
+  "lon": -117.9176483,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "110A"
+  }
+},
+{
+  "type": "node",
+  "id": 19344845,
+  "lat": 33.5245897,
+  "lon": -117.6676200,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "83"
+  }
+},
+{
+  "type": "node",
+  "id": 19345060,
+  "lat": 33.4418005,
+  "lon": -117.6273690,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "76",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2599"
+  }
+},
+{
+  "type": "node",
+  "id": 20189449,
+  "lat": 34.1170889,
+  "lon": -118.2692217,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "141A",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3545"
+  }
+},
+{
+  "type": "node",
+  "id": 20820565,
+  "lat": 34.1548861,
+  "lon": -118.2888255,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "144"
+  }
+},
+{
+  "type": "node",
+  "id": 20820632,
+  "lat": 34.1279196,
+  "lon": -118.2738191,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "141"
+  }
+},
+{
+  "type": "node",
+  "id": 20930309,
+  "lat": 34.1733561,
+  "lon": -118.3065579,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "145B"
+  }
+},
+{
+  "type": "node",
+  "id": 20972899,
+  "lat": 33.9845784,
+  "lon": -118.1335038,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "128A"
+  }
+},
+{
+  "type": "node",
+  "id": 20972936,
+  "lat": 33.8706301,
+  "lon": -118.0057323,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "117"
+  }
+},
+{
+  "type": "node",
+  "id": 21063546,
+  "lat": 33.9361741,
+  "lon": -118.0930010,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "124"
+  }
+},
+{
+  "type": "node",
+  "id": 21420499,
+  "lat": 34.0472870,
+  "lon": -118.2145530,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "135B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3509"
+  }
+},
+{
+  "type": "node",
+  "id": 21478645,
+  "lat": 34.1152994,
+  "lon": -118.2685532,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "140B"
+  }
+},
+{
+  "type": "node",
+  "id": 21490199,
+  "lat": 34.1215755,
+  "lon": -118.2715884,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "141B",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3549"
+  }
+},
+{
+  "type": "node",
+  "id": 24912473,
+  "lat": 34.2104458,
+  "lon": -118.3462836,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "149",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3584"
+  }
+},
+{
+  "type": "node",
+  "id": 24960503,
+  "lat": 34.1080794,
+  "lon": -118.2587401,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "140A"
+  }
+},
+{
+  "type": "node",
+  "id": 25274550,
+  "lat": 34.1010223,
+  "lon": -118.2487900,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "138"
+  }
+},
+{
+  "type": "node",
+  "id": 25464338,
+  "lat": 34.1055455,
+  "lon": -118.2543280,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "139"
+  }
+},
+{
+  "type": "node",
+  "id": 25726911,
+  "lat": 34.2219186,
+  "lon": -118.3628120,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "150B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3588"
+  }
+},
+{
+  "type": "node",
+  "id": 25903957,
+  "lat": 34.1893548,
+  "lon": -118.3240937,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "147B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3576"
+  }
+},
+{
+  "type": "node",
+  "id": 26390301,
+  "lat": 34.3308526,
+  "lon": -118.5062062,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "162",
+    "source": "image;survey;usgs_imagery_2006",
+    "source_ref": "AM909_DSCV3643"
+  }
+},
+{
+  "type": "node",
+  "id": 26390385,
+  "lat": 34.7945861,
+  "lon": -118.8476958,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "202",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3824"
+  }
+},
+{
+  "type": "node",
+  "id": 26390617,
+  "lat": 36.0862469,
+  "lon": -120.1116018,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 26409839,
+  "lat": 35.4206548,
+  "lon": -119.4273180,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 26666239,
+  "lat": 34.0065318,
+  "lon": -118.1553412,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "129",
+    "source": "bing_imagery_0.25m_200801;survey;image",
+    "source_ref": "AM909_DSCW8703;AM909_DSCW8704"
+  }
+},
+{
+  "type": "node",
+  "id": 26740011,
+  "lat": 34.1768246,
+  "lon": -118.3078246,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "146A",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3567"
+  }
+},
+{
+  "type": "node",
+  "id": 26819356,
+  "lat": 34.2932543,
+  "lon": -118.4698964,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 27144998,
+  "lat": 35.4021547,
+  "lon": -119.4020600,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "257",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 27145001,
+  "lat": 35.4151359,
+  "lon": -119.4192746,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 27305190,
+  "lat": 34.1787490,
+  "lon": -118.3110686,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "146A"
+  }
+},
+{
+  "type": "node",
+  "id": 29413874,
+  "lat": 34.0082057,
+  "lon": -118.1581677,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "129",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1411;AM909_DSCV1412"
+  }
+},
+{
+  "type": "node",
+  "id": 29881588,
+  "lat": 34.2888761,
+  "lon": -118.4652450,
+  "tags": {
+    "fixme": "Why does Caltrans give this an exit number?",
+    "highway": "motorway_junction",
+    "source": "CDOT;image;survey;usgs_imagery_2006",
+    "source_ref": "AM909_DSCV3629",
+    "unsigned_ref": "158"
+  }
+},
+{
+  "type": "node",
+  "id": 29974423,
+  "lat": 37.5851099,
+  "lon": -121.3263471,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "445",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 30181051,
+  "lat": 34.7659417,
+  "lon": -118.7996278,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "198"
+  }
+},
+{
+  "type": "node",
+  "id": 30185558,
+  "lat": 34.5890356,
+  "lon": -118.7117770,
+  "tags": {
+    "FIXME": "Why does Caltrans give this an exit number?",
+    "highway": "motorway_junction",
+    "ref": "185"
+  }
+},
+{
+  "type": "node",
+  "id": 30185570,
+  "lat": 34.5725925,
+  "lon": -118.6919893,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "183"
+  }
+},
+{
+  "type": "node",
+  "id": 30186287,
+  "lat": 34.3753496,
+  "lon": -118.5631867,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "167",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3654"
+  }
+},
+{
+  "type": "node",
+  "id": 32277648,
+  "lat": 33.7448031,
+  "lon": -117.8417068,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "103C"
+  }
+},
+{
+  "type": "node",
+  "id": 32277665,
+  "lat": 33.7739850,
+  "lon": -117.8719173,
+  "tags": {
+    "highway": "motorway_junction",
+    "note": "missing from Caltrans list",
+    "ref": "106"
+  }
+},
+{
+  "type": "node",
+  "id": 33088849,
+  "lat": 33.7249093,
+  "lon": -117.8025617,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "101A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCU2929;AM909_DSCU2930"
+  }
+},
+{
+  "type": "node",
+  "id": 33088863,
+  "lat": 33.7397634,
+  "lon": -117.8309844,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "103A"
+  }
+},
+{
+  "type": "node",
+  "id": 35656952,
+  "lat": 42.0159171,
+  "lon": -122.6132801,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1"
+  }
+},
+{
+  "type": "node",
+  "id": 38426677,
+  "lat": 34.3377137,
+  "lon": -118.5144940,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "162"
+  }
+},
+{
+  "type": "node",
+  "id": 48857761,
+  "lat": 32.6626038,
+  "lon": -117.1092249,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "10",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48857795,
+  "lat": 32.6564962,
+  "lon": -117.1063703,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "10",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48875155,
+  "lat": 32.8354490,
+  "lon": -117.2334670,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "26B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48876743,
+  "lat": 32.7231279,
+  "lon": -117.1631487,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "17A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48877446,
+  "lat": 33.2968480,
+  "lon": -117.4619582,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "62"
+  }
+},
+{
+  "type": "node",
+  "id": 48887796,
+  "lat": 32.8758493,
+  "lon": -117.2289844,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "28"
+  }
+},
+{
+  "type": "node",
+  "id": 48890738,
+  "lat": 32.7270740,
+  "lon": -117.1677423,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "17",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48895441,
+  "lat": 33.1774069,
+  "lon": -117.3513803,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51C",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48900273,
+  "lat": 33.3842663,
+  "lon": -117.5796216,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "71",
+    "source": "yahoo_imagery;survey;image",
+    "source:imagery": "Bing",
+    "source_ref": "AM909_DSCU2656"
+  }
+},
+{
+  "type": "node",
+  "id": 48907120,
+  "lat": 32.8424219,
+  "lon": -117.2366518,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "26",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48909958,
+  "lat": 33.1258878,
+  "lon": -117.3244481,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "47",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48910254,
+  "lat": 32.7923968,
+  "lon": -117.2076045,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "22",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48910269,
+  "lat": 32.7431672,
+  "lon": -117.1842219,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "18A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48915235,
+  "lat": 32.6263023,
+  "lon": -117.0945937,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "8A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48929439,
+  "lat": 32.7114571,
+  "lon": -117.1475194,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "15B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48936631,
+  "lat": 33.1766172,
+  "lon": -117.3512216,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51B"
+  }
+},
+{
+  "type": "node",
+  "id": 48940066,
+  "lat": 32.7329188,
+  "lon": -117.1725664,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "18A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48949309,
+  "lat": 32.5731385,
+  "lon": -117.0795259,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "4",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48953449,
+  "lat": 32.6884485,
+  "lon": -117.1152198,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "13A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48953637,
+  "lat": 32.6104713,
+  "lon": -117.0905683,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "7A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48957817,
+  "lat": 32.5614160,
+  "lon": -117.0672173,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "3",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48959808,
+  "lat": 32.6653473,
+  "lon": -117.1099888,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "11A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48963984,
+  "lat": 32.8040075,
+  "lon": -117.2135155,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "23B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48969359,
+  "lat": 32.7239588,
+  "lon": -117.1507838,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "16A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 48980518,
+  "lat": 32.6075386,
+  "lon": -117.0905411,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "6",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49014334,
+  "lat": 33.1371299,
+  "lon": -117.3308301,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "48",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49018763,
+  "lat": 33.1316962,
+  "lon": -117.3276200,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "48",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49019639,
+  "lat": 32.8323940,
+  "lon": -117.2326510,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "26A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49022210,
+  "lat": 32.6547385,
+  "lon": -117.1059518,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "9",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49029977,
+  "lat": 32.7541287,
+  "lon": -117.2004419,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "20",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49044543,
+  "lat": 32.6945651,
+  "lon": -117.1288782,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "13B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49181301,
+  "lat": 32.9084292,
+  "lon": -117.2267514,
+  "tags": {
+    "highway": "motorway_junction",
+    "note": "left exit",
+    "ref": "31",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49282629,
+  "lat": 32.6322650,
+  "lon": -117.0972559,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "8A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49749875,
+  "lat": 32.6972725,
+  "lon": -117.1372620,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "13B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49749909,
+  "lat": 32.7030748,
+  "lon": -117.1455310,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "14A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750049,
+  "lat": 32.5573049,
+  "lon": -117.0590394,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "2",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750057,
+  "lat": 32.5503092,
+  "lon": -117.0421538,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750155,
+  "lat": 33.1815720,
+  "lon": -117.3552930,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51C",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750192,
+  "lat": 33.1661318,
+  "lon": -117.3438286,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "50",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750343,
+  "lat": 33.0521652,
+  "lon": -117.2885386,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "41B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750372,
+  "lat": 33.0389760,
+  "lon": -117.2834940,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "41A"
+  }
+},
+{
+  "type": "node",
+  "id": 49750431,
+  "lat": 33.0131542,
+  "lon": -117.2681063,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "39",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750466,
+  "lat": 33.0008239,
+  "lon": -117.2575534,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "37"
+  }
+},
+{
+  "type": "node",
+  "id": 49750502,
+  "lat": 32.9541172,
+  "lon": -117.2446408,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "34",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750519,
+  "lat": 32.9354804,
+  "lon": -117.2416331,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "32"
+  }
+},
+{
+  "type": "node",
+  "id": 49750604,
+  "lat": 32.8921401,
+  "lon": -117.2273802,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "29",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750671,
+  "lat": 32.6165039,
+  "lon": -117.0915876,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "7A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750749,
+  "lat": 32.5797152,
+  "lon": -117.0857716,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "4",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750818,
+  "lat": 32.7233020,
+  "lon": -117.1584868,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "16",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750836,
+  "lat": 32.7240367,
+  "lon": -117.1516282,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "15C",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49750844,
+  "lat": 32.7233820,
+  "lon": -117.1503063,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "15B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751018,
+  "lat": 33.2069812,
+  "lon": -117.3853181,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751026,
+  "lat": 33.2047229,
+  "lon": -117.3834051,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751070,
+  "lat": 33.2099231,
+  "lon": -117.3867570,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54C"
+  }
+},
+{
+  "type": "node",
+  "id": 49751160,
+  "lat": 32.5602259,
+  "lon": -117.0657712,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "2",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751169,
+  "lat": 32.5526249,
+  "lon": -117.0486276,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751214,
+  "lat": 33.3872081,
+  "lon": -117.5865052,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "71",
+    "source": "yahoo_imagery;survey;image",
+    "source:imagery": "Bing",
+    "source_ref": "AM909_DSCU2617"
+  }
+},
+{
+  "type": "node",
+  "id": 49751250,
+  "lat": 32.9471784,
+  "lon": -117.2430345,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "34",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751276,
+  "lat": 32.9759811,
+  "lon": -117.2514626,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "36",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751431,
+  "lat": 32.7004993,
+  "lon": -117.1413628,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "14B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751536,
+  "lat": 32.7241306,
+  "lon": -117.1561048,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "16B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751588,
+  "lat": 32.7371259,
+  "lon": -117.1762570,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "18B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751607,
+  "lat": 32.7460192,
+  "lon": -117.1898469,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "19",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751676,
+  "lat": 32.7672309,
+  "lon": -117.2057279,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "21",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751745,
+  "lat": 32.7872683,
+  "lon": -117.2069563,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "22",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751850,
+  "lat": 32.8453075,
+  "lon": -117.2361546,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "27",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751894,
+  "lat": 32.8830923,
+  "lon": -117.2280061,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "29",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49751905,
+  "lat": 32.8986456,
+  "lon": -117.2250218,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 49751976,
+  "lat": 32.9296408,
+  "lon": -117.2405761,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "33B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752123,
+  "lat": 33.0815166,
+  "lon": -117.2970353,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "44",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752184,
+  "lat": 33.1183606,
+  "lon": -117.3196975,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "47",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752302,
+  "lat": 33.1749632,
+  "lon": -117.3495639,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752331,
+  "lat": 33.1968890,
+  "lon": -117.3676370,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "53",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752378,
+  "lat": 33.2076360,
+  "lon": -117.3852987,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752416,
+  "lat": 32.6004389,
+  "lon": -117.0894442,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "6",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752480,
+  "lat": 33.3929274,
+  "lon": -117.5910840,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "72",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2691;AM909_DSCU2692"
+  }
+},
+{
+  "type": "node",
+  "id": 49752620,
+  "lat": 33.2656005,
+  "lon": -117.4328792,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 49752783,
+  "lat": 32.8542630,
+  "lon": -117.2321400,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "27",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752830,
+  "lat": 32.6936815,
+  "lon": -117.1233977,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "13A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752898,
+  "lat": 32.6706634,
+  "lon": -117.1114781,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "11A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752930,
+  "lat": 32.6491855,
+  "lon": -117.1035388,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "8B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49752965,
+  "lat": 32.7490533,
+  "lon": -117.1954357,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "19",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49753015,
+  "lat": 32.7646393,
+  "lon": -117.2054707,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "20",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 49753024,
+  "lat": 32.7733512,
+  "lon": -117.2076721,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "21",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 60410363,
+  "lat": 33.5621704,
+  "lon": -117.6729488,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "86"
+  }
+},
+{
+  "type": "node",
+  "id": 60410366,
+  "lat": 33.5512269,
+  "lon": -117.6730135,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "85"
+  }
+},
+{
+  "type": "node",
+  "id": 60410406,
+  "lat": 33.4232629,
+  "lon": -117.6082990,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "74",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2605;AM909_DSCU2606"
+  }
+},
+{
+  "type": "node",
+  "id": 60410979,
+  "lat": 33.4858845,
+  "lon": -117.6660428,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "81"
+  }
+},
+{
+  "type": "node",
+  "id": 60410988,
+  "lat": 33.4983944,
+  "lon": -117.6584474,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "82"
+  }
+},
+{
+  "type": "node",
+  "id": 60411001,
+  "lat": 33.5173958,
+  "lon": -117.6642062,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "83"
+  }
+},
+{
+  "type": "node",
+  "id": 60411027,
+  "lat": 33.5438101,
+  "lon": -117.6733886,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "85B"
+  }
+},
+{
+  "type": "node",
+  "id": 60411064,
+  "lat": 33.5956151,
+  "lon": -117.6734733,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "89",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCV0241"
+  }
+},
+{
+  "type": "node",
+  "id": 60411074,
+  "lat": 33.6025582,
+  "lon": -117.6870141,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "90",
+    "source": "yahoo_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV0243;AM909_DSCV0244"
+  }
+},
+{
+  "type": "node",
+  "id": 60411091,
+  "lat": 33.6235678,
+  "lon": -117.7158842,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "92A"
+  }
+},
+{
+  "type": "node",
+  "id": 60411098,
+  "lat": 33.6345917,
+  "lon": -117.7268448,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 60411100,
+  "lat": 33.6390322,
+  "lon": -117.7303116,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "94A"
+  }
+},
+{
+  "type": "node",
+  "id": 60411114,
+  "lat": 33.6707387,
+  "lon": -117.7554543,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "95"
+  }
+},
+{
+  "type": "node",
+  "id": 60411124,
+  "lat": 33.6769738,
+  "lon": -117.7572449,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "96",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCU2920"
+  }
+},
+{
+  "type": "node",
+  "id": 60411139,
+  "lat": 33.7069606,
+  "lon": -117.7793572,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "99",
+    "source": "usgs_imagery;survey;image",
+    "source:exit_to": "traffic_sign",
+    "source_ref": "AM909_DSCU2924"
+  }
+},
+{
+  "type": "node",
+  "id": 72602764,
+  "lat": 34.0408218,
+  "lon": -118.2184964,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "135A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3504;AM909_DSCV3505"
+  }
+},
+{
+  "type": "node",
+  "id": 74435641,
+  "lat": 34.0122369,
+  "lon": -118.1633759,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "130A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1409"
+  }
+},
+{
+  "type": "node",
+  "id": 77741551,
+  "lat": 34.1384773,
+  "lon": -118.2766182,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "142",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3552"
+  }
+},
+{
+  "type": "node",
+  "id": 87095054,
+  "lat": 39.0214870,
+  "lon": -122.0615202,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "567"
+  }
+},
+{
+  "type": "node",
+  "id": 87095418,
+  "lat": 39.0532198,
+  "lon": -122.0822388,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "569"
+  }
+},
+{
+  "type": "node",
+  "id": 87096813,
+  "lat": 39.1630768,
+  "lon": -122.1476374,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "578"
+  }
+},
+{
+  "type": "node",
+  "id": 87097042,
+  "lat": 39.1539257,
+  "lon": -122.1420881,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "577"
+  }
+},
+{
+  "type": "node",
+  "id": 87097420,
+  "lat": 39.0272349,
+  "lon": -122.0639947,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "567"
+  }
+},
+{
+  "type": "node",
+  "id": 87101246,
+  "lat": 39.2802012,
+  "lon": -122.1832045,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "586"
+  }
+},
+{
+  "type": "node",
+  "id": 87112092,
+  "lat": 39.1714989,
+  "lon": -122.1530368,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "578"
+  }
+},
+{
+  "type": "node",
+  "id": 87123584,
+  "lat": 39.0604367,
+  "lon": -122.0881302,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "569"
+  }
+},
+{
+  "type": "node",
+  "id": 87125463,
+  "lat": 39.0099725,
+  "lon": -122.0522537,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "566"
+  }
+},
+{
+  "type": "node",
+  "id": 87126848,
+  "lat": 39.3448706,
+  "lon": -122.1946914,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "591"
+  }
+},
+{
+  "type": "node",
+  "id": 87130612,
+  "lat": 39.3527950,
+  "lon": -122.1946250,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "591"
+  }
+},
+{
+  "type": "node",
+  "id": 87131973,
+  "lat": 39.2721884,
+  "lon": -122.1821589,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "586"
+  }
+},
+{
+  "type": "node",
+  "id": 87133859,
+  "lat": 39.1270372,
+  "lon": -122.1305150,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "575"
+  }
+},
+{
+  "type": "node",
+  "id": 87137821,
+  "lat": 39.3172010,
+  "lon": -122.1944640,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "588"
+  }
+},
+{
+  "type": "node",
+  "id": 87138863,
+  "lat": 38.9288254,
+  "lon": -122.0020702,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "559"
+  }
+},
+{
+  "type": "node",
+  "id": 87146559,
+  "lat": 39.1605011,
+  "lon": -122.1464561,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "577"
+  }
+},
+{
+  "type": "node",
+  "id": 87174556,
+  "lat": 39.2373568,
+  "lon": -122.1816076,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 87174851,
+  "lat": 39.2455178,
+  "lon": -122.1821386,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 87221745,
+  "lat": 39.0151449,
+  "lon": -122.0576151,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "566"
+  }
+},
+{
+  "type": "node",
+  "id": 87222133,
+  "lat": 39.1303831,
+  "lon": -122.1342668,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "575"
+  }
+},
+{
+  "type": "node",
+  "id": 87356694,
+  "lat": 36.1336290,
+  "lon": -120.1548564,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "325",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87392798,
+  "lat": 36.5285630,
+  "lon": -120.4847656,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "357",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87405721,
+  "lat": 36.6020588,
+  "lon": -120.5819968,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "365",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87411801,
+  "lat": 36.6836776,
+  "lon": -120.6564707,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "372",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87413084,
+  "lat": 36.0751011,
+  "lon": -120.0989347,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "319",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87444815,
+  "lat": 36.8469427,
+  "lon": -120.7713602,
+  "tags": {
+    "destination:street": "Nees Avenue",
+    "highway": "motorway_junction",
+    "ref": "385",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87447239,
+  "lat": 36.2507507,
+  "lon": -120.2414805,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "334",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87456918,
+  "lat": 36.7744010,
+  "lon": -120.7214773,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "379",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87508433,
+  "lat": 39.4033710,
+  "lon": -122.1949730,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "595"
+  }
+},
+{
+  "type": "node",
+  "id": 87511253,
+  "lat": 39.4984821,
+  "lon": -122.1989642,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "601"
+  }
+},
+{
+  "type": "node",
+  "id": 87526065,
+  "lat": 39.5968510,
+  "lon": -122.2091600,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 87526962,
+  "lat": 39.5208268,
+  "lon": -122.2143797,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "603"
+  }
+},
+{
+  "type": "node",
+  "id": 87557926,
+  "lat": 39.6861245,
+  "lon": -122.2048763,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "614"
+  }
+},
+{
+  "type": "node",
+  "id": 87561352,
+  "lat": 39.5888870,
+  "lon": -122.2094250,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 87575641,
+  "lat": 39.7434821,
+  "lon": -122.2057402,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "618"
+  }
+},
+{
+  "type": "node",
+  "id": 87579127,
+  "lat": 39.6271781,
+  "lon": -122.2048895,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "610"
+  }
+},
+{
+  "type": "node",
+  "id": 87595866,
+  "lat": 39.4104772,
+  "lon": -122.1955082,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "595"
+  }
+},
+{
+  "type": "node",
+  "id": 87603976,
+  "lat": 39.5854230,
+  "lon": -122.2100640,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "607"
+  }
+},
+{
+  "type": "node",
+  "id": 87605544,
+  "lat": 39.5272208,
+  "lon": -122.2149086,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "603"
+  }
+},
+{
+  "type": "node",
+  "id": 87609585,
+  "lat": 39.7866730,
+  "lon": -122.2043000,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "621"
+  }
+},
+{
+  "type": "node",
+  "id": 87610116,
+  "lat": 39.7470987,
+  "lon": -122.2054268,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "619"
+  }
+},
+{
+  "type": "node",
+  "id": 87628263,
+  "lat": 39.7368773,
+  "lon": -122.2055902,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "618"
+  }
+},
+{
+  "type": "node",
+  "id": 87628809,
+  "lat": 39.5792800,
+  "lon": -122.2107210,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "607"
+  }
+},
+{
+  "type": "node",
+  "id": 87632577,
+  "lat": 39.6789807,
+  "lon": -122.2044960,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "614"
+  }
+},
+{
+  "type": "node",
+  "id": 87651847,
+  "lat": 39.4913569,
+  "lon": -122.1958916,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "601"
+  }
+},
+{
+  "type": "node",
+  "id": 87671413,
+  "lat": 39.7542420,
+  "lon": -122.2055950,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "619"
+  }
+},
+{
+  "type": "node",
+  "id": 87679255,
+  "lat": 39.7807301,
+  "lon": -122.2043393,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "621"
+  }
+},
+{
+  "type": "node",
+  "id": 87846096,
+  "lat": 34.8390824,
+  "lon": -118.8632474,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "207"
+  }
+},
+{
+  "type": "node",
+  "id": 87868583,
+  "lat": 35.2124934,
+  "lon": -119.1667320,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "239",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87963181,
+  "lat": 35.3524197,
+  "lon": -119.3321686,
+  "tags": {
+    "destination:street": "Stockdale Highway",
+    "highway": "motorway_junction",
+    "ref": "253",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 87978504,
+  "lat": 35.2905762,
+  "lon": -119.2493244,
+  "tags": {
+    "destination": "Shafter;Wasco",
+    "highway": "motorway_junction",
+    "ref": "246",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88015167,
+  "lat": 35.2634450,
+  "lon": -119.2204228,
+  "tags": {
+    "destination:street": "Taft Highway",
+    "highway": "motorway_junction",
+    "ref": "244",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88031078,
+  "lat": 35.2058270,
+  "lon": -119.1591546,
+  "tags": {
+    "destination:street": "Bear Mountain Boulevard",
+    "highway": "motorway_junction",
+    "ref": "239",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88039206,
+  "lat": 34.8310814,
+  "lon": -118.8678071,
+  "tags": {
+    "destination": "Lebec",
+    "highway": "motorway_junction",
+    "ref": "207"
+  }
+},
+{
+  "type": "node",
+  "id": 88069120,
+  "lat": 35.0975417,
+  "lon": -119.0402716,
+  "tags": {
+    "destination:street": "Copus Road",
+    "highway": "motorway_junction",
+    "ref": "228",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88078585,
+  "lat": 35.1641518,
+  "lon": -119.1138407,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "234",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88144372,
+  "lat": 35.0919020,
+  "lon": -119.0337441,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "228",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88189299,
+  "lat": 35.2704488,
+  "lon": -119.2284010,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "244",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88300026,
+  "lat": 35.3576346,
+  "lon": -119.3400270,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "253",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88389922,
+  "lat": 35.5033301,
+  "lon": -119.5387082,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "268",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88397365,
+  "lat": 34.9891606,
+  "lon": -118.9463327,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "219B"
+  }
+},
+{
+  "type": "node",
+  "id": 88397782,
+  "lat": 35.0561734,
+  "lon": -118.9955524,
+  "tags": {
+    "destination": "Taft;Maricopa",
+    "highway": "motorway_junction",
+    "ref": "225",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88420389,
+  "lat": 34.8246668,
+  "lon": -118.8744490,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "206"
+  }
+},
+{
+  "type": "node",
+  "id": 88445502,
+  "lat": 34.8199682,
+  "lon": -118.8796901,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "205"
+  }
+},
+{
+  "type": "node",
+  "id": 88568322,
+  "lat": 35.1588134,
+  "lon": -119.1074491,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "234",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88569027,
+  "lat": 35.9841536,
+  "lon": -119.9631216,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "309",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88585764,
+  "lat": 35.2959800,
+  "lon": -119.2555892,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "246",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88595950,
+  "lat": 35.0624147,
+  "lon": -119.0026842,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "225",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88606025,
+  "lat": 34.8135958,
+  "lon": -118.8844192,
+  "tags": {
+    "destination:street": "Frazier Mountain Park Road",
+    "highway": "motorway_junction",
+    "ref": "205",
+    "source": "usgs_imagery_2008;survey;image",
+    "source_ref": "AM909_DSCV9769"
+  }
+},
+{
+  "type": "node",
+  "id": 88613848,
+  "lat": 35.9785107,
+  "lon": -119.9568505,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "309",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88651649,
+  "lat": 35.9321815,
+  "lon": -119.9093707,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "305",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88665413,
+  "lat": 34.9449463,
+  "lon": -118.9323881,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "215"
+  }
+},
+{
+  "type": "node",
+  "id": 88683611,
+  "lat": 34.8750734,
+  "lon": -118.8927200,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "210"
+  }
+},
+{
+  "type": "node",
+  "id": 88685578,
+  "lat": 34.8304917,
+  "lon": -118.8687835,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 88709736,
+  "lat": 35.9369935,
+  "lon": -119.9148064,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "305",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 88721072,
+  "lat": 35.4971119,
+  "lon": -119.5314580,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "268",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89086645,
+  "lat": 35.0065337,
+  "lon": -118.9515395,
+  "tags": {
+    "destination": "San Francisco;Sacramento",
+    "highway": "motorway_junction",
+    "ref": "221"
+  }
+},
+{
+  "type": "node",
+  "id": 89152458,
+  "lat": 34.8750191,
+  "lon": -118.8923520,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "210"
+  }
+},
+{
+  "type": "node",
+  "id": 89154184,
+  "lat": 34.8020443,
+  "lon": -118.8760962,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "204"
+  }
+},
+{
+  "type": "node",
+  "id": 89302437,
+  "lat": 37.2426393,
+  "lon": -121.0878219,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "418",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89316299,
+  "lat": 36.9327230,
+  "lon": -120.8436060,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "391",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89316972,
+  "lat": 36.9284070,
+  "lon": -120.8382133,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "391",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89332106,
+  "lat": 37.0594642,
+  "lon": -120.9727223,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "403B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89341203,
+  "lat": 37.1087950,
+  "lon": -121.0180490,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "407",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89377603,
+  "lat": 37.1044874,
+  "lon": -121.0141154,
+  "tags": {
+    "destination": "Santa Nella;Gustine",
+    "highway": "motorway_junction",
+    "ref": "407",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 89379672,
+  "lat": 37.1233650,
+  "lon": -121.0276980,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 89386582,
+  "lat": 37.0536601,
+  "lon": -120.9666264,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "403A",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90239585,
+  "lat": 38.5439846,
+  "lon": -121.5094007,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "516"
+  }
+},
+{
+  "type": "node",
+  "id": 90240682,
+  "lat": 38.6001630,
+  "lon": -121.5049390,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "520"
+  }
+},
+{
+  "type": "node",
+  "id": 90241012,
+  "lat": 38.4901050,
+  "lon": -121.5141360,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "513"
+  }
+},
+{
+  "type": "node",
+  "id": 90243765,
+  "lat": 38.6710840,
+  "lon": -121.5962880,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "528"
+  }
+},
+{
+  "type": "node",
+  "id": 90244703,
+  "lat": 38.5222678,
+  "lon": -121.5215644,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "515"
+  }
+},
+{
+  "type": "node",
+  "id": 90244724,
+  "lat": 38.5282978,
+  "lon": -121.5193181,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "515"
+  }
+},
+{
+  "type": "node",
+  "id": 90244746,
+  "lat": 38.5597580,
+  "lon": -121.5140720,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "518"
+  }
+},
+{
+  "type": "node",
+  "id": 90245509,
+  "lat": 38.5788159,
+  "lon": -121.5068043,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "519A"
+  }
+},
+{
+  "type": "node",
+  "id": 90245937,
+  "lat": 38.2872260,
+  "lon": -121.4587375,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "498"
+  }
+},
+{
+  "type": "node",
+  "id": 90245981,
+  "lat": 38.3800188,
+  "lon": -121.4779817,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "504"
+  }
+},
+{
+  "type": "node",
+  "id": 90248571,
+  "lat": 38.6593462,
+  "lon": -121.5352600,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "525A"
+  }
+},
+{
+  "type": "node",
+  "id": 90248656,
+  "lat": 38.6095646,
+  "lon": -121.5097855,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "521"
+  }
+},
+{
+  "type": "node",
+  "id": 90249586,
+  "lat": 38.5004781,
+  "lon": -121.5176450,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "513"
+  }
+},
+{
+  "type": "node",
+  "id": 90250365,
+  "lat": 38.6519269,
+  "lon": -121.5308086,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "525A"
+  }
+},
+{
+  "type": "node",
+  "id": 90250602,
+  "lat": 38.5780312,
+  "lon": -121.5073740,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "518"
+  }
+},
+{
+  "type": "node",
+  "id": 90250706,
+  "lat": 38.6713690,
+  "lon": -121.5862087,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "528"
+  }
+},
+{
+  "type": "node",
+  "id": 90251086,
+  "lat": 38.4047500,
+  "lon": -121.4827230,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "506"
+  }
+},
+{
+  "type": "node",
+  "id": 90252058,
+  "lat": 38.6472518,
+  "lon": -121.5286623,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "524"
+  }
+},
+{
+  "type": "node",
+  "id": 90253113,
+  "lat": 38.5871269,
+  "lon": -121.5036477,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "519B"
+  }
+},
+{
+  "type": "node",
+  "id": 90254189,
+  "lat": 38.5195890,
+  "lon": -121.5219480,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "514"
+  }
+},
+{
+  "type": "node",
+  "id": 90254234,
+  "lat": 38.6710560,
+  "lon": -121.5500231,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "525B"
+  }
+},
+{
+  "type": "node",
+  "id": 90255314,
+  "lat": 38.4229255,
+  "lon": -121.4865504,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "508"
+  }
+},
+{
+  "type": "node",
+  "id": 90255728,
+  "lat": 38.2815426,
+  "lon": -121.4571519,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "498"
+  }
+},
+{
+  "type": "node",
+  "id": 90256048,
+  "lat": 38.4852679,
+  "lon": -121.5124877,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "512"
+  }
+},
+{
+  "type": "node",
+  "id": 90257385,
+  "lat": 38.5938440,
+  "lon": -121.5040630,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "520"
+  }
+},
+{
+  "type": "node",
+  "id": 90258463,
+  "lat": 38.6728940,
+  "lon": -121.6160660,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 90259917,
+  "lat": 38.6117439,
+  "lon": -121.5106130,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "521B"
+  }
+},
+{
+  "type": "node",
+  "id": 90261147,
+  "lat": 38.5661288,
+  "lon": -121.5130913,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "519A"
+  }
+},
+{
+  "type": "node",
+  "id": 90261985,
+  "lat": 38.5799684,
+  "lon": -121.5052668,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "519B"
+  }
+},
+{
+  "type": "node",
+  "id": 90264674,
+  "lat": 38.6306856,
+  "lon": -121.5199244,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "522"
+  }
+},
+{
+  "type": "node",
+  "id": 90264743,
+  "lat": 38.5388807,
+  "lon": -121.5124852,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "516"
+  }
+},
+{
+  "type": "node",
+  "id": 90265303,
+  "lat": 38.6189284,
+  "lon": -121.5142784,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "522"
+  }
+},
+{
+  "type": "node",
+  "id": 90272024,
+  "lat": 38.6052540,
+  "lon": -121.5072680,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "521A"
+  }
+},
+{
+  "type": "node",
+  "id": 90272104,
+  "lat": 38.4779115,
+  "lon": -121.5075546,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "512"
+  }
+},
+{
+  "type": "node",
+  "id": 90282683,
+  "lat": 38.4132294,
+  "lon": -121.4848880,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "506"
+  }
+},
+{
+  "type": "node",
+  "id": 90283257,
+  "lat": 38.3707780,
+  "lon": -121.4756560,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "504"
+  }
+},
+{
+  "type": "node",
+  "id": 90573808,
+  "lat": 38.4318530,
+  "lon": -121.4887385,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "508"
+  }
+},
+{
+  "type": "node",
+  "id": 90575031,
+  "lat": 38.6649619,
+  "lon": -121.5379454,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "525B"
+  }
+},
+{
+  "type": "node",
+  "id": 90754311,
+  "lat": 38.1495433,
+  "lon": -121.3995005,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "487"
+  }
+},
+{
+  "type": "node",
+  "id": 90759166,
+  "lat": 38.1862801,
+  "lon": -121.4023695,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "490"
+  }
+},
+{
+  "type": "node",
+  "id": 90759435,
+  "lat": 37.8160124,
+  "lon": -121.2942821,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "462",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90760655,
+  "lat": 38.2227720,
+  "lon": -121.4282810,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "493"
+  }
+},
+{
+  "type": "node",
+  "id": 90760812,
+  "lat": 37.8305930,
+  "lon": -121.2886429,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "463",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90762964,
+  "lat": 38.2294706,
+  "lon": -121.4334502,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "493"
+  }
+},
+{
+  "type": "node",
+  "id": 90764662,
+  "lat": 37.9331706,
+  "lon": -121.2966379,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "471",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90765187,
+  "lat": 37.9870737,
+  "lon": -121.3445982,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "476"
+  }
+},
+{
+  "type": "node",
+  "id": 90765548,
+  "lat": 37.8219560,
+  "lon": -121.2916222,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "463",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90765656,
+  "lat": 37.9096630,
+  "lon": -121.2881470,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "469",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90768168,
+  "lat": 38.0183447,
+  "lon": -121.3571808,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "478"
+  }
+},
+{
+  "type": "node",
+  "id": 90768281,
+  "lat": 37.9236155,
+  "lon": -121.2932331,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "470",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90768405,
+  "lat": 37.9562579,
+  "lon": -121.3234155,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "474A"
+  }
+},
+{
+  "type": "node",
+  "id": 90771070,
+  "lat": 37.7881909,
+  "lon": -121.3026639,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "461",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90771869,
+  "lat": 37.8595429,
+  "lon": -121.2812224,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "465",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90774351,
+  "lat": 38.1929659,
+  "lon": -121.4075406,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "490"
+  }
+},
+{
+  "type": "node",
+  "id": 90774355,
+  "lat": 37.8928186,
+  "lon": -121.2820950,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "468",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90774756,
+  "lat": 37.9418671,
+  "lon": -121.2982542,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "472",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90775043,
+  "lat": 37.9163993,
+  "lon": -121.2909634,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "469",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90775589,
+  "lat": 37.9618630,
+  "lon": -121.3342646,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "474B"
+  }
+},
+{
+  "type": "node",
+  "id": 90776479,
+  "lat": 37.9536274,
+  "lon": -121.3095768,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "473"
+  }
+},
+{
+  "type": "node",
+  "id": 90777006,
+  "lat": 37.8725381,
+  "lon": -121.2775085,
+  "tags": {
+    "highway": "motorway_junction",
+    "note": "missing from Caltrans list",
+    "ref": "467A"
+  }
+},
+{
+  "type": "node",
+  "id": 90778119,
+  "lat": 37.9597370,
+  "lon": -121.3333010,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "474A"
+  }
+},
+{
+  "type": "node",
+  "id": 90779064,
+  "lat": 37.8515310,
+  "lon": -121.2829000,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "465",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90782975,
+  "lat": 37.7698382,
+  "lon": -121.3284446,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "458B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90783033,
+  "lat": 38.0614390,
+  "lon": -121.3739790,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "481"
+  }
+},
+{
+  "type": "node",
+  "id": 90785237,
+  "lat": 37.6820488,
+  "lon": -121.3431199,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "452",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90787365,
+  "lat": 37.8077419,
+  "lon": -121.2968789,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "462",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90788509,
+  "lat": 37.8790333,
+  "lon": -121.2782845,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "467B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90789471,
+  "lat": 37.6328842,
+  "lon": -121.3428427,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "449A",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90790449,
+  "lat": 37.9527300,
+  "lon": -121.3083922,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "472",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90790460,
+  "lat": 37.7793177,
+  "lon": -121.3154414,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 90790889,
+  "lat": 38.1117709,
+  "lon": -121.3953139,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "485"
+  }
+},
+{
+  "type": "node",
+  "id": 90793377,
+  "lat": 38.1212251,
+  "lon": -121.4004073,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "485"
+  }
+},
+{
+  "type": "node",
+  "id": 90794761,
+  "lat": 37.7433077,
+  "lon": -121.3435002,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "457",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90795799,
+  "lat": 37.8852115,
+  "lon": -121.2797124,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "467B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90797123,
+  "lat": 37.6418491,
+  "lon": -121.3433250,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "449B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90797482,
+  "lat": 37.9396298,
+  "lon": -121.2982135,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "471",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90797506,
+  "lat": 37.9297529,
+  "lon": -121.2957747,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "470",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90797891,
+  "lat": 38.0245650,
+  "lon": -121.3605660,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "478"
+  }
+},
+{
+  "type": "node",
+  "id": 90797919,
+  "lat": 38.0073339,
+  "lon": -121.3526213,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "477"
+  }
+},
+{
+  "type": "node",
+  "id": 90800672,
+  "lat": 37.7624195,
+  "lon": -121.3386406,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "458A",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90804958,
+  "lat": 37.7529964,
+  "lon": -121.3439340,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "457",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90818326,
+  "lat": 37.7791143,
+  "lon": -121.3151039,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "460",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90818328,
+  "lat": 37.7797564,
+  "lon": -121.3142281,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 90819965,
+  "lat": 38.1419966,
+  "lon": -121.3990721,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "487"
+  }
+},
+{
+  "type": "node",
+  "id": 90849724,
+  "lat": 38.0016510,
+  "lon": -121.3500475,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "477"
+  }
+},
+{
+  "type": "node",
+  "id": 90849767,
+  "lat": 37.9808403,
+  "lon": -121.3418212,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "476"
+  }
+},
+{
+  "type": "node",
+  "id": 90850750,
+  "lat": 37.9746730,
+  "lon": -121.3397037,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "474B"
+  }
+},
+{
+  "type": "node",
+  "id": 90851278,
+  "lat": 37.6868023,
+  "lon": -121.3435056,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "452",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90868194,
+  "lat": 37.5922963,
+  "lon": -121.3351460,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "446",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 90938687,
+  "lat": 35.4573980,
+  "lon": -119.4778710,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "263",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 91130674,
+  "lat": 40.8892673,
+  "lon": -122.3834052,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "702"
+  }
+},
+{
+  "type": "node",
+  "id": 91141221,
+  "lat": 41.0244520,
+  "lon": -122.3966290,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "714"
+  }
+},
+{
+  "type": "node",
+  "id": 91160039,
+  "lat": 40.5901148,
+  "lon": -122.3607444,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "678B"
+  }
+},
+{
+  "type": "node",
+  "id": 91170690,
+  "lat": 40.7759065,
+  "lon": -122.3152451,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "692"
+  }
+},
+{
+  "type": "node",
+  "id": 91179612,
+  "lat": 40.7700170,
+  "lon": -122.3136380,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "692"
+  }
+},
+{
+  "type": "node",
+  "id": 91188635,
+  "lat": 40.5755723,
+  "lon": -122.3606623,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "677"
+  }
+},
+{
+  "type": "node",
+  "id": 91196144,
+  "lat": 41.0684879,
+  "lon": -122.3603964,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "718"
+  }
+},
+{
+  "type": "node",
+  "id": 91202473,
+  "lat": 41.0291622,
+  "lon": -122.3971411,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "714"
+  }
+},
+{
+  "type": "node",
+  "id": 91202505,
+  "lat": 40.5413667,
+  "lon": -122.3521632,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "675"
+  }
+},
+{
+  "type": "node",
+  "id": 91207907,
+  "lat": 40.6200690,
+  "lon": -122.3655100,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "681"
+  }
+},
+{
+  "type": "node",
+  "id": 91207967,
+  "lat": 40.6260160,
+  "lon": -122.3677755,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "681A"
+  }
+},
+{
+  "type": "node",
+  "id": 91224632,
+  "lat": 41.1465800,
+  "lon": -122.3171690,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "724"
+  }
+},
+{
+  "type": "node",
+  "id": 91225639,
+  "lat": 40.4406218,
+  "lon": -122.2879104,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "667"
+  }
+},
+{
+  "type": "node",
+  "id": 91229021,
+  "lat": 40.8107690,
+  "lon": -122.3234937,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "695"
+  }
+},
+{
+  "type": "node",
+  "id": 91231829,
+  "lat": 40.8970085,
+  "lon": -122.3832178,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "702"
+  }
+},
+{
+  "type": "node",
+  "id": 91252260,
+  "lat": 40.4710331,
+  "lon": -122.3104028,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "670"
+  }
+},
+{
+  "type": "node",
+  "id": 91257754,
+  "lat": 41.0979701,
+  "lon": -122.3447912,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "720"
+  }
+},
+{
+  "type": "node",
+  "id": 91258250,
+  "lat": 40.4484133,
+  "lon": -122.2894014,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "668"
+  }
+},
+{
+  "type": "node",
+  "id": 91277137,
+  "lat": 40.5669921,
+  "lon": -122.3599010,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "677"
+  }
+},
+{
+  "type": "node",
+  "id": 91278876,
+  "lat": 41.1500480,
+  "lon": -122.3133600,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "724"
+  }
+},
+{
+  "type": "node",
+  "id": 91282052,
+  "lat": 40.6386484,
+  "lon": -122.3659067,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "682"
+  }
+},
+{
+  "type": "node",
+  "id": 91294336,
+  "lat": 40.5343722,
+  "lon": -122.3495905,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "675"
+  }
+},
+{
+  "type": "node",
+  "id": 91305948,
+  "lat": 40.3860340,
+  "lon": -122.2849465,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "664"
+  }
+},
+{
+  "type": "node",
+  "id": 91310442,
+  "lat": 41.1593410,
+  "lon": -122.2956412,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "726"
+  }
+},
+{
+  "type": "node",
+  "id": 91339790,
+  "lat": 40.7551728,
+  "lon": -122.3217029,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "690"
+  }
+},
+{
+  "type": "node",
+  "id": 91348415,
+  "lat": 40.9781600,
+  "lon": -122.4324990,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "710"
+  }
+},
+{
+  "type": "node",
+  "id": 91348576,
+  "lat": 40.6088734,
+  "lon": -122.3619864,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "680"
+  }
+},
+{
+  "type": "node",
+  "id": 91364126,
+  "lat": 40.8584503,
+  "lon": -122.3474011,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "698"
+  }
+},
+{
+  "type": "node",
+  "id": 91364131,
+  "lat": 40.9065961,
+  "lon": -122.3838691,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "704"
+  }
+},
+{
+  "type": "node",
+  "id": 91373607,
+  "lat": 41.0737195,
+  "lon": -122.3569273,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "718"
+  }
+},
+{
+  "type": "node",
+  "id": 91375759,
+  "lat": 40.5776923,
+  "lon": -122.3603237,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "678"
+  }
+},
+{
+  "type": "node",
+  "id": 91393985,
+  "lat": 41.0011930,
+  "lon": -122.4121240,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "712"
+  }
+},
+{
+  "type": "node",
+  "id": 91394065,
+  "lat": 40.9953880,
+  "lon": -122.4192040,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "712"
+  }
+},
+{
+  "type": "node",
+  "id": 91402018,
+  "lat": 40.5021269,
+  "lon": -122.3355544,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "673"
+  }
+},
+{
+  "type": "node",
+  "id": 91405265,
+  "lat": 40.6450155,
+  "lon": -122.3637752,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "682"
+  }
+},
+{
+  "type": "node",
+  "id": 91421477,
+  "lat": 40.6162188,
+  "lon": -122.3646978,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "680"
+  }
+},
+{
+  "type": "node",
+  "id": 91423242,
+  "lat": 40.7088474,
+  "lon": -122.3353435,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "687"
+  }
+},
+{
+  "type": "node",
+  "id": 91455444,
+  "lat": 40.4242697,
+  "lon": -122.2825584,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "667A"
+  }
+},
+{
+  "type": "node",
+  "id": 91486634,
+  "lat": 40.4586585,
+  "lon": -122.2982908,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "668"
+  }
+},
+{
+  "type": "node",
+  "id": 91488012,
+  "lat": 41.0933071,
+  "lon": -122.3466965,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "720"
+  }
+},
+{
+  "type": "node",
+  "id": 91507104,
+  "lat": 40.9818752,
+  "lon": -122.4305111,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "710"
+  }
+},
+{
+  "type": "node",
+  "id": 91508662,
+  "lat": 40.6661932,
+  "lon": -122.3544403,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "684"
+  }
+},
+{
+  "type": "node",
+  "id": 91528433,
+  "lat": 40.7279368,
+  "lon": -122.3219182,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "689"
+  }
+},
+{
+  "type": "node",
+  "id": 91534168,
+  "lat": 40.6741883,
+  "lon": -122.3505018,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "685"
+  }
+},
+{
+  "type": "node",
+  "id": 91574680,
+  "lat": 40.8037772,
+  "lon": -122.3226085,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "695"
+  }
+},
+{
+  "type": "node",
+  "id": 91576147,
+  "lat": 40.4100372,
+  "lon": -122.2809154,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "665"
+  }
+},
+{
+  "type": "node",
+  "id": 91590182,
+  "lat": 40.6608322,
+  "lon": -122.3566261,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "684"
+  }
+},
+{
+  "type": "node",
+  "id": 91595307,
+  "lat": 40.3929449,
+  "lon": -122.2851345,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "664"
+  }
+},
+{
+  "type": "node",
+  "id": 91595734,
+  "lat": 40.7342381,
+  "lon": -122.3181043,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "689"
+  }
+},
+{
+  "type": "node",
+  "id": 91628726,
+  "lat": 41.1214420,
+  "lon": -122.3266540,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "723"
+  }
+},
+{
+  "type": "node",
+  "id": 91639367,
+  "lat": 40.4652373,
+  "lon": -122.3043271,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "670"
+  }
+},
+{
+  "type": "node",
+  "id": 91660948,
+  "lat": 41.1788880,
+  "lon": -122.2930670,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "728"
+  }
+},
+{
+  "type": "node",
+  "id": 91666262,
+  "lat": 40.9400320,
+  "lon": -122.4247800,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "707"
+  }
+},
+{
+  "type": "node",
+  "id": 91685498,
+  "lat": 40.7025805,
+  "lon": -122.3390140,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "687"
+  }
+},
+{
+  "type": "node",
+  "id": 91695961,
+  "lat": 41.1250300,
+  "lon": -122.3247250,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "723"
+  }
+},
+{
+  "type": "node",
+  "id": 91702689,
+  "lat": 41.1066450,
+  "lon": -122.3333850,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "721"
+  }
+},
+{
+  "type": "node",
+  "id": 91704139,
+  "lat": 40.6824365,
+  "lon": -122.3477213,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "685"
+  }
+},
+{
+  "type": "node",
+  "id": 91707469,
+  "lat": 41.1652728,
+  "lon": -122.2977333,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "726"
+  }
+},
+{
+  "type": "node",
+  "id": 91726876,
+  "lat": 41.1841770,
+  "lon": -122.2891680,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "728"
+  }
+},
+{
+  "type": "node",
+  "id": 91739831,
+  "lat": 40.9421706,
+  "lon": -122.4358247,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "707"
+  }
+},
+{
+  "type": "node",
+  "id": 91752915,
+  "lat": 40.5088616,
+  "lon": -122.3404469,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "673"
+  }
+},
+{
+  "type": "node",
+  "id": 91833752,
+  "lat": 40.9138050,
+  "lon": -122.3905807,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "704"
+  }
+},
+{
+  "type": "node",
+  "id": 91841259,
+  "lat": 40.8465651,
+  "lon": -122.3349604,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "698"
+  }
+},
+{
+  "type": "node",
+  "id": 91858782,
+  "lat": 40.7490273,
+  "lon": -122.3169927,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "690"
+  }
+},
+{
+  "type": "node",
+  "id": 91958081,
+  "lat": 41.1699280,
+  "lon": -122.2976990,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "727"
+  }
+},
+{
+  "type": "node",
+  "id": 92255846,
+  "lat": 41.1091804,
+  "lon": -122.3290798,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "721"
+  }
+},
+{
+  "type": "node",
+  "id": 92258194,
+  "lat": 40.7916810,
+  "lon": -122.3236615,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "693"
+  }
+},
+{
+  "type": "node",
+  "id": 92258803,
+  "lat": 40.6330956,
+  "lon": -122.3682342,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "681B"
+  }
+},
+{
+  "type": "node",
+  "id": 92286613,
+  "lat": 41.3930885,
+  "lon": -122.3759187,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "745"
+  }
+},
+{
+  "type": "node",
+  "id": 92306832,
+  "lat": 41.7367990,
+  "lon": -122.6301180,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "776"
+  }
+},
+{
+  "type": "node",
+  "id": 92308399,
+  "lat": 41.7435350,
+  "lon": -122.6237960,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "776"
+  }
+},
+{
+  "type": "node",
+  "id": 92328366,
+  "lat": 41.5491250,
+  "lon": -122.4832750,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "759"
+  }
+},
+{
+  "type": "node",
+  "id": 92329923,
+  "lat": 41.4153805,
+  "lon": -122.3822039,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "747"
+  }
+},
+{
+  "type": "node",
+  "id": 92359118,
+  "lat": 41.2866895,
+  "lon": -122.3048382,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "737"
+  }
+},
+{
+  "type": "node",
+  "id": 92359571,
+  "lat": 41.3656775,
+  "lon": -122.3675394,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "743"
+  }
+},
+{
+  "type": "node",
+  "id": 92377588,
+  "lat": 41.6654730,
+  "lon": -122.6061810,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "770"
+  }
+},
+{
+  "type": "node",
+  "id": 92377614,
+  "lat": 41.6702900,
+  "lon": -122.6147630,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "770"
+  }
+},
+{
+  "type": "node",
+  "id": 92437280,
+  "lat": 41.9516640,
+  "lon": -122.5901010,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "793"
+  }
+},
+{
+  "type": "node",
+  "id": 92450369,
+  "lat": 41.7074570,
+  "lon": -122.6427130,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "773"
+  }
+},
+{
+  "type": "node",
+  "id": 92561323,
+  "lat": 41.4719143,
+  "lon": -122.4518255,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "753"
+  }
+},
+{
+  "type": "node",
+  "id": 92648464,
+  "lat": 41.2894462,
+  "lon": -122.3088088,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "736"
+  }
+},
+{
+  "type": "node",
+  "id": 92655967,
+  "lat": 37.3945638,
+  "lon": -121.1360263,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "428",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92656872,
+  "lat": 37.3997511,
+  "lon": -121.1400822,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "428",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92657398,
+  "lat": 37.5380368,
+  "lon": -121.2646997,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "441",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92657866,
+  "lat": 37.4661780,
+  "lon": -121.1831270,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "434",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92657882,
+  "lat": 37.4608634,
+  "lon": -121.1776663,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "434",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92658049,
+  "lat": 37.2500026,
+  "lon": -121.0900784,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "418",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92658188,
+  "lat": 37.3227550,
+  "lon": -121.1089072,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "423",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92658255,
+  "lat": 37.3280451,
+  "lon": -121.1110232,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "423",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92676767,
+  "lat": 41.2619749,
+  "lon": -122.2745345,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "734"
+  }
+},
+{
+  "type": "node",
+  "id": 92714010,
+  "lat": 41.5553663,
+  "lon": -122.4879089,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "759"
+  }
+},
+{
+  "type": "node",
+  "id": 92728658,
+  "lat": 41.2385178,
+  "lon": -122.2645719,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "732"
+  }
+},
+{
+  "type": "node",
+  "id": 92728661,
+  "lat": 41.7338840,
+  "lon": -122.6318280,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "775"
+  }
+},
+{
+  "type": "node",
+  "id": 92765132,
+  "lat": 37.5422335,
+  "lon": -121.2707226,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "441",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 92773400,
+  "lat": 41.2247820,
+  "lon": -122.2756254,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "730"
+  }
+},
+{
+  "type": "node",
+  "id": 92850733,
+  "lat": 41.8968914,
+  "lon": -122.5642298,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "789"
+  }
+},
+{
+  "type": "node",
+  "id": 92859705,
+  "lat": 41.4805250,
+  "lon": -122.4579890,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "753"
+  }
+},
+{
+  "type": "node",
+  "id": 92897655,
+  "lat": 39.9323170,
+  "lon": -122.2004240,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "631"
+  }
+},
+{
+  "type": "node",
+  "id": 92898252,
+  "lat": 39.9511770,
+  "lon": -122.2004200,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 92905595,
+  "lat": 41.9577930,
+  "lon": -122.5946178,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "793"
+  }
+},
+{
+  "type": "node",
+  "id": 92906280,
+  "lat": 41.9227977,
+  "lon": -122.5767001,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "790"
+  }
+},
+{
+  "type": "node",
+  "id": 92908799,
+  "lat": 40.0800066,
+  "lon": -122.2164614,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "642"
+  }
+},
+{
+  "type": "node",
+  "id": 92924527,
+  "lat": 40.1508657,
+  "lon": -122.2230447,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "647"
+  }
+},
+{
+  "type": "node",
+  "id": 92942852,
+  "lat": 41.7008370,
+  "lon": -122.6417650,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "773"
+  }
+},
+{
+  "type": "node",
+  "id": 92945474,
+  "lat": 40.3311164,
+  "lon": -122.2816185,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "659"
+  }
+},
+{
+  "type": "node",
+  "id": 92989144,
+  "lat": 41.3999771,
+  "lon": -122.3829421,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "745"
+  }
+},
+{
+  "type": "node",
+  "id": 92999355,
+  "lat": 40.0033137,
+  "lon": -122.2065256,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "636"
+  }
+},
+{
+  "type": "node",
+  "id": 93023492,
+  "lat": 40.3637430,
+  "lon": -122.2836250,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "662"
+  }
+},
+{
+  "type": "node",
+  "id": 93149552,
+  "lat": 39.9028500,
+  "lon": -122.2000363,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "630"
+  }
+},
+{
+  "type": "node",
+  "id": 93167163,
+  "lat": 40.2162624,
+  "lon": -122.2498638,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "652"
+  }
+},
+{
+  "type": "node",
+  "id": 93167674,
+  "lat": 40.2329577,
+  "lon": -122.2550754,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "653"
+  }
+},
+{
+  "type": "node",
+  "id": 93169834,
+  "lat": 41.6485080,
+  "lon": -122.5403240,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "766"
+  }
+},
+{
+  "type": "node",
+  "id": 93176100,
+  "lat": 40.1835027,
+  "lon": -122.2277015,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "649"
+  }
+},
+{
+  "type": "node",
+  "id": 93182696,
+  "lat": 40.3241475,
+  "lon": -122.2807685,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "659"
+  }
+},
+{
+  "type": "node",
+  "id": 93187822,
+  "lat": 39.9101270,
+  "lon": -122.2003620,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "630"
+  }
+},
+{
+  "type": "node",
+  "id": 93200512,
+  "lat": 40.0879831,
+  "lon": -122.2171740,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "642"
+  }
+},
+{
+  "type": "node",
+  "id": 93221690,
+  "lat": 39.9606774,
+  "lon": -122.2003972,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "633"
+  }
+},
+{
+  "type": "node",
+  "id": 93222064,
+  "lat": 40.1578479,
+  "lon": -122.2235230,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "647A"
+  }
+},
+{
+  "type": "node",
+  "id": 93223636,
+  "lat": 40.2961764,
+  "lon": -122.2794339,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "657"
+  }
+},
+{
+  "type": "node",
+  "id": 93228863,
+  "lat": 41.9043150,
+  "lon": -122.5675610,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "789"
+  }
+},
+{
+  "type": "node",
+  "id": 93229276,
+  "lat": 40.2742085,
+  "lon": -122.2711062,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 93255474,
+  "lat": 41.4393810,
+  "lon": -122.4326940,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "751"
+  }
+},
+{
+  "type": "node",
+  "id": 93276261,
+  "lat": 39.9253183,
+  "lon": -122.2000890,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "631"
+  }
+},
+{
+  "type": "node",
+  "id": 93294145,
+  "lat": 41.3348090,
+  "lon": -122.3350330,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "740"
+  }
+},
+{
+  "type": "node",
+  "id": 93294155,
+  "lat": 40.2059854,
+  "lon": -122.2455378,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "651"
+  }
+},
+{
+  "type": "node",
+  "id": 93302333,
+  "lat": 40.2220604,
+  "lon": -122.2533390,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "652"
+  }
+},
+{
+  "type": "node",
+  "id": 93324655,
+  "lat": 41.8596692,
+  "lon": -122.5696148,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "786"
+  }
+},
+{
+  "type": "node",
+  "id": 93330305,
+  "lat": 40.3711508,
+  "lon": -122.2845245,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "662"
+  }
+},
+{
+  "type": "node",
+  "id": 93361461,
+  "lat": 39.9533300,
+  "lon": -122.2001140,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "633"
+  }
+},
+{
+  "type": "node",
+  "id": 93367230,
+  "lat": 40.2392634,
+  "lon": -122.2576039,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "653"
+  }
+},
+{
+  "type": "node",
+  "id": 93384003,
+  "lat": 40.3621793,
+  "lon": -122.2838926,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 93406497,
+  "lat": 39.8785607,
+  "lon": -122.1999462,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "628"
+  }
+},
+{
+  "type": "node",
+  "id": 93409667,
+  "lat": 41.3071785,
+  "lon": -122.3183631,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "738"
+  }
+},
+{
+  "type": "node",
+  "id": 93420588,
+  "lat": 40.1621938,
+  "lon": -122.2229307,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "647B"
+  }
+},
+{
+  "type": "node",
+  "id": 93420667,
+  "lat": 40.1947064,
+  "lon": -122.2371390,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "650"
+  }
+},
+{
+  "type": "node",
+  "id": 93422045,
+  "lat": 40.2887640,
+  "lon": -122.2783876,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "657"
+  }
+},
+{
+  "type": "node",
+  "id": 93457520,
+  "lat": 41.4220082,
+  "lon": -122.3905657,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "748"
+  }
+},
+{
+  "type": "node",
+  "id": 93457824,
+  "lat": 41.4266064,
+  "lon": -122.3994185,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "748"
+  }
+},
+{
+  "type": "node",
+  "id": 93496068,
+  "lat": 41.2827330,
+  "lon": -122.2978240,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "736"
+  }
+},
+{
+  "type": "node",
+  "id": 93500092,
+  "lat": 41.9165121,
+  "lon": -122.5721060,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "790"
+  }
+},
+{
+  "type": "node",
+  "id": 93541330,
+  "lat": 41.3406181,
+  "lon": -122.3399656,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "741"
+  }
+},
+{
+  "type": "node",
+  "id": 93689574,
+  "lat": 41.9958260,
+  "lon": -122.6105470,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "796"
+  }
+},
+{
+  "type": "node",
+  "id": 93698856,
+  "lat": 41.2336769,
+  "lon": -122.2719158,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "732"
+  }
+},
+{
+  "type": "node",
+  "id": 93721995,
+  "lat": 41.1908593,
+  "lon": -122.2853386,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "729"
+  }
+},
+{
+  "type": "node",
+  "id": 93736706,
+  "lat": 41.4204941,
+  "lon": -122.3862066,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "747"
+  }
+},
+{
+  "type": "node",
+  "id": 93813993,
+  "lat": 41.3474235,
+  "lon": -122.3481150,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "741"
+  }
+},
+{
+  "type": "node",
+  "id": 93843662,
+  "lat": 41.8520690,
+  "lon": -122.5698310,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "786"
+  }
+},
+{
+  "type": "node",
+  "id": 93856886,
+  "lat": 41.3131237,
+  "lon": -122.3219634,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "738"
+  }
+},
+{
+  "type": "node",
+  "id": 93899223,
+  "lat": 41.4452170,
+  "lon": -122.4365410,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "751"
+  }
+},
+{
+  "type": "node",
+  "id": 93923879,
+  "lat": 41.7284109,
+  "lon": -122.6339846,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "775"
+  }
+},
+{
+  "type": "node",
+  "id": 93934078,
+  "lat": 41.6430690,
+  "lon": -122.5327000,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "766"
+  }
+},
+{
+  "type": "node",
+  "id": 93942950,
+  "lat": 41.2129134,
+  "lon": -122.2740489,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "730"
+  }
+},
+{
+  "type": "node",
+  "id": 94010457,
+  "lat": 41.1941900,
+  "lon": -122.2843650,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "729"
+  }
+},
+{
+  "type": "node",
+  "id": 94011394,
+  "lat": 41.3728970,
+  "lon": -122.3745615,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "743"
+  }
+},
+{
+  "type": "node",
+  "id": 94018985,
+  "lat": 41.2558188,
+  "lon": -122.2674475,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "734"
+  }
+},
+{
+  "type": "node",
+  "id": 95709017,
+  "lat": 38.8853590,
+  "lon": -121.9756968,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "556"
+  }
+},
+{
+  "type": "node",
+  "id": 95709022,
+  "lat": 38.8635037,
+  "lon": -121.9561836,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "554"
+  }
+},
+{
+  "type": "node",
+  "id": 95709074,
+  "lat": 38.7393884,
+  "lon": -121.8210287,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "542"
+  }
+},
+{
+  "type": "node",
+  "id": 95709090,
+  "lat": 38.7216492,
+  "lon": -121.8029502,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "541"
+  }
+},
+{
+  "type": "node",
+  "id": 95709097,
+  "lat": 38.7051349,
+  "lon": -121.7862942,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "540"
+  }
+},
+{
+  "type": "node",
+  "id": 95709112,
+  "lat": 38.6963378,
+  "lon": -121.7648371,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "538"
+  }
+},
+{
+  "type": "node",
+  "id": 95709122,
+  "lat": 38.6863680,
+  "lon": -121.7525884,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "537"
+  }
+},
+{
+  "type": "node",
+  "id": 95709129,
+  "lat": 38.6736781,
+  "lon": -121.7332948,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "536"
+  }
+},
+{
+  "type": "node",
+  "id": 95709138,
+  "lat": 38.6732153,
+  "lon": -121.6410495,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "531"
+  }
+},
+{
+  "type": "node",
+  "id": 114948247,
+  "lat": 33.8819979,
+  "lon": -118.0251104,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "118"
+  }
+},
+{
+  "type": "node",
+  "id": 122413474,
+  "lat": 34.2265156,
+  "lon": -118.3772071,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "151"
+  }
+},
+{
+  "type": "node",
+  "id": 122420451,
+  "lat": 33.9103431,
+  "lon": -118.0703535,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "121"
+  }
+},
+{
+  "type": "node",
+  "id": 122422025,
+  "lat": 34.2474953,
+  "lon": -118.4255526,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "154"
+  }
+},
+{
+  "type": "node",
+  "id": 122438415,
+  "lat": 34.7956159,
+  "lon": -118.8576514,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "202",
+    "source": "usgs_imagery_2008;CDOT"
+  }
+},
+{
+  "type": "node",
+  "id": 122440149,
+  "lat": 34.2794714,
+  "lon": -118.4556342,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "157"
+  }
+},
+{
+  "type": "node",
+  "id": 122465734,
+  "lat": 34.2420253,
+  "lon": -118.4192848,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "154",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3612"
+  }
+},
+{
+  "type": "node",
+  "id": 122509389,
+  "lat": 34.4463737,
+  "lon": -118.6109093,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "172"
+  }
+},
+{
+  "type": "node",
+  "id": 122550911,
+  "lat": 34.2494213,
+  "lon": -118.4270965,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "155A",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3614"
+  }
+},
+{
+  "type": "node",
+  "id": 122563054,
+  "lat": 33.7866712,
+  "lon": -117.8847087,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107B"
+  }
+},
+{
+  "type": "node",
+  "id": 122565045,
+  "lat": 33.4569019,
+  "lon": -117.6525097,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "78",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2763;AM909_DSCU2764"
+  }
+},
+{
+  "type": "node",
+  "id": 122574634,
+  "lat": 33.4102741,
+  "lon": -117.6006138,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "73",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2697;AM909_DSCU2698"
+  }
+},
+{
+  "type": "node",
+  "id": 122586756,
+  "lat": 33.8623568,
+  "lon": -117.9907078,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "115"
+  }
+},
+{
+  "type": "node",
+  "id": 122587130,
+  "lat": 33.6181069,
+  "lon": -117.7113728,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "91"
+  }
+},
+{
+  "type": "node",
+  "id": 122600976,
+  "lat": 33.7578399,
+  "lon": -117.8580917,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "105A"
+  }
+},
+{
+  "type": "node",
+  "id": 122603359,
+  "lat": 33.6643279,
+  "lon": -117.7504802,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "95"
+  }
+},
+{
+  "type": "node",
+  "id": 122610498,
+  "lat": 33.4247529,
+  "lon": -117.6088400,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "75",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2573;AM909_DSCU2574"
+  }
+},
+{
+  "type": "node",
+  "id": 122618889,
+  "lat": 33.6117499,
+  "lon": -117.7039001,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "91",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCV0247"
+  }
+},
+{
+  "type": "node",
+  "id": 123104642,
+  "lat": 33.4627676,
+  "lon": -117.6629449,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "79",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU9824"
+  }
+},
+{
+  "type": "node",
+  "id": 123104673,
+  "lat": 33.4429181,
+  "lon": -117.6282915,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "77",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2585"
+  }
+},
+{
+  "type": "node",
+  "id": 123765988,
+  "lat": 33.9321373,
+  "lon": -118.0901758,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "123"
+  }
+},
+{
+  "type": "node",
+  "id": 250272802,
+  "lat": 34.0251160,
+  "lon": -118.2045752,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "133",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3493"
+  }
+},
+{
+  "type": "node",
+  "id": 250401694,
+  "lat": 34.0212303,
+  "lon": -118.1961176,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "132",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1681"
+  }
+},
+{
+  "type": "node",
+  "id": 250401732,
+  "lat": 34.0200539,
+  "lon": -118.1911134,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "131B"
+  }
+},
+{
+  "type": "node",
+  "id": 253226466,
+  "lat": 34.0101294,
+  "lon": -118.1597360,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "130A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1696"
+  }
+},
+{
+  "type": "node",
+  "id": 253460328,
+  "lat": 33.9783911,
+  "lon": -118.1275332,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "126B"
+  }
+},
+{
+  "type": "node",
+  "id": 253706429,
+  "lat": 33.9627839,
+  "lon": -118.1183861,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "126A"
+  }
+},
+{
+  "type": "node",
+  "id": 256797053,
+  "lat": 33.7648415,
+  "lon": -117.8655214,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "105B"
+  }
+},
+{
+  "type": "node",
+  "id": 257001617,
+  "lat": 33.8571773,
+  "lon": -117.9816748,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "114A"
+  }
+},
+{
+  "type": "node",
+  "id": 257416763,
+  "lat": 33.8475567,
+  "lon": -117.9634166,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "113"
+  }
+},
+{
+  "type": "node",
+  "id": 258017972,
+  "lat": 33.8069001,
+  "lon": -117.9067705,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "109A"
+  }
+},
+{
+  "type": "node",
+  "id": 258020058,
+  "lat": 33.7994345,
+  "lon": -117.8977166,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "109"
+  }
+},
+{
+  "type": "node",
+  "id": 258427885,
+  "lat": 33.7800458,
+  "lon": -117.8770963,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107A"
+  }
+},
+{
+  "type": "node",
+  "id": 258427915,
+  "lat": 33.7843898,
+  "lon": -117.8832913,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107B"
+  }
+},
+{
+  "type": "node",
+  "id": 259845452,
+  "lat": 33.2025945,
+  "lon": -117.3784056,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 269595905,
+  "lat": 34.0830646,
+  "lon": -118.2280086,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "137A"
+  }
+},
+{
+  "type": "node",
+  "id": 269596060,
+  "lat": 34.0882090,
+  "lon": -118.2361790,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "137B"
+  }
+},
+{
+  "type": "node",
+  "id": 271270486,
+  "lat": 34.3146775,
+  "lon": -118.4891750,
+  "tags": {
+    "fixme": "Why does Caltrans give this an exit number?",
+    "highway": "motorway_junction",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3637",
+    "unsigned_ref": "161A"
+  }
+},
+{
+  "type": "node",
+  "id": 271274088,
+  "lat": 34.3012244,
+  "lon": -118.4775119,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "159B",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3632"
+  }
+},
+{
+  "type": "node",
+  "id": 271274096,
+  "lat": 34.3007564,
+  "lon": -118.4770188,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "159A"
+  }
+},
+{
+  "type": "node",
+  "id": 271275533,
+  "lat": 34.2964088,
+  "lon": -118.4730214,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "158"
+  }
+},
+{
+  "type": "node",
+  "id": 271331771,
+  "lat": 34.2735154,
+  "lon": -118.4495629,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "157B",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3625"
+  }
+},
+{
+  "type": "node",
+  "id": 272257428,
+  "lat": 34.2309156,
+  "lon": -118.3991073,
+  "tags": {
+    "highway": "motorway_junction",
+    "old_ref": "153A",
+    "ref": "153",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3600;AM909_DSCV3602"
+  }
+},
+{
+  "type": "node",
+  "id": 274956433,
+  "lat": 32.6423572,
+  "lon": -117.1009038,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "9",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 274957578,
+  "lat": 32.6348377,
+  "lon": -117.0980292,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "8B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275592063,
+  "lat": 32.7306707,
+  "lon": -117.1706369,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "17B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275663701,
+  "lat": 32.5891788,
+  "lon": -117.0880756,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "5A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275666227,
+  "lat": 32.5802531,
+  "lon": -117.0858501,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "5A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275666505,
+  "lat": 32.5990580,
+  "lon": -117.0894762,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "5B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275667684,
+  "lat": 32.5926293,
+  "lon": -117.0883437,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "5B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275716916,
+  "lat": 32.6192802,
+  "lon": -117.0919532,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "7B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275719065,
+  "lat": 32.6246878,
+  "lon": -117.0942501,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "7B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275950391,
+  "lat": 32.6686770,
+  "lon": -117.1111789,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "11B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275953086,
+  "lat": 32.6820511,
+  "lon": -117.1108831,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "12",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275955975,
+  "lat": 32.6908121,
+  "lon": -117.1189610,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "12",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275961454,
+  "lat": 32.6985334,
+  "lon": -117.1385901,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "14A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 275963955,
+  "lat": 32.7103519,
+  "lon": -117.1477632,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "15A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 276300917,
+  "lat": 32.5505390,
+  "lon": -117.0434587,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 276301221,
+  "lat": 32.5460230,
+  "lon": -117.0346996,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "1A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 276302601,
+  "lat": 32.5706525,
+  "lon": -117.0779661,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "3",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 278814121,
+  "lat": 38.6734361,
+  "lon": -121.6337082,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "531"
+  }
+},
+{
+  "type": "node",
+  "id": 278814129,
+  "lat": 38.6738914,
+  "lon": -121.7235388,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "536"
+  }
+},
+{
+  "type": "node",
+  "id": 278817777,
+  "lat": 38.6746216,
+  "lon": -121.7411993,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "537"
+  }
+},
+{
+  "type": "node",
+  "id": 278853864,
+  "lat": 38.7010447,
+  "lon": -121.7814270,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "540"
+  }
+},
+{
+  "type": "node",
+  "id": 278854342,
+  "lat": 38.6928386,
+  "lon": -121.7574310,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "538"
+  }
+},
+{
+  "type": "node",
+  "id": 278854543,
+  "lat": 38.7157799,
+  "lon": -121.7971779,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "541"
+  }
+},
+{
+  "type": "node",
+  "id": 278855288,
+  "lat": 38.7319937,
+  "lon": -121.8144346,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "542"
+  }
+},
+{
+  "type": "node",
+  "id": 278980349,
+  "lat": 38.7908630,
+  "lon": -121.8756797,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "548"
+  }
+},
+{
+  "type": "node",
+  "id": 279228095,
+  "lat": 38.8517941,
+  "lon": -121.9440703,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "553"
+  }
+},
+{
+  "type": "node",
+  "id": 279228345,
+  "lat": 38.8588298,
+  "lon": -121.9509701,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "554"
+  }
+},
+{
+  "type": "node",
+  "id": 282490432,
+  "lat": 32.8948356,
+  "lon": -117.2265304,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "30",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 282542285,
+  "lat": 32.9850578,
+  "lon": -117.2550577,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "36",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 283382764,
+  "lat": 34.0665392,
+  "lon": -118.2162127,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "136A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV2687"
+  }
+},
+{
+  "type": "node",
+  "id": 286375290,
+  "lat": 34.0687680,
+  "lon": -118.2167832,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "136B",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV2688"
+  }
+},
+{
+  "type": "node",
+  "id": 286375304,
+  "lat": 34.0741960,
+  "lon": -118.2193017,
+  "tags": {
+    "FIXME:ref": "verify",
+    "highway": "motorway_junction",
+    "ref": "137B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV2691"
+  }
+},
+{
+  "type": "node",
+  "id": 288455631,
+  "lat": 32.9913270,
+  "lon": -117.2557649,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "37",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291676987,
+  "lat": 34.0993392,
+  "lon": -118.2472990,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3535",
+    "unsigned_ref": "139A"
+  }
+},
+{
+  "type": "node",
+  "id": 291695971,
+  "lat": 33.0230961,
+  "lon": -117.2734171,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "40",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291696085,
+  "lat": 33.0290684,
+  "lon": -117.2768325,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "40",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291696578,
+  "lat": 33.0336043,
+  "lon": -117.2794944,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "41A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291697218,
+  "lat": 33.0451889,
+  "lon": -117.2860858,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "41B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291697662,
+  "lat": 33.0621509,
+  "lon": -117.2911765,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "43",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291697731,
+  "lat": 33.0682252,
+  "lon": -117.2933859,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "43",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291698141,
+  "lat": 33.0886119,
+  "lon": -117.3011009,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "44",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291698408,
+  "lat": 33.1006335,
+  "lon": -117.3086032,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "45"
+  }
+},
+{
+  "type": "node",
+  "id": 291698739,
+  "lat": 33.1069248,
+  "lon": -117.3130017,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "45",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291701321,
+  "lat": 33.1555340,
+  "lon": -117.3384862,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "49",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291701501,
+  "lat": 33.1491829,
+  "lon": -117.3345488,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "49"
+  }
+},
+{
+  "type": "node",
+  "id": 291702302,
+  "lat": 33.1605371,
+  "lon": -117.3406902,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "50",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291703299,
+  "lat": 33.1678705,
+  "lon": -117.3444123,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 291712287,
+  "lat": 33.1935949,
+  "lon": -117.3651747,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "52",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 293925758,
+  "lat": 33.2018211,
+  "lon": -117.3769168,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "53",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 293990344,
+  "lat": 33.2134854,
+  "lon": -117.3893672,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "54C",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 294025020,
+  "lat": 33.2759511,
+  "lon": -117.4452800,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 294025492,
+  "lat": 33.3014213,
+  "lon": -117.4679680,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "62",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2633"
+  }
+},
+{
+  "type": "node",
+  "id": 294026122,
+  "lat": 33.3500498,
+  "lon": -117.5215098,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "yahoo_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCU2650"
+  }
+},
+{
+  "type": "node",
+  "id": 294097717,
+  "lat": 33.4113991,
+  "lon": -117.6013890,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "73",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2609;AM909_DSCU2610"
+  }
+},
+{
+  "type": "node",
+  "id": 294109814,
+  "lat": 33.4341076,
+  "lon": -117.6170042,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "75",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2602"
+  }
+},
+{
+  "type": "node",
+  "id": 294110001,
+  "lat": 33.4365129,
+  "lon": -117.6185213,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "76",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2581;AM909_DSCU2582"
+  }
+},
+{
+  "type": "node",
+  "id": 294111070,
+  "lat": 33.4470167,
+  "lon": -117.6347207,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "77"
+  }
+},
+{
+  "type": "node",
+  "id": 294118666,
+  "lat": 33.5051328,
+  "lon": -117.6593309,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "82"
+  }
+},
+{
+  "type": "node",
+  "id": 294321248,
+  "lat": 33.5548360,
+  "lon": -117.6727629,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "86"
+  }
+},
+{
+  "type": "node",
+  "id": 294322549,
+  "lat": 33.5748695,
+  "lon": -117.6717073,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "88"
+  }
+},
+{
+  "type": "node",
+  "id": 294323244,
+  "lat": 33.5852624,
+  "lon": -117.6718595,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "88"
+  }
+},
+{
+  "type": "node",
+  "id": 295412362,
+  "lat": 33.1900826,
+  "lon": -117.3619132,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "52",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 296105462,
+  "lat": 33.6513879,
+  "lon": -117.7406391,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "92"
+  }
+},
+{
+  "type": "node",
+  "id": 296834336,
+  "lat": 35.6207732,
+  "lon": -119.6568405,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "278",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 296847910,
+  "lat": 35.7281592,
+  "lon": -119.7363270,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "288",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 296848126,
+  "lat": 35.7357354,
+  "lon": -119.7423496,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "288",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 297521741,
+  "lat": 34.2708351,
+  "lon": -118.4475802,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "157A",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3623"
+  }
+},
+{
+  "type": "node",
+  "id": 297522007,
+  "lat": 34.2667738,
+  "lon": -118.4436950,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "156A"
+  }
+},
+{
+  "type": "node",
+  "id": 297524300,
+  "lat": 34.2620739,
+  "lon": -118.4402149,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "156B",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3619"
+  }
+},
+{
+  "type": "node",
+  "id": 298583385,
+  "lat": 34.1451244,
+  "lon": -118.2787757,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "142"
+  }
+},
+{
+  "type": "node",
+  "id": 306029929,
+  "lat": 38.6386184,
+  "lon": -121.5235289,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "524"
+  }
+},
+{
+  "type": "node",
+  "id": 309028979,
+  "lat": 36.0789596,
+  "lon": -120.1051807,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "319",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029181,
+  "lat": 36.8536531,
+  "lon": -120.7764506,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "385",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029197,
+  "lat": 36.7814741,
+  "lon": -120.7267861,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "379",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029253,
+  "lat": 36.6878989,
+  "lon": -120.6602093,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "372",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029309,
+  "lat": 36.6365381,
+  "lon": -120.6203253,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "368",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029381,
+  "lat": 36.6071290,
+  "lon": -120.5893189,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "365",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029423,
+  "lat": 36.5330436,
+  "lon": -120.4912188,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "357",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029429,
+  "lat": 36.4379468,
+  "lon": -120.3963844,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "349",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029448,
+  "lat": 36.2970471,
+  "lon": -120.2712896,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "337",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029450,
+  "lat": 36.2916105,
+  "lon": -120.2672697,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "337",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309029452,
+  "lat": 36.2578956,
+  "lon": -120.2464277,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "334",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309795626,
+  "lat": 36.1410675,
+  "lon": -120.1621264,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "325",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 309795707,
+  "lat": 36.0932764,
+  "lon": -120.1184490,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf",
+    "unsigned_ref": "320"
+  }
+},
+{
+  "type": "node",
+  "id": 317623786,
+  "lat": 34.0146693,
+  "lon": -118.1683901,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "130B",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1698"
+  }
+},
+{
+  "type": "node",
+  "id": 317641710,
+  "lat": 34.0257239,
+  "lon": -118.2062136,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 317642261,
+  "lat": 34.0272195,
+  "lon": -118.2095910,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "134A"
+  }
+},
+{
+  "type": "node",
+  "id": 317642471,
+  "lat": 34.0290627,
+  "lon": -118.2132553,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "134B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3496"
+  }
+},
+{
+  "type": "node",
+  "id": 317643002,
+  "lat": 34.0319851,
+  "lon": -118.2189206,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "134C",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3497"
+  }
+},
+{
+  "type": "node",
+  "id": 317645238,
+  "lat": 34.0358624,
+  "lon": -118.2209085,
+  "tags": {
+    "fixme:ref": "verify",
+    "highway": "motorway_junction",
+    "ref:signed": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 317645437,
+  "lat": 34.0324609,
+  "lon": -118.2206520,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "134B"
+  }
+},
+{
+  "type": "node",
+  "id": 317645438,
+  "lat": 34.0314629,
+  "lon": -118.2198085,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "134A"
+  }
+},
+{
+  "type": "node",
+  "id": 318308442,
+  "lat": 33.7219990,
+  "lon": -117.7988629,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "100"
+  }
+},
+{
+  "type": "node",
+  "id": 321135422,
+  "lat": 33.6892444,
+  "lon": -117.7681337,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "97"
+  }
+},
+{
+  "type": "node",
+  "id": 324714674,
+  "lat": 34.6650378,
+  "lon": -118.7617280,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "191",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3804;AM909_DSCV3805"
+  }
+},
+{
+  "type": "node",
+  "id": 324739280,
+  "lat": 34.4871252,
+  "lon": -118.6171334,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "176A",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3781"
+  }
+},
+{
+  "type": "node",
+  "id": 324743675,
+  "lat": 34.4519116,
+  "lon": -118.6148052,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "173",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3778"
+  }
+},
+{
+  "type": "node",
+  "id": 324743949,
+  "lat": 34.4598034,
+  "lon": -118.6155726,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "173",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3778"
+  }
+},
+{
+  "type": "node",
+  "id": 324822145,
+  "lat": 34.7052704,
+  "lon": -118.7947861,
+  "tags": {
+    "destination:street": "Smokey Bear Road",
+    "highway": "motorway_junction",
+    "ref": "195",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3809"
+  }
+},
+{
+  "type": "node",
+  "id": 329876521,
+  "lat": 38.7973531,
+  "lon": -121.8819522,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "548"
+  }
+},
+{
+  "type": "node",
+  "id": 330965185,
+  "lat": 33.5995797,
+  "lon": -117.6801344,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "89"
+  }
+},
+{
+  "type": "node",
+  "id": 330985350,
+  "lat": 33.3984596,
+  "lon": -117.5949216,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "72",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2613"
+  }
+},
+{
+  "type": "node",
+  "id": 331064574,
+  "lat": 39.9964207,
+  "lon": -122.2050956,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "636"
+  }
+},
+{
+  "type": "node",
+  "id": 336876786,
+  "lat": 38.9221677,
+  "lon": -121.9978200,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "559"
+  }
+},
+{
+  "type": "node",
+  "id": 338942399,
+  "lat": 34.0723533,
+  "lon": -118.2191836,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "136A"
+  }
+},
+{
+  "type": "node",
+  "id": 339934603,
+  "lat": 38.8780295,
+  "lon": -121.9708556,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "556"
+  }
+},
+{
+  "type": "node",
+  "id": 339934620,
+  "lat": 38.8890685,
+  "lon": -121.9769186,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 340143931,
+  "lat": 34.1886039,
+  "lon": -118.3235923,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 358000704,
+  "lat": 34.2326603,
+  "lon": -118.4083342,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "153B"
+  }
+},
+{
+  "type": "node",
+  "id": 358354069,
+  "lat": 34.1673524,
+  "lon": -118.3001092,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "145B"
+  }
+},
+{
+  "type": "node",
+  "id": 358354159,
+  "lat": 34.1673157,
+  "lon": -118.3004220,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "145A"
+  }
+},
+{
+  "type": "node",
+  "id": 360605834,
+  "lat": 32.6754914,
+  "lon": -117.1096367,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "11B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 360612582,
+  "lat": 32.7065075,
+  "lon": -117.1474951,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "15A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 360625017,
+  "lat": 32.7449698,
+  "lon": -117.1881118,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "18B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 360866450,
+  "lat": 33.7167143,
+  "lon": -117.7906673,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "100"
+  }
+},
+{
+  "type": "node",
+  "id": 360869491,
+  "lat": 33.7280529,
+  "lon": -117.8077992,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "101A"
+  }
+},
+{
+  "type": "node",
+  "id": 360957274,
+  "lat": 33.7403045,
+  "lon": -117.8325007,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "103B"
+  }
+},
+{
+  "type": "node",
+  "id": 360962503,
+  "lat": 33.7411154,
+  "lon": -117.8355048,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "102"
+  }
+},
+{
+  "type": "node",
+  "id": 360965916,
+  "lat": 33.7315116,
+  "lon": -117.8122267,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "101B",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCU2932;AM909_DSCU2933"
+  }
+},
+{
+  "type": "node",
+  "id": 361131668,
+  "lat": 33.8042723,
+  "lon": -117.9037521,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 361133171,
+  "lat": 33.8092509,
+  "lon": -117.9092454,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "109B"
+  }
+},
+{
+  "type": "node",
+  "id": 361161053,
+  "lat": 33.8609687,
+  "lon": -117.9892149,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "114B",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCV1817"
+  }
+},
+{
+  "type": "node",
+  "id": 361225504,
+  "lat": 33.8688001,
+  "lon": -118.0030410,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "116",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV1811;AM909_DSCW2146"
+  }
+},
+{
+  "type": "node",
+  "id": 361227891,
+  "lat": 33.8861333,
+  "lon": -118.0327699,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "118"
+  }
+},
+{
+  "type": "node",
+  "id": 363406765,
+  "lat": 34.0194456,
+  "lon": -118.1798727,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "131A",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1682;AM909_DSCV1683"
+  }
+},
+{
+  "type": "node",
+  "id": 363477390,
+  "lat": 34.0605091,
+  "lon": -118.2151767,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "135B"
+  }
+},
+{
+  "type": "node",
+  "id": 363477990,
+  "lat": 34.0624868,
+  "lon": -118.2158630,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "135C",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV1663"
+  }
+},
+{
+  "type": "node",
+  "id": 364042909,
+  "lat": 34.2534698,
+  "lon": -118.4314040,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "155B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3615"
+  }
+},
+{
+  "type": "node",
+  "id": 365011684,
+  "lat": 34.3909233,
+  "lon": -118.5702903,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "168",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3660"
+  }
+},
+{
+  "type": "node",
+  "id": 367127173,
+  "lat": 34.3975184,
+  "lon": -118.5722492,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "168"
+  }
+},
+{
+  "type": "node",
+  "id": 367132573,
+  "lat": 34.4051617,
+  "lon": -118.5747439,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "169",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3662;AM909_DSCV3663"
+  }
+},
+{
+  "type": "node",
+  "id": 367132815,
+  "lat": 34.4114915,
+  "lon": -118.5778793,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "169"
+  }
+},
+{
+  "type": "node",
+  "id": 367132961,
+  "lat": 34.4194615,
+  "lon": -118.5811984,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "170",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3664"
+  }
+},
+{
+  "type": "node",
+  "id": 367133423,
+  "lat": 34.4263419,
+  "lon": -118.5851329,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "170",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3686"
+  }
+},
+{
+  "type": "node",
+  "id": 367133484,
+  "lat": 34.4334774,
+  "lon": -118.5907041,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3670"
+  }
+},
+{
+  "type": "node",
+  "id": 367133516,
+  "lat": 34.4351955,
+  "lon": -118.5931416,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "171",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3684"
+  }
+},
+{
+  "type": "node",
+  "id": 367134071,
+  "lat": 34.5669443,
+  "lon": -118.6861554,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "183",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3793"
+  }
+},
+{
+  "type": "node",
+  "id": 367137752,
+  "lat": 34.7109527,
+  "lon": -118.7975912,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "195"
+  }
+},
+{
+  "type": "node",
+  "id": 368020795,
+  "lat": 37.3041233,
+  "lon": -121.1039412,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 368024019,
+  "lat": 37.4235650,
+  "lon": -121.1541207,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 368855480,
+  "lat": 37.9558580,
+  "lon": -121.3181041,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "473"
+  }
+},
+{
+  "type": "node",
+  "id": 370274661,
+  "lat": 39.6212080,
+  "lon": -122.2054959,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "610"
+  }
+},
+{
+  "type": "node",
+  "id": 370547190,
+  "lat": 40.1897950,
+  "lon": -122.2326260,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "650"
+  }
+},
+{
+  "type": "node",
+  "id": 399660262,
+  "lat": 37.7851830,
+  "lon": -121.3061826,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "461",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 403623346,
+  "lat": 34.1519891,
+  "lon": -118.2821500,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "144B"
+  }
+},
+{
+  "type": "node",
+  "id": 403630397,
+  "lat": 34.2239491,
+  "lon": -118.3722763,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "151",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3592"
+  }
+},
+{
+  "type": "node",
+  "id": 412110038,
+  "lat": 41.9895955,
+  "lon": -122.6078263,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "796"
+  }
+},
+{
+  "type": "node",
+  "id": 607839575,
+  "lat": 40.1775728,
+  "lon": -122.2224222,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "649"
+  }
+},
+{
+  "type": "node",
+  "id": 724916797,
+  "lat": 33.3543611,
+  "lon": -117.5283657,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2627"
+  }
+},
+{
+  "type": "node",
+  "id": 730539571,
+  "lat": 33.6796838,
+  "lon": -117.7605953,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "96A"
+  }
+},
+{
+  "type": "node",
+  "id": 780419146,
+  "lat": 33.4921942,
+  "lon": -117.6616234,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "81"
+  }
+},
+{
+  "type": "node",
+  "id": 780421736,
+  "lat": 33.4693238,
+  "lon": -117.6736551,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "79"
+  }
+},
+{
+  "type": "node",
+  "id": 780421897,
+  "lat": 33.4604127,
+  "lon": -117.6595847,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "78"
+  }
+},
+{
+  "type": "node",
+  "id": 780425803,
+  "lat": 33.3156487,
+  "lon": -117.4822763,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 783524496,
+  "lat": 33.7508214,
+  "lon": -117.8454913,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "104A"
+  }
+},
+{
+  "type": "node",
+  "id": 807656187,
+  "lat": 34.0174333,
+  "lon": -118.1758201,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "130B"
+  }
+},
+{
+  "type": "node",
+  "id": 839541443,
+  "lat": 33.5370994,
+  "lon": -117.6745442,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "85A"
+  }
+},
+{
+  "type": "node",
+  "id": 911820206,
+  "lat": 34.1032768,
+  "lon": -118.2507020,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3535;AM909_DSCV3537",
+    "unsigned_ref": "139B"
+  }
+},
+{
+  "type": "node",
+  "id": 911820291,
+  "lat": 34.1099031,
+  "lon": -118.2619330,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "140",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3540"
+  }
+},
+{
+  "type": "node",
+  "id": 916286407,
+  "lat": 34.6672225,
+  "lon": -118.7636599,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "191",
+    "source": "usgs_imagery_2006;CDOT"
+  }
+},
+{
+  "type": "node",
+  "id": 1098915020,
+  "lat": 33.9983942,
+  "lon": -118.1473741,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "128B",
+    "source": "usgs_imagery;CDOT"
+  }
+},
+{
+  "type": "node",
+  "id": 1108644311,
+  "lat": 32.5440997,
+  "lon": -117.0305878,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1132165014,
+  "lat": 34.4990663,
+  "lon": -118.6263518,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "176"
+  }
+},
+{
+  "type": "node",
+  "id": 1135512966,
+  "lat": 34.9400867,
+  "lon": -118.9302025,
+  "tags": {
+    "destination": "Grapevine",
+    "highway": "motorway_junction",
+    "ref": "215"
+  }
+},
+{
+  "type": "node",
+  "id": 1137168502,
+  "lat": 34.8730953,
+  "lon": -118.8903675,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "210"
+  }
+},
+{
+  "type": "node",
+  "id": 1140400789,
+  "lat": 34.7595763,
+  "lon": -118.7959600,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "198",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3815",
+    "unsigned_ref": "198B"
+  }
+},
+{
+  "type": "node",
+  "id": 1140440929,
+  "lat": 34.7709320,
+  "lon": -118.8035593,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "199",
+    "source": "usgs_imagery_2006;CDOT"
+  }
+},
+{
+  "type": "node",
+  "id": 1155662689,
+  "lat": 37.0567795,
+  "lon": -120.9701966,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "403A",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1224375906,
+  "lat": 32.7044377,
+  "lon": -117.1471542,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "14B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 1227949011,
+  "lat": 33.1735613,
+  "lon": -117.3488874,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "51A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 1293521217,
+  "lat": 34.8909201,
+  "lon": -118.9148439,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1316700766,
+  "lat": 33.7973822,
+  "lon": -117.8965259,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107C"
+  }
+},
+{
+  "type": "node",
+  "id": 1316700810,
+  "lat": 33.7927431,
+  "lon": -117.8908616,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1316711109,
+  "lat": 33.7890276,
+  "lon": -117.8867599,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107C"
+  }
+},
+{
+  "type": "node",
+  "id": 1382740850,
+  "lat": 32.9364205,
+  "lon": -117.2417060,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "33",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583561,
+  "lat": 33.9957540,
+  "lon": -118.1452873,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "128B"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583651,
+  "lat": 33.9875960,
+  "lon": -118.1376672,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "128A"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583702,
+  "lat": 33.9737494,
+  "lon": -118.1237060,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "126B"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583759,
+  "lat": 33.9562841,
+  "lon": -118.1093950,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "125"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583773,
+  "lat": 34.0207429,
+  "lon": -118.1943856,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "132"
+  }
+},
+{
+  "type": "node",
+  "id": 1530583835,
+  "lat": 33.9596724,
+  "lon": -118.1143545,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "125"
+  }
+},
+{
+  "type": "node",
+  "id": 1594973995,
+  "lat": 34.3225303,
+  "lon": -118.4986844,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1594974192,
+  "lat": 34.3280719,
+  "lon": -118.5054232,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1599261599,
+  "lat": 33.7515855,
+  "lon": -117.8460971,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1599261677,
+  "lat": 33.7530627,
+  "lon": -117.8477781,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1614922775,
+  "lat": 34.0458884,
+  "lon": -118.2154450,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "135A"
+  }
+},
+{
+  "type": "node",
+  "id": 1694000892,
+  "lat": 34.3398824,
+  "lon": -118.5189646,
+  "tags": {
+    "fixme": "Why does Caltrans give this an exit number?",
+    "highway": "motorway_junction",
+    "ref": "163"
+  }
+},
+{
+  "type": "node",
+  "id": 1707826870,
+  "lat": 36.8605009,
+  "lon": -120.7807152,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "386",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1707826904,
+  "lat": 36.8668720,
+  "lon": -120.7855649,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "386",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1707850225,
+  "lat": 36.6425242,
+  "lon": -120.6253591,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "368",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1707911648,
+  "lat": 34.9834102,
+  "lon": -118.9441679,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "219A"
+  }
+},
+{
+  "type": "node",
+  "id": 1707911656,
+  "lat": 34.9856732,
+  "lon": -118.9452844,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "219A"
+  }
+},
+{
+  "type": "node",
+  "id": 1708785235,
+  "lat": 33.9447230,
+  "lon": -118.0991004,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "124"
+  }
+},
+{
+  "type": "node",
+  "id": 1710833054,
+  "lat": 36.4337130,
+  "lon": -120.3920801,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "349",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1710871846,
+  "lat": 35.6116397,
+  "lon": -119.6496141,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "278",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1710873302,
+  "lat": 35.3990735,
+  "lon": -119.3973015,
+  "tags": {
+    "destination": "Buttonwillow;McKittrick",
+    "highway": "motorway_junction",
+    "ref": "257",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1711207592,
+  "lat": 33.8292053,
+  "lon": -117.9284531,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "111"
+  }
+},
+{
+  "type": "node",
+  "id": 1711210419,
+  "lat": 33.8355160,
+  "lon": -117.9414714,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "111"
+  }
+},
+{
+  "type": "node",
+  "id": 1711523133,
+  "lat": 34.9867603,
+  "lon": -118.9452869,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "219B"
+  }
+},
+{
+  "type": "node",
+  "id": 1711757438,
+  "lat": 33.8656680,
+  "lon": -117.9965298,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "116"
+  }
+},
+{
+  "type": "node",
+  "id": 1721320411,
+  "lat": 34.1821377,
+  "lon": -118.3146966,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "146B",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3571"
+  }
+},
+{
+  "type": "node",
+  "id": 1721337241,
+  "lat": 34.2022669,
+  "lon": -118.3404040,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "148"
+  }
+},
+{
+  "type": "node",
+  "id": 1724587384,
+  "lat": 37.5807458,
+  "lon": -121.3201387,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "445",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1724676505,
+  "lat": 39.9426854,
+  "lon": -122.2001055,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1737781230,
+  "lat": 33.7832014,
+  "lon": -117.8820068,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "107A"
+  }
+},
+{
+  "type": "node",
+  "id": 1790758652,
+  "lat": 34.1472520,
+  "lon": -118.2790667,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "144A"
+  }
+},
+{
+  "type": "node",
+  "id": 1823551643,
+  "lat": 33.7811545,
+  "lon": -117.8793570,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "105B"
+  }
+},
+{
+  "type": "node",
+  "id": 1825931329,
+  "lat": 33.4150428,
+  "lon": -117.6029866,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "74",
+    "source": "yahoo_imagery;survey;image",
+    "source_ref": "AM909_DSCU2700"
+  }
+},
+{
+  "type": "node",
+  "id": 1830327510,
+  "lat": 41.7801901,
+  "lon": -122.5835276,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1830379506,
+  "lat": 35.4396488,
+  "lon": -119.4528312,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "262",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 1830668013,
+  "lat": 32.7966007,
+  "lon": -117.2092217,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "23A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 1830668025,
+  "lat": 32.8129656,
+  "lon": -117.2210174,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "23",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 1831647668,
+  "lat": 33.6258179,
+  "lon": -117.7179960,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "92B"
+  }
+},
+{
+  "type": "node",
+  "id": 1831655060,
+  "lat": 33.6523301,
+  "lon": -117.7410064,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "94B"
+  }
+},
+{
+  "type": "node",
+  "id": 1831655093,
+  "lat": 33.6562059,
+  "lon": -117.7445017,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "94"
+  }
+},
+{
+  "type": "node",
+  "id": 1831663956,
+  "lat": 33.6070848,
+  "lon": -117.6955970,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "90"
+  }
+},
+{
+  "type": "node",
+  "id": 1831738070,
+  "lat": 33.8524041,
+  "lon": -117.9720886,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "113C"
+  }
+},
+{
+  "type": "node",
+  "id": 1831738071,
+  "lat": 33.8538194,
+  "lon": -117.9743325,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "114"
+  }
+},
+{
+  "type": "node",
+  "id": 1832153042,
+  "lat": 34.2146654,
+  "lon": -118.3517355,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "149"
+  }
+},
+{
+  "type": "node",
+  "id": 1832153051,
+  "lat": 34.2224190,
+  "lon": -118.3701171,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "150"
+  }
+},
+{
+  "type": "node",
+  "id": 1832567900,
+  "lat": 33.8129541,
+  "lon": -117.9124862,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "110"
+  }
+},
+{
+  "type": "node",
+  "id": 1832757132,
+  "lat": 33.8418228,
+  "lon": -117.9524020,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "113A"
+  }
+},
+{
+  "type": "node",
+  "id": 1832757140,
+  "lat": 33.8435630,
+  "lon": -117.9554970,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "113B"
+  }
+},
+{
+  "type": "node",
+  "id": 1832757515,
+  "lat": 33.8262658,
+  "lon": -117.9261310,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "110B"
+  }
+},
+{
+  "type": "node",
+  "id": 1832757517,
+  "lat": 33.8387712,
+  "lon": -117.9475309,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "112"
+  }
+},
+{
+  "type": "node",
+  "id": 1834751651,
+  "lat": 34.3056249,
+  "lon": -118.4820234,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "159"
+  }
+},
+{
+  "type": "node",
+  "id": 1834751673,
+  "lat": 34.3119947,
+  "lon": -118.4872100,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3636",
+    "unsigned_ref": "161A"
+  }
+},
+{
+  "type": "node",
+  "id": 1834892407,
+  "lat": 33.7569484,
+  "lon": -117.8571036,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "104B"
+  }
+},
+{
+  "type": "node",
+  "id": 1834892461,
+  "lat": 33.7416553,
+  "lon": -117.8370539,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "103"
+  }
+},
+{
+  "type": "node",
+  "id": 1834892480,
+  "lat": 33.7534676,
+  "lon": -117.8483005,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "104"
+  }
+},
+{
+  "type": "node",
+  "id": 1839684590,
+  "lat": 33.9666172,
+  "lon": -118.1214942,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "126A"
+  }
+},
+{
+  "type": "node",
+  "id": 1839684620,
+  "lat": 34.0149004,
+  "lon": -118.1690925,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "130C",
+    "source": "GPS;bing_imagery_0.06m_200801;survey;image;CDOT",
+    "source_ref": "AM909_DSCW8459",
+    "towards": "Pasadena"
+  }
+},
+{
+  "type": "node",
+  "id": 1839684624,
+  "lat": 34.0202327,
+  "lon": -118.1882390,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "131",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1554"
+  }
+},
+{
+  "type": "node",
+  "id": 1840876833,
+  "lat": 34.3596526,
+  "lon": -118.5541037,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "166"
+  }
+},
+{
+  "type": "node",
+  "id": 1846121564,
+  "lat": 33.6640553,
+  "lon": -117.7507669,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes",
+    "source": "usgs_imagery"
+  }
+},
+{
+  "type": "node",
+  "id": 1846255044,
+  "lat": 33.7791462,
+  "lon": -117.8765037,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1847890686,
+  "lat": 39.8845985,
+  "lon": -122.2002842,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "628"
+  }
+},
+{
+  "type": "node",
+  "id": 1850675786,
+  "lat": 33.8343690,
+  "lon": -117.9360134,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "112"
+  }
+},
+{
+  "type": "node",
+  "id": 1884813453,
+  "lat": 34.1616847,
+  "lon": -118.2933651,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "145A",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3561"
+  }
+},
+{
+  "type": "node",
+  "id": 2348914324,
+  "lat": 32.8649059,
+  "lon": -117.2297948,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "28A",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 3422240302,
+  "lat": 37.0566382,
+  "lon": -120.9695065,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "403B",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 3485085355,
+  "lat": 33.9204622,
+  "lon": -118.0825045,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "122"
+  }
+},
+{
+  "type": "node",
+  "id": 3485085374,
+  "lat": 33.9056744,
+  "lon": -118.0660698,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "120"
+  }
+},
+{
+  "type": "node",
+  "id": 3485129752,
+  "lat": 33.8964808,
+  "lon": -118.0518933,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "119"
+  }
+},
+{
+  "type": "node",
+  "id": 3516222514,
+  "lat": 37.9016750,
+  "lon": -121.2856670,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "468",
+    "source": "http://www.dot.ca.gov/hq/traffops/signtech/calnexus/pdf/5.pdf"
+  }
+},
+{
+  "type": "node",
+  "id": 3810629735,
+  "lat": 40.4345960,
+  "lon": -122.2857428,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "667B"
+  }
+},
+{
+  "type": "node",
+  "id": 3921100744,
+  "lat": 38.4623416,
+  "lon": -121.4954986,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "510"
+  }
+},
+{
+  "type": "node",
+  "id": 3921100763,
+  "lat": 38.4704704,
+  "lon": -121.4992784,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "510"
+  }
+},
+{
+  "type": "node",
+  "id": 3959753268,
+  "lat": 38.0546248,
+  "lon": -121.3714480,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "481"
+  }
+},
+{
+  "type": "node",
+  "id": 4040825132,
+  "lat": 34.3357189,
+  "lon": -118.5110167,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "161B"
+  }
+},
+{
+  "type": "node",
+  "id": 4050067075,
+  "lat": 34.2365902,
+  "lon": -118.4140216,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 5372923157,
+  "lat": 34.7559424,
+  "lon": -118.7955982,
+  "tags": {
+    "highway": "motorway_junction",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3814",
+    "unsigned_ref": "198A"
+  }
+},
+{
+  "type": "node",
+  "id": 5373002995,
+  "lat": 34.4924045,
+  "lon": -118.6210886,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "176B",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3783"
+  }
+},
+{
+  "type": "node",
+  "id": 5373370466,
+  "lat": 34.3837051,
+  "lon": -118.5681300,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "167"
+  }
+},
+{
+  "type": "node",
+  "id": 5373400623,
+  "lat": 34.3659895,
+  "lon": -118.5571635,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "166"
+  }
+},
+{
+  "type": "node",
+  "id": 5375907290,
+  "lat": 34.2693586,
+  "lon": -118.4463881,
+  "tags": {
+    "highway": "motorway_junction",
+    "unsigned_ref": "156B"
+  }
+},
+{
+  "type": "node",
+  "id": 5376004285,
+  "lat": 34.2603591,
+  "lon": -118.4387356,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "156A",
+    "source": "usgs_imagery_2006;survey;image",
+    "source_ref": "AM909_DSCV3618"
+  }
+},
+{
+  "type": "node",
+  "id": 5377605897,
+  "lat": 34.2345476,
+  "lon": -118.4118247,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "153B"
+  }
+},
+{
+  "type": "node",
+  "id": 5377612382,
+  "lat": 34.2313326,
+  "lon": -118.4028291,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "153A"
+  }
+},
+{
+  "type": "node",
+  "id": 5377617300,
+  "lat": 34.2279088,
+  "lon": -118.3912808,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "152"
+  }
+},
+{
+  "type": "node",
+  "id": 5377623059,
+  "lat": 34.2267701,
+  "lon": -118.3808548,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "152",
+    "source": "usgs_imagery;survey;image;CDOT",
+    "source_ref": "AM909_DSCV3594"
+  }
+},
+{
+  "type": "node",
+  "id": 5377654787,
+  "lat": 34.2204365,
+  "lon": -118.3573270,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "150A",
+    "source": "usgs_imagery;survey;image",
+    "source_ref": "AM909_DSCV3586"
+  }
+},
+{
+  "type": "node",
+  "id": 5395261090,
+  "lat": 32.8689327,
+  "lon": -117.2293728,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "28B",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 5543615241,
+  "lat": 33.0180928,
+  "lon": -117.2724556,
+  "tags": {
+    "destination": "View Point",
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 5902965604,
+  "lat": 33.8908514,
+  "lon": -118.0412386,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "119"
+  }
+},
+{
+  "type": "node",
+  "id": 6032371925,
+  "lat": 33.9001733,
+  "lon": -118.0578761,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "120B"
+  }
+},
+{
+  "type": "node",
+  "id": 6711207416,
+  "lat": 32.5420949,
+  "lon": -117.0353371,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 6947662812,
+  "lat": 33.6867349,
+  "lon": -117.7660739,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "97"
+  }
+},
+{
+  "type": "node",
+  "id": 7157906887,
+  "lat": 34.1955040,
+  "lon": -118.3333153,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "147B"
+  }
+},
+{
+  "type": "node",
+  "id": 7157906901,
+  "lat": 34.1989362,
+  "lon": -118.3377820,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "148"
+  }
+},
+{
+  "type": "node",
+  "id": 7266079950,
+  "lat": 40.5851170,
+  "lon": -122.3606980,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "678A"
+  }
+},
+{
+  "type": "node",
+  "id": 7297630113,
+  "lat": 33.6814865,
+  "lon": -117.7626231,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "96B"
+  }
+},
+{
+  "type": "node",
+  "id": 7446638627,
+  "lat": 32.5438525,
+  "lon": -117.0321378,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 7446848826,
+  "lat": 32.5430502,
+  "lon": -117.0326108,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7446848851,
+  "lat": 32.5421066,
+  "lon": -117.0353993,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7446848852,
+  "lat": 32.5433190,
+  "lon": -117.0338567,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 7777144523,
+  "lat": 33.0088425,
+  "lon": -117.2626305,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "39",
+    "source": "Caltrans"
+  }
+},
+{
+  "type": "node",
+  "id": 8181606494,
+  "lat": 32.5439271,
+  "lon": -117.0325161,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 8454461633,
+  "lat": 34.1877811,
+  "lon": -118.3224692,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "146B"
+  }
+},
+{
+  "type": "node",
+  "id": 9025842604,
+  "lat": 38.6710623,
+  "lon": -121.5722931,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "527"
+  }
+},
+{
+  "type": "node",
+  "id": 9025848026,
+  "lat": 38.6713679,
+  "lon": -121.5621476,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "527"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332147,
+  "lat": 32.5434206,
+  "lon": -117.0323578,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332187,
+  "lat": 32.5438212,
+  "lon": -117.0325731,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332207,
+  "lat": 32.5441924,
+  "lon": -117.0326662,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332208,
+  "lat": 32.5442719,
+  "lon": -117.0325378,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332211,
+  "lat": 32.5443994,
+  "lon": -117.0327057,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332213,
+  "lat": 32.5446334,
+  "lon": -117.0330559,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332332,
+  "lat": 32.5420111,
+  "lon": -117.0347647,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332335,
+  "lat": 32.5420057,
+  "lon": -117.0348227,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332339,
+  "lat": 32.5419951,
+  "lon": -117.0349367,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332358,
+  "lat": 32.5419537,
+  "lon": -117.0353811,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332361,
+  "lat": 32.5419500,
+  "lon": -117.0354208,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332379,
+  "lat": 32.5421249,
+  "lon": -117.0350455,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332381,
+  "lat": 32.5421182,
+  "lon": -117.0349844,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9357332417,
+  "lat": 32.5421012,
+  "lon": -117.0349092,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9362796811,
+  "lat": 32.5429227,
+  "lon": -117.0309788,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 9362806531,
+  "lat": 32.5433313,
+  "lon": -117.0297017,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 9789602622,
+  "lat": 37.6382150,
+  "lon": -121.3428586,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "449B"
+  }
+},
+{
+  "type": "node",
+  "id": 9789602625,
+  "lat": 37.6370916,
+  "lon": -121.3433162,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "449A"
+  }
+},
+{
+  "type": "node",
+  "id": 11147122669,
+  "lat": 33.8774210,
+  "lon": -118.0165942,
+  "tags": {
+    "highway": "motorway_junction",
+    "ref": "117",
+    "source": "usgs_imagery_2006;survey;image;CDOT",
+    "source_ref": "AM909_DSCV1809"
+  }
+},
+{
+  "type": "node",
+  "id": 13006664571,
+  "lat": 33.7486366,
+  "lon": -117.8432698,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 13008825299,
+  "lat": 33.8545665,
+  "lon": -117.9752770,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 13009000283,
+  "lat": 33.8278079,
+  "lon": -117.9276174,
+  "tags": {
+    "highway": "motorway_junction",
+    "noref": "yes"
+  }
+}
+
+  ]
+}

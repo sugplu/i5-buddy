@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><title>tests</title>
+<body><pre id="out">running</pre>
+<iframe id="f" src="../index.html" style="display:none"></iframe>
+<script>
+document.getElementById("f").onload = () => {
+  const {locate, coordAt} = document.getElementById("f").contentWindow.I5BUDDY;
+  // known spots: [name, lat, lon, expected milepost, tolerance]
+  const cases = [
+    ["Kettleman City SR41", 36.0065, -119.9617, 309, 3],
+    ["Old Sacramento J St", 38.5826, -121.5070, 519, 3],
+    ["Mt Shasta city", 41.3200, -122.3190, 738, 3],
+    ["Santa Nella SR33", 37.0985, -121.0177, 407, 3],
+    ["Oceanside", 33.2080, -117.3790, 52, 4],
+  ];
+  const lines = [];
+  let fails = 0;
+  for (const [n, la, lo, exp, tol] of cases) {
+    const r = locate(la, lo); const ok = Math.abs(r.mile - exp) <= tol && r.dist < 2.5;
+    if (!ok) fails++;
+    lines.push(`${ok ? "PASS" : "FAIL"} ${n}: mile ${r.mile.toFixed(1)} (want ${exp}), ${r.dist.toFixed(2)} mi off route`);
+  }
+  // round trip: coordAt(m) should locate back to m
+  for (const m of [10, 150, 250, 450, 600, 790]) { const [la, lo] = coordAt(m); const r = locate(la, lo); const ok = Math.abs(r.mile - m) < 0.5; if (!ok) fails++; lines.push(`${ok ? "PASS" : "FAIL"} round trip ${m} -> ${r.mile.toFixed(2)}`); }
+  // far away: San Francisco should be off route
+  const sf = locate(37.7749, -122.4194); const ok = sf.dist > 2.5; if (!ok) fails++; lines.push(`${ok ? "PASS" : "FAIL"} San Francisco off route (${sf.dist.toFixed(1)} mi)`);
+  document.getElementById("out").textContent = (fails ? `FAILED ${fails}` : "ALL PASS") + "\n" + lines.join("\n");
+};
+</script>

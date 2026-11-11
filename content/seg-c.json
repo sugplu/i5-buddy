@@ -1,0 +1,744 @@
+{
+ "places": [
+  {
+   "mi": 458,
+   "name": "Tracy",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Eleventh Street exit (I-205 / Business 205)",
+   "text": "Tracy began as a railroad junction in 1878. It was named for Lathrop J. Tracy, an Ohio grain merchant and railroad man who never actually saw the California town that carries his name.",
+   "src": "https://cityoftracy.org/our-city/about-us/tracy-history"
+  },
+  {
+   "mi": 460,
+   "name": "Mossdale Crossing",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Mossdale Road / Manthey Road exit",
+   "text": "Right about here you cross the San Joaquin River. On September 6, 1869, a railroad bridge opened at this crossing, and that first train carried passengers on to Alameda, where a ferry waited for San Francisco. It was the last link that tied the transcontinental railroad to the Bay, and a railroad lift bridge still stands beside the freeway.",
+   "src": "https://en.wikipedia.org/wiki/Mossdale_bridge"
+  },
+  {
+   "mi": 461,
+   "name": "Manteca",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Highway 120 exit",
+   "text": "Highway 120 heads east to Manteca. In Spanish, manteca means lard. Local historians still argue over whether the railroad misspelled a name the townsfolk picked or whether they chose it on purpose, since the place was a creamery stop.",
+   "src": "https://mantecabulletin.com/news/local-news/whats-in-mantecas-name"
+  },
+  {
+   "mi": 462,
+   "name": "Lathrop",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Louise Avenue exit",
+   "text": "Lathrop got its name from railroad boss Leland Stanford. He renamed the stop formerly called Wilson's Station after his wife Jane's brother, Charles Lathrop, and it grew into a busy rail junction by 1871.",
+   "src": "https://www.ci.lathrop.ca.us/node/3541"
+  },
+  {
+   "mi": 467,
+   "name": "French Camp",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "El Dorado Street / Mathews Road exit",
+   "text": "French Camp is the oldest community in San Joaquin County. From about 1832 to 1845, French Canadian trappers working for the Hudson's Bay Company camped here every year with their families, trapping beaver for hats. When beaver hats went out of style, they packed up and went home to Canada.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/668"
+  },
+  {
+   "mi": 471,
+   "name": "First Sikh temple in America",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Charter Way / Highway 4 exit",
+   "text": "Stockton's Gurdwara Sahib opened in 1912. It was the first Sikh house of worship in the United States.",
+   "src": "https://en.wikipedia.org/wiki/Stockton,_California"
+  },
+  {
+   "mi": 472,
+   "name": "Port of Stockton",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Highway 4 / Navy Drive exit",
+   "text": "Off to the west is the Port of Stockton, a seaport more than 70 miles from the ocean. Ocean-going ships up to 60,000 tons travel up a deep channel from San Francisco Bay, and the modern port opened in 1933. Stockton and Sacramento are home to California's only inland seaports.",
+   "src": "https://en.wikipedia.org/wiki/Port_of_Stockton"
+  },
+  {
+   "mi": 473,
+   "name": "Stockton's name",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Pershing Avenue / Oak Street exit",
+   "text": "Stockton's founder, Charles Weber, first called his town Tuleburg, after the marsh reeds called tules. He renamed it for Commodore Robert Stockton, which made it the first town in California with a name that was neither Spanish nor Native American.",
+   "src": "https://en.wikipedia.org/wiki/Stockton,_California"
+  },
+  {
+   "mi": 474,
+   "name": "University of the Pacific",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Country Club Boulevard / Alpine Avenue exit",
+   "text": "A couple of miles east is the University of the Pacific. It was chartered in 1851 as the first university in California, started out in Santa Clara, and moved to Stockton in 1924.",
+   "src": "https://en.wikipedia.org/wiki/University_of_the_Pacific_(United_States)"
+  },
+  {
+   "mi": 477,
+   "name": "Benjamin Holt and the Caterpillar",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Benjamin Holt Drive exit",
+   "text": "This exit is named for a Stockton inventor. On Thanksgiving Day 1904, Benjamin Holt tested a steam tractor with tracks instead of wheels. A company photographer said it crawled like a caterpillar, and the name stuck. It's the same Caterpillar you see on bulldozers today.",
+   "src": "https://www.caterpillar.com/en/company/history/archive/caterpillar-name.html"
+  },
+  {
+   "mi": 485,
+   "name": "Lodi",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Highway 12 exit",
+   "text": "Highway 12 runs east to Lodi, which grows roughly 40 percent of California's Zinfandel grapes, some from vines more than a hundred years old. A&W Root Beer got its start here in 1919, sold from a stand during a parade. And the band Creedence Clearwater Revival wrote a whole song about being stuck in Lodi, even though the songwriter admitted he'd never been there.",
+   "src": "https://en.wikipedia.org/wiki/Lodi,_California"
+  },
+  {
+   "mi": 488,
+   "name": "Delta asparagus",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Turner Road area",
+   "text": "The dark, spongy peat soil of the Delta once made this the top asparagus region in California. Harvest started as early as February, and thousands of Filipino and Mexican farmworkers cut spears by hand. Stockton still throws an asparagus festival, but only a few local farms grow it now.",
+   "src": "https://soundingsmag.net/2019/02/20/asparagus-historic-signature-crop-of-the-delta/"
+  },
+  {
+   "mi": 490,
+   "name": "Sandhill crane reserve",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Peltier Road exit, then Thornton and Woodbridge Roads",
+   "text": "About five miles west of here is the Isenberg Sandhill Crane Reserve. From fall into early spring, thousands of tall gray sandhill cranes spend the winter in the Delta, and around sunset they fly in to roost, calling a rattling call you can hear a long way off. The roadside pullouts are on Woodbridge Road.",
+   "src": "https://www.wildlife.ca.gov/Lands/Places-to-Visit/Woodbridge-ER"
+  },
+  {
+   "mi": 493,
+   "name": "Locke",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Thornton / Walnut Grove exit, west on Walnut Grove Road",
+   "text": "West of here along the Sacramento River is Locke, a little wooden town built by Chinese immigrants in 1915 after a fire burned Walnut Grove's Chinatown. They built it on land leased from a farmer named George Locke. It's now a National Historic Landmark, and the old main street still looks much like it did a century ago.",
+   "src": "https://www.nps.gov/places/locke-historic-district.htm"
+  },
+  {
+   "mi": 495,
+   "name": "The Delta levees",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Between Thornton and Hood",
+   "text": "To the west is the Sacramento-San Joaquin Delta, a maze of islands held in by about 1,100 miles of levees. As the peat soil dried out and blew away, many islands sank to 10 to 25 feet below sea level, so farmers there grow crops below the water in the channels next to them. Water passing through the Delta helps supply as many as 25 million Californians.",
+   "src": "https://www.ppic.org/publication/the-sacramento-san-joaquin-delta/"
+  },
+  {
+   "mi": 498,
+   "name": "Cosumnes River Preserve",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Twin Cities Road exit, east to Franklin Boulevard",
+   "text": "A few minutes east is the Cosumnes River Preserve. The Cosumnes is the only river on the western slope of the Sierra Nevada with no big dam controlling it, so it still floods its valley the old way. That makes great habitat for waterbirds, and there's a visitor center off Franklin Boulevard.",
+   "src": "https://wildlife.ca.gov/Lands/Places-to-Visit/Cosumnes-River-ER"
+  },
+  {
+   "mi": 504,
+   "name": "Stone Lakes National Wildlife Refuge",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Hood-Franklin Road exit",
+   "text": "The marshes and fields just west of the freeway are part of Stone Lakes National Wildlife Refuge, set aside in 1994. The freeway runs right along its eastern edge, so in winter watch for waterbirds in the flooded fields.",
+   "src": "https://en.wikipedia.org/wiki/Stone_Lakes_National_Wildlife_Refuge"
+  },
+  {
+   "mi": 506,
+   "name": "Elk Grove",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Elk Grove Boulevard exit",
+   "text": "Elk Grove started in 1850 as a hotel and stagecoach stop run by James and Sarah Hall. Nobody is quite sure about the name. One old county history says Hall named it after his Missouri hometown, and another says he found elk antlers in a grove nearby.",
+   "src": "https://elkgrovehistoricalsociety.com/?p=3939"
+  },
+  {
+   "mi": 518,
+   "name": "Sacramento's raised streets",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "US 50 / Business 80 junction",
+   "text": "Old Sacramento flooded again and again, and after a terrible flood in 1862 the city raised its streets. Workers built brick walls along the streets and filled them with dirt, lifting the city by up to 10 feet or more. The old first floors are still down there, and the history museum runs underground tours.",
+   "src": "https://sachistorymuseum.org/underground-tours/"
+  },
+  {
+   "mi": 519,
+   "name": "Crocker Art Museum",
+   "cat": "stop",
+   "side": "E",
+   "visible": false,
+   "where": "Q Street exit",
+   "text": "Just east of the freeway on O Street is the Crocker Art Museum. It opened in 1885 and is the oldest art museum in the western United States.",
+   "src": "https://en.wikipedia.org/wiki/Crocker_Art_Museum"
+  },
+  {
+   "mi": 519,
+   "name": "Tower Bridge",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Q Street / J Street exits",
+   "text": "Look west for the golden Tower Bridge over the Sacramento River. It opened in 1935, and its middle section can lift straight up so tall boats can pass. In 2002, people living nearby voted on its color, and gold won.",
+   "src": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)"
+  },
+  {
+   "mi": 519,
+   "name": "Sutter Health Park",
+   "cat": "stop",
+   "side": "W",
+   "visible": true,
+   "where": "Across the river from Old Sacramento",
+   "text": "Across the river in West Sacramento is the ballpark now called Sutter Health Park. The Athletics are playing their home games there from 2025 through 2027 while their new stadium in Las Vegas is built, and fans in the stands can see the Tower Bridge past right field.",
+   "src": "https://www.mlb.com/news/sutter-health-park-guide-capacity-seating-chart-parking-and-more"
+  },
+  {
+   "mi": 519,
+   "name": "Old Sacramento and I-5",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "J Street exit",
+   "text": "The old brick buildings between the freeway and the river are Old Sacramento. When I-5 was built here in the 1960s, it bulldozed much of the Gold Rush waterfront, including most of the old buildings on Front Street. What survived became a 28-acre historic district, and you're driving along its edge.",
+   "src": "https://www.hmdb.org/m.asp?m=16511"
+  },
+  {
+   "mi": 519,
+   "name": "Delta King",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "J Street exit, Old Sacramento waterfront",
+   "text": "Tied up at the riverbank is the Delta King, a big paddle-wheel steamboat from 1927. It used to carry passengers overnight between Sacramento and San Francisco. Later it served in the Navy, housed workers in British Columbia, and even sank for over a year before being rescued. It's been a floating hotel here since 1989.",
+   "src": "https://en.wikipedia.org/wiki/Delta_King"
+  },
+  {
+   "mi": 519,
+   "name": "Transcontinental railroad starts here",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "J Street exit, Front and K Streets",
+   "text": "On January 8, 1863, Governor Leland Stanford turned the first shovel of dirt at Front and K Streets to start the Central Pacific Railroad. The Central Pacific built the western part of the first transcontinental railroad, and it all started at this riverbank.",
+   "src": "https://www.hmdb.org/m.asp?m=146491"
+  },
+  {
+   "mi": 519,
+   "name": "California State Railroad Museum",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "J Street exit, Old Sacramento",
+   "text": "The California State Railroad Museum sits in Old Sacramento, with 21 restored locomotives and railroad cars in its main hall alone.",
+   "src": "https://www.californiarailroad.museum/visit/general-information"
+  },
+  {
+   "mi": 520,
+   "name": "The Railyards",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Richards Boulevard exit",
+   "text": "Just east of here are the old railroad shops, where the Central Pacific built and repaired trains starting in 1867. By 1910, about one in three jobs in Sacramento was with the railroad, and the shops stayed the region's biggest employer until after World War Two.",
+   "src": "https://railyards.com/blog/the-railyards-history"
+  },
+  {
+   "mi": 521,
+   "name": "Where two rivers meet",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Garden Highway exit",
+   "text": "At Discovery Park, just west of here, the American River flows into the Sacramento. The park is designed to flood in big storms, taking pressure off the levees.",
+   "src": "https://regionalparks.saccounty.gov/us/en/parks/american-river-parkway/discovery-park.html"
+  },
+  {
+   "mi": 528,
+   "name": "Airport and the big red rabbit",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Airport Boulevard exit",
+   "text": "Sacramento's airport opened here in 1967 on open land in Natomas. Inside Terminal B hangs a 56-foot red aluminum rabbit called Leap, diving headfirst into a giant granite suitcase over baggage claim. It weighs about 10,000 pounds.",
+   "src": "https://flysmf.gov/about/art"
+  },
+  {
+   "mi": 531,
+   "name": "Crossing the Sacramento River",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Elkhorn bridges, near Road 22 exit",
+   "text": "Here you cross the Sacramento River into Yolo County on the Elkhorn bridges, built in 1969. From here you'll follow the Sacramento Valley all the way to Red Bluff.",
+   "src": "https://www.aaroads.com/guides/i-005-north-woodland-ca"
+  },
+  {
+   "mi": 533,
+   "name": "Yolo Bypass",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Elkhorn Causeway, between Road 22 and Road 102",
+   "text": "The long, low causeway crosses the Yolo Bypass, a giant floodway. In big storms the Sacramento River spills over a weir upstream and this whole basin fills like a shallow inland sea, which keeps Sacramento from flooding. In drier months it's farmland and wetlands.",
+   "src": "https://californiawaterblog.com/2017/02/20/yolo-bypass-the-inland-sea-of-sacramento/"
+  },
+  {
+   "mi": 537,
+   "name": "Woodland",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Main Street / Highway 113 exits",
+   "text": "Woodland is the county seat of Yolo County and calls itself the City of Trees. Its founder picked the name in 1859. The 1896 Woodland Opera House downtown is now a state historic park and still puts on shows.",
+   "src": "https://en.wikipedia.org/wiki/Woodland,_California"
+  },
+  {
+   "mi": 540,
+   "name": "Woodland tomato cannery",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "West Street area, Woodland",
+   "text": "Woodland has processed tomatoes since at least 1958. The cannery here turns tomatoes from fields within about 16 miles into diced tomatoes, sauce and paste. Yolo is one of the top five counties in California for processing tomatoes.",
+   "src": "https://www.waterboards.ca.gov/centralvalley/board_decisions/adopted_orders/yolo/r5-2018-0051.pdf"
+  },
+  {
+   "mi": 545,
+   "name": "Sunflower seed fields",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Yolo and Colusa County fields",
+   "text": "In June and July, some fields along here turn bright yellow with sunflowers. Many are grown for seed, not for snacks. California has historically produced about 95 percent of the hybrid sunflower seed planted in the United States, mostly in Yolo and Colusa counties, though the business has shrunk in recent years.",
+   "src": "https://www.agalert.com/california-ag-news/archives/february-6-2024/sunflower-seed-firms-leave-state-impacting-growers/"
+  },
+  {
+   "mi": 553,
+   "name": "First look at the Sutter Buttes",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "I-505 junction / Dunnigan",
+   "text": "As you come out of the Dunnigan Hills, look ahead and to the east for a jagged cluster of peaks rising out of the flat valley. Those are the Sutter Buttes, the eroded leftovers of a volcano that was active about 1.5 million years ago. On a hazy day you might only see a faint outline.",
+   "src": "https://www.kqed.org/quest/36069/side-trips-from-interstate-5-sutter-buttes"
+  },
+  {
+   "mi": 566,
+   "name": "Arbuckle and almonds",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Arbuckle / College City exit",
+   "text": "Arbuckle was laid out in 1875 on the ranch of Tacitus Arbuckle, and it has long called itself the Home of the Almonds. Almonds and rice are the two biggest crops in Colusa County.",
+   "src": "https://countyofcolusaca.gov/217"
+  },
+  {
+   "mi": 566,
+   "name": "College City",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Arbuckle / College City exit",
+   "text": "College City, population about 290, is named for a college that isn't there anymore. Andrew Pierce gave land in 1874 for Pierce Christian College, which closed in 1897 and reopened that fall as a high school.",
+   "src": "https://en.wikipedia.org/wiki/College_City,_California"
+  },
+  {
+   "mi": 570,
+   "name": "Rice country",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Fields between Arbuckle and Willows",
+   "text": "Those flat, perfectly level fields with low dirt walls are rice paddies. California grows virtually all the sushi rice made in America. After harvest, farmers flood many fields in winter to break down the straw, and the water draws in huge flocks of ducks and geese.",
+   "src": "https://www.calrice.org/rice-footprint"
+  },
+  {
+   "mi": 577,
+   "name": "Granzella's",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Williams exit",
+   "text": "Granzella's in Williams has been a road-trip stop since Jim and Beverly Granzella opened a small deli here in January 1976. It grew into a restaurant, deli and market, and it's known for its sandwiches and its taxidermy displays.",
+   "src": "https://abc10.com/article/entertainment/television/programs/backroads/soup-sandwich-safari-granzellas-road-trip-bartells-backroads-pit-stop/103-143d9aea-0905-4494-80db-55c6b1f39515"
+  },
+  {
+   "mi": 578,
+   "name": "Sutter Buttes up close",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Highway 20 exit",
+   "text": "The peaks to the east are the Sutter Buttes, often called the world's smallest mountain range. The highest, South Butte, is about 2,117 feet tall. Almost all of the land is privately owned, so you can usually only hike them on guided trips.",
+   "src": "https://www.geographyrealm.com/sutters-butte-smallest-mountain-range/"
+  },
+  {
+   "mi": 588,
+   "name": "Delevan refuge",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Maxwell Road exit",
+   "text": "About four miles east of Maxwell is Delevan National Wildlife Refuge. In winter, ducks there can top 300,000 and geese 100,000. It's mostly closed to visitors, but Maxwell Road runs right along it.",
+   "src": "https://en.wikipedia.org/wiki/Delevan_National_Wildlife_Refuge"
+  },
+  {
+   "mi": 595,
+   "name": "Sacramento National Wildlife Refuge",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Road 68 / Princeton exit",
+   "text": "The marshes east of the freeway are the Sacramento National Wildlife Refuge, started in 1937. Between November and January it regularly hosts more than 500,000 ducks and 250,000 geese. Huge white flocks of snow geese often sit in the rice fields right by the freeway, and a 6-mile auto tour lets you drive through the marsh.",
+   "src": "https://www.fws.gov/locations/sacramento-national-wildlife-refuge/auto-tour"
+  },
+  {
+   "mi": 603,
+   "name": "Willows",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Highway 162 exit",
+   "text": "Willows got its name from a shady spring ringed with willow trees, where cattle drivers between Sacramento and Redding stopped to rest. It became the seat of Glenn County in 1891. The county is named for Hugh Glenn, once the biggest wheat farmer in California.",
+   "src": "https://cityofwillows.org/willows-history/"
+  },
+  {
+   "mi": 610,
+   "name": "Artois",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Artois exit",
+   "text": "Artois used to be called Germantown. During World War One, people wanted to drop the German name, so in 1918 it was renamed Artois, after a region in France where Allied soldiers fought.",
+   "src": "https://en.wikipedia.org/wiki/Artois,_California"
+  },
+  {
+   "mi": 614,
+   "name": "Prune orchards",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Glenn and Tehama County orchards",
+   "text": "Some of the orchards in this part of the valley are prune plums, the kind dried into prunes. California grows about 99 percent of America's prunes, and most come from the Sacramento Valley.",
+   "src": "https://californiaprunes.org/the-california-difference/"
+  },
+  {
+   "mi": 619,
+   "name": "Orland, Queen Bee Capital",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Highway 32 exit",
+   "text": "Orland calls itself the Queen Bee Capital of North America. Beekeepers here raise queen bees, and local groups say the counties around Orland produce about 80 percent of the queen bees in the U.S. There's even a Honeybee Discovery Center in town.",
+   "src": "https://abc10.com/article/entertainment/television/programs/backroads/small-california-town-is-the-queen-bee-capital-of-north-america-bartells-backroads/103-2befe302-330c-4aae-a764-4c6f8d98cac8"
+  },
+  {
+   "mi": 619,
+   "name": "Orland Project",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Highway 32 exit",
+   "text": "In 1907 the federal government picked Orland for its first irrigation project in California. Water from East Park Reservoir, finished in 1910 in the hills to the west, still waters orchards around Orland today.",
+   "src": "https://usbr.gov/projects/index.php?id=373"
+  },
+  {
+   "mi": 625,
+   "name": "Walnut orchards",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Orchards between Orland and Corning",
+   "text": "Many of the orchards along here are walnuts. California grows 99 percent of the commercial walnuts in the United States, and Glenn and Tehama counties each have more than 30,000 acres of them.",
+   "src": "https://www.cdfa.ca.gov/is/ffldrs/frep/FertilizationGuidelines/pdf/Walnut_Production_CA.pdf"
+  },
+  {
+   "mi": 628,
+   "name": "Rolling Hills Casino",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Liberal Avenue exit",
+   "text": "The resort here is Rolling Hills Casino, owned by the Paskenta Band of Nomlaki Indians. The tribe got federal recognition back in 1994 and opened the casino in 2002. It has grown into hotels, restaurants, a golf course and an RV park.",
+   "src": "https://en.wikipedia.org/wiki/Paskenta_Band_of_Nomlaki_Indians"
+  },
+  {
+   "mi": 631,
+   "name": "The Olive Pit",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Corning Road / Solano Street exit",
+   "text": "In 1967, Pete and Ann Craig opened a burger stand here, betting that the new interstate would bring travelers. They put a few jars of olives from their family's orchard on a shelf, and the jars sold out fast. Corning was once called the Olive Capital of the World, and today the Olive Pit sells olives, olive oil and even a lemon olive oil milkshake.",
+   "src": "https://californiagrown.org/blog/the-olive-pit/"
+  },
+  {
+   "mi": 636,
+   "name": "Tehama",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Gyle Road exit",
+   "text": "East toward the river is the tiny city of Tehama, population about 435. When Tehama County was formed in 1856, this was the county seat, but voters moved it to Red Bluff the very next year. Some folks still say Red Bluff stole it.",
+   "src": "https://en.wikipedia.org/wiki/Tehama,_California"
+  },
+  {
+   "mi": 647,
+   "name": "Red Bluff",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "South Main Street exit",
+   "text": "Red Bluff is named for the reddish banks along the Sacramento River, about 50 feet high. It was the farthest point that riverboats could reach, so in the 1850s paddle-wheel steamers came all the way up here to bring supplies for the gold miners.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff,_California"
+  },
+  {
+   "mi": 649,
+   "name": "Lassen Peak",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Highway 36 / Antelope Boulevard exit",
+   "text": "On a clear day, look east for Lassen Peak, the southernmost active volcano in the Cascade Range. On May 22, 1915, people in Red Bluff watched it blast a huge column of ash into the sky, and ash fell as far as 200 miles away. Before Mount St. Helens in 1980, it was the only Cascade volcano to erupt in the 1900s.",
+   "src": "https://www.nps.gov/lavo/learn/nature/eruption_lassen_peak.htm"
+  },
+  {
+   "mi": 649,
+   "name": "Red Bluff Round-Up",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Highway 36 / Antelope Boulevard exit",
+   "text": "Every April, Red Bluff holds the Red Bluff Round-Up, billed as the largest three-day rodeo in the country. It started in 1921, when close to 10,000 people turned out, and now it draws tens of thousands of fans.",
+   "src": "https://www.prorodeohalloffame.com/red-bluff-round-up/"
+  },
+  {
+   "mi": 650,
+   "name": "William B. Ide Adobe",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Adobe Road exit",
+   "text": "Just up Adobe Road is a state historic park honoring William Ide, the one and only president of the California Republic. That republic lasted less than a month in 1846, from June 14 to July 9, during the Bear Flag Revolt.",
+   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+  }
+ ],
+ "zones": [
+  {
+   "from": 446,
+   "to": 467,
+   "label": "San Joaquin River country",
+   "text": "You're crossing from the San Joaquin Valley into the edge of the Delta, with warehouses, new subdivisions and the San Joaquin River. Railroads shaped every town here, from Tracy to Lathrop."
+  },
+  {
+   "from": 467,
+   "to": 482,
+   "label": "Stockton",
+   "text": "The freeway runs along Stockton's west side, past the deep-water port and the sloughs that lead out to the Delta. The port sits to the west."
+  },
+  {
+   "from": 482,
+   "to": 503,
+   "label": "Edge of the Delta",
+   "text": "Flat islands of dark peat soil, held in by levees, stretch off to the west. From October into March, look for sandhill cranes and big flocks of geese in flooded fields."
+  },
+  {
+   "from": 503,
+   "to": 516,
+   "label": "Stone Lakes and south Sacramento",
+   "text": "Wetlands of the Stone Lakes refuge hug the west side of the freeway before the suburbs of Elk Grove and south Sacramento take over."
+  },
+  {
+   "from": 516,
+   "to": 526,
+   "label": "Downtown Sacramento",
+   "text": "I-5 squeezes between downtown and the Sacramento River, right past Old Sacramento and the Tower Bridge, then crosses the American River near where it meets the Sacramento."
+  },
+  {
+   "from": 526,
+   "to": 535,
+   "label": "Natomas and the Yolo Bypass",
+   "text": "Past the airport you cross the Sacramento River and the wide Yolo Bypass, a floodway that turns into a shallow lake in big winters and farmland and wetlands the rest of the year."
+  },
+  {
+   "from": 535,
+   "to": 552,
+   "label": "Woodland farm country",
+   "text": "This is processing tomato country, with sunflower fields that bloom yellow in June and July. Late summer brings double trailers full of tomatoes headed for the cannery."
+  },
+  {
+   "from": 552,
+   "to": 566,
+   "label": "Dunnigan Hills",
+   "text": "Low hills roll by on the west, and the Sutter Buttes come into view on the eastern horizon on clear days."
+  },
+  {
+   "from": 566,
+   "to": 597,
+   "label": "Rice and refuges",
+   "text": "Flat rice paddies run to the horizon, flooded in winter and bright green in summer. From fall through winter, millions of ducks and geese of the Pacific Flyway rest here, and the Sacramento Valley refuges sit just east of the freeway."
+  },
+  {
+   "from": 597,
+   "to": 623,
+   "label": "Willows and Orland orchards",
+   "text": "Rice gives way to orchards of almonds, walnuts and prunes, with the Coast Range on the western skyline."
+  },
+  {
+   "from": 623,
+   "to": 649,
+   "label": "Tehama County: olives to Red Bluff",
+   "text": "Olive groves and walnut orchards surround Corning, and the valley narrows as you near Red Bluff. On clear days, Lassen Peak stands out on the eastern skyline."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 461,
+   "q": "Manteca's name means what in Spanish?",
+   "choices": [
+    "Butter",
+    "Lard",
+    "Cheese",
+    "Milk"
+   ],
+   "answer": 1,
+   "why": "Manteca means lard in Spanish, and the town grew up as a creamery stop."
+  },
+  {
+   "mi": 467,
+   "q": "French Camp was named for French Canadian trappers hunting which animal?",
+   "choices": [
+    "Otter",
+    "Mink",
+    "Beaver",
+    "Fox"
+   ],
+   "answer": 2,
+   "why": "Hudson's Bay Company trappers camped here from about 1832 to 1845 to trap beaver for fur hats."
+  },
+  {
+   "mi": 477,
+   "q": "Benjamin Holt's 1904 tractor gave its name to which company?",
+   "choices": [
+    "John Deere",
+    "Caterpillar",
+    "Ford",
+    "Holt Motors"
+   ],
+   "answer": 1,
+   "why": "A photographer said the tracked machine crawled like a caterpillar, and the name stuck."
+  },
+  {
+   "mi": 485,
+   "q": "Which drink got its start in Lodi in 1919?",
+   "choices": [
+    "Dr Pepper",
+    "A&W Root Beer",
+    "7 Up",
+    "Orange Crush"
+   ],
+   "answer": 1,
+   "why": "Roy Allen first sold A&W Root Beer in Lodi during a parade in 1919."
+  },
+  {
+   "mi": 495,
+   "q": "About how many miles of levees hold in the Delta's islands?",
+   "choices": [
+    "110",
+    "500",
+    "1,100",
+    "5,000"
+   ],
+   "answer": 2,
+   "why": "Roughly 1,100 miles of levees protect Delta islands, many of which sit below sea level."
+  },
+  {
+   "mi": 519,
+   "q": "Who picked the gold color of Sacramento's Tower Bridge in 2002?",
+   "choices": [
+    "The governor",
+    "An artist",
+    "Local residents voting",
+    "The railroad"
+   ],
+   "answer": 2,
+   "why": "Caltrans painted it gold after residents within 35 miles voted for the color."
+  },
+  {
+   "mi": 528,
+   "q": "What giant animal hangs inside Sacramento's airport?",
+   "choices": [
+    "A bear",
+    "A rabbit",
+    "A salmon",
+    "An eagle"
+   ],
+   "answer": 1,
+   "why": "Leap is a 56-foot red rabbit diving into a granite suitcase in Terminal B."
+  },
+  {
+   "mi": 578,
+   "q": "The Sutter Buttes are the leftovers of what?",
+   "choices": [
+    "A glacier",
+    "A volcano",
+    "A meteor crater",
+    "A coral reef"
+   ],
+   "answer": 1,
+   "why": "They are the eroded remains of a volcano active about 1.5 million years ago."
+  },
+  {
+   "mi": 610,
+   "q": "What was the town of Artois called before 1918?",
+   "choices": [
+    "Frenchtown",
+    "Germantown",
+    "Glenn City",
+    "Rixville"
+   ],
+   "answer": 1,
+   "why": "Germantown was renamed Artois during World War One, after a region of France."
+  },
+  {
+   "mi": 650,
+   "q": "How long did the Bear Flag's California Republic last?",
+   "choices": [
+    "Less than a month",
+    "One year",
+    "Ten years",
+    "It still exists"
+   ],
+   "answer": 0,
+   "why": "William Ide's California Republic lasted from June 14 to July 9, 1846."
+  }
+ ]
+}

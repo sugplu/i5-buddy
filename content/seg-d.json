@@ -1,0 +1,688 @@
+{
+ "places": [
+  {
+   "mi": 649,
+   "name": "Red Bluff",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exit 649, Antelope Boulevard (SR 36)",
+   "text": "Red Bluff grew up at the head of navigation on the Sacramento River, the farthest point riverboats could reach from Sacramento. Miners stepped off the boats here and headed west to the Trinity County gold fields. Before it settled on Red Bluff in 1854, the town was called Leodocia, and then Covertsburg.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff,_California"
+  },
+  {
+   "mi": 650,
+   "name": "Red Bluff Round-Up",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Red Bluff",
+   "text": "Every April, Red Bluff hosts the Round-Up, billed as the largest three-day rodeo in the country. It started in 1918 as ranch hands holding friendly contests, became official in 1921, and is in the ProRodeo Hall of Fame. On Sunday there's an event called the Wild Ride, where bronc riders compete in costume.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff_Round-Up"
+  },
+  {
+   "mi": 651,
+   "name": "William B. Ide Adobe",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 651, Main Street, a mile north of Red Bluff",
+   "text": "A state park on the riverbank honors William Ide, the one and only president of the California Republic, which lasted from June 14 to July 9, 1846. That's about 25 days. Here's the twist: research later showed Ide never owned or lived in the adobe that carries his name. The state kept the name anyway.",
+   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+  },
+  {
+   "mi": 653,
+   "name": "Mount Shasta, 140 miles out",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Ahead to the north",
+   "text": "If the air is clear, the white peak far ahead is Mount Shasta. On a clear winter day it can be seen from the floor of the Central Valley 140 miles to the south. You'll drive right past its base in about an hour and a half.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta"
+  },
+  {
+   "mi": 663,
+   "name": "Cottonwood",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 662 to 665, Cottonwood Creek",
+   "text": "Cottonwood started as a stagecoach town in 1849, and it sits right in the middle: 15 miles to Redding and 15 miles back to Red Bluff. The creek here also marks the line from Tehama County into Shasta County. And in December 2024, a single Mega Millions ticket sold in Cottonwood won a jackpot of 1.22 billion dollars.",
+   "src": "https://en.wikipedia.org/wiki/Cottonwood,_California"
+  },
+  {
+   "mi": 667,
+   "name": "Anderson",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 667 and 668",
+   "text": "Anderson is a railroad town. In 1872 a rancher named Elias Anderson gave the railroad a right of way through his land, and in return the railroad named the depot after him. The town kept the name.",
+   "src": "https://en.wikipedia.org/wiki/Anderson,_California"
+  },
+  {
+   "mi": 677,
+   "name": "Redding",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 675 to 681",
+   "text": "During the Gold Rush this spot was called Poverty Flats, because there was so little gold here. The railroad built a town and named it for its land agent, Benjamin Redding. Summers are serious here: the average July high is near 100 degrees, and on July 6, 2024, Redding hit 119.",
+   "src": "https://en.wikipedia.org/wiki/Redding,_California"
+  },
+  {
+   "mi": 678,
+   "name": "Sundial Bridge",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 678, SR 44 west to Turtle Bay",
+   "text": "Redding's Sundial Bridge is a 700-foot footbridge whose 217-foot mast leans north and casts a shadow like a giant sundial. The tip of that shadow moves about a foot every minute, so you can actually watch the Earth turn. The bridge crosses the river without touching the water, to protect the salmon spawning grounds underneath.",
+   "src": "https://en.wikipedia.org/wiki/Sundial_Bridge"
+  },
+  {
+   "mi": 679,
+   "name": "Road to Lassen Peak",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 678, SR 44 east",
+   "text": "Highway 44 heads east toward Lassen Peak, about 55 miles from Redding. On May 22, 1915, Lassen blew an ash column more than 30,000 feet into the sky. It and Mount St. Helens were the only two volcanoes in the lower 48 states to erupt in the 1900s.",
+   "src": "https://en.wikipedia.org/wiki/Lassen_Peak"
+  },
+  {
+   "mi": 680,
+   "name": "Old Shasta",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 680, SR 299 west",
+   "text": "Six miles west is Shasta, once a Gold Rush town of about 3,500 people and the county seat. In 1873 the railroad passed it by in favor of Redding, and the town faded into a near ghost town. Its row of 1850s brick buildings is now a state historic park, and it has the oldest Masonic lodge in California.",
+   "src": "https://en.wikipedia.org/wiki/Shasta,_California"
+  },
+  {
+   "mi": 682,
+   "name": "The 9.5-mile conveyor belt",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Between Redding and Shasta Dam",
+   "text": "To make concrete for Shasta Dam, builders needed mountains of sand and gravel, so they built the largest conveyor belt system in the world. It was 9.5 miles long and ran from Redding all the way to the dam site.",
+   "src": "https://en.wikipedia.org/wiki/Shasta_Dam"
+  },
+  {
+   "mi": 685,
+   "name": "Shasta Dam",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 685, SR 151 Shasta Dam Boulevard",
+   "text": "A few miles west stands Shasta Dam, 602 feet tall. When it was finished in 1945, 26 months ahead of schedule, only Hoover Dam was taller. One workman summed it up: Old Shasta's about the secondest dam there is. During World War Two, many of the workers were women and high school students.",
+   "src": "https://en.wikipedia.org/wiki/Shasta_Dam"
+  },
+  {
+   "mi": 686,
+   "name": "Kennett, the drowned town",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Under Shasta Lake, upstream of the dam",
+   "text": "Under the lake lies Kennett, a copper mining town that was the biggest in the area outside Redding. The dam was first going to be called Kennett Dam, and its groundbreaking was held in Kennett itself in 1937. By 1944 the whole town was underwater, now around 400 feet down depending on the lake level.",
+   "src": "https://en.wikipedia.org/wiki/Kennett,_California"
+  },
+  {
+   "mi": 689,
+   "name": "Shasta Lake",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Exits 689 to 704",
+   "text": "Shasta Lake is California's largest reservoir, with 365 miles of steep, wooded shoreline. It has four big arms, made by the Sacramento, McCloud and Pit rivers and Sulanharas Creek, and at its deepest it's 517 feet.",
+   "src": "https://en.wikipedia.org/wiki/Shasta_Lake"
+  },
+  {
+   "mi": 691,
+   "name": "Pit River Bridge",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Between exits 690 and 692",
+   "text": "You're on a double-decker. The freeway rides the top deck and the railroad runs underneath, including Amtrak's Coast Starlight. It was built in 1942 more than 500 feet above the old Pit River, the tallest double-deck bridge in the country, but when the lake is full the water is only about 40 feet below you.",
+   "src": "https://en.wikipedia.org/wiki/Pit_River_Bridge"
+  },
+  {
+   "mi": 692,
+   "name": "The giant median",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "Just north of the Pit River Bridge",
+   "text": "Watch the gap between the northbound and southbound lanes for the next stretch. Just north of the bridge, I-5 has the second-largest median in California, with whole hillsides between the two directions.",
+   "src": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+  },
+  {
+   "mi": 694,
+   "name": "Shasta salamanders",
+   "cat": "nature",
+   "side": null,
+   "visible": false,
+   "where": "Limestone around Shasta Lake",
+   "text": "The limestone hills around this lake hide salamanders found nowhere else on Earth. Scientists used to think there was one kind. In 2018 they found three, and one of them is named the Wintu Shasta salamander, after the Wintu people.",
+   "src": "https://en.wikipedia.org/wiki/Shasta_salamander"
+  },
+  {
+   "mi": 695,
+   "name": "Lake Shasta Caverns",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 695, Shasta Caverns Road, O'Brien",
+   "text": "Getting to these limestone caves takes a boat ride across the lake and then a bus up a steep mountain road. Inside, you can still read the name of explorer James Richardson, who signed the wall with soot from his miner's lamp on November 11, 1878.",
+   "src": "https://en.wikipedia.org/wiki/Lake_Shasta_Caverns"
+  },
+  {
+   "mi": 696,
+   "name": "Winnemem Wintu",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "The McCloud River arm of the lake",
+   "text": "The Winnemem Wintu, whose name means middle river people, lived along the lower McCloud River for generations. When the lake filled, scores of their village sites, burial grounds and sacred places went underwater. They are still here, and they oppose plans to raise the dam higher.",
+   "src": "https://en.wikipedia.org/wiki/Winnemem_Wintu"
+  },
+  {
+   "mi": 707,
+   "name": "Delta",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Exit 707, Vollmers and Delta",
+   "text": "When the railroad pushed up this canyon in the 1880s, the town of Delta was the end of the line for about two years. Lots sold for 45 to 185 dollars, and almost overnight there were saloons, hotels, a Wells Fargo office and a railroad turntable.",
+   "src": "https://en.wikipedia.org/wiki/Delta,_California"
+  },
+  {
+   "mi": 711,
+   "name": "The upper Sacramento River",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Alongside I-5 through the canyon",
+   "text": "The stream beside you is the Sacramento, the largest river in California. From here it runs about 400 miles south to San Francisco Bay. Up here it's a famous trout river, full of wild rainbow trout.",
+   "src": "https://en.wikipedia.org/wiki/Sacramento_River"
+  },
+  {
+   "mi": 715,
+   "name": "Three in one canyon",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Sacramento River canyon",
+   "text": "The river, the railroad and the freeway all squeeze through this one canyon. The railroad arrived in 1887, and Amtrak's Coast Starlight still runs these tracks every day between Los Angeles and Seattle.",
+   "src": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
+  },
+  {
+   "mi": 719,
+   "name": "Siskiyou Trail",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "The whole I-5 corridor",
+   "text": "Long before this was a freeway, it was a network of Native American footpaths. In the 1820s, fur trappers from the Hudson's Bay Company followed them south from the Columbia River, and the route became known as the Siskiyou Trail. Today I-5 follows the same path.",
+   "src": "https://en.wikipedia.org/wiki/Siskiyou_Trail"
+  },
+  {
+   "mi": 724,
+   "name": "Castle Crags State Park",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 724, Castella",
+   "text": "In the 1890s, mineral water from a spring here was bottled and shipped all over the world. The bottling company went broke in the 1929 crash, and in 1943 the state bought 925 acres of the old springs property. That was the start of Castle Crags State Park.",
+   "src": "https://en.wikipedia.org/wiki/Castle_Crags"
+  },
+  {
+   "mi": 725,
+   "name": "Okwanuchu and the Crags",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Castle Crags",
+   "text": "This wilderness was the homeland of the Okwanuchu, a Shasta-speaking people, and the Crags were revered by the Wintu, Achumawi and Modoc too. The Gold Rush brought thousands of miners and terrible violence. In 1855 the Battle of Castle Crags was fought here, and the poet Joaquin Miller, who was wounded in it, later wrote about the cruelty settlers did to Native families.",
+   "src": "https://en.wikipedia.org/wiki/Castle_Crags"
+  },
+  {
+   "mi": 726,
+   "name": "Castle Crags",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Exits 724 to 728",
+   "text": "Those gray granite spires to the west rise from about 2,000 feet at the river to over 6,500 feet at the top. The granite formed underground in the age of dinosaurs, and Ice Age glaciers carved away the softer rock around it. A bellflower grows on these rocks and nowhere else in the world.",
+   "src": "https://en.wikipedia.org/wiki/Castle_Crags"
+  },
+  {
+   "mi": 728,
+   "name": "Caboose motel",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Exit 728, Railroad Park Road",
+   "text": "Just off this exit is a lodge where you can sleep in a real caboose and eat dinner in an old train car, with the Crags right behind it. It used to be called Railroad Park Resort and now goes by Jubilee Railroad.",
+   "src": "https://www.jubileerailroad.com/"
+  },
+  {
+   "mi": 729,
+   "name": "Dunsmuir",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 729 to 732",
+   "text": "Dunsmuir was a railroad town first, nicknamed Pusher, because extra steam engines were added here to push trains up the steep grade north. In 1888 Alexander Dunsmuir, son of a Canadian coal baron, offered the town a fountain if it would take his name. The town says its water, filtered through Mount Shasta's lava, is the best on Earth.",
+   "src": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
+  },
+  {
+   "mi": 731,
+   "name": "Babe Ruth in Dunsmuir",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Dunsmuir City Park",
+   "text": "In 1924, New York Yankees stars Babe Ruth and Bob Meusel came to Dunsmuir on a barnstorming tour and played an exhibition game against the locals in the city park. The park is now home to a botanical garden along the river.",
+   "src": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
+  },
+  {
+   "mi": 732,
+   "name": "Hedge Creek Falls",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Exit 732, Dunsmuir Avenue and Siskiyou Avenue",
+   "text": "A short trail from this exit leads to a waterfall with a small cave behind it, so you can walk behind the falling water. There's also a viewing platform over the river with a view of Mount Shasta. It's one of the quickest leg-stretchers on the whole drive.",
+   "src": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
+  },
+  {
+   "mi": 733,
+   "name": "Cantara Loop",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Upstream from Dunsmuir",
+   "text": "On the night of July 14, 1991, a train derailed at a horseshoe curve called the Cantara Loop, and a tank car spilled about 19,000 gallons of pesticide into the river. More than a million fish died. The river has largely come back, and today it's open to catch-and-release fishing all year.",
+   "src": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
+  },
+  {
+   "mi": 736,
+   "name": "McCloud",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 736, SR 89 east",
+   "text": "Highway 89 heads east to McCloud, a lumber company town. For decades the mill supplied the homes with their electricity and even their steam heat. The company sold the houses to private owners in 1965, and the mill closed for good in 2002.",
+   "src": "https://en.wikipedia.org/wiki/McCloud,_California"
+  },
+  {
+   "mi": 738,
+   "name": "Mount Shasta City",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 737 to 740",
+   "text": "This town has been called Strawberry Valley, Berryvale and Sisson, after an innkeeper who donated the land for the railroad station. It took the name Mount Shasta in 1925. It sits at about 3,600 feet, less than 9 miles from the summit.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta,_California"
+  },
+  {
+   "mi": 739,
+   "name": "Headwaters of the Sacramento",
+   "cat": "nature",
+   "side": null,
+   "visible": false,
+   "where": "Mount Shasta City Park",
+   "text": "In the city park, water pours straight out of a hillside at Big Springs. It started as snowmelt on the mountain and spent years filtering through volcanic rock. Roughly 12 million gallons a day flow out and help start the Sacramento River.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta_City_Park"
+  },
+  {
+   "mi": 740,
+   "name": "Mount Shasta",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Exits 736 to 748",
+   "text": "Mount Shasta is 14,179 feet tall and the biggest volcano by volume in the whole Cascade Range, about 85 cubic miles of rock. Seven glaciers ring it. Its last major eruption was about 3,000 years ago, and scientists still rate it a very high threat volcano.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta"
+  },
+  {
+   "mi": 741,
+   "name": "The Lemurians",
+   "cat": "odd",
+   "side": "E",
+   "visible": false,
+   "where": "Mount Shasta",
+   "text": "Mount Shasta has a famous legend: a hidden city of wise beings from a lost continent called Lemuria, supposedly living inside the mountain. The story grew from a passing mention in the 1880s into a whole book in 1931. Nobody has found the door yet.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta"
+  },
+  {
+   "mi": 742,
+   "name": "Black Butte",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Between exits 741 and 743",
+   "text": "The dark, bare cone right beside the northbound lanes is Black Butte, a pile of lava domes that squeezed out 9,000 to 10,000 years ago. The freeway crosses a 3,912-foot pass at its base, Black Butte Summit. A fire lookout stood on top until it was flown off by helicopter in 1975.",
+   "src": "https://en.wikipedia.org/wiki/Black_Butte_(Siskiyou_County,_California)"
+  },
+  {
+   "mi": 745,
+   "name": "Shastina and Diller Canyon",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Exits 745 to 748, Weed",
+   "text": "The smaller peak on Shasta's left shoulder is Shastina, 12,330 feet. If it stood alone it would be one of the tallest mountains in the Cascades. The big gash down its side facing Weed is Diller Canyon, cut by hot volcanic flows, and it drops more than 7,000 feet.",
+   "src": "https://en.wikipedia.org/wiki/Shastina"
+  },
+  {
+   "mi": 747,
+   "name": "Weed",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exit 747, US 97 and Weed Boulevard",
+   "text": "Weed is named for Abner Weed, who noticed that the strong winds here dried lumber nicely. In 1897 he bought a mill and 280 acres for 400 dollars. The town motto is Weed like to welcome you, and the town's signs get stolen a lot.",
+   "src": "https://en.wikipedia.org/wiki/Weed,_California"
+  },
+  {
+   "mi": 748,
+   "name": "A two-block highway",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "Exit 748, North Weed Boulevard (SR 265)",
+   "text": "This exit is the end of State Route 265, North Weed Boulevard. It's only two blocks long, the second-shortest state highway in California.",
+   "src": "https://en.wikipedia.org/wiki/Weed,_California"
+  },
+  {
+   "mi": 754,
+   "name": "Pluto's Cave",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Northeast of Weed, off US 97",
+   "text": "Off to the east is Pluto's Cave, a lava tube about 190,000 years old. A man named Nelson Cash stumbled onto it in 1863 while hunting for stray cattle, and it was named for the Greek god of the underworld.",
+   "src": "https://en.wikipedia.org/wiki/Pluto's_Cave"
+  },
+  {
+   "mi": 759,
+   "name": "The hummocks of Shasta Valley",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Exits 759 to 766",
+   "text": "See all the little lumpy hills scattered across the flat valley? Hundreds of thousands of years ago, an older version of Mount Shasta collapsed in one of the largest landslides known on Earth. The debris spread across more than 170 square miles, and these hummocks are the pieces.",
+   "src": "https://www.usgs.gov/volcanoes/mount-shasta"
+  },
+  {
+   "mi": 770,
+   "name": "State of Jefferson",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "South of Yreka, on old US 99",
+   "text": "On November 27, 1941, young men with hunting rifles stopped traffic on the old highway south of Yreka and handed out a proclamation of independence for the State of Jefferson. They promised to secede every Thursday until further notice. The seal is a gold pan with two Xs, called the Double Cross, for feeling abandoned by both state capitals.",
+   "src": "https://en.wikipedia.org/wiki/Jefferson_(proposed_Pacific_state)"
+  },
+  {
+   "mi": 773,
+   "name": "Yreka",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 773 to 776",
+   "text": "In March 1851 a mule packer named Abraham Thompson found gold here, and by April 2,000 miners had arrived. The name comes from a Shasta word for Mount Shasta. Mark Twain told a funnier story: a bakery sign was seen backwards, and BAKERY without the B reads YREKA.",
+   "src": "https://en.wikipedia.org/wiki/Yreka,_California"
+  },
+  {
+   "mi": 781,
+   "name": "The Shasta people",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Shasta Valley and the Klamath River",
+   "text": "This valley and the middle Klamath River are the homeland of the Shasta people. They celebrated the first salmon of each season, which they called salmon medicine. In the fall, women and children dove in the shrinking river to gather mussels.",
+   "src": "https://en.wikipedia.org/wiki/Shasta_people"
+  },
+  {
+   "mi": 786,
+   "name": "Klamath River",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Exit 786, SR 96",
+   "text": "Upstream from here, four hydroelectric dams on the Klamath were torn down in 2023 and 2024, the largest dam removal in American history. On October 17, 2024, a fall Chinook salmon was spotted in Oregon's Upper Klamath Basin, the first time in over 100 years salmon could swim that far up.",
+   "src": "https://en.wikipedia.org/wiki/Klamath_River"
+  },
+  {
+   "mi": 786,
+   "name": "Randolph Collier Rest Area",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Exit 786",
+   "text": "This rest area honors state senator Randolph Collier, who lived in Siskiyou County nearly all his life. He co-wrote the 1947 law that laid the groundwork for California's freeway system, so in a way, you're driving on his idea.",
+   "src": "https://en.wikipedia.org/wiki/Randolph_Collier"
+  },
+  {
+   "mi": 787,
+   "name": "Karuk Country",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Down the Klamath on SR 96",
+   "text": "Highway 96 follows the Klamath west into Karuk country. Karuk means upriver people, and traditionally they called themselves the middle of the world people. The Karuk Tribe is one of the largest tribes in California.",
+   "src": "https://en.wikipedia.org/wiki/Karuk"
+  },
+  {
+   "mi": 796,
+   "name": "Hilt",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Exit 796, Hilt Road",
+   "text": "Hilt is the last exit in California. It was a company town, first for the Northern California Lumber Company and then for the Fruit Growers Supply Company. It's named for an early settler, John Hilt.",
+   "src": "https://en.wikipedia.org/wiki/Hilt,_California"
+  },
+  {
+   "mi": 797,
+   "name": "Oregon line and Siskiyou Summit",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "California-Oregon state line",
+   "text": "Welcome to the Oregon border. About 4 miles ahead is Siskiyou Summit, 4,310 feet, the highest point on all of Interstate 5 from Mexico to Canada. The Pacific Crest Trail crosses the freeway up there, and snow can fall anytime from November through April.",
+   "src": "https://en.wikipedia.org/wiki/Siskiyou_Summit"
+  }
+ ],
+ "zones": [
+  {
+   "from": 649,
+   "to": 663,
+   "label": "Red Bluff rangeland",
+   "text": "North of Red Bluff the farm fields give way to mildly rugged rangeland used for grazing, until the crops pick up again around Cottonwood."
+  },
+  {
+   "from": 663,
+   "to": 676,
+   "label": "Cottonwood and Anderson",
+   "text": "The northern tip of the great Central Valley, with ranches, pastures and railroad towns along Cottonwood Creek and the Sacramento River."
+  },
+  {
+   "from": 676,
+   "to": 684,
+   "label": "Redding",
+   "text": "The biggest city on this stretch, built where the valley meets the mountains. July highs average close to 100 degrees."
+  },
+  {
+   "from": 684,
+   "to": 705,
+   "label": "Shasta Lake",
+   "text": "The freeway hops across the arms of California's largest reservoir. When the water is low, you can even spot old railroad tunnels that were drowned when the lake filled."
+  },
+  {
+   "from": 705,
+   "to": 722,
+   "label": "Sacramento River canyon",
+   "text": "A steep, forested canyon where the river, the railroad and I-5 squeeze side by side. Watch for trains on the far bank."
+  },
+  {
+   "from": 722,
+   "to": 734,
+   "label": "Castle Crags and Dunsmuir",
+   "text": "Granite spires on the west and an old railroad town in the canyon bottom. This is wet country: Dunsmuir averages about 63 inches of precipitation a year."
+  },
+  {
+   "from": 734,
+   "to": 748,
+   "label": "Mount Shasta and Black Butte",
+   "text": "The road climbs out of the canyon to the foot of the volcano and over Black Butte Summit at 3,912 feet. Winter snow is common up here, so check conditions before you go."
+  },
+  {
+   "from": 748,
+   "to": 770,
+   "label": "Shasta Valley",
+   "text": "A wide, dry valley in the rain shadow of the Klamath Mountains, dotted with the hummocks of an ancient landslide. Hay fields and cattle, with Mount Shasta in the rearview mirror."
+  },
+  {
+   "from": 770,
+   "to": 786,
+   "label": "Yreka gold country",
+   "text": "Gold Rush country around the county seat, with the Klamath Mountains rising to the west."
+  },
+  {
+   "from": 786,
+   "to": 797,
+   "label": "Klamath River to the state line",
+   "text": "The freeway crosses the Klamath and climbs toward the Siskiyou Mountains. Snow on the summit just over the border can close the road in winter."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 691,
+   "q": "About how high above the old Pit River was the Pit River Bridge built?",
+   "choices": [
+    "50 feet",
+    "150 feet",
+    "500 feet",
+    "1,500 feet"
+   ],
+   "answer": 2,
+   "why": "It was built more than 500 feet above the riverbed, but the full lake comes within about 40 feet of the deck."
+  },
+  {
+   "mi": 686,
+   "q": "What lies about 400 feet under Shasta Lake?",
+   "choices": [
+    "A sunken ship",
+    "The copper town of Kennett",
+    "A Spanish mission",
+    "A volcano"
+   ],
+   "answer": 1,
+   "why": "Kennett was flooded completely by 1944 as the dam's reservoir filled."
+  },
+  {
+   "mi": 682,
+   "q": "How long was the conveyor belt that carried gravel to build Shasta Dam?",
+   "choices": [
+    "Half a mile",
+    "2 miles",
+    "9.5 miles",
+    "40 miles"
+   ],
+   "answer": 2,
+   "why": "It ran 9.5 miles from Redding to the dam site, the largest conveyor system in the world at the time."
+  },
+  {
+   "mi": 678,
+   "q": "Why doesn't the Sundial Bridge touch the Sacramento River?",
+   "choices": [
+    "To protect salmon spawning grounds",
+    "The river freezes",
+    "It's too deep",
+    "For boat races"
+   ],
+   "answer": 0,
+   "why": "Keeping out of the water protects the salmon spawning beds beneath it."
+  },
+  {
+   "mi": 740,
+   "q": "How tall is Mount Shasta?",
+   "choices": [
+    "9,037 feet",
+    "10,457 feet",
+    "12,330 feet",
+    "14,179 feet"
+   ],
+   "answer": 3,
+   "why": "Shasta is 14,179 feet, the second-highest peak in the Cascades."
+  },
+  {
+   "mi": 747,
+   "q": "Why did Abner Weed pick this spot for his lumber mill?",
+   "choices": [
+    "Gold in the creek",
+    "Strong winds to dry lumber",
+    "A railroad junction",
+    "Hot springs"
+   ],
+   "answer": 1,
+   "why": "He found the area's strong winds helped dry lumber."
+  },
+  {
+   "mi": 773,
+   "q": "According to Mark Twain, where did the name Yreka come from?",
+   "choices": [
+    "A miner's dog",
+    "A backwards BAKERY sign",
+    "A Spanish saint",
+    "A riverboat"
+   ],
+   "answer": 1,
+   "why": "Twain said a bakery sign seen from behind read YREKA; the name actually comes from a Shasta word for Mount Shasta."
+  },
+  {
+   "mi": 770,
+   "q": "In 1941, State of Jefferson rebels promised to secede how often?",
+   "choices": [
+    "Every Monday",
+    "Every Thursday",
+    "Every full moon",
+    "Once a year"
+   ],
+   "answer": 1,
+   "why": "Their proclamation said they would secede every Thursday until further notice."
+  },
+  {
+   "mi": 786,
+   "q": "How many dams were torn down on the Klamath River in 2023 and 2024?",
+   "choices": [
+    "One",
+    "Two",
+    "Four",
+    "Ten"
+   ],
+   "answer": 2,
+   "why": "Four dams came out, the largest dam removal in US history."
+  },
+  {
+   "mi": 731,
+   "q": "Which baseball legend played a game in Dunsmuir in 1924?",
+   "choices": [
+    "Babe Ruth",
+    "Jackie Robinson",
+    "Joe DiMaggio",
+    "Ty Cobb"
+   ],
+   "answer": 0,
+   "why": "Babe Ruth and Bob Meusel played the locals on a barnstorming tour."
+  }
+ ]
+}

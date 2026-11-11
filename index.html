@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>I-5 Buddy</title>
+<meta name="description" content="A road-trip buddy for Interstate 5 in California. It follows you by GPS and tells you about the orchards, history and landmarks you pass.">
+<meta name="theme-color" content="#0b6e3f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="I-5 Buddy">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app">
+
+<header class="top">
+  <svg class="shield" viewBox="0 0 58 62" aria-hidden="true"><use href="#shield"/></svg>
+  <div class="brand"><b>I-5 Buddy</b><span id="statusText">Not tracking yet</span></div>
+  <span class="pill" id="statusPill" data-s="off">OFF</span>
+  <button class="icon-btn" id="openSettings" aria-label="Settings">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.4-2.5.1-1-.1-1 2.1-1.6-2-3.4-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3h-4l-.4 2.6c-.6.3-1.2.6-1.7 1l-2.5-1-2 3.4L6.5 11l-.1 1 .1 1-2.1 1.6 2 3.4 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.4-2.2-1.6Z" fill="currentColor"/></svg>
+  </button>
+</header>
+
+<main>
+<!-- DRIVE -->
+<section class="view" id="view-drive" data-view="drive">
+  <div class="sign-board">
+    <div class="sign-row">
+      <div class="dir-badge" id="dirBadge">NORTH</div>
+      <div class="speed"><span id="speed">--</span><small>mph</small></div>
+    </div>
+    <div class="mile-row">
+      <div><small>MILE</small><output id="mile">--</output></div>
+      <div class="near"><small>PASSING</small><span id="nearText">Start below</span></div>
+    </div>
+    <div class="ribbon" id="ribbon" aria-hidden="true"></div>
+  </div>
+
+  <div class="zone" id="zone" hidden>
+    <small>NOW PASSING</small>
+    <b id="zoneLabel"></b>
+    <p id="zoneText"></p>
+  </div>
+
+  <article class="next" id="nextCard"></article>
+
+  <div class="look">
+    <button class="big-btn" id="lookLeft"><span class="arrow">◀</span>What's on my left?</button>
+    <button class="big-btn" id="lookRight">What's on my right?<span class="arrow">▶</span></button>
+  </div>
+
+  <div class="controls" id="startControls">
+    <button class="primary" id="startGps">Start GPS</button>
+    <button class="secondary" id="startDemo">Demo drive</button>
+  </div>
+  <div class="controls" id="runControls" hidden>
+    <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
+    <button class="secondary" id="stopTrip">Stop</button>
+  </div>
+  <div class="demo-bar" id="demoBar" hidden>
+    <span>Demo speed</span>
+    <div class="seg" role="group" aria-label="Demo speed">
+      <button data-x="1">1×</button><button data-x="10" aria-pressed="true">10×</button><button data-x="40">40×</button>
+    </div>
+    <button class="link" id="demoFlip">Turn around</button>
+  </div>
+  <p class="safety">Set it up before you drive. Narration is hands-free; leave the screen to passengers.</p>
+</section>
+
+<!-- AHEAD -->
+<section class="view" id="view-ahead" data-view="ahead" hidden>
+  <h2 class="view-title" id="aheadTitle">Coming up</h2>
+  <div class="chips" id="chips"></div>
+  <ol class="ahead" id="aheadList"></ol>
+</section>
+
+<!-- PASSPORT -->
+<section class="view" id="view-passport" data-view="passport" hidden>
+  <h2 class="view-title">Passport</h2>
+  <p class="lede" id="passportLede"></p>
+  <div class="badges" id="badges"></div>
+  <h3 class="sub">Stamps</h3>
+  <div class="stamps" id="stamps"></div>
+</section>
+
+<!-- PLAY -->
+<section class="view" id="view-play" data-view="play" hidden>
+  <div class="seg wide" role="group" aria-label="Game">
+    <button id="tabBingo" aria-pressed="true">Road bingo</button>
+    <button id="tabTrivia" aria-pressed="false">Trivia</button>
+  </div>
+  <div id="bingoPane">
+    <p class="lede">Tap a square when someone spots it. Five in a row wins.</p>
+    <div class="bingo" id="bingo"></div>
+    <div class="row-btns"><button class="secondary" id="newBingo">New card</button></div>
+    <div class="win" id="bingoWin" hidden>BINGO!</div>
+  </div>
+  <div id="triviaPane" hidden>
+    <div class="score" id="triviaScore"></div>
+    <article class="quiz" id="quiz"></article>
+  </div>
+</section>
+</main>
+
+<nav class="tabs" aria-label="Sections">
+  <button data-go="drive" aria-current="page"><svg viewBox="0 0 24 24"><path d="M12 2 4 22l8-4 8 4L12 2Z" fill="currentColor"/></svg>Drive</button>
+  <button data-go="ahead"><svg viewBox="0 0 24 24"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z" fill="currentColor"/></svg>Ahead</button>
+  <button data-go="passport"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>Passport</button>
+  <button data-go="play"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg>Play</button>
+</nav>
+
+<!-- SETTINGS -->
+<div class="sheet-back" id="sheetBack" hidden></div>
+<aside class="sheet" id="settings" hidden aria-label="Settings">
+  <div class="sheet-head"><b>Settings</b><button class="link" id="closeSettings">Done</button></div>
+  <label class="field">Voice<select id="voice"></select></label>
+  <label class="field">Speaking speed <output id="rateOut">1.0×</output><input type="range" id="rate" min="0.7" max="1.4" step="0.05" value="1"></label>
+  <label class="field">Heads-up distance <output id="leadOut">2 mi</output><input type="range" id="lead" min="0.5" max="5" step="0.5" value="2"></label>
+  <div class="field">Narrate these
+    <div class="chips" id="narrChips"></div>
+  </div>
+  <label class="toggle"><input type="checkbox" id="zoneNarr" checked> Describe the landscape as it changes</label>
+  <label class="field">Set my milepost by hand <output id="manualOut">--</output><input type="range" id="manual" min="0" max="797" step="1" value="300"></label>
+  <div class="field">Direction by hand
+    <div class="seg"><button id="manN">North</button><button id="manS">South</button></div>
+  </div>
+  <div class="field" id="installHint"></div>
+  <div class="field danger">
+    <button class="secondary" id="resetPassport">Clear passport</button>
+    <span id="resetConfirm" hidden>Clear all stamps? <button class="link" id="resetYes">Yes, clear</button> <button class="link" id="resetNo">Keep</button></span>
+  </div>
+  <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Exit locations come from OpenStreetMap contributors (ODbL). Each place lists its source on the Ahead tab.</p>
+</aside>
+
+<div class="toast" id="toast" role="status" hidden></div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="shield" viewBox="0 0 58 62">
+    <path d="M4 4 Q29 0 54 4 Q58 36 29 60 Q0 36 4 4Z" fill="#fff"/>
+    <path d="M7 7 Q29 3.5 51 7 L51.6 17 H6.4Z" fill="#c8202f"/>
+    <path d="M6.4 19 H51.6 Q52 38 29 56 Q6 38 6.4 19Z" fill="#1f4aa8"/>
+    <text x="29" y="14.6" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="800" font-size="7" fill="#fff">INTERSTATE</text>
+    <text x="29" y="47" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="900" font-size="27" fill="#fff">5</text>
+  </symbol>
+</svg>
+
+<script src="data/i5.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

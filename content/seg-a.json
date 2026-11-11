@@ -1,0 +1,670 @@
+{
+ "places": [
+  {
+   "mi": 0,
+   "name": "San Ysidro Port of Entry",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Southern end of I-5, San Ysidro",
+   "text": "Mile zero of Interstate 5 is the Mexican border, and this crossing is often called the busiest land border crossing in the Western Hemisphere. On a typical day, tens of thousands of cars and tens of thousands of people on foot come north through here. Some of them cross every day for school or work. From here, the freeway runs all the way to Canada.",
+   "src": "https://gsa.gov/SanYsidro"
+  },
+  {
+   "mi": 3,
+   "name": "Montgomery's glider on Otay Mesa",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Otay Mesa, east via SR 905",
+   "text": "On the mesa to the east, a young man named John J. Montgomery flew a glider he built himself, back in 1883 or 1884. Engineers who honor the event say he glided about 600 feet, roughly 20 years before the Wright brothers' powered flight. This stretch of I-5, from the border into downtown San Diego, is named the John J. Montgomery Freeway after him.",
+   "src": "https://en.wikipedia.org/wiki/John_Joseph_Montgomery"
+  },
+  {
+   "mi": 5,
+   "name": "South Bay Salt Works",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Near the Main Street exit",
+   "text": "Just west of the freeway, at the south end of San Diego Bay, seawater is let into shallow ponds and the sun dries it into salt. People have been harvesting salt here since at least 1871. That makes it one of the oldest businesses in the San Diego area, older than almost any building you can see from the road.",
+   "src": "https://en.wikipedia.org/wiki/South_Bay_Salt_Works"
+  },
+  {
+   "mi": 7,
+   "name": "Chula Vista, the old Lemon Capital",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "L Street to E Street exits",
+   "text": "Chula Vista means beautiful view in Spanish, and in the 1920s the town called itself the Lemon Capital of the World. Lemon groves once ran from the bay toward Otay Mountain, watered by the Sweetwater Dam. Housing and wartime factories replaced the groves in the 1940s and 50s, but the town still throws a lemon festival every year.",
+   "src": "https://www.10news.com/news/local-news/the-lemon-capital-of-the-world-looking-back-at-chula-vistas-zesty-history"
+  },
+  {
+   "mi": 14,
+   "name": "Coronado Bridge and Chicano Park",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "SR 75 and Chicano Park Blvd exits",
+   "text": "The tall blue curve over the bay is the San Diego-Coronado Bridge, opened in 1969. The Navy insisted on about 200 feet of clearance so its biggest ships could pass under, and the curve stretched the bridge so the climb would not be too steep for cars. Beneath its pillars is Chicano Park, which neighbors took over in 1970 after the freeway and bridge split their community. Its giant painted murals now make it a National Historic Landmark.",
+   "src": "https://en.wikipedia.org/wiki/San_Diego%E2%80%93Coronado_Bridge"
+  },
+  {
+   "mi": 19,
+   "name": "El Indio",
+   "cat": "stop",
+   "side": "E",
+   "visible": false,
+   "where": "Washington St exit, India Street",
+   "text": "El Indio started in 1940 as a family tortilla shop and has been on India Street since 1947. The restaurant is credited with giving the taquito its name, small rolled tacos that workers could grab on the go. Some say it invented them too, but that part is still argued over. It's a short hop east of the freeway.",
+   "src": "https://fox5sandiego.com/news/business/family-recipe-to-phenomenon-the-san-diego-restaurant-credited-with-creating-taquitos/amp/"
+  },
+  {
+   "mi": 20,
+   "name": "Old Town and Presidio Hill",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Old Town Ave exit",
+   "text": "The hill just east of here is where Spain set up its first fort and mission in California, in the summer of 1769. Before that, the Kumeyaay village of Kosa'aay stood at the base of the hill. Its name means drying out place. The Spanish called it Cosoy. Old Town below the hill is full of restored 1800s adobes, and the white mission-style building on top is the Serra Museum, built in 1929.",
+   "src": "https://en.wikipedia.org/wiki/Presidio_of_San_Diego"
+  },
+  {
+   "mi": 22,
+   "name": "Mission Bay",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Sea World Dr to Grand Ave exits",
+   "text": "The water on your left was once a tidal marsh that sailors called False Bay, because it could be mistaken for San Diego Bay. Starting in the 1940s, the city dredged out about 25 million cubic yards of sand and mud to shape islands and coves. Today it's a park of about 4,200 acres, the largest man-made water park of its kind in the country.",
+   "src": "https://timesofsandiego.com/arts/2026/03/07/before-the-dredges-the-marsh-that-became-mission-bay/"
+  },
+  {
+   "mi": 28,
+   "name": "San Diego California Temple",
+   "cat": "odd",
+   "side": "E",
+   "visible": true,
+   "where": "Nobel Dr / La Jolla Village Dr exits",
+   "text": "That bright white building with two tall spires, on the ridge to the east, is a temple of the Church of Jesus Christ of Latter-day Saints. It was dedicated in 1993 and was California's third temple of that church. Look for the four smaller spires clustered around the base of each tall one, a design found on no other temple.",
+   "src": "https://churchofjesuschristtemples.org/san-diego-california-temple/"
+  },
+  {
+   "mi": 36,
+   "name": "Del Mar racetrack",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Via de la Valle exit",
+   "text": "The fairgrounds and racetrack on your left are where the turf meets the surf. The singer Bing Crosby helped found the track and stood at the front gate greeting fans when it opened in the summer of 1937. A song he recorded about the place is still played before the first and last race of the day.",
+   "src": "https://www.americasbestracing.net/lifestyle/2024-where-the-turf-meet-the-surf-and-stars-come-out-play-del-mars-hollywood-connection"
+  },
+  {
+   "mi": 43,
+   "name": "Ecke poinsettia ranch",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Leucadia Blvd exit, Encinitas",
+   "text": "If you've ever had a red poinsettia at Christmas, its family tree probably leads here. The Ecke family moved their poinsettia farm from Hollywood to Encinitas in 1923. By 1991, about 90 percent of all poinsettias sold in the world had their start at the Ecke Ranch.",
+   "src": "https://archives.csusm.edu/ecke/exhibits/show/family-papers/paul-sr"
+  },
+  {
+   "mi": 47,
+   "name": "The Flower Fields",
+   "cat": "farm",
+   "side": "E",
+   "visible": true,
+   "where": "Palomar Airport Rd exit",
+   "text": "In spring, the hillside on the east side of the freeway turns into stripes of color. That's about 50 acres of giant ranunculus flowers, blooming from early March into May and peaking around mid-April. The rest of the year, the hill looks like any other field, so spring travelers get the show.",
+   "src": "https://www.nbclosangeles.com/worth-the-trip/the-famous-flower-fields-in-carlsbad-are-in-full-bloom/2565160/"
+  },
+  {
+   "mi": 48,
+   "name": "Carlsbad Strawberry Company",
+   "cat": "farm",
+   "side": "E",
+   "visible": true,
+   "where": "Cannon Rd exit",
+   "text": "One block east of the freeway on Cannon Road, the Ukegawa family grows strawberries you can pick yourself. The family has farmed in North County since around 1950, once on about 2,000 acres. In 2006, Carlsbad voters chose to protect these fields from development.",
+   "src": "https://californiagrown.org/blog/carlsbad-strawberry-company/"
+  },
+  {
+   "mi": 53,
+   "name": "101 Cafe",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Mission Ave exit, Coast Highway",
+   "text": "Before this freeway existed, the main road to Los Angeles was Highway 101, which ran right down Oceanside's Coast Highway. The 101 Cafe opened beside it in 1928 as a 20-seat diner, and Greyhound buses used to stop out front. It's still serving breakfast, and it's often called the oldest cafe on old 101.",
+   "src": "https://www.10news.com/news/life-in/oceansides-cafe-101-is-as-rich-in-history-as-it-is-in-its-food"
+  },
+  {
+   "mi": 54,
+   "name": "Mission San Luis Rey",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "SR 76 exit, about 4 miles east",
+   "text": "About four miles up the San Luis Rey River stands Mission San Luis Rey, founded in 1798. It became known as the King of the Missions because it was the largest of California's 21 missions. It had more people, land, and crops than any of the others.",
+   "src": "https://en.wikipedia.org/wiki/Mission_San_Luis_Rey_de_Francia"
+  },
+  {
+   "mi": 57,
+   "name": "Camp Pendleton",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Harbor Dr / Vandegrift Blvd to Basilone Rd",
+   "text": "For the next 17 miles or so, the open hills on both sides belong to Marine Corps Base Camp Pendleton. In 1942, the government bought the old Rancho Santa Margarita y Las Flores, once owned by Pio Pico, the last governor of Mexican California. Because the Marines kept the land for training, this is one of the longest undeveloped stretches of coast left in Southern California.",
+   "src": "https://en.wikipedia.org/wiki/Marine_Corps_Base_Camp_Pendleton"
+  },
+  {
+   "mi": 62,
+   "name": "Las Pulgas",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Las Pulgas Rd exit",
+   "text": "Las Pulgas is Spanish for the fleas. Spanish soldiers in the 1700s camped at this canyon and got badly bitten, and the name stuck. The Portola expedition, the first Spanish land party to travel up California, camped here in July 1769.",
+   "src": "https://en.wikipedia.org/wiki/Camp_Las_Pulgas"
+  },
+  {
+   "mi": 71,
+   "name": "San Onofre nuclear plant",
+   "cat": "odd",
+   "side": "W",
+   "visible": true,
+   "where": "Basilone Rd exit",
+   "text": "Those two big round domes by the beach belong to the San Onofre nuclear power plant. A leak in new equipment shut it down in early 2012, and the owner decided in 2013 to close it for good. Crews have been taking it apart ever since, and the domes themselves are scheduled to come down, so they may not be here much longer.",
+   "src": "https://www.kpbs.org/news/environment/2025/12/16/demolishing-of-domes-next-up-as-decommissioning-of-san-onofre-nears-end"
+  },
+  {
+   "mi": 72,
+   "name": "La Cristianita",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Cristianitos Rd exit",
+   "text": "Up Cristianitos Road, on July 22, 1769, a priest traveling with the Portola expedition baptized a dying Native child. It is remembered as the first Christian baptism in California. The Spanish named the spot Los Cristianitos, the little Christians, and that's where this road's name comes from.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/562"
+  },
+  {
+   "mi": 75,
+   "name": "San Clemente",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Avenida Palizada / Avenida Pico exits",
+   "text": "In 1925, a former Seattle mayor named Ole Hanson set out to build a Spanish Village by the Sea on empty hills halfway between Los Angeles and San Diego. His plan called for white plaster and red tile, and early buildings had to pass an architectural review. Notice how many white walls and red roofs are still climbing these hills.",
+   "src": "https://sanclementehistoricalsociety.org/the-legend-of-ole-hanson/"
+  },
+  {
+   "mi": 82,
+   "name": "Mission San Juan Capistrano",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Ortega Hwy (SR 74) exit",
+   "text": "Just west of the freeway is Mission San Juan Capistrano, founded in 1776. Its Great Stone Church took about nine years to build and collapsed in an earthquake in December 1812, killing around 40 people inside. The ruins were never rebuilt. The mission's small Serra Chapel is described as the oldest building in California still in use, and the mission is famous for its spring swallows.",
+   "src": "https://californiamissionsfoundation.org/mission-san-juan-capistrano/"
+  },
+  {
+   "mi": 83,
+   "name": "Putuidem village",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Junipero Serra Rd exit",
+   "text": "Long before the mission, this valley was home to the Acjachemen people. Their mother village, Putuidem, stood just off where I-5 runs now, about a mile north of the mission. It was lived in for about 600 years, from around the year 1200 until 1776, when people were moved to the mission.",
+   "src": "https://en.wikipedia.org/wiki/Putuidem"
+  },
+  {
+   "mi": 85,
+   "name": "Rancho Mission Viejo",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Avery Pkwy / Crown Valley Pkwy exits",
+   "text": "In 1882, an Irish immigrant named Richard O'Neill went in with a partner to buy a huge ranch in this corner of California. His descendants still run part of it as a working cattle ranch, the largest left in Orange County. It also grows citrus and avocados, even as new neighborhoods have gone up around it.",
+   "src": "https://en.wikipedia.org/wiki/Rancho_Mission_Viejo,_California"
+  },
+  {
+   "mi": 88,
+   "name": "Saddleback",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Oso Pkwy / La Paz Rd exits",
+   "text": "Look east for two peaks with a dip between them, like a saddle. That's Saddleback. The higher one, Santiago Peak, is 5,689 feet, the highest point in Orange County. The lower one is named for Helena Modjeska, a famous Polish stage actress who lived in a canyon below it in the late 1800s.",
+   "src": "https://en.wikipedia.org/wiki/Modjeska_Peak"
+  },
+  {
+   "mi": 103,
+   "name": "Orange County's orange groves",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Santa Ana area",
+   "text": "Around 1948, Orange County had more than 67,000 acres of Valencia oranges, over five million trees. The flat land you're crossing was almost all groves. A tree virus called Quick Decline and a flood of new homes ended that era, and by 2004 fewer than 100 acres of citrus were still being picked.",
+   "src": "https://www.orangecountyhistory.org/wp/?p=231"
+  },
+  {
+   "mi": 109,
+   "name": "Disneyland",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Disney Way / Harbor Blvd exits",
+   "text": "Walt Disney built Disneyland on 160 acres of orange and walnut groves right next to this freeway. On opening day, July 17, 1955, traffic backed up about seven miles on the Santa Ana Freeway, which is the road you're on now. The park sits just southwest of the freeway, hidden behind its own berm.",
+   "src": "https://www.history.com/news/disneylands-disastrous-opening-day-60-years-ago"
+  },
+  {
+   "mi": 116,
+   "name": "Knott's chicken and boysenberries",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Beach Blvd (SR 39) exit, about 2 miles south",
+   "text": "Knott's Berry Farm started as a berry stand. In the early 1930s, Walter Knott rescued six scraggly plants from a local grower named Rudolph Boysen and grew them into the boysenberry. In 1934, his wife Cordelia served her first fried chicken dinners on her wedding china. That first day she sold eight of them, at 65 cents each, and a theme park grew up around the lines.",
+   "src": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm"
+  },
+  {
+   "mi": 125,
+   "name": "Oldest McDonald's",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Lakewood Blvd exit, at Florence Ave",
+   "text": "A short drive south, at Lakewood Boulevard and Florence Avenue in Downey, is the oldest McDonald's still operating. It opened in August 1953 with the original golden arches, and its sign shows Speedee, a little hamburger-headed chef who was the mascot before Ronald McDonald. There's a small museum next to the walk-up windows.",
+   "src": "https://sah-archipedia.org/node/82929"
+  },
+  {
+   "mi": 128,
+   "name": "The Citadel",
+   "cat": "odd",
+   "side": "E",
+   "visible": true,
+   "where": "Washington Blvd exit, Commerce",
+   "text": "That long wall that looks like an ancient palace is real 1929 architecture. It was built for the Samson Tire and Rubber Company and copies the palace of an Assyrian king, Sargon II. Tires were made here until 1978, and since 1990 it's been an outlet mall.",
+   "src": "https://en.wikipedia.org/wiki/Citadel_Outlets"
+  },
+  {
+   "mi": 134,
+   "name": "East Los Angeles Interchange",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "I-10 / SR 60 / US 101 junctions",
+   "text": "You're driving through a tangle of ramps where four freeways meet. A 2008 count put more than half a million vehicles a day through its southern part, and it's often called the busiest freeway interchange in the world. Building it in the 1960s cut through the Boyle Heights neighborhood right around you.",
+   "src": "https://en.wikipedia.org/wiki/East_Los_Angeles_Interchange"
+  },
+  {
+   "mi": 135,
+   "name": "Philippe the Original",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Cesar Chavez Ave exit, near Union Station",
+   "text": "A couple of miles west, near Union Station, Philippe's has been serving sandwiches since 1908. It claims to have invented the French dip, roast beef on a roll dipped in meat juice, though another downtown spot, Cole's, makes the same claim. The floor is still sprinkled with sawdust.",
+   "src": "https://en.wikipedia.org/wiki/Philippe%27s"
+  },
+  {
+   "mi": 136,
+   "name": "Yaanga and the Tongva",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Main St / Broadway exits",
+   "text": "Near today's downtown, close to the Los Angeles River, stood Yaanga, believed to be the largest village of the Tongva people. The Tongva lived across more than 4,000 square miles they call Tovangar, the whole Los Angeles basin. When Spanish settlers founded the pueblo of Los Angeles beside Yaanga in 1781, the village was eventually pushed out.",
+   "src": "https://www.laalmanac.com/history/hi03ae.php"
+  },
+  {
+   "mi": 140,
+   "name": "Los Angeles River",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Fletcher Dr to Los Feliz Blvd",
+   "text": "That concrete channel next to the freeway is the Los Angeles River. After deadly floods in the 1930s, the Army Corps of Engineers lined most of it with concrete. Here in the Glendale Narrows, bedrock pushes groundwater up, so the bottom was left as dirt. That's why you'll see trees, reeds, and herons growing right in the river.",
+   "src": "https://pbssocal.org/socal/departures/landofsunshine/la-river/los-angeles-flood-of-1938-channelization.html"
+  },
+  {
+   "mi": 141,
+   "name": "Griffith Park",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Los Feliz Blvd / Griffith Park exits",
+   "text": "The wild brown hills to the west are Griffith Park, about 4,210 acres. That's roughly five times the size of New York's Central Park. Griffith J. Griffith gave the first 3,000 acres to the city as a Christmas gift in 1896. The famous observatory sits up on its southern ridge.",
+   "src": "https://griffithobservatory.lacity.gov/explore/griffith-park/"
+  },
+  {
+   "mi": 144,
+   "name": "Golden State Freeway",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Glendale to Burbank",
+   "text": "North of downtown, I-5 is called the Golden State Freeway. Its first piece opened in 1957, from the corner of Griffith Park through Glendale into Burbank, replacing old Highway 99 through town. The last gap in California's I-5 wasn't closed until 1979, up in the Central Valley.",
+   "src": "https://www.gribblenation.org/2024/02/the-colorado-street-freeway-extension.html?m=0"
+  },
+  {
+   "mi": 157,
+   "name": "Mission San Fernando",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "San Fernando Mission Blvd exit",
+   "text": "Mission San Fernando Rey de Espana was founded in 1797. Its long two-story residence building, with 21 arches across the front, is often called the largest adobe building in California. It took about 13 years of work and was finished in 1822.",
+   "src": "https://calisphere.org/item/9038a99d2b4465aa116d77737f787d41/"
+  },
+  {
+   "mi": 159,
+   "name": "Sylmar's olive groves",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Roxford St exit",
+   "text": "Sylmar's name blends two Latin words for forest and sea, a sea of trees. Around 1906, up to 1,700 acres here were planted in olives, and it was called the largest olive grove in the world. Houses have replaced nearly all of it, but olive trees still line some streets.",
+   "src": "https://en.wikipedia.org/wiki/Sylmar,_Los_Angeles"
+  },
+  {
+   "mi": 162,
+   "name": "Newhall Pass Interchange",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "SR 14 junction",
+   "text": "The high, curving ramps here have collapsed twice in earthquakes, in 1971 and again in 1994. In the 1994 quake, a motorcycle officer named Clarence Wayne Dean rode off a broken ramp in the dark and was killed. The interchange now carries his name, and the rebuilt columns are much stronger.",
+   "src": "https://en.wikipedia.org/wiki/Newhall_Pass_interchange"
+  },
+  {
+   "mi": 163,
+   "name": "Beale's Cut and Placerita gold",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Via SR 14, Newhall Pass",
+   "text": "Before tunnels and freeways, stagecoaches crossed this pass through Beale's Cut, a slot carved 90 feet deep into the rock by 1863. Just beyond, in Placerita Canyon in 1842, Francisco Lopez pulled up wild onions and found gold on the roots. That was six years before the famous gold rush find at Sutter's Mill. The oak tree where it happened is now a state landmark.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/168"
+  },
+  {
+   "mi": 167,
+   "name": "Pico No. 4 oil well",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Lyons Ave / Pico Canyon Rd exit",
+   "text": "Up Pico Canyon to the west, a well called Pico Number 4 struck oil in September 1876. It's known as California's first commercially successful oil well. Amazingly, it kept producing for 114 years until it was capped in 1990. The little oil town of Mentryville grew up around it.",
+   "src": "https://en.wikipedia.org/wiki/Pico_Canyon_Oilfield"
+  },
+  {
+   "mi": 169,
+   "name": "Tataviam homeland",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Santa Clarita Valley",
+   "text": "This valley is the homeland of the Tataviam people. Villages such as Chaguayanga stood where Valencia and Castaic are now. Their descendants today are part of the Fernandeno Tataviam Band of Mission Indians. In 2024, the tribe's land conservancy was given about 500 acres of land in this region.",
+   "src": "https://signalscv.com/2023/08/scv-showcases-tataviam-culture/"
+  },
+  {
+   "mi": 170,
+   "name": "Six Flags Magic Mountain",
+   "cat": "odd",
+   "side": "W",
+   "visible": true,
+   "where": "Magic Mountain Pkwy exit",
+   "text": "Those twisting tracks on the hillside to the west belong to Six Flags Magic Mountain, which opened in 1971. In 2022, it became the first park ever to run 20 roller coasters at once. A couple have closed since, but it's still one of the most coaster-packed places on Earth.",
+   "src": "https://www.newshub.co.nz/home/travel/2023/05/six-flags-magic-mountain-with-a-record-20-roller-coasters-it-really-is-the-thrill-capital-of-the-world.html"
+  },
+  {
+   "mi": 172,
+   "name": "St. Francis Dam disaster",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "SR 126 exit, Santa Clara River",
+   "text": "Just before midnight on March 12, 1928, the St. Francis Dam in a canyon northeast of here gave way. A wall of water rushed down the canyon and along the Santa Clara River all the way to the ocean, killing more than 400 people. It's the second-deadliest dam failure in American history.",
+   "src": "https://damfailures.org/case-study/st-francis-dam-california-1928"
+  },
+  {
+   "mi": 183,
+   "name": "The old Ridge Route",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Templin Hwy exit",
+   "text": "In 1915, the first paved road over these mountains opened along the ridgetops east of here. It had about 697 curves in 36 miles, enough to make anyone carsick. Parts of that old road survive, and about 17 miles of it are now on the National Register of Historic Places.",
+   "src": "https://ridgeroute.org/the-long-and-winding-road/"
+  },
+  {
+   "mi": 191,
+   "name": "Pyramid Lake and Vista del Lago",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Vista del Lago Rd exit",
+   "text": "Pyramid Lake gets its name from Pyramid Rock, a pointy chunk left behind when road builders cut through a ridge for the old highway in the early 1930s. The Vista del Lago Visitors Center at this exit is free and looks out over the lake. It explains how water travels over these mountains to Southern California.",
+   "src": "https://water.ca.gov/What-We-Do/Recreation/Pyramid-Lake-Recreation"
+  },
+  {
+   "mi": 202,
+   "name": "Gorman wildflower hills",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Gorman exit",
+   "text": "After a wet winter, the hills around Gorman turn orange and purple in spring with California poppies and lupine, right beside the freeway. The town is named for James Gorman, a teamster at Fort Tejon who settled here in the 1860s. His log roadhouse became known as Gorman's Station.",
+   "src": "https://naturalhistorywanderings.com/2010/04/27/hungry-valleygorman-hills-wildflower-update-april-27-2010"
+  },
+  {
+   "mi": 204,
+   "name": "Tejon Pass summit",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Between Gorman and Frazier Park exits",
+   "text": "You're at the top of Tejon Pass, about 4,144 feet up, where Los Angeles County ends and Kern County begins. Tejon is Spanish for badger, from a dead badger a Spanish expedition found here in 1806. In the road cut on the west side right at the summit, geologists say you can see crushed rock from the San Andreas Fault.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+  },
+  {
+   "mi": 207,
+   "name": "Tejon Ranch",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Lebec exit",
+   "text": "Most of the rolling hills around you belong to Tejon Ranch, the largest single piece of private land in California, about 270,000 acres. It began as Mexican land grants in the 1840s. In 2008, the owners agreed to protect about 240,000 acres of it, around 90 percent, from development. The Kitanemuk people, whose descendants form the Tejon Indian Tribe, lived here long before.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Ranch"
+  },
+  {
+   "mi": 210,
+   "name": "Fort Tejon",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Fort Tejon exit",
+   "text": "Fort Tejon was an Army post founded in 1854 to guard this pass. In the late 1850s, it became home to the Army's experimental Camel Corps, real camels brought in to haul supplies across the desert. In January 1857, one of California's biggest earthquakes, about magnitude 7.9, struck nearby and badly damaged the fort. Today it's a state historic park with restored adobe buildings and a shady picnic area.",
+   "src": "https://en.wikipedia.org/wiki/Fort_Tejon"
+  },
+  {
+   "mi": 210,
+   "name": "Peter Lebeck's tree",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Fort Tejon State Historic Park",
+   "text": "At Fort Tejon stands the story of Peter Lebeck, a trapper killed by a grizzly bear in October 1837. Someone carved his epitaph into an oak tree: killed by a X bear. The X probably meant a grizzly. The nearby town of Lebec is named after him.",
+   "src": "https://en.wikipedia.org/wiki/Peter_Lebeck"
+  }
+ ],
+ "zones": [
+  {
+   "from": 0,
+   "to": 12,
+   "label": "Border and South Bay",
+   "text": "Flat land around the south end of San Diego Bay, with marsh and salt ponds out toward the water. These neighborhoods were lemon groves a century ago."
+  },
+  {
+   "from": 12,
+   "to": 28,
+   "label": "San Diego Bay to Mission Bay",
+   "text": "The freeway hugs downtown, the harbor, and the airport, then swings past the calm water and islands of Mission Bay. Look for Navy ships in the bay and planes coming in low over the hills."
+  },
+  {
+   "from": 28,
+   "to": 54,
+   "label": "North County lagoons and flower fields",
+   "text": "You cross a string of coastal lagoons where creeks meet the sea, with beach towns in between. Carlsbad's flower fields bloom from March to early May, and strawberries ripen in spring."
+  },
+  {
+   "from": 54,
+   "to": 72,
+   "label": "Camp Pendleton coast",
+   "text": "About 17 miles of open hills and beach with almost no buildings, because it's all Marine Corps training land. The hills are green after winter rains and golden by summer."
+  },
+  {
+   "from": 72,
+   "to": 90,
+   "label": "South Orange County hills",
+   "text": "Red-tile-roofed San Clemente gives way to the mission valley of San Juan Capistrano and the rolling ranch land below Saddleback. Cattle, citrus, and avocados are still raised on the old ranch east of the freeway."
+  },
+  {
+   "from": 90,
+   "to": 125,
+   "label": "Old orange-grove plain",
+   "text": "Wide flat land that was almost all orange groves into the 1940s, now Irvine, Santa Ana, Anaheim, and Buena Park. Saddleback rises behind you on clear days."
+  },
+  {
+   "from": 125,
+   "to": 150,
+   "label": "Los Angeles and the river",
+   "text": "Factories and rail yards give way to downtown's freeway tangle, then the Los Angeles River and Griffith Park's wild hills. Watch for herons in the soft-bottomed river past Elysian Park."
+  },
+  {
+   "from": 150,
+   "to": 166,
+   "label": "San Fernando Valley",
+   "text": "The north end of the San Fernando Valley, once covered in olive and citrus orchards, now houses and warehouses. The mountains ahead close in at Newhall Pass."
+  },
+  {
+   "from": 166,
+   "to": 180,
+   "label": "Santa Clarita Valley",
+   "text": "Oil country turned suburbs, with Magic Mountain's coasters on the hillside and the mostly dry Santa Clara River heading west to the sea. Chaparral covers the hills around Castaic."
+  },
+  {
+   "from": 180,
+   "to": 199,
+   "label": "Ridge country",
+   "text": "The freeway climbs through steep chaparral canyons of the national forest, with hidden reservoirs that store Northern California water. Snow can close this stretch in winter."
+  },
+  {
+   "from": 199,
+   "to": 210,
+   "label": "Tejon Pass high country",
+   "text": "Open grassland and oak hills along the San Andreas Fault, mostly cattle range of the huge Tejon Ranch. After wet winters, poppies and lupine color the slopes in April."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 36,
+   "q": "Which famous singer stood at the front gate to greet fans when the Del Mar racetrack opened in 1937?",
+   "choices": [
+    "Frank Sinatra",
+    "Bing Crosby",
+    "Elvis Presley",
+    "Dean Martin"
+   ],
+   "answer": 1,
+   "why": "Bing Crosby helped found the track and welcomed the crowd on opening day."
+  },
+  {
+   "mi": 47,
+   "q": "What kind of flower paints the Carlsbad Flower Fields in stripes each spring?",
+   "choices": [
+    "Tulips",
+    "Sunflowers",
+    "Ranunculus",
+    "Poppies"
+   ],
+   "answer": 2,
+   "why": "The fields are about 50 acres of giant ranunculus, blooming from March into May."
+  },
+  {
+   "mi": 62,
+   "q": "Las Pulgas Road on Camp Pendleton is named after what?",
+   "choices": [
+    "Fleas",
+    "Pigs",
+    "Pine trees",
+    "Pelicans"
+   ],
+   "answer": 0,
+   "why": "Las pulgas is Spanish for the fleas, which bit Spanish soldiers who camped there."
+  },
+  {
+   "mi": 116,
+   "q": "How many fried chicken dinners did Cordelia Knott serve on her very first day in 1934?",
+   "choices": [
+    "Eight",
+    "Fifty",
+    "One hundred",
+    "Five hundred"
+   ],
+   "answer": 0,
+   "why": "She served eight dinners at 65 cents each, and a theme park grew from there."
+  },
+  {
+   "mi": 125,
+   "q": "Who was the mascot on the sign at the oldest operating McDonald's in Downey?",
+   "choices": [
+    "Ronald McDonald",
+    "Grimace",
+    "Speedee",
+    "The Hamburglar"
+   ],
+   "answer": 2,
+   "why": "Speedee, a little hamburger-headed chef, was McDonald's mascot before Ronald."
+  },
+  {
+   "mi": 163,
+   "q": "In 1842, Francisco Lopez found gold in Placerita Canyon stuck to the roots of what?",
+   "choices": [
+    "An oak tree",
+    "Wild onions",
+    "Cactus",
+    "Carrots"
+   ],
+   "answer": 1,
+   "why": "He dug up wild onions and found gold flakes on the roots, six years before Sutter's Mill."
+  },
+  {
+   "mi": 167,
+   "q": "How long did the Pico No. 4 oil well keep producing before it was capped?",
+   "choices": [
+    "14 years",
+    "40 years",
+    "75 years",
+    "114 years"
+   ],
+   "answer": 3,
+   "why": "It struck oil in 1876 and was capped in 1990, 114 years later."
+  },
+  {
+   "mi": 204,
+   "q": "Tejon Pass is named after an animal. What does tejon mean in Spanish?",
+   "choices": [
+    "Bear",
+    "Badger",
+    "Eagle",
+    "Coyote"
+   ],
+   "answer": 1,
+   "why": "A Spanish expedition in 1806 found a dead badger here, and the name stuck."
+  }
+ ]
+}
