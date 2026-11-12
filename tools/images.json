@@ -86,7 +86,7 @@
 "ca135-philippe-the-original": {
 "f": "img/ca135-philippe-the-original.jpg",
 "w": 640,
-"h": 671,
+"h": 480,
 "by": "Bobak Ha'Eri",
 "lic": "CC BY 3.0",
 "url": "https://commons.wikimedia.org/wiki/File:120207-LA-Philippes.jpg",
@@ -1154,5 +1154,939 @@
 "lic": "CC BY-SA 3.0",
 "url": "https://commons.wikimedia.org/wiki/File:San_Luis_National_Wildlife_Refuge.JPG",
 "alt": "San Luis National Wildlife Refuge"
+},
+"ca239-kern-county-nut-country": {
+"f": "img/ca239-kern-county-nut-country.jpg",
+"w": 640,
+"h": 360,
+"by": "THOR",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Pistachio_vera.jpg",
+"alt": "Pistachio vera"
+},
+"ca288-kern-national-wildlife-refuge": {
+"f": "img/ca288-kern-national-wildlife-refuge.jpg",
+"w": 640,
+"h": 480,
+"by": "Elaine with Grey Cats",
+"lic": "CC BY-SA 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Hawk_at_Kern_National_Wildlife_refuge.jpg",
+"alt": "Hawk at Kern National Wildlife refuge"
+},
+"ca309-kettleman-city-halfway": {
+"f": "img/ca309-kettleman-city-halfway.jpg",
+"w": 640,
+"h": 427,
+"by": "Armona (talk)",
+"lic": "CC-BY-SA-3.0",
+"url": "https://en.wikipedia.org/wiki/File:Kettleman_City_4-8-08_A.JPG",
+"alt": "Kettleman City 4-8-08 A"
+},
+"ca407-santa-nella-s-name": {
+"f": "img/ca407-santa-nella-s-name.jpg",
+"w": 640,
+"h": 480,
+"by": "Cristiano Tomás",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Mission_de_Oro_(Santa_Nella,_California).jpg",
+"alt": "Mission de Oro (Santa Nella, California)"
+},
+"ca407-pea-soup-andersen-s": {
+"f": "img/ca407-pea-soup-andersen-s.jpg",
+"w": 640,
+"h": 463,
+"by": "Cullen328",
+"lic": "CC0",
+"url": "https://commons.wikimedia.org/wiki/File:Pea_Soup_Andersen%27s_restaurant_in_Santa_Nella.jpg",
+"alt": "Pea Soup Andersen's restaurant in Santa Nella"
+},
+"ca409-san-joaquin-valley-national-cemetery": {
+"f": "img/ca409-san-joaquin-valley-national-cemetery.jpg",
+"w": 640,
+"h": 425,
+"by": "Elf",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:CaliforniaKoreanWarMemorialFromHill.jpg",
+"alt": "CaliforniaKoreanWarMemorialFromHill"
+},
+"ca411-two-canals-side-by-side": {
+"f": "img/ca411-two-canals-side-by-side.jpg",
+"w": 640,
+"h": 439,
+"by": "Unknown author",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Delta-Mendota_Canal.jpg",
+"alt": "Delta-Mendota Canal"
+},
+"ca413-the-first-west-side-freeway": null,
+"ca416-kesterson-and-the-selenium-birds": null,
+"ca418-gustine": {
+"f": "img/ca418-gustine.jpg",
+"w": 640,
+"h": 480,
+"by": "Fruitianslip",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Welcome_to_Gustine_sign.jpg",
+"alt": "Welcome to Gustine sign"
+},
+"ca421-hills-ferry": null,
+"ca423-newman-and-orestimba-creek": {
+"f": "img/ca423-newman-and-orestimba-creek.jpg",
+"w": 640,
+"h": 480,
+"by": "Publichall",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Knights_of_Pythias_Bldg,_Newman,_CA.jpg",
+"alt": "Knights of Pythias Bldg, Newman, CA"
+},
+"ca426-almond-bloom": {
+"f": "img/ca426-almond-bloom.jpg",
+"w": 640,
+"h": 426,
+"by": "Ivar Leidus",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Almonds_-_in_shell,_shell_cracked_open,_shelled,_blanched.jpg",
+"alt": "Almonds - in shell, shell cracked open, shelled, blanched"
+},
+"ca428-crows-landing-airfield": {
+"f": "img/ca428-crows-landing-airfield.jpg",
+"w": 640,
+"h": 480,
+"by": "United States Geological Survey (USGS)",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:NASA_Crows_Landing_-_USGS_29_July_1999.jpg",
+"alt": "NASA Crows Landing - USGS 29 July 1999"
+},
+"ca434-patterson-the-paris-plan": {
+"f": "img/ca434-patterson-the-paris-plan.jpg",
+"w": 640,
+"h": 442,
+"by": "Wikimedia Commons",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Fountain_in_roundabout_Patterson.jpg",
+"alt": "Fountain in roundabout Patterson"
+},
+"ca434-diablo-grande": null,
+"ca436-del-puerto-canyon": null,
+"ca438-the-2020-lightning-fires": {
+"f": "img/ca438-the-2020-lightning-fires.jpg",
+"w": 640,
+"h": 480,
+"by": "Office of the Governor of California",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_SCU_Lightning_Complex_fires_(2020-08-20).jpg",
+"alt": "Aerial view of SCU Lightning Complex fires (2020-08-20)"
+},
+"ca444-mount-diablo": {
+"f": "img/ca444-mount-diablo.jpg",
+"w": 640,
+"h": 426,
+"by": "Trurl66",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:View_of_Mount_Diablo_and_CA_Highway_24_from_Lafayette_Heights.jpg",
+"alt": "View of Mount Diablo and CA Highway 24 from Lafayette Heights"
+},
+"ca446-the-i-580-junction": null,
+"ca449-vernalis": {
+"f": "img/ca449-vernalis.jpg",
+"w": 640,
+"h": 480,
+"by": "Pi.1415926535",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Former_Newman_station_building_(1),_May_2022.JPG",
+"alt": "Former Newman station building (1), May 2022"
+},
+"ca449-san-joaquin-river-refuge": {
+"f": "img/ca449-san-joaquin-river-refuge.jpg",
+"w": 640,
+"h": 426,
+"by": "USFWS",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:USFWS_Aerial_View_San_Joaquin_River_Refuge.jpg",
+"alt": "USFWS Aerial View San Joaquin River Refuge"
+},
+"ca451-estanislao-s-river": null,
+"ca455-tule-fog": {
+"f": "img/ca455-tule-fog.jpg",
+"w": 640,
+"h": 480,
+"by": "Jeff Schmaltz; NASA",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Tule_Fog_California_-_2005.jpg",
+"alt": "Tule Fog California - 2005"
+},
+"ca457-banta": null,
+"ca458-tracy-the-railroad-town": {
+"f": "img/ca458-tracy-the-railroad-town.jpg",
+"w": 640,
+"h": 416,
+"by": "Michael Patrick",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Downtown_Tracy_(cropped).jpg",
+"alt": "Downtown Tracy (cropped)"
+},
+"ca459-san-joaquin-county-farms": {
+"f": "img/ca459-san-joaquin-county-farms.jpg",
+"w": 640,
+"h": 382,
+"by": "GeneWright",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Lodi_1450_(cropped).jpg",
+"alt": "Lodi 1450 (cropped)"
+},
+"ca460-mossdale-crossing": {
+"f": "img/ca460-mossdale-crossing.jpg",
+"w": 640,
+"h": 480,
+"by": "CA2MI",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:2025_Mossdale_lift_bridge_looking_west.jpg",
+"alt": "2025 Mossdale lift bridge looking west"
+},
+"ca461-manteca-a-dairy-town-named-lard": {
+"f": "img/ca461-manteca-a-dairy-town-named-lard.jpg",
+"w": 640,
+"h": 480,
+"by": "Armaced at English Wikipedia",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:MantecaCA.jpg",
+"alt": "MantecaCA"
+},
+"ca462-lathrop-born-of-a-quarrel": {
+"f": "img/ca462-lathrop-born-of-a-quarrel.jpg",
+"w": 640,
+"h": 480,
+"by": "Slamslam102",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:San_Joaquin_River_Bridge_at_Mossdale_Crossing,_San_Joaquin_County_CA_USA_September_2012.JPG",
+"alt": "San Joaquin River Bridge at Mossdale Crossing, San Joaquin County CA USA September 2012"
+},
+"ca465-flying-scotsman-in-hiding": {
+"f": "img/ca465-flying-scotsman-in-hiding.jpg",
+"w": 640,
+"h": 438,
+"by": "ARG_Flickr",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Shropshire_Scotsman.jpg",
+"alt": "Shropshire Scotsman"
+},
+"ca467-french-camp": null,
+"ca470-first-sikh-temple-in-america": {
+"f": "img/ca470-first-sikh-temple-in-america.jpg",
+"w": 640,
+"h": 480,
+"by": "V. Covert Martin",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:The_Sikh_Temple_in_Stockton,_California,_1915.jpg",
+"alt": "The Sikh Temple in Stockton, California, 1915"
+},
+"ca472-little-manila": null,
+"ca472-stockton-once-tuleburg": {
+"f": "img/ca472-stockton-once-tuleburg.jpg",
+"w": 640,
+"h": 394,
+"by": "Quintin Soloviev",
+"lic": "CC BY 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Stockton,_California_skyline.jpg",
+"alt": "Aerial view of Stockton, California skyline"
+},
+"ca473-port-of-stockton": {
+"f": "img/ca473-port-of-stockton.jpg",
+"w": 640,
+"h": 475,
+"by": "Matthew Trump",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Wpdms_usgs_photo_sacramento_delta_2.jpg",
+"alt": "Wpdms usgs photo sacramento delta 2"
+},
+"ca474-university-of-the-pacific": null,
+"ca476-calaveras-river-river-of-skulls": {
+"f": "img/ca476-calaveras-river-river-of-skulls.jpg",
+"w": 640,
+"h": 421,
+"by": "Michael Nevins, U.S. Army Corps of Engineers",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:USACE_New_Hogan_Lake_and_Dam.jpg",
+"alt": "USACE New Hogan Lake and Dam"
+},
+"ca477-benjamin-holt-and-the-caterpillar": {
+"f": "img/ca477-benjamin-holt-and-the-caterpillar.jpg",
+"w": 640,
+"h": 480,
+"by": "Unknown author",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:BenjaminHolt.jpg",
+"alt": "BenjaminHolt"
+},
+"ca481-the-last-piece-of-i-5": null,
+"ca485-lodi-wine-and-root-beer": {
+"f": "img/ca485-lodi-wine-and-root-beer.jpg",
+"w": 640,
+"h": 364,
+"by": "Steveozone",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Lodi_Arch_2.jpg",
+"alt": "Lodi Arch 2"
+},
+"ca487-delta-asparagus": null,
+"ca490-sandhill-crane-reserve": {
+"f": "img/ca490-sandhill-crane-reserve.jpg",
+"w": 640,
+"h": 480,
+"by": "JeffreyGammon",
+"lic": "CC BY 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sandhill_Crane_JG.jpg",
+"alt": "Sandhill Crane JG"
+},
+"ca490-the-delta-california-s-holland": {
+"f": "img/ca490-the-delta-california-s-holland.jpg",
+"w": 640,
+"h": 475,
+"by": "Matthew Trump",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Wpdms_usgs_photo_sacramento_delta_2.jpg",
+"alt": "Wpdms usgs photo sacramento delta 2"
+},
+"ca493-mokelumne-people-of-the-fish-net": {
+"f": "img/ca493-mokelumne-people-of-the-fish-net.jpg",
+"w": 640,
+"h": 435,
+"by": "Calibas",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Mokelumne_River.jpg",
+"alt": "Mokelumne River"
+},
+"ca498-cosumnes-river-preserve": {
+"f": "img/ca498-cosumnes-river-preserve.jpg",
+"w": 640,
+"h": 360,
+"by": "AnonymousEditor95",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Cosumnes_River_(drone).jpg",
+"alt": "Cosumnes River (drone)"
+},
+"ca498-locke-a-chinese-river-town": {
+"f": "img/ca498-locke-a-chinese-river-town.jpg",
+"w": 640,
+"h": 480,
+"by": "Wikimedia Commons",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Locke_p1080790.jpg",
+"alt": "Locke p1080790"
+},
+"ca504-stone-lakes-national-wildlife-refuge": {
+"f": "img/ca504-stone-lakes-national-wildlife-refuge.jpg",
+"w": 640,
+"h": 428,
+"by": "Justine Belson/USFWS",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Stone_Lakes_National_Wildlife_Refuge_2.jpg",
+"alt": "Stone Lakes National Wildlife Refuge 2"
+},
+"ca506-elk-grove": {
+"f": "img/ca506-elk-grove.jpg",
+"w": 640,
+"h": 426,
+"by": "SarahStierch",
+"lic": "CC BY 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Elk_Grove_Historic_District_-_Sarah_Stierch_-_2.jpg",
+"alt": "Elk Grove Historic District - Sarah Stierch - 2"
+},
+"ca510-freeport-a-town-born-of-taxes": null,
+"ca516-sacramento-zoo-and-land-park": {
+"f": "img/ca516-sacramento-zoo-and-land-park.jpg",
+"w": 640,
+"h": 426,
+"by": "L Wade Brown (Grubbycup)",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:LWBSacramentoZoo.JPG",
+"alt": "LWBSacramentoZoo"
+},
+"ca519-tower-bridge": {
+"f": "img/ca519-tower-bridge.jpg",
+"w": 640,
+"h": 480,
+"by": "Michael Grindstaff of Sacramento, CA, edited by Fir0002",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Tower_Bridge_Sacramento_edit.jpg",
+"alt": "Tower Bridge Sacramento edit"
+},
+"ca519-the-boat-section": {
+"f": "img/ca519-the-boat-section.jpg",
+"w": 640,
+"h": 360,
+"by": "Morn (talk)",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Old_Sacramento.jpg",
+"alt": "Old Sacramento"
+},
+"ca519-california-state-railroad-museum": {
+"f": "img/ca519-california-state-railroad-museum.jpg",
+"w": 640,
+"h": 480,
+"by": "The original uploader was Swampyank at English Wikipedia.",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:California_State_Railroad_Museum_in_Sacramento.jpg",
+"alt": "California State Railroad Museum in Sacramento"
+},
+"ca521-where-two-rivers-meet": {
+"f": "img/ca521-where-two-rivers-meet.jpg",
+"w": 640,
+"h": 426,
+"by": "U.S. Bureau of Reclamation",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:American_River_CA.jpg",
+"alt": "American River CA"
+},
+"ca524-arco-arena-gone-but-loud": {
+"f": "img/ca524-arco-arena-gone-but-loud.jpg",
+"w": 640,
+"h": 480,
+"by": "CLopez63",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sleep_Train_Arena.jpg",
+"alt": "Sleep Train Arena"
+},
+"ca528-airport-and-the-big-red-rabbit": {
+"f": "img/ca528-airport-and-the-big-red-rabbit.jpg",
+"w": 640,
+"h": 426,
+"by": "Quintin Soloviev",
+"lic": "CC BY 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sacramento_International_Airport.jpg",
+"alt": "Sacramento International Airport"
+},
+"ca531-crossing-the-sacramento-river": {
+"f": "img/ca531-crossing-the-sacramento-river.jpg",
+"w": 640,
+"h": 480,
+"by": "Amadscientist",
+"lic": "CC BY 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sacramento_River.JPG",
+"alt": "Sacramento River"
+},
+"ca531-yolo-bypass": {
+"f": "img/ca531-yolo-bypass.jpg",
+"w": 640,
+"h": 427,
+"by": "Pacific Southwest Region USFWS from Sacramento, US",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Yolo_Bypass_Causeway2017-02-23_(32306199144).jpg",
+"alt": "Yolo Bypass Causeway2017-02-23 (32306199144)"
+},
+"ca536-knights-landing": null,
+"ca537-woodland-tomato-cannery": {
+"f": "img/ca537-woodland-tomato-cannery.jpg",
+"w": 640,
+"h": 343,
+"by": "Epolk",
+"lic": "CC0",
+"url": "https://commons.wikimedia.org/wiki/File:Yolo_County_Courthouse_(cropped).jpg",
+"alt": "Yolo County Courthouse (cropped)"
+},
+"ca537-woodland-city-of-trees": {
+"f": "img/ca537-woodland-city-of-trees.jpg",
+"w": 640,
+"h": 343,
+"by": "Epolk",
+"lic": "CC0",
+"url": "https://commons.wikimedia.org/wiki/File:Yolo_County_Courthouse_(cropped).jpg",
+"alt": "Yolo County Courthouse (cropped)"
+},
+"ca541-capay-valley-yocha-dehe-homeland": null,
+"ca541-cache-creek-the-trappers-creek": {
+"f": "img/ca541-cache-creek-the-trappers-creek.jpg",
+"w": 640,
+"h": 376,
+"by": "AnonymousEditor95",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Cache_Creek_(Rumsey).jpg",
+"alt": "Cache Creek (Rumsey)"
+},
+"ca542-yolo-place-of-rushes": {
+"f": "img/ca542-yolo-place-of-rushes.jpg",
+"w": 640,
+"h": 426,
+"by": "Epolk",
+"lic": "CC0",
+"url": "https://commons.wikimedia.org/wiki/File:Hotel_Woodland.jpg",
+"alt": "Hotel Woodland"
+},
+"ca548-sunflower-seed-fields": null,
+"ca548-zamora-cut-by-the-highways": null,
+"ca553-sutter-buttes-on-the-horizon": {
+"f": "img/ca553-sutter-buttes-on-the-horizon.jpg",
+"w": 640,
+"h": 426,
+"by": "Expedition 32 crew/NASA",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Sutter_Buttes_Bird%27s_eye_view.jpg",
+"alt": "Sutter Buttes Bird's eye view"
+},
+"ca553-i-505-once-i-5w": null,
+"ca556-dunnigan-once-antelope": {
+"f": "img/ca556-dunnigan-once-antelope.jpg",
+"w": 640,
+"h": 480,
+"by": "Pi.1415926535",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Dunnigan,_California,_December_2021.JPG",
+"alt": "Aerial view of Dunnigan, California, December 2021"
+},
+"ca566-college-city-no-college": null,
+"ca566-tacitus-arbuckle-s-town": {
+"f": "img/ca566-tacitus-arbuckle-s-town.jpg",
+"w": 640,
+"h": 410,
+"by": "Quintin Soloviev",
+"lic": "CC BY 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Arbuckle,_California,_USA.jpg",
+"alt": "Arbuckle, California, USA"
+},
+"ca567-almond-orchards": {
+"f": "img/ca567-almond-orchards.jpg",
+"w": 640,
+"h": 426,
+"by": "Ivar Leidus",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Almonds_-_in_shell,_shell_cracked_open,_shelled,_blanched.jpg",
+"alt": "Almonds - in shell, shell cracked open, shelled, blanched"
+},
+"ca572-sutter-buttes-closest-view": {
+"f": "img/ca572-sutter-buttes-closest-view.jpg",
+"w": 640,
+"h": 426,
+"by": "Expedition 32 crew/NASA",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Sutter_Buttes_Bird%27s_eye_view.jpg",
+"alt": "Sutter Buttes Bird's eye view"
+},
+"ca575-patwin-homeland": null,
+"ca578-colusa-and-korusi": {
+"f": "img/ca578-colusa-and-korusi.jpg",
+"w": 640,
+"h": 326,
+"by": "Ammodramus",
+"lic": "CC0",
+"url": "https://commons.wikimedia.org/wiki/File:Colusa_1926_high_school_from_NW_2.JPG",
+"alt": "Colusa 1926 high school from NW 2"
+},
+"ca582-rice-country": {
+"f": "img/ca582-rice-country.jpg",
+"w": 640,
+"h": 360,
+"by": "China News Service",
+"lic": "CC BY 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:20201102.Hengnan.Hybrid_rice_Sanyou-1.6.jpg",
+"alt": "20201102.Hengnan.Hybrid rice Sanyou-1.6"
+},
+"ca586-sites-reservoir-a-lake-to-come": null,
+"ca588-swift-s-stone-corral": {
+"f": "img/ca588-swift-s-stone-corral.jpg",
+"w": 640,
+"h": 480,
+"by": "Wikimedia Commons",
+"lic": "Public domain",
+"url": "https://en.wikipedia.org/wiki/File:GranvillePerrySwift.jpg",
+"alt": "GranvillePerrySwift"
+},
+"ca588-delevan-refuge": {
+"f": "img/ca588-delevan-refuge.jpg",
+"w": 640,
+"h": 431,
+"by": "Lora Haller/USFWS",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Delevan_national_wildlife_refuge_sunrise.jpg",
+"alt": "Delevan national wildlife refuge sunrise"
+},
+"ca591-tule-fog": {
+"f": "img/ca591-tule-fog.jpg",
+"w": 640,
+"h": 480,
+"by": "Jeff Schmaltz; NASA",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Tule_Fog_California_-_2005.jpg",
+"alt": "Tule Fog California - 2005"
+},
+"ca595-rancho-larkin-s-children": null,
+"ca595-sacramento-national-wildlife-refuge": {
+"f": "img/ca595-sacramento-national-wildlife-refuge.jpg",
+"w": 640,
+"h": 426,
+"by": "Brocken Inaglory",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Snow_geeze_and_ducks_at_Sacramento.jpg",
+"alt": "Snow geeze and ducks at Sacramento"
+},
+"ca601-mendocino-national-forest": {
+"f": "img/ca601-mendocino-national-forest.jpg",
+"w": 640,
+"h": 424,
+"by": "Marcia Wright",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Rattlesnake_creek.jpg",
+"alt": "Rattlesnake creek"
+},
+"ca603-willows-the-cattle-stop": {
+"f": "img/ca603-willows-the-cattle-stop.jpg",
+"w": 640,
+"h": 480,
+"by": "NoeHill",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Willows_Post_Office.jpg",
+"alt": "Willows Post Office"
+},
+"ca607-hugh-glenn-the-wheat-king": {
+"f": "img/ca607-hugh-glenn-the-wheat-king.jpg",
+"w": 640,
+"h": 480,
+"by": "Baker, Ethel",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Hugh_J._Glenn.jpg",
+"alt": "Hugh J. Glenn"
+},
+"ca610-artois-once-germantown": {
+"f": "img/ca610-artois-once-germantown.jpg",
+"w": 640,
+"h": 425,
+"by": "Frank Schulenburg",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Artois_(Germantown),_Glenn_County-L1003136.jpg",
+"alt": "Artois (Germantown), Glenn County-L1003136"
+},
+"ca614-prune-orchards": {
+"f": "img/ca614-prune-orchards.jpg",
+"w": 640,
+"h": 480,
+"by": "Emőke Dénes",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Rosales_-_Dried_Prunus_domestica_d.jpg",
+"alt": "Rosales - Dried Prunus domestica d"
+},
+"ca619-orland-queen-bee-capital": {
+"f": "img/ca619-orland-queen-bee-capital.jpg",
+"w": 640,
+"h": 410,
+"by": "Hikki Nagasaki",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Orland_station,_February_22,_1969.jpg",
+"alt": "Orland station, February 22, 1969"
+},
+"ca619-will-green-s-water-notice": {
+"f": "img/ca619-will-green-s-water-notice.jpg",
+"w": 640,
+"h": 425,
+"by": "Frank Schulenburg",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Post_Office_in_Hamilton_City,_California-L1003166.jpg",
+"alt": "Post Office in Hamilton City, California-L1003166"
+},
+"ca621-stony-creek": {
+"f": "img/ca621-stony-creek.jpg",
+"w": 640,
+"h": 480,
+"by": "U.S. Bureau of Reclamation",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Stony_Gorge_Dam.jpg",
+"alt": "Stony Gorge Dam"
+},
+"ca628-paskenta-band-of-nomlaki": {
+"f": "img/ca628-paskenta-band-of-nomlaki.jpg",
+"w": 640,
+"h": 360,
+"by": "Government of California",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Paskenta_Chairman_Andrew_Alejandre_video_for_the_Government_of_California.ogv",
+"alt": "Paskenta Chairman Andrew Alejandre video for the Government of California"
+},
+"ca628-walnut-orchards": {
+"f": "img/ca628-walnut-orchards.jpg",
+"w": 640,
+"h": 480,
+"by": "Thesupermat",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Noyer_centenaire_en_automne.JPG",
+"alt": "Noyer centenaire en automne"
+},
+"ca630-lassen-s-rancho-and-stanford-s-vines": null,
+"ca631-corning-olive-town": {
+"f": "img/ca631-corning-olive-town.jpg",
+"w": 640,
+"h": 400,
+"by": "Frank Schulenburg",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Downtown_Corning_(2023)-L1003469.jpg",
+"alt": "Downtown Corning (2023)-L1003469"
+},
+"ca633-thomes-creek": {
+"f": "img/ca633-thomes-creek.jpg",
+"w": 640,
+"h": 480,
+"by": "Anna Fiorella (US Forest Service)",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Thomes_Creek.jpg",
+"alt": "Thomes Creek"
+},
+"ca636-tehama-the-first-county-seat": {
+"f": "img/ca636-tehama-the-first-county-seat.jpg",
+"w": 640,
+"h": 464,
+"by": "NoeHill",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Molino_Lodge.jpg",
+"alt": "Molino Lodge"
+},
+"ca642-gerber-the-railroad-stop": {
+"f": "img/ca642-gerber-the-railroad-stop.jpg",
+"w": 640,
+"h": 480,
+"by": "Publichall",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Gerber,_California_-_Main_Street.JPG",
+"alt": "Gerber, California - Main Street"
+},
+"ca647-red-bluff-diversion-dam": {
+"f": "img/ca647-red-bluff-diversion-dam.jpg",
+"w": 640,
+"h": 480,
+"by": "US Bureau of Reclamation",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Redbluffdivdam.jpg",
+"alt": "Redbluffdivdam"
+},
+"ca649-john-brown-s-widow": {
+"f": "img/ca649-john-brown-s-widow.jpg",
+"w": 640,
+"h": 480,
+"by": "Mary Ann Brown (Life time: 1851)",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Marybrown_wifeofJohnBrown.jpg",
+"alt": "Marybrown wifeofJohnBrown"
+},
+"ca649-red-bluff-head-of-navigation": null,
+"ca650-william-b-ide-adobe": {
+"f": "img/ca650-william-b-ide-adobe.jpg",
+"w": 640,
+"h": 351,
+"by": "ChesPal (Debra Heaphy)",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Front_of_William_B._Ide_Adobe.JPG",
+"alt": "Front of William B. Ide Adobe"
+},
+"ca651-alvin-coffey-s-freedom": {
+"f": "img/ca651-alvin-coffey-s-freedom.jpg",
+"w": 640,
+"h": 480,
+"by": "Unknown author",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Alvin_Aaron_Coffey_Sr.png",
+"alt": "Alvin Aaron Coffey Sr"
+},
+"ca653-bend-once-horsethief-bend": {
+"f": "img/ca653-bend-once-horsethief-bend.jpg",
+"w": 640,
+"h": 480,
+"by": "Nickdp190",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sacramento_River_in_Bend,_California.jpg",
+"alt": "Sacramento River in Bend, California"
+},
+"ca657-mount-shasta-from-afar": {
+"f": "img/ca657-mount-shasta-from-afar.jpg",
+"w": 640,
+"h": 480,
+"by": "Ewen Denney (talk · contribs)",
+"lic": "CC BY-SA 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:MtShasta_aerial.JPG",
+"alt": "MtShasta aerial"
+},
+"ca662-cottonwood-creek": {
+"f": "img/ca662-cottonwood-creek.jpg",
+"w": 640,
+"h": 378,
+"by": "Mheberger",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Cottonwood_Creek_watershed.jpg",
+"alt": "Cottonwood Creek watershed"
+},
+"ca664-cottonwood-the-halfway-town": {
+"f": "img/ca664-cottonwood-the-halfway-town.jpg",
+"w": 640,
+"h": 360,
+"by": "Frank Schulenburg",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Cottonwood,_Shasta_County,_August_2022-8336.jpg",
+"alt": "Cottonwood, Shasta County, August 2022-8336"
+},
+"ca665-coleman-fish-hatchery": null,
+"ca668-lassen-peak": {
+"f": "img/ca668-lassen-peak.jpg",
+"w": 640,
+"h": 480,
+"by": "Frank Schulenburg",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Lassen_Peak_in_June_2020.jpg",
+"alt": "Lassen Peak in June 2020"
+},
+"ca668-anderson-a-railroad-town": {
+"f": "img/ca668-anderson-a-railroad-town.jpg",
+"w": 640,
+"h": 426,
+"by": "Jonmallard",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Club_50_Anderson.jpg",
+"alt": "Club 50 Anderson"
+},
+"ca673-reading-s-gold-on-clear-creek": {
+"f": "img/ca673-reading-s-gold-on-clear-creek.jpg",
+"w": 640,
+"h": 307,
+"by": "US Govt",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Whiskeytown_Lake_nps.jpg",
+"alt": "Whiskeytown Lake nps"
+},
+"ca673-redding-rancheria": null,
+"ca675-the-1846-river-massacre": null,
+"ca677-the-carr-fire": {
+"f": "img/ca677-the-carr-fire.jpg",
+"w": 640,
+"h": 426,
+"by": "Bureau of Land Management California",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:2018_Carr_Fire_(42286507280).jpg",
+"alt": "2018 Carr Fire (42286507280)"
+},
+"ca678-redding-once-poverty-flats": {
+"f": "img/ca678-redding-once-poverty-flats.jpg",
+"w": 640,
+"h": 338,
+"by": "Chad K",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sundial_Bridge_at_Turtle_Bay_(cropped).jpg",
+"alt": "Sundial Bridge at Turtle Bay (cropped)"
+},
+"ca678-sundial-bridge": {
+"f": "img/ca678-sundial-bridge.jpg",
+"w": 640,
+"h": 480,
+"by": "Chad K",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sundial_Bridge_at_Turtle_Bay.jpg",
+"alt": "Sundial Bridge at Turtle Bay"
+},
+"ca680-old-shasta": {
+"f": "img/ca680-old-shasta.jpg",
+"w": 640,
+"h": 459,
+"by": "Ian Poellet",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Masonic_Hall_-_Shasta_California.jpg",
+"alt": "Masonic Hall - Shasta California"
+},
+"ca682-the-9-5-mile-conveyor-belt": {
+"f": "img/ca682-the-9-5-mile-conveyor-belt.jpg",
+"w": 640,
+"h": 413,
+"by": "Bureau of Reclamation",
+"lic": "CC BY-SA 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Water_released_from_Shasta_Dam_(2017).jpg",
+"alt": "Water released from Shasta Dam (2017)"
+},
+"ca684-shasta-lake-the-dam-towns": {
+"f": "img/ca684-shasta-lake-the-dam-towns.jpg",
+"w": 640,
+"h": 360,
+"by": "Always dreamin",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Saint_Michael_Catholic_Mission_in_Shasta_Lake_California_Gate.jpg",
+"alt": "Saint Michael Catholic Mission in Shasta Lake California Gate"
+},
+"ca685-shasta-dam": {
+"f": "img/ca685-shasta-dam.jpg",
+"w": 640,
+"h": 413,
+"by": "Bureau of Reclamation",
+"lic": "CC BY-SA 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Water_released_from_Shasta_Dam_(2017).jpg",
+"alt": "Water released from Shasta Dam (2017)"
+},
+"ca687-kennett-the-drowned-town": {
+"f": "img/ca687-kennett-the-drowned-town.jpg",
+"w": 640,
+"h": 394,
+"by": "Unknown author",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Mammoth_Smelter_Kennett,_California_ca1910.jpg",
+"alt": "Mammoth Smelter Kennett, California ca1910"
+},
+"ca688-the-drowned-highway": null,
+"ca690-bass-hill-stage-road": {
+"f": "img/ca690-bass-hill-stage-road.jpg",
+"w": 640,
+"h": 387,
+"by": "California-Oregon Stagecoach Company (Life time: 1866)",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:California_and_Oregon_Stagecoach_Co.jpg",
+"alt": "California and Oregon Stagecoach Co"
+},
+"ca689-shasta-lake": null,
+"ca691-pit-river-bridge": {
+"f": "img/ca691-pit-river-bridge.jpg",
+"w": 640,
+"h": 381,
+"by": "Florence Low, California Department Of Water Resources",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Shasta_Lake_2016_Pit_River_Bridge.jpg",
+"alt": "Shasta Lake 2016 Pit River Bridge"
+},
+"ca693-the-giant-median": null,
+"ca694-shasta-salamanders": null,
+"ca695-lake-shasta-caverns": {
+"f": "img/ca695-lake-shasta-caverns.jpg",
+"w": 640,
+"h": 480,
+"by": "Oleg Alexandrov",
+"lic": "CC BY-SA 4.0",
+"url": "https://commons.wikimedia.org/wiki/File:Shasta_Caverns4.JPG",
+"alt": "Shasta Caverns4"
+},
+"ca696-winnemem-wintu-homeland": {
+"f": "img/ca696-winnemem-wintu-homeland.jpg",
+"w": 640,
+"h": 360,
+"by": "Michael Marmarou from San Francisco, CA, USA",
+"lic": "CC BY 2.0",
+"url": "https://commons.wikimedia.org/wiki/File:Winnemem_Wintu_Dancers_(3812026527).jpg",
+"alt": "Winnemem Wintu Dancers (3812026527)"
+},
+"ca698-the-salt-fire": {
+"f": "img/ca698-the-salt-fire.jpg",
+"w": 640,
+"h": 480,
+"by": "InciWeb - InciWeb",
+"lic": "Public domain",
+"url": "https://commons.wikimedia.org/wiki/File:Salt_Fire_Smoke_Column_July_4_2021.jpg",
+"alt": "Salt Fire Smoke Column July 4 2021"
+},
+"ca700-the-first-federal-fish-hatchery": null,
+"ca702-lakehead-top-of-the-lake": null,
+"ca707-delta-end-of-the-line": {
+"f": "img/ca707-delta-end-of-the-line.jpg",
+"w": 640,
+"h": 350,
+"by": "Delta, California (Life time: 1886)",
+"lic": "Public domain",
+"url": "https://en.wikipedia.org/wiki/File:Delta_Rail_Town_Shasta.jpg",
+"alt": "Delta Rail Town Shasta"
+},
+"ca711-the-upper-sacramento-river": {
+"f": "img/ca711-the-upper-sacramento-river.jpg",
+"w": 640,
+"h": 480,
+"by": "Amadscientist",
+"lic": "CC BY 3.0",
+"url": "https://commons.wikimedia.org/wiki/File:Sacramento_River.JPG",
+"alt": "Sacramento River"
 }
 }

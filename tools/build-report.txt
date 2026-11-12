@@ -1,3 +1,1 @@
 not fact-checked yet, left out: ca-gaps.json
-not fact-checked yet, left out: ca1.json
-using v1 content for ca1 (no v2 file yet)
