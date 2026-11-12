@@ -204,7 +204,7 @@
    "cat": "hist",
    "visible": false,
    "text": "A 4.6-mile stretch of freeway north of Stockton was the very last piece of Interstate 5 to open. On October 12, 1979, after 26 years of construction, the consuls of Canada and Mexico joined California's transportation secretary to cut a gold-colored chain, completing Interstate 5 from the Mexican border to the Canadian border.",
-   "more": "California's transportation secretary, Adriana Gianturco, compared the moment to the driving of the golden spike on the transcontinental railroad. The West Side Freeway, the stretch of I-5 down the west side of the San Joaquin Valley, was built in three phases starting in the early 1960s. Once the second phase opened in 1972, traffic picked up, because in Stockton the new freeway came within 4 miles of the Golden State Highway, Route 99. The third phase, finished in 1979, carried I-5 north to Sacramento and joined it to the northern half of the freeway.",
+   "more": "California's transportation secretary, Adriana Gianturco, compared the moment to the driving of the golden spike on the transcontinental railroad. Traffic on the West Side Freeway, the stretch of I-5 down the west side of the San Joaquin Valley, picked up once its second phase opened in 1972, because in Stockton the new freeway came within 4 miles of the Golden State Highway, Route 99. Its third phase, finished in 1979, carried I-5 north to Sacramento. There it joined the northern half of the freeway.",
    "spot": null,
    "months": null,
    "wiki": "Interstate 5 in California",
@@ -658,22 +658,6 @@
   {
    "state": "CA",
    "exit": 553,
-   "lat": 39.2057,
-   "lon": -121.8202,
-   "name": "Sutter Buttes on the horizon",
-   "cat": "nature",
-   "visible": true,
-   "text": "On a clear day, a jagged cluster of peaks rises out of the flat valley far to the north. These are the Sutter Buttes, the worn remains of a volcano that was active roughly a million and a half years ago. They form a rough circle about 10 miles across and are often called the world's smallest mountain range.",
-   "more": "The highest point, South Butte, rises a little over 2,100 feet. The Maidu name, Histum Yani, the Nisenan name, Estom Yanim, and the Wintun name, Onolai-Tol, all roughly mean the Middle Mountains. In Maidu and Nisenan religion, the Buttes are the place where dying people go to ascend to the afterlife. Almost all of the land around them is privately owned by ranchers and farmers, so hiking there is limited to trips led by a few local groups, such as the Middle Mountain Foundation.",
-   "spot": "Look for a jagged clump of mountains standing alone on the flat valley floor.",
-   "months": null,
-   "wiki": "Sutter Buttes",
-   "src": "https://www.kqed.org/quest/36069/side-trips-from-interstate-5-sutter-buttes",
-   "src2": "https://en.wikipedia.org/wiki/Sutter_Buttes"
-  },
-  {
-   "state": "CA",
-   "exit": 553,
    "lat": null,
    "lon": null,
    "name": "I-505, once I-5W",
@@ -711,9 +695,7 @@
    "to": 467,
    "label": "San Joaquin River and Lathrop",
    "text": "The freeway crosses the San Joaquin River at Mossdale and runs through Lathrop, a railroad town where large planned neighborhoods now spread west of the freeway.",
-   "seasons": {
-    "winter": "On some winter days, tule fog blankets this part of the valley."
-   }
+   "seasons": null
   },
   {
    "state": "CA",
@@ -722,7 +704,7 @@
    "label": "Stockton",
    "text": "I-5 runs through Stockton, past the deepwater port and its channel to San Francisco Bay, and crosses the Calaveras River.",
    "seasons": {
-    "winter": "Nearly all of Stockton's rain falls from October through April, and tule fog blankets the city on some winter days.",
+    "winter": "Nearly all of Stockton's rain falls from October through April.",
     "summer": "Summers here are very hot and dry."
    }
   },
@@ -733,7 +715,6 @@
    "label": "Lodi vineyards and the Delta's edge",
    "text": "Vineyards spread east toward Lodi, while the flat, reclaimed islands of the Delta, held in by levees, stretch off to the west.",
    "seasons": {
-    "fall": "Sandhill cranes arrive around late September and spend the fall and winter in the fields and wetlands west of the freeway.",
     "winter": "Cranes, geese and swans use the Woodbridge reserve as their winter home."
    }
   },
@@ -743,9 +724,7 @@
    "to": 510,
    "label": "Cosumnes wetlands and Elk Grove",
    "text": "Wetlands of the Cosumnes River Preserve lie near the freeway, which runs along the eastern edge of the Stone Lakes refuge as it passes through Elk Grove.",
-   "seasons": {
-    "winter": "Seasonal floods on the undammed Cosumnes River create important habitat for wintering birds."
-   }
+   "seasons": null
   },
   {
    "state": "CA",
@@ -760,17 +739,15 @@
    "from": 518,
    "to": 524,
    "label": "Downtown Sacramento",
-   "text": "I-5 runs in a sunken trench between downtown and the river, past Old Sacramento and the Tower Bridge, and crosses the American River near where it meets the Sacramento.",
-   "seasons": {
-    "winter": "In winter high water, Discovery Park, where the two rivers meet, can end up underwater, as it is designed to."
-   }
+   "text": "I-5 runs between downtown and the river, past Old Sacramento and the Tower Bridge.",
+   "seasons": null
   },
   {
    "state": "CA",
    "from": 524,
    "to": 531,
    "label": "The airport and the Sacramento River",
-   "text": "North of downtown the freeway passes the old ARCO Arena site and the airport and crosses the Sacramento River, the line between Sacramento and Yolo counties.",
+   "text": "North of downtown the freeway passes the old ARCO Arena site and the airport and crosses the Sacramento River.",
    "seasons": null
   },
   {
@@ -778,10 +755,9 @@
    "from": 531,
    "to": 537,
    "label": "Yolo Bypass",
-   "text": "The long Elkhorn Causeway crosses the Yolo Bypass, a floodway that becomes an inland sea in big floods and is farmed, mostly in rice, the rest of the time.",
+   "text": "Between floods, much of the Yolo Bypass is farmed, mostly in rice.",
    "seasons": {
-    "winter": "In wet winters and springs, the bypass floods and becomes a huge wetland for birds and young salmon.",
-    "summer": "In late spring and summer, much of the bypass is farmed in rice, safflower, tomatoes, corn and sunflowers."
+    "winter": "In wet winters and springs, the bypass floods and becomes a huge wetland for birds and young salmon."
    }
   },
   {
@@ -790,9 +766,7 @@
    "to": 548,
    "label": "Woodland and Cache Creek",
    "text": "The freeway passes Woodland, a farm town with a big tomato cannery, and crosses Cache Creek beside the little town of Yolo.",
-   "seasons": {
-    "summer": "From July through September, the Woodland tomato cannery works through about 495,000 tons of tomatoes."
-   }
+   "seasons": null
   },
   {
    "state": "CA",

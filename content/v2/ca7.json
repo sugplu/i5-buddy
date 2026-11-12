@@ -41,8 +41,8 @@
    "name": "Almond orchards",
    "cat": "farm",
    "visible": true,
-   "text": "The long, straight rows of trees around here are mostly almond orchards. In 2024 almonds were Colusa County's most valuable crop, worth about 279 million dollars, from roughly 63,000 acres. Almond pollination season usually runs from about mid-February to mid-March, when growers bring in honey bees to pollinate the blossoms.",
-   "more": "Growers aim for about two hives per acre, and beekeepers truck their bees in from all over the United States. About two-thirds of the nation's commercial honey bee hives converge on California for almond season. In 2024, Colusa County almond growers used about 126,000 hives. The county's own beekeepers produced about 50,000 queen bees that year. Even the almond hulls are sold, worth about 5 million dollars in 2024.",
+   "text": "The long, straight rows of trees around here are mostly almond orchards. In 2024 almonds were Colusa County's most valuable crop, worth about 279 million dollars, from roughly 63,000 acres. Almond pollination season usually runs from about mid-February to mid-March, when the trees bloom with fragrant white to pale pink flowers before their leaves come out.",
+   "more": "Growers aim for about two hives per acre, and in 2024 Colusa County's almond growers used about 126,000 hives. The county's own beekeepers produced about 50,000 queen bees that year. An almond is not a true nut but the seed of a fruit related to the peach, sealed in a hard shell inside a leathery hull, and it ripens in autumn, seven to eight months after the bloom. Even the almond hulls are sold, worth about 5 million dollars in 2024.",
    "spot": "Look for orchard trees lined up in long, straight rows.",
    "months": [
     2,
@@ -60,9 +60,9 @@
    "name": "Sutter Buttes, closest view",
    "cat": "nature",
    "visible": true,
-   "text": "On clear days, the cluster of peaks rising from the valley to the east is the Sutter Buttes, centered about 17 miles away. The Spanish explorer Gabriel Moraga was the first European to see them, in 1806. In 1817 Luis Antonio Argüello named them los tres picos, the three peaks, and in 1843 John Frémont called them the Three Buttes.",
-   "more": "John Sutter claimed the Buttes as part of his Mexican land grant, but American courts ruled that his grant did not include them, so every land title there traces back to the federal government. In June 1846, Frémont's party stopped at the Buttes and, fearing an attack, struck first, killing many Native people in what is known as the Sutter Buttes massacre. During the Gold Rush the peaks were called the Marysville Buttes, and in 1920 the state tried and failed to buy them. From 1962 to 1965, a Titan missile base with three underground silos was active on their north side. In 2003 the state bought 1,785 acres there for a park, but it is still not open to the public.",
-   "spot": "Look for the Sutter Buttes and try to count their bumpy peaks.",
+   "text": "On clear days, the cluster of peaks rising from the valley to the east is the Sutter Buttes, centered about 17 miles away. They are the worn remains of a volcano that was active roughly a million and a half years ago, and they are often called the world's smallest mountain range. The Maidu, Nisenan and Wintun names for them all roughly mean the Middle Mountains.",
+   "more": "In Maidu and Nisenan religion, the Buttes are the place where dying people go to ascend to the afterlife. The Spanish explorer Gabriel Moraga was the first European to see them, in 1806. John Sutter later claimed them as part of his Mexican land grant, but American courts ruled that his grant did not include them, so every land title there traces back to the federal government. In June 1846, John Frémont's party stopped at the Buttes and, fearing an attack, struck first, killing many Native people in what is known as the Sutter Buttes massacre. From 1962 to 1965, a Titan missile base with three underground silos was active on their north side. In 2003 the state bought 1,785 acres there for a park, but it is still not open to the public, and almost all the land around the Buttes is privately owned.",
+   "spot": "Look for a jagged clump of mountains standing alone on the flat valley floor.",
    "months": null,
    "wiki": "Sutter Buttes",
    "src": "https://en.wikipedia.org/wiki/Sutter_Buttes",
@@ -179,28 +179,6 @@
    "wiki": "Granville P. Swift",
    "src": "https://ohp.parks.ca.gov/ListedResources/Detail/238",
    "src2": "https://en.wikipedia.org/wiki/Granville_P._Swift"
-  },
-  {
-   "state": "CA",
-   "exit": 591,
-   "lat": null,
-   "lon": null,
-   "name": "Tule fog",
-   "cat": "nature",
-   "visible": true,
-   "text": "In winter this valley is known for tule fog, a thick ground fog named for the tule marshes of the Central Valley. It can stretch more than 400 miles, from Bakersfield all the way to Red Bluff. In the northern valley it usually clears sooner than in the south, because winter storms with strong winds and turbulent air pass through more often.",
-   "more": "The official tule fog season runs from November 1 to March 31. The fog often brings drizzle, and when temperatures stay below freezing, that drizzle can leave an invisible glaze of black ice on the road. Its ups and downs have followed air pollution. Tule fog increased by 85 percent between 1930 and 1970, as farming and industry grew, then fell by 76 percent between 1980 and 2016, after air pollution rules took effect. Nitrogen oxides in the air react with ammonia to form tiny particles that help fog droplets condense, so as those emissions fell, so did the fog. In a fog bank on Interstate 5 near Elk Grove, south of Sacramento, 25 cars and nine big rigs collided on December 12, 1997.",
-   "spot": null,
-   "months": [
-    11,
-    12,
-    1,
-    2,
-    3
-   ],
-   "wiki": "Tule fog",
-   "src": "https://en.wikipedia.org/wiki/Tule_fog",
-   "src2": "https://en.wikipedia.org/wiki/Tule_fog"
   },
   {
    "state": "CA",
@@ -506,7 +484,7 @@
    "cat": "hist",
    "visible": false,
    "text": "East of the freeway, the Red Bluff Diversion Dam, a concrete structure nearly 6,000 feet long, crosses the Sacramento River. Finished in 1964, it raised the river to feed the Tehama-Colusa and Corning canals, which water about 150,000 acres of farms. But it also blocked salmon, so since 2013 its gates have been locked open to let the river run free.",
-   "more": "The Sacramento, California's largest river, once had one of the southernmost large runs of Chinook salmon in North America. The count of winter-run Chinook fell from 118,000 in 1969 to a record low of 191 in 1991. Fish ladders and a fish screen did not solve the problem, and in 2009 federal fisheries officials ordered the gates opened year round. A new pumping plant with a fish screen, just upstream, now lifts water into the canals. Locking the gates open was controversial, because it drained Lake Red Bluff, a popular recreation spot. The Tehama-Colusa Canal, the larger of the two canals, runs 110.9 miles down the west side of the valley and was not finished until 1980.",
+   "more": "On the Sacramento, the count of winter-run Chinook salmon fell from 118,000 in 1969 to a record low of 191 in 1991. Fish ladders and a fish screen did not solve the problem, and in 2009 federal fisheries officials ordered the gates opened year round. A new pumping plant with a fish screen, just upstream, now lifts water into the canals. Locking the gates open was controversial, because it drained Lake Red Bluff, a popular recreation spot. The Tehama-Colusa Canal, the larger of the two canals, runs 110.9 miles down the west side of the valley and was not finished until 1980.",
    "spot": null,
    "months": null,
    "wiki": "Red Bluff Diversion Dam",
@@ -618,7 +596,7 @@
    "cat": "nature",
    "visible": true,
    "text": "On clear days, the lone peak far off on the northern skyline is Mount Shasta, about 80 miles away. It rises abruptly, towering nearly 9,800 feet above the land around it. On a clear winter day, it can be seen from the floor of the Central Valley as far as 140 miles to the south.",
-   "more": "Shasta is the second-highest peak in the Cascade Range and the fifth-highest in California. Together with its satellite cone, Shastina, it dominates the landscape around it. From the 1820s on, it was a landmark for travelers on the Siskiyou Trail, which followed old Native American footpaths between the Central Valley and the Pacific Northwest, and Interstate 5 is today's version of that trail. The mountain holds religious significance for the Wintu people. The freeway passes close to its base near the town of Weed.",
+   "more": "Shasta is the second-highest peak in the Cascade Range and the fifth-highest in California. Together with its satellite cone, Shastina, it dominates the landscape around it. From the 1820s on, it was a landmark for travelers on the Siskiyou Trail. The mountain holds religious significance for the Wintu people. The freeway passes close to its base near the town of Weed.",
    "spot": "Look for a lone white peak far away on the northern skyline.",
    "months": [
     12,
@@ -814,7 +792,6 @@
    "label": "Almonds, rice and the Sutter Buttes",
    "text": "Almond orchards ring Arbuckle and rice fields spread across the flat valley floor, while the Sutter Buttes rise from the plain to the east.",
    "seasons": {
-    "winter": "Almond pollination season, when the orchards bloom, usually runs from about mid-February to mid-March.",
     "fall": "Ducks and geese arrive in fall, and many rice fields are flooded to give them food and shelter through the winter."
    }
   },
@@ -825,7 +802,6 @@
    "label": "Rice fields and wildlife refuges",
    "text": "Rice fields spread across the valley here, and the marshes of the Sacramento National Wildlife Refuge sit just east of the freeway.",
    "seasons": {
-    "fall": "Ducks reach the Sacramento refuge by the thousands in October, and geese follow in November.",
     "winter": "Waterfowl numbers at the refuge peak in late November and early December.",
     "spring": "In April, shorebirds and songbirds stop at the refuge on their way north.",
     "summer": "Most of the refuge marshes are dry in summer, with only about 15 percent of the wetlands flooded."
@@ -836,11 +812,8 @@
    "from": 597,
    "to": 619,
    "label": "Willows and Glenn County",
-   "text": "Willows is home to the headquarters of the Mendocino National Forest, whose Coast Range mountains line the western skyline, and almond orchards grow around Artois.",
-   "seasons": {
-    "summer": "Prune harvest starts around mid-August and usually takes about 30 days.",
-    "winter": "Tule fog season officially runs from November 1 to March 31."
-   }
+   "text": "North of Willows, almond orchards grow around Artois.",
+   "seasons": null
   },
   {
    "state": "CA",
@@ -870,17 +843,15 @@
    "from": 649,
    "to": 662,
    "label": "Red Bluff rangeland",
-   "text": "Between Red Bluff and Cottonwood, mildly rugged rangeland separates the valley's crop areas, and on clear days Mount Shasta can be seen on the northern skyline.",
-   "seasons": {
-    "winter": "On a clear winter day, Mount Shasta can be seen from the valley floor as far as 140 miles to the south."
-   }
+   "text": "Between Red Bluff and Cottonwood, mildly rugged rangeland separates the valley's crop areas.",
+   "seasons": null
   },
   {
    "state": "CA",
    "from": 662,
    "to": 675,
    "label": "Cottonwood and Anderson",
-   "text": "Near the northern tip of the Central Valley, Cottonwood grew up as a stagecoach town and Anderson as a railroad town, with ranch land along Cottonwood Creek.",
+   "text": "Near the northern tip of the Central Valley, the freeway passes Cottonwood and Anderson, with ranch land along Cottonwood Creek.",
    "seasons": {
     "winter": "Cottonwood Creek often runs like a large river in winter and spring.",
     "summer": "By summer and fall, Cottonwood Creek dwindles to a trickle."

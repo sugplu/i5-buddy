@@ -137,7 +137,7 @@
    "name": "Pit River Bridge",
    "cat": "hist",
    "visible": true,
-   "text": "The Pit River Bridge is a double-decker. I-5 rides the top deck and the railroad runs underneath, including Amtrak's Coast Starlight. Built in 1942, it stands about 500 feet above the old bed of the Pit River, making it the highest double-deck bridge in the United States. When the lake is full, though, the water comes within about 40 feet of the bridge.",
+   "text": "The Pit River Bridge is a double-decker. I-5 rides the top deck and the railroad runs underneath. Built in 1942, it stands about 500 feet above the old bed of the Pit River, making it the highest double-deck bridge in the United States. When the lake is full, though, the water comes within about 40 feet of the bridge.",
    "more": "On May 3, 1953, back when this was a two-lane highway, a produce truck's steering failed on the bridge. The cab smashed through the railing and dangled over the water with two men trapped inside. Walter Schau and other drivers found a rope and pulled the driver up, with Schau at one point hanging by his ankles. When the cab caught fire, Schau climbed down and pulled out the second man just before it fell into the water. His wife, Virginia, grabbed her Kodak Brownie and took two pictures, the last on her roll. Her photo won the 1954 Pulitzer Prize for Photography, the first ever won by a woman.",
    "spot": "Look for the lake's water on both sides of the bridge.",
    "months": null,
@@ -281,13 +281,13 @@
    "name": "The upper Sacramento River",
    "cat": "nature",
    "visible": true,
-   "text": "The river beside the freeway is the Sacramento, the largest river in California. From its beginnings near Mount Shasta, it runs about 400 miles to San Francisco Bay. Up here it is a blue ribbon trout stream, where wild rainbow trout abound.",
-   "more": "The Spanish explorer Gabriel Moraga named it Rio de los Sacramentos in 1808. The upper river starts where its North, Middle and South forks meet near Mount Shasta, then flows into Lake Siskiyou. From there it runs about 60 miles through this canyon, past Dunsmuir and Castella, to Shasta Lake near Lakehead. This stretch supplies about 15 percent of the water flowing into Shasta Lake. For about 12,000 years, people have relied on this river's watershed, which once had one of the densest Native American populations in California.",
+   "text": "The river beside the freeway is the upper Sacramento. It begins near Mount Shasta, where its North, Middle and South forks meet, passes through Lake Siskiyou, and then runs about 60 miles through this canyon, past Dunsmuir and Castella, to Shasta Lake near Lakehead. Up here it is a blue ribbon trout stream, where wild rainbow trout abound.",
+   "more": "Anglers come from all over the world to fish it. Five-pound trout have often been caught right in Dunsmuir. This stretch supplies about 15 percent of the water flowing into Shasta Lake, water that later becomes part of the Central Valley Project and is sent on through the valley. Salmon once spawned up here too, until dams built in the 20th century cut them off from the whole upper river.",
    "spot": null,
    "months": null,
    "wiki": "Sacramento River",
    "src": "https://en.wikipedia.org/wiki/Sacramento_River",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento_River"
+   "src2": "https://en.wikipedia.org/wiki/Dunsmuir,_California"
   },
   {
    "state": "CA",
@@ -313,7 +313,7 @@
    "name": "River, rails and road",
    "cat": "hist",
    "visible": true,
-   "text": "The river, the railroad and the freeway all squeeze through this one canyon. The railroad was built up the canyon in the 1880s, along the old Siskiyou Trail. Amtrak's Coast Starlight still runs these tracks every day on its trips between Los Angeles and Seattle.",
+   "text": "The river, the railroad and the freeway all squeeze through this one canyon. The railroad follows the old Siskiyou Trail. Amtrak's Coast Starlight still runs these tracks every day on its trips between Los Angeles and Seattle.",
    "more": "From 1949, the Southern Pacific's Shasta Daylight streamliner ran this route between Oakland and Portland in about 15 and a half hours. Writer and train fan Lucius Beebe described riding all morning in the shadowy presence of Mount Shasta, a brooding, symmetrical cone of everlasting snow. When Amtrak took over in 1971, the Southern Pacific's own trains on this route ended, and Dunsmuir became a stop on the Coast Starlight. It is the train's only stop in Siskiyou County and the northernmost passenger station in California. Because of the way the schedules line up, trains in both directions pass through Dunsmuir in the middle of the night.",
    "spot": "Look for railroad tracks running alongside the river.",
    "months": null,
@@ -538,7 +538,7 @@
    "cat": "farm",
    "visible": false,
    "text": "On Old Stage Road in Mount Shasta, the Mount Shasta Hatchery has raised trout since 1888, and the state calls it the oldest trout hatchery west of the Mississippi. It supplies most of the eggs for the state's trout hatcheries, upwards of 30 million a year. From mid-March through July, visitors can watch the eggs hatch and the baby fish grow.",
-   "more": "The same address was once the Strawberry Valley Stage Station, where stagecoach drivers got fresh horses from 1857 until the railroad arrived in 1886. Across the road stood the Berryvale post office, whose first postmaster was Justin Sisson. He built a hotel nearby in 1865 and started his own trout hatchery in 1887. The town that grew up here was called Strawberry Valley, then Sisson, and finally Mount Shasta. The stage station site is California Historical Landmark No. 396. Trout here can grow to nearly 10 pounds, and the Sisson Museum tells the story of the hatchery and the area.",
+   "more": "The same address was once the Strawberry Valley Stage Station, where stagecoach drivers got fresh horses from 1857 until the railroad arrived in 1886. Across the road stood the Berryvale post office, whose first postmaster was Justin Sisson. He built a hotel nearby in 1865 and started his own trout hatchery in 1887. The stage station site is California Historical Landmark No. 396. Trout here can grow to nearly 10 pounds, and the Sisson Museum tells the story of the hatchery and the area.",
    "spot": null,
    "months": [
     3,
@@ -592,7 +592,7 @@
    "cat": "nature",
    "visible": true,
    "text": "Mount Shasta rises to 14,179 feet. By volume, about 85 cubic miles, it is the biggest stratovolcano in the Cascade Range, and seven glaciers ring its slopes. Its last major eruption was about 3,000 years ago, and the U.S. Geological Survey rates it a very high threat volcano.",
-   "more": "The Whitney Glacier is the longest glacier in California, and the Hotlum holds the most ice. A 2002 survey found that, unusually, Shasta's glaciers had grown since 1951, fed by heavier snowfall, though researchers warned that further warming would likely make them retreat. The first recorded climb to the summit was in 1854, and the first women reached the top in 1856. Naturalist John Muir wrote about surviving an overnight blizzard near the summit by lying in hot sulfur springs. Smaller eruptions happened as recently as about 200 years ago, and a 2019 report put the chance of an eruption by 2049 at 3.5 percent.",
+   "more": "The Shasta people call the mountain Waka-nunee-Tuki-wuki, and in the Karuk language it is Uytaahkoo. The first written description of it, from a Spanish expedition in 1817, tells of a very high hill, entirely covered with snow. The Whitney Glacier is the longest glacier in California, and the Hotlum holds the most ice. A 2002 survey found that, unusually, Shasta's glaciers had grown since 1951, fed by heavier snowfall, though researchers warned that further warming would likely make them retreat. The first recorded climb to the summit was in 1854, and the first women reached the top in 1856. Naturalist John Muir wrote about surviving an overnight blizzard near the summit by lying in hot sulfur springs. Smaller eruptions happened as recently as about 200 years ago, and a 2019 report put the chance of an eruption by 2049 at 3.5 percent.",
    "spot": "Look for a huge snowy volcano with a smaller cone on its west side.",
    "months": null,
    "wiki": "Mount Shasta",
@@ -665,22 +665,6 @@
   },
   {
    "state": "CA",
-   "exit": 746,
-   "lat": null,
-   "lon": null,
-   "name": "A mountain of many names",
-   "cat": "hist",
-   "visible": false,
-   "text": "The first written description of Mount Shasta came from a Spanish expedition. On May 20, 1817, Narciso Duran wrote of a very high hill, entirely covered with snow, that soldiers called Jesus Maria. The Shasta people call the mountain Waka-nunee-Tuki-wuki, and in the Karuk language it is Uytaahkoo.",
-   "more": "Fur trapper Peter Skene Ogden of the Hudson's Bay Company recorded seeing the mountain in 1826, and in 1827 he gave the name Sasty or Sastise to Mount McLoughlin in Oregon instead. An 1839 map called this peak Rogers Peak. The name Shasta moved to this mountain in 1841, partly through the work of the United States Exploring Expedition. Where the word Shasta itself comes from is unclear. The name Yreka, though, comes from waik'a, the Shasta people's word for this mountain, meaning north mountain or white mountain.",
-   "spot": null,
-   "months": null,
-   "wiki": "Mount Shasta",
-   "src": "https://en.wikipedia.org/wiki/Mount_Shasta",
-   "src2": "https://en.wikipedia.org/wiki/Yreka,_California"
-  },
-  {
-   "state": "CA",
    "exit": 747,
    "lat": 41.4242,
    "lon": -122.3844,
@@ -735,8 +719,8 @@
    "name": "Weed's wildfires",
    "cat": "hist",
    "visible": false,
-   "text": "The same strong winds that dry lumber have driven wildfires through Weed. On September 15, 2014, the wind-driven Boles Fire destroyed more than 150 buildings, most of them homes, in a single day. On September 2, 2022, the Mill Fire started at the lumber mill north of town and burned the Lincoln Heights neighborhood.",
-   "more": "Fire officials traced the Mill Fire to the mill's operations, and the company said a machine meant to cool hot ash from its wood-burning power plant may have failed. The fire destroyed 118 structures, and two people died. It raced north into Lake Shastina, and that same afternoon a second blaze, the Mountain Fire, started near Gazelle. In 2021, the Lava Fire, believed to have been started by lightning, burned more than 26,000 acres on Mount Shasta's slopes. It also damaged a railroad trestle, disrupting Amtrak's Coast Starlight for weeks.",
+   "text": "On September 15, 2014, the wind-driven Boles Fire spread through Weed and destroyed more than 150 buildings, most of them homes, in a single day. On September 2, 2022, the Mill Fire started at the lumber mill north of town and burned the Lincoln Heights neighborhood.",
+   "more": "Fire officials traced the Mill Fire to the mill's operations, and the company said a machine meant to cool hot ash from its wood-burning power plant may have failed. The fire destroyed 118 structures, and two people died. It raced north into Lake Shastina. In 2021, the Lava Fire, believed to have been started by lightning, burned more than 26,000 acres on Mount Shasta's slopes. It also damaged a railroad trestle, disrupting Amtrak's Coast Starlight for weeks.",
    "spot": null,
    "months": null,
    "wiki": "Mill Fire (2022)",
@@ -768,7 +752,7 @@
    "cat": "hist",
    "visible": false,
    "text": "A two-lane county road called Old Highway 99 runs between Weed and Yreka, still in the same form it had when it was U.S. 99, the main West Coast highway before I-5. It roughly parallels the freeway, but at one point swings several miles away.",
-   "more": "U.S. 99 was created in 1926 and ran from the Mexican border to the Canadian border. It was known as the Golden State Highway and the Main Street of California. Its end began with a 1963 bill by State Senator Randolph Collier that renumbered California's highways, and by 1968 the route was gone, replaced here by I-5. In Weed, a short piece of it survives as State Route 265. North of Yreka, old 99 became State Route 263, and much of it between Hornbrook and Oregon has been torn up or sits on private land.",
+   "more": "U.S. 99 was created in 1926 and ran from the Mexican border to the Canadian border. It was known as the Golden State Highway and the Main Street of California. Its end began with a 1963 bill by State Senator Randolph Collier that renumbered California's highways, and by 1968 the route was gone, replaced here by I-5. North of Yreka, old 99 became State Route 263, and much of it between Hornbrook and Oregon has been torn up or sits on private land.",
    "spot": null,
    "months": null,
    "wiki": "U.S. Route 99 in California",
@@ -864,7 +848,7 @@
    "cat": "town",
    "visible": true,
    "text": "In March 1851, a mule packer named Abraham Thompson found gold here, and by April, 2,000 miners had arrived at what they called Thompson's Dry Diggings. The name Yreka comes from waik'a, the Shasta people's word for Mount Shasta. Mark Twain told a funnier story: a bakery sign seen backwards, BAKERY without the B, read YREKA.",
-   "more": "Yreka is the county seat, and its brick courthouse, finished in 1857, stayed in use until 2021. The heart of downtown, along West Miner Street, is a historic district and a California Historical Landmark. The town holds Gold Rush Days every June, and its city flower is the Yreka phlox. The Karuk Tribe has housing, offices and the Rain Rock Casino on its land here, and in the Karuk language Yreka is kahtishraam. The town's history also includes hard chapters, among them two lynchings, in 1895 and 1935.",
+   "more": "In the Shasta language, waik'a means north mountain or white mountain. Yreka is the county seat, and its brick courthouse, finished in 1857, stayed in use until 2021. The heart of downtown, along West Miner Street, is a historic district and a California Historical Landmark. The town holds Gold Rush Days every June, and its city flower is the Yreka phlox. The Karuk Tribe has housing, offices and the Rain Rock Casino on its land here, and in the Karuk language Yreka is kahtishraam. The town's history also includes hard chapters, among them two lynchings, in 1895 and 1935.",
    "spot": null,
    "months": null,
    "wiki": "Yreka, California",
@@ -896,7 +880,7 @@
    "cat": "nature",
    "visible": true,
    "text": "The Shasta River starts on Mount Eddy and runs 58 miles through Shasta Valley to the Klamath. North of Yreka, the freeway crosses it, and the river then slips into a canyon. It's a spawning river for Chinook salmon, and estimates say about 80,000 adult fish once returned to it every year.",
-   "more": "Most of its water comes from groundwater and irrigation runoff, and some is Mount Shasta snowmelt that flows out of lava tubes as springs, feeding creeks like Big Springs Creek. The valley gets only about 14 inches of rain a year. Today fewer than one in ten of those salmon still return, and recent droughts have made it hard for young fish to survive. The river also supports coho salmon and steelhead. It meets the Klamath where Highways 263 and 96 come together.",
+   "more": "Most of its water comes from groundwater and irrigation runoff, and some is Mount Shasta snowmelt that flows out of lava tubes as springs, feeding creeks like Big Springs Creek. Today fewer than one in ten of those salmon still return, and recent droughts have made it hard for young fish to survive. The river also supports coho salmon and steelhead. It meets the Klamath where Highways 263 and 96 come together.",
    "spot": null,
    "months": null,
    "wiki": "Shasta River",
@@ -944,7 +928,7 @@
    "cat": "nature",
    "visible": true,
    "text": "The freeway crosses the Klamath River near here, where the river turns sharply south to meet I-5. Upstream, four hydroelectric dams were torn down in 2023 and 2024, the largest dam removal in American history. On October 17, 2024, a fall-run Chinook salmon was spotted in Oregon's Upper Klamath Basin, the first to reach it in more than 100 years.",
-   "more": "The Klamath is the third-largest salmon and steelhead river on the West Coast of the lower 48 states. It is also one of only three U.S. rivers that cross the Cascade Range. Copco No. 2 came down first, in October 2023, and the last of the dams was gone in 2024, reopening about 400 miles of river to spawning salmon. In 2025, tagged Chinook were seen above Upper Klamath Lake for the first time in more than a century. That same summer, Indigenous teenagers from the region made the first canoe trip down the entire river in over 100 years.",
+   "more": "The Klamath is the third-largest salmon and steelhead river on the West Coast of the lower 48 states. Copco No. 2 came down first, in October 2023, and the last of the dams was gone in 2024, reopening about 400 miles of river to spawning salmon. In 2025, tagged Chinook were seen above Upper Klamath Lake for the first time in more than a century. That same summer, Indigenous teenagers from the region made the first canoe trip down the entire river in over 100 years.",
    "spot": "Look for the river below the freeway bridge.",
    "months": null,
    "wiki": "Klamath River",
@@ -1038,7 +1022,7 @@
    "from": 680,
    "to": 688,
    "label": "North Redding and the dam towns",
-   "text": "Here Redding's northern edge meets the city of Shasta Lake, which grew from the camps of the people who built Shasta Dam, a few miles west.",
+   "text": "Here Redding's northern edge meets the city of Shasta Lake, with Shasta Dam a few miles west.",
    "seasons": {
     "summer": "Summers here are hot and dry, with big swings between daytime highs and nighttime lows.",
     "winter": "Winters are cool and wet."
@@ -1049,9 +1033,9 @@
    "from": 688,
    "to": 704,
    "label": "Shasta Lake",
-   "text": "The freeway crosses California's largest reservoir, whose steep shores are covered with tall evergreens and manzanita. In drought years, old highway bridges and railroad tunnels show above the water.",
+   "text": "The freeway crosses Shasta Lake, whose steep shores are covered with tall evergreens and manzanita.",
    "seasons": {
-    "summer": "Summer is the busy season at Bridge Bay, the lake's largest marina, and Lakehead can gain more than 1,500 seasonal residents."
+    "summer": "Summer is the busy season at Bridge Bay, the lake's largest marina."
    }
   },
   {
@@ -1059,7 +1043,7 @@
    "from": 704,
    "to": 722,
    "label": "Sacramento River canyon",
-   "text": "A steep, forested canyon where the river, the railroad and I-5 squeeze side by side, past old stage stops and Gold Rush camps.",
+   "text": "The freeway follows a steep, forested canyon, past old stage stops and Gold Rush camps.",
    "seasons": {
     "winter": "North of Redding, snow can fall at higher elevations from fall to spring, and Caltrans sometimes requires chains."
    }
@@ -1082,10 +1066,9 @@
    "from": 735,
    "to": 746,
    "label": "Mount Shasta and Black Butte",
-   "text": "The canyon opens onto the foot of the volcano, with the city of Mount Shasta, the dark cone of Black Butte and Black Butte Summit at 3,912 feet.",
+   "text": "The canyon opens onto the foot of the volcano, with the city of Mount Shasta, the dark cone of Black Butte and Black Butte Summit.",
    "seasons": {
-    "winter": "Mount Shasta City averages nearly 103 inches of snow a year, and in February 1959 the old Ski Bowl on the mountain got 15.75 feet in one storm, a U.S. record.",
-    "spring": "From mid-March through July, visitors can watch trout eggs hatch at the Mount Shasta Hatchery.",
+    "winter": "In February 1959 the old Ski Bowl on Mount Shasta got 15.75 feet of snow in one storm, a U.S. record.",
     "summer": "Climbers head for Mount Shasta's summit from late April into October."
    }
   },
@@ -1094,7 +1077,7 @@
    "from": 746,
    "to": 756,
    "label": "Weed, lumber and wind",
-   "text": "Weed grew up around lumber mills, helped by strong winds that dried the boards. Hot flows from Shastina's eruptions once covered the ground here, and recent wildfires have left their marks.",
+   "text": "Weed grew up around lumber mills. Hot flows from Shastina's eruptions once covered the ground here, and recent wildfires have left their marks.",
    "seasons": {
     "summer": "Weed holds its Carnevale, with bocce ball tournaments, each June or July."
    }
@@ -1104,7 +1087,7 @@
    "from": 756,
    "to": 770,
    "label": "Shasta Valley",
-   "text": "A wide, dry valley in the rain shadow of the Klamath Mountains, dotted with the hummocks of an ancient landslide, with hay fields, cattle and juniper.",
+   "text": "A wide, dry valley in the rain shadow of the Klamath Mountains, dotted with hummocks, with hay fields, cattle and juniper.",
    "seasons": {
     "summer": "Summer rain almost never falls here, except for an occasional thunderstorm.",
     "winter": "Winters are cool to cold, with fairly frequent snow."
@@ -1126,9 +1109,8 @@
    "from": 785,
    "to": 797,
    "label": "Klamath River to the Oregon line",
-   "text": "Below the old Iron Gate Dam site, the Klamath runs through an arid valley of farms and ranches before bending south to meet I-5. To the north rise the Siskiyou Mountains, the divide between the Klamath and the Rogue.",
+   "text": "Below the old Iron Gate Dam site, the Klamath runs through an arid valley of farms and ranches. To the north rise the Siskiyou Mountains, the divide between the Klamath and the Rogue.",
    "seasons": {
-    "fall": "Fall-run Chinook salmon now swim past here into Oregon; the first one reached the Upper Klamath Basin on October 17, 2024.",
     "winter": "Just over the Oregon line, Siskiyou Summit usually gets snow from November through April."
    }
   }

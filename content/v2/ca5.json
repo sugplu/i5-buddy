@@ -25,7 +25,7 @@
    "name": "Harris Ranch Inn and restaurant",
    "cat": "stop",
    "visible": true,
-   "text": "The Harris Ranch restaurant opened beside the freeway in 1977, aimed at local farmers, and soon became a popular halfway stop on the drive between Los Angeles and San Francisco. A 153-room hacienda-style inn was added in 1987, and by 2008 the restaurant ranked sixth in California by sales.",
+   "text": "The Harris Ranch restaurant opened beside the freeway in 1977, aimed at local farmers, and soon became a popular stop for travelers on the busy freeway between Los Angeles and San Francisco. A 153-room hacienda-style inn was added in 1987, and by 2008 the restaurant ranked sixth in California by sales.",
    "more": "In the late 2000s the restaurant turned to a farm to fork menu, serving the ranch's own beef along with wine and other products the ranch makes. Its beef and prepared meals also go to grocery stores and restaurants across the country. Next to the inn is Harris Ranch Airport, a single runway 2,820 feet long, open since 1981. No planes are based there, yet it averages about 27 takeoffs and landings a day, and one of its most common uses is flying in to eat or stay at Harris Ranch.",
    "spot": "Look for the big hacienda-style inn right beside the freeway.",
    "months": null,
@@ -217,8 +217,8 @@
    "name": "El Camino Viejo",
    "cat": "hist",
    "visible": false,
-   "text": "Long before the freeway, an older road ran along this side of the valley: El Camino Viejo, the Old Road to Los Angeles. Spanish ox carts used it as early as 1780, traveling from one creek or waterhole to the next along the foot of the Coast Ranges, between San Pedro Bay and the shore of San Francisco Bay at Oakland.",
-   "more": "Its Spanish names for creeks and watering places described what travelers found: Arroyo de las Garzas, Creek of the Herons, and Aguaje de las Berendas, Waterhole of the Pronghorns, in Merced County, and Arroyo de las Polvarduras, Creek of the Dust Storms, in Fresno County. The road was favored by those who wanted to stay out of sight of Spanish officials on the coast. Later, Californio vaqueros drove cattle along it, while mustang catchers herded wild horses to the Bay Area, Southern California and Sonora. At its north end the road turned west over the Diablo Range at Corral Hollow Pass. Through Santa Nella, its route has been replaced by Interstate 5 and Highway 33.",
+   "text": "Long before the freeway, an older road ran along this side of the valley: El Camino Viejo, the Old Road to Los Angeles, the oldest north-south trail in the interior of Spanish and Mexican California. Spanish ox carts used it as early as 1780, traveling from one creek or waterhole to the next along the foot of the Coast Ranges, between San Pedro Bay and the shore of San Francisco Bay at Oakland.",
+   "more": "From Los Angeles the road crossed Tejon Pass and came down through the San Emigdio Mountains into the valley. Its Spanish names for creeks and watering places described what travelers found: Arroyo de las Garzas, Creek of the Herons, and Aguaje de las Berendas, Waterhole of the Pronghorns, in Merced County, and Arroyo de las Polvarduras, Creek of the Dust Storms, in Fresno County. The road was favored by those who wanted to stay out of sight of Spanish officials on the coast. Later, Californio vaqueros drove cattle along it, while mustang catchers herded wild horses to the Bay Area, Southern California and Sonora. At its north end the road turned west over the Diablo Range at Corral Hollow Pass. Through Santa Nella, its route has been replaced by Interstate 5 and Highway 33.",
    "spot": null,
    "months": null,
    "wiki": "El Camino Viejo",
@@ -362,7 +362,7 @@
    "cat": "hist",
    "visible": true,
    "text": "Beside the freeway, the Dos Amigos Pumping Plant lifts California Aqueduct water 118 feet. Its six pumps can move 15,450 cubic feet of water a second, and that single boost lets the water flow by gravity for about 95 miles, to where the aqueduct's Coastal Branch splits off south of Kettleman City.",
-   "more": "The plant was built between 1963 and 1966 as part of the State Water Project, and its name means two friends in Spanish. Its water arrives through about 16 miles of canal from O'Neill Forebay. After the Coastal Branch split, the main aqueduct runs by gravity for another 66 miles to the Buena Vista Pumping Plant, which gives it the next lift. A vista point called Dos Amigos sits beside the freeway nearby.",
+   "more": "The plant was built between 1963 and 1966 as part of the State Water Project. Its name means two friends in Spanish. Its water arrives through about 16 miles of canal from O'Neill Forebay. A vista point called Dos Amigos sits beside the freeway nearby.",
    "spot": "Look for a big pumping plant beside the wide concrete canal.",
    "months": null,
    "wiki": "Dos Amigos Pumping Plant",
@@ -399,7 +399,7 @@
    "cat": "odd",
    "visible": true,
    "text": "Path 15, part of California's main north-south power corridor, runs along this side of the valley, generally 3 to 7 miles west of the freeway. Its 500,000-volt lines run from the Los Banos substation, west of Los Banos, to Midway, near Buttonwillow, linking hydroelectric plants in the north with fossil fuel power plants in the south.",
-   "more": "In places the lines run beside the freeway, and the two eastern lines cross it twice. Between Los Banos and the Gates substation near Coalinga there were once only two 500,000-volt lines, a bottleneck that was one of the leading causes of California's electricity crisis of 2000 and 2001. A third line, built by the federal Western Area Power Administration with several utilities, was finished on time and under budget on December 21, 2004. It runs apart from the other two, often out of sight, and it is the only line in Path 15 that strings its wires in bundles of three. North of Los Banos, two of the corridor's lines cross O'Neill Forebay on several man-made islands.",
+   "more": "In places the lines run beside the freeway, and the two eastern lines cross it twice. The newest line, finished in 2004 between Los Banos and the Gates substation near Coalinga, runs apart from the older two, often out of sight. It is the only line in Path 15 that strings its wires in bundles of three. North of Los Banos, two of the corridor's lines cross O'Neill Forebay on several man-made islands.",
    "spot": null,
    "months": null,
    "wiki": "Path 15",
@@ -462,8 +462,8 @@
    "name": "Tule elk at San Luis refuge",
    "cat": "nature",
    "visible": false,
-   "text": "About 13 miles east, San Luis National Wildlife Refuge, established in 1967, keeps a herd of reintroduced tule elk, the smallest kind of elk, found only in California. About half a million tule elk roamed the state when Europeans arrived, but by 1870 they were thought to be gone.",
-   "more": "In 1874 the cattle king Henry Miller found a few survivors on his ranch near Bakersfield and protected them, and by 1895 there were 28. Reintroductions later spread herds around the state. In March 1978, ten tule elk from Merced County, two males and eight females, were moved to Tomales Point at Point Reyes, where the herd struggled at first, then began growing fast in 1981. By 2019 California had about 5,700 tule elk. At the refuge, visitors can drive a Tule Elk auto tour route, and in hot months the elk are easiest to see in the morning or early evening.",
+   "text": "About 13 miles east, San Luis National Wildlife Refuge, established in 1967, keeps a herd of reintroduced tule elk, the smallest kind of elk. Its more than 26,800 acres of wetlands, riverside woods, native grasslands and vernal pools are also a major wintering ground and stopover for waterfowl and shorebirds on the Pacific Flyway.",
+   "more": "The refuge has played a vital role in the recovery of tule elk, which were nearly wiped out in the 1800s. In March 1978, ten tule elk from Merced County, two males and eight females, were moved to Tomales Point at Point Reyes, where the herd struggled at first, then began growing fast in 1981. The refuge visitor center has an exhibit hall with displays and a place to view tule elk. From there, a Tule Elk auto tour route and a Waterfowl route wind through the refuge, and in hot months the elk are easiest to see in the morning or early evening.",
    "spot": null,
    "months": null,
    "wiki": "San Luis National Wildlife Refuge",
@@ -549,22 +549,6 @@
    "wiki": "Delta–Mendota Canal",
    "src": "https://en.wikipedia.org/wiki/Delta%E2%80%93Mendota_Canal",
    "src2": "https://en.wikipedia.org/wiki/Delta%E2%80%93Mendota_Canal"
-  },
-  {
-   "state": "CA",
-   "exit": 413,
-   "lat": null,
-   "lon": null,
-   "name": "The first West Side Freeway",
-   "cat": "hist",
-   "visible": true,
-   "text": "This part of I-5, between Los Banos and the San Joaquin County line, was the first stretch of the West Side Freeway to be finished, in 1967. Planners chose this remote side of the valley over turning Highway 99 into a freeway, because it skipped the farm towns and gave a faster, more direct route through the state.",
-   "more": "Local groups had pushed for a west side freeway as early as 1945, and construction began in the early 1960s. The rest came in two big pieces: the stretch to Wheeler Ridge in 1972 and the one to Sacramento in 1979. When the long southern section opened in 1972, there were no businesses beside it and the nearest towns were miles away and out of sight, so cars often ran out of gas. The median from Wheeler Ridge to Tracy is wide enough that the freeway could someday grow to six or eight lanes. The stretch from Highway 152 near Santa Nella to I-580 near Tracy is an official state scenic highway.",
-   "spot": null,
-   "months": null,
-   "wiki": "Interstate 5 in California",
-   "src": "https://en.wikipedia.org/wiki/Interstate_5_in_California",
-   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
   },
   {
    "state": "CA",
@@ -768,13 +752,13 @@
    "name": "The I-580 junction",
    "cat": "hist",
    "visible": true,
-   "text": "At this junction, I-580 heads for the Bay Area over Altamont Pass, a major crossing of the Diablo Range. Early plans made it a branch of I-5 called I-5W, and I-5W signs once stood along the road between Tracy and Oakland. The 1964 renumbering dropped the I-5W name, and the route became I-580.",
-   "more": "One stretch of I-580 is named the William Elton Brownie Brown Freeway, for a Tracy man who helped decide the route of I-5 through the San Joaquin Valley. The piece between the I-205 split and this junction was built in the late 1960s and early 1970s on new right-of-way through low hills near Patterson. In all, I-580 runs about 76 miles, from San Rafael through Oakland to this meeting with I-5 south of Tracy. The junction sits in San Joaquin County, just north of the Stanislaus County line.",
+   "text": "At this junction, I-580 heads for the Bay Area over Altamont Pass, a major crossing of the Diablo Range. In all, I-580 runs about 76 miles, from San Rafael through Oakland to this meeting with I-5 south of Tracy. Together with I-5, it is a main route between the Bay Area and Southern California.",
+   "more": "One stretch of I-580 is named the William Elton Brownie Brown Freeway, for a Tracy man who helped decide the route of I-5 through the San Joaquin Valley. The piece between the I-205 split and this junction was built in the late 1960s and early 1970s on new right-of-way through low hills near Patterson. That piece is an official state scenic highway, and so is I-5 from Highway 152 near Santa Nella to this junction, the only stretch of I-5 the state has named a scenic highway. The junction sits in San Joaquin County, just north of the Stanislaus County line.",
    "spot": null,
    "months": null,
    "wiki": "Interstate 580 (California)",
-   "src": "https://gribblenation.org/2019/12/interstate-5-west-side-freeway.html",
-   "src2": "https://en.wikipedia.org/wiki/Interstate_580_(California)"
+   "src": "https://en.wikipedia.org/wiki/Interstate_580_(California)",
+   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
   },
   {
    "state": "CA",
@@ -831,28 +815,6 @@
   },
   {
    "state": "CA",
-   "exit": 455,
-   "lat": null,
-   "lon": null,
-   "name": "Tule fog",
-   "cat": "nature",
-   "visible": false,
-   "text": "From November through March, this part of the valley can fill with tule fog, a thick ground fog named for the tule marshes of the Central Valley. Visibility in it is usually less than 600 feet, and as of 2005 it was the leading cause of weather-related crashes in California.",
-   "more": "It forms after a good rain, on calm winter nights when the damp ground cools quickly and cold air gets trapped under warmer air above. Once settled, it can sit for days or even weeks. The fog matters to farmers too: it helps orchards of almonds, cherries and pistachios get the winter chill they need. Fog days in the valley have dropped by almost half since 1981, partly because cleaner air leaves fewer tiny particles for fog droplets to form on.",
-   "spot": null,
-   "months": [
-    11,
-    12,
-    1,
-    2,
-    3
-   ],
-   "wiki": "Tule fog",
-   "src": "https://en.wikipedia.org/wiki/Tule_fog",
-   "src2": "https://en.wikipedia.org/wiki/Tule_fog"
-  },
-  {
-   "state": "CA",
    "exit": 457,
    "lat": 37.75444,
    "lon": -121.36972,
@@ -906,7 +868,7 @@
    "from": 330,
    "to": 341,
    "label": "Coalinga plains",
-   "text": "Wide-open farmland stretches east of the freeway, with the oil field ridges around Coalinga and the Diablo Range to the west, and the big Harris Ranch feedlot beside the freeway often announces itself by smell.",
+   "text": "Wide-open farmland stretches east of the freeway, with the oil field ridges around Coalinga and the Diablo Range to the west, and the big Harris Ranch feedlot beside the freeway.",
    "seasons": {
     "summer": "Summers around Coalinga are very hot and dry, and most of its 8 inches of yearly rain falls from October to May."
    }
@@ -917,16 +879,14 @@
    "to": 357,
    "label": "Westlands farm country",
    "text": "Big farms of Westlands Water District spread across the valley floor here, growing crops such as almonds, tomatoes, pistachios and wheat, with the three Joaquin Rocks on the ridge to the west.",
-   "seasons": {
-    "winter": "Each February, more than a million beehives are trucked into California's almond orchards for the bloom."
-   }
+   "seasons": null
   },
   {
    "state": "CA",
    "from": 357,
    "to": 372,
    "label": "Panoche Hills",
-   "text": "The low Panoche Hills rise close on the west with the higher Diablo Range beyond them, and southwest of Mendota, east of the freeway, the ground sank about 28 feet from groundwater pumping.",
+   "text": "The low Panoche Hills rise close on the west with the higher Diablo Range beyond them.",
    "seasons": {
     "winter": "The grasslands of Panoche Valley, beyond the hills, are critical habitat, especially in winter, for golden eagles, hawks and mountain plovers."
    }
@@ -936,7 +896,7 @@
    "from": 372,
    "to": 391,
    "label": "Firebaugh and the canals",
-   "text": "The aqueduct, here officially the San Luis Canal, runs through flat farmland, with the San Joaquin River and the town of Firebaugh well off to the east and the Panoche Hills to the west.",
+   "text": "The aqueduct runs through flat farmland, with the San Joaquin River and the town of Firebaugh well off to the east and the Panoche Hills to the west.",
    "seasons": {
     "summer": "Firebaugh's yearly Cantaloupe Round-Up celebrates the melon harvest, which peaks in late July."
    }
@@ -946,7 +906,7 @@
    "from": 391,
    "to": 403,
    "label": "Los Banos and the Grasslands",
-   "text": "Pumping plants, power lines and canals line the west side of the valley here, while the Grasslands, a wetland of international importance on the Pacific Flyway, spread along the San Joaquin River north and east of Los Banos.",
+   "text": "Pumping plants, power lines and canals line the west side of the valley here, while the Grasslands spread along the San Joaquin River north and east of Los Banos.",
    "seasons": {
     "fall": "Each autumn more than 20,000 cranes and 60,000 geese arrive at Merced National Wildlife Refuge to stay about six months.",
     "spring": "Wildflowers bloom in rings around the drying vernal pools of Merced National Wildlife Refuge."
@@ -957,7 +917,7 @@
    "from": 403,
    "to": 410,
    "label": "San Luis water crossroads",
-   "text": "The state and federal water projects meet here and share San Luis Reservoir, its dam and its forebay, while Highway 152 heads west over Pacheco Pass toward the coast.",
+   "text": "The state and federal water projects meet here and share San Luis Reservoir, its dam and its forebay.",
    "seasons": {
     "winter": "In the wet season, from about November to April, water to spare is pumped from O'Neill Forebay up into San Luis Reservoir."
    }
@@ -967,7 +927,7 @@
    "from": 410,
    "to": 428,
    "label": "Gustine and Newman",
-   "text": "Two big canals run along the western edge of the valley, while farms spread east across Merced and Stanislaus counties toward the old railroad towns of Gustine and Newman and the San Joaquin River.",
+   "text": "Farms spread east across Merced and Stanislaus counties toward the old railroad towns of Gustine and Newman and the San Joaquin River.",
    "seasons": {
     "fall": "Newman holds its yearly Fall Festival on Labor Day weekend."
    }
@@ -979,7 +939,6 @@
    "label": "Patterson and Westley",
    "text": "The Diablo Range rises close on the west, cut by Del Puerto Canyon, while Patterson, known for its distribution centers, sits east of the freeway, and on clear days Mount Diablo shows on the northwest skyline.",
    "seasons": {
-    "winter": "From November through March, thick tule fog can settle over the valley floor.",
     "summer": "Downtown Patterson hosts its Apricot Fiesta on the first weekend of June."
    }
   },

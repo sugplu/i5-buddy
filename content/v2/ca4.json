@@ -137,29 +137,13 @@
    "name": "Mountains named for a saint",
    "cat": "nature",
    "visible": true,
-   "text": "The mountains forming the valley's southern wall are the San Emigdio Mountains, which top out at 7,492 feet. They are named for Saint Emygdius, an early Christian martyr whom Catholics call on for protection from earthquakes. It suits them: their eastern end reaches Lebec, near where the San Andreas and Garlock faults come together.",
+   "text": "The mountains forming the valley's southern wall are the San Emigdio Mountains, which top out at 7,492 feet. They are named for Saint Emygdius, an early Christian martyr whom Catholics call on for protection from earthquakes.",
    "more": "Emygdius was a bishop in Ascoli Piceno, Italy. In 1703 a violent earthquake shook the region but spared the city, people gave him the credit, and from then on he was invoked against earthquakes. All Catholic churches in California are directed to mark his feast day and ask his protection from earthquakes. The range links the Tehachapi Mountains with the Temblor Range, whose own name is Spanish for tremor. Its highest peaks include San Emigdio Mountain, Tecuya Mountain and Brush Mountain, all above 7,000 feet. San Emigdio Creek, which runs year-round, carries the same name down San Emigdio Canyon.",
    "spot": "Look for the long wall of mountains along the south edge of the valley.",
    "months": null,
    "wiki": "San Emigdio Mountains",
    "src": "https://en.wikipedia.org/wiki/San_Emigdio_Mountains",
    "src2": "https://en.wikipedia.org/wiki/Emygdius"
-  },
-  {
-   "state": "CA",
-   "exit": 228,
-   "lat": null,
-   "lon": null,
-   "name": "El Camino Viejo, the Old Road",
-   "cat": "hist",
-   "visible": false,
-   "text": "Long before this freeway, an older road ran along the west side of the valley. El Camino Viejo, the Old Road to Los Angeles, came over Tejon Pass, down through the San Emigdio Mountains to Buena Vista Lake, then north along the foothills from one watering place to the next, all the way to San Francisco Bay. Spanish ox carts used it as early as 1780.",
-   "more": "It was the oldest north-south trail in the interior of Spanish and Mexican California. Coming from Tejon Pass, it avoided Grapevine Canyon, turning west up Cuddy Canyon and coming down San Emigdio Creek into the valley, past Rancho San Emidio, a land grant of 1842. In the 1840s, more Mexican land grant ranchos were set up along the route. The names of its Kern County stops describe this country: Aguaje de la Brea, the tar watering place; Aguaje de los Temblores, the watering place of the earthquakes; and Aguaje Mesteño, the mustang watering place. Farther north came Arroyo de las Polvarduras, the creek of the dust storms, and Arroyo Pasajero, the travelers' creek.",
-   "spot": null,
-   "months": null,
-   "wiki": "El Camino Viejo",
-   "src": "https://en.wikipedia.org/wiki/El_Camino_Viejo",
-   "src2": "https://en.wikipedia.org/wiki/Tejon_Pass"
   },
   {
    "state": "CA",
@@ -318,7 +302,7 @@
    "cat": "town",
    "visible": false,
    "text": "The town of Buttonwillow is named for a single tree, and it is not a willow at all. It is a buttonbush. A lone one here stood out as a landmark on an old trail across the valley, and it was a Yokuts meeting place long before settlers held stock rodeos beside it. The tree is now California Historical Landmark 492.",
-   "more": "Around 1885 the cattle company Miller and Lux set up its headquarters and store beside the tree. When the town was founded in 1895 it was first called Buena Vista, but the name quickly became Buttonwillow. Cotton farming is its main industry, and locals call this cotton country. About 1,300 people live here, and for drivers it is a major stop, with gas stations, restaurants and travel centers at the Highway 58 exit. Buttonwillow Raceway Park nearby hosts sports car club races, and every year model jet fans gather here for a rally called Best in the West.",
+   "more": "When the town was founded in 1895 it was first called Buena Vista, but the name quickly became Buttonwillow. Cotton farming is its main industry, and locals call this cotton country. About 1,300 people live here, and for drivers it is a major stop, with gas stations, restaurants and travel centers at the Highway 58 exit. Buttonwillow Raceway Park nearby hosts sports car club races, and every year model jet fans gather here for a rally called Best in the West.",
    "spot": null,
    "months": null,
    "wiki": "Buttonwillow, California",
@@ -430,7 +414,7 @@
    "cat": "odd",
    "visible": false,
    "text": "A few miles west, the California Aqueduct flows downhill by gravity, with no pumps. From the Coastal Branch split south of Kettleman City, its water runs about 66 miles to the Buena Vista Pumping Plant, the first of four plants that lift it toward and over the Tehachapi Mountains. The canal is built on a slight grade so gravity does the work.",
-   "more": "The town of Lost Hills stands on the aqueduct's east bank. The aqueduct carries water for about 35 million people and 5.7 million acres of farmland, and farming on the West Side grew quickly after it was finished in the early 1970s. But pumping groundwater has made land along parts of the canal sink. By the 1970s some areas of the valley had dropped as much as 28 feet, and NASA's GRACE satellites measure the Tulare Basin sinking about a foot a year. A sagging canal carries less water and costs more to run.",
+   "more": "The town of Lost Hills stands on the aqueduct's east bank. The aqueduct carries water for about 35 million people and 5.7 million acres of farmland, and farming on the West Side grew quickly after it was finished in the early 1970s. But pumping groundwater has made land along parts of the canal sink. NASA's GRACE satellites measure the Tulare Basin sinking about a foot a year. A sagging canal carries less water and costs more to run.",
    "spot": null,
    "months": null,
    "wiki": "California Aqueduct",
@@ -445,7 +429,7 @@
    "name": "Blackwells Corner",
    "cat": "hist",
    "visible": false,
-   "text": "West on Highway 46, where it meets Highway 33, Blackwells Corner is named for George Blackwell, who started a rest stop there in 1921. On September 30, 1955, James Dean stopped there on his way to a race in Salinas, and it is often described as the last place he was seen alive before his fatal crash near Cholame.",
+   "text": "West on Highway 46, where it meets Highway 33, Blackwells Corner is named for George Blackwell, who started a rest stop there in 1921. James Dean stopped there in 1955, and it is often described as the last place he was seen alive before his fatal crash near Cholame.",
    "more": "Dean was driving west on what was then Highway 466, now Highway 46. At about 5:45 that evening, near Cholame, a college student driving the other way turned left across his path toward Highway 41, and Dean could not stop in time. The death certificate placed the crash one mile east of Cholame, at the junction of Highways 466 and 41, and an inquest jury found no criminal act. In 1977 a Japanese businessman, Seita Ohnishi, brought a stainless-steel memorial, built in Japan, to Cholame, where it stands in front of the old post office.",
    "spot": null,
    "months": null,
@@ -494,7 +478,7 @@
    "cat": "nature",
    "visible": true,
    "text": "From November through March, tule fog can fill this southern end of the valley. The thick ground fog, named for the tule marshes of the Central Valley, tends to last longer in the south and east of the valley than farther north. Inside it, visibility is usually less than 600 feet, and it can drop to almost nothing within a few feet.",
-   "more": "It forms on long, calm nights after a good rain, when the damp ground cools. Tule fog is a low cloud, usually below 2,000 feet, trapped by the mountains around the valley and pressed down by warmer air above, and it can linger for days or even weeks. Drive up into the foothills and you can look down on it from mild, clear air. As of 2005 it was the leading cause of weather-related accidents in California. In January 2024, fog led to a pileup of more than 40 vehicles on I-5 in Kern County that killed two people. When it forms, slow down and leave plenty of room.",
+   "more": "It forms on long, calm nights after a good rain, when the damp ground cools. Tule fog is a low cloud, usually below 2,000 feet, trapped by the mountains around the valley and pressed down by warmer air above, and it can linger for days or even weeks. It can stretch more than 400 miles, from Bakersfield all the way to Red Bluff. Drive up into the foothills and you can look down on it from mild, clear air. Farmers count on it too: almonds, cherries, pistachios and peaches need a long winter chill, and tule fog helps supply it. As of 2005 it was the leading cause of weather-related accidents in California. In January 2024, fog led to a pileup of more than 40 vehicles on I-5 in Kern County that killed two people. When it forms, slow down and leave plenty of room.",
    "spot": null,
    "months": [
     11,
@@ -612,7 +596,7 @@
    "cat": "odd",
    "visible": true,
    "text": "The freeway crosses the California Aqueduct here, the concrete river that carries water from the Sacramento-San Joaquin Delta toward Southern California. Counting from the south, this is the second of I-5's five crossings of the aqueduct. A typical stretch is 40 feet wide at the bottom and holds water about 30 feet deep, and the whole aqueduct runs more than 400 miles.",
-   "more": "It is named for Governor Edmund G. Pat Brown and is the main feature of the State Water Project. It begins at Clifton Court Forebay in the Delta, where the first pumps lift the water 240 feet. North of Kettleman City the canal is the federally built San Luis Canal, which carries water for both the state and federal projects; it ends at Kettleman City, where the state-built aqueduct takes over. The aqueduct's widest section is 110 feet across, and it can carry 13,100 cubic feet of water a second. A 2021 study estimated that covering canals like this with solar panels could save 11 to 22 million gallons of water per mile each year from evaporation.",
+   "more": "It is named for Governor Edmund G. Pat Brown and is the main feature of the State Water Project. It begins at Clifton Court Forebay in the Delta, where the first pumps lift the water 240 feet. The aqueduct's widest section is 110 feet across. A 2021 study estimated that covering canals like this with solar panels could save 11 to 22 million gallons of water per mile each year from evaporation.",
    "spot": "Look for the wide concrete canal of the aqueduct passing under the freeway.",
    "months": null,
    "wiki": "California Aqueduct",
@@ -644,7 +628,7 @@
    "cat": "stop",
    "visible": true,
    "text": "Kettleman City is near the halfway point between Los Angeles and San Francisco or Sacramento, which makes this exit a major stop for food and lodging. The travel stops cluster at the Highway 41 junction, while the town itself, about 1,200 people, sits about a mile north, past the aqueduct. It lies only about half a mile north of the 36th parallel.",
-   "more": "A real estate developer, A. Manford Brown, founded the town in 1929, right after oil was found in the hills, and its main street, Highway 41, was named Brown Street after him. In the early 1900s, before Tulare Lake shrank, people traveled between Lemoore and Kettleman by ferry, and as the lake receded in the late 1920s, that route became Highway 41. By 1940 about 600 people lived here. The aqueduct and the freeway both arrived in the early 1970s, and farming on the West Side grew with the new water. Most residents speak Spanish at home, and many work in agriculture.",
+   "more": "A real estate developer, A. Manford Brown, founded the town in 1929, right after oil was found in the hills, and its main street, Highway 41, was named Brown Street after him. In the early 1900s, before Tulare Lake shrank, people traveled between Lemoore and Kettleman by ferry, and as the lake receded in the late 1920s, that route became Highway 41. By 1940 about 600 people lived here. The aqueduct and the freeway both arrived in the early 1970s. Most residents speak Spanish at home, and many work in agriculture.",
    "spot": null,
    "months": null,
    "wiki": "Kettleman City, California",
@@ -772,7 +756,6 @@
    "label": "Wheeler Ridge and the valley's edge",
    "text": "Below the Grapevine the land flattens at Wheeler Ridge, where the Tehachapi and San Emigdio mountains meet the floor of the San Joaquin Valley and Highway 99 meets I-5.",
    "seasons": {
-    "winter": "From November through March, thick tule fog can settle over the valley floor.",
     "spring": "In spring, Wind Wolves Preserve in the hills to the southwest holds a nature festival with guided hikes and wildflower viewing."
    }
   },
@@ -797,7 +780,7 @@
    "from": 246,
    "to": 262,
    "label": "Kern River and the Elk Hills",
-   "text": "The freeway crosses the Kern River near the Kern Water Bank's recharge basins and runs past the low, bare Elk Hills, which sit on one of the country's great oil fields.",
+   "text": "The freeway crosses the Kern River near the Kern Water Bank's recharge basins and runs past the low, bare Elk Hills.",
    "seasons": {
     "summer": "Late summer is when the tule elk at the state reserve off Stockdale Highway become most active.",
     "fall": "The elk stay most active into early autumn."
@@ -809,9 +792,7 @@
    "to": 278,
    "label": "Buttonwillow cotton country",
    "text": "Around Buttonwillow, known locally as cotton country, farm fields and big power lines spread across the valley floor, with the Temblor Range on the far western skyline.",
-   "seasons": {
-    "winter": "On calm winter nights from November through March, tule fog can cut visibility to a few hundred feet."
-   }
+   "seasons": null
   },
   {
    "state": "CA",
@@ -819,17 +800,14 @@
    "to": 292,
    "label": "Lost Hills oil and pistachios",
    "text": "Oil pumps dot the low Lost Hills west of the freeway, the aqueduct runs past the town of Lost Hills, and Kern National Wildlife Refuge lies out on the flats to the east.",
-   "seasons": {
-    "winter": "In winter, Kern National Wildlife Refuge to the east shelters migrating ducks, geese and other water birds.",
-    "fall": "Pistachio harvest comes in the fall, when the trees are shaken and the nuts hauled to processing plants."
-   }
+   "seasons": null
   },
   {
    "state": "CA",
    "from": 292,
    "to": 309,
    "label": "Into Kings County",
-   "text": "North of the Kern County line, the Kettleman Hills rise west of the freeway, while the old bed of Tulare Lake, now farmland, spreads to the east.",
+   "text": "North of the Kern County line, the old bed of Tulare Lake, now farmland, spreads east of the freeway.",
    "seasons": {
     "winter": "In very wet winters, like 2023, storms can bring Tulare Lake back, flooding the old lakebed east of the freeway."
    }
@@ -839,7 +817,7 @@
    "from": 309,
    "to": 319,
    "label": "Kettleman Hills",
-   "text": "The Kettleman Hills rise west of the freeway, above the oil field that gave rise to Kettleman City and Avenal.",
+   "text": "The Kettleman Hills, with their oil field, rise west of the freeway.",
    "seasons": null
   },
   {
@@ -852,20 +830,6 @@
   }
  ],
  "trivia": [
-  {
-   "state": "CA",
-   "exit": 215,
-   "q": "Where does the name Grapevine come from?",
-   "choices": [
-    "A winery at the bottom of the grade",
-    "A racehorse named Grapevine",
-    "Wild grapevines in the canyon",
-    "A rancher named Grape"
-   ],
-   "answer": 2,
-   "why": "In 1772 Pedro Fages named the canyon Cañada de las Uvas, the canyon of the grapes, for its wild California grapevines.",
-   "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
-  },
   {
    "state": "CA",
    "exit": 219,

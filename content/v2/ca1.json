@@ -595,7 +595,7 @@
    "from": 9,
    "to": 20,
    "label": "San Diego Bay and downtown",
-   "text": "This stretch follows the east side of San Diego Bay through National City, the Navy's piers, Barrio Logan, downtown, the airport and Old Town, where Spanish California began in 1769.",
+   "text": "This stretch follows the east side of San Diego Bay through National City, the Navy's piers, Barrio Logan, downtown, the airport and Old Town.",
    "seasons": {
     "winter": "Most of the year's rain, less than 12 inches on average, falls from December through March.",
     "summer": "Marine layer clouds, most common from May to August, often keep mornings near the coast cool and gray, a pattern locals call May gray and June gloom."
@@ -627,9 +627,7 @@
    "label": "Carlsbad and Oceanside",
    "text": "Carlsbad's flower and strawberry fields, three more lagoons, Batiquitos, Agua Hedionda and Buena Vista, and the beach town of Oceanside fill this stretch of Luiseño and Kumeyaay country.",
    "seasons": {
-    "spring": "The Flower Fields bloom from early March into early May, and strawberry picking usually runs from March through July.",
-    "fall": "Migrating birds stop at Buena Vista Lagoon, and the strawberry farm's pumpkin season picks up in late September.",
-    "winter": "Strawberry plants set out in October give their first berries around the start of the year."
+    "fall": "The strawberry farm's pumpkin season picks up in late September."
    }
   },
   {
@@ -637,7 +635,7 @@
    "from": 54,
    "to": 70,
    "label": "Camp Pendleton coast",
-   "text": "Through Marine Corps Base Camp Pendleton the freeway follows the ocean for about 18 miles, past open hills, river valleys and the Surf Line railroad, on land kept for Marine training since 1942.",
+   "text": "Through Marine Corps Base Camp Pendleton the freeway follows the ocean for about 18 miles, past open hills, river valleys and the Surf Line railroad, on land kept for Marine training.",
    "seasons": null
   }
  ],

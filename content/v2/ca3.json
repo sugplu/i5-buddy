@@ -330,7 +330,7 @@
    "cat": "nature",
    "visible": true,
    "text": "The Santa Clara River, which passes under the freeway near Magic Mountain Parkway, runs 83 miles to the Pacific and is one of the least altered rivers in Southern California. Here its bed is dry most of the year. Spanish explorers named it on August 9, 1769, for Saint Clare of Assisi, and the valley later became known as little Santa Clara, Santa Clarita, to tell it apart from Santa Clara in Northern California.",
-   "more": "Its watershed is the homeland of the Tataviam people in the north and the Chumash people in the south. The river still shelters threatened wildlife, including a small fish called the unarmored threespine stickleback, steelhead trout, southwestern pond turtles and least Bell's vireos. Before 1940 its steelhead run was one of the largest in Southern California. On the night of March 12, 1928, the flood from the broken St. Francis Dam poured into the river at San Francisquito Creek, just east of here. It swept down this riverbed all the way to the sea.",
+   "more": "Its watershed is the homeland of the Tataviam people in the north and the Chumash people in the south. The river still shelters threatened wildlife. Among them are a small fish called the unarmored threespine stickleback, steelhead trout, southwestern pond turtles and least Bell's vireos. Before 1940 its steelhead run was one of the largest in Southern California.",
    "spot": null,
    "months": null,
    "wiki": "Santa Clara River (California)",
@@ -556,8 +556,8 @@
    "name": "Castac Lake, the eye",
    "cat": "nature",
    "visible": false,
-   "text": "East of Lebec lies Castac Lake, a natural salty lake that formed about 10,000 years ago when the fan of sediment washed down by Cuddy Creek dammed a valley along the Garlock Fault. The Chumash, Kitanemuk and Yokuts peoples all named it for an eye, and the town of Castaic, about 30 miles south, takes its name from the same Chumash word.",
-   "more": "Several villages stood near its shores, including the Emigdiano Chumash village of Sasau on the north side. In 1772 Pedro Fages named it Salinas de Cortes, and in the late 1800s and early 1900s its bed was sometimes mined for salt when it dried out. The Garlock Fault that shaped it is California's second-longest, running about 160 miles east toward Death Valley, and it meets the San Andreas near here. Since 2001, Tejon Ranch has pumped groundwater to keep the lake's level up.",
+   "text": "East of Lebec lies Castac Lake, a natural salty lake that formed about 10,000 years ago when the fan of sediment washed down by Cuddy Creek dammed a valley along the Garlock Fault. The Chumash, Kitanemuk and Yokuts peoples all named it for an eye.",
+   "more": "Several villages stood near its shores, including the Emigdiano Chumash village of Sasau on the north side. In 1772 Pedro Fages named it Salinas de Cortes, and in the late 1800s and early 1900s its bed was sometimes mined for salt when it dried out. The Garlock Fault that shaped it is California's second-longest, running about 160 miles east toward Death Valley. Since 2001, Tejon Ranch has pumped groundwater to keep the lake's level up.",
    "spot": null,
    "months": null,
    "wiki": "Castac Lake",
@@ -651,7 +651,7 @@
    "from": 140,
    "to": 145,
    "label": "LA River and Griffith Park",
-   "text": "The freeway follows the Los Angeles River through the Glendale Narrows, a soft-bottomed stretch full of willows and wading birds, with the brushy hills of Griffith Park on the west side.",
+   "text": "The freeway follows the Los Angeles River through the Glendale Narrows, with the brushy hills of Griffith Park on the west side.",
    "seasons": null
   },
   {
@@ -692,7 +692,7 @@
    "label": "Santa Clarita Valley",
    "text": "Planned neighborhoods of Valencia spread along the Santa Clara River, with Magic Mountain's roller coasters on the hills west of the freeway.",
    "seasons": {
-    "spring": "In April and May, chaparral yucca send up flower stalks 3 to 10 feet tall, a plant the Tataviam people harvested."
+    "spring": "In April and May, chaparral yucca send up flower stalks 3 to 10 feet tall."
    }
   },
   {
@@ -712,7 +712,7 @@
    "label": "Pyramid Lake to Gorman",
    "text": "Pyramid Lake fills the canyon of Piru Creek west of the freeway in the Sierra Pelona Mountains, and farther north the land opens into Peace Valley around Gorman.",
    "seasons": {
-    "spring": "From mid-April through May, Hungry Valley near Gorman offers guided wildflower tours, when poppies, goldfields and lupine can cover the hills after a wet winter."
+    "spring": "From mid-April through May, Hungry Valley near Gorman offers guided wildflower tours."
    }
   },
   {
@@ -720,7 +720,7 @@
    "from": 203,
    "to": 210,
    "label": "Tejon Pass and Lebec",
-   "text": "Tejon Pass, the freeway's highest point in California, sits where the San Andreas and Garlock faults meet, among the open hills of Tejon Ranch around Lebec.",
+   "text": "Tejon Pass sits among the open hills of Tejon Ranch around Lebec.",
    "seasons": {
     "winter": "When snow and ice close the freeway over the pass, the shutdown usually lasts four to six hours, but some closures run longer than a day.",
     "spring": "Spring brings showy wildflower blooms to Tejon Ranch, where several of California's natural regions meet."
@@ -733,7 +733,6 @@
    "label": "Grapevine Canyon",
    "text": "Grapevine Canyon carries the freeway's long, steep grade past Fort Tejon's centuries-old valley oaks to the southern edge of the San Joaquin Valley.",
    "seasons": {
-    "summer": "In hot weather, car engines often overheat on the long uphill grade.",
     "fall": "Autumn was acorn harvest time for the Kitanemuk people, whose homeland includes these mountains."
    }
   }
