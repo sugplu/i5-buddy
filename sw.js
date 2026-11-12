@@ -2,7 +2,7 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.2.1"; // 2.2.1: San Diego County rewritten and fact-checked, about 100 more photos
+const VERSION = "i5b-v2.2.2"; // 2.2.2: 14 fact-checked places that fill gaps, about 70 more photos
 const SHELL = [
   "./", "index.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js",
