@@ -1,0 +1,356 @@
+{
+ "places": [
+  {
+   "mi": 215,
+   "name": "Why it's called the Grapevine",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Exit 215, Grapevine",
+   "text": "Spanish travelers called this canyon La Cañada de las Uvas, the Ravine of the Grapes, for the wild grapevines growing here. The road took the English version of that name, and wild grapes still grow along the original road. So every time someone says the Grapevine, they're naming a plant.",
+   "src": "https://en.wikipedia.org/wiki/Grapevine_Canyon"
+  },
+  {
+   "mi": 218,
+   "name": "Tejon Ranch",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Both sides, Grapevine to Wheeler Ridge",
+   "text": "Much of the land around the bottom of the grade belongs to Tejon Ranch, about 270,000 acres, described as the largest stretch of private land in one piece in California. That's roughly the size of the City of Los Angeles. The name Tejon means badger. A Spanish priest recorded it in 1806 after a dead badger was found at the mouth of a canyon.",
+   "src": "https://www.tejonconservancy.org/whoweare"
+  },
+  {
+   "mi": 220,
+   "name": "Water climbing the mountains",
+   "cat": "odd",
+   "side": "E",
+   "visible": false,
+   "where": "Toward the Tehachapi Mountains, east of Wheeler Ridge",
+   "text": "Off toward the mountains to the east, water from Northern California gets lifted over the Tehachapis in steps. The last and biggest step, the Edmonston Pumping Plant, pushes water 1,926 feet straight uphill with fourteen enormous pumps. People driving by often mistake a smaller plant nearer the freeway, called Wind Gap, for the big one.",
+   "src": "https://en.wikipedia.org/wiki/Edmonston_Pumping_Plant"
+  },
+  {
+   "mi": 221,
+   "name": "Wheeler Ridge split",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Exit 221, Highway 99 to Bakersfield",
+   "text": "Here Highway 99 peels off toward Bakersfield and Fresno, and I-5 becomes the West Side Freeway. It was built in big pieces: the Tracy to Los Banos stretch by 1967, the run down to here by 1972, and the last link to Sacramento in 1979.",
+   "src": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+  },
+  {
+   "mi": 225,
+   "name": "Wind Wolves Preserve",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 225, Highway 166 west",
+   "text": "West along Highway 166 lies Wind Wolves Preserve, about 93,000 acres of hills and canyons, the largest nonprofit nature preserve on the West Coast. In 1998 nineteen tule elk were brought here. Today more than 500 roam the preserve.",
+   "src": "https://wildlandsconservancy.org/rewilding-tule-elk/"
+  },
+  {
+   "mi": 225,
+   "name": "Lakeview Gusher",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 225, Highway 166 toward Maricopa",
+   "text": "Out past Maricopa, in March 1910, an oil well called Lakeview Number One blew out and would not stop. It gushed for about 18 months and spilled roughly 9 million barrels of oil, the largest accidental oil spill in U.S. history. Amazingly, it never caught fire.",
+   "src": "https://en.wikipedia.org/wiki/Lakeview_Gusher"
+  },
+  {
+   "mi": 234,
+   "name": "Vanished Buena Vista Lake",
+   "cat": "nature",
+   "side": null,
+   "visible": false,
+   "where": "Near Old River Road",
+   "text": "This flat farmland was once Buena Vista Lake, a shallow lake fed by the Kern River that could spread over 150 square miles in wet years. A Yokuts village called Tulamniu stood on its southern shore. Today it's nearly all fields, except two small lakes kept for boating and fishing.",
+   "src": "https://en.wikipedia.org/wiki/Buena_Vista_Lake"
+  },
+  {
+   "mi": 239,
+   "name": "Kern County nut country",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Orchards both sides",
+   "text": "Those neat rows of trees are mostly almonds and pistachios. In 2020, Kern County alone grew about 410 million pounds of pistachios, roughly 40 percent of the whole U.S. crop. In 2016 pistachios helped make Kern the top farm county in the entire country.",
+   "src": "https://www.farmprogress.com/crops/pistachios-push-kern-county-crop-values-to-no-1"
+  },
+  {
+   "mi": 250,
+   "name": "Elk Hills oil reserve",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Low hills west of the freeway",
+   "text": "The low hills to the west are Elk Hills, once Naval Petroleum Reserve Number One, an oil field kept by the government for the Navy. In 1998 the government sold its share to Occidental Petroleum for 3.65 billion dollars. It was the largest sale of federal property in U.S. history.",
+   "src": "https://www.energy.gov/hgeo/opr/sale-elk-hills-naval-petroleum-reserve"
+  },
+  {
+   "mi": 253,
+   "name": "Tule Elk State Natural Reserve",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 253, Stockdale Highway, about 3 miles southwest",
+   "text": "Just a few miles southwest of here, a state reserve looks after a small herd of tule elk. Tule elk were once in danger of extinction. If you have time, the reserve is only a short drive off the freeway.",
+   "src": "https://www.parks.ca.gov/?page_id=584"
+  },
+  {
+   "mi": 255,
+   "name": "Kern Water Bank",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Along Stockdale Highway toward Bakersfield",
+   "text": "East of here is the Kern Water Bank, about 20,000 acres where water is spread into shallow ponds in wet years so it soaks down and is saved underground. When the ponds are full they turn into wetlands. One survey counted as many as 35,000 water birds there at once.",
+   "src": "https://www.turnto23.com/news/23abc-in-depth/heavy-water-year-lets-wildlife-thrive-on-kern-water-bank-grounds"
+  },
+  {
+   "mi": 257,
+   "name": "The Buttonwillow tree",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 257, Highway 58 to Buttonwillow",
+   "text": "The town of Buttonwillow is named for a single tree that isn't a willow at all. It's a buttonbush, and it stood out for miles as a landmark on an old trail across the valley and a Yokuts meeting place. Later, ranch workers reportedly left notes for each other in it, like a tiny post office.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/492"
+  },
+  {
+   "mi": 262,
+   "name": "Henry Miller, the Cattle King",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "West side of the valley, Buttonwillow to Gustine",
+   "text": "Much of this valley once belonged to one company, Miller and Lux. Henry Miller, a German immigrant butcher in San Francisco, teamed up with Charles Lux in 1858, and together they came to own well over a million acres. You'll pass places tied to him all the way up to Gustine.",
+   "src": "https://en.wikipedia.org/wiki/Henry_Miller_(rancher)"
+  },
+  {
+   "mi": 275,
+   "name": "Lost Hills oil field",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "About 4 miles west of I-5",
+   "text": "In July 1910 two drillers out here were digging a water well for livestock. At about 530 feet down they hit oil instead, and the Lost Hills oil field was born. So much oil has been pumped out since that parts of the hills above it have sunk as much as 8 feet.",
+   "src": "https://en.wikipedia.org/wiki/Lost_Hills_Oil_Field"
+  },
+  {
+   "mi": 276,
+   "name": "The 1998 well fire",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Northeast edge of the Lost Hills field",
+   "text": "In November 1998 a deep test well near Lost Hills hit high-pressure gas and caught fire. The flames rose about 340 feet, burned for fourteen days, and could be seen more than 40 miles away. Crews finally sealed it by drilling a second, slanted hole to meet the first one underground.",
+   "src": "https://en.wikipedia.org/wiki/Lost_Hills_Oil_Field"
+  },
+  {
+   "mi": 278,
+   "name": "Lost Hills pistachios",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exit 278, Highway 46, Lost Hills",
+   "text": "Lost Hills is a town of about 2,400 people, and many of them work for the Wonderful Company, which roasts and packs pistachios in a huge plant here. Almost all American pistachios, about 99 percent, are grown in California. Pistachio trees come as boys and girls, and only the female trees grow nuts.",
+   "src": "https://www.nbcbayarea.com/news/california/california-farmers-pistachio-boom-china/3705208/"
+  },
+  {
+   "mi": 278,
+   "name": "Wasco, rose town",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 278, Highway 46 east",
+   "text": "About 20 miles east on Highway 46 is Wasco, which calls itself the Rose Capital of the World. Around 55 percent of the rose plants grown in the United States come from in or around Wasco. So the rose bush in somebody's garden back home may well have started here.",
+   "src": "https://en.wikipedia.org/wiki/Wasco,_California"
+  },
+  {
+   "mi": 285,
+   "name": "San Joaquin kit fox",
+   "cat": "nature",
+   "side": null,
+   "visible": false,
+   "where": "Grasslands and orchard edges near Lost Hills",
+   "text": "This dry corner of the valley is home to the San Joaquin kit fox, endangered since 1967. Near Lost Hills, a conservation project has built artificial dens in fields and orchards so the little foxes have somewhere to hide from coyotes.",
+   "src": "https://nfwf.org/grants/grants-library/profile?egid=8804"
+  },
+  {
+   "mi": 300,
+   "name": "Kettleman Hills",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Hills west of the freeway",
+   "text": "These bare rolling hills are named, with a spelling change, for Dave Kettelman, who grazed sheep and cattle here in the 1860s. In October 1928 a well blew in out of control and revealed a giant oil and gas field underneath. By the early 1930s it was one of the most productive oil fields in the country.",
+   "src": "https://en.wikipedia.org/wiki/Kettleman_North_Dome_Oil_Field"
+  },
+  {
+   "mi": 305,
+   "name": "Ghost of Tulare Lake",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Valley floor east of Kettleman City",
+   "text": "Out to the east was once Tulare Lake, the largest freshwater lake west of the Mississippi, more than 100 miles long in the 1800s. It was drained for farming, but in 2023 huge storms brought it back, flooding about 100,000 acres of fields. Kettleman City sits near its old shoreline.",
+   "src": "https://news.northeastern.edu/2024/02/05/tulare-lake-reappearance"
+  },
+  {
+   "mi": 309,
+   "name": "Kettleman City, halfway",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Exit 309, Highway 41",
+   "text": "Kettleman City is close to the halfway point between Los Angeles and San Francisco or Sacramento, which is why this exit is so busy. In 2017 Tesla opened a 40-stall charging station here with its first lounge, at the time the biggest it had built. The town itself began in 1929, right after oil was found in the hills.",
+   "src": "https://en.wikipedia.org/wiki/Kettleman_City,_California"
+  },
+  {
+   "mi": 315,
+   "name": "The California Aqueduct",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "Canal running alongside the freeway",
+   "text": "That wide concrete river you keep seeing is the California Aqueduct, carrying water from the Delta to Southern California. A typical stretch is about 40 feet wide at the bottom and 30 feet deep. Counting its long branch to the east, it runs about 444 miles.",
+   "src": "https://www.britannica.com/topic/California-Aqueduct"
+  },
+  {
+   "mi": 319,
+   "name": "Avenal",
+   "cat": "town",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 319, Lassen Avenue",
+   "text": "The town of Avenal, up against the hills to the west, has a name that means oat field in Spanish. Early Spanish travelers found the plains here covered in wild oats. Later the town grew up with the oil boom in the Kettleman Hills.",
+   "src": "https://en.wikipedia.org/wiki/Avenal,_California"
+  },
+  {
+   "mi": 322,
+   "name": "Garlic country",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Fields toward Huron and Five Points",
+   "text": "Fresno County grows more garlic than anywhere else in the country, around three quarters of the U.S. supply. Much of it now grows on this west side, around little towns like Huron and Five Points, after production moved south from Gilroy.",
+   "src": "https://abc30.com/archive/6917658/"
+  }
+ ],
+ "zones": [
+  {
+   "from": 210,
+   "to": 221,
+   "label": "Down the Grapevine",
+   "text": "A steep, winding drop through Grapevine Canyon, with oak-dotted hills of Tejon Ranch on both sides. In winter the grade sometimes closes for ice and snow."
+  },
+  {
+   "from": 221,
+   "to": 240,
+   "label": "Valley floor and water lifts",
+   "text": "The road flattens into the southern tip of the San Joaquin Valley, with orchards and the Tehachapi Mountains behind you. From November to February, watch for tule fog, a thick ground fog that can drop visibility to a few hundred feet."
+  },
+  {
+   "from": 240,
+   "to": 262,
+   "label": "Elk Hills and the Kern River",
+   "text": "Oil country rises to the west in the Elk Hills while irrigated farmland spreads east toward Bakersfield. The Kern River once fed lakes and marshes here; now it's water banks and fields."
+  },
+  {
+   "from": 262,
+   "to": 290,
+   "label": "Lost Hills oil and pistachios",
+   "text": "Pumpjacks nod in the hills to the west and pistachio orchards line the road. Pistachio harvest starts in late August, when machines shake the nuts off the trees."
+  },
+  {
+   "from": 290,
+   "to": 312,
+   "label": "Kettleman Hills",
+   "text": "Bare, rounded hills rise to the west, sitting on top of one of the great oil fields of the 1930s. East is the old bed of Tulare Lake, which came back for a while in 2023."
+  },
+  {
+   "from": 312,
+   "to": 340,
+   "label": "Coalinga plains",
+   "text": "Wide-open farmland with the Diablo Range to the west and the aqueduct alongside. In summer, processing tomatoes are harvested from about July through the end of August, and the big feedlot near Coalinga announces itself by smell."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 215,
+   "q": "Where does the name Grapevine come from?",
+   "choices": [
+    "A winery",
+    "Wild grapes in the canyon",
+    "A twisty road shaped like a vine",
+    "A ranch owner named Grape"
+   ],
+   "answer": 1,
+   "why": "Spanish travelers named the canyon La Cañada de las Uvas for its wild grapevines."
+  },
+  {
+   "mi": 220,
+   "q": "How high does the Edmonston Pumping Plant lift water over the Tehachapi Mountains?",
+   "choices": [
+    "192 feet",
+    "926 feet",
+    "1,926 feet",
+    "4,144 feet"
+   ],
+   "answer": 2,
+   "why": "Edmonston pushes water 1,926 feet uphill on its way to Southern California."
+  },
+  {
+   "mi": 225,
+   "q": "How long did the 1910 Lakeview Gusher keep spilling oil?",
+   "choices": [
+    "18 days",
+    "18 weeks",
+    "18 months",
+    "18 years"
+   ],
+   "answer": 2,
+   "why": "It flowed for about 18 months and released roughly 9 million barrels."
+  },
+  {
+   "mi": 257,
+   "q": "The famous Buttonwillow tree that named the town is actually what kind of plant?",
+   "choices": [
+    "A willow",
+    "A buttonbush",
+    "An oak",
+    "A palm"
+   ],
+   "answer": 1,
+   "why": "Despite the name, it's a buttonbush, not a willow."
+  },
+  {
+   "mi": 275,
+   "q": "What were the drillers looking for when they found the Lost Hills oil field in 1910?",
+   "choices": [
+    "Gold",
+    "Water",
+    "Natural gas",
+    "Fossils"
+   ],
+   "answer": 1,
+   "why": "They were drilling a water well for livestock and hit oil instead."
+  },
+  {
+   "mi": 309,
+   "q": "Kettleman City is close to the halfway point between Los Angeles and which city?",
+   "choices": [
+    "San Diego",
+    "Las Vegas",
+    "San Francisco",
+    "Portland"
+   ],
+   "answer": 2,
+   "why": "Exit 309 sits near the halfway mark between LA and San Francisco or Sacramento."
+  }
+ ]
+}

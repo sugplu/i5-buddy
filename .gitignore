@@ -1,1 +1,7 @@
 .DS_Store
+# raw downloads (re-fetch with the commands in README; derived files are committed)
+tools/osm/*.json
+tools/live/*.json
+tools/geo/states.geojson
+.scratch/
+tools/qa-tmp/

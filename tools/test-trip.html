@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>trip module tests</title>
+<!--
+  Trip module test page. Loads the real app in a phone-sized iframe and drives it through I5BUDDY.api.
+  ?s=<scenario>  drive-none | drive-nopos | drive-dest | drive-behind | drive-party | drive-done | sheet | settings |
+                 passport | passport-empty | passport-filter | share | share-fit (the share sheet at 8 phone sizes, then open) |
+                 demo-live (the app's real demo drive and voice) |
+                 card | card-gps | card-all (the PNG at full size: use --window-size=1080,1350) |
+                 auto (130+ assertions; results in the console and beside the app; use --window-size=1100,960 and a 120000 budget).
+                 auto runs on the road in the data (California only since 2026-11-11: Mexico to the Oregon line), including
+                 driving off the end of it, then boots the app on progress saved by the version that covered Oregon and
+                 Washington, and runs a second copy of js/trip.js on a whole-road dataset (CA, OR, WA) for the badges
+                 that need more than one state
+  &theme=dark|light   &y=<scroll px inside the app>   &w=<iframe width, default 430>   &h=<iframe height, default 932>
+  Screenshot: Chrome --headless=new --window-size=460,960 --virtual-time-budget=8000 --screenshot=... "<this page>?s=passport"
+  The page clears the app's "i5b:" storage first, runs a fake clock (api.trip.setClock) and stubs speech, except in demo-live.
+-->
+<style>
+  html,body{margin:0;background:#3a3f3c;color:#e8ece9;font:12px/1.45 ui-monospace,Menlo,monospace}
+  #f{position:absolute;left:15px;top:14px;width:430px;height:932px;border:0;background:#000}
+  #log{position:absolute;left:470px;top:14px;margin:0;white-space:pre-wrap;max-width:640px}
+  #log .fail{color:#ff7b72;font-weight:bold}
+  #card{display:none;position:absolute;left:0;top:0;width:1080px;height:1350px}
+  body.card #card{display:block}
+  body.card #f,body.card #log{visibility:hidden}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<pre id="log"></pre>
+<img id="card" alt="share card">
+<script type="module">
+const q = new URLSearchParams(location.search);
+const scenario = q.get("s") || "drive-dest";
+const theme = q.get("theme") || "dark";
+const scrollY = +(q.get("y") || 0);
+const width = +(q.get("w") || 430);
+const height = +(q.get("h") || 932);
+const realVoice = scenario === "demo-live";
+const frame = document.getElementById("f");
+frame.style.width = width + "px";
+frame.style.height = height + "px";
+const logEl = document.getElementById("log");
+logEl.style.left = (15 + width + 25) + "px";
+let loads = 0, expectedLoads = 0;
+frame.addEventListener("load", () => { loads++; if (loads > expectedLoads) log(`WARNING the app reloaded on its own (load ${loads})`, true); });
+// Once the app is loaded, keep a short timer pending so headless virtual time moves in small steps instead of
+// leaping to the app's 5-minute interval (and past the budget) while real-time work like PNG encoding runs.
+const heartbeat = () => setInterval(() => {}, 20);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function log(line, fail) {
+  console.log("[test-trip] " + line);
+  const s = document.createElement("span");
+  if (fail) s.className = "fail";
+  s.textContent = line + "\n";
+  logEl.append(s);
+}
+
+// fresh state for every run (the iframe shares this origin's localStorage)
+for (const k of Object.keys(localStorage)) if (k.startsWith("i5b:")) localStorage.removeItem(k);
+localStorage.setItem("i5b:settings", JSON.stringify({ theme, narr: false, chime: false, zoneNarr: false, live: false }));
+
+let T = new Date(2026, 10, 3, 6, 5).getTime(); // the fake clock: Nov 3 2026, 6:05 am
+let W, api, doc;
+
+// On a fresh profile the app's service worker installs, claims the page and main.js reloads it, which would
+// pull the app out from under a running test. Activate the worker first so the app starts already controlled.
+async function serviceWorkerReady() {
+  if (!("serviceWorker" in navigator)) return;
+  try {
+    let reg = null;
+    navigator.serviceWorker.register("../sw.js").then(r => { reg = r; }, e => log("service worker: " + e.message));
+    // the worker installs in its own context, so wait in real time (fetches pause virtual time) until it controls this page
+    const ok = await waitReal(() => !!navigator.serviceWorker.controller && navigator.serviceWorker.controller.state === "activated", 3000);
+    if (!ok) log(`service worker never took control (${reg && reg.active ? reg.active.state : reg && reg.installing ? "installing" : "none"})`, true);
+  } catch (e) { log("service worker: " + e.message); }
+}
+
+async function boot() {
+  expectedLoads++;
+  const loaded = new Promise(r => { frame.onload = r; });
+  if (W) W.location.reload(); else frame.src = "../index.html";
+  await loaded;
+  W = frame.contentWindow; doc = frame.contentDocument;
+  for (let i = 0; i < 200 && !(W.I5BUDDY && W.I5BUDDY.api && W.I5BUDDY.api.trip); i++) await sleep(50);
+  if (!(W.I5BUDDY && W.I5BUDDY.api)) throw new Error(`app did not boot (readyState ${doc.readyState})`);
+  api = W.I5BUDDY.api;
+  if (!api.trip) throw new Error("trip module did not load");
+  api.trip.setClock(() => T);
+  api.settings.theme = theme;
+  doc.documentElement.dataset.theme = theme;
+  if (!realVoice) {
+    api.voice.say = () => Promise.resolve(false);     // keep headless runs quiet and deterministic
+    api.voice.chime = () => Promise.resolve();
+    api.voice.unlock = () => {};                      // (startGps calls it; outside a real tap Chrome warns about the AudioContext)
+  }
+}
+let rafMissed = 0;
+/** One painted frame (or 300 ms, since headless virtual time can starve requestAnimationFrame; the module falls back to 250 ms timers). */
+const nextFrame = () => new Promise(r => {
+  let done = false;
+  const fin = raf => { if (done) return; done = true; if (!raf) rafMissed++; setTimeout(r, 0); };
+  W.requestAnimationFrame(() => fin(true));
+  setTimeout(() => fin(false), 300);
+});
+/** Wait in real time: network fetches pause headless virtual time, so slow work like PNG encoding can finish. */
+async function waitReal(cond, tries = 80) {
+  for (let i = 0; i < tries && !cond(); i++) { try { await fetch("../manifest.webmanifest?wait=" + i, { cache: "no-store" }); } catch {} }
+  return cond();
+}
+/** Await a promise whose work happens in real time (canvas encoding, image decoding). */
+async function settle(promise) {
+  let done = false, val, err;
+  promise.then(v => { done = true; val = v; }, e => { done = true; err = e; });
+  await waitReal(() => done, 200);
+  if (err) throw err;
+  return val;
+}
+
+/** Simulated driving: one position every `step` miles, the fake clock advancing at `mph`. */
+function drive(from, to, { mph = 62, step = 0.4 } = {}) {
+  const dir = to >= from ? "N" : "S";
+  api.setPosition(from, { dir, speed: mph, jumped: true });
+  const n = Math.max(1, Math.ceil(Math.abs(to - from) / step));
+  for (let i = 1; i <= n; i++) {
+    T += Math.abs(to - from) / n / mph * 3.6e6;
+    api.setPosition(from + (to - from) * i / n, { dir, speed: mph });
+  }
+}
+function gpsTrip(from, to, opts) { api.setMode("gps"); drive(from, to, opts); }
+function endTrip() { api.stopAll(); }
+/** A fake GPS (main.js reads window.__I5_FAKE_GEO__), so fixes go through the app's own pipeline: jump detection,
+    direction votes, off-route and end-of-road handling, then the "pos" event. Returns fix(m): one GPS fix at corridor
+    mile m, stamped with the fake clock; fix.at(lat, lon) is a fix anywhere (off the road, past the Oregon line). */
+function fakeGps() {
+  let cb = null;
+  W.__I5_FAKE_GEO__ = { watchPosition(okFn) { cb = okFn; return 7; }, clearWatch() { cb = null; } };
+  api.startGps();
+  const at = (lat, lon, mph = 62) => {
+    if (cb) cb({ coords: { latitude: lat, longitude: lon, accuracy: 8, speed: mph / 2.23694, heading: null }, timestamp: T });
+  };
+  const fix = (m, mph = 62) => { const [lat, lon] = W.I5BUDDY.coordAt(m); at(lat, lon, mph); };
+  fix.at = at;
+  return fix;
+}
+/** A store in memory, for a second copy of js/trip.js run beside the app. */
+function memStore(seed = {}) {
+  const mem = new Map(Object.entries(seed).map(([k, v]) => [k, JSON.stringify(v)]));
+  return { mem, get: (k, f) => (mem.has(k) ? JSON.parse(mem.get(k)) : f), set: (k, v) => mem.set(k, JSON.stringify(v)), del: k => mem.delete(k) };
+}
+/** Everything a share card writes with fillText, in window win: [{t, multi}] plus the letter-spaced words, which
+    the card draws one letter at a time, joined back up per line. */
+async function cardTexts(win, make) {
+  const proto = win.CanvasRenderingContext2D.prototype, real = proto.fillText, calls = [];
+  proto.fillText = function (t, x, y, ...rest) { calls.push({ t: String(t), y: Math.round(y) }); return real.call(this, t, x, y, ...rest); };
+  let blob = null;
+  try { blob = await settle(make()); } finally { proto.fillText = real; }
+  const whole = calls.filter(c => [...c.t].length > 1).map(c => c.t);
+  const lines = new Map();   // y -> letters drawn one at a time on that line
+  for (const c of calls) if ([...c.t].length === 1) lines.set(c.y, (lines.get(c.y) || "") + c.t);
+  return { blob, whole, spaced: [...lines.values()], all: calls.map(c => c.t).join("") };
+}
+/** Wait until the page stops scrolling (smooth scrolls run over several frames). */
+async function settleScroll() {
+  let last = -1, same = 0;
+  for (let i = 0; i < 80 && same < 4; i++) { await nextFrame(); const y = W.scrollY; same = y === last ? same + 1 : 0; last = y; }
+}
+/** Headless virtual time starves the frames a smooth scroll runs on, so it barely moves before the screenshot.
+    Record what the app asks window.scrollTo for and go straight there. Returns the list of requests and a restore(). */
+function instantScroll() {
+  const real = W.scrollTo, asked = [];
+  W.scrollTo = function (a, b) {
+    if (a && typeof a === "object") { asked.push({ ...a }); return real.call(W, { top: a.top, left: a.left, behavior: "instant" }); }
+    return real.call(W, a, b);
+  };
+  asked.restore = () => { W.scrollTo = real; };
+  return asked;
+}
+/** Is the middle of `el` really what a finger meets (not covered by the sticky top bar or anything else)? */
+function tappable(el) {
+  if (!el) return false;
+  const r = el.getBoundingClientRect();
+  const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+  return !!hit && el.contains(hit);
+}
+
+async function seedPassport() {
+  T = new Date(2026, 10, 3, 6, 5).getTime();       // early morning: Early bird
+  gpsTrip(128, 312); endTrip();                      // over the Grapevine: Century
+  T = new Date(2026, 10, 5, 21, 50).getTime();     // late: Night owl
+  gpsTrip(312, 560); endTrip();
+  T = new Date(2026, 10, 8, 14, 0).getTime();
+  api.setMode("demo"); drive(560, 640); endTrip();  // a demo drive
+  api.store.set("trivia", { right: 4 });
+  T = new Date(2026, 10, 9, 16, 30).getTime();
+}
+
+async function show(tab) {
+  if (tab) api.ui.go(tab);
+  await nextFrame(); await sleep(60);
+  if (scrollY) W.scrollTo(0, scrollY);
+}
+
+const scenarios = {
+  async "drive-none"() { await show("drive"); },
+  async "drive-nopos"() { api.trip.setDest("Redding"); await show("drive"); },
+  async "drive-dest"() {
+    api.setPosition(135, { dir: "N", jumped: true });
+    api.setMode("gps");
+    api.trip.setDest("Redding");
+    drive(135, 262);
+    await show("drive");
+  },
+  async "drive-behind"() {
+    api.trip.setDest("San Diego");
+    api.setMode("gps");
+    drive(250, 300);
+    await show("drive");
+  },
+  async "drive-party"() {
+    T = new Date(2026, 10, 9, 9, 0).getTime();
+    api.trip.setDest("Sacramento");
+    api.setMode("gps");
+    drive(410, 519.3);
+    await show("drive");
+    await sleep(400);
+  },
+  async "drive-done"() {
+    await scenarios["drive-party"]();
+    doc.querySelector("#destStrip .trip-x").click();
+    await show("drive");
+  },
+  async sheet() {
+    api.setPosition(300, { dir: "N", jumped: true });
+    api.trip.setDest("Sacramento");
+    await show("drive");
+    api.trip.openDest();
+    await nextFrame();
+  },
+  async passport() { await seedPassport(); await show("passport"); },
+  async "passport-empty"() { await show("passport"); },
+  // the app's own demo drive with the real voice module: 40x from mile 512 to Sacramento (519)
+  async "demo-live"() {
+    api.trip.setClock(() => Date.now());
+    api.setPosition(512, { dir: "N", jumped: true });
+    api.trip.setDest("Sacramento");
+    api.startDemo();
+    doc.querySelector('#demoBar [data-x="40"]').click();
+    for (let i = 0; i < 80 && !doc.querySelector("#destStrip .trip-party"); i++) await sleep(250);
+    log(`demo-live: arrived ${!!doc.querySelector("#destStrip .trip-party")}, trip ${JSON.stringify(api.trip.current() && { miles: +api.trip.current().miles.toFixed(2), stamps: api.trip.current().stamps.length, arrived: api.trip.current().arrived })}`);
+    await show("drive");
+  },
+  // the module scrolls to the filtered stamps by itself; the heading and the filter chip must clear the sticky top bar
+  async "passport-filter"() {
+    await seedPassport();
+    await show("passport");
+    const asked = instantScroll();
+    doc.querySelector('#view-passport [data-k="region:sv"]').click();   // Sacramento Valley: some stamped, some not
+    await settleScroll();
+    asked.restore();
+    const chip = doc.querySelector("#view-passport .pp-chip");
+    const top = doc.getElementById("ppStamps").getBoundingClientRect().top, bar = doc.querySelector("header.top").getBoundingClientRect().bottom;
+    log(`passport-filter: asked for ${JSON.stringify(asked)}; Stamps section at ${top.toFixed(0)} px, top bar ends at ${bar.toFixed(0)} px, filter chip tappable: ${tappable(chip)}`, !(tappable(chip) && top >= bar));
+  },
+  async settings() {
+    await show("drive");
+    doc.getElementById("openSettings").click();
+    await nextFrame();
+    const x = doc.getElementById("settingsExtra");
+    x.scrollIntoView({ block: "center" });
+  },
+  async share() {
+    await seedPassport();
+    await show("passport");
+    api.trip.share("trip");
+    await sleep(600);
+  },
+  // the share sheet at common phone sizes: is the card preview clear of the buttons below it?
+  async "share-fit"() {
+    await seedPassport();
+    await show("passport");
+    for (const r of await shareFit(SHARE_SIZES)) log(r.line, !r.ok);
+    frame.style.width = width + "px"; frame.style.height = height + "px";
+    api.trip.share("trip");
+    await sleep(600);
+  },
+  async card() { await seedPassport(); await showCard("trip"); },
+  async "card-gps"() {
+    await seedPassport();
+    T = new Date(2026, 10, 9, 15, 0).getTime();
+    api.trip.setDest("Redding");
+    gpsTrip(640, 700);                                 // up the Sacramento Valley, arriving in Redding
+    endTrip();
+    await showCard("trip");
+  },
+  async "card-all"() { await seedPassport(); await showCard("all"); },
+  auto,
+};
+
+const SHARE_SIZES = [[320, 568], [375, 548], [375, 667], [360, 740], [390, 664], [390, 844], [430, 932], [600, 960]];
+/** Open the share sheet at each frame size and hit-test the middle of both buttons: the card preview must not cover them. */
+async function shareFit(sizes) {
+  const out = [];
+  for (const [w, h] of sizes) {
+    frame.style.width = w + "px"; frame.style.height = h + "px";
+    api.ui.closeSheet();
+    await nextFrame();
+    api.trip.share("trip");
+    await nextFrame(); await sleep(30);
+    const sh = doc.getElementById("tripShareSheet");
+    const card = sh.querySelector(".trip-card"), go = sh.querySelector(".trip-share-go"), cp = sh.querySelector(".trip-share-acts .secondary");
+    for (let i = 0; i < 40 && !sh.querySelector(".trip-card canvas"); i++) await sleep(25);   // test what a finger meets: the drawn card
+    await waitReal(() => !go.disabled, 300);
+    // on opening, both buttons should be on screen without scrolling the sheet
+    const vb = Math.min(sh.getBoundingClientRect().bottom, W.innerHeight);
+    const onScreen = [go, cp].every(b => { const r = b.getBoundingClientRect(); return r.top >= 0 && r.bottom <= vb + 0.5; });
+    const hits = [];
+    for (const b of [go, cp]) {
+      b.scrollIntoView({ block: "center" });          // inside the sheet, which scrolls on short screens
+      await nextFrame();
+      const r = b.getBoundingClientRect();
+      const hit = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      hits.push(b.contains(hit) ? "ok" : `covered by ${hit ? hit.tagName.toLowerCase() + (hit.className && typeof hit.className === "string" ? "." + hit.className.split(" ")[0] : "") : "nothing"}`);
+    }
+    const c = card.getBoundingClientRect(), a = go.parentElement.getBoundingClientRect();
+    const gap = a.top - c.bottom;
+    const ok = hits.every(x => x === "ok") && gap >= 0 && onScreen;
+    out.push({ ok, w, h, line: `${ok ? "PASS" : "FAIL"} share sheet at ${w}x${h}: card ${c.width.toFixed(0)}x${c.height.toFixed(0)}, ${gap.toFixed(0)} px above the buttons, buttons ${onScreen ? "on screen when it opens" : "below the fold"}; Share picture ${hits[0]}, Copy summary ${hits[1]}` });
+    api.ui.closeSheet();
+  }
+  return out;
+}
+
+async function showCard(kind) {
+  const blob = await settle(api.trip.card(kind));
+  const img = document.getElementById("card");
+  img.src = URL.createObjectURL(blob);
+  await new Promise(r => { img.onload = r; img.onerror = r; });
+  document.body.classList.add("card");
+  log(`card ${kind}: ${blob.size} bytes, ${img.naturalWidth}x${img.naturalHeight}`);
+}
+
+/* ---------------- assertions ---------------- */
+async function auto() {
+  let fails = 0;
+  const ok = (c, m) => { if (!c) fails++; log(`${c ? "PASS" : "FAIL"} ${m}`, !c); };
+  const said = [];
+  api.voice.say = (text, o = {}) => { said.push({ text, id: o.id }); return Promise.resolve(true); };
+  const strip = () => doc.getElementById("destStrip").innerText.replace(/\s+/g, " ");   // what is visible
+  const badges = () => api.trip.badges();
+  const emitted = [];
+  api.bus.on("badge", b => emitted.push(b.id));
+
+  ok(!!api.trip, "api.trip is attached");
+  await nextFrame();
+  ok(/Where to\?/.test(strip()), "Drive strip offers Where to? with no destination");
+
+  // the road in the data: California only since 2026-11-11, Mexico to the Oregon line (data.ENDS, data.STATES)
+  const ENDS = api.data.ENDS, MAXM = api.data.MAX_M, STS = api.data.STATES, oneState = STS.length === 1;
+  const endToEnd = `${ENDS.S.short} to ${ENDS.N.short}`, roadName = oneState ? `I-5 in ${STS[0].name}` : "I-5";
+  api.ui.go("passport"); await nextFrame();
+  const since0 = (doc.querySelector("#view-passport .pp-since") || {}).textContent || "";
+  ok(since0 === `${endToEnd}, one stamp at a time`, `a new passport reads "${since0}"`);
+  const rib = [...doc.querySelectorAll("#view-passport .pp-rib-lbl span")].map(s => s.textContent);
+  ok(rib.join() === (oneState ? [ENDS.S.short, STS[0].name, ENDS.N.short].map(x => x.toUpperCase()) : STS.map(s => s.id)).join(), `the road ribbon is labelled ${rib.join(" · ")}`);
+  const blist = api.trip.badgeList(), hintOf = id => (blist.find(b => b.id === id) || {}).hint, bids = blist.map(b => b.id);
+  ok(!oneState || !bids.some(id => ["three-states", "state-line", "summit"].includes(id)),
+    `one state: no Three-state run, State line or Siskiyou Summit to chase (road badges: ${blist.filter(b => b.group === "road").map(b => b.id).join(", ")})`);
+  ok(["grapevine", "halfway", "century", "long-haul", "border-to-border", "night-owl", "early-bird"].every(id => bids.includes(id)), "the California road badges are all offered");
+  ok(hintOf("border-to-border") === `Drive 95% of ${roadName}, ${endToEnd}`, `Border to border: "${hintOf("border-to-border")}"`);
+  ok(hintOf("halfway") === `Cross the middle of ${roadName}, mile ${Math.round(MAXM / 2)}`, `Halfway there: "${hintOf("halfway")}"`);
+  const bnote = [...doc.querySelectorAll("#view-passport .pp-head")].find(x => /^Badges/.test(x.textContent));
+  ok(!!bnote && bnote.querySelector(".pp-head-note").textContent === `0 of ${blist.length}`, `the Passport counts only the badges this road offers (${bnote && bnote.querySelector(".pp-head-note").textContent})`);
+  api.ui.go("drive"); await nextFrame();
+
+  ok(api.trip.setDest("Yreka") === true, "setDest by name");
+  ok(api.S.dest && api.S.dest.name === "Yreka" && api.S.dest.m === 776, "S.dest = {name, m}");
+  ok(api.store.get("dest", null)?.name === "Yreka", "destination saved in store 'dest'");
+  await nextFrame();
+  ok(/Yreka/.test(strip()) && /Start GPS/.test(strip()), `strip without a position asks to start GPS [${strip()}] S.m=${api.S.m}`);
+
+  // demo trip over the Grapevine: logged and marked demo, stamps count, road badges don't
+  T = new Date(2026, 10, 1, 12, 0).getTime();
+  api.setMode("demo"); drive(200, 216);
+  let c = api.trip.current();
+  ok(c && c.mode === "demo" && Math.abs(c.miles - 16) < 0.3, `demo trip miles ${c && c.miles.toFixed(2)} (want about 16)`);
+  endTrip();
+  let trips = api.trip.trips();
+  ok(trips.length === 1 && trips[0].demo === true && trips[0].mode === "demo", "demo trip saved, marked demo");
+  ok(trips[0].stamps.length > 0, `demo trip stamps recorded (${trips[0].stamps.length})`);
+  ok(!badges().grapevine, "demo drive does not unlock Over the Grapevine");
+  ok(!!badges().first, "stamp badges can come from a demo trip");
+  ok(emitted.includes("first"), "bus 'badge' emitted on unlock");
+
+  // GPS trip over the Grapevine
+  T = new Date(2026, 10, 1, 15, 0).getTime();
+  gpsTrip(200, 216);
+  ok(!!badges().grapevine, "GPS drive through miles 205-215 unlocks Over the Grapevine");
+  ok(api.trip.coverage().miles === 16, `16 miles driven cover 16 miles of road, the same as the trip's count (${api.trip.coverage().miles})`);
+  ok(api.trip.current().states.join() === "CA", "trip states visited");
+  let before = api.trip.current().miles;
+  api.setPosition(400, { jumped: true });
+  ok(api.trip.current().miles === before, "a jumped position adds no miles");
+  T += 1000; api.setPosition(460, { speed: 60 });
+  ok(api.trip.current().miles === before, "an impossible GPS leap (60 mi in 1 s) adds no miles");
+  for (let i = 0; i < 300; i++) { T += 1000; api.setPosition(460 + (i % 2 ? 0.012 : -0.012), { speed: 0 }); }
+  ok(api.trip.current().miles - before < 0.06, `parked GPS jitter adds no miles (+${(api.trip.current().miles - before).toFixed(3)})`);
+  api.setPosition(460, { offRoute: true, jumped: true });
+  api.setPosition(470, { offRoute: true });
+  ok(api.trip.current().miles - before < 0.06, "off-route positions add no miles");
+  endTrip();
+
+  // halfway and Century (State line, Siskiyou Summit and Three-state run need Oregon: the whole-road copy at the end tests them)
+  const half = MAXM / 2;
+  gpsTrip(half - 15, half + 5);
+  ok(!!badges().halfway, `crossing MAX_M / 2 (mile ${half.toFixed(1)}) unlocks Halfway there`);
+  drive(half + 5, half + 95);
+  ok(!!badges().century, "100 miles in one trip unlocks Century");
+  ok(!badges()["long-haul"], "Long haul still locked");
+  ok(api.trip.current().states.join() === STS[0].id, `trip states ${api.trip.current().states.join()}`);
+  endTrip();
+
+  // the end of the road: GPS up to the Oregon line, on past it, and back, through main.js's own pipeline (fake GPS)
+  if (oneState) {
+    api.settings.narr = true;
+    said.length = 0;
+    T = new Date(2026, 10, 1, 19, 0).getTime();               // (before the arrival trips below: trips()[0] is the newest)
+    const gps = fakeGps();
+    for (let m = MAXM - 10; m <= MAXM - 0.2; m += 0.4) { T += 0.4 / 62 * 3.6e6; gps(m); }
+    const atLine = api.trip.current().miles;
+    const [elat, elon] = W.I5BUDDY.coordAt(MAXM);
+    for (let k = 1; k <= 8; k++) { T += 80e3; gps.at(elat + k * 0.02, elon + k * 0.002); }   // about 1.4 miles a fix, on north into Oregon
+    await nextFrame(); await sleep(300);
+    const status = doc.getElementById("statusText").textContent, pill = doc.getElementById("statusPill").textContent;
+    ok(api.S.offRoute === true && api.trip.current().miles - atLine < 0.3, `past ${ENDS.N.long}: off the road, no miles counted after it (+${(api.trip.current().miles - atLine).toFixed(2)})`);
+    ok(pill === "THE END" && status.includes(ENDS.N.long), `...the status line says where we are: ${pill} · ${status}`);
+    const bye = said.filter(s => s.text.includes(ENDS.N.long) && /end of the road/i.test(s.text));
+    ok(bye.length === 1, `...and says goodbye once: ${bye.map(s => `"${s.text}"`).join(" / ") || "nothing"}`);
+    ok(api.trip.current().states.join() === STS[0].id && !badges()["state-line"], `...this trip is still in one state (${api.trip.current().states.join()}), and no badge for leaving it`);
+    T += 5 * 60e3; gps(MAXM - 0.5);                            // turned around: back on I-5 at the line, then south
+    for (let m = MAXM - 1; m >= MAXM - 6.01; m -= 0.5) { T += 0.5 / 62 * 3.6e6; gps(m); }
+    const back = api.trip.current().miles - atLine;
+    ok(!api.S.offRoute && Math.abs(back - 5.5) < 0.6, `back on I-5 heading south: the trip goes on, the detour into Oregon counts nothing (+${back.toFixed(2)} mi, want about 5.5)`);
+    endTrip();
+    delete W.__I5_FAKE_GEO__;
+    api.settings.narr = false;
+  }
+
+  // progress bars: every one a screen reader meets has a name (several locked badges show progress at this point)
+  api.ui.go("passport"); await nextFrame();
+  const pbs = [...doc.querySelectorAll('#view-passport [role="progressbar"], #destStrip [role="progressbar"]')];
+  const unnamed = pbs.filter(b => !(b.getAttribute("aria-label") || "").trim() && !b.getAttribute("aria-labelledby"));
+  const nested = pbs.filter(b => b.closest("button"));
+  const decor = doc.querySelectorAll('#view-passport .pp-bprog .pp-bar[aria-hidden="true"]').length;
+  ok(!unnamed.length && !nested.length && decor > 0, `progress bars: ${pbs.length} named, ${unnamed.length} unnamed, ${nested.length} inside buttons, ${decor} badge bars hidden as decoration beside their text`);
+  const regionBtn = doc.querySelector('#view-passport [data-k="region:la"]');
+  ok(regionBtn && /^Los Angeles & the Grapevine, \d+ of \d+ stamps$/.test(regionBtn.getAttribute("aria-label") || ""), `region buttons say what they hold [${regionBtn && regionBtn.getAttribute("aria-label")}]`);
+  api.ui.go("drive");
+
+  // arrival, spoken once, with a celebration
+  api.settings.narr = true;
+  api.trip.setDest("Sacramento");
+  T = new Date(2026, 10, 2, 9, 0).getTime();
+  gpsTrip(500, 517.4);
+  ok(!said.some(s => /We made it/.test(s.text)), "no arrival 1.6 mi out");
+  drive(517.4, 523);
+  await nextFrame();
+  const arrivals = said.filter(s => /We made it to Sacramento/.test(s.text));
+  ok(arrivals.length === 1, `arrival spoken once (${arrivals.length})`);
+  ok(/WE MADE IT TO/i.test(strip()) && doc.querySelector("#destStrip .trip-confetti"), `celebration shows in the strip [${strip()}]`);
+  drive(523, 519); drive(519, 523);
+  ok(said.filter(s => /We made it to Sacramento/.test(s.text)).length === 1, "driving around the destination does not repeat it");
+  endTrip();
+  ok(api.trip.trips()[0].dest === "Sacramento", "the trip remembers where it arrived");
+  api.settings.narr = false;
+
+  // starting a trip at the destination does not announce arrival
+  said.length = 0;
+  api.trip.setDest("Stockton");
+  gpsTrip(473.2, 473.6);
+  ok(!said.some(s => /We made it/.test(s.text)), "no arrival when the trip starts at the destination");
+  endTrip();
+
+  // arrival when the stretch between two GPS fixes crosses the destination (the phone was locked for 5 minutes),
+  // end to end through main.js with a fake GPS: fixes up to mile 515.5, then one at 520.67
+  api.settings.narr = true;
+  said.length = 0;
+  api.trip.setDest("Sacramento");
+  T = new Date(2026, 10, 2, 10, 0).getTime();
+  let fix = fakeGps();
+  for (let m = 495; m <= 515.5; m += 0.5) { T += 0.5 / 62 * 3.6e6; fix(m); }
+  T += 5 * 60e3; fix(520.67);
+  await nextFrame();
+  const gapSaid = said.filter(s => /We made it to Sacramento/.test(s.text)).length;
+  ok(gapSaid === 1 && !!api.trip.current().arrived, `passing the destination between two fixes still arrives (said ${gapSaid} time(s), arrived: ${api.trip.current().arrived})`);
+  ok(/WE MADE IT TO/i.test(strip()) && !/behind us/.test(strip()), `...with the celebration, not a turn-around note [${strip().slice(0, 60)}]`);
+  endTrip();
+  // a trip that starts at the destination and leaves it during a gap has not arrived anywhere
+  said.length = 0;
+  api.trip.setDest("Stockton");
+  T += 3600e3;
+  fix = fakeGps();
+  fix(472.6); T += 5 * 60e3; fix(478.5);
+  ok(!said.some(s => /We made it/.test(s.text)) && !api.trip.current().arrived, "leaving the destination during a gap is not an arrival");
+  endTrip();
+  delete W.__I5_FAKE_GEO__;
+  api.settings.narr = false;
+
+  // wrong direction
+  api.trip.setDest("San Diego");
+  gpsTrip(300, 302);
+  await nextFrame();
+  ok(/behind us/.test(strip()), `destination behind: the strip says so [${strip()}]`);
+  endTrip();
+  await nextFrame();
+  ok(!/behind us/.test(strip()), "not driving: no wrong-way note");
+
+  // progress bar from the trip start
+  api.trip.setDest("Redding");
+  gpsTrip(477, 577);
+  await nextFrame();
+  const bar = doc.querySelector("#destStrip .trip-bar");
+  ok(bar && Math.abs(+bar.getAttribute("aria-valuenow") - 50) <= 1, `progress from the trip start (${bar && bar.getAttribute("aria-valuenow")}%)`);
+  ok(/landmarks? to go/.test(strip()) && /about \d/.test(strip()), "strip shows time and landmarks to go");
+  endTrip();
+
+  // Night owl and Early bird
+  T = new Date(2026, 10, 2, 23, 0).getTime();
+  gpsTrip(560, 600, { mph: 60 });
+  ok(!!badges()["night-owl"], "40 minutes after 11 pm unlocks Night owl");
+  endTrip();
+  T = new Date(2026, 10, 3, 5, 30).getTime();
+  gpsTrip(600, 610, { mph: 50 });
+  ok(!!badges()["early-bird"], "12 minutes after 5:30 am unlocks Early bird");
+  endTrip();
+
+  // driving time when fixes come minutes apart (locked screen, app in the background)
+  T = new Date(2026, 10, 2, 23, 0).getTime();
+  gpsTrip(300, 370, { mph: 60, step: 5 });                    // one fix every 5 minutes for 70 minutes
+  ok(Math.abs(api.trip.current().nightMinutes - 70) < 1, `fixes 5 minutes apart still count all 70 night minutes (${api.trip.current().nightMinutes.toFixed(1)})`);
+  endTrip();
+  T = new Date(2026, 10, 2, 21, 25).getTime();
+  api.setMode("gps"); api.setPosition(300, { dir: "N", speed: 60, jumped: true });
+  T += 60 * 60e3; api.setPosition(355, { speed: 60 });        // the next fix an hour later: 9:25 to 10:25 pm
+  const nm1 = api.trip.current().nightMinutes;
+  ok(Math.abs(nm1 - 25) < 1, `an hour-long gap counts only its 25 minutes after 10 pm (${nm1.toFixed(1)})`);
+  T += 60 * 60e3; api.setPosition(355.4, { speed: 0 });       // parked for an hour, then 0.4 mi
+  ok(api.trip.current().nightMinutes - nm1 <= 2.01, `an hour parked between two fixes is not driving time (+${(api.trip.current().nightMinutes - nm1).toFixed(1)} min)`);
+  endTrip();
+
+  // a trip cut short by a closed tab resumes (the module checks the leftover at init with the real clock,
+  // so this part runs the fake clock just behind real time)
+  T = Date.now() - 40 * 60e3;
+  gpsTrip(300, 330);
+  T += 11e3; api.setPosition(330.2, { speed: 62 });          // let the throttled save run
+  const saved = api.store.get("tripCur", null);
+  ok(saved && saved.mode === "gps" && saved.miles > 29, "trip in progress saved to store 'tripCur'");
+  const id = saved && saved.id;
+  const nTrips = api.trip.trips().length;
+  await boot();                                              // the tab was closed and reopened
+  T += 5 * 60e3;
+  gpsTrip(331, 341);
+  c = api.trip.current();
+  ok(c && c.id === id && c.miles > 39, `restarting within 45 min resumes the same trip (${c && c.miles.toFixed(1)} mi)`);
+  endTrip();
+  ok(api.trip.trips().length === nTrips + 1, "resumed trip saved once");
+
+  // 30 trips max, newest first
+  for (let i = 0; i < 32; i++) { T += 3600e3; api.setMode("demo"); drive(20 + i, 21 + i); endTrip(); }
+  trips = api.trip.trips();
+  ok(trips.length === 30, `keeps the last 30 trips (${trips.length})`);
+  ok(trips.every((t, i) => i === 0 || trips[i - 1].start >= t.start), "trips are newest first");
+
+  // a trip that went nowhere is not logged
+  const n0 = api.trip.trips()[0].id;
+  api.setMode("gps"); api.setPosition(50, { jumped: true }); endTrip();
+  ok(api.trip.trips()[0].id === n0, "an empty trip is not logged");
+
+  // the whole road, Mexico to the Oregon line: Long haul, Border to border (and with one state there is no Three-state run)
+  T = new Date(2026, 10, 5, 8, 0).getTime();
+  gpsTrip(0, MAXM, { step: 0.7 });
+  ok(oneState ? !("three-states" in badges()) : !!badges()["three-states"], oneState ? "one state: driving all of it earns no Three-state run (there is none)" : "CA, OR and WA unlock Three-state run");
+  ok(!!badges()["long-haul"], "500 miles in one trip unlocks Long haul");
+  ok(!!badges()["border-to-border"] && api.trip.coverage().of === Math.ceil(MAXM), `95% coverage unlocks Border to border (${api.trip.coverage().miles} of ${api.trip.coverage().of})`);
+  endTrip();
+  ok(api.store.get("coverage", "").length > 100 && api.store.get("coverage", "").length < 400, `coverage stored compactly as base64 (${api.store.get("coverage", "").length} characters)`);
+
+  // region badges come with complete regions, and only for this road's regions
+  const regionDone = Object.keys(badges()).filter(k => k.startsWith("region-"));
+  ok(regionDone.length === api.trip.badgeList().filter(b => b.group === "region").length && regionDone.length > 0, `region badges for every region with landmarks (${regionDone.join(", ")})`);
+  const regionIds = api.trip.badgeList().filter(b => b.group === "region").map(b => b.id.slice(7));
+  ok(regionIds.every(id => api.data.REGIONS.some(r => r.id === id)) && api.data.REGIONS.every(r => regionIds.includes(r.id) || !api.data.PLACES.some(p => api.data.regionAt(p.m).id === r.id)),
+    `region badges for exactly the regions on this road that have landmarks (${regionIds.join(", ")})`);
+
+  // Trivia whiz reads store "trivia" when the Passport opens
+  api.store.set("trivia", Array.from({ length: 10 }, () => ({ correct: true })));
+  api.ui.go("passport");
+  await nextFrame();
+  ok(!!badges()["trivia-whiz"], "10 right trivia answers unlock Trivia whiz on opening the Passport");
+  ok(doc.querySelectorAll("#view-passport .pp-stamp").length >= 24, "passport shows the stamps grid");
+  ok(doc.querySelectorAll("#view-passport .pp-badge.on").length === Object.keys(badges()).length, "passport shows every earned badge in color");
+  ok(doc.querySelector("#view-passport .pp-trips"), "passport lists recent trips");
+  const s0 = doc.querySelector("#view-passport .pp-stamp");
+  s0.click();
+  await nextFrame();
+  ok(!doc.getElementById("moreSheet").hidden, "tapping a stamp opens the place sheet");
+  api.ui.closeSheet();
+
+  // summary text and the card
+  const text = api.trip.summary("all");
+  ok(/miles driven/.test(text) && text.includes("https://sugplu.github.io/i5-buddy/"), "summary text has numbers and the app URL");
+  ok(!/—/.test(text) && !/!/.test(text), "summary has no em dash and no exclamation mark");
+  const blob = await settle(api.trip.card("trip"));
+  const bmp = await settle(createImageBitmap(blob));
+  ok(blob.type === "image/png" && bmp.width === 1080 && bmp.height === 1350, `share card is a 1080x1350 PNG (${(blob.size / 1024).toFixed(0)} KB)`);
+  const ct = await cardTexts(W, () => api.trip.card("all"));
+  ok(ct.whole.includes(endToEnd) && (!oneState || (ct.spaced.includes((ENDS.S.short + STS[0].name + ENDS.N.short).toUpperCase()) && !/canada/i.test(ct.all))),
+    `the all-time card is titled "${endToEnd}", its road labelled ${oneState ? "by its ends" : "by state"} (${ct.spaced.filter(s => /^[A-Z]{4,}$/.test(s)).join(" | ")})`);
+
+  // the share sheet: the card preview at once, then a share/save button once the PNG is made
+  api.trip.share("all");
+  for (let i = 0; i < 20 && !doc.querySelector("#tripShareSheet canvas"); i++) await sleep(25);
+  const cv = doc.querySelector("#tripShareSheet canvas");
+  ok(cv && cv.width === 1080 && cv.height === 1350 && !doc.getElementById("tripShareSheet").hidden, "share sheet shows the card preview");
+  const go = doc.querySelector("#tripShareSheet .trip-share-go");
+  await waitReal(() => !go.disabled, 600);
+  ok(!go.disabled && /(Share|Save) picture/.test(go.textContent), `share button ready: "${go.textContent.trim()}"`);
+  api.ui.closeSheet();
+
+  // the share sheet at common phone sizes: the card preview never covers Share picture or Copy summary
+  for (const r of await shareFit(SHARE_SIZES)) ok(r.ok, r.line.replace(/^(PASS|FAIL) /, ""));
+  frame.style.width = width + "px"; frame.style.height = height + "px";
+
+  // Close, in both trip sheets, is a full touch target
+  const closeSizes = [];
+  for (const w of [320, 360]) {
+    frame.style.width = w + "px";
+    for (const open of [() => api.trip.openDest(), () => api.trip.share("all")]) {
+      open(); await nextFrame();
+      const sh = [...doc.querySelectorAll(".trip-sheet")].find(s => !s.hidden);
+      const r = sh.querySelector(".sheet-head .link").getBoundingClientRect();
+      closeSizes.push({ w, id: sh.id, h: r.height, wd: r.width });
+      api.ui.closeSheet();
+    }
+  }
+  frame.style.width = width + "px";
+  ok(closeSizes.length === 4 && closeSizes.every(c => c.h >= 44 && c.wd >= 44), "Close in the trip sheets is at least 44x44 px: " + closeSizes.map(c => `${c.id}@${c.w} ${c.wd.toFixed(0)}x${c.h.toFixed(0)}`).join(", "));
+
+  // Share picture: a double tap opens one system share and never falls into the download fallback
+  const nav = W.navigator, shares = [], downloads = [];
+  let pend = null;
+  Object.defineProperty(nav, "canShare", { configurable: true, writable: true, value: () => true });
+  Object.defineProperty(nav, "share", { configurable: true, writable: true, value: data => {
+    shares.push(data);
+    if (pend) return Promise.reject(new W.DOMException("An earlier share has not yet completed.", "InvalidStateError"));   // what browsers do
+    return new Promise((res, rej) => { pend = { done: () => { pend = null; res(); }, fail: name => { pend = null; rej(new W.DOMException(name, name)); } }; });
+  } });
+  const aClick = W.HTMLAnchorElement.prototype.click;
+  W.HTMLAnchorElement.prototype.click = function () { if (this.hasAttribute("download")) downloads.push(this.download); else aClick.call(this); };
+  try {
+    api.trip.share("all");
+    const sgo = doc.querySelector("#tripShareSheet .trip-share-go");
+    const ready = await waitReal(() => !sgo.disabled && sgo.dataset.mode === "share", 600);   // the PNG encodes in real time
+    sgo.click(); sgo.click(); await sleep(30);
+    ok(shares.length === 1 && !downloads.length, `double tap on Share picture: ${shares.length} share, ${downloads.length} downloads (want 1 and 0)${ready ? "" : `; button never got ready (disabled ${sgo.disabled}, mode ${sgo.dataset.mode})`}`);
+    pend && pend.fail("AbortError"); await sleep(30);
+    sgo.click(); await sleep(30); pend && pend.fail("InvalidStateError"); await sleep(30);
+    ok(shares.length === 2 && !downloads.length, `closing the share sheet, or a share already open, saves nothing (${downloads.length} downloads)`);
+    sgo.click(); await sleep(30); pend && pend.fail("DataError"); await sleep(30);
+    ok(shares.length === 3 && downloads.length === 1, `a share that fails saves the picture instead (${downloads.length} download)`);
+    sgo.click(); await sleep(30); pend && pend.done(); await sleep(30);
+    ok(shares.length === 4 && downloads.length === 1, `a finished share saves nothing extra (${shares.length} shares, ${downloads.length} download)`);
+  } finally {
+    W.HTMLAnchorElement.prototype.click = aClick;
+    delete nav.share; delete nav.canShare;
+    api.ui.closeSheet();
+  }
+
+  // tapping a region scrolls to its stamps, below the sticky top bar, with the filter chip in reach (and Show fewer too)
+  frame.style.width = "375px"; frame.style.height = "667px";
+  api.ui.go("passport"); await nextFrame();
+  const asked = instantScroll();
+  doc.querySelector('#view-passport [data-k="region:dc"]').click();
+  await settleScroll();
+  const barBottom = () => doc.querySelector("header.top").getBoundingClientRect().bottom;
+  let secTop = doc.getElementById("ppStamps").getBoundingClientRect().top;
+  ok(secTop >= barBottom() && tappable(doc.querySelector("#view-passport .pp-chip")), `a region tap shows its stamps below the top bar (section at ${secTop.toFixed(0)} px, bar ends at ${barBottom().toFixed(0)} px) and the filter chip can be tapped`);
+  ok(asked.length === 1 && asked[0].behavior === "smooth", `...with one smooth scroll (motion is allowed here) ${JSON.stringify(asked)}`);
+  doc.querySelector("#view-passport .pp-chip").click(); await nextFrame();
+  doc.querySelector('#view-passport [data-k="stamps-more"]').click(); await nextFrame();   // Show all
+  W.scrollTo(0, doc.documentElement.scrollHeight); await nextFrame();
+  doc.querySelector('#view-passport [data-k="stamps-more"]').click();                      // Show fewer
+  await settleScroll();
+  secTop = doc.getElementById("ppStamps").getBoundingClientRect().top;
+  ok(secTop >= barBottom() && secTop < barBottom() + 40, `Show fewer goes back to the Stamps heading, below the top bar (${secTop.toFixed(0)} px)`);
+  asked.restore();
+  W.scrollTo(0, 0);
+  frame.style.width = width + "px"; frame.style.height = height + "px";
+
+  // no horizontal scroll at phone widths, on Drive (destination strip) and on the Passport
+  api.trip.setDest("Downtown Los Angeles");   // the longest name in "Where to?"
+  const overflow = [];
+  for (const w of [360, 430, 600]) {
+    frame.style.width = w + "px";
+    for (const tab of ["drive", "passport"]) {
+      api.ui.go(tab);
+      await nextFrame(); await sleep(30);
+      const de = doc.documentElement;
+      if (de.scrollWidth > de.clientWidth + 1) overflow.push(`${tab}@${w}: ${de.scrollWidth} > ${de.clientWidth}`);
+      const wide = [...doc.querySelectorAll("#destStrip *, #view-passport *")].filter(e => e.getBoundingClientRect().right > de.clientWidth + 1 && e.getClientRects().length);
+      if (wide.length) overflow.push(`${tab}@${w}: ${wide[0].className || wide[0].tagName} sticks out`);
+    }
+  }
+  frame.style.width = width + "px";
+  ok(!overflow.length, "no horizontal overflow at 360, 430 and 600 px" + (overflow.length ? ": " + overflow.join("; ") : ""));
+  // touch targets: every button the module draws is at least 44 px tall
+  frame.style.width = "360px";
+  api.ui.go("passport"); await nextFrame(); await sleep(30);
+  const small = [...doc.querySelectorAll("#destStrip button, #view-passport button")].filter(b => b.getClientRects().length && b.getBoundingClientRect().height < 43.5);
+  api.ui.go("drive"); await nextFrame(); await sleep(30);
+  small.push(...[...doc.querySelectorAll("#destStrip button")].filter(b => b.getClientRects().length && b.getBoundingClientRect().height < 43.5));
+  frame.style.width = width + "px";
+  ok(!small.length, "touch targets at least 44 px" + (small.length ? ": " + small.map(b => `${b.className} ${b.getBoundingClientRect().height.toFixed(0)}px`).join(", ") : ""));
+
+  // passport:reset clears trips, badges and coverage
+  api.ui.go("drive");
+  doc.getElementById("resetPassport").click();
+  doc.getElementById("resetYes").click();
+  ok(api.trip.trips().length === 0 && Object.keys(badges()).length === 0 && api.trip.coverage().miles === 0, `Clear passport clears trips, badges and coverage (${api.trip.trips().length} trips, badges ${Object.keys(badges()).join(",")}, ${api.trip.coverage().miles} mi)`);
+  ok(api.store.get("trips", null) == null && api.store.get("badges", null) == null && api.store.get("coverage", null) == null, "...and their store keys");
+
+  // a destination set by another module (listen.js does this for "how far to Dunsmuir"), even one not in "Where to?"
+  api.ui.go("drive");
+  api.S.dest = { name: "Dunsmuir", m: 730 };
+  api.store.set("dest", api.S.dest);
+  api.bus.emit("dest", api.S.dest);
+  await nextFrame();
+  ok(/Dunsmuir/.test(strip()), `a destination set by another module shows in the strip [${strip().slice(0, 60)}]`);
+  // ...but nothing counts down to a place past the end of the road (Eugene is 194 miles into Oregon)
+  api.S.dest = { name: "Eugene", m: 991 };
+  api.bus.emit("dest", api.S.dest);
+  await nextFrame();
+  ok(MAXM > 992 || (!/Eugene/.test(strip()) && /Where to\?/.test(strip())), `a destination past ${ENDS.N.long} gets no countdown [${strip().slice(0, 40)}]`);
+  ok(MAXM > 1271 || api.trip.setDest({ name: "Seattle", m: 1270.5 }) === false, "setDest refuses a place past the end of the road");
+
+  ok(api.trip.setDest("Nowhere City") === false, "unknown destination is refused");
+  api.trip.clearDest();
+  await nextFrame();
+  ok(api.S.dest === null && api.store.get("dest", null) == null && /Where to\?/.test(strip()), "clearDest");
+
+  // progress saved by the version that covered Oregon and Washington (until 2026-11-11): boot the app on it
+  if (oneState) {
+    const t0 = new Date(2026, 9, 20, 9, 0).getTime();
+    const real = api.data.PLACES.find(p => p.m > 700 && p.m < 780);   // a stamp that is still on the road
+    const oldBits = new Uint8Array(173);                              // the old road: 1382 miles
+    const setBit = k => { oldBits[k >> 3] |= 1 << (k & 7); };
+    for (let k = 100; k < 110; k++) setBit(k);
+    for (let k = 790; k < 1300; k++) setBit(k);                       // the last California miles, then Oregon and Washington
+    api.store.set("stamps", { [real.id]: t0, "or303-wolf-creek-inn": t0 + 1, "wa1170-mount-st-helens": t0 + 2 });
+    api.store.set("badges", { first: t0, "three-states": t0, summit: t0, "state-line": t0, "region-wv": t0, "region-ps": t0 });
+    api.store.set("trips", [
+      { id: "told2", start: t0 + 864e5, end: t0 + 864e5 + 3 * 3.6e6, mode: "gps", demo: false, startM: 1110, lastM: 1260, miles: 150,
+        stamps: ["wa1170-mount-st-helens", "wa1190-fake"], states: ["WA"], maxSpeed: 70, nightMinutes: 0, dest: "Seattle" },
+      { id: "told1", start: t0, end: t0 + 3.6e6, mode: "gps", demo: false, startM: 760, lastM: 900, miles: 140,
+        stamps: [real.id, "or303-wolf-creek-inn"], states: ["CA", "OR"], maxSpeed: 70, nightMinutes: 0 },
+    ]);
+    api.store.set("tripStats", { count: 2, demo: 0, miles: 290, demoMiles: 0, best: 150, states: ["CA", "OR", "WA"], since: t0 });
+    api.store.set("coverage", btoa(String.fromCharCode(...oldBits)));
+    api.store.set("dest", { name: "Seattle", m: 1270.5 });
+    api.store.set("destDone", { name: "Seattle", m: 1270.5, t: t0, miles: 150, start: t0, stamps: 2 });
+    api.store.set("destFrom", 1110);
+    api.store.set("m", 1260);                                         // the phone last knew mile 1260, near Seattle
+    api.store.del("trivia");                                          // (an earlier step's 10 right answers would unlock Trivia whiz)
+    await boot();
+    T = new Date(2026, 10, 9, 10, 0).getTime();
+    const warns = [], cw = W.console.warn, ce = W.console.error;
+    W.console.warn = (...a) => { warns.push(a.map(String).join(" ")); cw.apply(W.console, a); };
+    W.console.error = (...a) => { warns.push(a.map(String).join(" ")); ce.apply(W.console, a); };
+    api.ui.go("drive"); await nextFrame();
+    ok(api.S.dest == null && api.store.get("dest", null) == null && /Where to\?/.test(strip()), `old version: the saved destination past ${ENDS.N.long} (Seattle) is dropped [${strip().slice(0, 30)}]`);
+    const kept = api.store.get("badges", {}), shown = Object.keys(api.trip.badges());
+    ok(shown.join() === "first" && !!kept["three-states"] && !!kept["region-wv"], `old version: badges this road doesn't offer stay in storage but aren't shown or counted (shown: ${shown.join()})`);
+    api.ui.go("passport"); await nextFrame(); await sleep(30);
+    const pv = doc.getElementById("view-passport");
+    const row = label => { const r = [...pv.querySelectorAll(".pp-dist-row")].find(x => x.querySelector("dt").textContent === label); return r ? r.querySelector("dd").textContent.replace(/\s+/g, "") : ""; };
+    const nb = api.trip.badgeList().length;
+    ok(row("Stamps") === `1of${api.data.PLACES.length}` && row("Badges") === `1of${nb}` && pv.querySelectorAll(".pp-badge.on").length === 1,
+      `old version: the cover counts what is on this road (stamps ${row("Stamps")}, badges ${row("Badges")}, ${pv.querySelectorAll(".pp-badge.on").length} badge in color)`);
+    const stampIds = [...pv.querySelectorAll('.pp-stamp[data-k^="stamp:"]')].map(b => b.dataset.k.slice(6));
+    ok(stampIds.length > 0 && stampIds.every(id => api.data.placeById(id)) && pv.querySelectorAll(".pp-stamp.got").length === 1,
+      `old version: no stamp tiles for places that are gone (${pv.querySelectorAll(".pp-stamp.got").length} stamped tile)`);
+    const seen = el => [...el.childNodes].filter(n => !(n.classList && n.classList.contains("trip-sr"))).map(n => n.textContent).join("");
+    const routes = [...pv.querySelectorAll(".pp-trip .pp-troute")].map(seen);
+    ok(routes.join(" | ") === "On I-5 | Shasta Country", `old version: trips past the Oregon line get no made-up region (${routes.join(" | ")})`);
+    const cov = api.trip.coverage(), covTxt = (pv.querySelector(".pp-cov-txt") || {}).textContent || "";
+    ok(cov.miles === 17 && cov.of === Math.ceil(MAXM) && covTxt.includes(`17 of ${Math.ceil(MAXM)} miles`) && covTxt.includes(`of ${roadName} driven`),
+      `old version: coverage counts this road's miles only (${cov.miles} of ${cov.of}: "${covTxt}")`);
+    const lt = await cardTexts(W, () => api.trip.card("trip"));
+    const summ = api.trip.summary("trip");
+    ok(!!lt.blob && lt.whole.includes("Interstate 5") && !api.data.REGIONS.some(r => lt.whole.includes(r.name) || summ.includes(r.name)) && /150 miles/.test(summ),
+      `old version: a share card for the Washington trip draws, without a California region on it ("${summ.slice(0, 70)}")`);
+    api.trip.openDest(); await nextFrame();
+    ok(api.S.m <= MAXM + 1 || !doc.querySelector("#tripDestSheet .trip-here"), `old version: "Where to?" doesn't place you at the stale mile ${api.S.m}`);
+    api.ui.closeSheet();
+    gpsTrip(200, 205); endTrip();                                     // new miles: the old ones past the line stay in storage
+    const raw = atob(api.store.get("coverage", "")), has = k => !!(raw.charCodeAt(k >> 3) & (1 << (k & 7)));
+    ok(api.trip.coverage().miles === 22 && raw.length === 173 && has(1000) && has(1299) && has(202) && !has(1300),
+      `old version: new miles add up (${api.trip.coverage().miles} of ${api.trip.coverage().of}) and the old coverage past the line is written back as it was (${raw.length} bytes)`);
+    W.console.warn = cw; W.console.error = ce;
+    ok(!warns.some(w => /\[trip\]/.test(w)), "old version: the trip module logged no errors" + (warns.length ? `: ${warns.slice(0, 2).join("; ")}` : ""));
+    api.ui.go("drive");
+  }
+
+  // a second copy of js/trip.js on the whole road (tools/build.py with SCOPE = ["CA", "OR", "WA"]): the badges that need Oregon and Washington
+  {
+    const whole = await import("../js/trip.js?whole");
+    const ST = [{ id: "CA", name: "California", from: 0, to: 796.973 }, { id: "OR", name: "Oregon", from: 796.973, to: 1105.4 }, { id: "WA", name: "Washington", from: 1105.4, to: 1381.8 }];
+    const reg = (id, name, st, a, b) => { const s = ST.find(x => x.id === st); return { id, name, st, from: s.from + a, to: b == null ? s.to : s.from + b }; };
+    const RG = [...api.data.REGIONS.filter(r => r.st === "CA").map(r => ({ ...r, to: Math.min(r.to, 796.973) })),
+      reg("rv", "Siskiyous & Rogue Valley", "OR", 0, 100), reg("um", "Umpqua & the Calapooyas", "OR", 100, 200), reg("wv", "Willamette Valley", "OR", 200),
+      reg("sw", "Southwest Washington", "WA", 0, 100), reg("ps", "Puget Sound", "WA", 100, 190), reg("ns", "North Sound & Skagit", "WA", 190)];
+    RG[RG.length - 1].to = 1381.81;
+    const stateAt = m => ST.find(s => m < s.to) || ST[2], regionAt = m => RG.find(r => m >= r.from && m < r.to) || RG[RG.length - 1];
+    const PL = RG.map(r => ({ id: "w-" + r.id, m: r.from + 3, st: r.st, name: "A place in " + r.name, cat: "town", ex: 3 }));
+    const ELEV = Array.from({ length: 1383 }, (_, k) => (k >= 800 && k <= 804 ? 4310 - Math.abs(802 - k) * 40 : 900));
+    const handlers = {};
+    const wbus = { on(e, f) { (handlers[e] ||= []).push(f); return () => {}; }, emit(e, d) { for (const f of handlers[e] || []) f(d); } };
+    const wS = { mode: "off", m: null, dir: "N", stamps: {}, dest: null };
+    const fake = { S: wS, settings: { narr: false }, bus: wbus, store: memStore(), voice: {}, ui: {},
+      data: { STATES: ST, REGIONS: RG, PLACES: PL, DESTS: [{ name: "Sacramento", m: 519 }, { name: "Seattle", m: 1270.5 }], MAX_M: 1381.8, ELEV,
+        ENDS: { S: { short: "Mexico", long: "the Mexico border" }, N: { short: "Canada", long: "the Canadian border" } },
+        stateAt, regionAt, localMile: m => ({ st: stateAt(m).id, mi: Math.max(0, m - stateAt(m).from) }), placeById: id => PL.find(p => p.id === id) } };
+    whole.init(fake);
+    const wt = fake.trip;
+    let TW = new Date(2026, 10, 6, 9, 0).getTime();
+    wt.setClock(() => TW);
+    const wl = wt.badgeList(), wh = id => (wl.find(b => b.id === id) || {}).hint;
+    ok(["three-states", "state-line", "summit", "grapevine", "region-rv", "region-ns"].every(id => wh(id)),
+      `whole road: Three-state run, State line, Highest point and the Oregon and Washington regions are offered again (${wl.length} badges)`);
+    ok(wh("three-states") === "Drive in California, Oregon and Washington" && wh("border-to-border") === "Drive 95% of I-5, Mexico to Canada" &&
+      wh("summit") === "Cross Siskiyou Summit, 4,310 ft, OR miles 3 to 7" && wh("halfway") === "Cross the middle of I-5, mile 691",
+      `whole road wording: "${wh("three-states")}" · "${wh("border-to-border")}" · "${wh("summit")}" · "${wh("halfway")}"`);
+    const driveW = (a, b, step = 0.5) => {
+      const dir = b >= a ? "N" : "S";
+      wS.m = a; wbus.emit("pos", { m: a, prevM: null, dir, speed: 62, offRoute: false, jumped: true });
+      const n = Math.ceil(Math.abs(b - a) / step);
+      for (let i = 1; i <= n; i++) {
+        const m = a + (b - a) * i / n, prevM = wS.m;
+        TW += Math.abs(b - a) / n / 62 * 3.6e6; wS.m = m;
+        wbus.emit("pos", { m, prevM, dir, speed: 62, offRoute: false, jumped: false });
+      }
+    };
+    wS.mode = "gps"; wbus.emit("mode", "gps");
+    driveW(680, 810);
+    const w1 = wt.badges();
+    ok(!!(w1.halfway && w1["state-line"] && w1.summit) && !w1["three-states"] && wt.current().states.join() === "CA,OR",
+      `whole road: 680 to 810 crosses the middle (mile 691), the Oregon line and Siskiyou Summit [${Object.keys(w1).join(", ")}; states ${wt.current().states.join()}]`);
+    wS.mode = "off"; wbus.emit("mode", "off");
+    TW += 3600e3;
+    wS.mode = "gps"; wbus.emit("mode", "gps");
+    driveW(0, 1381.8, 0.7);
+    const w2 = wt.badges();
+    ok(!!(w2["three-states"] && w2["long-haul"] && w2["border-to-border"]) && wt.coverage().of === 1382 && wt.current().states.join() === "CA,OR,WA",
+      `whole road: Mexico to Canada unlocks Three-state run, Long haul and Border to border (${wt.coverage().miles} of ${wt.coverage().of} miles)`);
+    wS.mode = "off"; wbus.emit("mode", "off");
+    const wc = await cardTexts(window, () => wt.card("all"));
+    ok(!!wc.blob && wc.whole.includes("Mexico to Canada") && wc.spaced.includes("CAORWA"),
+      `whole road: the all-time card says Mexico to Canada, with CA, OR and WA under the road (${wc.spaced.filter(s => /^[A-Z]{4,}$/.test(s)).join(" | ")})`);
+    ok(wt.setDest("Seattle") === true && wS.dest && wS.dest.m === 1270.5, "whole road: Seattle is a destination again");
+  }
+
+  // never throws: an empty api, no containers, no data, odd events
+  const mod = await import("../js/trip.js?robust");
+  const errs = [];
+  const handlers = {};
+  const fakeBus = { on(e, f) { (handlers[e] ||= []).push(f); return () => {}; }, emit(e, d) { for (const f of handlers[e] || []) { try { f(d); } catch (err) { errs.push(e + ": " + err.message); } } } };
+  const mem = new Map();
+  const fake = { S: { mode: "off", m: null, dir: "N", stamps: {}, dest: null }, settings: { narr: true }, bus: fakeBus,
+    store: { get: (k, f) => (mem.has(k) ? JSON.parse(mem.get(k)) : f), set: (k, v) => mem.set(k, JSON.stringify(v)), del: k => mem.delete(k) },
+    voice: {}, data: { PLACES: [], DESTS: [], REGIONS: [], STATES: [], MAX_M: 0 }, ui: {} };
+  try { mod.init(fake); } catch (e) { errs.push("init: " + e.message); }
+  try { mod.init({}); } catch (e) { errs.push("init({}): " + e.message); }
+  try { mod.init(undefined); } catch (e) { errs.push("init(undefined): " + e.message); }
+  for (const [e, d] of [["mode", "gps"], ["pos", { m: 10, prevM: null, jumped: true }], ["pos", { m: 10.6, prevM: 10 }], ["pos", null], ["pos", { m: NaN }],
+    ["place:stamp", { place: { id: "x", m: 10 } }], ["place:stamp", null], ["tab", "passport"], ["badge", {}], ["passport:reset", {}], ["trip:end", {}], ["mode", "off"], ["settings", null]]) fakeBus.emit(e, d);
+  try { fake.trip.setDest("x"); fake.trip.openDest(); fake.trip.share(); fake.trip.summary(); fake.trip.clearDest(); } catch (e) { errs.push("api: " + e.message); }
+  for (const s of document.querySelectorAll("body > .trip-sheet")) s.remove();
+  ok(!errs.length, "never throws with an empty api, no containers and no data" + (errs.length ? ": " + errs.join("; ") : ""));
+
+  log(`(requestAnimationFrame timed out ${rafMissed} times; virtual time used ${(performance.now() / 1000).toFixed(1)} s; app loads ${loads}, expected ${expectedLoads})`);
+  log(fails ? `FAILED ${fails}` : "ALL PASS", !!fails);
+  document.title = fails ? `FAILED ${fails}` : "ALL PASS";
+}
+
+(async () => {
+  try {
+    const t0 = performance.now();
+    await serviceWorkerReady();
+    const t1 = performance.now();
+    heartbeat();
+    await boot();
+    console.log(`[test-trip] timing: service worker ${(t1 - t0).toFixed(0)} ms, app boot ${(performance.now() - t1).toFixed(0)} ms (virtual)`);
+    if (!scenarios[scenario]) throw new Error("unknown scenario " + scenario);
+    await scenarios[scenario]();
+    log(`scenario ${scenario} (${theme}) ready; controlled by the service worker: ${!!navigator.serviceWorker?.controller}; app loads ${loads}`);
+  } catch (e) {
+    log("ERROR " + (e && e.stack || e), true);
+  }
+})();
+</script>
+</body>
+</html>

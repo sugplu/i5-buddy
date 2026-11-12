@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy: listen tests</title>
+<!--
+  Voice command tests. Headless Chrome has no microphone, so a fake SpeechRecognition is put into the app's
+  iframe and the real listen.js state machine is driven through it.
+
+  ?state=selftest   runs the end-to-end checks (about 60 s of page time: use --virtual-time-budget=250000)
+  ?state=drive|listening|heard|unknown|nospeech|network|answer|answered|help|reply|land|eta|past|blocked   shows one state for a screenshot
+                    (default: listening). The parser tables always run, and the totals show in a thin line above the app.
+  &theme=dark|light  &m=309  &dir=N|S  &delay=200 (ms to wait before driving the state)
+  &at=12500 (drive the state at that page time, so a screenshot taken with --virtual-time-budget=15000 still shows the toast)
+  &w=360 &h=380 (iframe size: narrow phone, or a phone on its side with &w=740&h=380)   &debug=1 (log the overlay's computed state)
+
+  The app covers California (tools/build.py SCOPE = ["CA"]): the road ends at data.ENDS.N, data.MAX_M (the Oregon
+  line), and places past it get a friendly "past the Oregon line" answer. Parser rows marked {whole: true} run with the
+  whole road's destinations, so the same words still work if the scope grows again.
+
+  The page prints PASS/FAIL tables, puts the totals in document.title and logs "LISTEN TEST" lines to the console.
+  Speech is faked as well (headless stalls on real utterances), and the app runs without its service worker here
+  (on a fresh profile the worker reloads the page, which would drop the fake microphone).
+-->
+<script src="../data/i5.js"></script>
+<style>
+  body{margin:0;padding:15px;background:#1d2220;color:#e6ebe7;font:13px/1.45 -apple-system,system-ui,"Segoe UI",sans-serif;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  #app{width:430px;height:932px;border:0;background:#000;flex:none;display:block}
+  #report{flex:1 1 560px;min-width:0;max-width:980px}
+  h1{font-size:17px;margin:0 0 6px}
+  h2{font-size:14px;margin:18px 0 6px;color:#f2c230}
+  p{margin:0 0 8px;color:#a9b6ad}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th,td{padding:3px 8px;border-bottom:1px solid #313b36;text-align:left;vertical-align:top}
+  th{color:#93a198;font-weight:600}
+  td.r{font-weight:800;width:44px}
+  .pass{color:#5cc46f}.fail{color:#ff6b5e}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  #badge{position:fixed;top:0;left:15px;width:430px;height:15px;font:700 10.5px/15px -apple-system,system-ui,sans-serif;color:#93a198;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #badge.pass{color:#5cc46f}#badge.fail{color:#ff6b5e}
+</style>
+</head>
+<body>
+<div id="badge">listen tests running…</div>
+<iframe id="app" title="I-5 Buddy" width="430" height="932"></iframe>
+<main id="report">
+  <h1 id="sum">Running…</h1>
+  <p id="info"></p>
+  <section id="e2eBox" hidden><h2>App checks (fake microphone)</h2><table id="tE2E"><tr><th>Result</th><th>Check</th><th>Detail</th></tr></table></section>
+  <h2>parseCommand</h2>
+  <table id="tCmd"><tr><th>Result</th><th>Phrase</th><th>Expected</th><th>Got</th></tr></table>
+  <h2>chooseCommand (recognizer alternatives)</h2>
+  <table id="tAlt"><tr><th>Result</th><th>Alternatives</th><th>Expected</th><th>Got</th></tr></table>
+  <h2>parseAnswer</h2>
+  <table id="tAns"><tr><th>Result</th><th>Phrase</th><th>Choices</th><th>Expected</th><th>Got</th></tr></table>
+</main>
+
+<script type="module">
+import { parseCommand, parseAnswer, chooseCommand, normText, init as initListen } from "../js/listen.js";
+
+const Q = new URLSearchParams(location.search);
+const STATE = Q.get("state") || "listening";
+const THEME = Q.get("theme") === "light" ? "light" : "dark";
+const M = Q.has("m") ? +Q.get("m") : 309;
+const DIR = Q.get("dir") === "S" ? "S" : "N";
+const DELAY = Q.has("delay") ? +Q.get("delay") : 200;
+const AT = Q.has("at") ? +Q.get("at") : 0; // drive the state at this page time (ms), e.g. just before the screenshot
+if (Q.has("w")) { const f = document.getElementById("app"); f.width = +Q.get("w"); f.style.width = Q.get("w") + "px"; } // e.g. &w=360
+if (Q.has("h")) { const f = document.getElementById("app"); f.height = +Q.get("h"); f.style.height = Q.get("h") + "px"; } // e.g. &w=740&h=360 (on its side)
+
+const DATA = window.I5DATA || { dests: [], places: [] };
+// The parser table uses frozen samples of names, so content edits can't break it. The live data is checked separately.
+// DESTS as tools/build.py writes them for California (SCOPE = ["CA"]): the road's north end is the Oregon border.
+const DESTS = ["Mexico border", "San Diego", "Oceanside", "San Clemente", "Anaheim", "Downtown Los Angeles", "Burbank", "Santa Clarita",
+  "Grapevine", "Kettleman City", "Coalinga", "Los Banos", "Stockton", "Sacramento", "Williams", "Red Bluff", "Redding", "Mount Shasta",
+  "Yreka", "Oregon border"];
+// The whole road (SCOPE = ["CA", "OR", "WA"]), for rows marked {whole: true}.
+const DESTS_WHOLE = ["Mexico border", "San Diego", "Oceanside", "San Clemente", "Anaheim", "Downtown Los Angeles", "Burbank", "Santa Clarita",
+  "Grapevine", "Kettleman City", "Coalinga", "Los Banos", "Stockton", "Sacramento", "Williams", "Red Bluff", "Redding", "Mount Shasta",
+  "Yreka", "Ashland", "Medford", "Grants Pass", "Roseburg", "Eugene", "Albany", "Salem", "Portland", "Vancouver, WA", "Longview",
+  "Centralia", "Olympia", "Tacoma", "Seattle", "Everett", "Mount Vernon", "Bellingham", "Canadian border"];
+const PLACES = ["San Ysidro Port of Entry", "Mission Bay", "Del Mar racetrack", "101 Cafe", "Camp Pendleton", "Disneyland", "Oldest McDonald's",
+  "Sylmar's olive groves", "Six Flags Magic Mountain", "Tejon Pass summit", "Tejon Ranch", "Fort Tejon", "The Grapevine grade",
+  "Why it's called the Grapevine", "Tejon Ranch", "Wind Wolves Preserve", "Kettleman Hills", "Kettleman City, halfway", "Harris Ranch feedlot",
+  "The Iron Zoo", "The 1991 dust storm", "John Erreca Rest Area", "Pea Soup Andersen's", "Two canals side by side", "Benjamin Holt and the Caterpillar",
+  "Old Sacramento and I-5", "Crossing the Sacramento River", "Granzella's", "The Olive Pit", "Red Bluff", "Redding", "Sundial Bridge", "Old Shasta",
+  "Shasta Dam", "Shasta Lake", "Lake Shasta Caverns", "Caboose motel", "Dunsmuir", "Mount Shasta City", "Mount Shasta", "Weed", "Yreka",
+  "Randolph Collier Rest Area", "Oregon line and Siskiyou Summit",
+  // look-alikes for common words: "what are those cows" must not find Crows Landing, "that tower" not Tower Bridge 200 miles away
+  "Crows Landing airfield", "Tower Bridge", "State of Jefferson", "The Siskiyou Trail", "Castle Crags", "Castle Crags State Park",
+  "Verdugo Mountains", "The Buttonwillow tree", "The California Aqueduct", "Los Angeles Aqueduct Cascades", "Navy jets overhead",
+  "Prune orchards", "Hilt, the border town", "Weed's wildfires", "Wind Wolves Preserve", "The Death Valley rescue", "Sandhill crane reserve"];
+// Places near us, as listen.js passes them ({name, side, d = miles ahead}): mile 309 northbound, and next to a few landmarks.
+const NEAR_309 = [{ name: "Kettleman City, halfway", side: "", d: 0 }, { name: "The California Aqueduct", side: "", d: 6 }, { name: "Avenal", side: "", d: 10 }, { name: "Garlic country", side: "", d: 13 }];
+const NEAR_CRAGS = [{ name: "Castle Crags", side: "left", d: 2.1 }, { name: "Dunsmuir, the railroad town", side: "", d: 5.3 }];
+const NEAR_SAC = [{ name: "Tower Bridge", side: "", d: 2 }, { name: "Old Sacramento and I-5", side: "", d: 2 }, { name: "Crossing the Sacramento River", side: "", d: 14 }];
+const NEAR_BUTTON = [{ name: "The Buttonwillow tree", side: "", d: 2 }];
+const NEAR_LA = [{ name: "Los Angeles Aqueduct Cascades", side: "right", d: 1.2 }, { name: "The Death Valley rescue", side: "left", d: 11.7 }];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const tally = { cmd: [0, 0], alt: [0, 0], ans: [0, 0], e2e: [0, 0] };
+const fails = [];
+const show = v => v === undefined ? "" : JSON.stringify(v);
+
+function addRow(id, ok, cells) {
+  const tr = document.createElement("tr");
+  const r = document.createElement("td");
+  r.className = "r " + (ok ? "pass" : "fail");
+  r.textContent = ok ? "PASS" : "FAIL";
+  tr.append(r);
+  for (const c of cells) { const td = document.createElement("td"); td.textContent = c; tr.append(td); }
+  document.getElementById(id).append(tr);
+}
+function count(key, ok, line) {
+  tally[key][0] += ok ? 1 : 0; tally[key][1]++;
+  if (!ok) { fails.push(line); console.log("LISTEN TEST FAIL " + line); }
+}
+
+/* ---------------- parseCommand table ---------------- */
+const CMD = [
+  // what's on my left / right
+  ["What's on my left?", "look", "left"], ["what's on my right", "look", "right"], ["What is on the left side", "look", "left"],
+  ["anything to my right", "look", "right"], ["hey buddy, what's that on the left", "look", "left"], ["what's on my write", "look", "right"],
+  ["Look right", "look", "right"], ["left side please", "look", "left"], ["what's on the right right now", "look", "right"],
+  // tell me more
+  ["Tell me more", "more", null], ["more", "more", null], ["can you tell me more about it", "more", null], ["keep going", "more", null],
+  ["tell me about Harris Ranch", "more", "Harris Ranch feedlot"], ["what is the Olive Pit", "more", "The Olive Pit"],
+  ["tell me about Pea Soup Andersen's", "more", "Pea Soup Andersen's"], ["who was Benjamin Holt", "more", "Benjamin Holt and the Caterpillar"],
+  ["tell me about the caboose motel", "more", "Caboose motel"], ["tell me about the 1991 dust storm", "more", "The 1991 dust storm"],
+  ["tell me about the olive pits", "more", "The Olive Pit"],
+  // say that again
+  ["say that again", "repeat", null], ["Repeat", "repeat", null], ["what was that", "repeat", null], ["huh?", "repeat", null],
+  ["sorry, I didn't catch that", "repeat", null], ["one more time", "repeat", null],
+  // next / skip
+  ["next", "next", null], ["skip", "next", null], ["skip this one", "next", null], ["what's coming up", "next", null], ["what's next", "next", null],
+  // quiet
+  ["be quiet", "quiet", null], ["Stop", "quiet", null], ["shut up", "quiet", null], ["okay stop talking", "quiet", null], ["shh", "quiet", null],
+  ["that's enough", "quiet", null], ["wait", "quiet", null],
+  // where are we
+  ["where are we", "where", null], ["Where am I right now?", "where", null], ["what town is this", "where", null],
+  ["what state are we in", "where", null], ["what mile marker are we at", "where", null],
+  // how far
+  ["how far", "howfar", null], ["are we there yet", "howfar", null], ["how much longer", "howfar", null],
+  ["how far to Sacramento", "howfar", "Sacramento"], ["How far is it to Portland?", "howfar", null, null, { past: "Portland" }],
+  ["how long until we get to Redding", "howfar", "Redding"], ["how far to reading", "howfar", "Redding"], ["how far to wedding", "howfar", "Redding"],
+  ["how many miles to Yreka", "howfar", "Yreka"], ["how far to eureka", "howfar", "Yreka"], ["how far to LA", "howfar", "Downtown Los Angeles"],
+  ["how far to Los Angeles", "howfar", "Downtown Los Angeles"], ["when do we get to Seattle", "howfar", null, null, { past: "Seattle" }],
+  ["how far to the Canadian border", "howfar", null, null, { past: "Canadian border" }], ["how far to Canada", "howfar", null, null, { past: "Canadian border" }],
+  ["how far to the border", "howfar", null, { dir: "N" }, { st: "OR" }], ["how far to the border", "howfar", "Mexico border", { dir: "S" }],
+  ["how far to Mount Shasta", "howfar", "Mount Shasta"], ["how far to mt shasta", "howfar", "Mount Shasta"],
+  ["how far to Vancouver Washington", "howfar", null, null, { past: "Vancouver, WA" }], ["take me to Bellingham", "howfar", null, null, { past: "Bellingham" }],
+  ["how far to the grapevine", "howfar", "Grapevine"], ["how far to kettleman", "howfar", "Kettleman City"],
+  ["how far are we from Los Banos", "howfar", "Los Banos"], ["how far to Hogwarts", "howfar", null, null, { past: undefined }],
+  ["how far is Harris Ranch", "distance", "Harris Ranch feedlot"], ["where is Disneyland", "distance", "Disneyland"],
+  ["when do we get to Red Bluff", "howfar", "Red Bluff"], ["take me to Stockton", "howfar", "Stockton"],
+  // the same words with the whole road's destinations (tools/build.py SCOPE = ["CA", "OR", "WA"]) find its cities again
+  ["How far is it to Portland?", "howfar", "Portland", { whole: true }], ["when do we get to Seattle", "howfar", "Seattle", { whole: true }],
+  ["how far to the Canadian border", "howfar", "Canadian border", { whole: true }], ["how far to Canada", "howfar", "Canadian border", { whole: true }],
+  ["how far to the border", "howfar", "Canadian border", { dir: "N", whole: true }], ["how far to the border", "howfar", "Mexico border", { dir: "S", whole: true }],
+  ["how far to Vancouver Washington", "howfar", "Vancouver, WA", { whole: true }], ["take me to Bellingham", "howfar", "Bellingham", { whole: true }],
+  ["how far to Hogwarts", "howfar", null, { whole: true }, { past: undefined }], ["how far to Sacramento", "howfar", "Sacramento", { whole: true }],
+  // services
+  ["where can I get gas", "services", "fuel"], ["I need gas", "services", "fuel"], ["next gas station", "services", "fuel"],
+  ["how far to the next gas station", "services", "fuel"], ["we need to fill up", "services", "fuel"], ["is there a truck stop", "services", "fuel"],
+  ["where's a charger", "services", "ev"], ["Tesla supercharger", "services", "ev"], ["EV charging", "services", "ev"],
+  ["I'm hungry", "services", "food"], ["where can we eat", "services", "food"], ["anywhere to get coffee", "services", "food"], ["find a restaurant", "services", "food"],
+  ["where can I get fast food", "services", "food"], ["breakfast", "services", "food"], ["we're in a hurry, where's the next gas", "services", "fuel"],
+  ["hurry up", "rate", "faster"], ["the traffic is slow", "road", null],
+  ["find a hotel", "services", "sleep"], ["motel", "services", "sleep"], ["we need a place to stay tonight", "services", "sleep"], ["I'm getting tired", "services", "sleep"],
+  ["bathroom", "services", "rest"], ["where is the next rest area", "services", "rest"], ["I need to pee", "services", "rest"],
+  ["next rest stop", "services", "rest"], ["restroom please", "services", "rest"],
+  // live road info
+  ["what's the weather", "weather", null], ["is it going to rain", "weather", null], ["what's the forecast", "weather", null],
+  ["do I need chains", "road", null], ["how's the traffic", "road", null],
+  // games and fun
+  ["trivia", "trivia", null], ["quiz me", "trivia", null], ["ask me a question", "trivia", null], ["tell me a joke", "joke", null],
+  ["tell me a fun fact", "story", null], ["tell me a story", "story", null],
+  ["answer B", "answer", 1], ["is it C", "answer", 2], ["b", "answer", 1], ["the second one", "answer", 1], ["my answer is d", "answer", 3],
+  ["next question", "trivia", "next"], ["repeat the question", "trivia", "read"], ["play bingo", "tab", "play"], ["I spy", "tab", "play"],
+  ["what does the sign say", "sign", null], ["freeway signs", "sign", null],
+  // my voice
+  ["slower", "rate", "slower"], ["talk slower please", "rate", "slower"], ["you're talking too fast", "rate", "slower"],
+  ["speak faster", "rate", "faster"], ["speed up", "rate", "faster"], ["too slow", "rate", "faster"],
+  ["narration off", "narr", false], ["turn off the narration", "narr", false], ["stop narrating", "narr", false],
+  ["narration on", "narr", true], ["turn the narration back on", "narr", true], ["mute", "narr", false], ["unmute", "narr", true],
+  ["louder", "volume", null], ["I can't hear you", "volume", null], ["talk less", "chat", "low"], ["story time", "chat", "high"],
+  ["kid mode on", "kid", true], ["turn off kid mode", "kid", false], ["night mode", "theme", "dark"], ["switch to day mode", "theme", "light"],
+  // help, politeness
+  ["help", "help", null], ["what can I say", "help", null], ["what are the commands", "help", null], ["never mind", "cancel", null],
+  ["cancel", "cancel", null], ["thank you", "thanks", null], ["thanks buddy", "thanks", null], ["hello", "hello", null], ["hey buddy", "hello", null],
+  // trip, screens, numbers
+  ["what's the next exit", "exit", null], ["how high are we", "elevation", null], ["what's our elevation", "elevation", null],
+  ["how fast are we going", "speed", null], ["how many stamps do I have", "stamps", null], ["show me the map", "tab", "map"],
+  ["open the passport", "tab", "passport"], ["let's play bingo", "tab", "play"], ["open settings", "settings", null],
+  ["start the demo", "start", "demo"], ["start GPS", "start", "gps"], ["end the trip", "end", null],
+  ["what's that", "around", null], ["anything interesting around here", "around", null], ["play", "announce", null],
+  // nothing useful
+  ["purple monkey dishwasher", "unknown", null], ["", "unknown", null], ["the", "unknown", null], ["um", "unknown", null],
+
+  // "what's that X" is about something in sight: only a place near us, else what's around (review 1)
+  ["what are those cows", "land", "farm", { near: NEAR_309 }], ["what's that tower", "around", null, { near: NEAR_309 }],
+  ["what's that statue", "around", null, { near: NEAR_309 }], ["what's that train", "around", null, { near: NEAR_309 }],
+  ["what's that castle", "around", null, { near: NEAR_309 }], ["what's that mountain", "land", "land", { near: NEAR_309 }],
+  ["what's the story", "more", null, { near: NEAR_309 }], ["what's the story behind that", "more", null, { near: NEAR_309 }],
+  ["what are those trees on the left", "look", "left", { near: NEAR_309 }], ["what are those trees", "land", "farm", { near: NEAR_309 }],
+  ["what's growing here", "land", "farm", { near: NEAR_309 }], ["tell me about this area", "land", "land", { near: NEAR_309 }],
+  ["what is that big bridge over there", "around", null, { near: NEAR_309 }],
+  ["what's that castle", "more", "Castle Crags", { near: NEAR_CRAGS }], ["what's that castle on the right", "look", "right", { near: NEAR_CRAGS }],
+  ["tell me about the castle", "more", "Castle Crags", { near: NEAR_CRAGS }], ["is that castle far", "distance", "Castle Crags", { near: NEAR_CRAGS }],
+  ["what's that tower", "more", "Tower Bridge", { near: NEAR_SAC }], ["what's that bridge", "more", "Tower Bridge", { near: NEAR_SAC }],
+  ["what are those trees", "more", "The Buttonwillow tree", { near: NEAR_BUTTON }],
+  ["what's the aqueduct", "more", "Los Angeles Aqueduct Cascades", { near: NEAR_LA }], ["what's the aqueduct", "more", "The California Aqueduct"],
+  ["what's this valley", "land", "land", { near: NEAR_LA }], ["what is this town", "where", null, { near: NEAR_LA }],
+  // names still work from anywhere: whole generic names, one strong word, the part before a comma, a recognizer typo
+  ["tell me about Tower Bridge", "more", "Tower Bridge"], ["what's the story behind tower bridge", "more", "Tower Bridge"],
+  ["tell me about the caverns", "more", "Lake Shasta Caverns"], ["tell me about the cranes", "more", "Sandhill crane reserve"],
+  ["tell me about hilt", "more", "Hilt, the border town"], ["tell me about castle crags", "more", "Castle Crags"],
+  ["tell me more about pea soup andersons", "more", "Pea Soup Andersen's"], ["tell me about the wind", "weather", null],
+  ["tell me the story of the dust storm", "more", "The 1991 dust storm"],
+  // how far, with a target in any form (review 3), time left (review 4), and only asking (review 6)
+  ["what time will we get to Redding", "howfar", "Redding", null, { eta: true, ask: false }],
+  ["what time do we arrive in Yreka", "howfar", "Yreka", null, { eta: true }],
+  ["are we close to Sacramento", "howfar", "Sacramento", null, { ask: true }], ["are we near Redding", "howfar", "Redding", null, { ask: true }],
+  ["how close are we to Redding", "howfar", "Redding", null, { ask: true }], ["is Redding far", "howfar", "Redding", null, { ask: true }],
+  ["where is Redding", "howfar", "Redding", null, { ask: true }], ["where's Sacramento", "howfar", "Sacramento", null, { ask: true }],
+  ["how far to Sacramento", "howfar", "Sacramento", null, { ask: false, eta: false }],
+  ["how far to Oregon", "howfar", null, null, { st: "OR" }], ["how far to the Oregon border", "howfar", null, null, { st: "OR" }],
+  ["when do we cross into Washington", "howfar", null, null, { st: "WA" }], ["how far to the state line", "howfar", null, null, { st: "next" }],
+  ["how many miles left", "howfar", null, null, { q: undefined }], ["how much time is left", "howfar", null], ["how long is left", "howfar", null],
+  ["how much is left", "howfar", null], ["hours left", "howfar", null], ["is it far", "howfar", null], ["what time will we get there", "howfar", null, null, { eta: true }],
+  ["right, what's on the left", "look", "left"], ["what's left", "look", "left"],
+
+  // California only: the road ends at the Oregon line. Its names (and "the state line", "the end of the road") count
+  // down to it; a place past it says so (st / past are answered by the runtime from data.STATES, MAX_M and ENDS)
+  ["how far to the Oregon line", "howfar", null, null, { st: "OR" }], ["how far to the Oregon state line", "howfar", null, null, { st: "OR" }],
+  ["how long until we hit Oregon", "howfar", null, null, { st: "OR" }], ["are we close to Oregon", "howfar", null, null, { st: "OR", ask: true }],
+  ["what time will we get to Oregon", "howfar", null, null, { st: "OR", eta: true }], ["how far to oregon boarder", "howfar", null, null, { st: "OR" }],
+  ["how far to Washington state", "howfar", null, null, { st: "WA" }], ["how far to California", "howfar", null, null, { st: "CA" }],
+  ["how far to the end of the road", "howfar", null, null, { st: "N" }], ["how far to the end of the road", "howfar", null, { dir: "S" }, { st: "S" }],
+  ["how far to Mexico", "howfar", "Mexico border"], ["how far to Tijuana", "howfar", "Mexico border"], ["how far to the Mexican border", "howfar", "Mexico border"],
+  ["what time will we get to Portland", "howfar", null, null, { past: "Portland", eta: true, ask: false }],
+  ["what time do we arrive in Seattle", "howfar", null, null, { past: "Seattle", eta: true }],
+  ["how far to Tacoma", "howfar", null, null, { past: "Tacoma" }], ["how far to takoma", "howfar", null, null, { past: "Tacoma" }],
+  ["how far to Vancouver", "howfar", null, null, { past: "Vancouver, WA" }], ["how far to Vancouver BC", "howfar", null, null, { past: "Canadian border" }],
+  ["how far to British Columbia", "howfar", null, null, { past: "Canadian border" }], ["how far to Olympia", "howfar", null, null, { past: "Olympia" }],
+  ["how far to Portland Oregon", "howfar", null, null, { past: "Portland" }], ["how far to Salem Oregon", "howfar", null, null, { past: "Salem" }],
+  ["how far to Seattle Washington", "howfar", null, null, { past: "Seattle" }], ["how far to Redding California", "howfar", "Redding"],
+  ["how far to Eugene", "howfar", null, null, { past: "Eugene" }], ["how far to Medford", "howfar", null, null, { past: "Medford" }],
+  ["how far to Ashland", "howfar", null, null, { past: "Ashland" }], ["how far to Grants Pass", "howfar", null, null, { past: "Grants Pass" }],
+  ["navigate to Everett", "howfar", null, null, { past: "Everett" }], ["is Portland far", "howfar", null, null, { past: "Portland", ask: true }],
+  ["where is Seattle", "howfar", null, null, { past: "Seattle", ask: true }], ["how far to Mount Rainier", "howfar", null, null, { past: "Mount Rainier" }],
+  ["how far to Mount St. Helens", "howfar", null, null, { past: "Mount Saint Helens" }], ["how far to Crater Lake", "howfar", null, null, { past: "Crater Lake" }],
+  ["how far to Ensenada", "howfar", null, null, { past: "Ensenada" }], ["how far to the Siskiyou Summit", "howfar", null, null, { past: "Siskiyou Summit" }],
+  ["tell me about Seattle", "howfar", null, null, { past: "Seattle" }], ["we're headed to Portland", "howfar", null, null, { past: "Portland" }],
+  ["we're headed to Redding", "howfar", "Redding"], ["what's the weather in Portland", "weather", null], ["how far to Hilt", "distance", "Hilt, the border town"],
+  // ...and with the whole road the same words find its cities and state lines again (a town that is no destination stays past)
+  ["what time will we get to Portland", "howfar", "Portland", { whole: true }, { eta: true, ask: false }],
+  ["what time do we arrive in Seattle", "howfar", "Seattle", { whole: true }, { eta: true }],
+  ["how far to Oregon", "howfar", null, { whole: true }, { st: "OR" }], ["how far to the Oregon border", "howfar", null, { whole: true }, { st: "OR" }],
+  ["when do we cross into Washington", "howfar", null, { whole: true }, { st: "WA" }], ["how far to the state line", "howfar", null, { whole: true }, { st: "next" }],
+  ["how far to Tacoma", "howfar", "Tacoma", { whole: true }], ["how far to Vancouver", "howfar", "Vancouver, WA", { whole: true }],
+  ["is Portland far", "howfar", "Portland", { whole: true }, { ask: true }], ["how far to the end of the road", "howfar", null, { whole: true }, { st: "N" }],
+  ["how far to Salem Oregon", "howfar", "Salem", { whole: true }], ["how far to Corvallis", "howfar", null, { whole: true }, { past: "Corvallis" }],
+];
+for (const [text, cmd, arg, o, extra] of CMD) {
+  const r = parseCommand(text, o && o.whole ? DESTS_WHOLE : DESTS, { places: PLACES, dir: (o && o.dir) || "N", near: (o && o.near) || [] });
+  const same = (k, v) => (typeof v === "boolean" ? !!r[k] === v : r[k] === v);
+  const ok = r.cmd === cmd && (arg === undefined || (r.arg ?? null) === arg) && Object.entries(extra || {}).every(([k, v]) => same(k, v));
+  const exp = cmd + (arg != null ? " " + show(arg) : "") + (o && o.dir ? ` (dir ${o.dir})` : "") + (o && o.near ? ` (near: ${o.near.map(n => n.name).slice(0, 2).join(", ")}…)` : "") +
+    (o && o.whole ? " (whole road)" : "") + Object.entries(extra || {}).map(([k, v]) => ` ${k}=${v === undefined ? "none" : show(v)}`).join("");
+  const got = r.cmd + (r.arg != null ? " " + show(r.arg) : "") + (r.q ? ` q=${show(r.q)}` : "") + ["ask", "eta", "st", "past"].filter(k => r[k] != null).map(k => ` ${k}=${show(r[k])}`).join("");
+  addRow("tCmd", ok, [show(text), exp, got]);
+  count("cmd", ok, `parseCommand ${show(text)}: want ${exp}, got ${got}`);
+}
+
+/* ---------------- chooseCommand: pick the best alternative ---------------- */
+const ALT = [
+  [["how far to hogwarts", "how far to redding"], "howfar", "Redding"],
+  [["purple monkey", "next gas"], "services", "fuel"],
+  [["what's on my lift", "what's on my left"], "look", "left"],
+  [["blah", "bleh"], "unknown", null],
+  // a place past the road is a whole answer, so it beats a half-heard one; so does the state line at the end of the road
+  [["how far to hogwarts", "how far to seattle"], "howfar", null, { past: "Seattle" }],
+  [["how far to organ", "how far to oregon"], "howfar", null, { st: "OR" }],
+];
+for (const [alts, cmd, arg, extra] of ALT) {
+  const r = chooseCommand(alts, DESTS, { places: PLACES, dir: "N" });
+  const ok = r.cmd === cmd && (r.arg ?? null) === arg && Object.entries(extra || {}).every(([k, v]) => r[k] === v);
+  const more = o => Object.entries(o || {}).filter(([, v]) => v !== undefined).map(([k, v]) => ` ${k}=${show(v)}`).join("");
+  addRow("tAlt", ok, [alts.map(show).join(" | "), cmd + (arg != null ? " " + show(arg) : "") + more(extra),
+    r.cmd + (r.arg != null ? " " + show(r.arg) : "") + more({ st: r.st, past: r.past })]);
+  count("alt", ok, `chooseCommand ${show(alts)}: want ${cmd} ${show(arg)}${more(extra)}, got ${r.cmd} ${show(r.arg)} st=${r.st} past=${r.past}`);
+}
+
+/* ---------------- live data: every landmark can be asked for by name ---------------- */
+{
+  const liveD = DATA.dests.map(d => d.name), liveP = DATA.places.map(p => p.name);
+  let ok = 0;
+  const bad = [];
+  for (const name of liveP) {
+    const r = parseCommand("tell me about " + name, liveD, { places: liveP });
+    const same = r.cmd === "more" && [r.arg, ...(r.cands || [])].some(a => normText(a) === normText(name));
+    if (same) ok++; else bad.push(`${name} -> ${r.cmd}${r.arg != null ? " " + show(r.arg) : ""}`);
+  }
+  const pass = liveP.length > 0 && bad.length <= Math.floor(liveP.length * 0.02); // a couple of look-alike names may resolve to a twin
+  addRow("tAlt", pass, [`live data: "tell me about <each of ${liveP.length} landmarks>"`, "the same landmark", `${ok}/${liveP.length}${bad.length ? " · misses: " + bad.slice(0, 6).join("; ") : ""}`]);
+  count("alt", pass, `live data: ${bad.length} landmark names don't resolve to themselves: ${bad.slice(0, 10).join("; ")}`);
+  if (bad.length) console.log("LISTEN TEST note: live names that resolve elsewhere: " + bad.join("; "));
+
+  // "what's that X" at a few real spots: never a landmark out of sight (more than 3 miles back or 15 ahead)
+  const SEEN = ["what are those cows", "what's that tower", "what's that statue", "what's that train", "what's that castle", "what's that mountain",
+    "what's the story behind that", "what are those trees on the left", "what are those trees", "what's that lake", "what's that bridge",
+    "what are those orchards", "what is that building", "what are those jets", "what's that smell", "what's that river", "tell me about that tower",
+    "what's the story", "where is that castle", "what's this valley", "what are those hills", "what is that big rock"];
+  for (const [at, dir] of [[309, "N"], [519, "S"], [700, "N"], [160, "N"], [20, "N"], [790, "N"]]) {
+    const ahd = x => (dir === "S" ? at - x : x - at);
+    const side = p => (!p.side ? "" : (dir === "N") === (p.side === 1) ? "right" : "left");
+    const near = DATA.places.filter(p => ahd(p.m) > -3 && ahd(p.m) < 15).map(p => ({ name: p.name, side: side(p), d: ahd(p.m) }));
+    const far = [];
+    for (const t of SEEN) {
+      const r = parseCommand(t, liveD, { places: liveP, dir, near });
+      if ((r.cmd === "more" || r.cmd === "distance") && r.arg && ![r.arg, ...(r.cands || [])].some(n => near.some(x => x.name === n))) far.push(`${t} -> ${r.arg}`);
+    }
+    addRow("tAlt", !far.length, [`live data at mile ${at} ${dir}: ${SEEN.length} "what's that…" questions`, "only landmarks in sight", far.length ? far.join("; ") : "none out of sight"]);
+    count("alt", !far.length, `live data at mile ${at} ${dir}: answers about places out of sight: ${far.join("; ")}`);
+  }
+
+  // every destination in the live data can be asked for by name: a city sets the trip, and the north end of the road
+  // ("Oregon border" when the app covers California) is the state line it is
+  const LINE = { oregon: "OR", washington: "WA" };
+  const destBad = [];
+  for (const name of liveD) {
+    const r = parseCommand("how far to " + name, liveD, { places: liveP });
+    const line = /^(oregon|washington) border$/i.exec(name);
+    if (r.cmd !== "howfar" || (line ? r.st !== LINE[line[1].toLowerCase()] || r.arg != null : r.arg !== name) || r.past) destBad.push(`${name} -> ${r.cmd} ${show(r.arg)} st=${r.st} past=${r.past}`);
+  }
+  addRow("tAlt", liveD.length > 0 && !destBad.length, [`live data: "how far to <each of ${liveD.length} destinations>"`, "that destination (the end of the road: its state line)", destBad.length ? destBad.join("; ") : "all"]);
+  count("alt", liveD.length > 0 && !destBad.length, `live data: destinations that don't resolve to themselves: ${destBad.join("; ")}`);
+
+  // whole road: none of its destinations is past the road; California only: each one of them past the Oregon line is
+  const wholeBad = DESTS_WHOLE.map(n => [n, parseCommand("how far to " + n, DESTS_WHOLE, { places: PLACES })]).filter(([n, r]) => r.cmd !== "howfar" || r.arg !== n || r.past);
+  addRow("tAlt", !wholeBad.length, [`whole road: "how far to <each of ${DESTS_WHOLE.length} destinations>"`, "that destination", wholeBad.length ? wholeBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ") : "all"]);
+  count("alt", !wholeBad.length, `whole road: destinations that don't resolve to themselves: ${wholeBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ")}`);
+  const beyond = DESTS_WHOLE.filter(n => !DESTS.includes(n));
+  const pastBad = beyond.map(n => [n, parseCommand("how far to " + n, DESTS, { places: PLACES })]).filter(([n, r]) => r.cmd !== "howfar" || r.past !== n || r.arg != null);
+  addRow("tAlt", beyond.length > 15 && !pastBad.length, [`California only: "how far to <each of ${beyond.length} whole-road cities past the Oregon line>"`, "past: that city", pastBad.length ? pastBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ") : "all"]);
+  count("alt", beyond.length > 15 && !pastBad.length, `California only: whole-road cities not answered as past the road: ${pastBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ")}`);
+}
+
+/* ---------------- parseAnswer table (choices from the real trivia) ---------------- */
+const SING = ["Frank Sinatra", "Bing Crosby", "Elvis Presley", "Dean Martin"];
+const NUMS = ["One", "Two", "Four", "Ten"];
+const YEARS = ["14 years", "40 years", "75 years", "114 years"];
+const FEET = ["192 feet", "926 feet", "1,926 feet", "4,144 feet"];
+const TIME = ["18 days", "18 weeks", "18 months", "18 years"];
+const GRAPE = ["A winery", "Wild grapes in the canyon", "A twisty road shaped like a vine", "A ranch owner named Grape"];
+const SODA = ["Dr Pepper", "A&W Root Beer", "7 Up", "Orange Crush"];
+const PEAK = ["9,037 feet", "10,457 feet", "12,330 feet", "14,179 feet"];
+const BIG = ["Eight", "Fifty", "One hundred", "Five hundred"];
+const ANS = [
+  ["B", SING, 1], ["bee", SING, 1], ["answer C", SING, 2], ["see", SING, 2], ["letter d", SING, 3], ["A.", SING, 0], ["D as in dog", SING, 3],
+  ["Bing Crosby", SING, 1], ["I think it's Bing Crosby", SING, 1], ["crosby", SING, 1], ["elvis", SING, 2], ["the second one", SING, 1],
+  ["number three", SING, 2], ["the last one", SING, 3], ["first", SING, 0], ["it's D", SING, 3], ["my final answer is B", SING, 1],
+  ["I don't know", SING, null], ["banana", SING, null],
+  ["four", NUMS, 2], ["ten", NUMS, 3], ["one", NUMS, 0], ["the fourth one", NUMS, 3],
+  ["one hundred fourteen years", YEARS, 3], ["114 years", YEARS, 3], ["forty", YEARS, 1],
+  ["1,926 feet", FEET, 2], ["nineteen twenty six", FEET, 2], ["one thousand nine hundred twenty six feet", FEET, 2],
+  ["eighteen months", TIME, 2], ["months", TIME, 2], ["18", TIME, null],
+  ["wild grapes", GRAPE, 1], ["a twisty road", GRAPE, 2], ["a winery", GRAPE, 0], ["A", GRAPE, 0],
+  ["root beer", SODA, 1], ["seven up", SODA, 2], ["A and W", SODA, 1], ["doctor pepper", SODA, 0],
+  ["fourteen thousand one hundred seventy nine feet", PEAK, 3], ["14,179", PEAK, 3],
+  ["fifty", BIG, 1], ["five hundred", BIG, 3], ["a hundred", BIG, 2],
+];
+for (const [text, choices, want] of ANS) {
+  const got = parseAnswer(text, choices);
+  const ok = got === want;
+  addRow("tAns", ok, [show(text), choices.join(" / "), show(want), show(got)]);
+  count("ans", ok, `parseAnswer ${show(text)} in [${choices.join(", ")}]: want ${show(want)}, got ${show(got)}`);
+}
+
+/* ---------------- a fake microphone ---------------- */
+class FakeSR {
+  constructor() { FakeSR.last = this; this.lang = ""; this.interimResults = false; this.maxAlternatives = 1; this.continuous = false; this.phase = "new"; }
+  start() {
+    if (FakeSR.throwOnStart) throw new DOMException("denied", "NotAllowedError");
+    this.phase = "started";
+    setTimeout(() => { if (this.phase !== "started") return; this.onstart && this.onstart({}); this.onaudiostart && this.onaudiostart({}); }, 20);
+  }
+  stop() { if (this.phase === "ended") return; this.phase = "stopping"; setTimeout(() => this._end(), 30); }
+  abort() { if (this.phase === "ended") return; this.onerror && this.onerror({ error: "aborted" }); this._end(); }
+  _end() { if (this.phase === "ended") return; this.phase = "ended"; this.onend && this.onend({}); }
+  /** Pretend the recognizer heard something. alts: a string or a list of alternatives. */
+  hear(alts, final = false) {
+    if (this.phase === "ended") return;
+    const r = (Array.isArray(alts) ? alts : [alts]).map(t => ({ transcript: t, confidence: 0.8 }));
+    r.isFinal = final;
+    this.onspeechstart && this.onspeechstart({});
+    this.onresult && this.onresult({ resultIndex: 0, results: [r] });
+  }
+  fail(code) { if (this.phase === "ended") return; this.onerror && this.onerror({ error: code }); setTimeout(() => this._end(), 20); }
+}
+
+/* ---------------- the app ---------------- */
+// On a fresh profile the app's service worker claims the page and main.js reloads it, which would throw away the
+// fake microphone (and installing it is erratic under headless virtual time). So the test app runs without it:
+// right after the iframe navigates, before main.js runs, worker registration is made to fail (main.js ignores that).
+// MessageChannel turns keep running while virtual time waits for the page to load; timers don't.
+const frame = document.getElementById("app");
+const nextTask = () => new Promise(r => { const c = new MessageChannel(); c.port1.onmessage = () => r(); c.port2.postMessage(0); });
+async function loadApp() {
+  frame.src = "../index.html";
+  for (let i = 0; i < 500000; i++) {
+    let w = null;
+    try { w = frame.contentWindow; if (!/\/index\.html$/.test(w.location.pathname)) w = null; } catch { w = null; }
+    if (w) {
+      try { if (w.navigator.serviceWorker) w.navigator.serviceWorker.register = () => Promise.reject(new Error("tests run without the service worker")); } catch { /* ignore */ }
+      break;
+    }
+    await nextTask();
+  }
+  for (let round = 0; round < 3; round++) {
+    const w = await appReady();
+    w.document.addEventListener("visibilitychange", () => console.log("LISTEN TEST note: app visibility " + w.document.visibilityState));
+    w.__listenTest = true;
+    await sleep(300);
+    if (frame.contentWindow.__listenTest) return frame.contentWindow; // still the same window
+  }
+  throw new Error("the app kept reloading");
+}
+async function appReady() {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    for (let i = 0; i < 175; i++) {
+      const w = frame.contentWindow;
+      if (w && w.I5BUDDY && w.I5BUDDY.api && w.I5BUDDY.api.listen) return w;
+      await sleep(40);
+    }
+    // headless sometimes stalls a load under virtual time; one fresh try
+    console.log("LISTEN TEST note: app load stalled, reloading");
+    try { frame.contentWindow.location.reload(); } catch { frame.src = "../index.html?retry=" + attempt; }
+  }
+  throw new Error("the app never exposed api.listen");
+}
+function withTimeout(p, ms) { return Promise.race([p, sleep(ms).then(() => "timeout")]); }
+
+/* Headless Chrome's virtual clock stalls while a real utterance is pending, so speech is faked too:
+   each utterance "plays" for a few ms per character, then fires onend like the real thing. */
+function fakeVoice(w) {
+  const s = w.speechSynthesis;
+  if (!s) return;
+  let busy = 0;
+  const fake = {
+    speak(u) {
+      busy++;
+      setTimeout(() => { busy--; try { u.onend && u.onend({}); } catch { /* ignore */ } }, Math.min(1200, 40 + String(u.text || "").length * 3));
+    },
+    cancel() {}, pause() {}, resume() {},
+  };
+  for (const k of Object.keys(fake)) { try { s[k] = fake[k]; } catch { /* read-only */ } }
+  try { Object.defineProperty(s, "speaking", { configurable: true, get: () => busy > 0 }); } catch { /* ignore */ }
+  try { Object.defineProperty(s, "paused", { configurable: true, get: () => false }); } catch { /* ignore */ }
+}
+
+function e2e(name, ok, detail = "") {
+  addRow("tE2E", ok, [name, String(detail)]);
+  count("e2e", ok, `app: ${name} ${detail ? "(" + detail + ")" : ""}`);
+  if (ok) console.log(`LISTEN TEST pass app: ${name}`);
+}
+
+async function selftest(w, api) {
+  document.getElementById("e2eBox").hidden = false;
+  const doc = w.document;
+  const st = () => api.listen.debug.state();
+  const mic = () => doc.getElementById("micBtn");
+  const toastText = () => { const t = doc.getElementById("toast"); return t && !t.hidden ? t.textContent : ""; };
+  const title = () => doc.querySelector(".lsn-title")?.textContent || "";
+  const spoken = [];
+  api.bus.on("speaking", s => { if (s) spoken.push(s); });
+  const said = re => spoken.some(s => re.test(s.text));
+  // Each flow starts from a quiet voice, a second after anything started: listen.js holds its reply until a stopped
+  // item's chime would be over (the fake recognizer answers far faster than anyone talks).
+  const tap = async () => { api.voice.stop(); await sleep(900); mic().click(); await sleep(60); return FakeSR.last; };
+
+  e2e("api.listen.supported", api.listen.supported === true);
+  e2e("mic button is visible", !mic().hidden);
+  e2e("mic is a 44px+ target", (() => { const r = mic().getBoundingClientRect(); return r.width >= 42 && r.height >= 42; })(), `${mic().getBoundingClientRect().width}px + hit area`);
+
+  // a whole command: tap, interim words, final words, toast, spoken reply, caption
+  let rec = await tap();
+  e2e("mic tap opens the panel", st().open && /listening|starting/.test(st().state),
+    `${JSON.stringify(st())} fake=${!!rec} SR=${w.SpeechRecognition === FakeSR} wSR=${w.webkitSpeechRecognition === FakeSR}`);
+  if (!rec) throw new Error("no recognizer was created");
+  // "Try saying": the how-far example is the next California destination up the road (25+ miles), never one past it
+  const exs = [...doc.querySelectorAll(".lsn-ex")].map(b => b.textContent), howEx = exs.find(t => /^How far to /.test(t)) || "";
+  const nextDest = DATA.dests.filter(d => !/border/i.test(d.name) && d.m - M > 25).sort((a, b) => a.m - b.m)[0];
+  e2e("'Try saying' asks how far to the next California city", !!nextDest && howEx === `How far to ${nextDest.name.replace(/^Downtown /, "")}?`, exs.join(" | "));
+  e2e("recognizer settings", rec.lang === "en-US" && rec.interimResults === true && rec.maxAlternatives === 3 && rec.continuous === false,
+    `${rec.lang} interim=${rec.interimResults} alts=${rec.maxAlternatives} continuous=${rec.continuous}`);
+  e2e("title says Listening…", title() === "Listening…", title());
+  e2e("focus moves into the panel", doc.querySelector(".lsn-panel").contains(doc.activeElement));
+  rec.hear("what's on my", false);
+  await sleep(30);
+  e2e("live transcript", doc.querySelector(".lsn-said").textContent.includes("what's on my"), doc.querySelector(".lsn-said").textContent);
+  rec.hear(["what's on my lift", "what's on my left"], true);
+  await sleep(450);
+  e2e("toast shows the command", toastText() === "What's on my left", toastText());
+  e2e("narrator looked left", said(/left/i), spoken.map(s => s.text).slice(-1)[0]?.slice(0, 70));
+  await sleep(600);
+  e2e("panel closes after a command", !st().open, st().state);
+  const cap = doc.querySelector(".lsn-reply");
+  e2e("spoken reply is captioned", cap && !cap.hidden && /left/i.test(cap.textContent), cap ? cap.textContent.slice(0, 70) : "none");
+  e2e("focus returns to the mic", doc.activeElement === mic(), doc.activeElement && (doc.activeElement.id || doc.activeElement.tagName));
+
+  // not understood
+  rec = await tap();
+  rec.hear("purple monkey dishwasher", true);
+  await sleep(200);
+  e2e("unknown -> Sorry state with Try again", st().state === "unknown" && !doc.querySelector(".lsn-again").hidden, title());
+  e2e("unknown is spoken", said(/Sorry, I didn't catch that\. Try: what's on my left\./));
+  doc.querySelector(".lsn-panel").dispatchEvent(new w.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+  await sleep(250);
+  e2e("Escape closes the panel", !st().open);
+
+  // errors
+  rec = await tap();
+  rec.fail("no-speech");
+  await sleep(120);
+  e2e("no-speech message", st().state === "error" && title() === "I didn't hear anything", title());
+  doc.querySelector(".lsn-again").click();
+  await sleep(80);
+  e2e("Try again listens again", st().listening && FakeSR.last !== rec, st().state);
+  FakeSR.last.fail("network");
+  await sleep(120);
+  e2e("network message", title() === "Voice commands need a connection on this phone", title());
+  doc.querySelector(".lsn-scrim").click();
+  await sleep(250);
+  e2e("tap outside closes", !st().open);
+
+  // cancel never runs a command
+  const before = spoken.length;
+  rec = await tap();
+  rec.hear("what's on my", false);
+  doc.querySelector(".lsn-cancel").click();
+  await sleep(500);
+  e2e("Cancel stops without acting", !st().open && !st().listening && spoken.length === before, `${spoken.length - before} spoken: ${spoken.slice(before).map(s => s.id + "=" + s.text.slice(0, 30)).join(" | ")}`);
+
+  // "how far to reading" sets the destination
+  rec = await tap();
+  rec.hear("how far to reading", true);
+  await sleep(500);
+  const dest = (() => { try { return JSON.parse(w.localStorage.getItem("i5b:dest")); } catch { return null; } })();
+  e2e("how far to Redding sets S.dest and store", api.S.dest?.name === "Redding" && dest?.name === "Redding", api.S.dest?.name);
+  e2e("how far answer spoken", said(/Redding is about \d+ miles away/), spoken.slice(-1)[0]?.text.slice(0, 70));
+
+  // speaking speed
+  const r0 = api.settings.rate;
+  rec = await tap();
+  rec.hear("talk slower", true);
+  await sleep(500);
+  e2e("slower lowers the rate by 0.1", Math.abs(api.settings.rate - Math.max(0.7, r0 - 0.1)) < 1e-9, `${r0} -> ${api.settings.rate}`);
+  e2e("rate saved", JSON.parse(w.localStorage.getItem("i5b:settings")).rate === api.settings.rate);
+  api.listen.run("faster");
+  e2e("faster restores it", Math.abs(api.settings.rate - r0) < 1e-9, api.settings.rate);
+
+  // narration off / on
+  rec = await tap();
+  rec.hear("turn off the narration", true);
+  await sleep(600); // (awaiting the iframe's requestAnimationFrame from here freezes headless virtual time)
+  e2e("narration off", api.settings.narr === false && JSON.parse(w.localStorage.getItem("i5b:settings")).narr === false, toastText());
+  api.listen.run("narration on");
+  e2e("narration on", api.settings.narr === true);
+
+  // "say that again" repeats what the app said, not our own short lines
+  api.voice.say("Content line for the repeat test.", { now: true, id: "t-content" });
+  await sleep(80);
+  api.listen.run("slower");
+  await sleep(80);
+  api.listen.run("faster");
+  await sleep(80);
+  const mark = spoken.length;
+  api.listen.run("say that again");
+  await sleep(120);
+  e2e("repeat skips our own confirmations", spoken.slice(mark).some(s => s.text === "Content line for the repeat test."), spoken.slice(mark).map(s => s.text).join(" | ").slice(0, 80));
+
+  // "tell me more" follows the place we talked about last, not just the Drive card. "What's that" names the nearest
+  // landmark: with hear() when it's on the road, or by looking to the side it's on (both tell listen.js the place).
+  api.voice.stop();
+  let m2 = spoken.length;
+  api.listen.run("what's that");
+  await sleep(100);
+  const heardP = spoken.slice(m2).map(s => /^(hear|look):/.test(s.id || "") ? api.data.placeById(s.id.replace(/^(hear|look):/, "")) : null).find(Boolean);
+  m2 = spoken.length;
+  api.listen.run("tell me more");
+  await sleep(120);
+  e2e("tell me more follows 'what's that'", !!heardP && spoken.slice(m2).some(s => s.text.includes(heardP.name)), heardP ? heardP.name : "nothing heard");
+  const farP = DATA.places.filter(p => p.m > 600).slice(-1)[0] || DATA.places[0];
+  api.bus.emit("place:look", { place: api.data.placeById(farP.id) });
+  m2 = spoken.length;
+  api.listen.run("tell me more");
+  await sleep(120);
+  e2e("tell me more follows a look", spoken.slice(m2).some(s => s.text.includes(farP.name)), farP.name);
+  m2 = spoken.length;
+  api.listen.run("tell me a fun fact");
+  await sleep(120);
+  e2e("fun fact tells about a nearby place", spoken.slice(m2).some(s => /^(hear|more):/.test(s.id || "")), spoken.slice(m2).map(s => s.text.slice(0, 50)).join(" | "));
+
+  // "tell me more" is about the landmark being spoken, not one the narrator only queued behind it (review 2)
+  const ahead2 = DATA.places.filter(p => p.m > M + 1 && p.m < M + 40).slice(0, 2).map(p => api.data.placeById(p.id)).filter(Boolean);
+  if (ahead2.length === 2) {
+    const [PA, PB] = ahead2;
+    api.voice.stop();
+    await sleep(40);
+    api.voice.say(api.narrator.announceText(PA, PA.m - M), { id: PA.id });
+    await sleep(60);
+    api.bus.emit("place:announce", { place: PB, d: PB.m - M });
+    m2 = spoken.length;
+    api.listen.run("tell me more");
+    await sleep(150);
+    const first = spoken.slice(m2)[0];
+    e2e("tell me more: the landmark being spoken, not one only queued", !!first && first.id === "more:" + PA.id, `spoken ${PA.name}, queued ${PB.name}: got ${first && first.id}`);
+  }
+
+  // asking where a city is keeps the trip's destination (review 6); time left is not "what's on my left" (review 4)
+  const far = DATA.dests.filter(d => !/border/i.test(d.name) && d.name !== "Redding" && d.m > M + 100).slice(-1)[0]; // Yreka, from mile 309
+  e2e("a destination far up the road to test with", !!far, far ? `${far.name} at mile ${far.m}` : DATA.dests.map(d => d.name).join(", "));
+  if (far) {
+    api.S.dest = { name: far.name, m: far.m }; api.store.set("dest", api.S.dest); api.bus.emit("dest", api.S.dest);
+    await sleep(40);
+    m2 = spoken.length;
+    api.listen.run("where is Redding");
+    await sleep(150);
+    const kept = (() => { try { return JSON.parse(w.localStorage.getItem("i5b:dest")).name; } catch { return null; } })();
+    e2e("'where is Redding' keeps the destination", api.S.dest && api.S.dest.name === far.name && kept === far.name, `${api.S.dest && api.S.dest.name} / stored ${kept}`);
+    e2e("'where is Redding' answers about Redding", spoken.slice(m2).some(s => /Redding is about \d+ miles/.test(s.text)), spoken.slice(m2).map(s => s.text.slice(0, 60)).join(" | "));
+    m2 = spoken.length;
+    api.listen.run("how much time is left");
+    await sleep(150);
+    e2e("'how much time is left' answers how far", toastText() === "How far" && spoken.slice(m2).some(s => new RegExp(`^${far.name} is about \\d+ miles away`).test(s.text)),
+      `${toastText()} · ${((spoken.slice(m2)[0] || {}).text || "").slice(0, 60)}`);
+  }
+  // a city named in any phrasing (review 3)
+  m2 = spoken.length;
+  api.listen.run("what time will we get to Redding");
+  await sleep(150);
+  e2e("'what time will we get to Redding' gives a clock time", spoken.slice(m2).some(s => /Redding is about \d+ miles away.*get there about \d/.test(s.text)) && api.S.dest.name === "Redding",
+    ((spoken.slice(m2)[0] || {}).text || "").slice(0, 110));
+  m2 = spoken.length;
+  api.listen.run("are we close to Sacramento");
+  await sleep(150);
+  e2e("'are we close to Sacramento' answers (and keeps Redding)", spoken.slice(m2).some(s => /Sacramento is about \d+ miles/.test(s.text)) && api.S.dest.name === "Redding",
+    ((spoken.slice(m2)[0] || {}).text || "").slice(0, 80));
+
+  // California only (data.SCOPE): the road ends at data.ENDS.N, data.MAX_M (the Oregon line). Its name and "the state
+  // line" count down to it; a place past it gets a short answer and the trip's destination stays (Redding).
+  const ENDS = api.data.ENDS, TOP = api.data.MAX_M, STATES = api.data.STATES;
+  const Cap = s => s.replace(/^\w/, c => c.toUpperCase());
+  const cover = `I-5 Buddy covers I-5 in ${STATES.map(s => s.name).join(" and ")}`;
+  const around = d => api.data.fmtDuration(d / 64); // the test drives at 64 mph
+  const mine = from => (spoken.slice(from).find(s => /^listen:/.test(s.id || "")) || {}).text || ""; // our own reply
+  const capText = () => { const c = doc.querySelector(".lsn-reply"); return c && !c.hidden ? doc.querySelector(".lsn-reply-a").textContent : ""; };
+  const ask = async text => { api.voice.stop(); await sleep(40); const at = spoken.length; api.listen.run(text); await sleep(150); return mine(at); };
+  e2e("the data covers California up to the Oregon line", STATES.length === 1 && STATES[0].id === "CA" && ENDS.N.long === "the Oregon line" && Math.abs(TOP - 797) < 1,
+    `${STATES.map(s => s.id).join("+")} · ${ENDS.S.long} to ${ENDS.N.long} · MAX_M ${TOP}`);
+  const northEnd = `${Cap(ENDS.N.long)} is about ${Math.round(TOP - M)} miles ahead, around ${around(TOP - M)}. That's the end of the road for I-5 Buddy.`;
+  let said2 = await ask("how far to Oregon");
+  e2e("'how far to Oregon' counts down to the Oregon line, the end of the road", said2 === northEnd && capText() === northEnd && api.S.dest.name === "Redding" && toastText() === "How far to Oregon",
+    `${said2} · ${toastText()}`);
+  said2 = await ask("how far to the Oregon border");
+  e2e("'how far to the Oregon border' says the same", said2 === northEnd, said2);
+  said2 = await ask("how far to the state line");
+  e2e("'how far to the state line' going north: the Oregon line", said2 === northEnd, said2);
+  said2 = await ask("how far to the border");
+  e2e("'how far to the border' going north: the Oregon line", said2 === northEnd && api.S.dest.name === "Redding", said2);
+  said2 = await ask("what time will we get to Oregon");
+  e2e("'what time will we get to Oregon' adds a clock time", said2.startsWith(northEnd + " Without stops, we'd get there about "), said2);
+  for (const [text, name] of [["how far to Portland", "Portland"], ["when do we get to Seattle", "Seattle"], ["how far to Tacoma", "Tacoma"],
+    ["how far to Vancouver", "Vancouver"], ["how far to Canada", "The Canadian border"], ["how far to Washington state", "Washington"], ["tell me about Eugene", "Eugene"]]) {
+    said2 = await ask(text);
+    const want = `${name} is past ${ENDS.N.long}. ${cover}, and ${ENDS.N.long} is about ${Math.round(TOP - M)} miles away.`;
+    e2e(`'${text}': past ${ENDS.N.long}`, said2 === want && capText() === want && api.S.dest.name === "Redding" && toastText().startsWith("How far to "), `${said2} · ${toastText()}`);
+  }
+  m2 = spoken.length;
+  api.listen.run("what's growing here");
+  await sleep(150);
+  e2e("'what's growing here' describes the land", spoken.slice(m2).some(s => /^(Out here: |.*(orchard|farm|field|grow|crop))/i.test(s.text)), ((spoken.slice(m2)[0] || {}).text || "").slice(0, 80));
+
+  // heading south: no more state lines that way, only the Mexico border; the Oregon line (and Portland) are behind us
+  const goTo = async (m, dir, more = {}) => { api.voice.stop(); api.setPosition(m, Object.assign({ dir, speed: 64, jumped: true }, more)); await sleep(100); api.voice.stop(); await sleep(40); };
+  const toMx = Math.round(M);
+  await goTo(M, "S");
+  said2 = await ask("how far to the state line");
+  e2e("heading south, 'how far to the state line': none left, then the Mexico border",
+    said2 === `There are no more state lines this way. ${Cap(ENDS.S.long)} is about ${toMx} miles ahead, around ${around(M)}. That's the end of the road for I-5 Buddy.`, said2);
+  said2 = await ask("how far to the end of the road");
+  e2e("heading south, 'how far to the end of the road': the Mexico border", said2 === `${Cap(ENDS.S.long)} is about ${toMx} miles ahead, around ${around(M)}. That's the end of the road for I-5 Buddy.`, said2);
+  said2 = await ask("how far to Oregon");
+  e2e("heading south, the Oregon line is behind us", said2 === `${Cap(ENDS.N.long)} is behind us, about ${Math.round(TOP - M)} miles back.`, said2);
+  said2 = await ask("how far to Portland");
+  e2e("heading south, a city past the Oregon line is behind us too", said2 === `Portland is past ${ENDS.N.long}. ${cover}, and ${ENDS.N.long} is about ${Math.round(TOP - M)} miles behind us.`, said2);
+  said2 = await ask("how far to Ensenada");
+  e2e("heading south, a city past the Mexico border", said2 === `Ensenada is past ${ENDS.S.long}. ${cover}, and ${ENDS.S.long} is about ${toMx} miles away.`, said2);
+  m2 = spoken.length;
+  api.listen.run("how far to the border");
+  await sleep(150);
+  e2e("heading south, 'how far to the border' is the Mexico border, a destination", spoken.slice(m2).some(s => /^The Mexico border is about \d+ miles away/.test(s.text)) && api.S.dest.name === "Mexico border",
+    `${((spoken.slice(m2)[0] || {}).text || "").slice(0, 80)} · destination ${api.S.dest && api.S.dest.name}`);
+  const redding = DATA.dests.find(d => d.name === "Redding");
+  if (redding) { api.S.dest = { name: redding.name, m: redding.m }; api.store.set("dest", api.S.dest); api.bus.emit("dest", api.S.dest); }
+
+  // at the very end of the road, then past it: the GPS off I-5 beyond its last point (main.js shows THE END)
+  await goTo(TOP - 0.4, "N");
+  said2 = await ask("how far to Oregon");
+  e2e("at the Oregon line: we're at the end of the road", said2 === `We're at ${ENDS.N.long}, the end of the road for I-5 Buddy.`, said2);
+  said2 = await ask("how far to Seattle");
+  e2e("at the Oregon line: a city past it", said2 === `Seattle is past ${ENDS.N.long}. ${cover}, and we're at ${ENDS.N.long} now.`, said2);
+  const R = api.data.ROUTE, lat0 = api.S.lat;
+  api.S.lat = R[R.length - 1][1] + 0.05; // a few miles into Oregon
+  await goTo(TOP, "N", { offRoute: true });
+  said2 = await ask("how far to the state line");
+  e2e("past the Oregon line: we're past the end of the road", said2 === `We're past ${ENDS.N.long}, the end of the road for I-5 Buddy.`, said2);
+  said2 = await ask("how far to Portland");
+  e2e("past the Oregon line: a city past it", said2 === `Portland is past ${ENDS.N.long}. ${cover}, and we're already past ${ENDS.N.long}.`, said2);
+  api.S.lat = lat0;
+  await goTo(M, "N");
+
+  // "answer B" from another tab: the verdict is captioned and the trivia card shown (review 9)
+  if (api.play && typeof api.play.askTrivia === "function") {
+    api.play.askTrivia();
+    await sleep(150);
+    api.ui.go("drive");
+    await sleep(40);
+    api.listen.run("answer B");
+    await sleep(900); // play.js lets its question wind down before the verdict (up to half a second)
+    const cap2 = doc.querySelector(".lsn-reply");
+    e2e("'answer B' from the Drive tab shows the verdict", !doc.getElementById("view-play").hidden && !!cap2 && !cap2.hidden && /That's right|Not quite/.test(cap2.textContent),
+      `play shown: ${!doc.getElementById("view-play").hidden} · ${cap2 ? cap2.textContent.slice(0, 60) : "no caption"} · spoken: ${spoken.slice(-4).map(s => s.id).join(",")}`);
+    m2 = spoken.length;
+    api.listen.run("answer C");
+    await sleep(200);
+    e2e("'answer C' with nothing waiting says so", spoken.slice(m2).some(s => /no trivia question waiting/.test(s.text)), ((spoken.slice(m2)[0] || {}).text || "").slice(0, 60));
+    api.ui.go("drive");
+    await sleep(40);
+  }
+
+  // narration that starts while the mic is open waits until we are done
+  api.voice.stop();
+  rec = await tap();
+  api.voice.say("Held narration line.", { id: "t-held" });
+  await sleep(60);
+  e2e("narration is held while listening", api.voice.currentId() !== "t-held");
+  rec.hear("where are we", true);
+  await sleep(1600);
+  // with voice.hold() the held line never started, so it plays exactly once: after the reply
+  const iReply = spoken.findIndex(s => s.id === "where"), iHeld = spoken.findIndex((s, i) => s.id === "t-held" && i > iReply);
+  e2e("held narration comes back after the reply", api.voice.queued().includes("t-held") || spoken.filter(s => s.id === "t-held").length >= 2 || (iReply >= 0 && iHeld > iReply),
+    `queued: ${api.voice.queued().join(",")}`);
+  api.voice.stop();
+  await sleep(300);
+
+  // two landmarks queued while listening: both come back after the reply, in order, rebuilt with a chime (review 5a, 5e)
+  if (ahead2.length === 2) {
+    const [P1, P2] = ahead2;
+    rec = await tap();
+    const m5 = spoken.length;
+    for (const P of [P1, P2]) { api.voice.say(api.narrator.announceText(P, P.m - M), { id: P.id, chime: true }); api.bus.emit("place:announce", { place: P, d: P.m - M }); }
+    await sleep(60);
+    e2e("landmarks wait while listening", st().listening && ![P1.id, P2.id].includes(api.voice.currentId()), api.voice.currentId());
+    rec.hear("where are we", true);
+    await sleep(5200);
+    const ids = spoken.slice(m5).map(s => s.id);
+    const iw = ids.indexOf("where"), i1 = ids.lastIndexOf(P1.id), i2 = ids.lastIndexOf(P2.id);
+    e2e("both held landmarks come back after the reply, in order", iw >= 0 && i1 > iw && i2 > i1, ids.join(","));
+    // passed while we talked: dropped
+    api.voice.stop();
+    api.setPosition(P1.m - 1, { dir: "N", speed: 64, jumped: true });
+    await sleep(100);
+    api.voice.stop();
+    rec = await tap();
+    const m6 = spoken.length;
+    api.voice.say(api.narrator.announceText(P1, 1), { id: P1.id, chime: true });
+    await sleep(60);
+    api.setPosition(P1.m + 2, { dir: "N", speed: 64, jumped: true });
+    rec.hear("where are we", true);
+    await sleep(2600);
+    const ids6 = spoken.slice(m6).map(s => s.id);
+    e2e("a held landmark we drove past is not replayed", ids6.includes("where") && ids6.filter(id => id === P1.id).length <= 1, ids6.join(","));
+    api.voice.stop();
+    api.setPosition(M, { dir: "N", speed: 64, jumped: true });
+    await sleep(100);
+    api.voice.stop();
+  }
+
+  // a chip tapped while narration waits: the reply first, then the narration (review 5)
+  rec = await tap();
+  api.voice.say("Held line during a tap.", { id: "t-held3" });
+  await sleep(60);
+  const m7 = spoken.length;
+  const whereChip = [...doc.querySelectorAll(".lsn-ex")].find(b => /Where are we/.test(b.textContent));
+  whereChip && whereChip.click();
+  await sleep(2600);
+  const ids7 = spoken.slice(m7).map(s => s.id);
+  e2e("chip tap: reply first, then the held narration", ids7.indexOf("where") >= 0 && ids7.indexOf("t-held3") > ids7.indexOf("where"), ids7.join(","));
+  api.voice.stop();
+
+  // early stop waits out a think-pause after "where's the next" (review 7)
+  rec = await tap();
+  rec.hear("where's the next", false);
+  await sleep(1900);
+  e2e("a pause after 'where's the next' keeps listening", st().listening, st().state);
+  rec.hear("where's the next rest area", false);
+  await sleep(2100);
+  e2e("…then 'where's the next rest area' runs", !st().listening && toastText() === "Next rest area", toastText());
+  api.voice.stop();
+
+  // voice.hold(): hold when the mic opens, release once the reply is queued. A recording stub stands in for the real
+  // hold() here; put the real one back afterwards (deleting it would leave the rest of this test without hold()).
+  const holds = [], realHold = api.voice.hold;
+  api.voice.hold = on => { holds.push([on, api.voice.queued().concat(api.voice.currentId() || [])]); };
+  rec = await tap();
+  rec.hear("where are we", true);
+  await sleep(900);
+  api.voice.hold = realHold;
+  e2e("voice.hold(): on when listening, off after the reply is queued", holds.length === 2 && holds[0][0] === true && holds[1][0] === false && holds[1][1].includes("where"),
+    JSON.stringify(holds));
+  api.voice.stop();
+  await sleep(200);
+
+  // trivia answers
+  let p = api.listen.listenForAnswer(SING, { question: "Who greeted fans at Del Mar in 1937?" });
+  await sleep(80);
+  e2e("answer panel lists the choices", doc.querySelectorAll(".lsn-choice").length === 4 && st().mode === "answer", st().state);
+  FakeSR.last.hear("bee", true);
+  e2e("answer 'bee' -> 1", (await withTimeout(p, 2000)) === 1);
+  await sleep(800);
+  p = api.listen.listenForAnswer(SING);
+  await sleep(80);
+  FakeSR.last.hear(["the third one"], true);
+  e2e("answer 'the third one' -> 2", (await withTimeout(p, 2000)) === 2);
+  await sleep(800);
+  p = api.listen.listenForAnswer(SING);
+  await sleep(80);
+  doc.querySelectorAll(".lsn-choice")[3].click();
+  e2e("tapping D -> 3", (await withTimeout(p, 2000)) === 3);
+  await sleep(800);
+  p = api.listen.listenForAnswer(SING);
+  await sleep(80);
+  doc.querySelector(".lsn-cancel").click();
+  e2e("cancel -> null", (await withTimeout(p, 2000)) === null);
+  await sleep(300);
+  const t0 = performance.now();
+  p = api.listen.listenForAnswer(SING);
+  await sleep(80);
+  FakeSR.last.hear("bananas", true);
+  const r = await withTimeout(p, 3000);
+  e2e("not an answer -> null right away", r === null && performance.now() - t0 < 1500, `${show(r)} after ${Math.round(performance.now() - t0)} ms`);
+  await sleep(300);
+  e2e("not an answer is spoken too", said(/I didn't catch an answer/), spoken.slice(-1)[0]?.text.slice(0, 60));
+  await sleep(1800);
+  e2e("answer panel closes itself", !st().open, st().state);
+
+  // narration that starts while waiting for an answer comes back after the verdict, which trivia speaks with now: true (review 5b)
+  p = api.listen.listenForAnswer(SING);
+  await sleep(80);
+  const m8 = spoken.length;
+  api.voice.say("Held line during an answer.", { id: "t-held2" });
+  await sleep(60);
+  p.then(() => api.voice.say("Verdict line.", { now: true, id: "t-verdict" })); // what play.js does
+  FakeSR.last.hear("bee", true);
+  await sleep(2600);
+  const ids8 = spoken.slice(m8).map(s => s.id);
+  e2e("answer mode: held narration comes back after the verdict", ids8.indexOf("t-verdict") >= 0 && ids8.lastIndexOf("t-held2") > ids8.indexOf("t-verdict"), ids8.join(","));
+  api.voice.stop();
+  await sleep(300);
+
+  // help
+  api.listen.run("what can I say");
+  await sleep(100);
+  e2e("help lists the commands", st().open && st().mode === "help" && doc.querySelectorAll(".lsn-cmd").length >= 20, `${doc.querySelectorAll(".lsn-cmd").length} rows`);
+  e2e("help speaks examples", said(/You can say: what's on my left/));
+  const rows = [...doc.querySelectorAll(".lsn-cmd")].map(b => b.textContent);
+  e2e("help: 'How far to Oregon?' (one state, so no state line row), a California city, nothing past the road",
+    rows.includes(`How far to ${ENDS.N.short}?`) && !rows.includes("How far to the state line?") && !rows.some(r => /Portland|Seattle|Canad|Washington|Mexico/.test(r)) &&
+    rows.some(r => DATA.dests.some(d => !/border/i.test(d.name) && r === `How far to ${d.name.replace(/^Downtown /, "")}?`)), rows.filter(r => /^How far/.test(r)).join(" | "));
+  doc.querySelector(".lsn-cmd").click();
+  await sleep(250);
+  e2e("tapping a command runs it", !st().open && toastText() === "What's on my left", toastText());
+  api.listen.help();
+  await sleep(100);
+  const endChip = [...doc.querySelectorAll(".lsn-cmd")].find(b => b.textContent === `How far to ${ENDS.N.short}?`);
+  m2 = spoken.length;
+  if (endChip) endChip.click();
+  await sleep(250);
+  e2e("tapping 'How far to Oregon?' counts down to the Oregon line", !!endChip && mine(m2) === northEnd && !st().open && toastText() === `How far to ${ENDS.N.short}`, `${mine(m2)} · ${toastText()}`);
+
+  // the microphone is refused: toast, button hidden for this session
+  rec = await tap();
+  rec.fail("not-allowed");
+  await sleep(150);
+  e2e("not-allowed hides the mic", mic().hidden && api.listen.blocked === true);
+  e2e("not-allowed toast", toastText() === "Microphone blocked", toastText());
+  e2e("not-allowed panel explains how to allow it", title() === "The microphone is blocked" && /allow/i.test(doc.querySelector(".lsn-hint").textContent)
+    && doc.querySelector(".lsn-again").hidden && doc.querySelector(".lsn-cancel").textContent === "Got it", doc.querySelector(".lsn-hint").textContent.slice(0, 80));
+  e2e("blocked is spoken", said(/microphone is blocked/i));
+  doc.querySelector(".lsn-cancel").click();
+  await sleep(250);
+  e2e("Got it closes", !st().open);
+  e2e("answers resolve null when blocked", (await withTimeout(api.listen.listenForAnswer(SING), 1000)) === null);
+}
+
+/* The module on its own, in this page (a separate copy from the app's): no recognizer, then an almost empty api. */
+async function moduleChecks() {
+  const keep = [window.SpeechRecognition, window.webkitSpeechRecognition];
+  const btn = document.createElement("button");
+  btn.id = "micBtn"; btn.hidden = true;
+  document.body.append(btn);
+  try {
+    delete window.SpeechRecognition; delete window.webkitSpeechRecognition;
+    const bare = {};
+    let threw = null;
+    try { initListen(bare); } catch (e) { threw = e; }
+    e2e("no recognizer: init doesn't throw", !threw, threw && threw.message);
+    e2e("no recognizer: api.listen = {supported: false}", bare.listen && bare.listen.supported === false && typeof bare.listen.listenForAnswer !== "function");
+    e2e("no recognizer: mic stays hidden", btn.hidden === true);
+  } finally {
+    window.SpeechRecognition = keep[0]; window.webkitSpeechRecognition = keep[1];
+  }
+  // a recognizer, but no data, no narrator, no voice, no other modules
+  window.SpeechRecognition = FakeSR; window.webkitSpeechRecognition = FakeSR;
+  const thin = { S: {}, settings: {}, bus: { on() { return () => {}; }, emit() {} }, data: {}, ui: {} };
+  let threw = null;
+  try {
+    initListen(thin);
+    for (const t of ["what's on my left", "tell me more", "how far to Portland", "next gas", "what's the weather", "where are we", "say that again",
+      "slower", "narration off", "tell me a joke", "fun fact", "what's that", "next exit", "how high are we", "answer b", "ask me trivia", "play", "help",
+      "how far to Oregon", "how much time is left", "where is Redding", "what's growing here", "what's that castle", "what time will we get there",
+      "how far to Seattle", "how far to the state line", "how far to Canada", "how far to the border", "when do we cross into Washington", "how far to Mexico",
+      "how far to the end of the road", "what time will we get to Portland", "tell me about Tacoma", "how far to Corvallis"]) thin.listen.run(t);
+    thin.listen.start();
+    await sleep(60);
+    FakeSR.last.hear("next gas", true);
+    await sleep(500);
+    const p = thin.listen.listenForAnswer(["a", "b"]);
+    await sleep(60);
+    FakeSR.last.fail("network");
+    await sleep(100);
+    e2e("empty api: answer still settles", (await withTimeout(p, 3000)) === null);
+  } catch (e) { threw = e; }
+  e2e("empty api: commands and listening never throw", !threw, threw && (threw.stack || threw.message));
+  e2e("empty data: parser copes", parseCommand("how far to sacramento", []).cmd === "howfar" && parseAnswer("b", []) === null && parseCommand(null).cmd === "unknown");
+  thin.listen.stop();
+  await sleep(200);
+
+  // Some data and no other modules: the answers about the ends of the road come from data.STATES, MAX_M and ENDS alone
+  const replyText = () => { const a = document.querySelector("body > .lsn-reply .lsn-reply-a"); return a ? a.textContent : ""; };
+  const ask = (api, text) => { api.listen.run(text); return replyText(); };
+  const thinApi = (data, S) => ({ S, settings: {}, bus: { on() { return () => {}; }, emit() {} }, data: Object.assign({ PLACES: [], ROUTE: [] }, data), ui: {} });
+  let threw2 = null, got;
+  try {
+    // California only, and no ENDS: the north end is still the Oregon line (tools/build.py names it the same way)
+    const ca = thinApi({ STATES: [{ id: "CA", name: "California", from: 0, to: 796.973 }], MAX_M: 796.973,
+      DESTS: [{ name: "Mexico border", m: 0 }, { name: "Sacramento", m: 519 }, { name: "Redding", m: 677 }, { name: "Oregon border", m: 797 }] }, { m: 700, dir: "N", mode: "gps" });
+    initListen(ca);
+    got = ask(ca, "how far to Portland");
+    e2e("one state, no ENDS: 'how far to Portland'", got === "Portland is past the Oregon line. I-5 Buddy covers I-5 in California, and the Oregon line is about 97 miles away.", got);
+    got = ask(ca, "how far to the state line");
+    e2e("one state, no ENDS: 'how far to the state line'", got === "The Oregon line is about 97 miles ahead. That's the end of the road for I-5 Buddy.", got);
+    got = ask(ca, "when do we cross into Washington");
+    e2e("one state, no ENDS: Washington lies past the Oregon line", got === "Washington is past the Oregon line. I-5 Buddy covers I-5 in California, and the Oregon line is about 97 miles away.", got);
+    ca.S.m = null;
+    got = ask(ca, "how far to Oregon");
+    e2e("one state, no position: where the road ends", got === "The Oregon line is at mile 797, the end of the road for I-5 Buddy. Start GPS or a demo drive and I'll count down to it.", got);
+    got = ask(ca, "how far to Seattle");
+    e2e("one state, no position: a city past the road", got === "Seattle is past the Oregon line. I-5 Buddy covers I-5 in California, from the Mexico border to the Oregon line.", got);
+
+    // the whole road (tools/build.py SCOPE = ["CA", "OR", "WA"]): its state lines are on the road and its cities are destinations again
+    const whole = thinApi({ STATES: [{ id: "CA", name: "California", from: 0, to: 796.973 }, { id: "OR", name: "Oregon", from: 796.973, to: 1105 },
+      { id: "WA", name: "Washington", from: 1105, to: 1381.8 }], MAX_M: 1381.8, ENDS: { S: { short: "Mexico", long: "the Mexico border" }, N: { short: "Canada", long: "the Canadian border" } },
+      DESTS: [{ name: "Mexico border", m: 0 }, { name: "Redding", m: 677 }, { name: "Portland", m: 1105 }, { name: "Seattle", m: 1270 }, { name: "Canadian border", m: 1381.8 }] },
+      { m: 700, dir: "N", mode: "gps" });
+    initListen(whole);
+    got = ask(whole, "how far to Oregon");
+    e2e("whole road: 'how far to Oregon' is a state line on the road", got === "The Oregon state line is about 97 miles ahead.", got);
+    got = ask(whole, "how far to the state line");
+    e2e("whole road: 'how far to the state line'", got === "The next state line is Oregon, about 97 miles ahead.", got);
+    ask(whole, "how far to Portland");
+    e2e("whole road: 'how far to Portland' sets the destination again", !!whole.S.dest && whole.S.dest.name === "Portland", show(whole.S.dest));
+    ask(whole, "how far to the border");
+    e2e("whole road: 'the border' going north is the Canadian border", !!whole.S.dest && whole.S.dest.name === "Canadian border", show(whole.S.dest));
+    whole.S.m = 1300;
+    got = ask(whole, "how far to the state line");
+    e2e("whole road, in Washington: no more state lines, then the Canadian border",
+      got === "There are no more state lines this way. The Canadian border is about 82 miles ahead. That's the end of the road for I-5 Buddy.", got);
+    got = ask(whole, "how far to Corvallis");
+    e2e("whole road: a town that is no destination", got === "I don't know exactly where Corvallis is on I-5. Try a city, like Redding.", got);
+  } catch (e) { threw2 = e; }
+  e2e("one-state and whole-road data: nothing throws", !threw2, threw2 && (threw2.stack || threw2.message));
+  for (const el of document.querySelectorAll("body > .lsn, body > .lsn-reply, body > #micBtn")) el.remove();
+  delete window.SpeechRecognition; delete window.webkitSpeechRecognition;
+  window.SpeechRecognition = keep[0]; window.webkitSpeechRecognition = keep[1];
+}
+
+/* one state on screen, for screenshots */
+async function showState(w, api, state) {
+  api.listen.debug.hold = true;
+  const doc = w.document;
+  const tap = async () => { doc.getElementById("micBtn").click(); await sleep(60); return FakeSR.last; };
+  const keep = (rec, text) => { const t = setInterval(() => { if (rec.phase === "ended") clearInterval(t); else rec.hear(text, false); }, 2000); };
+  let rec;
+  switch (state) {
+    case "listening": rec = await tap(); rec.hear("how far to sacra", false); keep(rec, "how far to sacra"); break;
+    case "heard": rec = await tap(); rec.hear("what's on my", false); await sleep(120); rec.hear("what's on my left", true); break;
+    case "unknown": rec = await tap(); rec.hear("purple monkey dishwasher", true); break;
+    case "nospeech": rec = await tap(); rec.fail("no-speech"); break;
+    case "network": rec = await tap(); rec.fail("network"); break;
+    case "answer":
+      api.voice.stop();
+      api.listen.listenForAnswer(SING, { question: "Which famous singer stood at the front gate to greet fans when the Del Mar racetrack opened in 1937?" });
+      await sleep(80);
+      FakeSR.last.hear("I think it's", false); keep(FakeSR.last, "I think it's");
+      break;
+    case "answered":
+      api.voice.stop();
+      api.listen.listenForAnswer(SING, { question: "Which famous singer stood at the front gate to greet fans when the Del Mar racetrack opened in 1937?" });
+      await sleep(80);
+      FakeSR.last.hear("Bing Crosby", true);
+      break;
+    case "help": api.listen.help(); break;
+    case "reply": api.listen.run("where are we"); break;
+    case "land": api.listen.run("what are those trees"); break;
+    case "eta": api.listen.run("what time will we get to Redding"); break;
+    case "past": api.listen.run("how far to Portland"); break;
+    case "blocked": rec = await tap(); rec.fail("not-allowed"); break;
+    default: break; // "drive": just the app with the mic in the header
+  }
+}
+
+(async () => {
+  let w;
+  try {
+    w = await loadApp();
+    const api = w.I5BUDDY.api;
+    w.SpeechRecognition = FakeSR;
+    w.webkitSpeechRecognition = FakeSR;
+    fakeVoice(w);
+    api.settings.theme = THEME;
+    api.saveSettings();
+    w.document.documentElement.dataset.theme = THEME;
+    api.setMode("gps");
+    api.setPosition(M, { dir: DIR, speed: 64, jumped: true });
+    await sleep(DELAY);
+    if (AT) await sleep(Math.max(0, AT - performance.now()));
+    if (STATE === "selftest") { await selftest(w, api); await moduleChecks(); }
+    else {
+      // Headless only advances CSS animations when it draws a frame, so a screenshot can catch the panel's fade-in
+      // at opacity 0 (or a color change at its first frame). Skip the entrance animations here (the pulsing rings stay).
+      const noFade = w.document.createElement("style");
+      noFade.textContent = ".lsn,.lsn-panel,.lsn-reply{animation:none!important}.lsn-core{transition:none!important}";
+      w.document.head.append(noFade);
+      await showState(w, api, STATE);
+    }
+    if (Q.has("debug")) {
+      await sleep(1500);
+      const d = w.document, o = d.querySelector(".lsn"), p = d.querySelector(".lsn-panel");
+      const r = p && p.getBoundingClientRect();
+      const hit = r && d.elementFromPoint(r.left + r.width / 2, r.top + 60);
+      console.log("LISTEN TEST debug " + JSON.stringify({
+        hidden: o && o.hidden, cls: o && o.className, opOv: o && w.getComputedStyle(o).opacity, opPanel: p && w.getComputedStyle(p).opacity,
+        anims: o ? o.getAnimations({ subtree: true }).map(a => `${a.animationName || a.transitionProperty}:${a.playState}:${Math.round(a.currentTime)}`) : [],
+        hit: hit && (hit.className || hit.tagName), vis: d.visibilityState, rect: r && [Math.round(r.top), Math.round(r.height)],
+      }));
+    }
+  } catch (e) {
+    count("e2e", false, "setup: " + (e && e.message || e));
+    document.getElementById("e2eBox").hidden = false;
+    addRow("tE2E", false, ["setup", String(e && e.stack || e)]);
+  }
+  const tot = Object.values(tally).reduce((a, [p, n]) => [a[0] + p, a[1] + n], [0, 0]);
+  const line = `${tot[0] === tot[1] ? "ALL PASS" : `FAILED ${tot[1] - tot[0]}`} · commands ${tally.cmd[0]}/${tally.cmd[1]} · alternatives ${tally.alt[0]}/${tally.alt[1]} · answers ${tally.ans[0]}/${tally.ans[1]}` +
+    (tally.e2e[1] ? ` · app checks ${tally.e2e[0]}/${tally.e2e[1]}` : "");
+  document.getElementById("sum").textContent = line;
+  document.getElementById("info").textContent = `state=${STATE} theme=${THEME} mile=${M} ${DIR}`;
+  const badge = document.getElementById("badge");
+  badge.textContent = `LISTEN TESTS ${line} · showing: ${STATE}, ${THEME}`;
+  badge.className = tot[0] === tot[1] ? "pass" : "fail";
+  document.title = line;
+  console.log("LISTEN TEST SUMMARY " + line);
+})();
+</script>
+</body>
+</html>

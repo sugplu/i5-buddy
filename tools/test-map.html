@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Map module test</title>
+<!--
+  Test bench for js/map.js. Loads the app in a phone-sized iframe, drives it through I5BUDDY.api and checks the result.
+
+  Query: ?scene=whole|zoom|place|cam|camlive|rest|road|follow|hint|gesture|perf|battery|height|card|follow2|camcancel|stamps|fake
+         &theme=dark|light   &w=430&h=932   &scroll=card   &variant=nothing|empty|routeonly|nobus (fake only)   &log (show the log)
+         &motion (keep the real animations; use without --virtual-time-budget, where requestAnimationFrame ticks normally)
+  Results go to the console as "[test-map] PASS/FAIL/SKIPPED ..." and end with "ALL PASS (n)" or "FAILED n".
+  Every scene also runs the layout checks (no sideways scroll, 44 px targets, the whole map above the tab bar) and, at the
+  whole-road view, the label and framing checks (every state in data.STATES named and nothing else, the ocean name on
+  screen and clear of city names, the road and every covered state in view).
+
+  Headless Chrome notes: under --virtual-time-budget, requestAnimationFrame in the iframe barely ticks until the screenshot
+  is taken, so this page waits with timers only and asks the map for instant transitions (it reports
+  prefers-reduced-motion to the app; the map then jumps instead of animating). The app reloads itself once on a fresh
+  profile when its service worker takes over; the scene runs on the page that stays.
+  Under virtual time, performance.now() also stands still during synchronous work, so timings read 0 ms. The perf and
+  battery scenes detect that and log their timing and rate checks as SKIPPED. For real numbers, open
+  ?scene=perf&motion or ?scene=battery&motion in a normal browser window, or run headless Chrome with
+  --remote-debugging-port and no --virtual-time-budget and read the console over the DevTools protocol.
+-->
+<style>
+  html,body{margin:0;background:#3a3f3c;font:12px/1.35 ui-monospace,Menlo,monospace;color:#dfe8e2}
+  #f{display:block;border:0;background:#000}
+  #out{position:fixed;left:0;right:0;bottom:0;max-height:45%;overflow:auto;margin:0;padding:4px 8px;background:rgba(0,0,0,.85);white-space:pre-wrap;display:none;z-index:9}
+  body.log #out{display:block}
+</style>
+</head>
+<body>
+<pre id="out"></pre>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const scene = q.get("scene") || "whole";
+const theme = q.get("theme") === "light" ? "light" : "dark";
+const W = +q.get("w") || 430, H = +q.get("h") || 932;
+const out = document.getElementById("out");
+if (q.has("log")) document.body.classList.add("log");
+let fails = 0, passes = 0;
+const log = s => { console.log("[test-map] " + s); out.textContent += s + "\n"; };
+const check = (name, ok, info = "") => { ok ? passes++ : fails++; log(`${ok ? "PASS" : "FAIL"} ${name}${info ? " (" + info + ")" : ""}`); };
+const skip = (name, why) => log(`SKIPPED ${name} (${why})`);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const done = () => log(fails ? `FAILED ${fails} (passed ${passes})` : `ALL PASS (${passes})`);
+const GAP = 12; // map.js MAP_GAP: room between the map and the tab bar
+
+if (scene === "fake") runFake().catch(e => { check("fake scene ran", false, e && (e.stack || e.message)); done(); });
+else boot();
+
+function boot() {
+  const f = document.createElement("iframe");
+  f.id = "f"; f.title = "I-5 Buddy"; f.src = "../index.html";
+  f.style.width = W + "px"; f.style.height = H + "px";
+  document.body.prepend(f);
+  let started = false;
+  const start = () => { if (started) return; started = true; run(f).catch(e => { check("scene ran", false, e && (e.stack || e.message)); done(); }); };
+  f.addEventListener("load", async () => {
+    if (started) return;
+    const w = f.contentWindow, sw = w.navigator.serviceWorker;
+    if (sw && !sw.controller) {
+      // The worker is installing. Wait without timers (they advance virtual time) for it to take over; the app then
+      // reloads and the next load event starts the scene. In real time, give up after a few seconds.
+      let changed = false;
+      sw.addEventListener("controllerchange", () => { changed = true; });
+      const t0 = performance.now();
+      for (let i = 0; !changed && !started && i < 4e6 && (i < 4e5 || performance.now() - t0 < 6000); i++) await yieldTask();
+      // Since v2.0 the app only reloads when the user taps "Reload" for an update, so carry on with this page.
+      await new Promise(r => setTimeout(r, 0));
+    }
+    if (w.I5BUDDY) start(); // otherwise the page is still on its way; the next load event takes over
+  });
+}
+// A zero-delay yield that does not advance headless virtual time.
+const chan = new MessageChannel(), yields = [];
+chan.port1.onmessage = () => { const r = yields.shift(); r && r(); };
+function yieldTask() { return new Promise(r => { yields.push(r); chan.port2.postMessage(0); }); }
+
+/** Resolve when the map module has called init (it sets api.map). No polling: polling burns headless virtual time. */
+function mapReady(api) {
+  if (api.map) return Promise.resolve();
+  return new Promise(resolve => {
+    Object.defineProperty(api, "map", { configurable: true, enumerable: true, get: () => undefined,
+      set(v) { Object.defineProperty(api, "map", { value: v, writable: true, configurable: true, enumerable: true }); resolve(); } });
+  });
+}
+
+/** True under --virtual-time-budget: there, performance.now() does not move while synchronous work runs. */
+function virtualTime(w) {
+  const t0 = w.performance.now();
+  let x = 0;
+  for (let i = 0; i < 3e6; i++) x += i % 7;
+  return w.performance.now() - t0 < 0.05 && x > 0;
+}
+
+let reduce = !q.has("motion"); // what the app is told about prefers-reduced-motion (a scene can flip it)
+
+async function run(f) {
+  const w = f.contentWindow, doc = f.contentDocument;
+  w.addEventListener("error", e => check("no uncaught error in the app", false, e.message));
+  w.addEventListener("unhandledrejection", e => check("no unhandled rejection in the app", false, e.reason && e.reason.message));
+  const realMM = w.matchMedia.bind(w);
+  w.matchMedia = query => /prefers-reduced-motion:\s*reduce/.test(query) ? { matches: reduce, media: query, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} } : realMM(query);
+  const api = w.I5BUDDY && w.I5BUDDY.api;
+  if (!api) throw new Error("I5BUDDY.api missing");
+  await mapReady(api);
+  try { api.voice.say = () => Promise.resolve(false); api.voice.unlock = () => {}; } catch {} // quiet
+  api.settings.theme = theme;
+  doc.documentElement.dataset.theme = theme;
+  api.settings.live = scene === "camlive" || scene === "camcancel";
+  const P = api.data.PLACES, map = api.map;
+  if (scene === "perf") {
+    // pad the data to ~1,000 landmarks over the whole covered road (the heaviest the map should ever carry)
+    const base = P.slice(), cats = ["farm", "hist", "nature", "town", "stop", "odd"];
+    for (let i = 0; P.length < 1000; i++) {
+      const b = base[i % base.length], m = (i * 1.37) % api.data.MAX_M;
+      P.push({ ...b, id: "perf-" + i, m, st: api.data.stateAt(m).id, name: b.name + " " + i, cat: cats[i % 6], side: i % 3 - 1 });
+    }
+    P.sort((a, b) => a.m - b.m);
+  }
+  const stampUpTo = m => { for (const p of P) if (p.m < m) api.S.stamps[p.id] = 1; api.bus.emit("place:stamp", { place: P[0] }); };
+
+  const noPos = scene === "hint" || scene === "height";
+  if (!noPos) stampUpTo(scene === "whole" ? 480 : 520);
+  if (!noPos) api.setPosition({ zoom: 300, follow: 640, place: 516 }[scene] ?? 480, { dir: "N", speed: 64, jumped: true });
+  if (scene === "whole" || scene === "follow") api.setMode("demo");
+  api.ui.go("map");
+  await sleep(50);
+  const svg = doc.querySelector("#view-map .mp-svg");
+  check("map built in #view-map", !!svg);
+
+  if (scene === "perf") {
+    map.setLayer("cams", true); map.setLayer("rest", true);
+    check("map drew ~1,000 landmark dots", doc.querySelector(".mp-halo").getAttribute("d").split("M").length - 1 >= 1000);
+    if (virtualTime(w)) {
+      skip("frame timings", "virtual time: performance.now() stands still during synchronous work; run ?scene=perf&motion in real time");
+    } else {
+      const t = () => w.performance.now();
+      const frame = (fn, n) => { const t0 = t(); for (let i = 0; i < n; i++) { fn(i); map.redraw(); } return (t() - t0) / n; };
+      const zoomMs = frame(i => map.zoomBy(i < 30 ? 1.12 : 1 / 1.12), 60);
+      map.showMile(api.data.MAX_M * 0.87, 8);
+      const panMs = frame(i => { pe(w, svg, "pointerdown", 1, 200, 300); pe(w, svg, "pointermove", 1, 200 + (i % 2 ? 12 : -12), 312); pe(w, svg, "pointerup", 1, 200, 312); }, 60);
+      map.showMile(519, 30);
+      const deepMs = frame(i => map.zoomBy(i % 2 ? 1.05 : 1 / 1.05), 60);
+      log(`frame cost with ${P.length} landmarks: zooming out-in ${zoomMs.toFixed(2)} ms, panning ${panMs.toFixed(2)} ms, zooming at 30x ${deepMs.toFixed(2)} ms (redraw is synchronous here; a phone is ~4x slower)`);
+      check("a zoom frame costs under 8 ms here", zoomMs < 8, zoomMs.toFixed(2) + " ms");
+      check("a pan frame costs under 4 ms here", panMs < 4, panMs.toFixed(2) + " ms");
+    }
+    map.wholeRoad();
+  } else if (scene === "zoom") {
+    map.setLayer("cams", true); map.setLayer("rest", true);
+    map.nearMe();
+    const near = P.reduce((b, p) => (Math.abs(p.m - 309) < Math.abs(b.m - 309) ? p : b), P[0]);
+    map.select("place", near);
+    check("near me zooms in on you", map.view.z >= 12, "z=" + map.view.z);
+  } else if (scene === "place") {
+    const p = P.find(x => new RegExp(q.get("name") || "sacramento", "i").test(x.name)) || P[Math.floor(P.length / 2)];
+    map.showPlace(p);
+    if (q.get("z")) map.showMile(p.m, +q.get("z"));
+    check("showPlace selects it", map.selected && map.selected.item === p);
+  } else if (scene === "cam" || scene === "camlive") {
+    map.setLayer("cams", true);
+    const cam = api.data.CAMS.find(c => c.m > 515 && c.by === "Caltrans") || api.data.CAMS[0];
+    map.showMile(cam.m, 14);
+    map.select("cam", cam);
+    check("camera card shown", !!doc.querySelector(".mp-camcard"));
+    if (scene === "cam") check("no live picture without consent", !doc.querySelector(".mp-camcard img") && !!doc.querySelector(".mp-live.consent"));
+    else { await sleep(2500); check("live picture requested", !!doc.querySelector(".mp-camcard img") || !!doc.querySelector(".mp-live.none")); }
+  } else if (scene === "rest") {
+    map.setLayer("rest", true);
+    const r = api.data.REST.find(x => x.kind === "rest_area" && (q.get("restname") ? x.name.includes(q.get("restname")) : x.m > 200)) || api.data.REST[0];
+    map.showMile(r.m, +q.get("z") || 16);
+    map.select("rest", r);
+    check("rest area card shown", !!doc.querySelector(".mp-restcard"));
+  } else if (scene === "road") {
+    // the middle of the longest stretch with no landmark or rest area, zoomed in so the tap lands on the road itself
+    const stops = [...P.map(p => p.m), ...api.data.REST.filter(r => r.kind === "rest_area").map(r => r.m)].sort((a, b) => a - b);
+    let gap = [0, 0];
+    for (let i = 1; i < stops.length; i++) if (stops[i] - stops[i - 1] > gap[1] - gap[0]) gap = [stops[i - 1], stops[i]];
+    const mid = (gap[0] + gap[1]) / 2;
+    map.showMile(mid, 20);
+    const v = map.view;
+    tap(w, svg, v.W / 2, v.H / 2);
+    await sleep(400);
+    check("tap on the road opens a road card", map.selected && map.selected.type === "road", JSON.stringify(map.selected && map.selected.type));
+    const meta = doc.querySelector(".mp-roadcard .mp-meta");
+    const st = api.data.stateAt(mid), mi = Math.round(api.data.localMile(mid).mi);
+    check("the road card names the state and its mile", !!meta && meta.textContent.startsWith(`${st.name} · Mile ${mi}`), `${meta && meta.textContent} at ${mid.toFixed(1)} (gap ${gap.map(x => x.toFixed(1)).join("-")})`);
+  } else if (scene === "follow") {
+    map.setFollow(true);
+    const gap = q.has("motion") ? 500 : 100; // with &motion (real time only), the marker glides between updates
+    for (let i = 1; i <= 6; i++) { api.setPosition(640 + i * 0.4, { dir: "N", speed: 64 }); await sleep(gap); }
+    if (q.has("motion")) await sleep(700);
+    // no redraw() here: the marker must already be where the view is centered
+    const v = map.view, core = doc.querySelector(".mp-you-core"), sr = svg.getBoundingClientRect();
+    const r = core.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - (sr.left + v.W / 2), dy = r.top + r.height / 2 - (sr.top + v.H / 2);
+    check("follow keeps you in the middle", Math.hypot(dx, dy) < 1.5, `${dx.toFixed(1)}, ${dy.toFixed(1)}`);
+    check("follow zooms in", v.z >= 8, "z=" + v.z);
+  } else if (scene === "gesture") {
+    await gestures(api, w, doc, svg);
+  } else if (scene === "battery") {
+    await battery(api, w, doc, svg);
+  } else if (scene === "height") {
+    await heightFallback(api, w, doc);
+  } else if (scene === "card") {
+    await cardScene(api, w, doc, svg);
+  } else if (scene === "follow2") {
+    await follow2(api, w, doc, svg);
+  } else if (scene === "camcancel") {
+    await camCancel(api, w, doc);
+  } else if (scene === "stamps") {
+    await stamps(api, w, doc);
+  }
+
+  if (q.get("scroll") === "card") {
+    const c = doc.querySelector(".mp-cardbox");
+    if (c) w.scrollTo(0, Math.max(0, c.getBoundingClientRect().bottom + w.scrollY - w.innerHeight + 110));
+  }
+  map.redraw();
+  layoutChecks(w, doc, map);
+  if (map.view.z <= 1.2 && w.scrollY === 0) labelChecks(w, doc, api);
+  done();
+}
+
+function pe(w, svg, type, id, x, y, ptype = "touch") {
+  const r = svg.getBoundingClientRect();
+  svg.dispatchEvent(new w.PointerEvent(type, { pointerId: id, clientX: r.left + x, clientY: r.top + y, pointerType: ptype, isPrimary: id === 1,
+    bubbles: true, cancelable: true, button: 0, buttons: type === "pointerup" ? 0 : 1 }));
+}
+function tap(w, svg, x, y, ptype = "touch") { pe(w, svg, "pointerdown", 1, x, y, ptype); pe(w, svg, "pointerup", 1, x, y, ptype); }
+
+async function gestures(api, w, doc, svg) {
+  const map = api.map, V = () => map.view;
+  const settle = (ms = 1200) => (q.has("motion") ? sleep(ms) : Promise.resolve()); // let real animations finish
+  check("starts on the whole road", Math.abs(V().z - 1) < 1e-6, "z=" + V().z);
+  // pinch: fingers 100 px apart move to 200 px apart -> 2x
+  const cx = V().W / 2, cy = V().H / 2;
+  pe(w, svg, "pointerdown", 1, cx - 50, cy); pe(w, svg, "pointerdown", 2, cx + 50, cy);
+  for (let i = 1; i <= 5; i++) { pe(w, svg, "pointermove", 1, cx - 50 - i * 10, cy); pe(w, svg, "pointermove", 2, cx + 50 + i * 10, cy); }
+  pe(w, svg, "pointerup", 1, cx - 100, cy); pe(w, svg, "pointerup", 2, cx + 100, cy);
+  check("pinch zooms 2x", Math.abs(V().z - 2) < 0.05, "z=" + V().z.toFixed(3));
+  // one-finger drag pans
+  const before = V().cx;
+  pe(w, svg, "pointerdown", 1, 200, 300);
+  for (let i = 1; i <= 6; i++) pe(w, svg, "pointermove", 1, 200 + i * 10, 300);
+  pe(w, svg, "pointerup", 1, 260, 300);
+  check("one-finger drag pans the map", V().cx < before - 0.5, `cx ${before.toFixed(1)} -> ${V().cx.toFixed(1)}`);
+  // mouse wheel zooms around the cursor
+  const z0 = V().z, sr = svg.getBoundingClientRect();
+  svg.dispatchEvent(new w.WheelEvent("wheel", { deltaY: -240, clientX: sr.left + 120, clientY: sr.top + 200, bubbles: true, cancelable: true }));
+  check("mouse wheel zooms in", V().z > z0 * 1.5, `${z0.toFixed(2)} -> ${V().z.toFixed(2)}`);
+  // double tap zooms in 2x
+  const z1 = V().z;
+  tap(w, svg, 60, 120); await sleep(80); tap(w, svg, 62, 121);
+  await settle(500);
+  check("double tap zooms in 2x", Math.abs(V().z / z1 - 2) < 0.05, `${z1.toFixed(2)} -> ${V().z.toFixed(2)}`);
+  await sleep(400);
+  // two-finger tap zooms out
+  const z2 = V().z;
+  pe(w, svg, "pointerdown", 1, 150, 300); pe(w, svg, "pointerdown", 2, 220, 300); pe(w, svg, "pointerup", 1, 150, 300); pe(w, svg, "pointerup", 2, 220, 300);
+  await settle(500);
+  check("two-finger tap zooms out", Math.abs(z2 / V().z - 2) < 0.05, `${z2.toFixed(2)} -> ${V().z.toFixed(2)}`);
+  // limits
+  for (let i = 0; i < 9; i++) map.zoomBy(2); // quick presses add up even while the zoom is still animating
+  await settle(600);
+  map.redraw();
+  check("zoom stops at 60x", Math.abs(V().z - 60) < 1e-6, "z=" + V().z);
+  check("zoom-in button disabled at 60x", doc.querySelector('.mp-zb[aria-label="Zoom in"]').disabled);
+  map.wholeRoad(); await settle(); map.redraw();
+  check("whole road returns to 1x", Math.abs(V().z - 1) < 1e-6, "z=" + V().z);
+  check("zoom-out button disabled at 1x", doc.querySelector('.mp-zb[aria-label="Zoom out"]').disabled);
+  // tap a landmark dot: find it on screen through the selection ring, then tap near (not exactly on) it
+  map.setLayer("cams", false); map.setLayer("rest", false);
+  map.showMile(519, 20);
+  await settle();
+  const p = api.data.PLACES.find(x => Math.abs(x.m - 519) < 2) || api.data.PLACES[0];
+  map.select("place", p); map.redraw();
+  const ring = doc.querySelector(".mp-sel").getBoundingClientRect(), s2 = svg.getBoundingClientRect();
+  map.clear(); map.redraw();
+  await sleep(400);
+  tap(w, svg, ring.left + ring.width / 2 - s2.left + 4, ring.top + ring.height / 2 - s2.top - 3);
+  check("tapping a dot selects that landmark", map.selected && map.selected.type === "place", map.selected ? map.selected.item.name : "nothing");
+  const card = doc.querySelector(".mp-card");
+  check("card sits below the map, not over it", !!card && card.getBoundingClientRect().top >= doc.querySelector(".mp-map").getBoundingClientRect().bottom);
+  const btns = card ? [...card.querySelectorAll("button")].map(b => b.textContent.trim()) : [];
+  check("card has Hear it and More", btns.includes("Hear it") && btns.includes("More"), btns.join("|"));
+  const first = map.selected && map.selected.item;
+  card.querySelector('[data-step="1"]').click();
+  await settle(900);
+  check("north button steps to the next landmark", map.selected && map.selected.item !== first && map.selected.item.m >= first.m, map.selected && map.selected.item.name);
+  check("focus stays on the step button", doc.activeElement && doc.activeElement.dataset && doc.activeElement.dataset.step === "1");
+  // layer chips
+  const chip = doc.querySelector('.mp-chip[data-layer="cams"]');
+  chip.click(); map.redraw();
+  const shownCams = () => doc.querySelectorAll('.mp-cam:not([display="none"])').length;
+  check("Cameras chip turns on (aria-pressed)", chip.getAttribute("aria-pressed") === "true");
+  check("camera glyphs drawn", shownCams() > 0, shownCams() + " shown");
+  chip.click(); map.redraw();
+  check("camera glyphs hidden when off", shownCams() === 0);
+  // follow: a drag turns it off
+  api.setPosition(519, { dir: "N", jumped: true });
+  map.setFollow(true);
+  await settle();
+  check("Follow me zooms in on you", V().z >= 8, "z=" + V().z);
+  pe(w, svg, "pointerdown", 1, 200, 300); for (let i = 1; i <= 4; i++) pe(w, svg, "pointermove", 1, 200, 300 + i * 12); pe(w, svg, "pointerup", 1, 200, 348);
+  check("dragging turns Follow me off", map.follow === false && doc.querySelector(".mp-loc [aria-pressed]").getAttribute("aria-pressed") === "false");
+  // keyboard
+  const mapEl = doc.querySelector(".mp-map");
+  mapEl.focus();
+  const zk = V().z;
+  mapEl.dispatchEvent(new w.KeyboardEvent("keydown", { key: "+", bubbles: true, cancelable: true }));
+  await settle(500);
+  check("plus key zooms in", V().z > zk * 1.9, `${zk.toFixed(2)} -> ${V().z.toFixed(2)}`);
+  const kx = V().cx;
+  mapEl.dispatchEvent(new w.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }));
+  await settle(500);
+  check("arrow key pans", V().cx > kx);
+  // only the map surface claims touches; the page keeps scrolling
+  check("touch-action none on the map surface only", w.getComputedStyle(svg).touchAction === "none" && w.getComputedStyle(mapEl).touchAction !== "none" && w.getComputedStyle(doc.body).touchAction !== "none");
+  // stamps update the summary and the dots (on the next frame, or within 250 ms when frames are throttled)
+  const sum0 = doc.querySelector(".mp-sum").textContent;
+  for (const x of api.data.PLACES) api.S.stamps[x.id] = 1;
+  api.bus.emit("place:stamp", { place: api.data.PLACES[0] });
+  await sleep(300);
+  check("summary counts stamps", doc.querySelector(".mp-sum").textContent !== sum0, doc.querySelector(".mp-sum").textContent);
+  check("all dots bright once stamped", doc.querySelectorAll(".mp-dot.un").length === 0);
+  api.S.stamps = {}; api.bus.emit("passport:reset", {});
+  await sleep(300);
+  check("passport reset dims them again", doc.querySelectorAll(".mp-dot.un").length > 0 && /· 0 stamped/.test(doc.querySelector(".mp-sum").textContent));
+  // odd payloads never throw
+  try {
+    for (const [e, d] of [["pos", null], ["pos", {}], ["tab", "map"], ["settings", null], ["speaking", null], ["speaking", { id: "hear:x" }], ["passport:reset", undefined], ["mode", "gps"], ["place:stamp", null], ["dest", null], ["dest", { m: "x" }]]) api.bus.emit(e, d);
+    check("odd events are harmless", true);
+  } catch (e) { check("odd events are harmless", false, e.message); }
+}
+
+/* Battery: while you drive, a GPS fix must not start an animation loop, and nothing may animate forever. */
+async function battery(api, w, doc, svg) {
+  const map = api.map;
+  // set the view up instantly (even with &motion), then switch real motion on for the drive itself
+  reduce = true;
+  api.setMode("gps");
+  map.showMile(api.S.m, 10);
+  map.setFollow(true);
+  map.redraw();
+  reduce = false;
+  const pulse = doc.querySelector(".mp-you-pulse");
+  const iters = w.getComputedStyle(pulse).animationIterationCount;
+  check("the 'here you are' pulse stops on its own", iters !== "infinite" && +iters <= 6, "iterations: " + iters);
+  const counts = { world: 0, you: 0, raf: 0 };
+  const orig = w.Element.prototype.setAttribute, origRaf = w.requestAnimationFrame.bind(w);
+  w.Element.prototype.setAttribute = function (n, v) {
+    if (n === "transform" && this.classList) { if (this.classList.contains("mp-world")) counts.world++; else if (this.classList.contains("mp-you")) counts.you++; }
+    return orig.call(this, n, v);
+  };
+  // frames asked for by a position update (a glide); one-shot frames (a stamp redraw) do not count
+  w.requestAnimationFrame = fn => { if (/onPos[^\n]*\/js\/map\.js/.test(String(new Error().stack))) counts.raf++; return origRaf(fn); };
+  const drive = async (n, stepMi, gap) => {
+    Object.assign(counts, { world: 0, you: 0, raf: 0 });
+    let m = api.S.m;
+    for (let i = 0; i < n; i++) { m += stepMi; api.setPosition(m, { dir: "N", speed: 65 }); await sleep(gap); }
+    return { ...counts };
+  };
+  // 65 mph, one fix a second (here 10 fixes, 150 ms apart: what matters is the distance per fix)
+  let c = await drive(10, 65 / 3600, 150);
+  check("Follow me at 65 mph: no animation loop per GPS fix", c.raf === 0, `map.js asked for ${c.raf} frames`);
+  // 10 fixes at 65 mph move the view about a pixel: it recenters once or twice (every half pixel), not on every fix
+  check("Follow me at 65 mph: the view is not redrawn for sub-pixel moves", c.world <= 3, `${c.world} world redraws for 10 fixes`);
+  check("Follow me at 65 mph: at most a few marker writes", c.you <= 3, `${c.you} marker writes for 10 fixes`);
+  map.setFollow(false);
+  c = await drive(10, 65 / 3600, 150);
+  check("at 65 mph without Follow me: no animation loop", c.raf === 0 && c.world === 0, `frames ${c.raf}, world ${c.world}`);
+  check("at 65 mph without Follow me: at most a few marker writes", c.you <= 3, `${c.you} marker writes for 10 fixes`);
+  // the 40x demo at 40x zoom moves ~6 px per update: that one glides
+  reduce = true; map.showMile(api.S.m, 40); map.redraw(); reduce = false;
+  c = await drive(4, 65 * 40 / 3600 * 0.5, 500);
+  check("a visible step (fast demo, zoomed in) glides", c.raf >= 4, `map.js asked for ${c.raf} frames`);
+  if (virtualTime(w)) {
+    skip("marker writes per second while gliding", "virtual time: animation frames barely tick; run ?scene=battery&motion in real time");
+  } else {
+    const t0 = w.performance.now();
+    c = await drive(6, 65 * 40 / 3600 * 0.5, 500);
+    const sec = (w.performance.now() - t0) / 1000;
+    check("the glide is capped near 30 frames a second", c.you / sec <= 36, `${(c.you / sec).toFixed(1)} marker writes/s`);
+  }
+  w.Element.prototype.setAttribute = orig;
+  w.requestAnimationFrame = origRaf;
+  reduce = true;
+  map.showMile(api.S.m, 12);
+}
+
+/* Height: the CSS formula for browsers without svh (iOS 15.0-15.3), with the browser toolbar taking 81 px. */
+async function heightFallback(api, w, doc) {
+  const mapEl = doc.querySelector(".mp-map");
+  const above = parseFloat(mapEl.style.getPropertyValue("--mp-above"));
+  const small = w.innerHeight - 81;
+  const had = mapEl.classList.contains("mp-vh");
+  mapEl.classList.add("mp-vh");
+  mapEl.style.setProperty("--mp-vh", small / 100 + "px");
+  const h = mapEl.getBoundingClientRect().height;
+  const want = Math.max(300, Math.min(820, small * 0.62, small - above));
+  check("without svh, the map fits the viewport the browser reports", Math.abs(h - want) < 1.5, `${h.toFixed(1)} vs ${want.toFixed(1)} for a ${small} px viewport`);
+  if (!had) { mapEl.classList.remove("mp-vh"); mapEl.style.removeProperty("--mp-vh"); }
+  await sleep(50);
+}
+
+/* Card: offline photo, the full story while it is read, keyboard focus. */
+async function cardScene(api, w, doc, svg) {
+  const map = api.map;
+  // keyboard focus on the zoom buttons is drawn inside them (their group clips its corners)
+  const zb = doc.querySelector('.mp-zb[aria-label="Zoom in"]');
+  zb.focus();
+  if (zb.matches(":focus-visible")) check("zoom button focus ring is drawn inside the button", w.getComputedStyle(zb).outlineOffset === "-3px" && w.getComputedStyle(zb).outlineStyle !== "none", w.getComputedStyle(zb).outlineOffset);
+  else {
+    // the window has no focus here, so :focus-visible cannot match: check the rule itself
+    const rule = [...doc.styleSheets].filter(x => /map\.css/.test(x.href || "")).flatMap(x => [...x.cssRules]).find(r => r.selectorText === ".mp-zb:focus-visible");
+    check("zoom button focus ring is drawn inside the button (stylesheet)", !!rule && rule.style.outlineOffset === "-3px", rule ? rule.cssText : "no rule");
+  }
+  // a landmark whose photo cannot load (offline and not saved): the longest name, the worst case for the header row
+  const P = api.data.PLACES;
+  const p = P.reduce((a, b) => (b.name.length > a.name.length ? b : a), P[0]);
+  const hadImg = p.img;
+  p.img = { f: "img/not-here-offline-test.jpg", w: 640, h: 480, by: "test" };
+  map.showPlace(p);
+  await sleep(600);
+  const card = doc.querySelector(".mp-card");
+  const x = card && card.querySelector(".mp-x"), cr = card && card.getBoundingClientRect();
+  check("a photo that fails to load becomes the category icon", !!card && !card.querySelector(".photo") && !!card.querySelector(".mp-top > .mp-ph"));
+  check("the close button stays inside the card", !!x && x.getBoundingClientRect().right <= cr.right + 0.5, x && `${Math.round(x.getBoundingClientRect().right)} vs ${Math.round(cr.right)}`);
+  check("the title keeps the middle column", !!card && w.getComputedStyle(card.querySelector(".mp-headtxt")).gridColumnStart === "2");
+  if (hadImg) p.img = hadImg; else delete p.img;
+  // Hear it: the whole story shows while it is read
+  const text = card.querySelector(".mp-text"), hear = card.querySelector(".mp-go");
+  const clamped = text.scrollHeight > text.clientHeight + 1;
+  api.bus.emit("speaking", { id: "hear:" + p.id, text: p.text });
+  check("while it is read, the whole story is on screen", card.classList.contains("is-open") && text.scrollHeight <= text.clientHeight + 1, `${clamped ? "was clamped" : "fit before"}, now ${text.scrollHeight} of ${text.clientHeight}`);
+  check("Hear it turns into Stop", /Stop/.test(hear.textContent));
+  api.bus.emit("speaking", null);
+  check("after reading, the story stays open", card.classList.contains("is-open") && /Hear it/.test(hear.textContent));
+  // Close keeps keyboard focus in the map module
+  const close = card.querySelector(".mp-x");
+  close.focus(); close.click();
+  const a = doc.activeElement;
+  check("Close moves focus to Next up (or the map), not the page", !!a && (a.classList.contains("mp-next") || a.classList.contains("mp-map")), a ? a.className : "none");
+  // leave the card open for the screenshot
+  map.showPlace(p);
+  api.bus.emit("speaking", { id: "hear:" + p.id, text: p.text });
+  api.bus.emit("speaking", null);
+  await sleep(100);
+}
+
+/* Follow me + other things that pull the view; the destination flag; double-tap keeps the card. */
+async function follow2(api, w, doc, svg) {
+  const map = api.map, V = () => map.view;
+  const settle = (ms = 1300) => (q.has("motion") ? sleep(ms) : Promise.resolve()); // let real animations finish
+  api.setMode("gps");
+  map.clear();
+  map.setFollow(true);
+  await settle();
+  map.redraw();
+  const next = doc.querySelector(".mp-next");
+  check("Next up is offered", !!next);
+  next.click();
+  await settle();
+  check("Next up turns Follow me off (it would pull the view back)", map.follow === false && doc.querySelector(".mp-loc [aria-pressed]").getAttribute("aria-pressed") === "false");
+  api.setPosition(api.S.m + 0.02, { dir: "N", speed: 64 });
+  map.redraw();
+  const ring = doc.querySelector(".mp-sel").getBoundingClientRect(), sr = svg.getBoundingClientRect();
+  const off = Math.hypot(ring.left + ring.width / 2 - (sr.left + V().W / 2), ring.top + ring.height / 2 - (sr.top + V().H / 2));
+  check("the next fix leaves the landmark in view", off < 3, off.toFixed(1) + " px from the middle");
+  // showMile with Follow me on (a mile far from you, on the covered road)
+  map.setFollow(true); map.showMile(api.S.m > api.data.MAX_M / 2 ? 60 : api.data.MAX_M - 60, 9);
+  check("showMile turns Follow me off", map.follow === false);
+  // two-finger tap with Follow me on keeps you in the middle
+  map.setFollow(true);
+  await settle();
+  map.redraw();
+  const z0 = V().z;
+  pe(w, svg, "pointerdown", 1, 40, 60); pe(w, svg, "pointerdown", 2, 110, 60); pe(w, svg, "pointerup", 1, 40, 60); pe(w, svg, "pointerup", 2, 110, 60);
+  await settle(700);
+  map.redraw();
+  const core = doc.querySelector(".mp-you-core").getBoundingClientRect();
+  const yoff = Math.hypot(core.left + core.width / 2 - (sr.left + V().W / 2), core.top + core.height / 2 - (sr.top + V().H / 2));
+  check("two-finger tap with Follow me zooms out around you", Math.abs(z0 / V().z - 2) < 0.05 && yoff < 2, `z ${z0.toFixed(1)} -> ${V().z.toFixed(1)}, you ${yoff.toFixed(1)} px from the middle`);
+  map.setFollow(false);
+  // the destination flag follows "dest" events right away, with no position update
+  api.S.dest = { name: "Redding", m: 677 };
+  api.bus.emit("dest", api.S.dest);
+  check("setting a destination shows the flag at once", !doc.querySelector(".mp-dest").hasAttribute("display"));
+  api.S.dest = null;
+  api.bus.emit("dest", null);
+  check("clearing it removes the flag", doc.querySelector(".mp-dest").getAttribute("display") === "none");
+  api.S.dest = { name: "Redding", m: 677 };
+  api.bus.emit("dest", api.S.dest);
+  // double-tap on empty land zooms but keeps the card you were reading
+  const p = api.data.PLACES.find(x => /avenal|kettleman/i.test(x.name)) || api.data.PLACES[60];
+  map.showPlace(p);
+  map.showMile(p.m, 6);
+  map.select("place", p);
+  await settle();
+  map.redraw();
+  const z1 = V().z;
+  tap(w, svg, 12, V().H * 0.45); await sleep(90); tap(w, svg, 14, V().H * 0.45 + 2);
+  await sleep(450);
+  await settle(400);
+  check("double-tap zooms in", Math.abs(V().z / z1 - 2) < 0.05, `${z1.toFixed(1)} -> ${V().z.toFixed(1)}`);
+  check("double-tap keeps the card open", map.selected && map.selected.item === p, map.selected ? map.selected.type : "nothing selected");
+  tap(w, svg, 12, V().H * 0.45);
+  check("a single empty tap waits before closing the card", !!map.selected);
+  await sleep(450);
+  check("then closes it", !map.selected);
+  map.showPlace(p);
+  map.showMile(p.m, 9);
+}
+
+/* Camera pictures: only the card on screen downloads one. */
+async function camCancel(api, w, doc) {
+  const map = api.map;
+  map.setLayer("cams", true);
+  const cams = api.data.CAMS.filter(c => c.m > 515 && c.by === "Caltrans").slice(0, 3);
+  cams.forEach((c, i) => { c.img = "icons/icon-512.png?cam=" + i + "&t=" + Date.now(); }); // local stand-ins
+  map.showMile(cams[0].m, 14);
+  map.select("cam", cams[0]);
+  const imgA = doc.querySelector(".mp-camcard img");
+  check("live road info on: the picture starts loading", !!imgA && imgA.hasAttribute("src"));
+  map.select("cam", cams[1]);
+  check("picking another camera stops the first download", !!imgA && !imgA.hasAttribute("src"));
+  const imgB = doc.querySelector(".mp-camcard img");
+  api.ui.go("drive");
+  check("leaving the Map tab stops a download in progress", !!imgB && !imgB.hasAttribute("src"));
+  api.ui.go("map");
+  const imgC = doc.querySelector(".mp-camcard img");
+  check("coming back starts it again", !!imgC && imgC !== imgB && imgC.hasAttribute("src"));
+  await sleep(800);
+  check("and the picture shows", !!doc.querySelector(".mp-camcard .mp-live:not(.loading):not(.none) img"));
+}
+
+/* Passport stamps: a burst of events redraws the dots once, and a hidden map does no work. */
+async function stamps(api, w, doc) {
+  const dots = doc.querySelector(".mp-dots");
+  let rebuilds = 0;
+  const mo = new w.MutationObserver(recs => { for (const r of recs) for (const n of r.removedNodes) if (n.classList && n.classList.contains("mp-halo")) rebuilds++; });
+  mo.observe(dots, { childList: true });
+  const P = api.data.PLACES.filter(p => !api.S.stamps[p.id]).slice(0, 20);
+  for (const p of P) { api.S.stamps[p.id] = Date.now(); api.bus.emit("place:stamp", { place: p }); }
+  await sleep(320);
+  for (const r of mo.takeRecords()) for (const n of r.removedNodes) if (n.classList && n.classList.contains("mp-halo")) rebuilds++;
+  check("20 stamps in one burst redraw the dots once", rebuilds === 1, rebuilds + " redraws");
+  check("the summary counts them", new RegExp(`· ${Object.keys(api.S.stamps).length} stamped`).test(doc.querySelector(".mp-sum").textContent), doc.querySelector(".mp-sum").textContent);
+  api.ui.go("drive");
+  rebuilds = 0;
+  const more = api.data.PLACES.filter(p => !api.S.stamps[p.id]).slice(0, 5);
+  for (const p of more) { api.S.stamps[p.id] = Date.now(); api.bus.emit("place:stamp", { place: p }); }
+  await sleep(320);
+  for (const r of mo.takeRecords()) for (const n of r.removedNodes) if (n.classList && n.classList.contains("mp-halo")) rebuilds++;
+  check("a hidden map does no work for stamps", rebuilds === 0, rebuilds + " redraws");
+  api.ui.go("map");
+  for (const r of mo.takeRecords()) for (const n of r.removedNodes) if (n.classList && n.classList.contains("mp-halo")) rebuilds++;
+  check("opening the map catches up at once", rebuilds === 1 && new RegExp(`· ${Object.keys(api.S.stamps).length} stamped`).test(doc.querySelector(".mp-sum").textContent), rebuilds + " redraws");
+  mo.disconnect();
+}
+
+function layoutChecks(w, doc, map) {
+  const view = doc.getElementById("view-map");
+  if (!view || view.hidden) return;
+  check("no horizontal page scroll", doc.documentElement.scrollWidth <= w.innerWidth + 0.5, `${doc.documentElement.scrollWidth} vs ${w.innerWidth}`);
+  const small = [...view.querySelectorAll("button")].filter(b => {
+    const r = b.getBoundingClientRect();
+    return r.width > 0 && (r.height < 43.5 || r.width < 43.5);
+  }).map(b => (b.getAttribute("aria-label") || b.textContent.trim()).slice(0, 20) + ` ${Math.round(b.getBoundingClientRect().width)}x${Math.round(b.getBoundingClientRect().height)}`);
+  check("touch targets >= 44px", small.length === 0, small.join(", "));
+  const mapEl = view.querySelector(".mp-map"), mr = mapEl.getBoundingClientRect();
+  const tabs = doc.querySelector(".tabs"), tr = tabs.getBoundingClientRect();
+  const above = parseFloat(mapEl.style.getPropertyValue("--mp-above"));
+  const expectAbove = Math.round(mr.top + w.scrollY + tr.height + GAP);
+  check("--mp-above = what sits above the map + the tab bar + a gap", Math.abs(above - expectAbove) <= 1, `${above} vs ${expectAbove}`);
+  const vh = w.innerHeight;
+  const want = Math.max(300, Math.min(820, vh * 0.62, vh - expectAbove));
+  check("map is 62% of the screen, capped to fit above the tab bar", Math.abs(mr.height - want) < 2, `${Math.round(mr.height)}px of ${vh}`);
+  if (w.scrollY === 0 && vh - expectAbove >= 300) {
+    check("whole map visible above the tab bar", mr.bottom + GAP - 1 <= tr.top, `map ends ${Math.round(mr.bottom)}, tabs start ${Math.round(tr.top)}`);
+    const pills = [...view.querySelectorAll(".mp-pill")];
+    // what a tap there lands on, looking through the app's toast (a passing message, not part of the layout)
+    const blocked = pills.map(b => {
+      const r = b.getBoundingClientRect();
+      const e = doc.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2).find(x => !x.closest(".toast"));
+      return e && b.contains(e) ? null : `${b.textContent.trim()} under ${e ? e.tagName.toLowerCase() + "." + String(e.className.baseVal ?? e.className) : "nothing"}`;
+    }).filter(Boolean);
+    check("Near me and Follow me can be tapped (nothing on top)", !blocked.length, blocked.join(", "));
+  }
+  const over = [...view.querySelectorAll("*")].filter(e => !e.closest("svg")).filter(e => { const r = e.getBoundingClientRect(); return r.width && (r.right > w.innerWidth + 0.5 || r.left < -0.5); });
+  check("nothing pokes out sideways", over.length === 0, over.slice(0, 3).map(e => e.className).join(" | "));
+}
+
+/* At the whole-road view: every covered state named (neighbours like Oregon or Nevada are context, not named), the
+   road and all of every covered state in view, and no name on top of another or off the edge of the map. */
+function labelChecks(w, doc, api) {
+  const shown = sel => [...doc.querySelectorAll(sel)].filter(e => !e.closest("[display='none']"));
+  const states = shown(".mp-stname");
+  const outlined = new Set(api.data.OUTLINE.map(o => o.st));
+  const covered = api.data.STATES.filter(s => outlined.has(s.id));
+  const names = states.map(s => s.textContent);
+  const ok = covered.every(s => names.includes(s.name.toUpperCase()) || names.includes(s.id)) && names.length === covered.length;
+  check(`every covered state named, and only those (${covered.map(s => s.id).join(", ")})`, ok, names.join(", ") || "none");
+  const box = e => e.getBoundingClientRect();
+  const hit = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+  const inside = (r, o, slack = 1) => r.left >= o.left - slack && r.right <= o.right + slack && r.top >= o.top - slack && r.bottom <= o.bottom + slack;
+  const mapBox = box(doc.querySelector(".mp-svg"));
+  const r2 = r => `${Math.round(r.left)},${Math.round(r.top)} ${Math.round(r.right)},${Math.round(r.bottom)}`;
+  const tints = [...doc.querySelectorAll(".mp-tint")];
+  check("the whole-road view frames every covered state", tints.length === covered.length && tints.every(t => inside(box(t), mapBox)),
+    tints.map(t => `${t.getAttribute("class")} ${r2(box(t))}`).join("; ") + ` in ${r2(mapBox)}`);
+  const road = box(doc.querySelector(".mp-road"));
+  check("and the whole road", inside(road, mapBox) && road.height > mapBox.height * 0.55, `${r2(road)} in ${r2(mapBox)}`);
+  check("neighbour outlines are drawn as context", !!doc.querySelector(".mp-nbr") || outlined.size === covered.length);
+  // the words come from the data too: the road's length (rounded, as on the Drive tab) and what lies past each end
+  const E = api.data.ENDS, label = doc.querySelector(".mp-map").getAttribute("aria-label") || "", title = doc.querySelector("#view-map .view-title").textContent;
+  check("the map's name for screen readers says where the road runs, from data.ENDS", label.includes(`from ${E.S.long} to ${E.N.long}`) && (covered.length !== 1 || label.includes(`in ${covered[0].name}`)), label);
+  check("the title is the road's length, rounded like the Drive tab", title === `${Math.round(api.data.MAX_M).toLocaleString("en-US")} miles of I-5`, title);
+  const cities = shown(".mp-city text").map(box);
+  const sea = shown(".mp-seaname");
+  if (sea.length) {
+    const sb = box(sea[0]);
+    check("the ocean name is on the map, not off its edge", inside(sb, mapBox, 0), `${r2(sb)} in ${r2(mapBox)}`);
+    const bad = shown(".mp-city text").filter(t => hit(box(t), sb)).map(t => t.textContent);
+    check("the ocean name is clear of city names", bad.length === 0, bad.join(", "));
+  } else log("NOTE the ocean name is hidden at this size (no clear spot)");
+  const off = states.filter(s => !inside(box(s), mapBox, 0)).map(s => s.textContent);
+  check("state names are on the map, not off its edge", off.length === 0, off.join(", "));
+  // a rotated name's bounding box is far bigger than its letters: test each letter's own box
+  const letters = t => {
+    const out = [], m = t.getScreenCTM();
+    for (let i = 0; i < t.getNumberOfChars(); i++) {
+      const e = t.getExtentOfChar(i), xs = [], ys = [];
+      for (const [x, y] of [[e.x, e.y], [e.x + e.width, e.y], [e.x, e.y + e.height], [e.x + e.width, e.y + e.height]]) {
+        xs.push(m.a * x + m.c * y + m.e); ys.push(m.b * x + m.d * y + m.f);
+      }
+      out.push({ left: Math.min(...xs) + 1, right: Math.max(...xs) - 1, top: Math.min(...ys) + 1, bottom: Math.max(...ys) - 1 });
+    }
+    return out;
+  };
+  const crowd = [];
+  for (const s of states) {
+    const ls = letters(s.querySelector("text"));
+    for (const t of shown(".mp-city text")) if (ls.some(l => hit(l, box(t)))) crowd.push(s.textContent + "/" + t.textContent);
+  }
+  check("state names are clear of city names", crowd.length === 0, crowd.join(", "));
+  log("NOTE state names: " + states.map(s => s.textContent).join(", ") + (sea.length ? "; ocean: " + sea[0].getAttribute("class") : "; no ocean name"));
+  let pairs = 0;
+  for (let i = 0; i < cities.length; i++) for (let j = i + 1; j < cities.length; j++) if (hit(cities[i], cities[j])) pairs++;
+  check("city names do not overlap each other", pairs === 0, pairs + " overlaps");
+}
+
+/* A fake app with broken or empty data: the module must not throw. */
+async function runFake() {
+  const variant = q.get("variant") || "empty";
+  for (const href of ["../app.css", "../css/map.css"]) { const l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.append(l); }
+  document.documentElement.dataset.theme = theme;
+  document.body.style.cssText = `background:var(--bg);color:var(--fg);font-family:var(--display);width:${Math.min(W, 600)}px`;
+  const main = document.createElement("main");
+  main.innerHTML = '<section class="view" id="view-map" data-view="map"></section>';
+  document.body.prepend(main);
+  const errors = [];
+  window.addEventListener("error", e => errors.push(e.message));
+  const origError = console.error, origWarn = console.warn;
+  console.error = (...a) => { errors.push(a.join(" ")); origError.apply(console, a); };
+  console.warn = (...a) => { if (String(a[0]).includes("[map]")) errors.push(a.join(" ")); origWarn.apply(console, a); };
+  const handlers = {};
+  const bus = { on(e, fn) { (handlers[e] = handlers[e] || []).push(fn); return () => {}; }, emit(e, d) { for (const fn of handlers[e] || []) fn(d); } };
+  const route = [[0, 32.54, -117.03], [100, 33.5, -117.6], [400, 37, -121], [797, 42, -122.6]];
+  const data = variant === "nothing" ? {} :
+    variant === "routeonly" ? { ROUTE: route, MAX_M: 797 } :
+    { ROUTE: [], PLACES: [], CAMS: [], REST: [], DESTS: [], OUTLINE: [], STATES: [], CATS: {}, CAT_ICON: {} };
+  const api = variant === "nobus" ? { data: { ROUTE: route } } : {
+    S: { m: variant === "routeonly" ? 200 : null, dir: "N", mode: "off", stamps: {} }, settings: { live: false }, bus, data,
+    store: { get: (k, f) => f, set() {}, del() {} }, ui: { toast() {}, go(t) { bus.emit("tab", t); } },
+  };
+  const mod = await import("../js/map.js");
+  mod.init(api);
+  if (variant !== "nobus") {
+    for (const [e, d] of [["tab", "map"], ["pos", { m: 200 }], ["place:stamp", {}], ["settings", {}], ["speaking", { id: "x" }], ["mode", "demo"], ["dest", null], ["tab", "drive"], ["tab", "map"]]) bus.emit(e, d);
+  } else if (api.map) api.map.open();
+  if (api.map) {
+    const m = api.map;
+    m.zoomBy(2); m.nearMe(); m.wholeRoad(); m.showMile(100); m.showPlace("nope"); m.setLayer("cams", true); m.select("place", {}); m.setFollow(true); m.clear(); m.redraw();
+  }
+  await sleep(1200);
+  check(`fake app (${variant}) runs without errors`, errors.length === 0, errors.slice(0, 3).join(" | "));
+  check(`fake app (${variant}) still builds the view`, !!document.querySelector("#view-map .mp-map"));
+  done();
+}
+</script>
+</body>
+</html>

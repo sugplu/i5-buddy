@@ -1,0 +1,139 @@
+# I-5 exits in OR from OpenStreetMap (exit ref | lat,lon | signed destinations)
+exit 1 | 42.01592,-122.61328 | OR 273; Siskiyou Summit
+exit 6 | 42.07362,-122.60562 | OR 273; Mount Ashland
+exit 11 | 42.15215,-122.64373 | OR 99; Siskiyou Boulevard, Ashland
+exit 14 | 42.18242,-122.66401 | OR 66; Ashland, Klamath Falls
+exit 19 | 42.22693,-122.73776 | Valley View Road, Ashland; Ashland
+exit 21 | 42.24258,-122.76935 | Talent
+exit 24 | 42.27738,-122.81083 | Phoenix
+exit 27 | 42.30890,-122.84577 | South Medford
+exit 30 | 42.34590,-122.87506 | OR 62; North Medford, Crater Lake; Crater Lake Highway, Medford, Klamath Falls
+exit 33 | 42.37537,-122.90003 | Central Point
+exit 35 | 42.40389,-122.93819 | OR 99 South, OR 140; Central Point, Blackwell Road
+exit 40 | 42.42522,-123.03912 | OR 99; Scenic Byway, Gold Hill; Gold Hill
+exit 43 | 42.43017,-123.09328 | OR 99; Rouge River Route; OR 99, OR 234; Gold Hill, Crater Lake
+exit 45A | 42.42074,-123.12012 | OR 99; Rouge River Route
+exit 45B | 42.41443,-123.12794 | Valley of the Rouge State Park
+exit 48 | 42.42858,-123.16648 | City of Rogue River
+exit 55 | 42.43793,-123.28683 | US 199; Redwood Highway, Ocean Beaches, Crescent City
+exit 58 | 42.46288,-123.31877 | OR 99; Redwood Highway, Grants Pass, City Center
+exit 61 | 42.49317,-123.36285 | Merlin
+exit 66 | 42.56278,-123.37181 | Hugo
+exit 71 | 42.63147,-123.38167 | Sunny Valley
+exit 76 | 42.68714,-123.39136 | Wolf Creek
+exit 78 | 42.71508,-123.36903 | Speaker Road
+exit 80 | 42.74541,-123.37068 | Glendale
+exit 83 | 42.76578,-123.33726 | Barton Road
+exit 86 | 42.77727,-123.28344 | Quines Creek Road; Quines Creek Road, Barton Road
+exit 88 | 42.79684,-123.25597 | Azalea, Galesville Reservoir
+exit 95 | 42.89071,-123.23850 | Canyon Creek
+exit 98 | 42.92199,-123.27701 | Canyonville, Days Creek
+exit 99 | 42.93398,-123.28397 | North Canyonville, Stanton Park; North Canyonville, Crater Lake
+exit 101 | 42.94800,-123.31325 | Riddle; Riddle, Stanton Park
+exit 102 | 42.94797,-123.32626 | Gazley Road
+exit 103 | 42.96949,-123.33693 | OR 99; Tri City, Myrtle Creek; Tri CIty, Riddle
+exit 106 | 43.00423,-123.31058 | Weaver Road
+exit 108 | 43.02189,-123.29971 | Myrtle Creek; OR 99
+exit 110 | 43.03347,-123.32591 | Boomer Hill Road
+exit 112 | 43.05985,-123.34185 | OR 99; Dillard, Coos Bay, Rest Area; Dillard, Winston
+exit 113 | 43.07197,-123.35558 | Clarks Branch Road; Round Prairie
+exit 119 | 43.15457,-123.36504 | OR 99 South, OR 42 West; Winston, Coos Bay
+exit 120 | 43.16503,-123.36539 | OR 99 North; South Roseburg; Green District, Roseburg
+exit 121 | 43.17499,-123.37051 | McLain Avenue
+exit 123 | 43.19503,-123.36128 | Fairgrounds, Umpqua Park
+exit 124 | 43.20949,-123.35659 | OR 138 East; City Center, Diamond Lake
+exit 125 | 43.22174,-123.35908 | Garden Valley Boulevard; Roseburg
+exit 127 | 43.24399,-123.36023 | Edenbower Boulevard; North Roseburg
+exit 129 | 43.28988,-123.35457 | Winchester, Wilbur; OR 99; Winchester, North Roseburg
+exit 135 | 43.36499,-123.32907 | Sutherlin; Wilbur
+exit 136 | 43.38309,-123.33812 | OR 138; Sutherlin, Elkton; OR 138 West
+exit 138 | 43.41089,-123.32937 | Oakland
+exit 140 | 43.43974,-123.31601 | OR 99; Oakland
+exit 142 | 43.45865,-123.32325 | Metz Hill
+exit 146 | 43.51024,-123.31614 | Rice Valley
+exit 148 | 43.53695,-123.29222 | Rice Hill
+exit 150 | 43.55896,-123.28234 | OR 99; Yoncalla, Drain
+exit 154 | 43.60547,-123.22495 | Scotts Valley, Elkhead
+exit 159 | 43.67029,-123.20236 | Elk Creek,  Cox Road
+exit 160 | 43.68021,-123.19751 | Salt Springs Road
+exit 161 | 43.70444,-123.20601 | Anlauf,  Lorane
+exit 162 | 43.70844,-123.21719 | OR 38,  OR 99; Drain,  Elkton
+exit 163 | 43.72178,-123.20828 | Curtin,  Lorane
+exit 170 | 43.75209,-123.13161 | OR 99; Cottage Grove
+exit 172 | 43.77417,-123.05986 | Sixth Street, Cottage Grove Lake
+exit 174 | 43.80485,-123.04264 | Cottage Grove, Dorena Lake
+exit 176 | 43.82935,-123.03105 | Saginaw
+exit 182 | 43.91332,-123.01282 | OR 222; Creswell
+exit 186 | 43.96563,-123.01171 | Dillard Road; Goshen
+exit 188 | 44.00115,-123.01583 | OR 58; Oakridge, Klamath Falls, Goshen
+exit 188A | 43.99228,-123.00573 | OR 58; Willamette Highway; Oakridge
+exit 188B | 43.99963,-123.01113 | OR 99 South; Goshen
+exit 189 | 44.01026,-123.02182 | OR 225; 30th Avenue; South Eugene
+exit 191 | 44.03488,-123.03870 | OR 126 Business East; Glenwood Boulevard; Downtown Springfield
+exit 192 | 44.03827,-123.04796 | OR 99, OR 126 Business West; University of Oregon, Downtown Eugene
+exit 194A | 44.05899,-123.04950 | OR 126 East; Springfield, McKenzie River; Springfield
+exit 194B | 44.06317,-123.04901 | I 105, OR 126 West; Eugene
+exit 195B | 44.08828,-123.04642 | OR 569; Beltline Road West; Florence, Oregon Coast
+exit 199 | 44.13063,-123.05004 | Coburg
+exit 209 | 44.27632,-123.06070 | Harrisburg, Junction City
+exit 216 | 44.38558,-123.06106 | OR 228; Halsey, Brownsville
+exit 228 | 44.55095,-123.06162 | OR 34; Lebanon, Corvallis
+exit 233 | 44.62918,-123.06189 | US 20; Santiam Highway; Lebanon, Sweet Home
+exit 234 | 44.63956,-123.06225 | Fair-Expo, Knox Butte
+exit 234A | 44.64253,-123.06275 | Fair-Expo, Knox Butte
+exit 234B | 44.64667,-123.06260 | OR 99E; Albany
+exit 235 | 44.66678,-123.05855 | Viewcrest; Millersburg
+exit 237 | 44.69798,-123.05217 | Viewcrest
+exit 238 | 44.70127,-123.05187 | OR 164; South Jefferson; Scio, Millersburg
+exit 239 | 44.72033,-123.05419 | Dever-Conner
+exit 242 | 44.75834,-123.04920 | Talbot Road
+exit 243 | 44.77480,-123.04229 | Ankeny Hill
+exit 244 | 44.79051,-123.03571 | OR 164; North Jefferson; Jefferson
+exit 248 | 44.83982,-123.00823 | Sunnyside, Turner
+exit 249 | 44.84482,-123.00875 | Commercial Street
+exit 252 | 44.87925,-122.99917 | Kuebler Boulevard; Kuebler Boulevard Southeast
+exit 253 | 44.91114,-122.98710 | OR 22, OR 99E Business; Detroit Lake, Bend
+exit 256 | 44.94504,-122.99015 | OR 213; Market Street; Silverton
+exit 258 | 44.98021,-122.99224 | OR 99E North; Portland Road; OR 99E; Pacific Highway East; North Salem, Fairgrounds, Amphitheater
+exit 260 | 44.99798,-123.00018 | Chemawa Road; Keizer
+exit 260A | 45.00536,-122.99679 | OR 99E Business; Salem Parkway
+exit 260B | 45.01053,-122.99400 | Chemawa Road Northeast; Keizer
+exit 263 | 45.04631,-122.97430 | Brooks, Gervais
+exit 271 | 45.14781,-122.88375 | OR 214, OR 219; Woodburn, Molalla; Woodburn, Silverton
+exit 278 | 45.22943,-122.81115 | Donald, Aurora; Ehlen Road Northeast; Aurora
+exit 282 | 45.28027,-122.76951 | Canby
+exit 282A | 45.28545,-122.76949 | OR 551; Canby, Hubbard
+exit 282B | 45.28862,-122.76950 | Charboneau District
+exit 283 | 45.29970,-122.76905 | Wilsonville Road
+exit 286 | 45.33147,-122.76910 | Elligsen Road, Boones Ferry Road
+exit 288 | 45.36507,-122.75934 | I 205 North; Oregon City
+exit 289 | 45.37920,-122.75365 | Nyberg Street, Tualatin-Sherwood Road
+exit 290 | 45.39364,-122.74813 | Lower Boones Ferry Road
+exit 291 | 45.40524,-122.74411 | Carman Drive
+exit 292 | 45.42605,-122.74426 | OR 217 North; Kruse Way, Lake Oswego
+exit 292A | 45.41690,-122.74392 | OR 217; Tigard, Beaverton
+exit 292B | 45.42057,-122.74395 | Kruse Way, 72nd Avenue
+exit 293 | 45.43127,-122.74406 | Haines Street
+exit 294 | 45.43788,-122.74393 | OR 99W North; Barbur Boulevard; OR 99W South; Tigard, Newberg, McMinnville, Lincoln City
+exit 295 | 45.45617,-122.71203 | Taylors Ferry Road; Capitol Highway
+exit 296A | 45.46321,-122.69988 | Barbur Boulevard
+exit 296B | 45.46637,-122.69404 | Multnomah Boulevard
+exit 297 | 45.46578,-122.69467 | Terwilliger Boulevard
+exit 298 | 45.48732,-122.67846 | Corbett Avenue
+exit 299A | 45.49271,-122.67365 | OR 43; Macadam Avenue, Ross Island Bridge; Lake Oswego
+exit 299B | 45.49865,-122.67320 | 
+exit 300 | 45.51200,-122.66732 | I 84 East, US 30 East; The Dalles, Portland Airport
+exit 300B | 45.52504,-122.66547 | US 26 East, OR 99E; OMSI, Oregon City
+exit 301 | 45.52864,-122.66536 | I 84, US 30 East; The Dalles
+exit 302A | 45.53197,-122.66524 | Moda Center, Broadway-Weidler Street; Broadway, Weidler Street, Moda Center
+exit 302B | 45.54076,-122.67150 | I 405 West, US 30 West; Saint Helens; I 405, US 30 West; Beaverton, Saint Helens
+exit 302C | 45.54247,-122.67346 | Greeley Avenue, Swan Island
+exit 303 | 45.55360,-122.67854 | Interstate Avenue, Swan Island; Alberta Street, Swan Island
+exit 304 | 45.56717,-122.67853 | Rosa Parks Way
+exit 305A | 45.57467,-122.67856 | US 30 Bypass; Lombard Street East
+exit 305B | 45.57728,-122.67853 | US 30 Bypass; Lombard Street West
+exit 306 | 45.59869,-122.68443 | Interstate Avenue, Portland International Raceway
+exit 306A | 45.58428,-122.67911 | Columbia Boulevard
+exit 306B | 45.59086,-122.68210 | Victory Boulevard, Expo Center
+exit 307 | 45.59529,-122.68407 | OR 99E South; Martin Luther King Jr. Boulevard, Marine Drive; Martin Luther King Junior Boulevard, Marine Drive
+exit 308 | 45.60979,-122.67998 | Hayden Island; Hayden Island, ODOT Permits

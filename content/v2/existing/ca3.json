@@ -1,0 +1,312 @@
+{
+ "places": [
+  {
+   "mi": 140,
+   "name": "Los Angeles River",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Fletcher Dr to Los Feliz Blvd",
+   "text": "That concrete channel next to the freeway is the Los Angeles River. After deadly floods in the 1930s, the Army Corps of Engineers lined most of it with concrete. Here in the Glendale Narrows, bedrock pushes groundwater up, so the bottom was left as dirt. That's why you'll see trees, reeds, and herons growing right in the river.",
+   "src": "https://pbssocal.org/socal/departures/landofsunshine/la-river/los-angeles-flood-of-1938-channelization.html"
+  },
+  {
+   "mi": 141,
+   "name": "Griffith Park",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Los Feliz Blvd / Griffith Park exits",
+   "text": "The wild brown hills to the west are Griffith Park, about 4,210 acres. That's roughly five times the size of New York's Central Park. Griffith J. Griffith gave the first 3,000 acres to the city as a Christmas gift in 1896. The famous observatory sits up on its southern ridge.",
+   "src": "https://griffithobservatory.lacity.gov/explore/griffith-park/"
+  },
+  {
+   "mi": 144,
+   "name": "Golden State Freeway",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Glendale to Burbank",
+   "text": "North of downtown, I-5 is called the Golden State Freeway. Its first piece opened in 1957, from the corner of Griffith Park through Glendale into Burbank, replacing old Highway 99 through town. The last gap in California's I-5 wasn't closed until 1979, up in the Central Valley.",
+   "src": "https://www.gribblenation.org/2024/02/the-colorado-street-freeway-extension.html?m=0"
+  },
+  {
+   "mi": 157,
+   "name": "Mission San Fernando",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "San Fernando Mission Blvd exit",
+   "text": "Mission San Fernando Rey de Espana was founded in 1797. Its long two-story residence building, with 21 arches across the front, is often called the largest adobe building in California. It took about 13 years of work and was finished in 1822.",
+   "src": "https://calisphere.org/item/9038a99d2b4465aa116d77737f787d41/"
+  },
+  {
+   "mi": 159,
+   "name": "Sylmar's olive groves",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Roxford St exit",
+   "text": "Sylmar's name blends two Latin words for forest and sea, a sea of trees. Around 1906, up to 1,700 acres here were planted in olives, and it was called the largest olive grove in the world. Houses have replaced nearly all of it, but olive trees still line some streets.",
+   "src": "https://en.wikipedia.org/wiki/Sylmar,_Los_Angeles"
+  },
+  {
+   "mi": 162,
+   "name": "Newhall Pass Interchange",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "SR 14 junction",
+   "text": "The high, curving ramps here have collapsed twice in earthquakes, in 1971 and again in 1994. In the 1994 quake, a motorcycle officer named Clarence Wayne Dean rode off a broken ramp in the dark and was killed. The interchange now carries his name, and the rebuilt columns are much stronger.",
+   "src": "https://en.wikipedia.org/wiki/Newhall_Pass_interchange"
+  },
+  {
+   "mi": 163,
+   "name": "Beale's Cut and Placerita gold",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Via SR 14, Newhall Pass",
+   "text": "Before tunnels and freeways, stagecoaches crossed this pass through Beale's Cut, a slot carved 90 feet deep into the rock by 1863. Just beyond, in Placerita Canyon in 1842, Francisco Lopez pulled up wild onions and found gold on the roots. That was six years before the famous gold rush find at Sutter's Mill. The oak tree where it happened is now a state landmark.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/168"
+  },
+  {
+   "mi": 167,
+   "name": "Pico No. 4 oil well",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Lyons Ave / Pico Canyon Rd exit",
+   "text": "Up Pico Canyon to the west, a well called Pico Number 4 struck oil in September 1876. It's known as California's first commercially successful oil well. Amazingly, it kept producing for 114 years until it was capped in 1990. The little oil town of Mentryville grew up around it.",
+   "src": "https://en.wikipedia.org/wiki/Pico_Canyon_Oilfield"
+  },
+  {
+   "mi": 169,
+   "name": "Tataviam homeland",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Santa Clarita Valley",
+   "text": "This valley is the homeland of the Tataviam people. Villages such as Chaguayanga stood where Valencia and Castaic are now. Their descendants today are part of the Fernandeno Tataviam Band of Mission Indians. In 2024, the tribe's land conservancy was given about 500 acres of land in this region.",
+   "src": "https://signalscv.com/2023/08/scv-showcases-tataviam-culture/"
+  },
+  {
+   "mi": 170,
+   "name": "Six Flags Magic Mountain",
+   "cat": "odd",
+   "side": "W",
+   "visible": true,
+   "where": "Magic Mountain Pkwy exit",
+   "text": "Those twisting tracks on the hillside to the west belong to Six Flags Magic Mountain, which opened in 1971. In 2022, it became the first park ever to run 20 roller coasters at once. A couple have closed since, but it's still one of the most coaster-packed places on Earth.",
+   "src": "https://www.newshub.co.nz/home/travel/2023/05/six-flags-magic-mountain-with-a-record-20-roller-coasters-it-really-is-the-thrill-capital-of-the-world.html"
+  },
+  {
+   "mi": 172,
+   "name": "St. Francis Dam disaster",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "SR 126 exit, Santa Clara River",
+   "text": "Just before midnight on March 12, 1928, the St. Francis Dam in a canyon northeast of here gave way. A wall of water rushed down the canyon and along the Santa Clara River all the way to the ocean, killing more than 400 people. It's the second-deadliest dam failure in American history.",
+   "src": "https://damfailures.org/case-study/st-francis-dam-california-1928"
+  },
+  {
+   "mi": 183,
+   "name": "The old Ridge Route",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Templin Hwy exit",
+   "text": "In 1915, the first paved road over these mountains opened along the ridgetops east of here. It had about 697 curves in 36 miles, enough to make anyone carsick. Parts of that old road survive, and about 17 miles of it are now on the National Register of Historic Places.",
+   "src": "https://ridgeroute.org/the-long-and-winding-road/"
+  },
+  {
+   "mi": 191,
+   "name": "Pyramid Lake and Vista del Lago",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Vista del Lago Rd exit",
+   "text": "Pyramid Lake gets its name from Pyramid Rock, a pointy chunk left behind when road builders cut through a ridge for the old highway in the early 1930s. The Vista del Lago Visitors Center at this exit is free and looks out over the lake. It explains how water travels over these mountains to Southern California.",
+   "src": "https://water.ca.gov/What-We-Do/Recreation/Pyramid-Lake-Recreation"
+  },
+  {
+   "mi": 202,
+   "name": "Gorman wildflower hills",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Gorman exit",
+   "text": "After a wet winter, the hills around Gorman turn orange and purple in spring with California poppies and lupine, right beside the freeway. The town is named for James Gorman, a teamster at Fort Tejon who settled here in the 1860s. His log roadhouse became known as Gorman's Station.",
+   "src": "https://naturalhistorywanderings.com/2010/04/27/hungry-valleygorman-hills-wildflower-update-april-27-2010"
+  },
+  {
+   "mi": 204,
+   "name": "Tejon Pass summit",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Between Gorman and Frazier Park exits",
+   "text": "You're at the top of Tejon Pass, about 4,144 feet up, where Los Angeles County ends and Kern County begins. Tejon is Spanish for badger, from a dead badger a Spanish expedition found here in 1806. In the road cut on the west side right at the summit, geologists say you can see crushed rock from the San Andreas Fault.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+  },
+  {
+   "mi": 207,
+   "name": "Tejon Ranch",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Lebec exit",
+   "text": "Most of the rolling hills around you belong to Tejon Ranch, the largest single piece of private land in California, about 270,000 acres. It began as Mexican land grants in the 1840s. In 2008, the owners agreed to protect about 240,000 acres of it, around 90 percent, from development. The Kitanemuk people, whose descendants form the Tejon Indian Tribe, lived here long before.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Ranch"
+  },
+  {
+   "mi": 210,
+   "name": "Fort Tejon",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Fort Tejon exit",
+   "text": "Fort Tejon was an Army post founded in 1854 to guard this pass. In the late 1850s, it became home to the Army's experimental Camel Corps, real camels brought in to haul supplies across the desert. In January 1857, one of California's biggest earthquakes, about magnitude 7.9, struck nearby and badly damaged the fort. Today it's a state historic park with restored adobe buildings and a shady picnic area.",
+   "src": "https://en.wikipedia.org/wiki/Fort_Tejon"
+  },
+  {
+   "mi": 210,
+   "name": "Peter Lebeck's tree",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Fort Tejon State Historic Park",
+   "text": "At Fort Tejon stands the story of Peter Lebeck, a trapper killed by a grizzly bear in October 1837. Someone carved his epitaph into an oak tree: killed by a X bear. The X probably meant a grizzly. The nearby town of Lebec is named after him.",
+   "src": "https://en.wikipedia.org/wiki/Peter_Lebeck"
+  },
+  {
+   "mi": 210,
+   "name": "Fort Tejon",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Exit 210, Fort Tejon / Lebec Road",
+   "text": "Those old buildings beside the freeway are Fort Tejon, an Army post founded in 1854 and abandoned ten years later. Starting in 1858 it was the western end of the Army's experiment with camels as pack animals. In January 1857 one of the biggest earthquakes in California history, about magnitude 7.9, was named after this fort.",
+   "src": "https://en.wikipedia.org/wiki/Fort_Tejon"
+  },
+  {
+   "mi": 210,
+   "name": "Peter Lebeck's oak",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Fort Tejon State Historic Park",
+   "text": "On the fort grounds stands an oak with a strange story. In 1837 someone carved into it that Peter Lebeck had been killed by an X bear, most likely a California grizzly, and he was buried beneath it. Almost nothing else is known about him, but the nearby town of Lebec carries his name.",
+   "src": "https://en.wikipedia.org/wiki/Peter_Lebeck"
+  },
+  {
+   "mi": 212,
+   "name": "The Grapevine grade",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "I-5 between Lebec and Grapevine",
+   "text": "Back at Tejon Pass, I-5 reaches 4,144 feet, its highest point anywhere in California. From there the road drops to about 1,500 feet at Grapevine, a long, steep grade that is famous for overheating engines on the climb. Watch for the runaway truck ramps, built for big rigs whose brakes give out on the way down.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+  },
+  {
+   "mi": 214,
+   "name": "Ridge Route to eight lanes",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Grapevine Canyon",
+   "text": "Cars first crossed these mountains on the Ridge Route, built around 1910. It was replaced by a three-lane road in 1933, a four-lane expressway in 1947, and finally the eight-lane freeway you're on in 1970. A notorious bend in Lebec called Dead Man's Curve was straightened out back in 1935.",
+   "src": "https://en.wikipedia.org/wiki/Tejon_Pass"
+  }
+ ],
+ "zones": [
+  {
+   "from": 125,
+   "to": 150,
+   "label": "Los Angeles and the river",
+   "text": "Factories and rail yards give way to downtown's freeway tangle, then the Los Angeles River and Griffith Park's wild hills. Watch for herons in the soft-bottomed river past Elysian Park."
+  },
+  {
+   "from": 150,
+   "to": 166,
+   "label": "San Fernando Valley",
+   "text": "The north end of the San Fernando Valley, once covered in olive and citrus orchards, now houses and warehouses. The mountains ahead close in at Newhall Pass."
+  },
+  {
+   "from": 166,
+   "to": 180,
+   "label": "Santa Clarita Valley",
+   "text": "Oil country turned suburbs, with Magic Mountain's coasters on the hillside and the mostly dry Santa Clara River heading west to the sea. Chaparral covers the hills around Castaic."
+  },
+  {
+   "from": 180,
+   "to": 199,
+   "label": "Ridge country",
+   "text": "The freeway climbs through steep chaparral canyons of the national forest, with hidden reservoirs that store Northern California water. Snow can close this stretch in winter."
+  },
+  {
+   "from": 199,
+   "to": 210,
+   "label": "Tejon Pass high country",
+   "text": "Open grassland and oak hills along the San Andreas Fault, mostly cattle range of the huge Tejon Ranch. After wet winters, poppies and lupine color the slopes in April."
+  },
+  {
+   "from": 210,
+   "to": 221,
+   "label": "Down the Grapevine",
+   "text": "A steep, winding drop through Grapevine Canyon, with oak-dotted hills of Tejon Ranch on both sides. In winter the grade sometimes closes for ice and snow."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 163,
+   "q": "In 1842, Francisco Lopez found gold in Placerita Canyon stuck to the roots of what?",
+   "choices": [
+    "An oak tree",
+    "Wild onions",
+    "Cactus",
+    "Carrots"
+   ],
+   "answer": 1,
+   "why": "He dug up wild onions and found gold flakes on the roots, six years before Sutter's Mill."
+  },
+  {
+   "mi": 167,
+   "q": "How long did the Pico No. 4 oil well keep producing before it was capped?",
+   "choices": [
+    "14 years",
+    "40 years",
+    "75 years",
+    "114 years"
+   ],
+   "answer": 3,
+   "why": "It struck oil in 1876 and was capped in 1990, 114 years later."
+  },
+  {
+   "mi": 204,
+   "q": "Tejon Pass is named after an animal. What does tejon mean in Spanish?",
+   "choices": [
+    "Bear",
+    "Badger",
+    "Eagle",
+    "Coyote"
+   ],
+   "answer": 1,
+   "why": "A Spanish expedition in 1806 found a dead badger here, and the name stuck."
+  },
+  {
+   "mi": 210,
+   "q": "Starting in 1858, which unusual animals did the Army test at Fort Tejon?",
+   "choices": [
+    "Camels",
+    "Elephants",
+    "Llamas",
+    "Ostriches"
+   ],
+   "answer": 0,
+   "why": "Fort Tejon was the western end of the Army's experimental Camel Corps."
+  }
+ ]
+}

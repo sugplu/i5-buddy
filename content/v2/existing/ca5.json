@@ -1,0 +1,366 @@
+{
+ "places": [
+  {
+   "mi": 334,
+   "name": "Harris Ranch feedlot",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Exit 334, Highway 198",
+   "text": "You'll probably smell this one before you see it. Harris Ranch's feedlot covers about 800 acres and can hold more than 100,000 cattle at a time, making it California's largest beef producer. Jack and Teresa Harris started the ranch in 1937 on desert land nobody had farmed before.",
+   "src": "https://en.wikipedia.org/wiki/Harris_Ranch"
+  },
+  {
+   "mi": 334,
+   "name": "Navy jets overhead",
+   "cat": "odd",
+   "side": "E",
+   "visible": false,
+   "where": "Highway 198 east toward Lemoore",
+   "text": "East of here, past Lemoore, is Naval Air Station Lemoore, the Navy's largest jet base. More than half of the Navy's Super Hornet fighters live there, and it's the only Navy base with F-35C stealth jets. If you hear a roar overhead, look up.",
+   "src": "https://cnrsw.cnic.navy.mil/Installations/NAS-Lemoore/About/"
+  },
+  {
+   "mi": 337,
+   "name": "Coalinga's name",
+   "cat": "town",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 337, Highway 33 south",
+   "text": "Coalinga started in 1888 as a Southern Pacific railroad stop called Coaling Station A, where trains loaded coal. Squash Coaling and A together and you get Coalinga. Nobody is quite sure who did the squashing, and there are several competing stories.",
+   "src": "https://en.wikipedia.org/wiki/Coalinga,_California"
+  },
+  {
+   "mi": 337,
+   "name": "The Iron Zoo",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Oil fields around Coalinga",
+   "text": "In the early 1970s a local motel owner named Jean Dakessian Jones started painting the nodding oil pumps around Coalinga to look like animals. At its peak the Iron Zoo had more than fifty, including zebras, giraffes and a rhino, and it made it into Ripley's Believe It or Not. Only a few painted pumps are left today.",
+   "src": "https://www.atlasobscura.com/places/iron-zoo"
+  },
+  {
+   "mi": 337,
+   "name": "Coalinga earthquake of 1983",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Downtown Coalinga",
+   "text": "On May 2, 1983, at about twenty to five in the afternoon, a magnitude 6.2 earthquake hit Coalinga. The eight-block downtown, full of old brick buildings, was almost completely destroyed. Remarkably, no one was killed.",
+   "src": "https://en.wikipedia.org/wiki/1983_Coalinga_earthquake"
+  },
+  {
+   "mi": 337,
+   "name": "Arroyo de Cantua",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Highway 198 near Highway 33, toward Coalinga",
+   "text": "A state landmark out near Coalinga marks Arroyo de Cantua, said to be the hideout of the famous bandit Joaquin Murrieta. According to the marker, he was killed there on July 25, 1853, by a posse of state rangers led by Captain Harry Love. How much of his legend is true is still argued about.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/344"
+  },
+  {
+   "mi": 342,
+   "name": "The 1991 dust storm",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "I-5 north of Coalinga",
+   "text": "On November 29, 1991, a sudden dust storm blew across this stretch north of Coalinga and dropped visibility to almost nothing. About 104 vehicles crashed, 17 people died, and around 150 were hurt. It's a good reminder to slow way down whenever dust or fog rolls in.",
+   "src": "https://en.wikipedia.org/wiki/1991_Interstate_5_dust_storm"
+  },
+  {
+   "mi": 349,
+   "name": "Mendota, cantaloupe town",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 349, Highway 33 north",
+   "text": "Up Highway 33 is Mendota, which calls itself the Cantaloupe Center of the World. The west side's hot, dry summers are great for melons. If it's summertime, some of the cantaloupes in your grocery store may have grown in these fields.",
+   "src": "https://en.wikipedia.org/wiki/Mendota,_California"
+  },
+  {
+   "mi": 355,
+   "name": "Westlands Water District",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Farmland along both sides",
+   "text": "Much of the farmland you've been passing is in Westlands Water District, the largest farm water district in the country, covering more than 1,000 square miles. It formed in 1952. How much water this land should get is one of California's longest running arguments.",
+   "src": "https://wwd.ca.gov/about-westlands/history/"
+  },
+  {
+   "mi": 362,
+   "name": "The Diablo Range",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Mountains to the west",
+   "text": "The mountains to the west are the Diablo Range, part of California's Coast Ranges. They run about 180 miles, from near the Carquinez Strait down to Polonio Pass. The highest point is San Benito Mountain, at more than 5,200 feet.",
+   "src": "https://en.wikipedia.org/wiki/Diablo_Range"
+  },
+  {
+   "mi": 370,
+   "name": "Panoche Hills",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Near Panoche Road and Little Panoche Road",
+   "text": "The crumpled, grassy foothills to the west are the Panoche Hills, which the Bureau of Land Management describes as badlands. They shelter rare animals like the San Joaquin kit fox, the giant kangaroo rat, and the blunt-nosed leopard lizard. They turn green in spring and golden the rest of the year.",
+   "src": "https://www.npshistory.com/brochures/blm/ca/panoche-griswold-tumey-hills-2009.pdf"
+  },
+  {
+   "mi": 385,
+   "name": "Firebaugh's Ferry",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 385, Nees Avenue",
+   "text": "East of here is the town of Firebaugh, named for Andrew Firebaugh, who started a ferry across the San Joaquin River in 1854. His crossing became a stop on the Butterfield Overland stagecoach line. He also built a toll road over Pacheco Pass, the route Highway 152 follows today.",
+   "src": "https://www.hmdb.org/m.asp?m=28015"
+  },
+  {
+   "mi": 386,
+   "name": "John Erreca Rest Area",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Rest areas on both sides, Merced County",
+   "text": "This rest stop was completely rebuilt, reopening northbound in August 2025 and southbound in May 2026. It's one of the greenest rest areas Caltrans has built: it recycles water for flushing toilets and its artwork honors the region's Basque history. It's named for Chuck Erreca, a state highway commissioner who championed roadside rest stops.",
+   "src": "https://concretepavements.org/2024/01/18/concrete-sustainability-the-john-chuck-erreca-rest-area-sets-a-strong-foundation-for-the-future"
+  },
+  {
+   "mi": 391,
+   "name": "Dos Amigos Pumping Plant",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "Along I-5, about 10 miles south of Los Banos",
+   "text": "Near here the Dos Amigos Pumping Plant lifts the aqueduct's water about 118 feet. After that boost, gravity carries it all the way south toward Kettleman City. It's one of several giant steps that move water the length of the state.",
+   "src": "https://en.wikipedia.org/wiki/Dos_Amigos_Pumping_Plant"
+  },
+  {
+   "mi": 395,
+   "name": "Los Banos, the baths",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Exits 391 and 403, Los Banos",
+   "text": "Los Banos means the baths in Spanish. The name comes from pools in the hills where padres from Mission San Juan Bautista liked to bathe on their trips into the valley, a spot visited as early as 1805. The creek kept the name, and so did the town.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/550"
+  },
+  {
+   "mi": 400,
+   "name": "Grassland wetlands",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "East of Los Banos and Gustine",
+   "text": "East of the freeway lie about 250 square miles of wetlands and grasslands along the San Joaquin River. They sit on the Pacific Flyway, the great bird migration route. They're important habitat for migrating water birds.",
+   "src": "https://en.wikipedia.org/wiki/Grassland_Ecological_Area"
+  },
+  {
+   "mi": 403,
+   "name": "San Luis Reservoir",
+   "cat": "nature",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 403, Highway 152 west",
+   "text": "A few miles west up Highway 152 is B.F. Sisk Dam, 382 feet high and more than three miles long, holding back San Luis Reservoir. It's the largest reservoir in the country that isn't on a river: every drop is pumped in from canals.",
+   "src": "https://www.usbr.gov/mp/sccao/sisk/index.html"
+  },
+  {
+   "mi": 404,
+   "name": "A giant water battery",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Base of San Luis Dam",
+   "text": "At the foot of the dam, the Gianelli plant pumps water uphill into the reservoir when there's water to spare. When it's let back down, the same machines spin as generators and make electricity. About 70 percent of the energy used to pump it up comes back out.",
+   "src": "https://en.wikipedia.org/wiki/San_Luis_Dam"
+  },
+  {
+   "mi": 407,
+   "name": "Pea Soup Andersen's",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Exit 407, Santa Nella",
+   "text": "Pea Soup Andersen's started in 1924 in Buellton, near Santa Barbara, opened by a Danish immigrant named Anton Andersen. This Santa Nella restaurant opened on December 6, 1976. The Buellton original closed in 2024, so this is now the last one still serving.",
+   "src": "https://www.westsideconnect.com/news/community-news/the-last-ladle-standing-in-santa-nella/"
+  },
+  {
+   "mi": 407,
+   "name": "Santa Nella's name",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exit 407, Highway 33",
+   "text": "Santa Nella sounds like a saint, but there's no Saint Nella. The name is a mangled version of the Spanish word centinela, meaning sentinel, from an old adobe nearby. Today it's mostly a crossroads of gas stations and restaurants.",
+   "src": "https://en.wikipedia.org/wiki/Santa_Nella,_California"
+  },
+  {
+   "mi": 412,
+   "name": "Two canals side by side",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "Between Santa Nella and Tracy",
+   "text": "Between here and Tracy, two big canals run through the foothills: the state's California Aqueduct and the federal Delta-Mendota Canal. The Delta-Mendota begins at a pumping plant near Tracy, built between 1947 and 1951, that lifts water 197 feet. From there it flows nearly 120 miles south to Mendota.",
+   "src": "https://www.usbr.gov/mp/mpr-news/docs/factsheets/jones-pumping-plant.pdf"
+  },
+  {
+   "mi": 418,
+   "name": "Gustine",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 418, Highway 140",
+   "text": "The town of Gustine is named for Sarah Alice Miller, nicknamed Gussie, the daughter of cattle king Henry Miller. She died in 1879, at about age 8, after being thrown from her horse. The town grew up later as a railroad stop and became a city in 1915.",
+   "src": "https://en.wikipedia.org/wiki/Gustine,_California"
+  },
+  {
+   "mi": 428,
+   "name": "Crows Landing airfield",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 428, Fink Road",
+   "text": "East of here is an old airfield the Navy built during World War Two, starting in late 1942, to support its air station in Alameda. Later NASA's Ames Research Center used it for flight testing.",
+   "src": "https://www.bracpmo.navy.mil/BRAC-Bases/California/Former-Naval-Auxiliary-Landing-Field-NALF-Crows-Landing"
+  },
+  {
+   "mi": 434,
+   "name": "Patterson",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 434, Sperry Avenue",
+   "text": "Patterson's founder, Thomas Patterson, wanted his town to look different, so he based its center on Washington, D.C., and Paris, with circles and streets spreading out like spokes. In 1971 it took the title Apricot Capital of the World. Every first weekend of June it throws an Apricot Fiesta.",
+   "src": "https://en.wikipedia.org/wiki/Patterson,_California"
+  },
+  {
+   "mi": 441,
+   "name": "Westley tire fire",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Exit 441, Howard Road, Westley",
+   "text": "In September 1999 lightning struck a giant pile of about six million old tires near Westley. The fire burned for 34 days and melted the tires into at least 250,000 gallons of oily goo. Cleaning it up was expected to cost more than 20 million dollars.",
+   "src": "https://www.oag.ca.gov/news/press-releases/state-sues-owners-operators-waste-tire-haulers-cleanup-abatement-removal-wastes"
+  },
+  {
+   "mi": 444,
+   "name": "Mount Diablo",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Northwest horizon on clear days",
+   "text": "On a clear day, look northwest for a lone peak standing above the hills. That's Mount Diablo, 3,849 feet tall. In 1851 a surveyor set a starting point on its summit, and land across about two thirds of California is still measured from that spot.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Diablo_meridian"
+  },
+  {
+   "mi": 446,
+   "name": "The I-580 split",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Exit 446, I-580 west to Tracy and San Francisco",
+   "text": "Here I-580 splits off toward the Bay Area. In early plans, that route was going to be its own branch of I-5, called I-5W, and signs for it went up along the road to Oakland. In 1964 the state dropped the idea and gave it a separate number.",
+   "src": "https://gribblenation.org/2019/12/interstate-5-west-side-freeway.html"
+  },
+  {
+   "mi": 458,
+   "name": "Tracy",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Eleventh Street exit (I-205 / Business 205)",
+   "text": "Tracy began as a railroad junction in 1878. It was named for Lathrop J. Tracy, an Ohio grain merchant and railroad man who never actually saw the California town that carries his name.",
+   "src": "https://cityoftracy.org/our-city/about-us/tracy-history"
+  }
+ ],
+ "zones": [
+  {
+   "from": 312,
+   "to": 340,
+   "label": "Coalinga plains",
+   "text": "Wide-open farmland with the Diablo Range to the west and the aqueduct alongside. In summer, processing tomatoes are harvested from about July through the end of August, and the big feedlot near Coalinga announces itself by smell."
+  },
+  {
+   "from": 340,
+   "to": 368,
+   "label": "Westlands heartland",
+   "text": "This is the heart of the west side's big farms: almonds, pistachios, melons, garlic and tomatoes. In February, almond orchards burst into white bloom and beekeepers truck in hives, usually about two per acre, to pollinate them."
+  },
+  {
+   "from": 368,
+   "to": 391,
+   "label": "Panoche badlands",
+   "text": "The foothills crowd closer on the west, wrinkled and treeless, green in spring and gold by summer. This is rare-animal country for kit foxes and kangaroo rats."
+  },
+  {
+   "from": 391,
+   "to": 410,
+   "label": "San Luis water crossroads",
+   "text": "Canals, pumping plants and the giant San Luis Reservoir make this the plumbing hub of California's water system. Highway 152 heads west over Pacheco Pass toward the coast."
+  },
+  {
+   "from": 410,
+   "to": 434,
+   "label": "Westside Stanislaus orchards",
+   "text": "Twin canals run along the foothills while orchards and row crops fill the valley to the east. Look for almond blossoms in February and shaking machines at harvest."
+  },
+  {
+   "from": 434,
+   "to": 446,
+   "label": "Toward the Delta",
+   "text": "The hills get closer, and on clear days Mount Diablo appears on the northwest horizon. The Delta, where Northern California's rivers meet, lies just ahead."
+  },
+  {
+   "from": 446,
+   "to": 467,
+   "label": "San Joaquin River country",
+   "text": "You're crossing from the San Joaquin Valley into the edge of the Delta, with warehouses, new subdivisions and the San Joaquin River. Railroads shaped every town here, from Tracy to Lathrop."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 337,
+   "q": "Coalinga got its name from what?",
+   "choices": [
+    "A Native word for hill",
+    "A railroad stop called Coaling Station A",
+    "A coal mine owner named Linga",
+    "A Spanish saint"
+   ],
+   "answer": 1,
+   "why": "The Southern Pacific stop was called Coaling Station A, which became Coalinga."
+  },
+  {
+   "mi": 395,
+   "q": "What does Los Banos mean in Spanish?",
+   "choices": [
+    "The farms",
+    "The bridges",
+    "The baths",
+    "The bells"
+   ],
+   "answer": 2,
+   "why": "It's named for pools where mission padres liked to bathe."
+  },
+  {
+   "mi": 403,
+   "q": "What makes San Luis Reservoir special?",
+   "choices": [
+    "It's the deepest lake in the U.S.",
+    "It's the largest U.S. reservoir not on a river",
+    "It's saltwater",
+    "It freezes every winter"
+   ],
+   "answer": 1,
+   "why": "It's the largest offstream reservoir in the country, filled entirely by pumping."
+  }
+ ]
+}

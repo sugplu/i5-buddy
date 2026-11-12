@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Play module tests</title>
+<!--
+  Test page for js/play.js. Loads the app in a phone-sized iframe and drives it through I5BUDDY.api.
+  URL params:
+    s      scenario:
+             check          logic tests for bingo, trivia, I spy, speech politeness, accessibility (ALL PASS at the end),
+                            plus the bingo areas on the road in the data (California only) against a whole-road dataset,
+                            and cards saved when the app covered Oregon and Washington
+             speech         game speech never cancels or drops the guide's speech (real voice.js queue, timed fake synth)
+             cluster        real data: Kid mode drive through the Mount Shasta cluster; the top card matches the voice
+                            (about 125 s of page time before the result line: use --virtual-time-budget=180000)
+             legacy         old storage
+             bingo, bingo-win, bingo-full, bingo-mix, bingo-north (near the Oregon line), bingo-confirm
+             trivia, trivia-right, trivia-wrong, trivia-empty, trivia-ask, trivia-wait
+             spy-off, spy-on, spy-live, spy-cards, spy-quick-found
+             drive-spot, drive-spot-found, drive-spot-again, drive-spot-gone, drive-spots
+    theme  dark (default) | light
+    y      scroll the app this many pixels after setting up
+    w      when to fire the winning tap (ms after the page started; keep it about 2 s before the end of the budget)
+    width  iframe width in px (default 430)
+    synth  real = leave the browser's speechSynthesis alone (default: a timed fake, installed before voice.js loads)
+  Results go to the console as "PLAYTEST ..." lines, so the headless Chrome log shows them.
+-->
+<style>
+  html,body{margin:0;background:#2a2a2a;color:#ddd;font:12px/1.4 ui-monospace,Menlo,monospace}
+  iframe{display:block;width:430px;height:932px;border:0;background:#000}
+  #log{white-space:pre-wrap;padding:8px;margin:0}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy"></iframe>
+<pre id="log"></pre>
+<script src="../data/i5.js"></script>
+<script>
+const P = new URLSearchParams(location.search);
+const SCEN = P.get("s") || "check";
+const THEME = P.get("theme") === "light" ? "light" : "dark";
+const Y = +P.get("y") || 0;
+const WHEN = +P.get("w") || 6000;   // when to fire the last tap of a win, in ms after the page started
+const logEl = document.getElementById("log");
+function log(...a) { const s = a.join(" "); logEl.textContent += s + "\n"; console.log("PLAYTEST " + s); }
+
+// Fresh state for every run (the app shares this origin's localStorage). Seeded again if the app reloads itself.
+const SPOTS = (window.I5DATA ? I5DATA.places : []).filter(p => p.spot && p.vis).sort((a, b) => a.m - b.m);
+const kid = /^(spy-on|spy-quick|spy-live|spy-cards|drive-spot|cluster)/.test(SCEN) || SCEN === "check" || SCEN === "speech";
+const narr = ["check", "speech", "cluster"].includes(SCEN);
+function seed() {
+  try { localStorage.clear(); } catch (e) {}
+  localStorage.setItem("i5b:settings", JSON.stringify({ theme: THEME, kid, narr, chime: true }));
+  if (SCEN === "legacy") {   // what the old app (v1) left behind, plus junk: the module must cope
+    localStorage.setItem("i5b:bingo", JSON.stringify({ cells: ["Oil pumpjack", "Almond orchard", "FREE: I-5 shield"], on: [true, false, true] }));
+    localStorage.setItem("i5b:trivia", JSON.stringify({ right: 3, asked: 5 }));
+    localStorage.setItem("i5b:spy", JSON.stringify({ points: "lots", found: "nope", missed: [1, 2, "x"] }));
+    localStorage.setItem("i5b:playGame", JSON.stringify("chess"));
+  }
+  if (SCEN.startsWith("spy")) {
+    const ids = SPOTS.slice(0, 6).map(p => p.id);
+    localStorage.setItem("i5b:spy", JSON.stringify({ points: 45, found: SCEN === "spy-off" ? [] : ids.slice(0, 4), missed: ids.slice(4, 5) }));
+  }
+  if (SCEN === "trivia-stale") {   // the reviewer's case: Trivia was the last game, the phone last knew mile 790 (near the Oregon line)
+    localStorage.setItem("i5b:playGame", JSON.stringify("trivia"));
+    localStorage.setItem("i5b:m", "790");
+    localStorage.setItem("i5b:dir", JSON.stringify("N"));
+  }
+  if (SCEN === "drive-spot-again" || SCEN === "cluster") {   // found on an earlier trip: still gets a card (and points once per trip)
+    const shasta = SPOTS.find(p => /mount-shasta/.test(p.id));
+    localStorage.setItem("i5b:spy", JSON.stringify({ points: 120, found: shasta ? [shasta.id] : [], missed: [] }));
+  }
+}
+seed();
+
+/* A speech engine with real timing (about 40 characters a second, interrupts with "interrupted"), so voice.js runs
+   its actual queue. Swapped into the browser's speechSynthesis object once the app has booted. */
+function makeSynth() {
+  const said = [];   // {text, at, end?, cut?}
+  let cur = null, wait = [], timer = 0;
+  const synth = {
+    speaking: false, paused: false, pending: false, said,
+    getVoices: () => [], addEventListener() {}, removeEventListener() {},
+    speak(u) { if (P.get("debug") && String(u.text).trim()) log("synth.speak", JSON.stringify(String(u.text).slice(0, 24)), "cur:", cur ? JSON.stringify(String(cur.text).slice(0, 12)) : "-"); wait.push(u); if (!cur) next(); },
+    cancel() {
+      if (P.get("debug")) log("synth.cancel", "cur:", cur ? JSON.stringify(String(cur.text).slice(0, 12)) : "-", "wait:", wait.length);
+      const all = [cur, ...wait].filter(Boolean);
+      if (cur && cur._rec) cur._rec.cut = true;
+      wait = []; cur = null; clearTimeout(timer); synth.speaking = false;
+      for (const u of all) setTimeout(() => { try { u.onerror && u.onerror({ error: "interrupted" }); } catch (e) {} }, 0);
+    },
+    pause() { synth.paused = true; }, resume() { synth.paused = false; },
+  };
+  function next() {
+    cur = wait.shift() || null;
+    synth.speaking = !!cur;
+    if (!cur) return;
+    const u = cur, text = String(u.text || "");
+    const rec = { text, at: performance.now() };
+    u._rec = rec;
+    if (text.trim()) said.push(rec);
+    timer = setTimeout(() => {
+      if (cur !== u) return;
+      rec.end = performance.now(); cur = null; synth.speaking = false;
+      try { u.onend && u.onend({}); } catch (e) {}
+      // voice.js speaks a long item's next chunk from onend, and speak() already started it: only move on if nothing did
+      if (!cur) next();
+    }, Math.max(20, text.length * (+P.get("cps") ? 1000 / +P.get("cps") : 25)));
+  }
+  return synth;
+}
+const SYNTH = P.get("synth") === "real" ? null : makeSynth();
+/** voice.js keeps the speechSynthesis object it found at startup, so swap that object's insides for the fake. */
+function installSynth(w) {
+  const real = w.speechSynthesis;
+  if (!real) return;
+  try {
+    for (const k of ["speak", "cancel", "pause", "resume", "getVoices"]) Object.defineProperty(real, k, { value: SYNTH[k], configurable: true, writable: true });
+    for (const k of ["speaking", "paused", "pending"]) Object.defineProperty(real, k, { get: () => SYNTH[k], configurable: true });
+    synthIn = true;
+  } catch (e) { log("note: could not install the fake synth", e.message); }
+}
+
+const f = document.getElementById("f");
+if (+P.get("width")) f.style.width = (+P.get("width")) + "px";   // e.g. 360 for a small phone, 600 for a big one
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let runGen = 0;   // bumps when the scenario restarts, so timers from an earlier run do nothing
+const at = (ms, fn) => { const g = runGen; setTimeout(() => { if (g === runGen) fn(); }, Math.max(0, ms - performance.now())); };
+
+// The app registers a service worker, and main.js reloads the page when that worker first takes control. On a fresh
+// browser profile that lands in the middle of a test. Headless virtual time also races ahead of the worker's install,
+// so waiting for it is unreliable. Instead, stub navigator.serviceWorker.register in the app's window as soon as the
+// window exists (main.js runs much later, after data/i5.js and its imports load). If the stub ever misses and the app
+// reloads anyway, the scenario runs again on the new page.
+let loads = 0, started = false, synthIn = false;
+function hookServiceWorker() {
+  let n = 0;
+  const tick = () => {
+    try {
+      const w = f.contentWindow;
+      if (w && /index\.html/.test(w.location.href) && !w.__i5test) {   // a new app window: hook it once, then stop
+        w.__i5test = true;
+        if (w.navigator.serviceWorker) w.navigator.serviceWorker.register = () => new Promise(() => {});
+        // errors while the app boots (a failed module fetch only shows up in the capture phase)
+        w.addEventListener("error", e => { if (!w.I5BUDDY && P.get("debug")) log("BOOT ERROR", e.message || (e.target && (e.target.src || e.target.href)) || "?", e.filename || "", e.lineno || ""); }, true);
+        w.addEventListener("unhandledrejection", e => { if (!w.I5BUDDY) log("BOOT ERROR (promise)", String(e.reason && (e.reason.stack || e.reason))); });
+        if (P.get("debug")) log("service worker stubbed at", Math.round(performance.now()) + "ms");
+        return;
+      }
+    } catch (e) {}
+    if (n++ < 5000) setTimeout(tick, 1);
+  };
+  tick();
+}
+f.addEventListener("load", () => {
+  loads++;
+  try {
+    const w = f.contentWindow;
+    w.addEventListener("error", e => log("ERROR (window)", e.message, e.filename + ":" + e.lineno));
+    w.addEventListener("unhandledrejection", e => log("ERROR (promise)", String(e.reason && (e.reason.stack || e.reason))));
+  } catch (e) { log("ERROR attaching listeners", e.message); }
+  if (P.get("debug")) log("iframe load", loads, Math.round(performance.now()) + "ms");
+  if (started && isCurrent(f.contentWindow)) {
+    // The app reloaded itself (its service worker took over). Start clean: fresh storage, fresh page, run again.
+    log("note: the app reloaded; running the scenario again on fresh storage");
+    runGen++; navigate(true); start();
+  }
+});
+let navId = 0;
+/** Load the app. Each load gets its own number, so ready() never mistakes the old page for the new one. With
+    reseed, the old page is unloaded first (its late module inits would write into the fresh storage), then the
+    storage is seeded again. */
+function navigate(reseed = false) {
+  const id = ++navId;
+  const go = () => { if (id !== navId) return; if (reseed) seed(); hookServiceWorker(); f.src = "../index.html?nav=" + id; };
+  if (!reseed) return go();
+  const onBlank = () => { f.removeEventListener("load", onBlank); setTimeout(go, 50); };
+  f.addEventListener("load", onBlank);
+  f.src = "about:blank";
+}
+function isCurrent(w) { try { return new URLSearchParams(w.location.search).get("nav") === String(navId); } catch (e) { return false; } }
+function boot() {
+  navigate();
+  start();
+}
+function start() {
+  started = false;
+  const g = runGen;
+  ready().then(a => { if (g !== runGen) return; started = true; return run(a); })
+    .catch(e => { if (g === runGen && !/superseded/.test(e.message)) log("ERROR", e.stack || e.message); });
+}
+async function ready() {
+  const g = runGen;
+  let tries = 0, seen = 0, since = Infinity;
+  for (let i = 0; i < 1600 && g === runGen; i++) {
+    const w = f.contentWindow;
+    if (!isCurrent(w)) { await sleep(25); continue; }
+    if (loads && w && w.I5BUDDY && w.I5BUDDY.api && w.I5BUDDY.api.play) {
+      await sleep(50);   // let the other modules finish loading
+      if (SYNTH) installSynth(w);
+      return f.contentWindow.I5BUDDY.api;
+    }
+    // The shared test server drops requests when many browsers hit it at once, and then main.js never arrives
+    // (the page still finishes loading). Load the app again rather than failing the run.
+    if (loads > seen) { seen = loads; since = performance.now(); }
+    const booted = !!(w && w.I5BUDDY && w.I5BUDDY.api && w.I5BUDDY.api.play);
+    if (w && w.document && w.document.readyState === "complete" && !booted && performance.now() - since > (w.I5BUDDY ? 2500 : 1500) && tries < 3) {
+      tries++;
+      since = Infinity;
+      log(`note: the app did not boot (the server dropped a file); loading it again (${tries})`);
+      navigate(true);
+    }
+    await sleep(25);
+  }
+  const w = f.contentWindow;
+  let where = "?";
+  try { where = w.location.href; } catch (e) {}
+  let res = "";
+  try { res = w.performance.getEntriesByType("resource").filter(r => /\.js/.test(r.name)).map(r => r.name.replace(/^.*\//, "") + ":" + Math.round(r.duration) + "ms" + (r.responseStatus ? "/" + r.responseStatus : "")).join(" "); } catch (e) {}
+  throw new Error(`app or play module did not load (loads=${loads}, url=${where}, I5BUDDY=${!!(w && w.I5BUDDY)}, ready=${w && w.document && w.document.readyState}, t=${Math.round(performance.now())}) scripts: ${res}`);
+}
+
+let W, D, api;
+const $ = sel => D.querySelector(sel);
+const $$ = sel => [...D.querySelectorAll(sel)];
+function theme(t) { api.settings.theme = t; D.documentElement.dataset.theme = t; }
+function game(id) { api.ui.go("play"); const b = $(`.pl-seg [data-g="${id}"]`); b && b.click(); }
+function sq(i) { const b = $(`#pl-bingo .pl-grid button[data-i="${i}"]`); if (!b) throw new Error("no square " + i); b.click(); }
+function currentQ() { const t = $(".pl-qt") && $(".pl-qt").textContent; return api.data.TRIVIA.find(q => q.q === t); }
+function fakeSpot(m, spot, id) {
+  const base = api.data.PLACES.find(p => p.m >= m && p.vis) || api.data.PLACES[0];
+  return { ...base, id: id || base.id, m, spot, vis: true };
+}
+const cards = (sel = "#spotCard") => $$(`${sel} .pl-spot`);
+const cardIds = (sel = "#spotCard") => cards(sel).map(c => c.dataset.id);
+function overflow() {   // no horizontal page scroll at any phone width
+  const o = D.documentElement.scrollWidth - D.documentElement.clientWidth;
+  if (o > 0) log("FAIL horizontal overflow", o + "px", "at width", W.innerWidth);
+}
+function finish() { if (Y) W.scrollTo(0, Y); overflow(); log("DONE", SCEN, THEME); }
+async function idle(ms = 60000) {   // wait for the voice queue to empty
+  const t0 = performance.now(), g = runGen;
+  while (performance.now() - t0 < ms) {
+    if (g !== runGen) throw new Error("superseded");
+    if (!api.voice.isSpeaking() && !api.voice.queued().length) { await sleep(400); if (!api.voice.isSpeaking() && !api.voice.queued().length) return true; }
+    await sleep(100);
+  }
+  return false;
+}
+async function until(cond, ms = 20000) { const t0 = performance.now(); while (performance.now() - t0 < ms) { if (cond()) return true; await sleep(50); } return false; }
+/** Emoji newer than Unicode 9 (Android 8 lacks them): Emoji 11-13 glyphs used before, plus the newer blocks. */
+function tooNew(s) {
+  for (const ch of s) {
+    const c = ch.codePointAt(0);
+    if ((c >= 0x1FA70 && c <= 0x1FAFF) || (c >= 0x1F7E0 && c <= 0x1F7EB) || c === 0x1F6FB || c === 0x1F6F9 || c === 0x1F6FA ||
+      (c >= 0x1F9A2 && c <= 0x1F9AF) || (c >= 0x1F9F0 && c <= 0x1F9FF) || (c >= 0x1F9C1 && c <= 0x1F9CF) || (c >= 0x1F94D && c <= 0x1F94F) ||
+      (c >= 0x1F96C && c <= 0x1F970) || (c >= 0x1F973 && c <= 0x1F97F) || (c >= 0x1F998 && c <= 0x1F9A1)) return true;
+  }
+  return false;
+}
+// Labels that are one sighting: a card may hold at most one from each group (independent of play.js's own tags).
+const OVERLAP = [
+  ["Airplane", "Plane landing", "Jet taking off", "Big jet overhead", "Crop duster"],
+  ["Freight train", "Train in the canyon"],
+  ["Bridge over a river", "Tall bridge", "Double-deck bridge", "Drawbridge", "Train bridge"],
+  ["Ducks", "Ducks on water"],
+  ["Cattle", "Dairy cows", "Smelly feedlot"],
+  ["Big ship", "Cargo ship"],
+  ["Snow-capped peak", "Snowy peak far off"],
+  ["Snow-capped peak", "Mount Hood"], ["Snow-capped peak", "Mount Rainier"], ["Snow-capped peak", "Mount Baker"],
+  ["Snowy peak far off", "Mount Hood"], ["Snowy peak far off", "Mount Rainier"], ["Snowy peak far off", "Mount Baker"],
+  ["Lake", "Houseboat"], ["Rice field", "Flooded field"], ["Douglas fir", "Evergreen trees", "Pine forest"],
+];
+// Squares only Oregon or Washington have (independent of play.js's own pools): none on a California-only road.
+const NORTH_ONLY = ["Douglas fir", "Covered bridge sign", "Hazelnut orchard", "Grass seed field", "Christmas tree farm", "River rafters",
+  "Rain", "Beaver logo", "Duck logo", "Gas attendant", "Mount Hood", "Marionberry sign", "Blueberry farm", "Lumber mill", "Brewery sign",
+  "Hops on poles", "Elk crossing sign", "Salmon sign", "Ferry sign", "Mount Rainier", "Evergreen trees", "Tulip field", "Coffee stand",
+  "Space Needle", "Port cranes", "Light rail train", "Double-deck bridge", "BC license plate", "Snow geese", "Big jet overhead",
+  "Apple stand", "Mossy trees", "Puget Sound view", "Mount Baker"];
+/** A store in memory, for a second copy of play.js run beside the app. */
+function memStore(seed = {}) {
+  const mem = new Map(Object.entries(seed).map(([k, v]) => [k, JSON.stringify(v)]));
+  return { mem, get: (k, f) => (mem.has(k) ? JSON.parse(mem.get(k)) : f), set: (k, v) => mem.set(k, JSON.stringify(v)), del: k => mem.delete(k) };
+}
+const quietBus = () => ({ on() { return () => {}; }, emit() {} });
+
+const LETTERS_ = ["A", "B", "C", "D", "E", "F"];
+
+/* ---------- logic checks ---------- */
+async function check() {
+  let pass = 0, fail = 0;
+  const g = runGen;
+  const ok = (cond, name, extra = "") => {
+    if (g !== runGen) throw new Error("superseded");   // the app reloaded; a fresh run took over
+    cond ? pass++ : fail++; log(cond ? "PASS" : "FAIL", name, extra);
+  };
+  const card = () => JSON.parse(W.localStorage.getItem("i5b:bingo"));
+  const spyStore = () => JSON.parse(W.localStorage.getItem("i5b:spy") || "{}");
+  const AREA = { sd: "socal", la: "socal", ws: "westside", dc: "delta", sv: "valley", sh: "shasta", rv: "oregon", um: "oregon", wv: "oregon", sw: "washington", ps: "washington", ns: "washington" };
+  const plain = t => t.replace(/\u00AD/g, "");
+  const northSq = c => c.cells.filter(x => !x.free).map(x => plain(x.t)).filter(t => NORTH_ONLY.includes(t));   // Oregon or Washington squares on a card
+
+  // bingo deals (the road in the data: since 2026-11-11 California only, Mexico to the Oregon line)
+  const END = api.data.MAX_M;
+  const northRoad = api.data.REGIONS.some(r => r.st !== "CA");   // false unless tools/build.py covers Oregon or Washington again
+  ok(!!card() && card().cells.length === 25 && card().cells[12].free, "card at boot has 25 cells, free center");
+  ok(card().area === "mix", "no position -> whole road mix", card().area);
+  for (const m of [40, 150, 309, 500, 600, 720, END - 1]) {
+    api.setPosition(m, { dir: "N", jumped: true });
+    game("bingo");
+    $(".pl-new").click();
+    if (!$(".pl-confirm").hidden) $(".pl-confirm .primary").click();
+    const c = card();
+    const labels = c.cells.filter(x => !x.free).map(x => x.t);
+    ok(new Set(labels).size === 24, `m=${m}: 24 unique squares`);
+    ok(c.area === AREA[api.data.regionAt(m).id], `m=${m}: area ${c.area}`, api.data.regionAt(m).name);
+  }
+  // one sighting never marks two squares; every emoji draws on Android 8+; no Oregon or Washington squares on this road
+  {
+    let clash = 0, deals = 0, newEmoji = new Set(), example = "";
+    const emojis = new Set(), north = new Set();
+    const positions = [null, 0.5, 20, 100, 150, 250, 400, 470, 540, 600, 650, 700, 740, 780, END - 0.5];
+    for (const m of positions) {
+      for (const dir of ["N", "S"]) {
+        if (m == null) api.S.m = null; else api.setPosition(m, { dir, jumped: true });
+        for (let k = 0; k < 20; k++) {
+          api.play.newBingoCard();
+          const labels = new Set(card().cells.filter(x => !x.free).map(x => plain(x.t)));
+          for (const c of card().cells) if (c.e) { emojis.add(c.e); if (tooNew(c.e)) newEmoji.add(c.e + " " + plain(c.t)); }
+          for (const t of labels) if (NORTH_ONLY.includes(t)) north.add(`${t} (m=${m} ${dir})`);
+          deals++;
+          for (const grp of OVERLAP) {
+            const hit = grp.filter(t => labels.has(t));
+            if (hit.length > 1) { clash++; if (!example) example = hit.join(" + "); }
+          }
+        }
+      }
+    }
+    ok(clash === 0, `no card holds two squares for one sighting (${deals} deals)`, example);
+    ok(newEmoji.size === 0, `all ${emojis.size} square emoji are Unicode 9 or older`, [...newEmoji].join(", "));
+    ok(northRoad || north.size === 0, `a California-only road deals no Oregon or Washington squares, also in the whole-road mix and at the Oregon line (${deals} deals)`, [...north].slice(0, 4).join(", "));
+  }
+  // the quick I spy challenge draws from the same squares
+  {
+    api.S.m = null;
+    game("spy");
+    const seen = new Set(), north = [];
+    for (let k = 0; k < 80; k++) {
+      const t = plain($(".pl-quick-main b").textContent);
+      seen.add(t);
+      if (NORTH_ONLY.includes(t)) north.push(t);
+      [...$$(".pl-quick button")].find(b => /New one/.test(b.textContent)).click();
+    }
+    ok(seen.size > 20 && (northRoad || !north.length), `quick challenges with no position: ${seen.size} different, none only Oregon or Washington have`, north.join(", "));
+  }
+  // the same module on the whole road (tools/build.py with SCOPE = ["CA", "OR", "WA"]): Oregon and Washington cards come back
+  {
+    const mod = await import("../js/play.js?whole");
+    const ST = [{ id: "CA", name: "California", from: 0, to: 796.973 }, { id: "OR", name: "Oregon", from: 796.973, to: 1105.4 }, { id: "WA", name: "Washington", from: 1105.4, to: 1381.8 }];
+    const reg = (id, st, a, b) => { const s = ST.find(x => x.id === st); return { id, name: id, st, from: s.from + a, to: b == null ? s.to : s.from + b }; };
+    const RG = [...api.data.REGIONS.filter(r => r.st === "CA").map(r => ({ ...r, to: Math.min(r.to, 796.973) })),
+      reg("rv", "OR", 0, 100), reg("um", "OR", 100, 200), reg("wv", "OR", 200), reg("sw", "WA", 0, 100), reg("ps", "WA", 100, 190), reg("ns", "WA", 190)];
+    RG[RG.length - 1].to = 1381.81;
+    const stateAt = m => ST.find(s => m < s.to) || ST[2];
+    const fs = memStore(), fakeS = { mode: "manual", m: null, dir: "N" };
+    const fake = { S: fakeS, settings: {}, bus: quietBus(), store: fs, voice: {}, ui: {},
+      data: { STATES: ST, REGIONS: RG, MAX_M: 1381.8, PLACES: [], TRIVIA: [], stateAt, regionAt: m => RG.find(r => m >= r.from && m < r.to) || RG[RG.length - 1],
+        localMile: m => ({ st: stateAt(m).id, mi: Math.max(0, m - stateAt(m).from) }) } };
+    mod.init(fake);
+    const deal = (m, dir = "N") => { fakeS.m = m; fakeS.dir = dir; fake.play.newBingoCard(); return fs.get("bingo", null); };
+    const orC = deal(950), waC = deal(1240);
+    ok(orC.area === "oregon" && northSq(orC).length >= 8 && waC.area === "washington" && northSq(waC).length >= 8,
+      "whole road: a card dealt in Oregon, or Washington, is mostly theirs", `${orC.area} ${northSq(orC).length}, ${waC.area} ${northSq(waC).length}`);
+    let mixN = 0;
+    for (let k = 0; k < 20; k++) mixN += northSq(deal(null)).length;
+    ok(mixN >= 10, `whole road, no position: the mix has Oregon and Washington squares again (${mixN} in 20 cards)`);
+    const nearLine = [0, 1, 2].map(() => deal(780, "N"));
+    ok(nearLine.every(c => c.area === "shasta") && nearLine.some(c => northSq(c).length > 0), "whole road: a Shasta card near the Oregon line, northbound, adds squares for the road ahead",
+      nearLine.map(c => northSq(c).join("/")).join(" | "));
+  }
+  // cards and finds saved when the app covered Oregon and Washington, read by this road's data
+  if (northRoad) log("note: the road in the data reaches Oregon or Washington; the saved-card checks for a California-only road are skipped");
+  else {
+    const CA_SQ = ["RV", "Horse", "School bus", "Dog in a car", "Fire truck", "Old barn", "Water tower", "Giant flag", "Orange cones", "Yellow car",
+      "Purple car", "Rainbow", "Sports car", "Moving truck", "Log truck", "Deer", "Burned trees", "Osprey nest"];
+    const cellsOf = labels => { const c = labels.map(t => ({ e: "🚗", t })); c.splice(12, 0, { free: true, e: "", t: "Free" }); return c; };
+    const run = async (tag, seed, m = null) => {
+      const mod = await import("../js/play.js?" + tag);
+      const fs = memStore(seed);
+      const fake = { S: { mode: "off", m, dir: "N" }, settings: {}, bus: quietBus(), store: fs, voice: {}, ui: {}, data: api.data };
+      mod.init(fake);
+      return { c: fs.get("bingo", null), fake };
+    };
+    const ORSQ = ["Douglas fir", "Covered bridge sign", "Hazelnut orchard", "Grass seed field", "Christmas tree farm", "River rafters", "Rain", "Beaver logo",
+      "Duck logo", "Gas attendant", "Mount Hood", "Marionberry sign", "Blueberry farm", "Lumber mill", "Brewery sign", "Hops on poles", "Elk crossing sign",
+      "Salmon sign", "Vineyard", "Sheep", "Log truck", "Dairy cows", "Ferry sign", "Coffee stand"];
+    // (1) a card dealt in Oregon: dealt again
+    const onOR = cellsOf(ORSQ);
+    const r1 = await run("legacy1", { bingo: { v: 2, area: "oregon", m: 950, at: 1, cells: onOR, on: onOR.map((_, i) => i === 12 || i < 3), won: [], full: false } });
+    ok(r1.c.area === "mix" && r1.c.cells.length === 25 && !northSq(r1.c).length, "a saved Oregon card is dealt again for this road", `${r1.c.area}: ${northSq(r1.c).join(", ")}`);
+    // (2) a whole-road mix with Oregon and Washington squares: the unmarked ones are swapped, marks stay
+    const N6 = ["Mount Hood", "Space Needle", "Ferry sign", "Beaver logo", "Gas attendant", "Puget Sound view"];
+    const mixCells = cellsOf([...CA_SQ.slice(0, 9), ...N6, ...CA_SQ.slice(9)]);
+    const mixOn = mixCells.map((x, i) => i === 12 || ["Mount Hood", "Space Needle", "RV", "Horse", "Rainbow"].includes(x.t));
+    const r2 = await run("legacy2", { bingo: { v: 2, area: "mix", m: null, at: 2, cells: mixCells, on: mixOn, won: [], full: false } });
+    const after = r2.c.cells.filter(x => !x.free).map(x => plain(x.t));
+    const swapped = r2.c.cells.filter((x, i) => x.t !== mixCells[i].t).map(x => plain(x.t));
+    let clash2 = "";
+    for (const grp of OVERLAP) { const hit = grp.filter(t => after.includes(t)); if (hit.length > 1) clash2 = hit.join(" + "); }
+    ok(r2.c.area === "mix" && JSON.stringify(r2.c.on) === JSON.stringify(mixOn) && after.includes("Mount Hood") && after.includes("Space Needle") &&
+      swapped.length === 4 && !swapped.some(t => NORTH_ONLY.includes(t)) && new Set(after).size === 24 && !clash2,
+      "a saved mix card keeps its marks (and the marked Mount Hood and Space Needle); the 4 unmarked northern squares are swapped for California ones",
+      `swapped in: ${swapped.join(", ")}${clash2 ? "; clash " + clash2 : ""}`);
+    // (3) a Shasta card dealt northbound near the Oregon line, with squares for the Oregon road ahead
+    const sh = cellsOf([...CA_SQ, "Mount Hood", "Marionberry sign", "Salmon sign", "Pine forest", "Snow-capped peak", "Chain-up area"]);
+    const r3 = await run("legacy3", { bingo: { v: 2, area: "shasta", m: 780, at: 3, cells: sh, on: sh.map((_, i) => i === 12), won: [], full: false } }, 780);
+    ok(r3.c.area === "shasta" && r3.c.m === 780 && !northSq(r3.c).length && plain(r3.c.cells.map(x => x.t).join("|")).includes("Snow-capped peak"),
+      "a saved Shasta card loses its Oregon squares and keeps the rest", northSq(r3.c).join(", "));
+    // (4) I spy finds of places that are no longer on the road: not counted
+    const real = SPOTS[0];
+    const r4 = await run("legacy4", { spy: { points: 30, found: [real.id, "or303-wolf-creek", "wa1170-fake"], missed: ["or310-fake"] } });
+    const sc = r4.fake.play.score();
+    ok(sc.spy.points === 30 && sc.spy.found === 1, "I spy: points saved before stay; finds count places on this road only", JSON.stringify(sc.spy));
+  }
+  // marking and lines
+  api.setPosition(309, { dir: "N", jumped: true });
+  game("bingo"); $(".pl-new").click(); if (!$(".pl-confirm").hidden) $(".pl-confirm .primary").click();
+  sq(0); sq(1); sq(2); sq(3);
+  ok(!$(".pl-win"), "no bingo after 4 squares");
+  ok($(`#pl-bingo [data-i="0"]`).getAttribute("aria-pressed") === "true", "square has aria-pressed=true");
+  sq(4);
+  ok(!!$(".pl-win"), "row 1 -> BINGO overlay");
+  ok($$(".pl-grid .win").length === 5, "5 winning squares highlighted", $$(".pl-grid .win").length);
+  ok(card().won.length === 1 && card().won[0] === 0, "won line saved in store");
+  $(".pl-win").click();
+  ok(!$(".pl-win"), "tap closes overlay");
+  sq(4); sq(4);
+  ok(!$(".pl-win"), "re-completing a celebrated line does not celebrate again");
+  for (const i of [5, 10, 15, 20]) sq(i);
+  ok(!!$(".pl-win") && /column/i.test($(".pl-win-s").textContent), "column -> BINGO", $(".pl-win-s") && $(".pl-win-s").textContent);
+  $(".pl-win") && $(".pl-win").click();
+  $(".pl-new").click();
+  ok(!$(".pl-confirm").hidden, "new card asks first when the card has marks");
+  $$(".pl-confirm button")[1].click();
+  ok($(".pl-confirm").hidden && card().on.filter(Boolean).length > 1, "keep this one keeps the card");
+  ok(JSON.stringify(api.play.score().bingo) === JSON.stringify({ marked: 9, lines: 2, full: false }), "score() reports bingo progress", JSON.stringify(api.play.score().bingo));
+  // fast taps: no double-tap zoom on the controls kids hammer
+  ok(W.getComputedStyle($(".pl-grid button.pl-sq")).touchAction === "manipulation", "bingo squares: touch-action manipulation", W.getComputedStyle($(".pl-grid button.pl-sq")).touchAction);
+
+  // trivia
+  api.setMode("demo");
+  api.setPosition(300, { dir: "N", speed: 65, jumped: true });
+  game("trivia");
+  let q = currentQ();
+  ok(!!q && q.m >= 299, "driving north at 300: first question is just ahead", q && q.m);
+  ok(W.getComputedStyle($(".pl-opt")).touchAction === "manipulation", "answer buttons: touch-action manipulation");
+  const asked = new Set([q.q]);
+  const right = $$(".pl-opt")[q.answer];
+  right.click();
+  ok(!!$(".pl-fb.ok"), "right answer shows feedback");
+  ok(JSON.parse(W.localStorage.getItem("i5b:trivia")).right === 1, "score saved");
+  ok(!!$(".pl-src a") && /^https?:/.test($(".pl-src a").href), "source link shown", $(".pl-src a") && $(".pl-src a").href);
+  $(".pl-next").click();
+  q = currentQ();
+  ok(!!q && !asked.has(q.q), "next question is new");
+  const wrongIdx = (q.answer + 1) % q.choices.length;
+  $$(".pl-opt")[wrongIdx].click();
+  ok(!!$(".pl-fb.no") && $(".pl-opt.right") && $(".pl-opt.wrong"), "wrong answer marks right and wrong");
+  const sc = JSON.parse(W.localStorage.getItem("i5b:trivia"));
+  ok(sc.right === 1 && sc.asked === 2, "score 1 of 2", JSON.stringify(sc));
+  // never repeat in a session
+  const seen = new Set();
+  let repeats = 0;
+  for (let i = 0; i < api.data.TRIVIA.length - 2; i++) {
+    $(".pl-next") ? $(".pl-next").click() : $(".pl-skip").click();
+    const t = currentQ(); if (!t) break;
+    if (seen.has(t.q)) repeats++;
+    seen.add(t.q);
+  }
+  ok(repeats === 0, "no repeats while questions remain", repeats);
+  // voice answer, with a fake listen module
+  api.listen = { supported: true, blocked: false, listenForAnswer: () => Promise.resolve("I think it's bee") };
+  $(".pl-next") ? $(".pl-next").click() : $(".pl-skip").click();
+  const vb = $$(".pl-tool").find(b => /voice/i.test(b.textContent));
+  ok(!!vb, "Answer by voice shows when api.listen.listenForAnswer exists");
+  vb && vb.click();
+  await sleep(50);
+  ok(!!$(".pl-fb") && $$(".pl-opt")[1].classList.contains(currentQ().answer === 1 ? "right" : "wrong"), "voice answer 'bee' picks B");
+  // the microphone gets refused: the button goes, and taps say so instead of flipping to Listening and back
+  $(".pl-next").click();
+  api.listen = { supported: true, blocked: false, listenForAnswer: () => { api.listen.blocked = true; return Promise.resolve(null); } };
+  api.play.open("trivia");
+  const vb2 = $$(".pl-tool").find(b => /voice/i.test(b.textContent));
+  D.getElementById("toast").hidden = true;
+  vb2 && vb2.click();
+  await sleep(50);
+  ok(!$$(".pl-tool").some(b => /voice/i.test(b.textContent)) && !D.getElementById("toast").hidden && /microphone is blocked/i.test(D.getElementById("toast").textContent),
+    "mic refused while listening: toast, and the voice button goes away", D.getElementById("toast").textContent);
+  api.listen = { supported: true, blocked: true, listenForAnswer: () => Promise.resolve(null) };
+  api.play.open("trivia");
+  ok(!$$(".pl-tool").some(b => /voice/i.test(b.textContent)), "no voice button when the microphone is blocked");
+  api.listen = { supported: false, listenForAnswer: () => Promise.resolve(null) };
+  api.play.open("trivia");
+  ok(!$$(".pl-tool").some(b => /voice/i.test(b.textContent)), "no voice button when listen says it isn't supported");
+  api.listen = { supported: true, blocked: false, listenForAnswer: () => Promise.resolve(null) };
+  api.play.open("trivia");
+  const vb3 = $$(".pl-tool").find(b => /voice/i.test(b.textContent));
+  api.listen.blocked = true;   // refused from the header mic after the button was drawn
+  D.getElementById("toast").hidden = true;
+  vb3 && vb3.click();
+  await sleep(20);
+  ok(!!vb3 && /microphone is blocked/i.test(D.getElementById("toast").textContent) && !$$(".pl-tool").some(b => /voice/i.test(b.textContent)),
+    "a stale voice button explains the block instead of doing nothing");
+  delete api.listen;
+  api.play.open("trivia");
+  ok(!$$(".pl-tool").some(b => /voice/i.test(b.textContent)), "no voice button without api.listen");
+  // answers from voice commands (listen.js passes an index; letters and text work too)
+  $(".pl-next") ? $(".pl-next").click() : $(".pl-skip").click();
+  let q2 = currentQ();
+  ok(api.play.answerTrivia(LETTERS_[q2.answer]) === true, "answerTrivia('" + LETTERS_[q2.answer] + "') is right -> true");
+  ok(api.play.answerTrivia(0) === false, "answerTrivia when already answered -> false");
+  api.play.nextTrivia();
+  q2 = currentQ();
+  ok(api.play.answerTrivia((q2.answer + 1) % q2.choices.length) === false && !!$(".pl-fb.no"), "wrong index -> false, shows feedback");
+  // askTrivia from anywhere
+  api.ui.go("drive");
+  api.play.askTrivia();
+  ok(!$("#view-play").hidden && !$("#pl-trivia").hidden, "askTrivia opens Play > Trivia");
+  D.body.dispatchEvent(new W.KeyboardEvent("keydown", { key: "b", bubbles: true }));
+  const optB = $$(".pl-opt")[1];
+  ok(!!$(".pl-fb") && (optB.classList.contains("right") || optB.classList.contains("wrong")), "key B answers B");
+  const srLine = ($("#pl-bingo .pl-sr") || {}).textContent || "";
+  ok(/marked|cleared/.test(srLine), "bingo taps are announced to screen readers", srLine);
+
+  // trivia follows you: a waiting question picked somewhere else gives way to the closest one
+  {
+    const near = (m, dir) => api.data.TRIVIA.map(t => ({ t, d: dir === "S" ? m - t.m : t.m - m })).filter(x => x.d >= -1).sort((a, b) => a.d - b.d)[0].t;
+    // (1) last game Trivia, last position mile 790 (near the Oregon line), new trip at mile 43.5
+    api.setMode("manual");
+    api.setPosition(790, { dir: "N", jumped: true });
+    game("trivia"); api.play.nextTrivia();
+    const before = currentQ();
+    api.ui.go("drive");
+    api.setMode("demo");
+    api.setPosition(43.5, { dir: "N", speed: 65, jumped: true });
+    api.play.askTrivia();
+    const after = currentQ();
+    ok(!!after && after !== before && Math.abs(after.m - near(43.5, "N").m) < 0.01, "ask me trivia on a new trip reads the question just ahead", `${before && before.m} -> ${after && after.m}`);
+    // (2) opened at home with no position, then driving
+    api.setMode("off");
+    api.S.m = null;
+    game("trivia"); api.play.nextTrivia();
+    api.ui.go("drive");
+    api.setMode("demo");
+    api.setPosition(44.5, { dir: "N", speed: 65, jumped: true });
+    game("trivia");
+    const t3 = currentQ();
+    ok(!!t3 && t3.m >= 43.5 && t3.m - 44.5 < 30, "opening Trivia after GPS starts shows a question near you", t3 && t3.m);
+    // (3) the question on screen doesn't change under you while you read it
+    api.setPosition(80, { dir: "N", speed: 65 });
+    api.bus.emit("tab", "play");
+    ok(currentQ() === t3, "no swap while the question is on screen");
+    // (4) a question you heard stays yours for the next 15 miles, then gives way too
+    api.play.readTrivia();
+    api.ui.go("drive");
+    api.setPosition(90, { dir: "N", speed: 65 });
+    game("trivia");
+    ok(currentQ() === t3, "a question read aloud 10 miles ago is still the one waiting");
+    api.ui.go("drive");
+    api.setPosition(140, { dir: "N", speed: 65, jumped: true });
+    api.play.askTrivia();
+    const t4 = currentQ();
+    ok(!!t4 && t4 !== t3 && Math.abs(t4.m - near(140, "N").m) < 0.01, "60 miles on, ask me trivia reads a question near you", `${t3.m} -> ${t4 && t4.m}`);
+    api.voice.stop();
+  }
+
+  // I spy
+  api.ui.go("drive");
+  api.setMode("manual");
+  api.setPosition(300, { dir: "N", jumped: true });
+  ok(!$("#spotCard").hasAttribute("aria-live") && !!$("#spotCard [role=status]"), "#spotCard is not a live region; a status line speaks instead");
+  const p = fakeSpot(301.5, "a water tower shaped like a golf ball");
+  api.bus.emit("place:announce", { place: p, d: 1.5 });
+  ok(cards().length === 1, "spot card shows on Drive");
+  await sleep(200);
+  ok(/I spy.*golf ball/.test($("#spotCard [role=status]").textContent), "the new challenge is announced once to screen readers", $("#spotCard [role=status]").textContent);
+  ok($("#spotCard .pl-spot-d").getAttribute("aria-hidden") === "true", "the ticking distance is hidden from screen readers");
+  ok(W.getComputedStyle($("#spotCard .pl-found")).touchAction === "manipulation", "Found it: touch-action manipulation");
+  {   // the distance is only rewritten when it changes
+    let writes = 0;
+    const mo = new W.MutationObserver(r => { writes += r.length; });
+    mo.observe($("#spotCard .pl-spot-d"), { childList: true, characterData: true, subtree: true });
+    const shown = new Set();
+    for (let i = 1; i <= 40; i++) { api.setPosition(300 + i * 0.01, { dir: "N" }); shown.add($("#spotCard .pl-spot-d").textContent); }
+    await sleep(20);
+    mo.disconnect();
+    ok(writes <= shown.size, `40 GPS fixes -> ${writes} distance writes for ${shown.size} distinct values`);
+  }
+  api.setPosition(302, { dir: "N" });
+  ok(cards().length === 1, "still there right after passing");
+  api.setPosition(302.8, { dir: "N" });
+  ok(cards().length === 0, "gone once more than 1 mile behind");
+  ok(W.getComputedStyle($("#spotCard .pl-spots")).display === "none", "no empty box left behind on Drive");
+  api.setPosition(300.5, { dir: "N", jumped: true });
+  api.bus.emit("place:announce", { place: { ...p, id: p.id + "-2" }, d: 1 });
+  $("#spotCard .pl-found").click();
+  let spy = spyStore();
+  ok(spy.points === 10 && spy.found.includes(p.id + "-2"), "found = +10 and saved", JSON.stringify(spy));
+  await sleep(2500);
+  ok(cards().length === 0, "card goes away after an answer");
+  // several challenges at once: the newest (what you just heard) on top, each with its own buttons
+  api.setPosition(300.2, { dir: "N", jumped: true });
+  const a1 = fakeSpot(301.0, "a red barn with a white X", "x-a1"), a2 = fakeSpot(301.6, "a windmill with one blade missing", "x-a2"), a3 = fakeSpot(302.2, "a giant orange", "x-a3");
+  api.bus.emit("place:announce", { place: a1, d: 0.8 });
+  api.bus.emit("place:announce", { place: a2, d: 1.4 });
+  ok(cardIds().join() === "x-a2,x-a1", "a second challenge shows right away, on top", cardIds().join());
+  ok(cards()[0].querySelectorAll(".pl-found").length === 1 && cards()[1].querySelectorAll(".pl-found").length === 1 && cards()[1].classList.contains("pl-mini"),
+    "each card has its own Found it; the earlier one is compact");
+  api.bus.emit("speaking", { id: "x-a1", text: "In about a mile: something. I spy challenge: a red barn with a white X" });
+  ok(cardIds().join() === "x-a2,x-a1", "speech for a place that isn't in the data changes nothing");
+  api.bus.emit("place:announce", { place: a3, d: 2 });
+  api.bus.emit("place:announce", { place: fakeSpot(302.4, "a fourth thing", "x-a4"), d: 2.2 });
+  ok(cards().length === 3 && cardIds()[0] === "x-a4" && !cardIds().includes("x-a1"), "at most three cards; the oldest goes", cardIds().join());
+  cards()[1].querySelector(".pl-found").click();   // x-a3, the compact one
+  spy = spyStore();
+  ok(spy.found.includes("x-a3") && cards()[1].classList.contains("found") && cards()[0].querySelector(".pl-found"), "answering a compact card answers that place only", cardIds().join());
+  ok(cardIds("#pl-spy") .join() === cardIds().join(), "the I spy tab shows the same cards");
+  api.setPosition(303.5, { dir: "N" });
+  await sleep(2500);
+  ok(cards().length === 0, "all cleared after driving past and answering");
+  // a finger on its way to one card doesn't land on another that just slid in under it
+  {
+    const tap = el => el.dispatchEvent(new W.MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 }));
+    api.setPosition(300.2, { dir: "N", jumped: true });
+    api.bus.emit("place:announce", { place: fakeSpot(301.0, "a silver water tank", "x-b1"), d: 0.8 });
+    await sleep(600);
+    api.bus.emit("place:announce", { place: fakeSpot(301.4, "a blue barn", "x-b2"), d: 1.2 });
+    tap(cards()[0].querySelector(".pl-found"));   // x-b2 slid in on top a moment ago
+    ok(!cards()[0].classList.contains("found"), "a tap right as a card slides in is ignored");
+    await sleep(500);
+    tap(cards()[0].querySelector(".pl-found"));
+    ok(cards()[0].classList.contains("found"), "the same tap a moment later counts");
+    tap(cards()[1].querySelector(".pl-found"));   // answering x-b2 didn't move x-b1
+    ok(cards()[1].classList.contains("found"), "answering one card doesn't block a quick tap on the next");
+    await sleep(2500);
+  }
+  // a place found on an earlier trip still gets its card (the guide still says the challenge)
+  const real = api.data.PLACES.find(x => x.spot && x.vis);
+  api.setMode("off");   // a new trip
+  api.setPosition(real.m - 1.5, { dir: "N", jumped: true });
+  api.setMode("manual");
+  api.bus.emit("place:announce", { place: real, d: 1.5 });
+  cards()[0].querySelector(".pl-found").click();   // trip 1: found it
+  await sleep(2500);
+  ok(spyStore().found.includes(real.id) && cards().length === 0, "trip 1: found and saved");
+  api.bus.emit("trip:end", {});                    // trip 2, same place
+  api.bus.emit("place:announce", { place: real, d: 1.5 });
+  ok(cardIds().includes(real.id), "a place found on an earlier trip gets a card again", real.id);
+  const pts0 = api.play.score().spy.points;
+  cards()[0].querySelector(".pl-found").click();
+  ok(api.play.score().spy.points === pts0 + 10 && /\+10/.test(cards()[0].textContent), "first find this trip pays 10", cards()[0].textContent);
+  await sleep(2500);
+  api.bus.emit("place:announce", { place: real, d: 1 });   // e.g. "Turn around" in the demo: the guide says it again
+  cards()[0].querySelector(".pl-found").click();
+  ok(api.play.score().spy.points === pts0 + 10 && /Found again/.test(cards()[0].textContent) && !/\+10/.test(cards()[0].textContent),
+    "the same trip pays once: 'Found again', no +10", cards()[0].textContent);
+  await sleep(2500);
+  // the voice reads a challenge (Play button, voice command, replay) with no place:announce: the card follows the voice
+  api.setPosition(real.m - 1, { dir: "N", jumped: true });
+  api.bus.emit("trip:end", {});
+  api.bus.emit("speaking", { id: real.id, text: api.narrator.announceText(real, 1) });
+  ok(cardIds().join() === real.id, "a spoken challenge brings up its card", api.narrator.announceText(real, 1).slice(-60));
+  api.bus.emit("speaking", { id: "more:" + real.id, text: "More about it." });
+  ok(cardIds().join() === real.id, "other speech about the place doesn't add cards");
+  // Kid mode with narration off: the guide is quiet, the cards still come while driving
+  api.bus.emit("trip:end", {});
+  api.settings.narr = false;
+  api.setMode("demo");
+  const target = api.data.PLACES.find(x => x.spot && x.vis && x.m > 700) || real;
+  api.setPosition(target.m - 6, { dir: "N", speed: 65, jumped: true });
+  ok(!cardIds().includes(target.id), "narration off: nothing while it's far away");
+  for (let m = target.m - 6; m < target.m - 1; m += 0.25) api.setPosition(m, { dir: "N", speed: 65 });
+  ok(cardIds().includes(target.id), "narration off: the card comes within the heads-up distance", target.id + " " + cardIds().join());
+  api.settings.narr = true;
+  api.setMode("manual");
+  api.setPosition(300.5, { dir: "N", jumped: true });
+  api.bus.emit("place:announce", { place: { ...p, id: "x-novis", vis: false }, d: 1 });
+  ok(!cardIds().includes("x-novis"), "no card for places you can't see");
+  api.settings.kid = false;
+  api.bus.emit("settings", api.settings);
+  api.bus.emit("place:announce", { place: { ...p, id: "x-kidoff" }, d: 1 });
+  ok(cards().length === 0, "no card when kid mode is off");
+  game("spy");
+  ok(!!$(".pl-hint") && !$(".pl-hint").hidden, "kid mode hint shows");
+  $(".pl-hint .primary").click();
+  ok(api.settings.kid === true && JSON.parse(W.localStorage.getItem("i5b:settings")).kid === true, "hint button turns kid mode on and saves");
+
+  // robustness: null position, bogus storage
+  api.setMode("off");
+  W.localStorage.setItem("i5b:bingo", JSON.stringify({ cells: ["a", "b"], on: [true] }));
+  let threw = false;
+  try {
+    api.bus.emit("place:announce", null); api.bus.emit("place:announce", {}); api.bus.emit("pos", {}); api.bus.emit("speaking", null);
+    api.bus.emit("speaking", { id: 5 }); api.bus.emit("settings", api.settings); api.bus.emit("tab", "play");
+  } catch (e) { threw = true; }
+  ok(!threw, "bad events don't throw");
+
+  // no position at all (first launch before GPS)
+  api.S.m = null;
+  game("trivia"); api.play.nextTrivia();
+  ok(!!currentQ() && /mile/i.test($(".pl-qwhere").textContent), "no position: trivia still asks, labelled by mile", $(".pl-qwhere") && $(".pl-qwhere").textContent);
+  game("bingo"); $(".pl-new").click(); if (!$(".pl-confirm").hidden) $(".pl-confirm .primary").click();
+  ok(card().area === "mix" && $("#pl-bingo .pl-banner").hidden, "no position: new card is a whole-road mix, no banner", card().area);
+  // empty data: every game still renders
+  api.data.PLACES.splice(0); api.data.TRIVIA.splice(0);
+  threw = false;
+  try { for (const g of ["bingo", "trivia", "spy"]) game(g); api.play.nextTrivia(); api.play.askTrivia(); $(".pl-new").click(); api.setMode("demo"); api.setPosition(740, { dir: "N", speed: 65 }); } catch (e) { threw = e; }
+  ok(!threw && /No trivia/.test($("#pl-trivia").textContent), "no places and no trivia: still renders", threw && threw.message);
+
+  log(fail ? `FAILED ${fail} of ${pass + fail}` : `ALL PASS (${pass})`);
+  document.title = fail ? "FAIL" : "PASS";
+}
+
+/* ---------- speech: the games wait their turn ---------- */
+async function speech() {
+  let pass = 0, fail = 0;
+  const g = runGen;
+  const ok = (cond, name, extra = "") => {
+    if (g !== runGen) throw new Error("superseded");   // the app reloaded; a fresh run took over
+    cond ? pass++ : fail++; log(cond ? "PASS" : "FAIL", name, extra);
+  };
+  const V = api.voice;
+  if (P.get("debug")) api.bus.on("speaking", x => log("  speaking", x ? x.id : "(stop)", Math.round(performance.now())));
+  if (SYNTH) { V.say("Probe.", { id: "probe", now: true }); await sleep(300); }
+  if (!SYNTH || !synthIn || !SYNTH.said.some(r => r.text === "Probe.")) { log("FAIL fake speech engine was not installed before voice.js loaded; rerun"); return; }
+  const said = () => SYNTH.said.map(r => r.text);
+  const mark = () => SYNTH.said.length;
+  const since = k => SYNTH.said.slice(k);
+  const LONG = "Coming up on your left: the California Aqueduct, which carries water four hundred miles south from the Delta.";
+  const spoke = (k, re) => since(k).find(r => re.test(r.text));
+  const fullySpoken = (k, re) => { const r = spoke(k, re); return !!r && !r.cut && r.end != null; };
+  const order = (k, ...res) => { const xs = since(k); let i = 0; for (const r of xs) if (i < res.length && res[i].test(r.text)) i++; return i === res.length; };
+  // the guide's own announcements would muddle the order checks: this test plays the guide itself
+  api.settings.narr = false; api.settings.chime = false;
+  api.setMode("manual");
+  api.setPosition(300, { dir: "N", jumped: true });
+  await idle();
+
+  // 1. "Read it out loud" while a landmark is speaking and a chain-control alert waits
+  game("trivia");
+  let q = currentQ();
+  let k = mark();
+  const pLand = V.say(LONG, { id: "ca300-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca300-aqueduct");
+  const pAlert = V.say("Chain controls on the Grapevine. Chains are required.", { id: "cc:grapevine", prio: 3, chime: "alert" });
+  D.getElementById("toast").hidden = true;
+  $$(".pl-tool")[0].click();
+  ok(V.currentId() === "ca300-aqueduct", "Read it out loud does not cut off the landmark");
+  ok(V.queued().includes("cc:grapevine") && V.queued().some(id => /^play:trivia:q:/.test(id)), "the chain alert stays queued, the question waits", V.queued().join());
+  ok(!D.getElementById("toast").hidden && /right after this/.test(D.getElementById("toast").textContent), "the button says it will read after the guide", D.getElementById("toast").textContent);
+  await idle();
+  ok(await pAlert === true && await pLand === true, "landmark and chain alert were both spoken");
+  ok(order(k, /Aqueduct/, /Chain controls/, new RegExp(q.q.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))), "order: landmark, alert, then the question", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+  ok(fullySpoken(k, /Aqueduct/), "the landmark was not cut");
+
+  // 2. answering a read question while a landmark speaks and a severe-weather warning waits
+  k = mark();
+  V.say(LONG, { id: "ca301-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca301-aqueduct");
+  const pWx = V.say("A winter storm warning is in effect ahead.", { id: "wx:1", prio: 2, chime: "alert" });
+  $$(".pl-opt")[q.answer].click();
+  ok(V.currentId() === "ca301-aqueduct" && V.queued()[0] === "wx:1", "the verdict waits behind the warning", V.queued().join());
+  await idle();
+  ok(await pWx === true && order(k, /Aqueduct/, /winter storm/, /That's right/), "order: landmark, warning, verdict", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+
+  // 3. Next question (auto-read) while a landmark speaks and another landmark waits
+  k = mark();
+  V.say(LONG, { id: "ca302-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca302-aqueduct");
+  const pNext = V.say("In about 2 miles: Kettleman City.", { id: "ca309-kettleman", prio: 1 });
+  $(".pl-next").click();
+  q = currentQ();
+  await idle();
+  ok(await pNext === true, "the waiting landmark is still spoken");
+  ok(order(k, /Aqueduct/, new RegExp(q.q.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), /Kettleman/), "the question goes ahead of ordinary narration, after the current item", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+
+  // 4. a queued read for a question you skipped is dropped, not read late
+  k = mark();
+  V.say(LONG, { id: "ca303-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca303-aqueduct");
+  const skipped = currentQ();
+  $(".pl-skip").click();   // spoken mode: the next one is read instead
+  const newer = currentQ();
+  await idle();
+  ok(!spoke(k, new RegExp(skipped.q.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))) && !!spoke(k, new RegExp(newer.q.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))),
+    "skipped question is not read late; the new one is", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+
+  // 5. when the guide is quiet, game speech is immediate and may interrupt itself
+  k = mark();
+  $$(".pl-tool")[0].click();
+  await sleep(30);
+  ok(/^play:trivia:q:/.test(V.currentId() || ""), "idle: Read it out loud starts right away", V.currentId());
+  $$(".pl-tool")[0].click();   // read it again from the top
+  await idle();
+  ok(since(k).filter(r => r.cut).length === 1 && since(k).filter(r => r.end && !r.cut).length >= 1, "a second tap restarts our own reading only",
+    since(k).map(r => `${r.text.slice(0, 18)}${r.cut ? " [cut]" : r.end ? " [done]" : " [?]"}`).join(" | "));
+
+  // 5b. answer, then Next right away, while our own reading plays: the verdict is skipped, the next question is read,
+  //     and voice.js still knows what is speaking (a landmark queued after it resolves true)
+  const esc = t => new RegExp(t.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  $$(".pl-tool")[0].click();
+  await until(() => /^play:trivia:q:/.test(V.currentId() || ""));
+  k = mark();
+  const first = currentQ();
+  $$(".pl-opt")[first.answer].click();
+  $(".pl-next").click();
+  const second = currentQ();
+  const id2 = "play:trivia:q:" + api.data.TRIVIA.indexOf(second);
+  await until(() => since(k).some(r => esc(second.q).test(r.text) && r.end == null && !r.cut), 8000);   // the engine is reading it now
+  await sleep(100);
+  const knows = V.currentId();
+  const pAfter = V.say("In about a mile: Lost Hills.", { id: "ca280-lost-hills", prio: 1 });   // arrives mid-read
+  await idle();
+  const after = await pAfter;
+  ok(knows === id2, "answer + Next during our own reading: voice.js still knows what is speaking", `current: ${knows}`);
+  ok(!spoke(k, /That's right/) && fullySpoken(k, esc(second.q)) && after === true && order(k, esc(second.q), /Lost Hills/),
+    "...only the new question is read, and a landmark arriving mid-read follows it", `after: ${after}; ` + since(k).map(r => `${r.text.slice(0, 18)}${r.cut ? " [cut]" : r.end ? " [done]" : " [?]"}`).join(" | "));
+
+  // 6. listen.js answer flow: held narration is requeued (prio 1) right before the answer comes in
+  k = mark();
+  const pHeld = V.say("Right now, on your right: Harris Ranch.", { id: "ca334-harris", prio: 1 });
+  api.play.answerTrivia(currentQ().answer);
+  await idle();
+  const heldOk = await pHeld;
+  ok(heldOk === true && order(k, /That's right|Not quite/, /Harris Ranch/), "voice answer: verdict first, then the held narration (not flushed)",
+    `held spoken: ${heldOk}; ` + since(k).map(r => `${r.text.slice(0, 18)}${r.cut ? " [cut]" : r.end ? " [done]" : " [?]"}`).join(" | "));
+
+  // 7. quick challenge speaker while a landmark speaks
+  game("spy");
+  k = mark();
+  V.say(LONG, { id: "ca304-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca304-aqueduct");
+  const pQueued = V.say("In about a mile: Coalinga.", { id: "ca305-coalinga", prio: 1 });
+  $(".pl-quick .pl-icon-btn").click();
+  await idle();
+  ok(await pQueued === true && fullySpoken(k, /Aqueduct/) && !!spoke(k, /I spy with my little eye/), "quick challenge waits its turn, nothing dropped", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+  // a quick challenge you replaced while it waited is not said
+  k = mark();
+  V.say(LONG, { id: "ca306-aqueduct", prio: 1 });
+  await until(() => V.currentId() === "ca306-aqueduct");
+  const oldQuick = $(".pl-quick-main b").textContent.replace(/\u00AD/g, "").toLowerCase();
+  $(".pl-quick .pl-icon-btn").click();
+  [...$$(".pl-quick button")].find(b => /New one/.test(b.textContent)).click();
+  $(".pl-quick .pl-icon-btn").click();
+  const newQuick = $(".pl-quick-main b").textContent.replace(/\u00AD/g, "").toLowerCase();
+  await idle();
+  ok(!since(k).some(r => r.text.includes(": " + oldQuick + ".")) && since(k).some(r => r.text.includes(": " + newQuick + ".")), "only the challenge on screen is said", oldQuick + " -> " + newQuick);
+
+  // 8. Bingo while the guide talks: said after it, if that is soon
+  api.settings.narr = true;   // Bingo! is only said with narration on
+  game("bingo");
+  api.play.newBingoCard();
+  k = mark();
+  V.say("In about a mile: the Kettleman Hills.", { id: "ca307-hills", prio: 1 });
+  await until(() => V.currentId() === "ca307-hills");
+  for (const i of [0, 1, 2, 3, 4]) sq(i);
+  await idle();
+  ok(fullySpoken(k, /Kettleman Hills/) && order(k, /Kettleman Hills/, /^Bingo!$/), "Bingo! waits for the landmark instead of being skipped", since(k).map(r => r.text.slice(0, 24)).join(" | "));
+  $(".pl-win") && $(".pl-win").click();
+  k = mark();
+  V.say(LONG + " " + LONG, { id: "ca308-long", prio: 1 });
+  await until(() => V.currentId() === "ca308-long");
+  for (const i of [5, 10, 15, 20]) sq(i);
+  await idle();
+  ok(!spoke(k, /^Bingo!$/), "...and gives up when the guide talks on for more than a few seconds");
+
+  log(fail ? `FAILED ${fail} of ${pass + fail}` : `ALL PASS (${pass})`);
+  document.title = fail ? "FAIL" : "PASS";
+}
+
+/* ---------- real data: a Kid mode drive through the Mount Shasta cluster ---------- */
+async function cluster() {
+  let pass = 0, fail = 0;
+  const g = runGen;
+  const ok = (cond, name, extra = "") => {
+    if (g !== runGen) throw new Error("superseded");
+    cond ? pass++ : fail++; log(cond ? "PASS" : "FAIL", name, extra);
+  };
+  const ids = new Set(SPOTS.map(p => p.id));
+  const mismatches = [], lags = [];
+  const announcedAt = {};
+  api.bus.on("place:announce", e => {
+    if (!e || !e.place || !ids.has(e.place.id)) return;
+    announcedAt[e.place.id] = api.S.m;
+    setTimeout(() => { if (!cardIds().includes(e.place.id)) lags.push(e.place.id + "@" + api.S.m.toFixed(1)); }, 0);
+  });
+  api.bus.on("speaking", s => {
+    if (!s || !ids.has(s.id)) return;
+    setTimeout(() => { const top = cardIds()[0]; if (top !== s.id) mismatches.push(`${s.id} spoken, top ${top} @${api.S.m.toFixed(1)}`); }, 0);
+  });
+  let maxCards = 0;
+  api.setMode("off");
+  api.setPosition(734, { dir: "N", jumped: true });
+  api.setMode("demo");
+  api.ui.go("drive");
+  const stopAt = +P.get("to") || 746.2;
+  for (let m = 734; m <= stopAt; m += 0.05) {
+    api.setPosition(m, { dir: "N", speed: 65 });
+    maxCards = Math.max(maxCards, cards().length);
+    await sleep(500);
+  }
+  const want = SPOTS.filter(p => p.m > 735 && p.m < stopAt + 1.9).map(p => p.id);
+  ok(want.every(id => id in announcedAt), "every I spy place on this stretch was announced", want.filter(id => !(id in announcedAt)).join());
+  ok(lags.length === 0, "each card shows the moment its challenge is announced", lags.join(", "));
+  ok(mismatches.length === 0, "whenever a challenge is spoken, its card is the big one on top", mismatches.join("; "));
+  ok(maxCards >= 2 && maxCards <= 3, "several cards at once on this stretch, never more than three", maxCards);
+  if (P.get("stay") !== "1") { log(fail ? `FAILED ${fail} of ${pass + fail}` : `ALL PASS (${pass})`); document.title = fail ? "FAIL" : "PASS"; }
+  W.scrollTo(0, +P.get("y") || 330);
+  api.setMode("manual");   // freeze the scene for the screenshot
+}
+
+/* ---------- visual scenarios ---------- */
+async function run(a) {
+  api = a;
+  W = f.contentWindow; D = f.contentDocument;
+  theme(THEME);
+  const s = SCEN;
+  if (s === "check") { await check(); return finish(); }
+  if (s === "speech") { await speech(); return finish(); }
+  if (s === "cluster") { await cluster(); return log("DONE", SCEN, THEME); }
+  if (s === "legacy") {
+    const c = JSON.parse(W.localStorage.getItem("i5b:bingo"));
+    const t = JSON.parse(W.localStorage.getItem("i5b:trivia"));
+    const okAll = c && c.v === 2 && c.cells.length === 25 && t.right === 3 && t.asked === 5 && !$("#pl-bingo").hidden;
+    log(okAll ? "PASS" : "FAIL", "old v1 storage: new card dealt, trivia score kept, unknown game falls back to bingo");
+    game("spy");
+    log(/0\s*points/.test($(".pl-spy-hero").textContent) ? "PASS" : "FAIL", "junk spy data reads as 0 points", $(".pl-spy-hero").textContent);
+    game("trivia");
+    log(/3/.test($(".pl-stats").textContent) ? "PASS" : "FAIL", "trivia score shows 3 right");
+    return finish();
+  }
+
+  if (s.startsWith("bingo")) {
+    const m = { "bingo-mix": null, "bingo-north": api.data.MAX_M - 4 }[s];   // bingo-north: a Shasta card at the Oregon line
+    if (m !== null) { api.setMode("manual"); api.setPosition(m || 309, { dir: "N", jumped: true }); }
+    game("bingo");
+    if (s !== "bingo-mix") $(".pl-new").click();
+    if (s === "bingo" || s === "bingo-north") { for (const i of [0, 6, 8, 17, 23]) sq(i); }
+    if (s === "bingo-confirm") { sq(3); sq(9); $(".pl-new").click(); W.scrollTo(0, 400); }
+    if (s === "bingo-win") {
+      for (const i of [10, 11, 13, 2, 21]) sq(i);
+      at(WHEN, () => {
+        if (P.get("freeze")) {   // headless virtual time doesn't run CSS animations: freeze confetti mid-fall to look at it
+          const st = D.createElement("style");
+          st.textContent = ".pl-confetti i{animation-play-state:paused!important;animation-delay:calc(var(--d) * -2 - .6s)!important}";
+          D.head.append(st);
+        }
+        sq(14);
+        setTimeout(() => {
+          const c = $$(".pl-confetti i");
+          const vis = c.filter(i => +W.getComputedStyle(i).opacity > 0);
+          const a = c[0] && c[0].getAnimations()[0];
+          log("confetti", c.length, "visible:", vis.length, vis[0] ? W.getComputedStyle(vis[0]).transform : "-",
+            "t:", a && Math.round(a.currentTime), a && a.playState, "reduced:", W.matchMedia("(prefers-reduced-motion: reduce)").matches);
+        }, 900);
+      });
+    }
+    if (s === "bingo-full") {
+      for (let i = 0; i < 25; i++) if (i !== 12 && i !== 7) sq(i);
+      $(".pl-win") && $(".pl-win").click();
+      at(WHEN, () => sq(7));
+    }
+    if (s === "bingo-mix") api.setPosition(700, { dir: "N", jumped: true });   // shows the "new area" banner
+    return finish();
+  }
+
+  if (s === "trivia-stale") {
+    const boot = api.play && $(".pl-qt") ? currentQ() : null;
+    api.setMode("demo");
+    api.setPosition(43.5, { dir: "N", speed: 65, jumped: true });
+    api.play.askTrivia();
+    const q = currentQ();
+    const near = api.data.TRIVIA.filter(t => t.m >= 42.5).sort((a, b) => a.m - b.m)[0];
+    log(boot && boot.m > 700 ? "PASS" : "FAIL", "at boot the waiting question is from near mile 790", boot && boot.m);
+    log(q && q === near ? "PASS" : "FAIL", "new trip at mile 43.5: ask me trivia reads the question just ahead", q && q.m, near && near.m);
+    return finish();
+  }
+  if (s.startsWith("trivia")) {
+    if (s === "trivia-empty") api.data.TRIVIA.splice(0);
+    api.setMode("demo");
+    api.setPosition(300, { dir: "N", speed: 65, jumped: true });
+    if (s === "trivia-ask") { api.play.askTrivia(); return finish(); }
+    game("trivia");
+    const q = currentQ();
+    if (q && s === "trivia-right") $$(".pl-opt")[q.answer].click();
+    if (q && s === "trivia-wrong") $$(".pl-opt")[(q.answer + 2) % q.choices.length].click();
+    if (s === "trivia-wait") {   // the guide is talking: the question waits, and the toast says so
+      api.voice.say("Coming up on your left: the California Aqueduct, which carries water four hundred miles south from the Delta. " +
+        "It is one of the largest water projects in the world.", { id: "ca300-aqueduct", prio: 1 });
+      await until(() => api.voice.currentId() === "ca300-aqueduct", 3000);
+      $$(".pl-tool")[0].click();
+      log("queued:", api.voice.queued().join(), "toast:", D.getElementById("toast").textContent);
+    }
+    return finish();
+  }
+
+  if (s.startsWith("spy")) {
+    api.setMode("manual");
+    api.setPosition(740, { dir: "N", jumped: true });
+    game("spy");
+    if (s === "spy-quick-found") $(".pl-quick .pl-found").click();
+    if (s === "spy-live") {
+      api.setPosition(300, { dir: "N", jumped: true });
+      api.bus.emit("place:announce", { place: fakeSpot(301.4, "a giant red barn with a white X on the door"), d: 1.4 });
+    }
+    if (s === "spy-cards") {
+      api.setPosition(739.2, { dir: "N", jumped: true });
+      const shasta = SPOTS.find(p => /mount-shasta/.test(p.id)), butte = SPOTS.find(p => /black-butte/.test(p.id));
+      api.bus.emit("place:announce", { place: shasta, d: 0.8 });
+      api.bus.emit("place:announce", { place: butte, d: 3 });
+    }
+    return finish();
+  }
+
+  if (s.startsWith("drive-spot")) {
+    api.setMode("manual");
+    api.ui.go("drive");
+    if (s === "drive-spots") {   // two challenges in view at once (the Mount Shasta cluster)
+      api.setPosition(740.6, { dir: "N", jumped: true });
+      const shasta = SPOTS.find(p => /mount-shasta/.test(p.id)), butte = SPOTS.find(p => /black-butte/.test(p.id)), tina = SPOTS.find(p => /shastina/.test(p.id));
+      api.bus.emit("place:announce", { place: shasta, d: 0 });
+      api.bus.emit("place:announce", { place: butte, d: 1.6 });
+      api.bus.emit("place:announce", { place: tina, d: 2.4 });
+      if (P.get("answer")) cardIds()[1] && $$("#spotCard .pl-spot")[1].querySelector(P.get("answer") === "missed" ? ".pl-missed" : ".pl-found").click();
+      W.scrollTo(0, +P.get("y") || 330);
+      overflow();
+      return log("DONE", SCEN, THEME);
+    }
+    if (s === "drive-spot-again") {
+      const shasta = SPOTS.find(p => /mount-shasta/.test(p.id));
+      api.setPosition(shasta.m - 1.2, { dir: "N", jumped: true });
+      api.bus.emit("place:announce", { place: shasta, d: 1.2 });
+      at(WHEN - 3000, () => cards()[0].querySelector(".pl-found").click());
+      at(WHEN, () => { api.bus.emit("place:announce", { place: shasta, d: 1 }); cards()[0].querySelector(".pl-found").click(); });
+      W.scrollTo(0, +P.get("y") || 330);
+      return;
+    }
+    api.setPosition(300, { dir: "N", jumped: true });
+    api.bus.emit("place:announce", { place: fakeSpot(301.5, "a water tower shaped like a golf ball"), d: 1.5 });
+    if (s === "drive-spot-found") at(WHEN, () => { log("found click at", Math.round(performance.now())); $("#spotCard .pl-found").click(); });
+    if (P.get("debug")) new W.MutationObserver(() => log("spotCard ->", ($("#spotCard").textContent || "(empty)").slice(0, 60), Math.round(performance.now()))).observe($("#spotCard"), { childList: true, subtree: true });
+    if (s === "drive-spot-gone") api.setPosition(303, { dir: "N" });
+    W.scrollTo(0, 380);
+    return;
+  }
+  log("unknown scenario", s);
+}
+boot();
+</script>
+</body>
+</html>

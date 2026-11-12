@@ -1,0 +1,445 @@
+# I-5 exits in CA from OpenStreetMap (exit ref | lat,lon | signed destinations)
+exit 1A | 32.54602,-117.03470 | Camino de la Plaza
+exit 1B | 32.55031,-117.04215 | Via de San Ysidro
+exit 2 | 32.55730,-117.05904 | San Ysidro Boulevard, Dairy Mart Road; Dairy Mart Road
+exit 3 | 32.56142,-117.06722 | CA 905 East; Tocayo Avenue
+exit 4 | 32.57314,-117.07953 | Coronado Avenue
+exit 5A | 32.58025,-117.08585 | CA 75; Palm Avenue
+exit 5B | 32.59263,-117.08834 | Main Street
+exit 6 | 32.60044,-117.08944 | Palomar Street
+exit 7A | 32.61047,-117.09057 | L Street
+exit 7B | 32.61928,-117.09195 | J Street, Marina Parkway
+exit 8A | 32.62630,-117.09459 | H Street
+exit 8B | 32.63484,-117.09803 | E Street
+exit 9 | 32.64236,-117.10090 | CA 54 East
+exit 10 | 32.65650,-117.10637 | Bay Marina Drive, Mile of Cars Way; Mile of Cars Way, Bay Marina Drive
+exit 11A | 32.66535,-117.10999 | Harbor Drive, Civic Center Drive; Civic Center Drive
+exit 11B | 32.66868,-117.11118 | Plaza Boulevard, Downtown; 8th Street, National City
+exit 12 | 32.68205,-117.11088 | Division Street, Main Street; Main Street, National City Boulevard
+exit 13A | 32.68845,-117.11522 | CA 15 North; Riverside
+exit 13B | 32.69457,-117.12888 | 28th Street, National Avenue; 28th Street South, 28th Street North, National Avenue
+exit 14A | 32.69853,-117.13859 | CA 75 South; Coronado
+exit 14B | 32.70050,-117.14136 | Cesar E Chavez Parkway; Chicano Park Blvd
+exit 15A | 32.70651,-117.14750 | CA 94 East; J Street, Martin Luther king Junior Freeway; Imperial Avenue
+exit 15B | 32.71146,-117.14752 | B Street, Pershing Drive; CA 94 East; Martin Luther King Junior Freeway
+exit 15C | 32.72404,-117.15163 | Pershing Drive, B Street
+exit 16 | 32.72330,-117.15849 | CA 163 North; Escondido, 10th Avenue
+exit 16A | 32.72396,-117.15078 | CA 163 North; Escondido
+exit 16B | 32.72413,-117.15610 | 6th Avenue; Downtown San Diego
+exit 17 | 32.72707,-117.16774 | Front Street, Civic Center, 2nd Avenue
+exit 17A | 32.72313,-117.16315 | San Diego Airport, Hawthorn Street
+exit 17B | 32.73067,-117.17064 | India Street
+exit 18A | 32.73292,-117.17257 | Pacific Highway; San Diego Airport, Sassafras Street
+exit 18B | 32.73713,-117.17626 | Washington Street
+exit 19 | 32.74602,-117.18985 | Old Town Avenue
+exit 20 | 32.75413,-117.20044 | I 8; El Centro; I 8 East; El Centro, Rosecrans Street South
+exit 21 | 32.76723,-117.20573 | Sea World Drive, Tecolote Road
+exit 22 | 32.78727,-117.20696 | Clairemont Drive, Mission Bay Drive; Clairemont Drive, East Mission Bay Drive
+exit 23 | 32.81297,-117.22102 | Balboa Avenue, Garnet Avenue
+exit 23A | 32.79660,-117.20922 | Grand Avenue, Garnet Avenue
+exit 23B | 32.80401,-117.21352 | Balboa Avenue East
+exit 26 | 32.84242,-117.23665 | CA 52 East
+exit 26A | 32.83239,-117.23265 | La Jolla Parkway West
+exit 26B | 32.83545,-117.23347 | CA 52 East
+exit 27 | 32.84531,-117.23615 | Gilman Drive, La Jolla Colony Drive
+exit 28 | 32.87585,-117.22898 | La Jolla Village Drive
+exit 28A | 32.86491,-117.22979 | Nobel Drive
+exit 28B | 32.86893,-117.22937 | La Jolla Village Drive
+exit 29 | 32.88309,-117.22801 | Genesee Avenue
+exit 30 | 32.89484,-117.22653 | Sorrento Valley Road
+exit 31 | 32.90843,-117.22675 | 
+exit 32 | 32.93548,-117.24163 | Local Bypass
+exit 33 | 32.93642,-117.24171 | CA 56 East; Carmel Valley Road, Beaches
+exit 33B | 32.92964,-117.24058 | Carmel Valley Road
+exit 34 | 32.94718,-117.24303 | Del Mar Heights Road
+exit 36 | 32.97598,-117.25146 | Via De La Valle; Via de la Valle
+exit 37 | 32.99133,-117.25576 | Lomas Santa Fe Drive; CR S8
+exit 39 | 33.00884,-117.26263 | Manchester Avenue
+exit 40 | 33.02310,-117.27342 | Birmingham Drive
+exit 41A | 33.03360,-117.27949 | Santa Fe Drive
+exit 41B | 33.04519,-117.28609 | CR-S9; Encinitas Boulevard
+exit 43 | 33.06215,-117.29118 | Leucadia Boulevard
+exit 44 | 33.08152,-117.29704 | La Costa Avenue
+exit 45 | 33.10063,-117.30860 | Poinsettia Lane, Aviara Parkway
+exit 47 | 33.11836,-117.31970 | Palomar Airport Road
+exit 48 | 33.13170,-117.32762 | Cannon Road
+exit 49 | 33.14918,-117.33455 | Tamarack Avenue
+exit 50 | 33.16054,-117.34069 | Carlsbad Village Drive
+exit 51A | 33.16787,-117.34441 | Las Flores Drive
+exit 51B | 33.17496,-117.34956 | CA 78 East; Escondido; Escondido, Vista Way
+exit 51C | 33.17741,-117.35138 | Vista Way; Cassidy Street
+exit 52 | 33.19008,-117.36191 | Oceanside Boulevard
+exit 53 | 33.19689,-117.36764 | Mission Avenue
+exit 54A | 33.20259,-117.37841 | CA 76 East; Coast Highway
+exit 54B | 33.20764,-117.38530 | Vandegrift Boulevard, Camp Pendleton; Coast Highway
+exit 54C | 33.20992,-117.38676 | Harbor Drive; Harbor Drive, Vandegrift Boulevard, Camp Pendleton
+exit 62 | 33.29685,-117.46196 | Las Pulgas Road
+exit 71 | 33.38427,-117.57962 | San Onofre, Basilone Road
+exit 72 | 33.39293,-117.59108 | Cristianitos Road
+exit 73 | 33.41027,-117.60061 | Avenida Magdalena; Avenida Calafia
+exit 74 | 33.41504,-117.60299 | El Camino Real
+exit 75 | 33.42475,-117.60884 | Avenida Presidio; San Clemente; Avenida Palizada
+exit 76 | 33.43651,-117.61852 | Avenida Pico
+exit 77 | 33.44292,-117.62829 | Avenida Vista Hermosa
+exit 78 | 33.45690,-117.65251 | Camino de Estrella
+exit 79 | 33.46277,-117.66294 | CA 1; Camino Las Ramblas, Pacific Coast Highway; Pacific Coast Highway, Camino Las Ramblas
+exit 81 | 33.48588,-117.66604 | Camino Capistrano
+exit 82 | 33.49839,-117.65845 | CA 74; Ortega Highway, San Juan Capistrano
+exit 83 | 33.51740,-117.66421 | Junipero Serra Road
+exit 85 | 33.55123,-117.67301 | Avery Parkway
+exit 85A | 33.53710,-117.67454 | 
+exit 85B | 33.54381,-117.67339 | Avery Parkway
+exit 86 | 33.55484,-117.67276 | Crown Valley Parkway
+exit 88 | 33.57487,-117.67171 | Oso Parkway
+exit 89 | 33.59562,-117.67347 | La Paz Road
+exit 90 | 33.60256,-117.68701 | Alicia Parkway
+exit 91 | 33.61175,-117.70390 | El Toro Road
+exit 92 | 33.65139,-117.74064 | 
+exit 92A | 33.62357,-117.71588 | Lake Forest Drive
+exit 94 | 33.65621,-117.74450 | Alton Parkway
+exit 94A | 33.63903,-117.73031 | 
+exit 94B | 33.65233,-117.74101 | Alton Parkway
+exit 95 | 33.66433,-117.75048 | CA 133 North; Riverside; CA 133 South; Laguna Beach, Barranca Parkway
+exit 96 | 33.67697,-117.75724 | Sand Canyon Avenue
+exit 96A | 33.67968,-117.76060 | Sand Canyon Avenue
+exit 96B | 33.68149,-117.76262 | CA 133 North; Santa Margarita
+exit 97 | 33.68673,-117.76607 | Jeffrey Road
+exit 99 | 33.70696,-117.77936 | Culver Drive
+exit 100 | 33.71671,-117.79067 | Jamboree Road
+exit 101A | 33.72491,-117.80256 | Tustin Ranch Road
+exit 101B | 33.73151,-117.81223 | Red Hill Avenue, Tustin; Red Hill Avenue
+exit 102 | 33.74112,-117.83550 | Newport Avenue
+exit 103 | 33.74166,-117.83705 | CA 55 South; Newport Beach
+exit 103A | 33.73976,-117.83098 | CA 55 North; Riverside, Anaheim
+exit 103B | 33.74030,-117.83250 | CA 55 South
+exit 103C | 33.74480,-117.84171 | First Street, Fourth Street
+exit 104 | 33.75347,-117.84830 | Grand Avenue, Santa Ana Boulevard
+exit 104A | 33.75082,-117.84549 | Fourth Street, First Street
+exit 104B | 33.75695,-117.85710 | Santa Ana Boulevard, Grand Avenue
+exit 105A | 33.75784,-117.85809 | 17th Street; Penn Way, 17th Street
+exit 105B | 33.76484,-117.86552 | Main Street, Broadway
+exit 106 | 33.77399,-117.87192 | CA 22 West; Long Beach
+exit 107A | 33.78005,-117.87710 | CA 57 North; Pomona; CA 22 East; Orange, La Veta Avenue, Bristol Street
+exit 107B | 33.78667,-117.88471 | Chapman Avenue; CA 22 West; Garden Grove
+exit 107C | 33.78903,-117.88676 | State College Boulevard, The City Drive; State College Boulevard, The City Drive, Chapman Avenue
+exit 109 | 33.79943,-117.89772 | Katella Avenue, Disney Way
+exit 109A | 33.80690,-117.90677 | Katella Avenue, Orangewood Avenue
+exit 109B | 33.80925,-117.90925 | Disney Way, Anaheim Boulevard
+exit 110 | 33.81295,-117.91249 | Harbor Boulevard, Ball Road
+exit 110A | 33.81736,-117.91765 | Harbor Boulevard
+exit 110B | 33.82627,-117.92613 | Disneyland Drive, Ball Road
+exit 111 | 33.82921,-117.92845 | Lincoln Avenue
+exit 112 | 33.83437,-117.93601 | Euclid Street
+exit 113 | 33.84756,-117.96342 | Brookhurst Street, La Palma Avenue
+exit 113A | 33.84182,-117.95240 | Brookhurst Street, La Palma Avenue
+exit 113B | 33.84356,-117.95550 | La Palma Avenue East
+exit 113C | 33.85240,-117.97209 | CA 91 West; Artesia
+exit 114 | 33.85382,-117.97433 | CA 91 East; Magnolia Avenue
+exit 114A | 33.85718,-117.98167 | Magnolia Avenue
+exit 114B | 33.86097,-117.98921 | CA 91 East; Riverside
+exit 115 | 33.86236,-117.99071 | Auto Center Drive
+exit 116 | 33.86567,-117.99653 | CA 39; Beach Boulevard
+exit 117 | 33.87063,-118.00573 | Artesia Boulevard; Artesia Boulevard, Knott Avenue
+exit 118 | 33.88200,-118.02511 | Valley View Ave, N Firestone Blvd; Valley View Avenue
+exit 119 | 33.89085,-118.04124 | Carmenita Road
+exit 120 | 33.90567,-118.06607 | Rosecrans Avenue
+exit 120B | 33.90017,-118.05788 | Rosecrans Avenue
+exit 121 | 33.91034,-118.07035 | Norwalk Boulevard, Imperial Highway
+exit 122 | 33.92046,-118.08250 | Imperial Highway, Norwalk Boulevard
+exit 123 | 33.93214,-118.09018 | Florence Avenue
+exit 124 | 33.94472,-118.09910 | I 605 North, I 605 South; San Gabriel River Freeway
+exit 125 | 33.95628,-118.10940 | CA 19; Lakewood Boulevard, Rosemead Boulevard
+exit 126A | 33.96278,-118.11839 | Paramount Boulevard; Paramount Boulevard, Downey
+exit 126B | 33.97375,-118.12371 | Slauson Avenue
+exit 128A | 33.98458,-118.13350 | Garfield Avenue
+exit 128B | 33.99575,-118.14529 | Washington Boulevard
+exit 129 | 34.00653,-118.15534 | Atlantic Boulevard North; Atlantic Boulevard, Eastern Avenue
+exit 130A | 34.01013,-118.15974 | I 710 South; Atlantic Boulevard South, Long Beach Freeway South; Triggs Street
+exit 130B | 34.01467,-118.16839 | Eastern Avenue; I 710 South; Long Beach
+exit 130C | 34.01490,-118.16909 | I 710 North; Pasadena
+exit 131 | 34.02023,-118.18824 | Indiana Street
+exit 131A | 34.01945,-118.17987 | Olympic Boulevard
+exit 131B | 34.02005,-118.19111 | Ditman Avenue
+exit 132 | 34.02074,-118.19439 | Calzona Street; Indiana Street
+exit 133 | 34.02512,-118.20458 | Grande Vista Avenue
+exit 134A | 34.03146,-118.21981 | Soto Street
+exit 134B | 34.02906,-118.21326 | Soto Street; CA 60 East; Pomona
+exit 134C | 34.03199,-118.21892 | Seventh Street
+exit 135A | 34.04082,-118.21850 | Fourth Street
+exit 135B | 34.04729,-118.21455 | Cesar Chavez Avenue
+exit 135C | 34.05110,-118.21390 | I 10 East; San Bernardino Freeway, San Bernardino; Mission Road
+exit 136A | 34.06654,-118.21621 | Main Street
+exit 136B | 34.06877,-118.21678 | Broadway
+exit 137A | 34.08306,-118.22801 | CA 110 North; Arroyo Seco Parkway, Pasadena
+exit 137B | 34.07420,-118.21930 | CA 110 North; Pasadena, Arroyo Seco Parkway
+exit 138 | 34.09151,-118.23970 | Stadium Way
+exit 140 | 34.10990,-118.26193 | Glendale Boulevard
+exit 140A | 34.10808,-118.25874 | Fletcher Drive
+exit 140B | 34.11530,-118.26855 | Glendale Boulevard
+exit 141 | 34.12792,-118.27382 | Los Feliz Boulevard
+exit 141A | 34.11709,-118.26922 | Los Feliz Boulevard
+exit 141B | 34.12158,-118.27159 | Griffith Park Drive
+exit 142 | 34.13848,-118.27662 | Colorado Street; Colorado Street, South Pacific Avenue, San Fernando Road
+exit 144 | 34.15489,-118.28883 | CA 134 East; Glendale, Pasadena
+exit 144A | 34.14725,-118.27907 | CA 134 East; Zoo Drive; Pasadena, Los Angeles Zoo, Autry National Center
+exit 145A | 34.16168,-118.29337 | Western Avenue
+exit 145B | 34.16735,-118.30011 | Alameda Avenue
+exit 146A | 34.17682,-118.30782 | Olive Avenue, Downtown; Verdugo Avenue
+exit 146B | 34.18214,-118.31470 | Burbank Boulevard
+exit 147B | 34.18935,-118.32409 | Empire Avenue, San Fernando Boulevard
+exit 148 | 34.19894,-118.33778 | Buena Vista Street
+exit 149 | 34.21045,-118.34628 | Hollywood Way; Hollywood Way, Hollywood Burbank Airport
+exit 150 | 34.22242,-118.37012 | Sunland Boulevard
+exit 150A | 34.22044,-118.35733 | Glenoaks Boulevard
+exit 150B | 34.22192,-118.36281 | Sunland Boulevard
+exit 151 | 34.22395,-118.37228 | Penrose Street
+exit 152 | 34.22677,-118.38085 | Lankershim Boulevard, Tuxford Street; Lankershim Boulevard
+exit 153 | 34.23092,-118.39911 | Sheldon Street
+exit 153A | 34.23133,-118.40283 | Sheldon Street
+exit 153B | 34.23266,-118.40833 | Branford Street; CA 170 South; Hollywood
+exit 154 | 34.24203,-118.41928 | Osborne Street
+exit 155A | 34.24942,-118.42710 | Terra Bella Street
+exit 155B | 34.25347,-118.43140 | Van Nuys Boulevard
+exit 156A | 34.26036,-118.43874 | CA 118 West, CA 118 East; Paxton Street
+exit 156B | 34.26207,-118.44021 |  Paxton Street
+exit 157 | 34.27947,-118.45563 | San Fernando Mission Boulevard; San Fernando
+exit 157A | 34.27084,-118.44758 | Brand Boulevard
+exit 157B | 34.27352,-118.44956 | San Fernando, Mission Boulevard
+exit 158 | 34.29641,-118.47302 | 
+exit 159 | 34.30562,-118.48202 | Roxford Street
+exit 159A | 34.30076,-118.47702 | Roxford Street East
+exit 159B | 34.30122,-118.47751 | Roxford Street
+exit 161A | 34.32005,-118.49487 | I 210 East; Foothill Freeway; Pasadena
+exit 161B | 34.33572,-118.51102 | Balboa Boulevard, San Fernando Road
+exit 162 | 34.33085,-118.50621 | CA 14 North; Palmdale, Lancaster
+exit 163 | 34.33988,-118.51896 | 
+exit 166 | 34.35965,-118.55410 | Calgrove Boulevard
+exit 167 | 34.37535,-118.56319 | Lyons Avenue, Pico Canyon Road
+exit 168 | 34.39092,-118.57029 | McBean Parkway
+exit 169 | 34.40516,-118.57474 | Valencia Boulevard
+exit 170 | 34.41946,-118.58120 | Magic Mountain Parkway
+exit 171 | 34.43520,-118.59314 | Rye Canyon Road
+exit 172 | 34.44064,-118.60019 | CA 126 West; Newhall Ranch Road
+exit 173 | 34.45191,-118.61481 | Hasley Canyon Road
+exit 176 | 34.49907,-118.62635 | Lake Hughes Road; Castaic
+exit 176A | 34.48713,-118.61713 | Parker Road
+exit 176B | 34.49240,-118.62109 | Lake Hughes Road, Castaic
+exit 183 | 34.56694,-118.68616 | Templin Highway
+exit 185 | 34.58904,-118.71178 | Brake Check Area
+exit 191 | 34.66504,-118.76173 | Vista Del Lago Road
+exit 195 | 34.70527,-118.79479 | Smokey Bear Road
+exit 198 | 34.75958,-118.79596 | Quail Lake Road
+exit 199 | 34.77093,-118.80356 | CA 138 East; Lancaster, Palmdale
+exit 202 | 34.79459,-118.84770 | Gorman
+exit 204 | 34.80204,-118.87610 | 
+exit 205 | 34.81360,-118.88442 | Frazier Mountain Park Road
+exit 207 | 34.83108,-118.86781 | Lebec
+exit 210 | 34.87502,-118.89235 | Fort Tejon
+exit 215 | 34.94009,-118.93020 | Grapevine
+exit 219A | 34.98341,-118.94417 | Laval Road East
+exit 219B | 34.98676,-118.94529 | Laval Road West
+exit 221 | 35.00653,-118.95154 | 
+exit 225 | 35.05617,-118.99555 | CA 166; Maricopa, Taft; Mettler, Maricopa
+exit 228 | 35.09190,-119.03374 | Copus Road
+exit 234 | 35.15881,-119.10745 | Old River Road
+exit 239 | 35.20583,-119.15915 | CA 223; Bear Mountain Boulevard; Arvin; Bear Mountain Boulevard, Arvin
+exit 244 | 35.26344,-119.22042 | CA 119; Taft Highway; Pumpkin Center, Lamont
+exit 246 | 35.29058,-119.24932 | CA 43; Shafter, Wasco; Taft, Maricopa
+exit 253 | 35.35242,-119.33217 | Stockdale Highway
+exit 257 | 35.39907,-119.39730 | CA 58; Buttonwillow, McKittrick; Bakersfield
+exit 262 | 35.43965,-119.45283 | 7th Standard Road, Rowlee Road
+exit 263 | 35.45740,-119.47787 | Buttonwillow, McKittrick
+exit 268 | 35.49711,-119.53146 | Lerdo Highway
+exit 278 | 35.61164,-119.64961 | CA 46; Lost Hills, Paso Robles; Lost Hills, Wasco
+exit 288 | 35.72816,-119.73633 | Twisselman Road
+exit 305 | 35.93218,-119.90937 | Utica Avenue; Alpaugh
+exit 309 | 35.97851,-119.95685 | CA 41; Kettleman City, Fresno; Paso Robles, Kettleman City
+exit 319 | 36.07510,-120.09893 | CA 269; Lassen Avenue
+exit 325 | 36.13363,-120.15486 | Jayne Avenue
+exit 334 | 36.25075,-120.24148 | CA 198; Lemoore, Hanford
+exit 337 | 36.29161,-120.26727 | CA 33 South, CA 145 North; Kerman; Coalinga
+exit 349 | 36.43371,-120.39208 | CA 33 North; Derrick Avenue; Mendota
+exit 357 | 36.52856,-120.48477 | Kamm Avenue
+exit 365 | 36.60206,-120.58200 | Manning Avenue
+exit 368 | 36.63654,-120.62033 | Panoche Road
+exit 372 | 36.68368,-120.65647 | Russell Avenue
+exit 379 | 36.77440,-120.72148 | Shields Avenue
+exit 385 | 36.84694,-120.77136 | Nees Avenue; Firebaugh
+exit 386 | 36.86050,-120.78072 | Rest Area
+exit 391 | 36.92841,-120.83821 | CA 165 North; Mercy Springs Road; Los Banos
+exit 403A | 37.05366,-120.96663 | CA 152 East, CA 33 South; Los Banos
+exit 403B | 37.05664,-120.96951 | CA 152 West; Gilroy, Hollister, San Jose; Monterey, Hollister
+exit 407 | 37.10449,-121.01412 | CA 33; Santa Nella, Gustine; Santa Nella, Gilroy
+exit 418 | 37.24264,-121.08782 | CA 140; Gustine, Merced
+exit 423 | 37.32276,-121.10891 | Stuhr Road
+exit 428 | 37.39456,-121.13603 | Fink Road
+exit 434 | 37.46086,-121.17767 | Diablo Grande Parkway, Sperry Avenue
+exit 441 | 37.53804,-121.26470 | Howard Road; Ingram Creek
+exit 445 | 37.58075,-121.32014 | Rest Area
+exit 446 | 37.59230,-121.33515 | 
+exit 449A | 37.63288,-121.34284 | CA 132 East; Modesto
+exit 449B | 37.63822,-121.34286 | CA 132 West; San Francisco
+exit 452 | 37.68205,-121.34312 | CA 33 South; Vernalis
+exit 457 | 37.74331,-121.34350 | Kasson Road
+exit 458A | 37.76242,-121.33864 | 11th Street
+exit 458B | 37.76984,-121.32844 | 
+exit 460 | 37.77911,-121.31510 | 
+exit 461 | 37.78518,-121.30618 | CA 120 East; Manteca, Sonora
+exit 462 | 37.80774,-121.29688 | East Louise Avenue
+exit 463 | 37.82196,-121.29162 | Lathrop Road
+exit 465 | 37.85153,-121.28290 | Roth Road; Roth Road, Sharpe Depot
+exit 467A | 37.87254,-121.27751 | El Dorado Street
+exit 467B | 37.87903,-121.27828 | West Mathews Road
+exit 468 | 37.89282,-121.28209 | French Camp Road, Arch Airport Road; French Camp Road
+exit 469 | 37.90966,-121.28815 | Downing Avenue, Carolyn Weston Boulevard; Downing Avenue
+exit 470 | 37.92362,-121.29323 | Eighth Street
+exit 471 | 37.93317,-121.29664 | CA 4 West; Charter Way
+exit 472 | 37.94187,-121.29825 | CA 4 East; Fresno Avenue, Navy Drive; Downtown Stockton; CA 4; Fresno Avenue
+exit 473 | 37.95363,-121.30958 | Pershing Avenue; Oak Street, Fremont Street
+exit 474A | 37.95626,-121.32342 | Monte Diablo Avenue
+exit 474B | 37.96186,-121.33426 | Country Club Boulevard, Alpine Avenue; Alpine Avenue, Country Club Boulevard
+exit 476 | 37.98084,-121.34182 | March Lane
+exit 477 | 38.00165,-121.35005 | Benjamin Holt Drive
+exit 478 | 38.01834,-121.35718 | Hammer Lane
+exit 481 | 38.05462,-121.37145 | Eight Mile Road
+exit 485 | 38.11177,-121.39531 | CA 12; Lodi, Fairfield
+exit 487 | 38.14200,-121.39907 | Turner Road
+exit 490 | 38.18628,-121.40237 | Peltier Road
+exit 493 | 38.22277,-121.42828 | Walnut Grove Road
+exit 498 | 38.28154,-121.45715 | Twin Cities Road
+exit 504 | 38.37078,-121.47566 | Hood-Franklin Road; Hood Franklin Road
+exit 506 | 38.40475,-121.48272 | Elk Grove Boulevard
+exit 508 | 38.42293,-121.48655 | Laguna Boulevard
+exit 510 | 38.46234,-121.49550 | Cosumnes River Boulevard
+exit 512 | 38.47791,-121.50755 | Pocket Road, Meadowview Road, Freeport
+exit 513 | 38.49010,-121.51414 | Florin Road
+exit 514 | 38.51959,-121.52195 | 43rd Avenue
+exit 515 | 38.52227,-121.52156 | Fruitridge Road, Seamas Avenue
+exit 516 | 38.53888,-121.51249 | Sutterville Road; Sutterville Road, William Land Park, Sacramento Zoo
+exit 518 | 38.55976,-121.51407 | US 50, I 80 East; San Francisco, South Lake Tahoe
+exit 519A | 38.56613,-121.51309 | Q Street
+exit 519B | 38.57997,-121.50527 | J Street, Downtown; Downtown, J Street
+exit 520 | 38.59384,-121.50406 | Richards Boulevard
+exit 521 | 38.60956,-121.50979 | Garden Highway
+exit 521A | 38.60525,-121.50727 | Garden Highway
+exit 521B | 38.61174,-121.51061 | West El Camino Avenue
+exit 522 | 38.61893,-121.51428 | I 80 West, I 80 East; San Francisco, Reno; I 80 East, I 80 West; Reno, San Francisco
+exit 524 | 38.63862,-121.52353 | Arena Boulevard
+exit 525A | 38.65193,-121.53081 | Del Paso Road
+exit 525B | 38.66496,-121.53795 | CA 99 North, CA 70; Yuba City, Marysville
+exit 527 | 38.67137,-121.56215 | Metro Air Parkway
+exit 528 | 38.67137,-121.58621 | Sacramento International Airport
+exit 531 | 38.67344,-121.63371 | Road 22
+exit 536 | 38.67389,-121.72354 | Road 102, Knights Landing; County Road 102
+exit 537 | 38.67462,-121.74120 | CA 113 South; Main Street, Woodland
+exit 538 | 38.69284,-121.75743 | CA 113 North; Yuba City
+exit 540 | 38.70104,-121.78143 | West Street
+exit 541 | 38.71578,-121.79718 | CA 16 West; Esparto
+exit 542 | 38.73199,-121.81443 | Yolo
+exit 548 | 38.79086,-121.87568 | Zamora
+exit 553 | 38.85179,-121.94407 | 
+exit 554 | 38.85883,-121.95097 | County Road 8
+exit 556 | 38.87803,-121.97086 | Dunnigan
+exit 559 | 38.92217,-121.99782 | County Line Road
+exit 566 | 39.00997,-122.05225 | Arbuckle, College City; College City
+exit 567 | 39.02149,-122.06152 | Putnam Lateral
+exit 569 | 39.05322,-122.08224 | Hahn Road
+exit 575 | 39.12704,-122.13052 | Husted Road
+exit 577 | 39.15393,-122.14209 | Williams
+exit 578 | 39.16308,-122.14764 | CA 20; Colusa, Clear Lake
+exit 586 | 39.27219,-122.18216 | Maxwell Road
+exit 588 | 39.31720,-122.19446 | Maxwell
+exit 591 | 39.34487,-122.19469 | Delevan Road
+exit 595 | 39.40337,-122.19497 | Norman Road, Princeton
+exit 601 | 39.49136,-122.19589 | County Road 57
+exit 603 | 39.52083,-122.21438 | CA 162; Willows, Oroville
+exit 607 | 39.57928,-122.21072 | County Road 39
+exit 610 | 39.62121,-122.20550 | Artois
+exit 614 | 39.67898,-122.20450 | County Road 27; CR 27
+exit 618 | 39.73688,-122.20559 | County Road 16
+exit 619 | 39.74710,-122.20543 | CA 32 East; Orland, Chico
+exit 621 | 39.78073,-122.20434 | County Road 7; CR 7; Road 7
+exit 628 | 39.87856,-122.19995 | Liberal Avenue, Road 99 W
+exit 630 | 39.90285,-122.20004 | South Avenue
+exit 631 | 39.92532,-122.20009 | Corning, Corning Road
+exit 633 | 39.95333,-122.20011 | Finnell Avenue; Richfield; Richfield, Finnell Avenue
+exit 636 | 39.99642,-122.20510 | Tehama, Los Molinos, Gyle Road
+exit 642 | 40.08001,-122.21646 | Proberta, Gerber, Flores Avenue
+exit 647 | 40.15087,-122.22304 | Red Bluff
+exit 647A | 40.15785,-122.22352 | Red Bluff
+exit 647B | 40.16219,-122.22293 | Diamond Avenue
+exit 649 | 40.17757,-122.22242 | CA 36 East, CA 36 West, CA 99; Chico, Redbluff, Lassen Park; Chico, Lassen National Park
+exit 650 | 40.18979,-122.23263 | Adobe Road
+exit 651 | 40.20599,-122.24554 | Red Bluff
+exit 652 | 40.21626,-122.24986 | Wilcox Golf Road
+exit 653 | 40.23296,-122.25508 | Jellys Ferry Road
+exit 657 | 40.28876,-122.27839 | Auction Yard Road, Hooker Creek Road
+exit 659 | 40.32415,-122.28077 | Sunset Hills Drive, Auction Yard Road
+exit 662 | 40.36374,-122.28363 | Bowman Road, Cottonwood; Bowman Road
+exit 664 | 40.38603,-122.28495 | Gas Point Road, Balls Ferry Road; Gas Point Road
+exit 665 | 40.41004,-122.28092 | Cottonwood
+exit 667 | 40.44062,-122.28791 | Deschutes Road, Factory Outlet Drive
+exit 667A | 40.42427,-122.28256 | Anderson, Deschutes Road, Factory Outlet Drive
+exit 667B | 40.43460,-122.28574 | Factory Outlet Drive, Deschutes Road
+exit 668 | 40.44841,-122.28940 | Central Anderson, Lassen National Park; Central Anderson
+exit 670 | 40.46524,-122.30433 | Riverside Avenue
+exit 673 | 40.50213,-122.33555 | Knighton Road
+exit 675 | 40.53437,-122.34959 | Bechelli Lane
+exit 677 | 40.56699,-122.35990 | Cypress Avenue
+exit 678 | 40.57769,-122.36032 | CA 44; Hilltop Drive; Eureka, Susanville
+exit 678A | 40.58512,-122.36070 | CA 44 East; Hilltop Drive, Lassen National Park
+exit 678B | 40.59011,-122.36074 | CA 44 West
+exit 680 | 40.60887,-122.36199 | Lake Boulevard; CA 299
+exit 681 | 40.62007,-122.36551 | Twin View Boulevard
+exit 681A | 40.62602,-122.36778 | Twin View Boulevard
+exit 681B | 40.63310,-122.36823 | CA 273; Market Street
+exit 682 | 40.63865,-122.36591 | Oasis Road
+exit 684 | 40.66083,-122.35663 | Pine Grove Avenue
+exit 685 | 40.67419,-122.35050 | CA 151; Shasta Dam Boulevard
+exit 687 | 40.70258,-122.33901 | Mountain Gate
+exit 689 | 40.72794,-122.32192 | Fawndale Road
+exit 690 | 40.74903,-122.31699 | Bridge Bay Road
+exit 692 | 40.77002,-122.31364 | Turntable Bay Road
+exit 693 | 40.79168,-122.32366 | Packers Bay Road
+exit 695 | 40.80378,-122.32261 | Shasta Caverns Road
+exit 698 | 40.84657,-122.33496 | Gillman Road; Salt Creek Road
+exit 702 | 40.88927,-122.38341 | Lakeshore Drive
+exit 704 | 40.90660,-122.38387 | Riverview Drive
+exit 707 | 40.94003,-122.42478 | Vollmers
+exit 710 | 40.97816,-122.43250 | Slate Creek Road
+exit 712 | 40.99539,-122.41920 | Pollard Flat
+exit 714 | 41.02445,-122.39663 | Gibson Road
+exit 718 | 41.06849,-122.36040 | Sims Road
+exit 720 | 41.09331,-122.34670 | Flume Creek Road
+exit 721 | 41.10665,-122.33339 | Conant Road; conant road
+exit 723 | 41.12144,-122.32665 | Sweetbrier Avenue
+exit 724 | 41.14658,-122.31717 | Castella
+exit 726 | 41.15934,-122.29564 | Soda Creek Road
+exit 727 | 41.16993,-122.29770 | Crag View Drive
+exit 728 | 41.17889,-122.29307 | Crag View Drive
+exit 729 | 41.19086,-122.28534 | I 5 Business; Dunsmuir
+exit 730 | 41.21291,-122.27405 | Central Dunsmuir
+exit 732 | 41.23368,-122.27192 | Siskiyou Avenue, Dunsmuir Avenue; I 5 Business
+exit 734 | 41.25582,-122.26745 | Mott Road
+exit 736 | 41.28273,-122.29782 | McCloud
+exit 737 | 41.28669,-122.30484 | I 5 Business; Mount Shasta
+exit 738 | 41.30718,-122.31836 | Central Mount Shasta
+exit 740 | 41.33481,-122.33503 | Mount Shasta
+exit 741 | 41.34062,-122.33997 | Abrams Lake Road
+exit 743 | 41.36568,-122.36754 | Summit Drive; Summit Drive, Truck Village Drive
+exit 745 | 41.39309,-122.37592 | South Weed
+exit 747 | 41.41538,-122.38220 | US 97; South Weed Boulevard, Klamath Falls; South Weed Boulevard
+exit 748 | 41.42201,-122.39057 | North Weed Boulevard
+exit 751 | 41.43938,-122.43269 | Edgewood, Gazelle
+exit 753 | 41.47191,-122.45183 | Weed Airport Road
+exit 759 | 41.54912,-122.48328 | Louie Road
+exit 766 | 41.64307,-122.53270 | Montague, Grenada
+exit 770 | 41.66547,-122.60618 | Easy Street, Shamrock Road
+exit 773 | 41.70084,-122.64177 | CA 3; Yreka
+exit 775 | 41.72841,-122.63398 | Central Yreka
+exit 776 | 41.73680,-122.63012 | Yreka, Montague; I 5 Business, CA 3
+exit 786 | 41.85207,-122.56983 | Klamath Highway
+exit 789 | 41.89689,-122.56423 | Henley, Hornbrook
+exit 790 | 41.91651,-122.57211 | Hornbrook Highway, Ditch Creek Road
+exit 793 | 41.95166,-122.59010 | Bailey Hill Road
+exit 796 | 41.98960,-122.60783 | Hilt Road

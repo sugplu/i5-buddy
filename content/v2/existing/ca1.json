@@ -1,0 +1,238 @@
+{
+ "places": [
+  {
+   "mi": 0,
+   "name": "San Ysidro Port of Entry",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Southern end of I-5, San Ysidro",
+   "text": "Mile zero of Interstate 5 is the Mexican border, and this crossing is often called the busiest land border crossing in the Western Hemisphere. On a typical day, tens of thousands of cars and tens of thousands of people on foot come north through here. Some of them cross every day for school or work. From here, the freeway runs all the way to Canada.",
+   "src": "https://gsa.gov/SanYsidro"
+  },
+  {
+   "mi": 3,
+   "name": "Montgomery's glider on Otay Mesa",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Otay Mesa, east via SR 905",
+   "text": "On the mesa to the east, a young man named John J. Montgomery flew a glider he built himself, back in 1883 or 1884. Engineers who honor the event say he glided about 600 feet, roughly 20 years before the Wright brothers' powered flight. This stretch of I-5, from the border into downtown San Diego, is named the John J. Montgomery Freeway after him.",
+   "src": "https://en.wikipedia.org/wiki/John_Joseph_Montgomery"
+  },
+  {
+   "mi": 5,
+   "name": "South Bay Salt Works",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Near the Main Street exit",
+   "text": "Just west of the freeway, at the south end of San Diego Bay, seawater is let into shallow ponds and the sun dries it into salt. People have been harvesting salt here since at least 1871. That makes it one of the oldest businesses in the San Diego area, older than almost any building you can see from the road.",
+   "src": "https://en.wikipedia.org/wiki/South_Bay_Salt_Works"
+  },
+  {
+   "mi": 7,
+   "name": "Chula Vista, the old Lemon Capital",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "L Street to E Street exits",
+   "text": "Chula Vista means beautiful view in Spanish, and in the 1920s the town called itself the Lemon Capital of the World. Lemon groves once ran from the bay toward Otay Mountain, watered by the Sweetwater Dam. Housing and wartime factories replaced the groves in the 1940s and 50s, but the town still throws a lemon festival every year.",
+   "src": "https://www.10news.com/news/local-news/the-lemon-capital-of-the-world-looking-back-at-chula-vistas-zesty-history"
+  },
+  {
+   "mi": 14,
+   "name": "Coronado Bridge and Chicano Park",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "SR 75 and Chicano Park Blvd exits",
+   "text": "The tall blue curve over the bay is the San Diego-Coronado Bridge, opened in 1969. The Navy insisted on about 200 feet of clearance so its biggest ships could pass under, and the curve stretched the bridge so the climb would not be too steep for cars. Beneath its pillars is Chicano Park, which neighbors took over in 1970 after the freeway and bridge split their community. Its giant painted murals now make it a National Historic Landmark.",
+   "src": "https://en.wikipedia.org/wiki/San_Diego%E2%80%93Coronado_Bridge"
+  },
+  {
+   "mi": 19,
+   "name": "El Indio",
+   "cat": "stop",
+   "side": "E",
+   "visible": false,
+   "where": "Washington St exit, India Street",
+   "text": "El Indio started in 1940 as a family tortilla shop and has been on India Street since 1947. The restaurant is credited with giving the taquito its name, small rolled tacos that workers could grab on the go. Some say it invented them too, but that part is still argued over. It's a short hop east of the freeway.",
+   "src": "https://fox5sandiego.com/news/business/family-recipe-to-phenomenon-the-san-diego-restaurant-credited-with-creating-taquitos/amp/"
+  },
+  {
+   "mi": 20,
+   "name": "Old Town and Presidio Hill",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Old Town Ave exit",
+   "text": "The hill just east of here is where Spain set up its first fort and mission in California, in the summer of 1769. Before that, the Kumeyaay village of Kosa'aay stood at the base of the hill. Its name means drying out place. The Spanish called it Cosoy. Old Town below the hill is full of restored 1800s adobes, and the white mission-style building on top is the Serra Museum, built in 1929.",
+   "src": "https://en.wikipedia.org/wiki/Presidio_of_San_Diego"
+  },
+  {
+   "mi": 22,
+   "name": "Mission Bay",
+   "cat": "nature",
+   "side": "W",
+   "visible": true,
+   "where": "Sea World Dr to Grand Ave exits",
+   "text": "The water on your left was once a tidal marsh that sailors called False Bay, because it could be mistaken for San Diego Bay. Starting in the 1940s, the city dredged out about 25 million cubic yards of sand and mud to shape islands and coves. Today it's a park of about 4,200 acres, the largest man-made water park of its kind in the country.",
+   "src": "https://timesofsandiego.com/arts/2026/03/07/before-the-dredges-the-marsh-that-became-mission-bay/"
+  },
+  {
+   "mi": 28,
+   "name": "San Diego California Temple",
+   "cat": "odd",
+   "side": "E",
+   "visible": true,
+   "where": "Nobel Dr / La Jolla Village Dr exits",
+   "text": "That bright white building with two tall spires, on the ridge to the east, is a temple of the Church of Jesus Christ of Latter-day Saints. It was dedicated in 1993 and was California's third temple of that church. Look for the four smaller spires clustered around the base of each tall one, a design found on no other temple.",
+   "src": "https://churchofjesuschristtemples.org/san-diego-california-temple/"
+  },
+  {
+   "mi": 36,
+   "name": "Del Mar racetrack",
+   "cat": "hist",
+   "side": "W",
+   "visible": true,
+   "where": "Via de la Valle exit",
+   "text": "The fairgrounds and racetrack on your left are where the turf meets the surf. The singer Bing Crosby helped found the track and stood at the front gate greeting fans when it opened in the summer of 1937. A song he recorded about the place is still played before the first and last race of the day.",
+   "src": "https://www.americasbestracing.net/lifestyle/2024-where-the-turf-meet-the-surf-and-stars-come-out-play-del-mars-hollywood-connection"
+  },
+  {
+   "mi": 43,
+   "name": "Ecke poinsettia ranch",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Leucadia Blvd exit, Encinitas",
+   "text": "If you've ever had a red poinsettia at Christmas, its family tree probably leads here. The Ecke family moved their poinsettia farm from Hollywood to Encinitas in 1923. By 1991, about 90 percent of all poinsettias sold in the world had their start at the Ecke Ranch.",
+   "src": "https://archives.csusm.edu/ecke/exhibits/show/family-papers/paul-sr"
+  },
+  {
+   "mi": 47,
+   "name": "The Flower Fields",
+   "cat": "farm",
+   "side": "E",
+   "visible": true,
+   "where": "Palomar Airport Rd exit",
+   "text": "In spring, the hillside on the east side of the freeway turns into stripes of color. That's about 50 acres of giant ranunculus flowers, blooming from early March into May and peaking around mid-April. The rest of the year, the hill looks like any other field, so spring travelers get the show.",
+   "src": "https://www.nbclosangeles.com/worth-the-trip/the-famous-flower-fields-in-carlsbad-are-in-full-bloom/2565160/"
+  },
+  {
+   "mi": 48,
+   "name": "Carlsbad Strawberry Company",
+   "cat": "farm",
+   "side": "E",
+   "visible": true,
+   "where": "Cannon Rd exit",
+   "text": "One block east of the freeway on Cannon Road, the Ukegawa family grows strawberries you can pick yourself. The family has farmed in North County since around 1950, once on about 2,000 acres. In 2006, Carlsbad voters chose to protect these fields from development.",
+   "src": "https://californiagrown.org/blog/carlsbad-strawberry-company/"
+  },
+  {
+   "mi": 53,
+   "name": "101 Cafe",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Mission Ave exit, Coast Highway",
+   "text": "Before this freeway existed, the main road to Los Angeles was Highway 101, which ran right down Oceanside's Coast Highway. The 101 Cafe opened beside it in 1928 as a 20-seat diner, and Greyhound buses used to stop out front. It's still serving breakfast, and it's often called the oldest cafe on old 101.",
+   "src": "https://www.10news.com/news/life-in/oceansides-cafe-101-is-as-rich-in-history-as-it-is-in-its-food"
+  },
+  {
+   "mi": 54,
+   "name": "Mission San Luis Rey",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "SR 76 exit, about 4 miles east",
+   "text": "About four miles up the San Luis Rey River stands Mission San Luis Rey, founded in 1798. It became known as the King of the Missions because it was the largest of California's 21 missions. It had more people, land, and crops than any of the others.",
+   "src": "https://en.wikipedia.org/wiki/Mission_San_Luis_Rey_de_Francia"
+  },
+  {
+   "mi": 57,
+   "name": "Camp Pendleton",
+   "cat": "hist",
+   "side": null,
+   "visible": true,
+   "where": "Harbor Dr / Vandegrift Blvd to Basilone Rd",
+   "text": "For the next 17 miles or so, the open hills on both sides belong to Marine Corps Base Camp Pendleton. In 1942, the government bought the old Rancho Santa Margarita y Las Flores, once owned by Pio Pico, the last governor of Mexican California. Because the Marines kept the land for training, this is one of the longest undeveloped stretches of coast left in Southern California.",
+   "src": "https://en.wikipedia.org/wiki/Marine_Corps_Base_Camp_Pendleton"
+  },
+  {
+   "mi": 62,
+   "name": "Las Pulgas",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Las Pulgas Rd exit",
+   "text": "Las Pulgas is Spanish for the fleas. Spanish soldiers in the 1700s camped at this canyon and got badly bitten, and the name stuck. The Portola expedition, the first Spanish land party to travel up California, camped here in July 1769.",
+   "src": "https://en.wikipedia.org/wiki/Camp_Las_Pulgas"
+  }
+ ],
+ "zones": [
+  {
+   "from": 0,
+   "to": 12,
+   "label": "Border and South Bay",
+   "text": "Flat land around the south end of San Diego Bay, with marsh and salt ponds out toward the water. These neighborhoods were lemon groves a century ago."
+  },
+  {
+   "from": 12,
+   "to": 28,
+   "label": "San Diego Bay to Mission Bay",
+   "text": "The freeway hugs downtown, the harbor, and the airport, then swings past the calm water and islands of Mission Bay. Look for Navy ships in the bay and planes coming in low over the hills."
+  },
+  {
+   "from": 28,
+   "to": 54,
+   "label": "North County lagoons and flower fields",
+   "text": "You cross a string of coastal lagoons where creeks meet the sea, with beach towns in between. Carlsbad's flower fields bloom from March to early May, and strawberries ripen in spring."
+  },
+  {
+   "from": 54,
+   "to": 72,
+   "label": "Camp Pendleton coast",
+   "text": "About 17 miles of open hills and beach with almost no buildings, because it's all Marine Corps training land. The hills are green after winter rains and golden by summer."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 36,
+   "q": "Which famous singer stood at the front gate to greet fans when the Del Mar racetrack opened in 1937?",
+   "choices": [
+    "Frank Sinatra",
+    "Bing Crosby",
+    "Elvis Presley",
+    "Dean Martin"
+   ],
+   "answer": 1,
+   "why": "Bing Crosby helped found the track and welcomed the crowd on opening day."
+  },
+  {
+   "mi": 47,
+   "q": "What kind of flower paints the Carlsbad Flower Fields in stripes each spring?",
+   "choices": [
+    "Tulips",
+    "Sunflowers",
+    "Ranunculus",
+    "Poppies"
+   ],
+   "answer": 2,
+   "why": "The fields are about 50 acres of giant ranunculus, blooming from March into May."
+  },
+  {
+   "mi": 62,
+   "q": "Las Pulgas Road on Camp Pendleton is named after what?",
+   "choices": [
+    "Fleas",
+    "Pigs",
+    "Pine trees",
+    "Pelicans"
+   ],
+   "answer": 0,
+   "why": "Las pulgas is Spanish for the fleas, which bit Spanish soldiers who camped there."
+  }
+ ]
+}

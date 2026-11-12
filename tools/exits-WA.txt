@@ -1,0 +1,167 @@
+# I-5 exits in WA from OpenStreetMap (exit ref | lat,lon | signed destinations)
+exit 1A | 45.62167,-122.67292 | SR 14 East; Camas
+exit 1B | 45.62277,-122.67190 | City Center, Convention Center
+exit 1C | 45.63589,-122.66260 | SR 501; City Center, Mill Plain Boulevard, Port of Vancouver
+exit 1D | 45.64197,-122.66201 | 4th Plain Boulevard
+exit 1D;1C | 45.62786,-122.66709 | SR 501; 4th Plain Boulevard, Mill Plain Boulevard
+exit 2 | 45.64464,-122.66169 | SR 500 East; 39th Street
+exit 3 | 45.65385,-122.66308 | Northeast Highway 99; Main Street
+exit 4 | 45.67272,-122.66439 | Northeast 78th Street
+exit 5 | 45.68773,-122.66382 | Northeast 99th Street
+exit 7 | 45.72964,-122.65633 | 
+exit 7A | 45.71421,-122.65320 | Northeast 134th Street, Washington State University Vancouver
+exit 7B | 45.71814,-122.65481 | Northeast 139th Street
+exit 9 | 45.74680,-122.66135 | Northeast 179th Street, Clark County Event Center; Northeast 179th Street
+exit 11 | 45.76533,-122.66710 | SR 502 East; Rest Area, Battle Ground; Battle Ground
+exit 14 | 45.81149,-122.68372 | SR 501 South; Pioneer Street, Ridgefield
+exit 16 | 45.84801,-122.70070 | La Center, Cowlitz Reservation
+exit 21 | 45.90267,-122.74066 | SR 503 East; Woodland, Cougar
+exit 22 | 45.92380,-122.75357 | Dike Access Road
+exit 27 | 45.97701,-122.82146 | Todd Road; Port of Kalama; Todd Road, Port of Kalama
+exit 30 | 46.00392,-122.84406 | Kalama
+exit 32 | 46.03784,-122.85767 | Kalama River Road
+exit 39 | 46.14078,-122.89751 | SR 4 West; Allen Street, Kelso; Allen Street Kelso
+exit 40 | 46.15325,-122.90120 | North Kelso Avenue
+exit 42 | 46.18073,-122.89892 | Lexington Bridge Drive
+exit 46 | 46.22894,-122.88791 | Headquarters Road, Pleasant Hill Road; Headquarters Road
+exit 48 | 46.25647,-122.88463 | I 5 Business Loop; Castle Rock; Interstate 5 Business Route
+exit 49 | 46.28013,-122.89990 | SR 411 South, SR 504 East; Castle Rock, Toutle; SR 504; Castle Rock
+exit 52 | 46.32012,-122.91454 | Barnes Drive, Toutle Park Road; Barnes Driv, Toutle Park Road
+exit 57 | 46.38544,-122.90313 | Jackson Highway; Jackson Highway,  Barnes Drive
+exit 59 | 46.41614,-122.89046 | SR 506 West; Vader, Ryderwood
+exit 60 | 46.43426,-122.88924 | Toledo Vader Road
+exit 63 | 46.47105,-122.88397 | SR 505; Winlock, Toledo
+exit 68 | 46.54326,-122.87651 | US 12 East; Morton, Yakima
+exit 71 | 46.57932,-122.88418 | SR 508 East; Onalaska, Napavine
+exit 72 | 46.60208,-122.90448 | Rush Road
+exit 74 | 46.62263,-122.92835 | Labree Road
+exit 76 | 46.64309,-122.95328 | 13th Street, Southwest Parkland Drive; Southwest Parkland Drive; 13th Street
+exit 77 | 46.65635,-122.97686 | SR 6 West; West Main Street; Pe Ell, Raymond
+exit 79 | 46.67298,-122.97790 | Chamber Way
+exit 81 | 46.70003,-122.97155 | SR 507 North; Mellen Street, City Center
+exit 82 | 46.71823,-122.97616 | Harrison Avenue, Factory Outlet Way
+exit 88 | 46.79977,-123.00867 | US 12 West; Aberdeen, Tenino
+exit 95 | 46.89244,-122.96205 | SR 121; Littlerock, Maytown; SR 121 North
+exit 99 | 46.94697,-122.93907 | SR 121 South; 93rd Avenue
+exit 101 | 46.97599,-122.93031 | Tumwater Boulevard, Olympia Airport
+exit 102 | 46.99675,-122.91393 | Trosper Road, Black Lake
+exit 103 | 47.00846,-122.90714 | Deschutes Way, 2nd Avenue
+exit 104 | 47.01714,-122.90584 | US 101 North; Aberdeen, Port Angeles; US 101
+exit 105 | 47.02603,-122.89761 | State Capitol, Olympia City Center
+exit 107 | 47.04031,-122.85845 | Pacific Avenue
+exit 108 | 47.04460,-122.84332 | Sleater-Kinney Road, College Street; Sleater-Kinney Road South, College Street
+exit 109 | 47.04716,-122.82154 | Martin Way; Martin Way, College Street, Sleater-Kinney Road North
+exit 111 | 47.06103,-122.77981 | SR 510 East; Marvin Road North, Marvin Road South, Yelm; Marvin Road, Yelm
+exit 114 | 47.06793,-122.72474 | Nisqually
+exit 116 | 47.08144,-122.67527 | Mounts Road, Old Nisqually
+exit 118 | 47.08721,-122.64752 | City Center, Center Drive
+exit 119 | 47.09111,-122.63046 | Steilacoom-DuPont Road, Clark Road; Steilacoom, DuPont Road
+exit 122A | 47.11624,-122.56096 | Berkeley Street, Madigan
+exit 122B | 47.12388,-122.54797 | Thorne Lane, JBLM Logistics Gate
+exit 124 | 47.13413,-122.53056 | Gravelly Lake Drive
+exit 125 | 47.14389,-122.51034 | Bridgeport Way, McChord Field
+exit 127 | 47.15866,-122.48440 | SR 512 East; South Tacoma Way, Puyallup
+exit 128 | 47.17582,-122.46687 | South 84th Street
+exit 129 | 47.18630,-122.46335 | South 72nd Street; South 72 Street, South 84 Street
+exit 130 | 47.20107,-122.46142 | South 56th Street, University Place; South 56th Street
+exit 132 | 47.21575,-122.46271 | SR 16 West; Gig Harbor, Bremerton, South 38th Street
+exit 132A | 47.23108,-122.45567 | I 5 South; South 38th Street, Tacoma Mall
+exit 132B | 47.23053,-122.45148 | SR 16 West; Gig Harbor, Bremerton
+exit 133 | 47.22667,-122.46304 | I 705 North, SR 7 South; City Center; SR 7 South, I 705 North; City Center, Tacoma Dome
+exit 134 | 47.23836,-122.41665 | Portland Avenue
+exit 135 | 47.23882,-122.41251 | SR 167 North; Puyallup; Puyallup, Portland Avenue
+exit 136 | 47.24070,-122.37525 | Port of Tacoma
+exit 136A | 47.24139,-122.38987 | 20th Street East
+exit 136B | 47.24122,-122.38664 | Port of Tacoma
+exit 137 | 47.24059,-122.36300 | SR 99 North; Fife,  54th Avenue East; 54th Avenue East, Fife
+exit 138 | 47.24815,-122.33378 | 
+exit 142A | 47.28518,-122.30783 | SR 18 East; Auburn, Muckleshoot Reservation; Auburn
+exit 142B | 47.28842,-122.30678 | SR 18 West; South 348th Street
+exit 143 | 47.31092,-122.29895 | Federal Way, South 320th Street
+exit 147 | 47.35303,-122.29582 | South 272nd Street
+exit 149 | 47.38561,-122.29000 | SR 516 East; Kent, Des Moines; SR 516
+exit 150 | 47.40328,-122.29228 | 
+exit 151 | 47.41633,-122.28957 | South 200th Street, Military Road
+exit 152 | 47.42861,-122.27491 | South 188th Street, Orillia Road South; South 188th Street, Orillia Road
+exit 153 | 47.45348,-122.26408 | Tukwila, Southcenter Parkway
+exit 154A | 47.46429,-122.26655 | I 405 North; Renton
+exit 154B | 47.47209,-122.26913 | SR 518; Seattle-Tacoma International Airport, Southcenter, Southcenter Boulevard
+exit 156 | 47.47767,-122.27105 | SR 599 North; Tukwila; Tukwila, Interurban Avenue
+exit 157 | 47.49948,-122.27376 | Martin Luther King Way; SR 900 East
+exit 158 | 47.50562,-122.27971 | East Marginal Way, Airport Way; Boeing Access Road, East Marginal Way
+exit 161 | 47.54190,-122.30354 | Swift Avenue, Albro Place; Albro Place, Swift Avenue
+exit 162 | 47.54882,-122.31217 | Corson Avenue, Michigan Street
+exit 163 | 47.56653,-122.32051 | West Seattle Bridge, Columbian Way, Port of Seattle
+exit 163A | 47.57730,-122.31968 | West Seattle Bridge, Columbian Way
+exit 163B | 47.58006,-122.31931 | Forest Avenue, 6th Avenue South
+exit 164 | 47.60723,-122.33022 | Bellevue, Spokane
+exit 164A | 47.58713,-122.32014 | I 90 East, I 5 North; Dearborn Street, James Street, Madison Street, Spokane
+exit 164B | 47.58978,-122.32070 | East Martinez Drive
+exit 165 | 47.60586,-122.32867 | Seneca Street
+exit 165A | 47.61057,-122.33138 | James Street
+exit 165B | 47.61325,-122.33046 | Union Street
+exit 166 | 47.61326,-122.33003 | Olive Way; Stewart Street, Denny Way
+exit 167 | 47.61914,-122.32824 |  Mercer Street, Seattle Center; Mercer Street, Seattle Center
+exit 168A | 47.63225,-122.32411 | Lakeview Boulevard; Boylston Avenue, Roanoke Street
+exit 168B | 47.63854,-122.32263 | SR 520; Bellevue, Kirkland; SR 520 East; Montlake, Bellevue, Kirkland
+exit 169 | 47.65665,-122.32232 | Northeast 50th Street, Northeast 45th Street
+exit 170 | 47.66982,-122.32173 | Ravenna Boulevard, Northeast 65th Street
+exit 171 | 47.67714,-122.32042 | SR 522; Bothell, Lake City Way; Northeast 71st Street, Northeast 65th Street
+exit 172 | 47.68603,-122.32505 | North 85th Street, Aurora Avenue North; North 85th Street, Northeast 80th Street
+exit 173 | 47.70363,-122.32941 | Northgate Way, 1st Avenue Northeast; North Seattle College
+exit 174 | 47.71985,-122.32418 | Northeast 130th Street, Roosevelt Way
+exit 175 | 47.72945,-122.32412 | SR 523; Northeast 145th Street; Northeast 145th Street, 5th Avenue Northeast
+exit 176 | 47.75341,-122.33011 | Northeast 175th Street; Shoreline; Shoreline, Shoreline Community College
+exit 177 | 47.77195,-122.32020 | SR 104; Edmonds, Lake Forest Park
+exit 178 | 47.78029,-122.31707 | 236th Street Southwest; Mountlake Terrace
+exit 179 | 47.79559,-122.31537 | 220th Street Southwest; Mountlake Terrace
+exit 181 | 47.83127,-122.26330 | SR 524; 196th Street Southwest; Lynnwood, Brier, Edmonds Community College
+exit 181A | 47.80998,-122.29924 | Lynnwood, 44th Avenue West
+exit 181B | 47.81799,-122.28431 | SR 524; 196th Street Southwest
+exit 182 | 47.82608,-122.26910 | I 405 South; Bellevue, Renton, Bothell, Kirkland
+exit 183 | 47.84342,-122.25887 | 164th Street Southwest; Alderwood Mall Parkway, 164th Street Southwest; Mill Creek, Park & Ride
+exit 186 | 47.87909,-122.23693 | SR 96 East; 128th Street Southwest
+exit 189 | 47.90729,-122.21082 | 
+exit 192 | 47.95286,-122.19919 | Broadway, 41st Street; Everett City Center, Naval Station, Port of Everett; 41st Street, Evergreen Way
+exit 193 | 47.97310,-122.19157 | Pacific Avenue; City Center
+exit 194 | 47.97693,-122.19030 | US 2 East; Snohomish, Wenatchee; Everett Avenue; Wenatchee, Everett Station, Angel Of The Winds Arena
+exit 195 | 47.98755,-122.18296 | Marine View Drive; Everett Community College
+exit 198 | 48.03818,-122.17846 | SR 529; State Avenue
+exit 199 | 48.04883,-122.18370 | SR 528 East; Marysville; Marysville, Tulalip
+exit 200 | 48.07043,-122.18464 | 88th Street Northeast, Quil Ceda Way
+exit 202 | 48.09587,-122.18473 | 116th Street Northeast
+exit 206 | 48.14676,-122.18768 | SR 531; 172nd Street Northeast
+exit 208 | 48.18543,-122.20046 | SR 530 East; Arlington, Darrington; Arlington, Darrington, Sauk-Suiattle Reservation
+exit 210 | 48.20576,-122.21408 | 236th Street Northeast
+exit 212 | 48.23565,-122.23778 | SR 532 West; Stanwood, Camano Island
+exit 215 | 48.26445,-122.26455 | 300th Street Northwest
+exit 218 | 48.30459,-122.31161 | Starbird Road
+exit 221 | 48.33659,-122.33431 | SR 534 East; Lake McMurray
+exit 224 | 48.37740,-122.33535 | Old Highway 99 South
+exit 225 | 48.39581,-122.33037 | Anderson Road
+exit 226 | 48.41412,-122.33151 | SR 536 West; Kincaid Street
+exit 227 | 48.43222,-122.34103 | SR 538 East; College Way
+exit 229 | 48.44738,-122.34113 | George Hopper Road
+exit 230 | 48.46501,-122.34156 | SR 20; Anacortes,  Burlington; Burlington, Anacortes
+exit 231 | 48.48230,-122.34023 | SR 11 North; Chuckanut Drive Bow,  Edison,  Burlington; Chuckanut Drive, Burlington
+exit 232 | 48.50404,-122.33704 | Cook Road,  Sedro-Woolley
+exit 236 | 48.55413,-122.35029 | Bow-Edison,  Bow Hill Road
+exit 240 | 48.61769,-122.35473 | Alger
+exit 242 | 48.64489,-122.36420 | Nulle Road, South Lake Samish
+exit 246 | 48.68825,-122.39992 | North Lake Samish
+exit 250 | 48.71127,-122.47547 | SR 11 South; Old Fairhaven Parkway, Chuckanut Drive, Alaska Marine Highway; Old Fairhaven Parkway,  Chuckanut Drive,  Alaska Marine Highway
+exit 252 | 48.72546,-122.47369 | Samish Way, Western Washington University
+exit 253 | 48.74544,-122.46578 | Lakeway Drive
+exit 254 | 48.75370,-122.46219 | Iowa Street, State Street; State Street, Ohio Street
+exit 255 | 48.76858,-122.46236 | SR 542 East; Sunset Drive, Mount Baker
+exit 256 | 48.78187,-122.47888 | SR 539; SR 539 North; Meridian Street, Bellis Fair - Mall Parkway
+exit 257 | 48.78360,-122.49794 | Northwest Avenue
+exit 258 | 48.78660,-122.51054 | Bakerview Road, Bellingham International Airport
+exit 260 | 48.81372,-122.54458 | Slater Road,  Lummi Island
+exit 262 | 48.84522,-122.57408 | Main Street,  Ferndale City Center; Main Street,  City Center
+exit 263 | 48.85517,-122.58400 | Portal Way
+exit 266 | 48.88935,-122.59232 | SR 548 North; Grandview Road Custer; Grandview Road
+exit 270 | 48.93293,-122.65645 | Birch Bay, Lynden; Lynden, Birch Bay
+exit 274 | 48.97270,-122.72039 | Peace Portal Drive, Semiahmoo
+exit 275 | 48.98455,-122.73318 | SR 543 North; H Street – Truck Customs
+exit 276 | 48.99582,-122.74858 | SR 548 South; Blaine City Center, Peace Arch State Park

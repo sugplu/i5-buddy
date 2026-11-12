@@ -1,0 +1,198 @@
+/* map module styles: the whole road on one interactive SVG. Tokens only (app.css); night = default, day = light. */
+#view-map{gap:12px}
+.mp-view button{touch-action:manipulation}
+.mp-head{align-items:baseline;row-gap:0}
+.mp-sum{margin:0;color:var(--muted);font-size:.84rem;font-weight:800;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+
+/* layer chips */
+.mp-layers{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:8px}
+.mp-chip{min-height:44px;min-width:0;justify-content:center;padding:6px 8px;gap:7px;font-size:.86rem;white-space:nowrap;
+  transition:opacity .15s,border-color .15s,background-color .15s}
+.mp-chip svg{width:19px;height:15px;flex:none;overflow:visible}
+.mp-chip[aria-pressed="true"]{background:var(--surface-2);border-color:var(--muted)}
+.mp-chip[aria-pressed="false"]{opacity:.5}
+.mp-chip[aria-pressed="false"] svg{filter:grayscale(1)}
+
+/* the map frame. Sized from the SMALL viewport (browser toolbars showing), so the whole map and its pills sit above the
+   tab bar when the tab opens. --mp-above (set by map.js) = room taken above the map + the tab bar + a small gap.
+   Without svh (iOS 15.0-15.3, Chrome < 108) map.js supplies --mp-vh and the class mp-vh. */
+.mp-map{position:relative;height:62vh;height:min(62vh,calc(100vh - var(--mp-above,262px)));min-height:300px;max-height:820px;border-radius:var(--radius);overflow:hidden;background:var(--bg);
+  border:1px solid var(--line);box-shadow:var(--shadow);isolation:isolate;-webkit-tap-highlight-color:transparent}
+@supports (height:100svh){.mp-map{height:min(62svh,calc(100svh - var(--mp-above,262px)))}}
+.mp-map.mp-vh{height:min(calc(var(--mp-vh) * 62),calc(var(--mp-vh) * 100 - var(--mp-above,262px)))}
+.mp-map:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mp-svg{position:absolute;top:0;left:0;width:100%;height:100%;display:block;touch-action:none;-webkit-user-select:none;user-select:none;
+  -webkit-touch-callout:none;cursor:grab;font-family:var(--display)}
+.mp-svg.grabbing{cursor:grabbing}
+.mp-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* sea and land */
+.mp-ocean{fill:var(--nature);fill-opacity:.1}
+.mp-grat{fill:none;stroke:var(--nature);stroke-opacity:.2;stroke-width:1px;stroke-dasharray:1 5;vector-effect:non-scaling-stroke}
+.mp-beyond{fill:var(--surface)}
+.mp-nbr{fill:var(--surface);stroke:var(--line);stroke-width:1px;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.mp-land{fill:var(--surface-2)}
+.mp-tint{fill-opacity:.07;stroke:var(--muted);stroke-opacity:.55;stroke-width:1.1px;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.mp-tint.st-ca{fill:var(--st-ca)}
+.mp-tint.st-or{fill:var(--st-or)}
+.mp-tint.st-wa{fill:var(--st-wa)}
+.mp-stname text{font-size:11.5px;font-weight:900;letter-spacing:.24em;fill:var(--muted);fill-opacity:.9}
+.mp-stname.compact text{font-size:10px;letter-spacing:.08em}
+.mp-seaname text{font-size:10.5px;font-weight:800;letter-spacing:.45em;fill:var(--nature);fill-opacity:.75}
+.mp-seaname.compact text{font-size:9.5px;letter-spacing:.25em}
+
+/* the road */
+.mp-route path{fill:none;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.mp-glow1{stroke:var(--ok);stroke-opacity:.12;stroke-width:17px}
+.mp-glow2{stroke:var(--ok);stroke-opacity:.3;stroke-width:9px}
+.mp-road{stroke:var(--sign);stroke-width:5px}
+.mp-center{stroke:var(--accent);stroke-width:1.3px;stroke-dasharray:4 5;stroke-linecap:butt}
+
+/* landmark dots: tiny round-capped strokes that keep their size at every zoom */
+.mp-dots path{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.mp-halo{stroke:var(--bg);stroke-width:12px}
+.mp-dot{stroke-width:8.5px}
+.mp-dot.un{opacity:.45}
+.mp-dot.farm{stroke:var(--farm)}
+.mp-dot.hist{stroke:var(--hist)}
+.mp-dot.nature{stroke:var(--nature)}
+.mp-dot.town{stroke:var(--town)}
+.mp-dot.stop{stroke:var(--stop)}
+.mp-dot.odd{stroke:var(--odd)}
+.mp-dot.other{stroke:var(--fg-2)}
+
+/* camera and rest-area glyphs (map, chips and legend) */
+.mp-cam-b{fill:var(--fg-2);stroke:var(--bg);stroke-width:1.6px;paint-order:stroke;stroke-linejoin:round}
+.mp-cam-l{fill:var(--bg)}
+.mp-rest-b{fill:var(--shield);stroke:var(--sign-fg);stroke-width:1.3px}
+.mp-rest-f{fill:var(--sign-fg)}
+.mp-glyph{width:18px;height:18px;flex:none;overflow:visible}
+
+/* labels: constant size, with a halo so they read over the road */
+.mp-cities text,.mp-plabel text{paint-order:stroke;stroke:var(--bg);stroke-linejoin:round}
+.mp-cities circle{fill:var(--fg);stroke:var(--bg);stroke-width:1.6px}
+.mp-city text{font-size:11.5px;font-weight:800;fill:var(--fg);stroke-width:3.5px}
+.mp-city.r0 text{font-size:12.5px;font-weight:900}
+.mp-city.r2 text{font-weight:700;fill:var(--fg-2)}
+.mp-plabel text{font-size:11px;font-weight:700;fill:var(--fg-2);stroke-width:3px}
+.mp-plabel.is-sel text{fill:var(--fg);font-weight:900}
+
+/* selection, destination, you */
+.mp-sel-h{fill:none;stroke:var(--bg);stroke-width:5px}
+.mp-sel-r{fill:none;stroke:var(--fg);stroke-width:2.4px}
+.mp-dest-pole{stroke:var(--fg);stroke-width:2px;stroke-linecap:round}
+.mp-dest-flag{fill:var(--accent);stroke:var(--bg);stroke-width:1.2px;stroke-linejoin:round}
+.mp-dest-base{fill:var(--fg)}
+.mp-you-shadow{fill:var(--bg);opacity:.4}
+.mp-you-core{fill:var(--accent);stroke:var(--sign-fg);stroke-width:3px}
+.mp-you-dir path{fill:var(--accent);stroke:var(--accent-fg);stroke-width:1.4px;stroke-linejoin:round}
+/* "here you are": a few pulses when tracking starts, the map opens, or Near me / Follow me is tapped, then it rests.
+   A pulse that never stops restyles and repaints the map every frame for the whole drive. */
+.mp-you-pulse{fill:var(--accent);opacity:0;transform-origin:0 0}
+.mp-you.live .mp-you-pulse{animation:mp-pulse 2.2s ease-out 4}
+.mp-you.lost .mp-you-core{fill:var(--danger)}
+@keyframes mp-pulse{0%{transform:scale(.8);opacity:.55}100%{transform:scale(3.1);opacity:0}}
+
+/* controls on the map */
+.mp-ctls{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none}
+.mp-ctls>*{pointer-events:auto}
+.mp-zoom{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.mp-zb{width:44px;height:44px;padding:0;border:0;background:none;display:grid;place-items:center;color:var(--fg)}
+.mp-zb+.mp-zb{border-top:1px solid var(--line)}
+.mp-zb svg{width:22px;height:22px}
+.mp-zb:disabled{color:var(--muted);opacity:.4;cursor:default}
+/* the group clips its corners, so the focus ring is drawn inside each button */
+.mp-zb:focus-visible{outline-offset:-3px;border-radius:10px}
+.mp-zb:active:not(:disabled){background:var(--surface-2)}
+.mp-loc{position:absolute;left:10px;bottom:10px;display:flex;gap:8px;max-width:calc(100% - 20px)}
+.mp-pill{min-height:44px;display:inline-flex;align-items:center;gap:7px;padding:0 15px 0 12px;border-radius:99px;border:1px solid var(--line);
+  background:var(--surface);color:var(--fg);font-weight:800;font-size:.9rem;box-shadow:var(--shadow);white-space:nowrap}
+.mp-pill svg{width:19px;height:19px;flex:none}
+.mp-pill[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+.mp-pill:active{transform:translateY(1px)}
+/* the scale sits beside the zoom buttons: the top-left corner is where the road ends at the whole-road view */
+.mp-scale{position:absolute;right:64px;top:10px;pointer-events:none;display:grid;justify-items:start;gap:2px;padding:4px 8px 6px;border-radius:8px;
+  background:var(--surface);border:1px solid var(--line);font-family:var(--mono);font-size:.68rem;font-weight:700;line-height:1.2;color:var(--fg-2)}
+.mp-scale i{display:block;height:5px;min-width:8px;border:2px solid var(--fg-2);border-top:0}
+
+/* the card under the map */
+.mp-cardbox{display:grid;min-width:0}
+.mp-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-top:4px solid var(--c,var(--line));padding:12px 14px 14px;
+  display:grid;gap:10px;min-width:0;scroll-margin-top:72px;scroll-margin-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.mp-camcard{--c:var(--fg-2)}
+.mp-restcard{--c:var(--shield)}
+.mp-roadcard{--c:var(--sign)}
+.mp-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start}
+.mp-top>.mp-headtxt{grid-column:2}
+.mp-top>.mp-x{grid-column:3}
+.mp-top .photo.thumb{width:64px;height:64px}
+.mp-ph{width:64px;height:64px;border-radius:10px;display:grid;place-items:center;font-size:1.8rem;line-height:1;background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--c,var(--line))}
+.mp-ph .mp-glyph{width:32px;height:32px}
+.mp-ph-road svg{width:34px;height:36px}
+.mp-headtxt{display:grid;gap:3px;min-width:0;padding-top:1px}
+.mp-meta{font-size:.7rem;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:var(--c,var(--muted))}
+.mp-camcard .mp-meta,.mp-restcard .mp-meta{color:var(--link)}
+.mp-name{margin:0;font-size:1.15rem;line-height:1.2;font-weight:900;overflow-wrap:anywhere}
+.mp-where{color:var(--muted);font-size:.86rem;font-weight:700}
+.mp-got{color:var(--ok);font-weight:800}
+.mp-x{width:44px;height:44px;margin:-8px -8px 0 0;padding:0;border:0;background:none;color:var(--muted);border-radius:10px;display:grid;place-items:center}
+.mp-x svg{width:22px;height:22px}
+.mp-text{margin:0;color:var(--fg-2);font-size:.95rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.mp-card.is-open .mp-text{display:block;-webkit-line-clamp:unset;overflow:visible}
+.mp-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.mp-btn{min-height:44px;display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);
+  color:var(--fg);font-weight:800;font-size:.95rem}
+.mp-btn svg{width:18px;height:18px;flex:none}
+.mp-go{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+.mp-step{display:flex;gap:6px;margin-left:auto}
+.mp-icon{width:44px;height:44px;padding:0;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);display:grid;place-items:center}
+.mp-icon svg{width:22px;height:22px}
+.mp-icon:disabled{opacity:.35;cursor:default}
+.mp-btn:active,.mp-icon:active:not(:disabled){transform:translateY(1px)}
+
+/* live camera picture */
+.mp-live{position:relative;margin:0;border-radius:10px;overflow:hidden;background:var(--surface-2);display:grid}
+.mp-live img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--surface-2)}
+.mp-live.loading img{opacity:0}
+.mp-live.loading::after{content:"";position:absolute;top:0;left:0;right:0;aspect-ratio:16/9;
+  background:linear-gradient(100deg,transparent 25%,var(--surface) 50%,transparent 75%) 0 0/200% 100%;animation:mp-shimmer 1.2s linear infinite}
+@keyframes mp-shimmer{to{background-position:-200% 0}}
+.mp-cap{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 4px 4px 12px;font-size:.78rem;font-weight:700;color:var(--muted)}
+.mp-cap .mp-btn:focus-visible{outline-offset:-3px} /* the picture frame clips its edges */
+.mp-live.consent,.mp-live.none{padding:14px;gap:12px;justify-items:start}
+.mp-note{margin:0;color:var(--fg-2);font-size:.92rem}
+
+/* nothing selected */
+.mp-hint{display:grid;gap:10px;padding:12px 14px;border-radius:var(--radius);background:var(--surface);border:1px dashed var(--line)}
+.mp-hint p{margin:0;color:var(--muted);font-size:.9rem}
+.mp-next{min-width:0;width:100%;justify-content:flex-start;text-align:left;border-left:4px solid var(--c,var(--line))}
+.mp-next b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-next-l{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--muted))}
+.mp-next-d{font-family:var(--mono);color:var(--muted)}
+.mp-next .mp-k-dot{display:none}
+
+/* legend */
+.mp-legend{list-style:none;margin:0;padding:0 2px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.76rem;font-weight:700;color:var(--muted)}
+.mp-legend li{display:inline-flex;align-items:center;gap:6px}
+.mp-k-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--c,var(--muted));flex:none}
+.mp-k-faded .mp-k-dot{background:var(--fg-2);opacity:.4}
+.mp-legend .mp-glyph{width:15px;height:15px}
+
+/* day theme */
+:root[data-theme="light"] .mp-ocean{fill-opacity:.16}
+:root[data-theme="light"] .mp-beyond,:root[data-theme="light"] .mp-nbr{fill:var(--bg)}
+:root[data-theme="light"] .mp-land{fill:var(--surface)}
+:root[data-theme="light"] .mp-tint{fill-opacity:.06}
+:root[data-theme="light"] .mp-halo,:root[data-theme="light"] .mp-sel-h{stroke:var(--surface)}
+:root[data-theme="light"] .mp-cities text,:root[data-theme="light"] .mp-plabel text,:root[data-theme="light"] .mp-cities circle{stroke:var(--surface)}
+:root[data-theme="light"] .mp-cam-b{stroke:var(--surface)}
+:root[data-theme="light"] .mp-cam-l{fill:var(--surface)}
+:root[data-theme="light"] .mp-you-shadow{fill:var(--fg);opacity:.25}
+
+/* far out: cameras and rest areas as small squares on the road */
+.mp-mini path{fill:none;stroke-linecap:square;vector-effect:non-scaling-stroke}
+.mp-mini.rest .mp-mini-h{stroke:var(--sign-fg);stroke-width:8.5px}
+.mp-mini.rest .mp-mini-f{stroke:var(--shield);stroke-width:6px}
+.mp-mini.cam .mp-mini-h{stroke:var(--bg);stroke-width:7.5px}
+.mp-mini.cam .mp-mini-f{stroke:var(--fg-2);stroke-width:4.5px}
+:root[data-theme="light"] .mp-mini.cam .mp-mini-h{stroke:var(--surface)}

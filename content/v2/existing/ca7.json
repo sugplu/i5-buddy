@@ -1,0 +1,388 @@
+{
+ "places": [
+  {
+   "mi": 566,
+   "name": "Arbuckle and almonds",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Arbuckle / College City exit",
+   "text": "Arbuckle was laid out in 1875 on the ranch of Tacitus Arbuckle, and it has long called itself the Home of the Almonds. Almonds and rice are the two biggest crops in Colusa County.",
+   "src": "https://countyofcolusaca.gov/217"
+  },
+  {
+   "mi": 566,
+   "name": "College City",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Arbuckle / College City exit",
+   "text": "College City, population about 290, is named for a college that isn't there anymore. Andrew Pierce gave land in 1874 for Pierce Christian College, which closed in 1897 and reopened that fall as a high school.",
+   "src": "https://en.wikipedia.org/wiki/College_City,_California"
+  },
+  {
+   "mi": 570,
+   "name": "Rice country",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Fields between Arbuckle and Willows",
+   "text": "Those flat, perfectly level fields with low dirt walls are rice paddies. California grows virtually all the sushi rice made in America. After harvest, farmers flood many fields in winter to break down the straw, and the water draws in huge flocks of ducks and geese.",
+   "src": "https://www.calrice.org/rice-footprint"
+  },
+  {
+   "mi": 577,
+   "name": "Granzella's",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Williams exit",
+   "text": "Granzella's in Williams has been a road-trip stop since Jim and Beverly Granzella opened a small deli here in January 1976. It grew into a restaurant, deli and market, and it's known for its sandwiches and its taxidermy displays.",
+   "src": "https://abc10.com/article/entertainment/television/programs/backroads/soup-sandwich-safari-granzellas-road-trip-bartells-backroads-pit-stop/103-143d9aea-0905-4494-80db-55c6b1f39515"
+  },
+  {
+   "mi": 578,
+   "name": "Sutter Buttes up close",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Highway 20 exit",
+   "text": "The peaks to the east are the Sutter Buttes, often called the world's smallest mountain range. The highest, South Butte, is about 2,117 feet tall. Almost all of the land is privately owned, so you can usually only hike them on guided trips.",
+   "src": "https://www.geographyrealm.com/sutters-butte-smallest-mountain-range/"
+  },
+  {
+   "mi": 588,
+   "name": "Delevan refuge",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Maxwell Road exit",
+   "text": "About four miles east of Maxwell is Delevan National Wildlife Refuge. In winter, ducks there can top 300,000 and geese 100,000. It's mostly closed to visitors, but Maxwell Road runs right along it.",
+   "src": "https://en.wikipedia.org/wiki/Delevan_National_Wildlife_Refuge"
+  },
+  {
+   "mi": 595,
+   "name": "Sacramento National Wildlife Refuge",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Road 68 / Princeton exit",
+   "text": "The marshes east of the freeway are the Sacramento National Wildlife Refuge, started in 1937. Between November and January it regularly hosts more than 500,000 ducks and 250,000 geese. Huge white flocks of snow geese often sit in the rice fields right by the freeway, and a 6-mile auto tour lets you drive through the marsh.",
+   "src": "https://www.fws.gov/locations/sacramento-national-wildlife-refuge/auto-tour"
+  },
+  {
+   "mi": 603,
+   "name": "Willows",
+   "cat": "town",
+   "side": null,
+   "visible": false,
+   "where": "Highway 162 exit",
+   "text": "Willows got its name from a shady spring ringed with willow trees, where cattle drivers between Sacramento and Redding stopped to rest. It became the seat of Glenn County in 1891. The county is named for Hugh Glenn, once the biggest wheat farmer in California.",
+   "src": "https://cityofwillows.org/willows-history/"
+  },
+  {
+   "mi": 610,
+   "name": "Artois",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Artois exit",
+   "text": "Artois used to be called Germantown. During World War One, people wanted to drop the German name, so in 1918 it was renamed Artois, after a region in France where Allied soldiers fought.",
+   "src": "https://en.wikipedia.org/wiki/Artois,_California"
+  },
+  {
+   "mi": 614,
+   "name": "Prune orchards",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Glenn and Tehama County orchards",
+   "text": "Some of the orchards in this part of the valley are prune plums, the kind dried into prunes. California grows about 99 percent of America's prunes, and most come from the Sacramento Valley.",
+   "src": "https://californiaprunes.org/the-california-difference/"
+  },
+  {
+   "mi": 619,
+   "name": "Orland, Queen Bee Capital",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Highway 32 exit",
+   "text": "Orland calls itself the Queen Bee Capital of North America. Beekeepers here raise queen bees, and local groups say the counties around Orland produce about 80 percent of the queen bees in the U.S. There's even a Honeybee Discovery Center in town.",
+   "src": "https://abc10.com/article/entertainment/television/programs/backroads/small-california-town-is-the-queen-bee-capital-of-north-america-bartells-backroads/103-2befe302-330c-4aae-a764-4c6f8d98cac8"
+  },
+  {
+   "mi": 619,
+   "name": "Orland Project",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Highway 32 exit",
+   "text": "In 1907 the federal government picked Orland for its first irrigation project in California. Water from East Park Reservoir, finished in 1910 in the hills to the west, still waters orchards around Orland today.",
+   "src": "https://usbr.gov/projects/index.php?id=373"
+  },
+  {
+   "mi": 625,
+   "name": "Walnut orchards",
+   "cat": "farm",
+   "side": null,
+   "visible": true,
+   "where": "Orchards between Orland and Corning",
+   "text": "Many of the orchards along here are walnuts. California grows 99 percent of the commercial walnuts in the United States, and Glenn and Tehama counties each have more than 30,000 acres of them.",
+   "src": "https://www.cdfa.ca.gov/is/ffldrs/frep/FertilizationGuidelines/pdf/Walnut_Production_CA.pdf"
+  },
+  {
+   "mi": 628,
+   "name": "Rolling Hills Casino",
+   "cat": "stop",
+   "side": null,
+   "visible": true,
+   "where": "Liberal Avenue exit",
+   "text": "The resort here is Rolling Hills Casino, owned by the Paskenta Band of Nomlaki Indians. The tribe got federal recognition back in 1994 and opened the casino in 2002. It has grown into hotels, restaurants, a golf course and an RV park.",
+   "src": "https://en.wikipedia.org/wiki/Paskenta_Band_of_Nomlaki_Indians"
+  },
+  {
+   "mi": 631,
+   "name": "The Olive Pit",
+   "cat": "stop",
+   "side": null,
+   "visible": false,
+   "where": "Corning Road / Solano Street exit",
+   "text": "In 1967, Pete and Ann Craig opened a burger stand here, betting that the new interstate would bring travelers. They put a few jars of olives from their family's orchard on a shelf, and the jars sold out fast. Corning was once called the Olive Capital of the World, and today the Olive Pit sells olives, olive oil and even a lemon olive oil milkshake.",
+   "src": "https://californiagrown.org/blog/the-olive-pit/"
+  },
+  {
+   "mi": 636,
+   "name": "Tehama",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "Gyle Road exit",
+   "text": "East toward the river is the tiny city of Tehama, population about 435. When Tehama County was formed in 1856, this was the county seat, but voters moved it to Red Bluff the very next year. Some folks still say Red Bluff stole it.",
+   "src": "https://en.wikipedia.org/wiki/Tehama,_California"
+  },
+  {
+   "mi": 647,
+   "name": "Red Bluff",
+   "cat": "town",
+   "side": "E",
+   "visible": false,
+   "where": "South Main Street exit",
+   "text": "Red Bluff is named for the reddish banks along the Sacramento River, about 50 feet high. It was the farthest point that riverboats could reach, so in the 1850s paddle-wheel steamers came all the way up here to bring supplies for the gold miners.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff,_California"
+  },
+  {
+   "mi": 649,
+   "name": "Lassen Peak",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Highway 36 / Antelope Boulevard exit",
+   "text": "On a clear day, look east for Lassen Peak, the southernmost active volcano in the Cascade Range. On May 22, 1915, people in Red Bluff watched it blast a huge column of ash into the sky, and ash fell as far as 200 miles away. Before Mount St. Helens in 1980, it was the only Cascade volcano to erupt in the 1900s.",
+   "src": "https://www.nps.gov/lavo/learn/nature/eruption_lassen_peak.htm"
+  },
+  {
+   "mi": 649,
+   "name": "Red Bluff Round-Up",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Highway 36 / Antelope Boulevard exit",
+   "text": "Every April, Red Bluff holds the Red Bluff Round-Up, billed as the largest three-day rodeo in the country. It started in 1921, when close to 10,000 people turned out, and now it draws tens of thousands of fans.",
+   "src": "https://www.prorodeohalloffame.com/red-bluff-round-up/"
+  },
+  {
+   "mi": 650,
+   "name": "William B. Ide Adobe",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Adobe Road exit",
+   "text": "Just up Adobe Road is a state historic park honoring William Ide, the one and only president of the California Republic. That republic lasted less than a month in 1846, from June 14 to July 9, during the Bear Flag Revolt.",
+   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+  },
+  {
+   "mi": 649,
+   "name": "Red Bluff",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exit 649, Antelope Boulevard (SR 36)",
+   "text": "Red Bluff grew up at the head of navigation on the Sacramento River, the farthest point riverboats could reach from Sacramento. Miners stepped off the boats here and headed west to the Trinity County gold fields. Before it settled on Red Bluff in 1854, the town was called Leodocia, and then Covertsburg.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff,_California"
+  },
+  {
+   "mi": 650,
+   "name": "Red Bluff Round-Up",
+   "cat": "odd",
+   "side": null,
+   "visible": false,
+   "where": "Red Bluff",
+   "text": "Every April, Red Bluff hosts the Round-Up, billed as the largest three-day rodeo in the country. It started in 1918 as ranch hands holding friendly contests, became official in 1921, and is in the ProRodeo Hall of Fame. On Sunday there's an event called the Wild Ride, where bronc riders compete in costume.",
+   "src": "https://en.wikipedia.org/wiki/Red_Bluff_Round-Up"
+  },
+  {
+   "mi": 651,
+   "name": "William B. Ide Adobe",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 651, Main Street, a mile north of Red Bluff",
+   "text": "A state park on the riverbank honors William Ide, the one and only president of the California Republic, which lasted from June 14 to July 9, 1846. That's about 25 days. Here's the twist: research later showed Ide never owned or lived in the adobe that carries his name. The state kept the name anyway.",
+   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+  },
+  {
+   "mi": 653,
+   "name": "Mount Shasta, 140 miles out",
+   "cat": "nature",
+   "side": null,
+   "visible": true,
+   "where": "Ahead to the north",
+   "text": "If the air is clear, the white peak far ahead is Mount Shasta. On a clear winter day it can be seen from the floor of the Central Valley 140 miles to the south. You'll drive right past its base in about an hour and a half.",
+   "src": "https://en.wikipedia.org/wiki/Mount_Shasta"
+  },
+  {
+   "mi": 663,
+   "name": "Cottonwood",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 662 to 665, Cottonwood Creek",
+   "text": "Cottonwood started as a stagecoach town in 1849, and it sits right in the middle: 15 miles to Redding and 15 miles back to Red Bluff. The creek here also marks the line from Tehama County into Shasta County. And in December 2024, a single Mega Millions ticket sold in Cottonwood won a jackpot of 1.22 billion dollars.",
+   "src": "https://en.wikipedia.org/wiki/Cottonwood,_California"
+  },
+  {
+   "mi": 667,
+   "name": "Anderson",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 667 and 668",
+   "text": "Anderson is a railroad town. In 1872 a rancher named Elias Anderson gave the railroad a right of way through his land, and in return the railroad named the depot after him. The town kept the name.",
+   "src": "https://en.wikipedia.org/wiki/Anderson,_California"
+  },
+  {
+   "mi": 677,
+   "name": "Redding",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Exits 675 to 681",
+   "text": "During the Gold Rush this spot was called Poverty Flats, because there was so little gold here. The railroad built a town and named it for its land agent, Benjamin Redding. Summers are serious here: the average July high is near 100 degrees, and on July 6, 2024, Redding hit 119.",
+   "src": "https://en.wikipedia.org/wiki/Redding,_California"
+  },
+  {
+   "mi": 678,
+   "name": "Sundial Bridge",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Exit 678, SR 44 west to Turtle Bay",
+   "text": "Redding's Sundial Bridge is a 700-foot footbridge whose 217-foot mast leans north and casts a shadow like a giant sundial. The tip of that shadow moves about a foot every minute, so you can actually watch the Earth turn. The bridge crosses the river without touching the water, to protect the salmon spawning grounds underneath.",
+   "src": "https://en.wikipedia.org/wiki/Sundial_Bridge"
+  },
+  {
+   "mi": 679,
+   "name": "Road to Lassen Peak",
+   "cat": "nature",
+   "side": "E",
+   "visible": false,
+   "where": "Exit 678, SR 44 east",
+   "text": "Highway 44 heads east toward Lassen Peak, about 55 miles from Redding. On May 22, 1915, Lassen blew an ash column more than 30,000 feet into the sky. It and Mount St. Helens were the only two volcanoes in the lower 48 states to erupt in the 1900s.",
+   "src": "https://en.wikipedia.org/wiki/Lassen_Peak"
+  }
+ ],
+ "zones": [
+  {
+   "from": 552,
+   "to": 566,
+   "label": "Dunnigan Hills",
+   "text": "Low hills roll by on the west, and the Sutter Buttes come into view on the eastern horizon on clear days."
+  },
+  {
+   "from": 566,
+   "to": 597,
+   "label": "Rice and refuges",
+   "text": "Flat rice paddies run to the horizon, flooded in winter and bright green in summer. From fall through winter, millions of ducks and geese of the Pacific Flyway rest here, and the Sacramento Valley refuges sit just east of the freeway."
+  },
+  {
+   "from": 597,
+   "to": 623,
+   "label": "Willows and Orland orchards",
+   "text": "Rice gives way to orchards of almonds, walnuts and prunes, with the Coast Range on the western skyline."
+  },
+  {
+   "from": 623,
+   "to": 649,
+   "label": "Tehama County: olives to Red Bluff",
+   "text": "Olive groves and walnut orchards surround Corning, and the valley narrows as you near Red Bluff. On clear days, Lassen Peak stands out on the eastern skyline."
+  },
+  {
+   "from": 649,
+   "to": 663,
+   "label": "Red Bluff rangeland",
+   "text": "North of Red Bluff the farm fields give way to mildly rugged rangeland used for grazing, until the crops pick up again around Cottonwood."
+  },
+  {
+   "from": 663,
+   "to": 676,
+   "label": "Cottonwood and Anderson",
+   "text": "The northern tip of the great Central Valley, with ranches, pastures and railroad towns along Cottonwood Creek and the Sacramento River."
+  },
+  {
+   "from": 676,
+   "to": 684,
+   "label": "Redding",
+   "text": "The biggest city on this stretch, built where the valley meets the mountains. July highs average close to 100 degrees."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 578,
+   "q": "The Sutter Buttes are the leftovers of what?",
+   "choices": [
+    "A glacier",
+    "A volcano",
+    "A meteor crater",
+    "A coral reef"
+   ],
+   "answer": 1,
+   "why": "They are the eroded remains of a volcano active about 1.5 million years ago."
+  },
+  {
+   "mi": 610,
+   "q": "What was the town of Artois called before 1918?",
+   "choices": [
+    "Frenchtown",
+    "Germantown",
+    "Glenn City",
+    "Rixville"
+   ],
+   "answer": 1,
+   "why": "Germantown was renamed Artois during World War One, after a region of France."
+  },
+  {
+   "mi": 650,
+   "q": "How long did the Bear Flag's California Republic last?",
+   "choices": [
+    "Less than a month",
+    "One year",
+    "Ten years",
+    "It still exists"
+   ],
+   "answer": 0,
+   "why": "William Ide's California Republic lasted from June 14 to July 9, 1846."
+  },
+  {
+   "mi": 678,
+   "q": "Why doesn't the Sundial Bridge touch the Sacramento River?",
+   "choices": [
+    "To protect salmon spawning grounds",
+    "The river freezes",
+    "It's too deep",
+    "For boat races"
+   ],
+   "answer": 0,
+   "why": "Keeping out of the water protects the salmon spawning beds beneath it."
+  }
+ ]
+}

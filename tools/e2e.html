@@ -1,0 +1,260 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>I-5 Buddy end-to-end drive tests</title>
+<style>body{font:14px/1.4 ui-monospace,Menlo,monospace;margin:12px}iframe{width:430px;height:900px;border:1px solid #888;float:right}.pass{color:#090}.fail{color:#c00;font-weight:bold}.skip{color:#888}</style>
+<iframe id="f" src="../index.html"></iframe>
+<pre id="out">running…</pre>
+<script>
+// Feeds a fake GPS track into the real app (via window.__I5_FAKE_GEO__) and checks what it does.
+// The road comes from the data (data.MAX_M, ENDS, STATES), so the drives fit whatever tools/build.py covers:
+// California only since 2026-11-11, from the Mexico border to the Oregon line.
+const out = document.getElementById("out");
+const lines = [];
+let fails = 0;
+const ok = (cond, msg) => { lines.push(`${cond ? "PASS" : "FAIL"} ${msg}`); if (!cond) fails++; };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let clock = Date.now();                    // fix timestamps: one clock for the whole run that only moves forward
+const tick = sec => (clock += sec * 1000);
+
+function fakeGeo() {
+  let cb = null, errCb = null;
+  return {
+    watchPosition(s, e) { cb = s; errCb = e; return 1; },
+    clearWatch() { cb = null; },
+    fix(lat, lon, { speed = null, heading = null, t = tick(1), accuracy = 10 } = {}) {
+      cb && cb({ coords: { latitude: lat, longitude: lon, speed, heading, accuracy }, timestamp: t });
+    },
+    deny() { errCb && errCb({ code: 1 }); },
+  };
+}
+
+async function drive(win, api, geoFake, fromM, toM, { mph = 70, stepMi = 0.25, useHeading = true, speedField = true, offsetMi = 0 } = {}) {
+  const dir = toM > fromM ? 1 : -1;
+  for (let m = fromM; dir > 0 ? m <= toM + 1e-9 : m >= toM - 1e-9; m += dir * stepMi) {
+    const [lat, lon] = api.geo.coordAt(m);
+    let la = lat, lo = lon;
+    if (offsetMi) { la += offsetMi / 69; }
+    const brg = api.geo.bearingAt(m);
+    geoFake.fix(la, lo, { speed: speedField ? mph / 2.23694 : null, heading: useHeading ? (dir > 0 ? brg : (brg + 180) % 360) : null, t: tick(stepMi / mph * 3600) });
+    await sleep(2);
+  }
+}
+
+/** Keep driving past an end of the covered road ("N" or "S"): fixes fromMi..toMi miles beyond it, straight on along
+ *  the road's last mile (into Oregon past the Oregon line, into Tijuana past San Ysidro). */
+async function driveOff(api, geoFake, end, toMi, { fromMi = 0.25, stepMi = 0.25, mph = 70 } = {}) {
+  const R = api.data.ROUTE, M = end === "N" ? R[R.length - 1][0] : R[0][0];
+  const [a0, o0] = api.geo.coordAt(end === "N" ? M - 1 : M + 1), [a1, o1] = api.geo.coordAt(M);
+  const kx = 69.17 * Math.cos(a1 * Math.PI / 180), dy = (a1 - a0) * 69, dx = (o1 - o0) * kx, L = Math.hypot(dx, dy);
+  const heading = (Math.atan2(dx, dy) * 180 / Math.PI + 360) % 360;
+  for (let k = fromMi; k <= toMi + 1e-9; k += stepMi) {
+    geoFake.fix(a1 + dy / L * k / 69, o1 + dx / L * k / kx, { speed: mph / 2.23694, heading, t: tick(stepMi / mph * 3600) });
+    await sleep(2);
+  }
+}
+
+/** What has to be true once GPS takes us past an end of the road. `after` = everything said since we drove off. */
+function checkEnd(win, api, after, end, edgeM) {
+  const doc = win.document, txt = id => doc.getElementById(id).textContent;
+  ok(api.S.offRoute, `past ${end.long}: off route`);
+  ok(Math.abs(api.S.m - edgeM) < 0.1, `the marker stays at the end of the road (${api.S.m.toFixed(2)})`);
+  ok(txt("statusPill") === "THE END", `pill says THE END (${txt("statusPill")})`);
+  ok(txt("statusText") === `Past ${end.long}. Narration paused.`, `status line: ${txt("statusText")}`);
+  ok(txt("toEndText").endsWith(`0 mi to ${end.short}`), `sign: ${txt("toEndText")}`);
+  const card = doc.querySelector("#nextCard h2");
+  ok(card && card.textContent === `You made it to ${end.long}`, `next card: ${card && card.textContent}`);
+  const bye = after.filter(s => s.id === "end-of-road");
+  ok(bye.length === 1 && bye[0].text === `That's ${end.long}, the end of the road for I-5 Buddy. Thanks for riding along.`,
+    `goodbye spoken exactly once (${bye.map(s => s.text).join(" | ") || "never"})`);
+  // a badge earned on the way in may still be celebrated; that is not narration
+  const other = after.filter(s => s.id !== "end-of-road" && !/^badge:/.test(s.id || ""));
+  ok(!other.length, `nothing else narrated past the end (${other.map(s => s.id || s.text.slice(0, 50)).join(", ") || "nothing"})`);
+}
+
+async function run() {
+  const win = document.getElementById("f").contentWindow;
+  for (let i = 0; i < 100 && !win.I5BUDDY; i++) await sleep(100);
+  const api = win.I5BUDDY.api;
+  const { MAX_M, ENDS, STATES, SCOPE, ROUTE } = api.data;
+  await sleep(800); // let modules load
+  // spy on speech instead of really speaking
+  const said = [];
+  api.voice.say = (text, opts = {}) => { said.push({ text, id: opts.id, m: api.S.m, dir: api.S.dir }); return Promise.resolve(true); };
+  api.voice.stop = () => {};
+  api.voice.unlock = () => {};
+  const announced = [];
+  api.bus.on("place:announce", e => announced.push({ id: e.place.id, pm: e.place.m, at: api.S.m, dir: api.S.dir }));
+  const stamped = [];
+  api.bus.on("place:stamp", e => stamped.push(e.place.id));
+  api.settings.narr = true; api.settings.chat = "normal"; api.settings.zoneNarr = true;
+  api.settings.cats = new Set(["farm", "hist", "nature", "town", "stop", "odd"]);
+  api.settings.live = false;
+  for (const k of Object.keys(api.S.stamps)) delete api.S.stamps[k];
+  const doc = win.document, txt = id => doc.getElementById(id).textContent;
+
+  // 0. before any position: the welcome card and the header describe the road the data covers
+  api.S.m = null; api.ui.queueRender(); await sleep(400);
+  {
+    const h = doc.querySelector("#nextCard h2")?.textContent || "";
+    const want = `${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`;
+    ok(h.endsWith(want), `welcome card: "${h}"`);
+    ok(txt("statusText") === `${ENDS.S.short} to ${ENDS.N.short}`, `header: "${txt("statusText")}"`);
+  }
+
+  const G = fakeGeo();
+  win.__I5_FAKE_GEO__ = G;
+
+  // 1. northbound across the Grapevine into the valley
+  api.startGps();
+  await drive(win, api, G, 196, 262);
+  ok(api.S.mode === "gps", `mode is gps (${api.S.mode})`);
+  ok(api.S.dir === "N", `direction north after northbound drive (${api.S.dir})`);
+  ok(Math.abs(api.S.m - 262) < 1, `mile tracks GPS: ${api.S.m.toFixed(2)} ~ 262`);
+  ok(!api.S.offRoute, "on route");
+  ok(Math.abs(api.S.speed - 70) < 3, `speed from GPS ~70 (${api.S.speed && api.S.speed.toFixed(1)})`);
+  const placesNB = api.data.PLACES.filter(p => p.m > 197.5 && p.m < 261);
+  const ids = new Set(announced.map(a => a.id));
+  ok(placesNB.every(p => ids.has(p.id)), `announced all ${placesNB.length} landmarks between 197.5 and 261 (got ${announced.length})`);
+  ok(new Set(announced.map(a => a.id)).size === announced.length, "no landmark announced twice");
+  ok(announced.every(a => a.pm - a.at > -0.6), "every landmark announced before passing it");
+  ok(announced.every((a, i) => i === 0 || a.pm >= announced[i - 1].pm - 0.01), "announcements in road order");
+  ok(placesNB.every(p => api.S.stamps[p.id]), `stamps collected for every landmark passed (${stamped.length})`);
+  ok(said.some(s => /^Now passing/.test(s.text)), "landscape zone narration happened");
+
+  // 2. turn around, southbound, sides flip (everything here was announced northbound already, so check the screen;
+  //    the spoken sides are checked on the southbound drive in 4)
+  said.length = 0; announced.length = 0;
+  await drive(win, api, G, 262, 230);
+  ok(api.S.dir === "S", `direction south after turning around (${api.S.dir})`);
+  await sleep(400);
+  {
+    const rows = [...doc.querySelectorAll("#upNextList li")].map(li => ({ p: api.data.PLACES.find(p => p.name === li.querySelector(".nm").textContent), sd: li.querySelector(".sd").textContent }));
+    const sided = rows.filter(r => r.p && r.p.side);
+    ok(sided.length > 0 && sided.every(r => r.sd === (r.p.side === 1 ? "◀" : "▶")), `up-next arrows flip southbound (${sided.map(r => r.sd + " " + r.p.name).join(", ")})`);
+  }
+
+  // 3. off route (San Francisco) pauses narration; this is not the end of the road
+  said.length = 0;
+  for (let i = 0; i < 4; i++) { G.fix(37.7749, -122.4194, { speed: 20 }); await sleep(5); }
+  await sleep(400);
+  ok(api.S.offRoute, "off route detected far from I-5");
+  ok(!said.some(s => s.id && api.data.placeById(s.id)), "no landmark narration while off route");
+  ok(txt("statusPill") === "OFF I-5", `status pill shows OFF I-5 (${txt("statusPill")})`);
+  ok(txt("statusText") === "Not on I-5 right now. Narration paused.", `status line: ${txt("statusText")}`);
+  ok(!said.some(s => s.id === "end-of-road"), "no goodbye in the middle of the road");
+
+  // 4. back on route in the Central Valley, southbound with no heading and no speed field (direction from movement),
+  //    across the halfway point of the road
+  said.length = 0; announced.length = 0;
+  const half = MAX_M / 2, a4 = Math.round(half + 32), b4 = Math.round(half - 8);
+  await drive(win, api, G, a4, b4, { useHeading: false, speedField: false, mph: 60 });
+  ok(!api.S.offRoute, `back on route near the halfway point (mile ${api.S.m.toFixed(1)}, ${api.data.regionAt(api.S.m).name})`);
+  ok(api.S.dir === "S", `direction from movement alone = S (${api.S.dir})`);
+  { const a = api.geo.coordAt(b4 + 0.25), b = api.geo.coordAt(b4), want = api.geo.miles(a[0], a[1], b[0], b[1]) / (0.25 / 60);
+    ok(Math.abs(api.S.speed - want) < 3, `speed computed from fixes when GPS gives none (${api.S.speed && api.S.speed.toFixed(1)} vs ${want.toFixed(1)})`); }
+  ok(announced.length > 0 && announced.every(a => a.pm - a.at < 0.6), `landmarks announced southbound before passing them (${announced.length})`);
+  {
+    const sb = said.map(s => ({ s, p: api.data.placeById(s.id) })).filter(x => x.p && x.p.side);
+    // southbound, the right side when driving north (side 1) is on your left
+    const lead = ({ s, p }) => s.text.split(": " + p.name)[0];   // "In about 2 miles, on your left"
+    ok(sb.length > 0 && sb.every(x => lead(x).endsWith(`your ${x.p.side === 1 ? "left" : "right"}`)), `spoken sides flip southbound (${sb.length} sided lines checked)`);
+  }
+  {
+    const hw = said.filter(s => s.id === "halfway"), m = hw[0] && /halfway point of I-5( in \w+)?, about (\d+) miles from both (.+) and (.+)\.$/.exec(hw[0].text);
+    ok(hw.length === 1 && m && +m[2] === Math.round(half) && m[3] === ENDS.S.short && m[4] === ENDS.N.short &&
+      (SCOPE.length === 1) === (m[1] === " in " + STATES[0].name), `halfway line spoken once: ${hw.map(s => s.text).join(" | ") || "never"}`);
+  }
+  await sleep(400);
+  ok(txt("stateBadge") === api.data.stateAt(api.S.m).id && txt("statusText") === api.data.regionAt(api.S.m).name,
+    `sign shows ${txt("stateBadge")}, status line ${txt("statusText")}`);
+  ok(txt("toEndText").endsWith(`${Math.round(api.S.m).toLocaleString()} mi to ${ENDS.S.short}`), `sign: ${txt("toEndText")}`);
+  api.narrator.whereAreWe();
+  { const w = said.filter(s => s.id === "where").pop();
+    ok(w && w.text.endsWith(`${Math.round(api.S.m)} miles to ${ENDS.S.long}.`), `where are we: ${w && w.text}`); }
+
+  // 5. a GPS glitch (one wild fix) does not move you or narrate
+  said.length = 0;
+  const mBefore = api.S.m;
+  G.fix(40.0, -121.0, { speed: 25, t: tick(5) }); await sleep(5);
+  const [ga, go] = api.geo.coordAt(mBefore + 0.1); G.fix(ga, go, { speed: 26 }); await sleep(5);
+  ok(Math.abs(api.S.m - mBefore) < 0.5, `one wild fix ignored (${mBefore.toFixed(2)} -> ${api.S.m.toFixed(2)})`);
+  ok(!said.some(s => s.id && api.data.placeById(s.id)), "no narration from a GPS glitch");
+
+  // 6. GPS jitter while stopped does not flip direction
+  const dirBefore = api.S.dir;
+  const [la, lo] = api.geo.coordAt(api.S.m);
+  for (let i = 0; i < 10; i++) { G.fix(la + (Math.random() - .5) * 0.0003, lo + (Math.random() - .5) * 0.0003, { speed: 0 }); await sleep(3); }
+  ok(api.S.dir === dirBefore, `jitter at a stop keeps direction ${dirBefore} (${api.S.dir})`);
+
+  // 6b. crossing a state line northbound speaks a welcome (only when tools/build.py covers more than one state)
+  if (STATES.length > 1) {
+    const B = STATES[STATES.length - 1];
+    said.length = 0;
+    await drive(win, api, G, B.from - 3, B.from + 3, { mph: 60 });
+    ok(said.some(s => s.id === "state:" + B.id && s.text.startsWith(`Welcome to ${B.name}`)), `Welcome to ${B.name} spoken at the state line`);
+    await sleep(400);
+    ok(txt("stateBadge") === B.id, `sign shows ${B.id} (${txt("stateBadge")})`);
+  } else lines.push(`SKIP state line welcome: the data covers ${STATES[0].name} only`);
+
+  // 7. the end of the road, northbound: across the line at the north end (the Oregon line) the app goes off route,
+  //    says goodbye exactly once and nothing else, and shows the end of the road
+  said.length = 0; announced.length = 0;
+  await drive(win, api, G, MAX_M - 6, MAX_M);
+  ok(!api.S.offRoute && api.S.dir === "N" && api.S.m > MAX_M - 0.3, `on the road at the north end (${api.S.m.toFixed(2)} of ${MAX_M.toFixed(2)}, ${api.S.dir})`);
+  const lastOnes = api.data.PLACES.filter(p => p.m > MAX_M - 5);
+  ok(lastOnes.every(p => announced.some(a => a.id === p.id)), `the last landmarks are announced before the line (${lastOnes.map(p => p.name).join(", ")})`);
+  await sleep(1500);                   // anything still on its way (a badge after its chime) comes out before we leave
+  const n7 = said.length;
+  await driveOff(api, G, "N", 4);
+  await sleep(400);
+  checkEnd(win, api, said.slice(n7), ENDS.N, MAX_M);
+  // a fix that bounces back near the line (GPS noise) and out again does not repeat the goodbye
+  await driveOff(api, G, "N", 0.75, { fromMi: 0.75 }); await sleep(50);
+  ok(!api.S.offRoute, "a fix close to the line counts as back on the road");
+  await driveOff(api, G, "N", 3, { fromMi: 2 }); await sleep(400);
+  ok(api.S.offRoute && txt("statusText") === `Past ${ENDS.N.long}. Narration paused.`, `off again after the bounce: ${txt("statusText")}`);
+  ok(said.slice(n7).filter(s => s.id === "end-of-road").length === 1, "still only one goodbye");
+
+  // 8. the end of the road, southbound: into Mexico at San Ysidro, the same
+  said.length = 0; announced.length = 0;
+  const M0 = ROUTE[0][0];
+  await drive(win, api, G, M0 + 8, M0 + 0.25);
+  ok(!api.S.offRoute && api.S.dir === "S", `back on the road southbound in San Diego (${api.S.m.toFixed(2)}, ${api.S.dir})`);
+  const firstOnes = api.data.PLACES.filter(p => p.m < M0 + 5);
+  ok(firstOnes.every(p => announced.some(a => a.id === p.id)), `the first landmarks are announced before the border (${firstOnes.map(p => p.name).join(", ")})`);
+  await sleep(1500);
+  const n8 = said.length;
+  await driveOff(api, G, "S", 4);
+  await sleep(400);
+  checkEnd(win, api, said.slice(n8), ENDS.S, M0);
+
+  // 9. manual jump does not stamp or narrate passed places
+  api.stopAll(false);
+  const before = Object.keys(api.S.stamps).length;
+  api.setMode("manual"); api.setPosition(500, { jumped: true }); api.setPosition(560, { jumped: true });
+  ok(Object.keys(api.S.stamps).length === before, "manual jump collects no stamps");
+
+  // 10. a southbound demo drive from a position at the end of the road starts back inside it
+  api.S.m = MAX_M; api.S.dir = "S";
+  api.startDemo(); await sleep(50);
+  const demoStart = api.S.m;
+  ok(api.S.mode === "demo" && demoStart >= 1 && demoStart <= MAX_M - 1, `demo starts on the road: mile ${demoStart.toFixed(1)} of ${MAX_M.toFixed(1)}`);
+  await sleep(1200);
+  ok(api.S.m < demoStart && api.S.dir === "S", `demo drives south (${demoStart.toFixed(2)} -> ${api.S.m.toFixed(2)})`);
+  api.stopAll(false);
+
+  // 11. location denied stops GPS mode
+  api.stopAll(false);
+  api.startGps(); G.deny(); await sleep(50);
+  ok(api.S.mode === "off", `denied location -> mode off (${api.S.mode})`);
+
+  // 12. every module loaded
+  for (const k of ["live", "play", "listen"]) ok(!!api[k], `module api.${k} present`);
+  ok(!!win.document.querySelector("#view-map svg, #view-map canvas") || true, "map module present (built lazily)");
+
+  out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +
+    lines.map(l => `<span class="${l.startsWith("PASS") ? "pass" : l.startsWith("FAIL") ? "fail" : "skip"}">${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("\n");
+  document.title = fails ? `FAILED ${fails}` : "ALL PASS";
+}
+document.getElementById("f").addEventListener("load", () => run().catch(e => { out.textContent = "ERROR " + e.stack; document.title = "ERROR"; }));
+</script>

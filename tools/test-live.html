@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy live module test</title>
+<!--
+  Drives the live module (js/live.js) inside the real app and checks it. Results: bottom bar + console "[test-live] ...".
+  ?s=      mock (default) | optin | cadence | timers | south | north | la | fail | nopos | end | real | unit
+           speech | chains | alertupd | deadzone | partial | nowx | srcfail | toggle | retry | camvis
+           (north: the last miles before the Oregon line and past it; la: a Caltrans camera strip and side-by-side weather)
+  ?theme=  dark | light       ?view= top | more | block | wx | cams | sheet-cam | sheet-alert | sheet-chain | sheet-wx
+  ?w= ?h=  iframe width and height (default 430 x 932)   ?m= & ?dir= start mile and direction for s=real
+  ?tap=no|on (optin) also taps "Not now" or "Turn on"   ?names=1 (unit) logs every camera name the cleaner changes
+  ?next=1  (sheet-cam) taps "Farther"          ?sw=1 loads index.html itself, with its service worker
+  ?speech=real  keeps the browser's own speechSynthesis (default: a fake one, so voice.js's queue really runs)
+  ?dbg=1   (speech) logs every synthesizer event and every item voice.js starts, with times
+  Mocked scenarios answer weather.gov and Caltrans from tools/live/*.json (real feeds saved earlier; statuses edited to
+  show chain controls and a two-page sign). s=real uses the network. Long virtual budgets: s=timers 400000,
+  s=speech 300000, s=alertupd 900000, s=retry 1500000, s=camvis 150000.
+  By default the app is loaded as srcdoc with service-worker registration stubbed: in a fresh headless profile the
+  worker claims the page mid-test and main.js reloads it. ?sw=1 keeps the real behavior (the run is retried once).
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:430px;height:932px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+  #log{display:none;margin:0;padding:10px 10px 40px;white-space:pre-wrap;word-break:break-word}
+  body.unit #f{display:none}
+  body.unit #log{display:block}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<pre id="log"></pre>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search);
+const SCEN = Q.get("s") || "mock", THEME = Q.get("theme") || "dark", VIEW = Q.get("view") || "top";
+const f = document.getElementById("f");
+f.style.width = (+(Q.get("w") || 430)) + "px";
+if (Q.get("h")) f.style.height = (+Q.get("h")) + "px";
+if (SCEN === "unit") document.body.classList.add("unit");
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 6000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) throw new Error("timed out waiting"); await wait(step); }
+}
+const checks = [], lines = [];
+function log(...a) {
+  const s = a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ");
+  lines.push(s); console.log("[test-live] " + s);
+  document.getElementById("log").textContent = lines.join("\n");
+}
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + extra : ""}`); }
+function finish() {
+  const bad = checks.filter(c => !c[1]).length;
+  const bar = document.getElementById("bar");
+  bar.className = bad ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${THEME} · ${VIEW} · ${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  log(bad ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+
+/* ---------- fresh app state (same origin: this is the app's localStorage; see resetStorage) ---------- */
+const LIVE0 = { optin: null, toggle: null, nopos: true };   // settings.live at start (default false: the test turns it on)
+const live0 = SCEN in LIVE0 ? LIVE0[SCEN] : false;
+const NOW = Date.now(), MIN = 60e3;
+
+/* ---------- a fake speech synthesizer (runs inside the app before its modules load) ----------
+   Utterances "play" for 150 ms + 25 ms per character of virtual time, cancel() interrupts like Chrome does,
+   so voice.js's real queue (priorities, now:true, stop) runs exactly as on a phone. ?speech=real turns it off. */
+function fakeSpeech() {
+  var log = window.__speech = [];
+  function U(t) { this.text = String(t == null ? "" : t); this.lang = ""; this.rate = 1; this.pitch = 1; this.volume = 1; this.voice = null; this.onstart = this.onend = this.onerror = null; }
+  var q = [], cur = null, timer = 0;
+  var synth = {
+    speaking: false, paused: false, pending: false,
+    getVoices: function () { return [{ name: "Test Voice", lang: "en-US", voiceURI: "test-voice", default: true, localService: true }]; },
+    addEventListener: function () {}, removeEventListener: function () {},
+    speak: function (u) { q.push(u); synth.pending = true; go(); },
+    cancel: function () {
+      var c = cur, w = q;
+      q = []; cur = null; clearTimeout(timer); synth.speaking = false; synth.pending = false;
+      if (c) { if (c.text.trim()) log.push({ t: Date.now(), ev: "cut", text: c.text }); if (c.onerror) c.onerror({ error: "interrupted" }); }
+      w.forEach(function (u) { if (u.onerror) u.onerror({ error: "canceled" }); });
+    },
+    pause: function () {}, resume: function () {},
+  };
+  function go() {
+    if (cur || !q.length) return;
+    var u = cur = q.shift();
+    synth.pending = q.length > 0; synth.speaking = true;
+    if (u.text.trim()) log.push({ t: Date.now(), ev: "start", text: u.text });
+    if (u.onstart) u.onstart({});
+    timer = setTimeout(function () {
+      if (cur !== u) return;
+      cur = null; synth.speaking = false;
+      if (u.text.trim()) log.push({ t: Date.now(), ev: "end", text: u.text });
+      if (u.onend) u.onend({});
+      go();
+    }, 150 + u.text.length * 25);
+  }
+  try { Object.defineProperty(window, "speechSynthesis", { configurable: true, get: function () { return synth; } }); } catch (e) {}
+  window.SpeechSynthesisUtterance = U;
+}
+
+/** Replace voice.say with a recorder. play: the item "starts" at once (onstart runs) and resolves true. */
+function stubSay(api, play = true) {
+  const said = [];
+  api.voice.say = (text, o = {}) => {
+    said.push({ text, ...o, check: undefined, onstart: undefined, t: Date.now() });
+    if (play) { try { o.onstart && o.onstart(); } catch {} }
+    return Promise.resolve(!!play);
+  };
+  return said;
+}
+/** Ids waiting in voice.js's queue (not the one speaking). */
+const voiceWaiting = api => (api.voice.queued ? api.voice.queued() : []).map(x => String(x == null ? "" : x));
+/** Every item voice.js starts, in order (the "speaking" event). */
+function recordSpeech(api) {
+  const spoken = [];
+  api.bus.on("speaking", s => { if (s) spoken.push({ id: String(s.id == null ? "" : s.id), text: s.text, t: Date.now() }); });
+  return spoken;
+}
+/** A fake GPS for startGps(): a fix every second, driving north at 63 mph from mile m0. */
+function fakeGps(win, m0) {
+  const g = { m: m0, timer: 0, fixes: 0 };
+  win.__I5_FAKE_GEO__ = {
+    watchPosition(ok) {
+      const tick = () => {
+        const [lat, lon] = win.I5BUDDY.coordAt(g.m);
+        g.fixes++;
+        ok({ coords: { latitude: lat, longitude: lon, accuracy: 8, speed: 28, heading: null, altitude: null }, timestamp: Date.now() });
+        g.m += 28 * 2.23694 / 3600;
+      };
+      win.setTimeout(tick, 300);
+      g.timer = win.setInterval(tick, 1000);
+      return 7;
+    },
+    clearWatch() { win.clearInterval(g.timer); },
+  };
+  return g;
+}
+/** The live module's own instance (same URL as main.js's import), for its _test hooks. */
+async function liveMod(win, doc) {
+  if (!win.__liveMod) {
+    const s = doc.createElement("script");
+    s.type = "module";
+    s.textContent = "import * as m from './js/live.js'; window.__liveMod = m;";
+    doc.head.append(s);
+  }
+  return (await until(() => win.__liveMod, 4000))._test;
+}
+/** Cameras between two miles show a local picture instead of the live one: headless virtual time stands still while
+    a camera server answers (2 to 5 s each near Yreka), and these scenarios test the strip, not the pictures. */
+function localCams(api, from, to) {
+  api.data.CAMS.forEach((c, i) => { if (c.m >= from && c.m <= to) c.img = `icons/icon-192.png?cam=${i}`; });
+}
+/** Wait out the 2-minute rule (virtual time), then refresh and wait for it to land. */
+async function refreshNow(api) {
+  const left = api.live.status().netT + 120e3 - Date.now();
+  if (left > 0) await wait(left + 200);
+  await api.live.refresh();
+  await wait(100);
+}
+
+/* ---------- samples from tools/live (real Caltrans answers saved earlier) ---------- */
+const SAMPLE = {};
+async function sample(name) {
+  if (!SAMPLE[name]) { const r = await fetch("live/" + name); SAMPLE[name] = { status: r.status, buf: await r.arrayBuffer() }; }
+  return SAMPLE[name];
+}
+const json = buf => JSON.parse(new TextDecoder().decode(buf));
+
+/* ---------- fake weather.gov ---------- */
+// Town names by corridor mile. The ones past mile 797 (Oregon and Washington) only come up in a build of the data that
+// covers those states; a California-only road ends at the Oregon line.
+const TOWNS = [[0, "San Ysidro"], [17, "San Diego"], [54, "Oceanside"], [109, "Anaheim"], [135, "Los Angeles"], [168, "Santa Clarita"], [199, "Gorman"],
+  [215, "Grapevine"], [309, "Kettleman City"], [403, "Los Banos"], [450, "Tracy"], [473, "Stockton"], [490, "Lodi"], [519, "Sacramento"],
+  [577, "Williams"], [649, "Red Bluff"], [677, "Redding"], [700, "Lakehead"], [712, "Lamoine"], [724, "Castella"], [730, "Dunsmuir"],
+  [738, "Mount Shasta"], [748, "Weed"], [776, "Yreka"], [790, "Hornbrook"], [816, "Ashland"], [827, "Medford"], [855, "Grants Pass"],
+  [880, "Wolf Creek"], [921, "Roseburg"], [991, "Eugene"], [1050, "Salem"], [1097, "Portland"], [1141, "Longview"], [1210, "Olympia"],
+  [1238, "Tacoma"], [1270, "Seattle"], [1297, "Everett"], [1358, "Bellingham"], [1381, "Blaine"]];
+function town(m) { let b = TOWNS[0]; for (const t of TOWNS) if (Math.abs(t[0] - m) < Math.abs(b[0] - m)) b = t; return b[1]; }
+function iso(t) { return new Date(t).toISOString(); }
+function forecastFor(api, m) {
+  const ft = api.data.elevAt(m) || 0;
+  const hi = Math.round(64 - ft / 1000 * 6), lo = hi - 15;
+  const wet = m > 690 && m < 830, snowy = ft > 2000;
+  const p = (n, name, day, temp, short, wind, pop, detail) => ({ number: n, name, startTime: iso(NOW + (n - 1) * 12 * 3600e3 - 3600e3), endTime: iso(NOW + n * 12 * 3600e3 - 3600e3),
+    isDaytime: day, temperature: temp, temperatureUnit: "F", windSpeed: wind, windDirection: "S", shortForecast: short, probabilityOfPrecipitation: { value: pop }, detailedForecast: detail });
+  return { properties: { periods: [
+    p(1, "This Afternoon", true, hi, wet ? (snowy ? "Rain And Snow Showers Likely" : "Rain Likely") : "Sunny", wet ? "10 to 20 mph" : "5 mph", wet ? 80 : 0, wet ? `Rain likely, mixed with snow above ${snowy ? 2000 : 3000} feet. High near ${hi}. Breezy.` : `Sunny, with a high near ${hi}.`),
+    p(2, "Tonight", false, lo, wet ? (snowy ? "Snow Showers" : "Rain And Snow") : "Mostly Clear", wet ? "15 mph" : "3 mph", wet ? 90 : 0, wet ? `Snow showers. Low around ${lo}. New snow accumulation of 3 to 7 inches possible.` : `Mostly clear, with a low around ${lo}.`),
+    p(3, "Wednesday", true, hi - 3, wet ? "Snow Showers Likely then Partly Sunny" : "Sunny", "10 mph", wet ? 60 : 0, "Snow showers likely before 11am, then partly sunny."),
+    p(4, "Wednesday Night", false, lo - 2, "Partly Cloudy", "5 mph", 10, "Partly cloudy, with a low around " + (lo - 2) + "."),
+  ] } };
+}
+/* The Shasta warning. NWS gives each update of a product a new id (messageType "Update") that lists the earlier ids
+   in properties.references; s=alertupd changes v, refs and event between refreshes. */
+const WSW = { v: 1, refs: true, event: "Winter Storm Warning" };
+function alertsFor(m) {
+  const feats = [];
+  const A = (id, event, severity, area, extra = {}) => feats.push({ id: "urn:oid:mock." + id, properties: Object.assign({
+    id: "urn:oid:mock." + id, areaDesc: area, status: "Actual", messageType: "Alert", severity, event, senderName: "NWS Sacramento CA",
+    onset: iso(NOW - 2 * 3600e3), effective: iso(NOW - 2 * 3600e3), expires: iso(NOW + 8 * 3600e3), ends: iso(NOW + 20 * 3600e3),
+    headline: event + " issued by NWS", description: "", instruction: "", parameters: {} }, extra) });
+  const refs = WSW.refs ? Array.from({ length: WSW.v - 1 }, (_, i) => ({ "@id": `https://api.weather.gov/alerts/urn:oid:mock.wsw.${i + 1}`,
+    identifier: `urn:oid:mock.wsw.${i + 1}`, sender: "w-nws.webmaster@noaa.gov", sent: iso(NOW - (WSW.v - i) * 3600e3) })) : [];
+  if (m >= 700 && m <= 800) A("wsw." + WSW.v, WSW.event, "Severe", "Shasta Lake and North Shasta County; Mount Shasta and Western Siskiyou County", {
+    messageType: WSW.v > 1 ? "Update" : "Alert", references: refs,
+    senderName: "NWS Medford OR",
+    parameters: { NWSheadline: ["WINTER STORM WARNING IN EFFECT UNTIL 10 AM PST WEDNESDAY ABOVE 2500 FEET"] },
+    description: "* WHAT...Heavy snow expected above 2500 feet. Total snow accumulations of 8 to 14 inches. Winds gusting as high as 45 mph.\n\n* WHERE...Interstate 5 from Lakehead to Weed, including Dunsmuir and Mount Shasta City.\n\n* WHEN...Until 10 AM PST Wednesday.\n\n* IMPACTS...Travel could be very difficult to impossible. The hazardous conditions could impact the morning commute.",
+    instruction: "If you must travel, keep an extra flashlight, food, and water in your vehicle in case of an emergency.\nThe latest road conditions for California can be obtained by calling 1-800-427-7623." });
+  if (m >= 640 && m <= 720) A("wind.1", "Wind Advisory", "Moderate", "South-Central Shasta County Including Redding Metro; Northern Sacramento Valley", { description: "* WHAT...South winds 20 to 30 mph with gusts up to 45 mph.\n\n* WHERE...Redding and the northern Sacramento Valley.\n\n* WHEN...Until 4 PM PST Wednesday." });
+  // the last miles before the Oregon line (the alert points ahead of mile 700 end there, at the end of the road)
+  if (m >= 790 && m <= 840) A("wwa.1", "Winter Weather Advisory", "Moderate", "Central Siskiyou County Including Shasta Valley", { onset: iso(NOW + 6 * 3600e3), senderName: "NWS Medford OR", description: "* WHAT...Snow expected. Total snow accumulations of 2 to 5 inches.\n\n* WHERE...Interstate 5 from Yreka to the Oregon line, including Hornbrook and Hilt." });
+  A("beach.1", "Beach Hazards Statement", "Moderate", "San Diego County Coastal Areas");                 // not a road hazard: dropped
+  A("test.1", "Winter Storm Warning", "Severe", "Test Zone", { status: "Test" });                        // test message: dropped
+  A("old.1", "High Wind Warning", "Severe", "Old Zone", { ends: iso(NOW - 3600e3), expires: iso(NOW - 3600e3) }); // over: dropped
+  return { type: "FeatureCollection", features: feats };
+}
+
+/* ---------- fake Caltrans (sample files, edited) ---------- */
+const CC_DESC = {
+  "R-1": "Chains are required on all vehicles except passenger vehicles and pickups under 6,000 pounds gross weight and equipped with snow tires on at least two drive wheels.",
+  "R-2": "Chains are required on all vehicles except four wheel drive vehicles with snow tread tires on all four wheels.",
+};
+function editCC(d, api) {
+  const set = (c, st) => { c.statusData.status = st; c.statusData.statusDescription = CC_DESC[st]; };
+  for (const row of d.data) {
+    const c = row.cc, L = c.location;
+    if (L.route !== "I-5") continue;
+    const lat = +L.latitude;
+    if (SCEN === "south") continue;
+    if (lat > 40.95 && lat < 41.1 && L.direction === "North") set(c, "R-1");      // Lakehead
+    else if (lat >= 41.1 && lat < 41.5) set(c, "R-2");                          // Castella, Dunsmuir, Mount Shasta, Weed
+    else if (SCEN === "chains" && lat >= 41.7 && lat < 42) set(c, "R-2");       // Yreka to Hilt: 34 mi past Mount Shasta
+  }
+  return d;
+}
+function editCMS(d, signs) {
+  for (const row of d.data) {
+    const c = row.cms, L = c.location;
+    if (L.route !== "I-5") continue;
+    if (/Lamoine/.test(L.locationName)) {
+      c.message.display = "2 Pages (Extended)";
+      Object.assign(c.message.phase1, { phase1Line1: "CHAIN CONTROLS", phase1Line2: "AHEAD", phase1Line3: "R-2 AT CASTELLA" });
+      Object.assign(c.message.phase2, { phase2Line1: "CARRY CHAINS", phase2Line2: "OR TRACTION", phase2Line3: "DEVICES" });
+      signs.push(L);
+    }
+    if (/Smith Road S\/B/.test(L.locationName)) {      // southbound one, must not show when going north
+      c.message.display = "1 Page (Normal)";
+      Object.assign(c.message.phase1, { phase1Line1: "SB TRAFFIC", phase1Line2: "SHOULD NOT", phase1Line3: "SHOW NORTHBOUND" });
+    }
+  }
+  return d;
+}
+
+/* ---------- network: mock (default) or real, always recorded ---------- */
+function installNet(win, api) {
+  const calls = [];
+  const real = win.fetch.bind(win);
+  const net = { calls, count: (rx = /./) => calls.filter(c => rx.test(c.url)).length, signs: [],
+    fail: SCEN === "fail" || SCEN === "deadzone" || SCEN === "retry",       // every request fails (no signal)
+    failForecast: SCEN === "partial" || SCEN === "nowx",                    // forecasts answer 500, the rest works
+    failOthers: SCEN === "srcfail" };                                        // alerts and Caltrans answer 500, weather works
+  const R = (body, status = 200, type = "application/geo+json") =>
+    new win.Response(body instanceof ArrayBuffer || typeof body === "string" ? body : JSON.stringify(body), { status, headers: { "Content-Type": type } });
+  const delay = (ms, signal) => new Promise((res, rej) => {
+    const t = setTimeout(res, ms);
+    signal && signal.addEventListener("abort", () => { clearTimeout(t); rej(new DOMException("aborted", "AbortError")); });
+  });
+  win.fetch = async (url, opts = {}) => {
+    url = String(url && url.url || url);
+    if (!/^https:\/\/(api\.weather\.gov|cwwp2\.dot\.ca\.gov)\//.test(url)) return real(url, opts);
+    calls.push({ url, t: Date.now() });
+    if (SCEN === "real") return real(url, opts);
+    await delay(30 + calls.length % 5 * 20, opts.signal);
+    if (net.fail) throw new TypeError("Failed to fetch");
+    const u = new URL(url);
+    let mm;
+    if ((mm = /^\/points\/(-?[\d.]+),(-?[\d.]+)$/.exec(u.pathname))) {
+      const m = win.I5BUDDY.locate(+mm[1], +mm[2]).m;
+      return R({ properties: { forecast: `https://api.weather.gov/gridpoints/MOCK/${Math.round(m)},1/forecast`,
+        relativeLocation: { properties: { city: town(m), state: api.data.stateAt(m).id } } } });
+    }
+    if ((mm = /^\/gridpoints\/MOCK\/(\d+),1\/forecast$/.exec(u.pathname))) {
+      if (net.failForecast) return R({ status: 500, title: "Unexpected Problem", detail: "An unexpected problem has occurred." }, 500, "application/problem+json");
+      return R(forecastFor(api, +mm[1]));
+    }
+    if (u.pathname === "/alerts/active" && net.failOthers) return R({ status: 500, title: "Unexpected Problem" }, 500, "application/problem+json");
+    if (u.pathname === "/alerts/active") {
+      const [la, lo] = (u.searchParams.get("point") || "0,0").split(",").map(Number);
+      return R(alertsFor(win.I5BUDDY.locate(la, lo).m));
+    }
+    if ((mm = /^\/data\/d(\d+)\/(cc|cms)\/(?:cc|cms)Status(D\d\d)\.json$/.exec(u.pathname))) {
+      const nn = mm[3].slice(1), file = `${mm[2]}-${nn}.json`;
+      const s = await sample(file);
+      if (s.status !== 200 || net.failOthers) return R("<html><h1>500 Internal Server Error</h1></html>", 500, "text/html");
+      if (nn === "02" && mm[2] === "cc") return R(editCC(json(s.buf), api), 200, "application/json");
+      if (nn === "02" && mm[2] === "cms") return R(editCMS(json(s.buf), net.signs), 200, "application/json");
+      return R(s.buf.slice(0), 200, "application/json"); // as served (cc-11 has Latin-1 bytes, cc-12 is a 500 page)
+    }
+    return R({ title: "not found" }, 404);
+  };
+  return net;
+}
+
+/* ---------- a last-good copy from 12 minutes ago (for ?s=fail) ---------- */
+function staleSnap() {
+  const t = NOW - 12 * MIN;
+  const per = (n, name, day, temp, short) => ({ name, start: iso(t + (n - 1) * 12 * 3600e3), end: iso(NOW + n * 12 * 3600e3), day, temp, unit: "F", short, wind: "10 mph", windDir: "S", pop: 70, detail: short + "." });
+  return { v: 1, okT: t,
+    wx: [
+      { m: 725, lat: 41.15, lon: -122.31, city: "Castella", st: "CA", url: "https://api.weather.gov/gridpoints/MOCK/725,1/forecast", t, periods: [per(1, "This Afternoon", true, 41, "Rain And Snow Showers Likely"), per(2, "Tonight", false, 29, "Snow Showers")] },
+      { m: 790, lat: 41.9, lon: -122.57, city: "Hornbrook", st: "CA", url: "https://api.weather.gov/gridpoints/MOCK/790,1/forecast", t, periods: [per(1, "This Afternoon", true, 44, "Chance Rain Showers"), per(2, "Tonight", false, 31, "Snow Showers Likely")] },
+    ],
+    alerts: [],
+    cc: { "02": { t, items: [
+      { id: "mock-1", m: 711.1, dir: "N", level: 1, status: "R-1", desc: CC_DESC["R-1"], place: "Lakehead", name: "19 miles south of Dunsmuir" },
+      { id: "mock-2", m: 723.8, dir: "N", level: 2, status: "R-2", desc: CC_DESC["R-2"], place: "Castella", name: "6 miles south of Dunsmuir" },
+    ] } },
+    cms: {},
+  };
+}
+/** s=partial: forecasts from 2.5 hours ago (weather.gov has been answering 500 since). */
+function oldWxSnap() {
+  const s = staleSnap(), t = NOW - 150 * MIN;
+  for (const w of s.wx) w.t = t;
+  return { ...s, okT: t, cc: {} };
+}
+/** s=deadzone: no signal for 50 minutes; the last copy holds a sign 4 mi ahead of mile 706.5. */
+function deadSnap() {
+  const t = NOW - 50 * MIN;
+  const wsw = { id: "urn:oid:mock.wsw.1", event: "Winter Storm Warning", sev: "Severe", kind: "warn", area: "Shasta Lake and North Shasta County",
+    onset: iso(NOW - 2 * 3600e3), until: iso(NOW + 20 * 3600e3), headline: "", desc: "", instr: "", sender: "NWS Medford OR", refs: [], ms: [710, 750], t };
+  return { v: 1, okT: t, wx: [], alerts: [wsw], cc: {},
+    cms: { "02": { t, items: [{ id: "mock-sign", m: 710.6, dir: "N", p1: ["CRASH AHEAD", "RIGHT LANE", "BLOCKED"], p2: [], name: "Lamoine", place: "Lakehead" }] } } };
+}
+
+/* ---------- scenarios ---------- */
+const $ = (doc, sel) => doc.querySelector(sel);
+const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+async function turnOn(api) { api.settings.live = true; api.saveSettings(); }
+async function settle(api, ms = 500) { await wait(ms); await until(() => !api.live.status().busy, 5000); await wait(150); }
+
+const SCENARIOS = {
+  async optin(api, win, doc, net) {
+    api.setPosition(700, { dir: "N", jumped: true });
+    await wait(400);
+    check("opt-in card shown once position is known", $(doc, "#liveBlock .lv-ask") && !$(doc, "#liveBlock").hidden);
+    check("opt-in has Turn on and Not now", /Turn on/.test(txt($(doc, ".lv-ask-acts"))) && /Not now/.test(txt($(doc, ".lv-ask-acts"))));
+    check("nothing fetched before opting in", net.calls.length === 0, `${net.calls.length} calls`);
+    check("alerts strip empty", $(doc, "#liveAlerts").hidden && !$(doc, "#liveAlerts").firstChild);
+    const fine = txt($(doc, ".lv-ask .lv-fine"));
+    // every agency in the road data (Caltrans for California; WSDOT only when Washington is in the data), no other
+    const ags = [...new Set(["Caltrans", ...api.data.CAMS.map(c => c.by)])], others = ["Caltrans", "WSDOT", "ODOT"].filter(a => !ags.includes(a));
+    check("fine print names every server it talks to", /weather\.gov/.test(fine) && ags.every(a => fine.includes(a)) && /camera/i.test(fine), fine);
+    check("and no agency the road data does not have", !others.some(a => fine.includes(a)), `${fine} (not: ${others.join(", ")})`);
+    const desc = a => (a ? `${a.tagName.toLowerCase()}.${a.className} "${txt(a).slice(0, 40)}"` : "none");
+    // "Not now" hides it and fetches nothing; focus stays near where it was
+    if (Q.get("tap") === "no") {
+      const b = [...doc.querySelectorAll(".lv-ask-acts button")].find(b => /Not now/.test(b.textContent));
+      b.focus(); b.click();
+      await wait(300);
+      check("Not now sets live=false", api.settings.live === false);
+      check("Not now hides the card", !$(doc, "#liveBlock .lv-ask") && $(doc, "#liveBlock").hidden);
+      check("still nothing fetched", net.calls.length === 0);
+      const a = doc.activeElement;
+      check("Not now: focus goes to the control just above, not to the page", a && a !== doc.body && !!(a.compareDocumentPosition($(doc, "#liveBlock")) & 4), desc(a));
+    }
+    // "Turn on": focus moves into the new block and a status message says it is on
+    if (Q.get("tap") === "on") {
+      const b = [...doc.querySelectorAll(".lv-ask-acts button")].find(b => /Turn on/.test(b.textContent));
+      b.focus(); b.click();
+      await wait(60);
+      const a = doc.activeElement;
+      check("Turn on: focus moves into the live block, not to the page", a && a !== doc.body && $(doc, "#liveBlock").contains(a), desc(a));
+      check("Turn on: a status message says it is on", !$(doc, "#toast").hidden && /Live road info is on/.test(txt($(doc, "#toast"))), txt($(doc, "#toast")));
+      await settle(api);
+      check("Turn on: data arrives", doc.querySelectorAll(".lv-wxpt").length === 2);
+    }
+  },
+  async nopos(api, win, doc, net) {
+    await wait(800);
+    check("live on but no position: nothing rendered", !$(doc, "#liveBlock").firstChild && !$(doc, "#liveAlerts").firstChild);
+    check("live on but no position: nothing fetched", net.calls.length === 0, `${net.calls.length} calls`);
+    check("weatherText asks for a position", /Start GPS/.test(api.live.weatherText()));
+    api.setPosition(519, { dir: "N", jumped: true });
+    await settle(api);
+    check("position known: fetches start", net.calls.length > 0, `${net.calls.length} calls`);
+    check("position known: block renders", !!$(doc, "#liveBlock .lv"));
+  },
+  async mock(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const st = api.live.status();
+    log("status", st);
+    log("requests", net.calls.map(c => c.url.replace(/^https:\/\//, "")));
+    const rows = [...doc.querySelectorAll("#liveAlerts .lv-al")].map(txt);
+    log("alert rows", rows);
+    check("alerts strip visible", !$(doc, "#liveAlerts").hidden && rows.length >= 2);
+    check("one chain controls row: nearest level, then the next", /^Chain controls R-1 near Lakehead, \d+(\.\d)? mi ahead\s*Then R-2 near Castella, \d+ mi\. Chains/.test(rows[0] || ""), rows[0]);
+    check("chain row is danger (R-2 ahead)", $(doc, "#liveAlerts .lv-al").classList.contains("warn"));
+    check("warning stays visible when collapsed", /Winter Storm Warning/.test(rows[1] || ""), rows[1]);
+    check("strip collapses to 2 rows + more", doc.querySelectorAll("#liveAlerts .lv-al").length === 2 && /Show 2 more/.test(txt($(doc, ".lv-more"))));
+    check("weather: two points", doc.querySelectorAll(".lv-wxpt").length === 2, txt($(doc, ".lv-wx")));
+    check("weather says Near CITY, ST", /Near [A-Z][a-z]+.*, CA/.test(txt($(doc, ".lv-wx-city"))));
+    check("freeway sign shown with its lines", /CHAIN CONTROLS/.test(txt($(doc, ".lv-cms-face"))) && /CARRY CHAINS/.test(txt($(doc, ".lv-cms-face"))));
+    check("southbound sign not shown going north", !/SHOULD NOT/.test(txt($(doc, "#liveBlock"))));
+    check("sign caption at LOCATION · N mi", /^At Lamoine, Lakehead · \d+(\.\d)? mi$/.test(txt($(doc, ".lv-cms-cap"))), txt($(doc, ".lv-cms-cap")));
+    check("3 cameras", doc.querySelectorAll(".lv-cam").length === 3);
+    check("cameras have lazy images with ?t=", [...doc.querySelectorAll(".lv-cam img")].every(i => i.loading === "lazy" && /[?&]t=\d+/.test(i.getAttribute("src"))));
+    check("no TripCheck link in mid California", !$(doc, ".lv-tc") || $(doc, ".lv-tc").hidden);
+    const ags = [...new Set(["Caltrans", ...api.data.CAMS.map(c => c.by)])];
+    check("sources line names the agencies in the road data", txt($(doc, ".lv-src")) === `Sources: National Weather Service, ${ags.join(", ")}.`, txt($(doc, ".lv-src")));
+    check("footer says updated", /Live road info\s*Updated just now(Refresh)?$/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+    check("footer dot green (all current)", !$(doc, ".lv-foot").classList.contains("part") && !$(doc, ".lv-foot").classList.contains("bad"));
+    check("only districts near: D2", st.cc.join() === "02" && st.cms.join() === "02", JSON.stringify([st.cc, st.cms]));
+    const wt = api.live.weatherText();
+    log("weatherText:", wt);
+    check("weatherText speaks both points", /^Weather ahead\. Near \w+.*in about \d+ miles.*Near/.test(wt));
+    check("weatherText mentions the warning", /Winter Storm Warning/.test(wt));
+    log("roadText:", api.live.roadText());
+    const snap = api.live.snapshot();
+    check("snapshot for other modules", snap.chains.length >= 6 && snap.sign && snap.weather.length === 2 && snap.alerts.length === 3, JSON.stringify({ c: snap.chains.length, s: !!snap.sign, w: snap.weather.length, a: snap.alerts.length }));
+  },
+  async cadence(api, win, doc, net) {
+    const say0 = api.voice.say;
+    const said = stubSay(api);                 // each item "plays" as soon as it is queued
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const n1 = net.calls.length;
+    log("first refresh requests", n1);
+    check("first refresh: 2 points + 2 forecasts + 3 alerts + D2 cc + D2 cms", n1 === 9, String(n1));
+    const mine = () => said.filter(s => /^(cc:|urn:|cms:)/.test(s.id || ""));
+    log("spoken", mine().map(s => `${s.prio} ${s.chime} ${s.id} :: ${s.text}`));
+    const cc = mine().filter(s => s.id.startsWith("cc:"));
+    check("chain controls spoken once, prio 3, alert chime", cc.length === 1 && cc[0].prio === 3 && cc[0].chime === "alert", cc.map(s => s.text).join(" | "));
+    check("chain levels spoken as 'R 1'", cc[0] && /R 1 near Lakehead/.test(cc[0].text) && !/R-\d/.test(cc[0].text), cc[0] && cc[0].text);
+    const wsw = mine().filter(s => s.id === "urn:oid:mock.wsw.1");
+    check("winter storm warning spoken once, prio 2, id = alert id", wsw.length === 1 && wsw[0].prio === 2 && wsw[0].chime === "alert");
+    check("advisories not spoken", !mine().some(s => /Advisory/.test(s.text)));
+    // drive 4 miles in small steps: no new requests
+    for (let m = 700.5; m <= 704; m += 0.5) { api.setPosition(m, { speed: 63 }); await wait(20); }
+    await wait(300);
+    check("moving < 5 mi: no new requests", net.calls.length === n1, `${net.calls.length - n1} new`);
+    // sign at Lamoine (~710.6): within 3 mi -> read once
+    for (let m = 704.5; m <= 709; m += 0.5) { api.setPosition(m, { speed: 63 }); await wait(20); }
+    await wait(200);
+    const sg = mine().filter(s => s.id.startsWith("cms:"));
+    log("sign speech", sg.map(s => s.text));
+    check("sign read once when within 3 mi, prio 1", sg.length === 1 && sg[0].prio === 1 && /^The freeway sign ahead says: chain controls ahead R 2 at castella\. carry chains or traction devices\.$/.test(sg[0].text), sg[0] && sg[0].text);
+    // moved > 5 mi but less than 2 minutes since the last refresh: waits
+    check("moved > 5 mi within 2 min: no request yet", net.calls.length === n1, `${net.calls.length - n1} new`);
+    check("chain + warning still spoken only once", mine().filter(s => s.id.startsWith("cc:")).length === 1 && mine().filter(s => s.id === "urn:oid:mock.wsw.1").length === 1);
+    // turn around: northbound chain controls go away
+    api.setPosition(709, { dir: "S", jumped: true });
+    await wait(200);
+    check("turned south: northbound chain controls hidden", ![...doc.querySelectorAll("#liveAlerts .lv-al")].some(b => /Chain controls R-1/.test(txt(b))));
+    check("refresh() inside 2 min does not fetch at once", (api.live.refresh(), net.calls.length === n1));
+    // ending the trip lets the next trip hear active warnings again
+    const before = mine().length;
+    api.stopAll(false);                       // emits trip:end, mode off
+    api.setMode("demo");
+    api.setPosition(709.2, { speed: 63 });
+    await wait(200);
+    check("new trip: active warning spoken again", mine().filter(s => s.id === "urn:oid:mock.wsw.1").length === 2, `${mine().length - before} new`);
+    // turn live off: everything goes away and nothing more is fetched
+    api.settings.live = false; api.saveSettings();
+    await wait(200);
+    check("live off: containers empty", !$(doc, "#liveBlock").firstChild && !$(doc, "#liveAlerts").firstChild);
+    api.voice.say = say0;
+    api.settings.live = true; api.saveSettings();
+    await wait(300);
+    api.setPosition(700, { dir: "N", jumped: true });
+    await wait(300);
+  },
+  async timers(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    let t = api.live.status().timers;
+    check("on Drive: tick and camera timers run", t.tick && t.cam, JSON.stringify(t));
+    api.ui.go("map"); await wait(100);
+    t = api.live.status().timers;
+    check("other tab: camera timer stops, tick keeps going", t.tick && !t.cam, JSON.stringify(t));
+    api.ui.go("drive"); await wait(100);
+    check("back on Drive: camera timer again", api.live.status().timers.cam);
+    // page hidden: everything pauses
+    Object.defineProperty(doc, "hidden", { configurable: true, get: () => true });
+    Object.defineProperty(doc, "visibilityState", { configurable: true, get: () => "hidden" });
+    doc.dispatchEvent(new Event("visibilitychange"));
+    await wait(100);
+    t = api.live.status().timers;
+    check("hidden page: all timers paused", !t.tick && !t.cam && !t.sched, JSON.stringify(t));
+    const n0 = net.calls.length;
+    api.setPosition(720, { speed: 63 });   // moved 20 mi while hidden (GPS on Android keeps going)
+    await wait(200);
+    check("hidden page: no fetch even when due", net.calls.length === n0);
+    delete doc.hidden; delete doc.visibilityState;
+    doc.dispatchEvent(new Event("visibilitychange"));
+    await wait(100);
+    t = api.live.status().timers;
+    check("visible again: timers back, refresh waiting for the 2-minute mark", t.tick && t.cam && t.sched, JSON.stringify(t));
+    // the deferred refresh fires once the 2 minutes are up (virtual time)
+    const first = net.calls[0].t;
+    const p = api.live.refresh();
+    let resolved = null;
+    p.then(v => { resolved = v; });
+    await until(() => net.calls.length > n0, 200000, 500);
+    const second = net.calls[n0].t;
+    log(`second refresh ${Math.round((second - first) / 1000)} s after the first, ${net.calls.length - n0} requests`);
+    check("deferred refresh after >= 2 minutes", second - first >= 120e3 - 50, `${second - first} ms`);
+    await until(() => resolved !== null, 20000);
+    check("refresh() resolves true when it lands", resolved === true);
+    check("forecasts reused from the 30-minute cache", !net.calls.slice(n0).some(c => /forecast$/.test(c.url) && net.calls.slice(0, n0).some(o => o.url === c.url)));
+  },
+  async south(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(492, { dir: "S", speed: 61, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const st = api.live.status();
+    log("status", st);
+    log("requests", net.calls.map(c => c.url.replace(/^https:\/\//, "")));
+    check("districts D10, D3 (and D6 for chains)", st.cc.includes("10") && st.cms.includes("10") && st.cms.includes("03"), JSON.stringify([st.cc, st.cms]));
+    check("two-page closure sign shown", /W-4 TO CLOSE AT/.test(txt($(doc, ".lv-cms-face"))) && /TUNE TO 1670 AM/.test(txt($(doc, ".lv-cms-face"))), txt($(doc, ".lv-cms-face")));
+    check("sign has two pages", $(doc, ".lv-cms-face") && $(doc, ".lv-cms-face").dataset.pages === "2");
+    check("no chain controls in the valley", $(doc, "#liveAlerts").hidden);
+    check("cc feeds with no I-5 points are skipped next time", st.skip.some(u => /ccStatusD10/.test(u)), JSON.stringify(st.skip));
+  },
+  /* The last miles before the Oregon line, where a California-only road ends: Caltrans chain-control checks and
+     cameras right up to the line, forecasts that stop at it, and nothing about Oregon unless the data covers it (no
+     TripCheck link). Then the GPS leaves the road past the line (main.js: off route, "THE END"): nothing more is
+     spoken, nothing breaks. With Oregon in the data the road goes on: the TripCheck link and Oregon forecasts instead. */
+  async north(api, win, doc, net) {
+    const D = api.data, line = D.STATES.find(s => s.id === "CA").to, m0 = line - 18;
+    const or = D.STATES.find(s => s.id === "OR"), end = D.MAX_M - line < 0.01;   // the Oregon line ends the road
+    const said = stubSay(api);
+    const mine = () => said.filter(s => /^(cc:|urn:|cms:|wx:|live:)/.test(s.id || ""));   // live's own speech (not a badge)
+    localCams(api, m0 - 70, m0 + 70);
+    api.setMode("demo");
+    api.setPosition(m0, { dir: "N", speed: 64, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const st = api.live.status();
+    log("status", st);
+    log("requests", net.calls.map(c => c.url.replace(/^https:\/\//, "")));
+    check("Caltrans checked up to the line (D2 chain controls and signs)", st.cc.includes("02") && st.cms.includes("02") && net.count(/cwwp2/) > 0, JSON.stringify([st.cc, st.cms]));
+    const tc = $(doc, ".lv-tc");
+    if (or) check("Oregon is in the data: TripCheck link for the road ahead", tc && !tc.hidden && tc.href.startsWith("https://tripcheck.com"));
+    else check("Oregon is not in the data: no TripCheck link", !tc || tc.hidden, tc ? tc.outerHTML : "none");
+    const want = D.camsAhead(m0, "N", 3, 60).filter(c => c.img);
+    const labels = [...doc.querySelectorAll(".lv-cam small")].map(txt);
+    check("cameras right up to the line", labels.length === want.length && labels.length >= 2, `${labels.length} shown; in the data ahead: ${want.map(c => c.m.toFixed(1)).join(", ")}`);
+    check("each camera names its source from the data", labels.every((t, i) => want[i] && t.endsWith("· " + want[i].by)), labels.join(" | "));
+    // forecast points 25 and 90 mi ahead stop at the end of the road (one point when both are past it)
+    const exp = [25, 90].map(a => Math.min(D.MAX_M, m0 + a)).filter((t, i, a) => a.findIndex(x => Math.abs(x - t) < 12) === i);
+    check(`weather ahead: ${exp.length} point${exp.length === 1 ? "" : "s"}, the first at the end of the road or before`, doc.querySelectorAll(".lv-wxpt").length === exp.length, txt($(doc, ".lv-wx")));
+    const d0 = `In about ${Math.round(exp[0] - m0)} mi`, st0 = D.stateAt(exp[0]).id;
+    check(`first forecast: ${d0}, near a town in ${st0}`, txt($(doc, ".lv-wx-d")) === d0 && new RegExp(`^Near [A-Z][a-z]+.*, ${st0}$`).test(txt($(doc, ".lv-wx-city"))), `${txt($(doc, ".lv-wx-d"))} / ${txt($(doc, ".lv-wx-city"))}`);
+    check("weather.gov asked once per forecast point (nothing past the end of the road)", net.count(/\/points\//) === exp.length, `${net.count(/\/points\//)} /points/ requests`);
+    const ags = [...new Set(["Caltrans", ...D.CAMS.map(c => c.by)])];
+    check("sources: the agencies in the road data", txt($(doc, ".lv-src")) === `Sources: National Weather Service, ${ags.join(", ")}.`, txt($(doc, ".lv-src")));
+    const at = api.live.alertsText();
+    check("road conditions: Caltrans was asked, so 'no chain controls' (not 'only California roads')", /No chain controls on the road ahead right now\./.test(at) && !/only get chain controls/.test(at), at);
+    // drive the last miles to the line: the camera strip empties out (nothing ahead), the forecast is right here
+    for (let m = m0 + 0.5; m <= line - 0.15; m += 0.5) { api.setPosition(m, { speed: 64 }); await wait(10); }
+    api.setPosition(line - 0.1, { speed: 64 });
+    await wait(200);
+    if (!end) {
+      // the road goes on into Oregon: no cameras there in the data, so the TripCheck link stands in for them
+      check("at the line, Oregon ahead: the camera section keeps the TripCheck link", !$(doc, ".lv-camsec").hidden && $(doc, ".lv-cams").hidden && !!$(doc, ".lv-tc") && !$(doc, ".lv-tc").hidden, txt($(doc, ".lv-camsec")));
+      check("at the line, Oregon ahead: forecasts from Oregon", /, OR$/.test(txt($(doc, ".lv-wx-city"))), txt($(doc, ".lv-wx-city")));
+      return;
+    }
+    check("at the line: no cameras ahead, the camera section hides", $(doc, ".lv-camsec").hidden, txt($(doc, ".lv-camsec")));
+    check("at the line: the forecast is 'Right around here'", /^Right around here$/.test(txt($(doc, ".lv-wx-d"))), txt($(doc, ".lv-wx-d")));
+    // past the line the GPS is off the road (main.js keeps the last mile, sets offRoute and says the end-of-road line)
+    const n0 = mine().length;
+    api.setPosition(api.S.m, { offRoute: true, jumped: true });
+    await wait(200);
+    api.bus.emit("trip:end", {});                 // would make active warnings speakable again...
+    api.setPosition(api.S.m, { offRoute: true, jumped: true });
+    await wait(300);
+    check("past the line (off the road): live says nothing, not even the warnings a new trip would hear", mine().length === n0, mine().slice(n0).map(s => s.text).join(" | "));
+    check("past the line: the last forecast stays on screen", doc.querySelectorAll(".lv-wxpt").length === 1 && !!$(doc, "#liveBlock .lv-foot"));
+    const texts = [api.live.weatherText(), api.live.alertsText(), api.live.roadText(), api.live.signText()];
+    check("past the line: the spoken summaries still work", texts.every(t => typeof t === "string" && t.length > 10 && !/NaN|undefined|null/.test(t)), texts.join(" | "));
+    // back on the road heading south: speech comes back (the warning, once)
+    api.setPosition(line - 0.5, { dir: "S", speed: 60, jumped: true });
+    await wait(300);
+    check("back on the road: the warning is spoken again for the new trip", mine().slice(n0).some(s => /Winter Storm Warning/.test(s.text)), mine().slice(n0).map(s => s.text).join(" | "));
+  },
+  /* Los Angeles to the Grapevine: a camera strip from one agency (the data's own "by"), a camera sheet named after it,
+     and side-by-side forecasts whose place names wrap differently, lined up row by row (alignWx). */
+  async la(api, win, doc, net) {
+    const m0 = 174;   // Castaic: forecasts near Gorman (25 mi) and Kettleman City (90 mi)
+    localCams(api, m0 - 10, m0 + 130);
+    api.setMode("demo");
+    api.setPosition(m0, { dir: "N", speed: 62, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const st = api.live.status();
+    log("districts", JSON.stringify([st.cc, st.cms]));
+    const want = api.data.camsAhead(m0, "N", 3, 60).filter(c => c.img);
+    const labels = [...doc.querySelectorAll(".lv-cam small")].map(txt);
+    check("3 cameras, each naming its source from the data", labels.length === 3 && labels.every((t, i) => want[i] && t.endsWith("· " + want[i].by)), labels.join(" | "));
+    const ags = [...new Set(["Caltrans", ...api.data.CAMS.map(c => c.by)])];
+    const foreign = ["WSDOT", "ODOT", "TripCheck"].filter(a => !ags.includes(a));   // no TripCheck this far from Oregon
+    const shown = $(doc, "#liveBlock").innerText;                                     // visible text only
+    check("no agency outside the data on screen", !foreign.some(a => shown.includes(a)), `not: ${foreign.join(", ")}`);
+    $(doc, ".lv-cam").click();
+    await wait(300);
+    const sh = $(doc, ".lv-sheet");
+    const head = sh ? txt(sh.querySelector(".sheet-head b")) : "";
+    check("the camera sheet is named after the camera's agency", !!sh && !sh.hidden && head === `${want[0].by} camera` && txt(sh).includes(`Live image from ${want[0].by}`), `${head} / ${sh ? txt(sh.querySelector(".lv-cam-meta")) : ""}`);
+    if (sh) { sh.querySelector(".lv-close").click(); await wait(200); }
+    check("weather in California", [...doc.querySelectorAll(".lv-wx-city")].every(c => /, CA$/.test(txt(c))), txt($(doc, ".lv-wx")));
+    await wait(200);
+    const lines = e => { const r = doc.createRange(); r.selectNodeContents(e); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; };
+    const cities = [...doc.querySelectorAll(".lv-wx-city")];
+    log("wx cards", [...doc.querySelectorAll(".lv-wxpt")].map(c => [c.offsetTop, c.offsetWidth, [...c.children].map(k => `${k.className}:${k.offsetHeight}/${k.style.minHeight || "-"}`).join(",")]));
+    check("side by side, the place names wrap differently (the rows need lining up)", cities.length === 2 && cities[0].offsetTop === cities[1].offsetTop && lines(cities[0]) !== lines(cities[1]), cities.map(c => `${txt(c)}: ${lines(c)} line(s)`).join(", "));
+    const tops = [...doc.querySelectorAll(".lv-wxpt")].map(c => [...c.querySelectorAll(".lv-per")].map(p => Math.round(p.getBoundingClientRect().top)));
+    check("weather rows line up across cards", tops.length === 2 && tops[0].join() === tops[1].join(), JSON.stringify(tops));
+  },
+  async end(api, win, doc, net) {
+    // a mile and a half from the end of the road (the Oregon line): both weather points clamp to it, so one is asked for
+    localCams(api, api.data.MAX_M - 70, api.data.MAX_M);
+    api.setMode("demo");
+    api.setPosition(api.data.MAX_M - 1.4, { dir: "N", speed: 40, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    check("end of the road: one weather point", doc.querySelectorAll(".lv-wxpt").length === 1, String(doc.querySelectorAll(".lv-wxpt").length));
+    check("end of the road: 'Right around here'", /Right around here/.test(txt($(doc, ".lv-wx-d"))), txt($(doc, ".lv-wx-d")));
+    check("end of the road: 1 or 2 points asked", net.count(/\/points\//) === 1, String(net.count(/\/points\//)));
+  },
+  async fail(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const st = api.live.status();
+    log("status", st);
+    check("refresh failed quietly", st.fails === 1);
+    check("footer: unavailable + age", /Live info unavailable right now\s*Updated 12 min ago/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+    check("last good weather kept", doc.querySelectorAll(".lv-wxpt").length === 2);
+    check("last good chain controls kept", /Chain controls R-1 near Lakehead/.test(txt($(doc, "#liveAlerts"))));
+    check("stale chain controls say how old", /As of 12 min ago/.test(txt($(doc, "#liveAlerts"))), txt($(doc, "#liveAlerts .lv-al small")));
+    check("Try again button", /Try again/.test(txt($(doc, ".lv-foot button"))));
+  },
+  /* Warnings already known when a trip starts: Start GPS and Demo drive call setMode() (live sees chain controls and
+     a warning) and then greet() with now:true, which clears the speech queue. With the real queue (fake synthesizer). */
+  async speech(api, win, doc, net) {
+    const T0 = Date.now(), marks = [], mark = n => marks.push([n, Date.now()]);
+    const spoken = recordSpeech(api);
+    const ids = (from = 0) => spoken.slice(from).map(s => s.id);
+    const isCC = id => /^cc:/.test(id), isWSW = id => id === "urn:oid:mock.wsw.1";
+    const both = from => () => ids(from).some(isCC) && ids(from).some(isWSW);
+    const order = from => ids(from).join(" > ");
+    api.setPosition(700, { dir: "N", jumped: true });      // the app is off: live loads its data, says nothing
+    await turnOn(api);
+    await settle(api);
+    check("app off: live says nothing", !spoken.length, ids().join());
+    // 1. Demo drive
+    mark("demo1"); api.startDemo();
+    await until(both(0), 90000, 250).catch(() => {});
+    log("demo start:", ids());
+    check("demo: greeting first", ids()[0] === "greet");
+    check("demo: chain controls spoken once, after the greeting", ids().filter(isCC).length === 1 && ids().findIndex(isCC) > 0, order(0));
+    check("demo: winter storm warning spoken once, after the greeting", ids().filter(isWSW).length === 1 && ids().findIndex(isWSW) > 0, order(0));
+    check("demo: chain controls (prio 3) before the warning (prio 2)", ids().findIndex(isCC) < ids().findIndex(isWSW));
+    // 2. End the trip, then Start GPS (a fake GPS a few miles on)
+    mark("end1"); api.stopAll(false);
+    // voice.js: when an item is stopped during its chime, its pump() later sets current = null even if a newer item
+    // is speaking by then, and the next queued item starts over it. Let such a chime run out between the parts.
+    await wait(1500);
+    let k = spoken.length;
+    fakeGps(win, 704);
+    mark("gps2"); api.startGps();
+    await until(both(k), 90000, 250).catch(() => {});
+    log("gps start:", ids(k));
+    check("gps: greeting first", ids(k)[0] === "greet");
+    check("gps: new trip, chain controls and the warning again, once each", ids(k).filter(isCC).length === 1 && ids(k).filter(isWSW).length === 1, order(k));
+    // 3. A new trip, and Stop is pressed during the greeting: both were waiting, neither is lost
+    api.stopAll(false);
+    await wait(1500);   // let a chime cut by stopAll run out (the voice.js race above)
+    k = spoken.length;
+    mark("demo3"); api.startDemo();
+    await wait(1200);
+    check("stop: both still waiting during the greeting", voiceWaiting(api).some(isCC) && voiceWaiting(api).some(isWSW), voiceWaiting(api).join());
+    mark("stop3"); api.voice.stop();
+    const tStop = Date.now();
+    await until(both(k), 90000, 250).catch(() => {});
+    const back = spoken.slice(k).find(s => isCC(s.id));
+    log("after Stop:", ids(k), back ? `chain controls ${Math.round((back.t - tStop) / 1000)} s after Stop` : "");
+    check("stop: chain controls and the warning come back later, once each", ids(k).filter(isCC).length === 1 && ids(k).filter(isWSW).length === 1, order(k));
+    check("stop: not straight away (about 30 s later)", back && back.t - tStop >= 25e3 && back.t - tStop < 45e3, back ? `${Math.round((back.t - tStop) / 1000)} s` : "never");
+    // 4. A new trip, and "Next landmark" (now:true) cuts in during the greeting: they follow it
+    api.stopAll(false);
+    await wait(1500);   // let a chime cut by stopAll run out (the voice.js race above)
+    k = spoken.length;
+    mark("demo4"); api.startDemo();
+    await wait(1200);
+    mark("next4"); api.narrator.nextOne();
+    const tNext = Date.now();
+    await until(both(k), 90000, 250).catch(() => {});
+    const nextId = ids(k).find(id => id !== "greet" && !isCC(id) && !isWSW(id));
+    log("after Next:", ids(k));
+    check("next: the landmark plays, then chain controls and the warning, once each",
+      ids(k).filter(isCC).length === 1 && ids(k).filter(isWSW).length === 1 && ids(k).indexOf(nextId) < ids(k).findIndex(isCC), ids(k).join(" > "));
+    const cc4 = spoken.slice(k).find(s => isCC(s.id));
+    check("next: right after it, not 30 s later", cc4 && cc4.t - tNext < 25e3, cc4 ? `${Math.round((cc4.t - tNext) / 1000)} s` : "never");
+    api.stopAll(false);
+    if (Q.get("dbg")) {
+      log("marks:", marks.map(([n, t]) => `${n}@${t - T0}`).join(" "));
+      for (const e of win.__speech || []) log(`synth ${e.t - T0} ${e.ev} ${e.text.slice(0, 50)}`);
+      for (const s of spoken) log(`speaking ${s.t - T0} ${s.id}`);
+    }
+  },
+  /* One continuous chain-control area is announced once (and again only when the level goes up); a clearly separate
+     area further on (more than 30 mi past the last checkpoint) is announced on its own. */
+  async chains(api, win, doc, net) {
+    const said = stubSay(api);
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const cc = () => said.filter(s => /^cc:/.test(s.id || ""));
+    const towns = new Set();
+    for (let m = 700.25; m <= 796; m += 0.25) {
+      api.setPosition(m, { speed: 63 });
+      await wait(8);
+      const r = txt($(doc, "#liveAlerts .lv-al[data-k='cc'] b"));
+      const t = /near ([A-Z][a-z]+( [A-Z][a-z]+)?)/.exec(r);
+      if (t) towns.add(t[1]);
+    }
+    log("chain announcements:", cc().map(s => s.text.replace(/ Chains are required.*$/, "")));
+    log("towns the strip showed on the way:", [...towns]);
+    check("700 to 796 northbound: two announcements, not one per town", cc().length === 2, String(cc().length));
+    check("first: R 1 at Lakehead, then R 2 at Castella", cc()[0] && /^Chain controls ahead\. R 1 near Lakehead.*Then R 2 near Castella/.test(cc()[0].text), cc()[0] && cc()[0].text);
+    check("second: the separate Siskiyou area at Yreka", cc()[1] && /R 2 near Yreka, in about 3\d miles/.test(cc()[1].text), cc()[1] && cc()[1].text);
+    check("the strip still names each town on the way", ["Lakehead", "Castella", "Dunsmuir", "Mount Shasta", "Yreka", "Hornbrook"].every(t => towns.has(t)), [...towns].join());
+  },
+  /* NWS gives each update a new id. The same warning is spoken once; an upgrade (a different event) is spoken. */
+  async alertupd(api, win, doc, net) {
+    const said = stubSay(api);
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const wsw = () => said.filter(s => /^urn:oid:mock\.wsw\./.test(s.id || ""));
+    check("first issue spoken", wsw().length === 1);
+    for (const v of [2, 3, 4]) { WSW.v = v; await refreshNow(api); }
+    const rows = () => [...doc.querySelectorAll("#liveAlerts .lv-al")].filter(b => /Warning/.test(txt(b)));
+    log("after 3 updates:", api.live.snapshot().alerts.map(a => a.id), "spoken:", wsw().map(s => s.id));
+    check("3 updates with new ids: not spoken again", wsw().length === 1, wsw().map(s => s.id).join());
+    check("the strip shows it once, the latest update", rows().length === 1 && rows()[0].dataset.k === "wx:urn:oid:mock.wsw.4", rows().map(b => b.dataset.k).join());
+    WSW.v = 5; WSW.refs = false;
+    await refreshNow(api);
+    check("re-issued with no references, same event and area: still quiet", wsw().length === 1, wsw().map(s => s.id).join());
+    WSW.v = 6; WSW.refs = true; WSW.event = "Blizzard Warning";
+    await refreshNow(api);
+    check("upgraded to a Blizzard Warning: spoken", wsw().length === 2 && /Blizzard Warning/.test(wsw()[1].text), wsw().map(s => s.text).join(" | "));
+    api.stopAll(false);
+    api.setMode("demo");
+    api.setPosition(700.2, { speed: 63 });
+    await wait(200);
+    check("a new trip hears it again", wsw().length === 3, String(wsw().length));
+  },
+  /* No signal for 50 minutes: the last copy of a sign stays on screen with its age, but is not read out as current. */
+  async deadzone(api, win, doc, net) {
+    const said = stubSay(api);
+    api.setMode("demo");
+    api.setPosition(706.5, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    for (let m = 706.6; m <= 709.6; m += 0.1) { api.setPosition(m, { speed: 63 }); await wait(15); }
+    const cap = txt($(doc, ".lv-cms-cap"));
+    check("the 50-minute-old sign is on screen with its age", /as of 50 min ago/.test(cap), cap);
+    check("it is not read out by itself", !said.some(s => /^cms:/.test(s.id || "")), said.map(s => s.id).join());
+    $(doc, ".lv-signsec .lv-link").click();
+    const last = said[said.length - 1];
+    check("Hear it says how old it is", last && /^As of 50 minutes ago, the freeway sign at Lamoine, Lakehead said: crash ahead\. right lane blocked\.$/.test(last.text), last && last.text);
+    const rt = api.live.roadText(), st = api.live.signText();
+    check("road and sign summaries say how old too", /As of 50 minutes ago, the next freeway sign/.test(rt) && /^As of 50 minutes ago/.test(st), rt + " | " + st);
+    check("footer: unavailable, last update 50 min ago", /Live info unavailable right now\s*Updated 50 min ago/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+    const row = txt($(doc, "#liveAlerts .lv-al[data-k='wx:urn:oid:mock.wsw.1'] small"));
+    check("the kept warning says how old it is", /^As of 50 min ago · until /.test(row), row);
+    check("and is not spoken from a 50-minute-old copy", !said.some(s => /wsw/.test(s.id || "")));
+  },
+  /* weather.gov forecasts answer 500 while alerts and Caltrans work: kept forecasts show their age. */
+  async partial(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api, 3000);
+    const cards = [...doc.querySelectorAll(".lv-wxpt")];
+    check("the last good forecasts stay (2)", cards.length === 2, String(cards.length));
+    check("each says how old it is", cards.length && cards.every(c => /As of 2 h 30 min ago/.test(txt(c))), cards.map(txt).join(" | "));
+    const foot = txt($(doc, ".lv-foot"));
+    check("footer names the old weather", /Updated just now · Weather from 2 h 30 min ago/.test(foot), foot);
+    check("footer dot amber (part of it is old)", $(doc, ".lv-foot").classList.contains("part") && !$(doc, ".lv-foot").classList.contains("bad"));
+    const wt = api.live.weatherText();
+    check("weatherText says how old", /That forecast is from 2 hours and 30 minutes ago\./.test(wt), wt);
+    check("fresh chain controls carry no age", /Chain controls R-1/.test(txt($(doc, "#liveAlerts"))) && !/As of/.test(txt($(doc, "#liveAlerts .lv-al[data-k='cc']"))));
+  },
+  /* Alerts and Caltrans answer 500 while the weather works: nothing on screen must look like "no chain controls". */
+  async srcfail(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    log("status", api.live.status().src);
+    check("weather still shown", doc.querySelectorAll(".lv-wxpt").length === 2);
+    check("no alert or chain rows", $(doc, "#liveAlerts").hidden);
+    const foot = txt($(doc, ".lv-foot"));
+    check("footer names the silent sources", /Live road info\s*Updated just now · No answer from NWS alerts or Caltrans/.test(foot), foot);
+    check("footer dot amber", $(doc, ".lv-foot").classList.contains("part"));
+    const at = api.live.alertsText();
+    check("road conditions say what could not be checked", /can't reach the weather service.*can't check for warnings/.test(at) && /can't reach Caltrans/.test(at) && !/No chain controls/.test(at), at);
+  },
+  /* Forecasts answer 500 on the very first check: a quiet note instead of an empty section. */
+  async nowx(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api, 3000);
+    const sec = $(doc, ".lv-wxsec");
+    check("weather section says the service is not answering", sec && !sec.hidden && /weather service isn't answering/i.test(txt(sec)), txt(sec));
+    const wt = api.live.weatherText();
+    check("weatherText says so too", /can't reach the weather service/.test(wt), wt);
+    check("footer: updated (alerts and Caltrans came in)", /Updated just now/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+  },
+  /* First use: Turn on, off and on again within a moment. Data must arrive at once, not 10 minutes later. */
+  async toggle(api, win, doc, net) {
+    api.setPosition(700, { dir: "N", jumped: true });
+    await wait(300);
+    [...doc.querySelectorAll(".lv-ask-acts button")].find(b => /Turn on/.test(b.textContent)).click();
+    await wait(12);
+    api.settings.live = false; api.saveSettings();
+    await wait(5);
+    api.settings.live = true; api.saveSettings();
+    const t0 = Date.now();
+    const foot0 = txt($(doc, ".lv-foot"));
+    await until(() => doc.querySelectorAll(".lv-wxpt").length > 0, 30000, 100).catch(() => {});
+    const dt = Date.now() - t0;
+    log("calls", net.calls.length, "footer right after:", foot0);
+    check("on, off, on: data arrives right away", doc.querySelectorAll(".lv-wxpt").length > 0 && dt < 10000, `${Math.round(dt / 1000)} s`);
+    check("meanwhile the footer says it is checking (not unavailable)", /Checking the road ahead/.test(foot0), foot0);
+    await settle(api);
+    check("afterwards: Updated just now", /Live road info\s*Updated just now/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+  },
+  /* After 3 failures (backoff 8 min), Try again goes out at the 2-minute mark and says when. */
+  async retry(api, win, doc, net) {
+    api.setPosition(700, { dir: "N", jumped: true });       // the app is off: no demo timer
+    await turnOn(api);
+    await settle(api);
+    check("first check failed", api.live.status().fails === 1);
+    await until(() => api.live.status().fails >= 3 && !api.live.status().busy, 1200000, 1000);
+    log(`3 failures, the last ${Math.round((api.live.status().netT - NOW) / 1000)} s in`);
+    await wait(30000);
+    net.fail = false;                                        // signal is back
+    const n0 = net.calls.length, tap = Date.now();
+    const b = $(doc, ".lv-foot button");
+    check("the button says Try again", /Try again/.test(txt(b)), txt(b));
+    b.click();
+    await wait(80);
+    const toast = $(doc, "#toast");
+    check("tapped inside the 2 minutes: a toast says when", toast && !toast.hidden && /in about (a minute|2 minutes)/.test(toast.textContent), toast && toast.textContent);
+    await until(() => net.calls.length > n0, 1200000, 500);
+    const dt = net.calls[n0].t - tap;
+    check("it goes out at the 2-minute mark, not after the 8-minute backoff", dt > 80e3 && dt < 100e3, `${Math.round(dt / 1000)} s after the tap`);
+    await settle(api);
+    check("back: weather shown, failures cleared", doc.querySelectorAll(".lv-wxpt").length === 2 && api.live.status().fails === 0);
+  },
+  /* Cameras off screen are not reloaded; when one comes back into view with an old frame, it reloads at once. */
+  async camvis(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const T = await liveMod(win, doc);
+    const pre = [];                                          // every off-page preload (one per camera reload)
+    const desc = Object.getOwnPropertyDescriptor(win.HTMLImageElement.prototype, "src");
+    Object.defineProperty(win.HTMLImageElement.prototype, "src", { configurable: true, get() { return desc.get.call(this); }, set(v) { if (!this.isConnected) pre.push(String(v)); desc.set.call(this, v); } });
+    const lis = [...doc.querySelectorAll(".lv-cams li")];
+    check("3 cameras", lis.length === 3);
+    log("IntersectionObserver in this run says on screen:", lis.map(li => T.camOnScreen(li)));
+    const loads = li => pre.filter(u => u.startsWith(li.dataset.k)).length;
+    T.camsSeen(lis.map(li => ({ target: li, isIntersecting: false })));   // all scrolled away
+    lis[0]._t = Date.now() - 5 * MIN;                       // its frame is 5 minutes old
+    T.camsSeen([{ target: lis[0], isIntersecting: true }]);
+    check("back into view with a 5-minute-old frame: reloads at once", loads(lis[0]) === 1, String(loads(lis[0])));
+    lis[1]._t = Date.now() - 20e3;                          // 20 seconds old
+    T.camsSeen([{ target: lis[1], isIntersecting: true }]);
+    check("a 20-second-old frame is kept", loads(lis[1]) === 0, String(loads(lis[1])));
+    await wait(61000);
+    log("loads after a minute:", lis.map(loads));
+    check("the minute timer reloads the cameras on screen", loads(lis[0]) >= 2 && loads(lis[1]) >= 1, lis.map(loads).join());
+    check("and leaves the one off screen alone", loads(lis[2]) === 0, String(loads(lis[2])));
+    Object.defineProperty(win.HTMLImageElement.prototype, "src", desc);
+  },
+  async real(api, win, doc, net) {
+    api.setMode("demo");
+    api.setPosition(+(Q.get("m") || 700), { dir: Q.get("dir") || "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api, 2500);
+    const st = api.live.status();
+    log("status", st);
+    log("requests", net.calls.map(c => c.url.replace(/^https:\/\//, "")));
+    log("alerts", txt($(doc, "#liveAlerts")));
+    log("weather", txt($(doc, ".lv-wx")));
+    log("sign", txt($(doc, ".lv-signsec")));
+    check("real: refresh succeeded", st.okT > 0 && !st.fails, JSON.stringify(st));
+    check("real: weather shown", doc.querySelectorAll(".lv-wxpt").length >= 1);
+    log("weatherText:", api.live.weatherText());
+  },
+  async unit(api, win, doc, net) {
+    // the app's own instance of js/live.js (initialized, so geo/data are wired): load it from inside the iframe
+    const s = doc.createElement("script");
+    s.type = "module";
+    s.textContent = "import * as m from './js/live.js'; window.__liveMod = m;";
+    doc.head.append(s);
+    const T = (await until(() => win.__liveMod, 4000))._test;
+    const L = [
+      ["1 - Smith Road N/B - Redding", "Redding", "at Smith Road, Redding"],
+      ["057 - Del Paso Rd", "Sacramento", "at Del Paso Rd, Sacramento"],
+      ["CMS 90 - BROADWAY 38.72 S5", "Santa Ana", "at Broadway, Santa Ana"],
+      ["008-SB 5 JNO CARMEL MTN RD UC", "San Diego", "just north of Carmel Mtn Rd, San Diego"],
+      ["10 - SB I-5 S/O MARCH LANE", "Stockton", "south of March Lane, Stockton"],
+      ["024-NB 5 @ JNO TAMARACK AVE OC", "Carlsbad", "just north of Tamarack Ave, Carlsbad"],
+      ["026-NB 5 JNO MILE OF CARS (NC)", "", "just north of Mile Of Cars"],
+      ["19 - Henley Road OC - N/B", "Hornbrook", "at Henley Road, Hornbrook"],
+      ["21 - Abrams Lake - N/B  Wind Warning", "Mount Shasta", "at Abrams Lake, Mount Shasta"],
+      ["40 - Mountain Gate", "Mountain Gate", "at Mountain Gate"],
+      ["STADIUM WAY", "Los Angeles", "at Stadium Way, Los Angeles"],
+      ["", "Weed", "at Weed"],
+    ];
+    for (const [name, near, want] of L) { const got = T.signWhere({ name, place: near }); check(`signWhere "${name}"`, got === want, got); }
+    const sp = [
+      [["W-4 TO CLOSE AT", "TRACY BLVD", "11/15 7AM-7PM"], ["", "TUNE TO 1670 AM", ""], "westbound 4 to close at tracy boulevard November 15 7 AM to 7 PM. tune to 1670 AM."],
+      [["SLOW", "TRAFFIC", "AHEAD"], [], "slow traffic ahead."],
+      [["SR-78 2 MIN", "SR-76 5 MIN", ""], [], "state route 78, 2 minutes; state route 76, 5 minutes."],
+      [["MINUTES TO:", "RTE 405 20", "JW AIRPORT >50"], [], "travel times: route 405, 20 minutes; jw airport, more than 50 minutes."],
+      [["VINCENT THOMAS", "BRIDGE CLOSED", "USE ALT ROUTE"], [], "vincent thomas bridge closed. use alternate route."],
+      [["EXIT 42", "CLOSED", ""], [], "exit 42 closed."],
+      [["I-8 26 MIN", "SR-94 44 MIN", "SR-54 56 MIN"], [], "I 8, 26 minutes; state route 94, 44 minutes; state route 54, 56 minutes."],
+    ];
+    for (const [p1, p2, want] of sp) { const got = T.signSpeech({ p1, p2 }); check(`signSpeech ${p1.join("/")}`, got === want, got); }
+    check("travel-time sign detected", T.isTravelTime({ p1: ["SR-78 2 MIN", "SR-76 5 MIN"], p2: [] }));
+    check("closure sign is not travel time", !T.isTravelTime({ p1: ["W-4 TO CLOSE AT", "TRACY BLVD", "11/15 7AM-7PM"], p2: [] }));
+    check("slow traffic sign is not travel time", !T.isTravelTime({ p1: ["SLOW TRAFFIC", "AHEAD", "10 MIN DELAY"], p2: [] }));
+    // feeds
+    const cc02 = json((await sample("cc-02.json")).buf);
+    const p = T.parseCC(cc02);
+    check("parseCC: 23 I-5 rows, none active in the sample", p.i5 === 23 && p.items.length === 0, JSON.stringify({ i5: p.i5, n: p.items.length }));
+    const cc02b = editCC(json((await sample("cc-02.json")).buf), api);
+    const pb = T.parseCC(cc02b);
+    log("parsed chain items", pb.items.map(i => `${i.status} ${i.dir || "*"} ${i.m.toFixed(1)} ${i.place}`));
+    check("parseCC: edited sample has active items on I-5", pb.items.length >= 6 && pb.items.every(i => i.m > 700 && i.m < 760));
+    const cc07 = json((await sample("cc-07.json")).buf);
+    check("parseCC: malformed status and an off-I-5 'East' point are dropped", T.parseCC(cc07).items.length === 0);
+    const latin = (await sample("cc-11.json")).buf;
+    const dec = T.decode(latin);
+    check("Latin-1 feed decodes (ú, ó)", /Nueva Hindú Sección/.test(dec), (dec.match(/Nueva[^"]*/) || [""])[0]);
+    check("Latin-1 feed parses", JSON.parse(dec).data.length > 0);
+    const cms10 = json((await sample("cms-10.json")).buf);
+    const signs = T.parseCMS(cms10).items;
+    log("D10 signs", signs.map(s => `${s.dir} ${s.m.toFixed(1)} ${s.name} :: ${s.p1.join("/")} | ${s.p2.join("/")}`));
+    check("parseCMS: D10 has 5 lit I-5 signs", signs.length === 5, String(signs.length));
+    const cms03 = json((await sample("cms-03.json")).buf);
+    check("parseCMS: 'True' (capitalized) inService accepted", T.parseCMS(cms03).items.length === 1);
+    // alerts
+    const al = alertsFor(710).features.map(T.parseAlert).filter(Boolean);
+    check("parseAlert keeps warning + advisory, drops beach/test/expired", al.map(a => a.event).join() === "Winter Storm Warning,Wind Advisory", al.map(a => a.event).join());
+    check("warning kind", al[0].kind === "warn" && al[1].kind === "adv");
+    const sec = T.alertSections(alertsFor(710).features[0].properties.description);
+    check("alert description sections", sec.length === 4 && sec[0][0] === "What" && sec[3][0] === "Impacts", JSON.stringify(sec.map(s => s[0])));
+    // geometry helpers
+    const MAXM = api.data.MAX_M, endN = T.targets(MAXM - 2, "N", [25, 90], 12), endS = T.targets(2, "S", [25, 90], 12);
+    check("targets clamp at the north end of the road (data.MAX_M)", endN.length === 1 && endN[0] === MAXM, JSON.stringify(endN));
+    check("targets clamp at the south end (the Mexico border)", JSON.stringify(endS) === "[0]", JSON.stringify(endS));
+    const ags = T.agencies();
+    check("agencies come from the road data", ags[0] === "Caltrans" && ags.length === new Set(["Caltrans", ...api.data.CAMS.map(c => c.by)]).size && (api.data.CAMS.some(c => c.by === "WSDOT") || !ags.includes("WSDOT")), JSON.stringify(ags));
+    check("andList", T.andList(["A"]) === "A" && T.andList(["A", "B"]) === "A and B" && T.andList(["A", "B", "C"]) === "A, B and C" && T.andList([]) === "");
+    check("targets southbound", JSON.stringify(T.targets(700, "S", [25, 90], 12)) === "[675,610]");
+    check("districts near 700 N (150 mi): D2", T.districtsNear(700, "N", 150).join() === "02");
+    check("districts near 492 S (150 mi)", T.districtsNear(492, "S", 150).join() === "06,10,03", T.districtsNear(492, "S", 150).join());
+    check("feed url", T.ctUrl("07", "cc") === "https://cwwp2.dot.ca.gov/data/d7/cc/ccStatusD07.json" && T.ctUrl("11", "cms") === "https://cwwp2.dot.ca.gov/data/d11/cms/cmsStatusD11.json");
+    check("weather icons", T.wxIcon("Mostly Clear then Haze", false) === "🌙" && T.wxIcon("Snow Showers Likely", true) === "🌨️" && T.wxIcon("Partly Sunny", true) === "⛅");
+    check("areaSaid", T.areaSaid("A; B; C") === "A, B and nearby areas" && T.areaSaid("A; B") === "A and B");
+    for (const [raw, want] of [["59 - Sb I-5 S/O Peltier Road", "South of Peltier Road"], ["Via De San Ysidro", "Via De San Ysidro"], ["At H Street", "H Street"],
+      ["SR 543 Interchange", "SR 543 Interchange"], ["I-5 at Mercer St", "Mercer St"], ["Nb at Lomas Santa Fe Dr", "Lomas Santa Fe Dr"],
+      ["Sb 5 Jso Las Flores Dr B", "Just south of Las Flores Dr"], ["Sb at Carlsbad Village_T", "Carlsbad Village"], ["6Th Ave", "6th Ave"],
+      ["17Th Street (7Th)", "17th Street (7th)"], ["Sb 5 To Wb 10 Conn", "To Wb 10 Conn"], ["Conn To Nb Rte 14", "Conn To Nb Rte 14"], ["N/O Sunland Blvd", "North of Sunland Blvd"],
+      ["SR 55", "SR 55"], ["(C 011) I-5 : Just North of Washington Street", "Just North of Washington Street"], ["I-5 @ MP 107.8: Lilly Rd", "Lilly Rd"],
+      ["I-5 NB at MP 11.6: SR 502 on ramp", "SR 502 on ramp"], ["SB/SR 512 Interchange", "SR 512 Interchange"], ["Seneca St, SB", "Seneca St"],
+      ["Hwy 5 at Laguna Nb", "Laguna"], ["Pacific Ave (Olympia)", "Pacific Ave (Olympia)"], ["Sb Just North of Encinitas Bottom", "Just North of Encinitas"],
+      ["I-5 at 130.67: 56th St NB VMS", "56th St NB VMS"], ["I-5 at MP 73.3", "MP 73.3"], ["Disneyland Dr.", "Disneyland Dr"], ["At Grapevine Uc", "Grapevine"], ["Sb So Cannon Rd T", "South of Cannon Rd"]]) {
+      const got = T.camName({ name: raw });
+      check(`camName "${raw}"`, got === want, got);
+    }
+    // never throws: a separate copy of the module, started with nothing, junk, and empty data
+    try {
+      const fresh = await import("../js/live.js?fresh=" + Date.now());
+      fresh.init(undefined); fresh.init({}); fresh.init({ S: null });
+      const handlers = {};
+      const fake = {
+        S: { m: 5, dir: "S", mode: "gps" }, settings: { live: true, narr: true, chat: "normal" },
+        bus: { on: (e, fn) => { handlers[e] = fn; return () => {}; }, emit() {} },
+        store: { get: (k, f) => f, set() {}, del() {} }, data: { DISTRICTS: [], CAMS: [], STATES: [] }, geo: {}, ui: {},
+      };
+      localStorage.setItem("i5b:live:said", JSON.stringify("junk"));   // corrupted storage must not break it
+      localStorage.setItem("i5b:live:snap", JSON.stringify({ v: 1, okT: "x", wx: [{ m: "a" }], alerts: [1], cc: { "02": { t: Date.now(), items: [{ m: "?" }, null] } }, cms: { "02": { t: Date.now(), items: [{ m: 1 }] } } }));
+      fake.store = { get: (k, f) => { try { const v = localStorage.getItem("i5b:" + k); return v == null ? f : JSON.parse(v); } catch { return f; } }, set() {}, del() {} };
+      fresh.init(fake);
+      localStorage.removeItem("i5b:live:said"); localStorage.removeItem("i5b:live:snap");
+      for (const [e, v] of [["pos", { m: 5, jumped: true }], ["tab", "map"], ["settings", fake.settings], ["mode", "off"], ["pos", null]]) handlers[e] && handlers[e](v);
+      fake.S.m = 790; fake.S.dir = "N";
+      const onTexts = [fake.live.weatherText(), fake.live.alertsText(), fake.live.roadText(), fake.live.signText(), JSON.stringify(fake.live.snapshot())];
+      check("junk snapshot in storage: summaries still work, no NaN", onTexts.every(t => typeof t === "string" && !/NaN|undefined/.test(t)), onTexts.join(" | "));
+      fake.settings.live = false; handlers.settings && handlers.settings(fake.settings);
+      const texts = [fake.live.weatherText(), fake.live.alertsText(), fake.live.roadText(), fake.live.signText()];
+      check("never throws with empty data and no containers", texts.every(t => typeof t === "string" && t.length > 5), texts.join(" | "));
+      check("refresh() returns a promise", typeof fake.live.refresh().then === "function");
+    } catch (e) { check("never throws with empty data and no containers", false, String(e && e.stack || e)); }
+    if (Q.get("names")) {
+      const changed = api.data.CAMS.map(c => [c.name, T.camName(c)]).filter(([a, b]) => a !== b);
+      log("camera names changed: " + changed.length);
+      for (let i = 0; i < changed.length; i += 12) log(changed.slice(i, i + 12).map(([a, b]) => `${a} => ${b}`).join(" | "));
+    }
+    const hl = T.sentence("WINTER STORM WARNING IN EFFECT UNTIL 10 AM PST WEDNESDAY ABOVE 2500 FEET");
+    check("NWS headline in sentence case", hl === "Winter storm warning in effect until 10 AM PST Wednesday above 2500 feet.", hl);
+    // speech wording
+    const soon = [10e3, 60e3, 89e3, 90e3, 120e3].map(T.soonText);
+    check("soonText", soon.join("|") === "a few seconds|about a minute|about a minute|about 2 minutes|about 2 minutes", soon.join("|"));
+    const ah = [0.1, 1, 1.6, 4.4].map(T.aheadSaid);
+    check("aheadSaid (no '1 miles')", ah.join("|") === "right here|about a mile ahead|about 2 miles ahead|about 4 miles ahead", ah.join("|"));
+    const sg = { p1: ["CRASH AHEAD", "RIGHT LANE", "BLOCKED"], p2: [] };
+    const fresh = T.signLine({ ...sg, t: Date.now() - 2 * MIN }, "freeway sign ahead"), old = T.signLine({ ...sg, t: Date.now() - 40 * MIN }, "freeway sign ahead");
+    check("signLine: a current copy", fresh === "The freeway sign ahead says: crash ahead. right lane blocked.", fresh);
+    check("signLine: an old copy says how old", old === "As of 40 minutes ago, the freeway sign ahead said: crash ahead. right lane blocked.", old);
+    WSW.v = 3;
+    const upd = T.parseAlert(alertsFor(710).features[0]);
+    WSW.v = 1;
+    check("parseAlert keeps the ids an update replaces", upd && upd.id === "urn:oid:mock.wsw.3" && upd.refs.join() === "urn:oid:mock.wsw.1,urn:oid:mock.wsw.2", upd && JSON.stringify(upd.refs));
+  },
+};
+
+/** Headless (virtual time) can keep an old layout/frame of the iframe; a 1px resize makes it current. */
+async function nudge() {
+  const w0 = f.style.width;
+  f.style.width = (parseInt(w0) - 1) + "px"; await wait(60);
+  f.style.width = w0; await wait(60);
+}
+
+/* ---------- views for screenshots ---------- */
+async function applyView(api, win, doc) {
+  const scrollTo = async sel => {
+    for (let i = 0; i < 6; i++) { // content above may still grow (photos, fonts): repeat until it sits still
+      const n = $(doc, sel);
+      if (!n) return;
+      const y = Math.round(n.getBoundingClientRect().top + win.scrollY - 64);
+      if (Math.abs(win.scrollY - Math.min(y, doc.documentElement.scrollHeight - win.innerHeight)) < 2 && i) return;
+      win.scrollTo(0, y);
+      await wait(250);
+    }
+  };
+  if (VIEW === "top") win.scrollTo(0, 0);
+  else if (VIEW === "more") { const b = $(doc, ".lv-more"); b && b.click(); await wait(100); win.scrollTo(0, 0); }
+  else if (VIEW === "block") await scrollTo("#liveBlock");
+  else if (VIEW === "wx") await scrollTo(".lv-wxsec");
+  else if (VIEW === "cams") await scrollTo(".lv-camsec");
+  else if (VIEW.startsWith("sheet-")) {
+    const sel = { "sheet-cam": ".lv-cam", "sheet-alert": "#liveAlerts .lv-al.warn[data-k^='wx:']", "sheet-chain": "#liveAlerts .lv-al[data-k='cc']", "sheet-wx": ".lv-wxpt" }[VIEW];
+    const b = $(doc, sel);
+    check(`${VIEW}: button found`, !!b);
+    if (b) b.click();
+    await wait(400);
+    const sh = $(doc, ".lv-sheet");
+    check(`${VIEW}: sheet open`, sh && !sh.hidden);
+    if (VIEW === "sheet-cam") {
+      const next = [...doc.querySelectorAll(".lv-nav button")].find(x => /Farther/.test(x.textContent));
+      if (Q.get("next")) { next.click(); await wait(300); }
+      log("cam sheet", txt(sh));
+    } else log("sheet", txt(sh).slice(0, 400));
+  }
+  await wait(600);
+  const lb = $(doc, "#liveBlock");
+  log(`view ${VIEW}: scrollY ${Math.round(win.scrollY)} of ${doc.documentElement.scrollHeight - win.innerHeight}, liveBlock top ${lb ? Math.round(lb.getBoundingClientRect().top) : "-"}, inner ${win.innerHeight}`);
+}
+
+/** The app reloads itself once when its service worker first takes control (main.js, controllerchange).
+    Give the worker a short head start; if the app still reloads mid-run, the run is repeated (see below). */
+async function swReady(tries) {
+  if (!("serviceWorker" in navigator)) return;
+  try {
+    await navigator.serviceWorker.register("../sw.js");
+    // No timers here on purpose: headless virtual time jumps straight to the next timer, while the worker
+    // installs in real time. Awaiting the worker itself lets real time pass without spending the budget.
+    let done = false;
+    const claimed = new Promise(r => {
+      if (navigator.serviceWorker.controller) return r();
+      navigator.serviceWorker.addEventListener("controllerchange", r, { once: true });
+    });
+    const poll = (async () => { // safety net if the worker never claims: small real fetches, then give up
+      for (let i = 0; i < tries && !done; i++) await fetch("../manifest.webmanifest?sw=" + i, { cache: "no-store" }).catch(() => {});
+    })();
+    await Promise.race([navigator.serviceWorker.ready.then(() => claimed), poll]);
+    done = true;
+  } catch (e) { log("service worker not ready: " + e.message); }
+}
+function resetStorage() {
+  for (const k of Object.keys(localStorage)) if (k.startsWith("i5b:")) localStorage.removeItem(k);
+  localStorage.setItem("i5b:settings", JSON.stringify({ live: live0, theme: THEME, narr: true }));
+  const snap = { fail: staleSnap, partial: oldWxSnap, deadzone: deadSnap }[SCEN];
+  if (snap) localStorage.setItem("i5b:live:snap", JSON.stringify(snap()));
+}
+let loads = 0;
+f.addEventListener("load", () => { loads++; });
+
+/** One run of the scenario on the page now in the frame. Returns "reloaded" if the app reloaded under it. */
+async function attempt() {
+  const baseLoads = loads;
+  const win = f.contentWindow, doc = f.contentDocument, api = win.I5BUDDY.api;
+  try {
+    api.settings.theme = THEME;
+    doc.documentElement.dataset.theme = THEME;
+    const errs = [];
+    const ce = win.console.error.bind(win.console);
+    win.console.error = (...a) => { errs.push(a.map(String).join(" ")); ce(...a); };
+    const cw = win.console.warn.bind(win.console);
+    win.console.warn = (...a) => { if (/\[live\]/.test(String(a[0]))) errs.push(a.map(String).join(" ")); cw(...a); };
+    win.addEventListener("error", e => errs.push("uncaught: " + e.message));
+    win.addEventListener("unhandledrejection", e => errs.push("unhandled: " + ((e.reason && e.reason.message) || e.reason)));
+    const net = installNet(win, api);
+    await SCENARIOS[SCEN](api, win, doc, net);
+    if (loads !== baseLoads) return "reloaded";
+    if (SCEN !== "unit") {
+      await nudge();
+      await applyView(api, win, doc);
+      await nudge();
+      const de = doc.documentElement;
+      check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+      const small = [...doc.querySelectorAll("#liveAlerts button, #liveBlock button, #liveBlock a, .lv-sheet button, .lv-sheet a")]
+        .filter(b => b.offsetParent && !b.closest(".lv-cams")).map(b => [b, b.getBoundingClientRect()]).filter(([, r]) => r.height < 43.5 || r.width < 43.5);
+      check("touch targets >= 44 px", !small.length, small.map(([b, r]) => `${txt(b).slice(0, 20)} ${Math.round(r.width)}x${Math.round(r.height)}`).join(", "));
+    }
+    if (loads !== baseLoads) return "reloaded";
+    check("no errors or [live] warnings in the app", !errs.length, errs.join(" | "));
+    return "done";
+  } catch (e) {
+    if (loads !== baseLoads) return "reloaded";
+    throw e;
+  }
+}
+
+/** Load the app into the frame. Default: index.html as srcdoc with <base> at the app root and service-worker
+    registration stubbed, so the app never reloads itself under the test (the worker would claim the page and
+    main.js reloads on controllerchange). Same code, same origin, same localStorage. ?sw=1 loads index.html as is. */
+let appHtml = null;
+async function loadApp(first) {
+  if (REAL) { if (first) f.src = "../index.html"; else f.contentWindow.location.reload(); return; }
+  if (!appHtml) {
+    const html = await (await fetch("../index.html", { cache: "no-store" })).text();
+    const stub = `<base href="${new URL("../", location.href).href}"><script>try{Object.defineProperty(navigator.serviceWorker,"register",` +
+      `{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}` +
+      (Q.get("speech") === "real" ? "" : `(${fakeSpeech.toString()})();`) + `<\/script>`;
+    appHtml = html.replace(/<head>/i, "<head>" + stub);
+  }
+  if (first) f.srcdoc = appHtml; else f.contentWindow.location.reload();
+}
+const REAL = !!Q.get("sw");
+
+(async () => {
+  try {
+    if (REAL) {
+      const t0 = performance.now();
+      await swReady(Q.get("swwait") ? +Q.get("swwait") : 200);
+      log(`service worker head start ${Math.round(performance.now() - t0)} ms (controlled: ${!!navigator.serviceWorker.controller})`);
+    }
+    for (let run = 1; run <= 3; run++) {
+      resetStorage();
+      const before = loads;
+      await loadApp(run === 1);
+      const ready = () => loads > before && f.contentDocument.readyState === "complete" && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api.live;
+      try { await until(ready, 20000); } catch {
+        const w = f.contentWindow;
+        log(`the app did not start in 20 s (loads ${loads - before}, ${f.contentDocument && f.contentDocument.readyState}, I5BUDDY ${!!(w && w.I5BUDDY)}, live ${!!(w && w.I5BUDDY && w.I5BUDDY.api.live)}); loading it again`);
+        if (run < 3) { appHtml = null; continue; }
+        throw new Error("the app did not start");
+      }
+      await wait(150);
+      if (loads > before + 1) { log("the app reloaded itself while starting; starting again"); continue; }
+      if ((await attempt()) !== "reloaded") break;
+      log("the app reloaded itself during the run (its service worker took control); running the scenario again");
+      checks.length = 0;
+    }
+  } catch (e) {
+    check("test ran", false, String((e && e.stack) || e).replace(/\n\s*/g, " | "));
+  }
+  finish();
+  await nudge();
+  // watch for anything that changes the page after the checks (late reloads, scroll jumps)
+  for (const ms of [1000, 4000, 12000]) {
+    await wait(ms);
+    try {
+      const w = f.contentWindow, lb = f.contentDocument.getElementById("liveBlock");
+      const hit = f.contentDocument.elementFromPoint(200, 450);
+      log(`after +${ms}: loads ${loads}, scrollY ${Math.round(w.scrollY)}, liveBlock top ${lb ? Math.round(lb.getBoundingClientRect().top) : "-"}, height ${f.contentDocument.documentElement.scrollHeight}, at(200,450): ${hit ? hit.tagName + "." + hit.className + " " + (hit.textContent || "").trim().slice(0, 30) : "-"}`);
+    } catch (e) { log("after: " + e.message); }
+  }
+})();
+</script>
+</body>
+</html>

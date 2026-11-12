@@ -2,27 +2,89 @@
 <body><pre id="out">running</pre>
 <iframe id="f" src="../index.html" style="display:none"></iframe>
 <script>
-document.getElementById("f").onload = () => {
-  const {locate, coordAt} = document.getElementById("f").contentWindow.I5BUDDY;
-  // known spots: [name, lat, lon, expected milepost, tolerance]
-  const cases = [
-    ["Kettleman City SR41", 36.0065, -119.9617, 309, 3],
-    ["Old Sacramento J St", 38.5826, -121.5070, 519, 3],
-    ["Mt Shasta city", 41.3200, -122.3190, 738, 3],
-    ["Santa Nella SR33", 37.0985, -121.0177, 407, 3],
-    ["Oceanside", 33.2080, -117.3790, 52, 4],
-  ];
+// Geometry tests: GPS position -> corridor mile. Expected values are each state's exit numbers.
+// The data covers the states in tools/build.py SCOPE (California only since 2026-11-11, Mexico to the Oregon line).
+// A place in a state the data does not cover must come out off the road instead: more than 2.5 miles from it, or so
+// far that there is no road anywhere near. With SCOPE = ["CA", "OR", "WA"] the same page checks the whole road.
+document.getElementById("f").onload = async () => {
+  const win = document.getElementById("f").contentWindow;
+  for (let i = 0; i < 300 && !win.I5BUDDY; i++) await new Promise(r => setTimeout(r, 100));
+  const { locate, coordAt } = win.I5BUDDY;
+  const D = win.I5DATA, STATES = D.states, R = D.route, MAX_M = STATES[STATES.length - 1].to;
+  const ST = Object.fromEntries(STATES.map(s => [s.id, s.from]));
   const lines = [];
   let fails = 0;
-  for (const [n, la, lo, exp, tol] of cases) {
-    const r = locate(la, lo); const ok = Math.abs(r.mile - exp) <= tol && r.dist < 2.5;
-    if (!ok) fails++;
-    lines.push(`${ok ? "PASS" : "FAIL"} ${n}: mile ${r.mile.toFixed(1)} (want ${exp}), ${r.dist.toFixed(2)} mi off route`);
+  const check = (ok, msg) => { if (!ok) fails++; lines.push(`${ok ? "PASS" : "FAIL"} ${msg}`); };
+  const off = r => r.m == null ? "no road near it" : `${r.dist.toFixed(1)} mi from the road`;
+
+  // [name, lat, lon, state, expected exit-mile in that state, tolerance]
+  const cases = [
+    ["San Ysidro Port of Entry", 32.5422, -117.0296, "CA", 0, 1],
+    ["Petco Park, San Diego", 32.7073, -117.1566, "CA", 15, 2],
+    ["Oceanside", 33.2080, -117.3790, "CA", 52, 4],
+    ["Disneyland", 33.8121, -117.9190, "CA", 110, 2],
+    ["LA Zoo, Griffith Park", 34.1484, -118.2846, "CA", 144, 2],
+    ["Fort Tejon", 34.8736, -118.8941, "CA", 210, 2],
+    ["Kettleman City SR 41", 36.0065, -119.9617, "CA", 309, 3],
+    ["Harris Ranch, SR 198", 36.2526, -120.2387, "CA", 334, 2],
+    ["Santa Nella SR 33", 37.0985, -121.0177, "CA", 407, 3],
+    ["Stockton, Weber Point", 37.9541, -121.2930, "CA", 472, 3],
+    ["Old Sacramento J St", 38.5826, -121.5070, "CA", 519, 3],
+    ["Red Bluff", 40.1769, -122.2349, "CA", 649, 3],
+    ["Sundial Bridge, Redding", 40.5933, -122.3779, "CA", 678, 3],
+    ["Mt Shasta city", 41.3200, -122.3190, "CA", 738, 3],
+    ["Weed", 41.4226, -122.3861, "CA", 747, 2],
+    ["Yreka", 41.7310, -122.6365, "CA", 775, 2],
+    ["Hilt, by the Oregon line", 41.9947, -122.6233, "CA", 796, 2],
+    // Oregon and Washington: on the road (their own exit numbers) only when the data covers them
+    ["Siskiyou Summit", 42.0736, -122.6056, "OR", 6, 2],
+    ["Ashland, OR 66", 42.1824, -122.6640, "OR", 14, 2],
+    ["Grants Pass", 42.4390, -123.3284, "OR", 58, 4],
+    ["Roseburg", 43.2165, -123.3417, "OR", 124, 4],
+    ["Eugene", 44.0521, -123.0868, "OR", 194, 6],
+    ["Downtown Portland", 45.5152, -122.6784, "OR", 300, 3],
+    ["Olympia capitol", 47.0358, -122.9049, "WA", 105, 3],
+    ["Downtown Seattle", 47.6062, -122.3321, "WA", 165, 3],
+    ["Peace Arch", 49.0024, -122.7566, "WA", 276, 2],
+  ];
+  for (const [n, la, lo, st, exit, tol] of cases) {
+    const r = locate(la, lo);
+    if (!(st in ST)) {
+      check(r.m == null || r.dist > 2.5, `${n} (${st}, past the end of the road) is off route: ${off(r)}`);
+      continue;
+    }
+    const want = ST[st] + exit;
+    const ok = r.m != null && Math.abs(r.m - want) <= tol && r.dist < 2.5;
+    check(ok, r.m == null ? `${n}: no road near it (want ${st} ${exit})` :
+      `${n}: corridor ${r.m.toFixed(1)} = ${st} ${(r.m - ST[st]).toFixed(1)} (want ${exit}), ${r.dist.toFixed(2)} mi off`);
   }
-  // round trip: coordAt(m) should locate back to m
-  for (const m of [10, 150, 250, 450, 600, 790]) { const [la, lo] = coordAt(m); const r = locate(la, lo); const ok = Math.abs(r.mile - m) < 0.5; if (!ok) fails++; lines.push(`${ok ? "PASS" : "FAIL"} round trip ${m} -> ${r.mile.toFixed(2)}`); }
-  // far away: San Francisco should be off route
-  const sf = locate(37.7749, -122.4194); const ok = sf.dist > 2.5; if (!ok) fails++; lines.push(`${ok ? "PASS" : "FAIL"} San Francisco off route (${sf.dist.toFixed(1)} mi)`);
+
+  for (const m of [10, 150, 250, 350, 450, 550, 650, 700, 750, 790, 796, 900, 1050, 1150, 1300, 1380].filter(m => m < MAX_M)) {
+    const [la, lo] = coordAt(m); const r = locate(la, lo);
+    check(r.m != null && Math.abs(r.m - m) < 0.3, `round trip ${m} -> ${r.m == null ? "none" : r.m.toFixed(2)}`);
+  }
+
+  for (const [n, la, lo] of [["San Francisco", 37.7749, -122.4194], ["Reno", 39.5296, -119.8138], ["Fresno, on CA 99", 36.7378, -119.7871],
+    ["Rosarito, Mexico", 32.3661, -117.0618], ["Spokane", 47.6588, -117.4260]]) {
+    const r = locate(la, lo);
+    check(r.m == null || r.dist > 2.5, `${n} is off route (${off(r)})`);
+  }
+
+  // Each state's stretch of I-5 against the state DOT lengths, and the whole corridor.
+  const LEN = { CA: 796.95, OR: 308.14, WA: 276.62 };
+  for (const s of STATES) check(Math.abs(s.to - s.from - LEN[s.id]) < 2, `${s.name}: ${(s.to - s.from).toFixed(1)} mi of I-5 (want ${LEN[s.id]})`);
+  const total = STATES.reduce((a, s) => a + LEN[s.id], 0);
+  check(Math.abs(MAX_M - total) < 2, `corridor length ${MAX_M.toFixed(1)} mi (want ${total.toFixed(1)}, ${STATES.map(s => s.id).join(" + ")})`);
+
+  // The line starts at the Mexico border and stops at the line at the north end of the last state covered. The app's
+  // "past the end of the road" check (js/main.js pastEnd) relies on both ends being east-west borders at these latitudes.
+  const NORTH = { CA: [42.0, "the Oregon line"], OR: [45.618, "the Washington line"], WA: [49.002, "the Canadian border"] };
+  const [first, last] = [R[0], R[R.length - 1]], [nLat, nName] = NORTH[STATES[STATES.length - 1].id];
+  check(first[0] < 0.5 && Math.abs(first[1] - 32.542) < 0.01, `road starts at the Mexico border: mile ${first[0]}, ${first[1]} N`);
+  check(Math.abs(last[0] - MAX_M) < 0.1 && Math.abs(last[1] - nLat) < 0.03, `road ends at ${nName}: mile ${last[0]} of ${MAX_M}, ${last[1]} N (want ${nLat})`);
+  check(D.ends && D.ends.N.long === nName, `data names the north end "${D.ends && D.ends.N.long}"`);
+
   document.getElementById("out").textContent = (fails ? `FAILED ${fails}` : "ALL PASS") + "\n" + lines.join("\n");
+  document.title = fails ? `FAILED ${fails}` : "ALL PASS";
 };
 </script>

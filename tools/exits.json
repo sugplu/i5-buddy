@@ -1,0 +1,9356 @@
+[
+{
+"st": "CA",
+"ref": "1A",
+"n": 1,
+"lat": 32.546023,
+"lon": -117.0346996,
+"dest": [
+"Camino de la Plaza"
+],
+"m": 1.0,
+"local": 1.0
+},
+{
+"st": "CA",
+"ref": "1B",
+"n": 1,
+"lat": 32.5503092,
+"lon": -117.0421538,
+"dest": [
+"Via de San Ysidro"
+],
+"m": 1.28,
+"local": 1.28
+},
+{
+"st": "CA",
+"ref": "2",
+"n": 2,
+"lat": 32.5573049,
+"lon": -117.0590394,
+"dest": [
+"San Ysidro Boulevard, Dairy Mart Road",
+"Dairy Mart Road"
+],
+"m": 2.0,
+"local": 2.0
+},
+{
+"st": "CA",
+"ref": "3",
+"n": 3,
+"lat": 32.561416,
+"lon": -117.0672173,
+"dest": [
+"CA 905 East",
+"Tocayo Avenue"
+],
+"m": 3.0,
+"local": 3.0
+},
+{
+"st": "CA",
+"ref": "4",
+"n": 4,
+"lat": 32.5731385,
+"lon": -117.0795259,
+"dest": [
+"Coronado Avenue"
+],
+"m": 4.0,
+"local": 4.0
+},
+{
+"st": "CA",
+"ref": "5A",
+"n": 5,
+"lat": 32.5802531,
+"lon": -117.0858501,
+"dest": [
+"CA 75",
+"Palm Avenue"
+],
+"m": 5.0,
+"local": 5.0
+},
+{
+"st": "CA",
+"ref": "5B",
+"n": 5,
+"lat": 32.5926293,
+"lon": -117.0883437,
+"dest": [
+"Main Street"
+],
+"m": 5.58,
+"local": 5.58
+},
+{
+"st": "CA",
+"ref": "6",
+"n": 6,
+"lat": 32.6004389,
+"lon": -117.0894442,
+"dest": [
+"Palomar Street"
+],
+"m": 6.0,
+"local": 6.0
+},
+{
+"st": "CA",
+"ref": "7A",
+"n": 7,
+"lat": 32.6104713,
+"lon": -117.0905683,
+"dest": [
+"L Street"
+],
+"m": 7.0,
+"local": 7.0
+},
+{
+"st": "CA",
+"ref": "7B",
+"n": 7,
+"lat": 32.6192802,
+"lon": -117.0919532,
+"dest": [
+"J Street, Marina Parkway"
+],
+"m": 7.53,
+"local": 7.53
+},
+{
+"st": "CA",
+"ref": "8A",
+"n": 8,
+"lat": 32.6263023,
+"lon": -117.0945937,
+"dest": [
+"H Street"
+],
+"m": 8.0,
+"local": 8.0
+},
+{
+"st": "CA",
+"ref": "8B",
+"n": 8,
+"lat": 32.6348377,
+"lon": -117.0980292,
+"dest": [
+"E Street"
+],
+"m": 8.66,
+"local": 8.66
+},
+{
+"st": "CA",
+"ref": "9",
+"n": 9,
+"lat": 32.6423572,
+"lon": -117.1009038,
+"dest": [
+"CA 54 East"
+],
+"m": 9.0,
+"local": 9.0
+},
+{
+"st": "CA",
+"ref": "10",
+"n": 10,
+"lat": 32.6564962,
+"lon": -117.1063703,
+"dest": [
+"Bay Marina Drive, Mile of Cars Way",
+"Mile of Cars Way, Bay Marina Drive"
+],
+"m": 10.0,
+"local": 10.0
+},
+{
+"st": "CA",
+"ref": "11A",
+"n": 11,
+"lat": 32.6653473,
+"lon": -117.1099888,
+"dest": [
+"Harbor Drive, Civic Center Drive",
+"Civic Center Drive"
+],
+"m": 11.0,
+"local": 11.0
+},
+{
+"st": "CA",
+"ref": "11B",
+"n": 11,
+"lat": 32.668677,
+"lon": -117.1111789,
+"dest": [
+"Plaza Boulevard, Downtown",
+"8th Street, National City"
+],
+"m": 11.21,
+"local": 11.21
+},
+{
+"st": "CA",
+"ref": "12",
+"n": 12,
+"lat": 32.6820511,
+"lon": -117.1108831,
+"dest": [
+"Division Street, Main Street",
+"Main Street, National City Boulevard"
+],
+"m": 12.0,
+"local": 12.0
+},
+{
+"st": "CA",
+"ref": "13A",
+"n": 13,
+"lat": 32.6884485,
+"lon": -117.1152198,
+"dest": [
+"CA 15 North",
+"Riverside"
+],
+"m": 13.0,
+"local": 13.0
+},
+{
+"st": "CA",
+"ref": "13B",
+"n": 13,
+"lat": 32.6945651,
+"lon": -117.1288782,
+"dest": [
+"28th Street, National Avenue",
+"28th Street South, 28th Street North, National Avenue"
+],
+"m": 13.58,
+"local": 13.58
+},
+{
+"st": "CA",
+"ref": "14A",
+"n": 14,
+"lat": 32.6985334,
+"lon": -117.1385901,
+"dest": [
+"CA 75 South",
+"Coronado"
+],
+"m": 14.0,
+"local": 14.0
+},
+{
+"st": "CA",
+"ref": "14B",
+"n": 14,
+"lat": 32.7004993,
+"lon": -117.1413628,
+"dest": [
+"Cesar E Chavez Parkway",
+"Chicano Park Blvd"
+],
+"m": 14.26,
+"local": 14.26
+},
+{
+"st": "CA",
+"ref": "15A",
+"n": 15,
+"lat": 32.7065075,
+"lon": -117.1474951,
+"dest": [
+"CA 94 East",
+"J Street, Martin Luther king Junior Freeway",
+"Imperial Avenue"
+],
+"m": 15.0,
+"local": 15.0
+},
+{
+"st": "CA",
+"ref": "15B",
+"n": 15,
+"lat": 32.7114571,
+"lon": -117.1475194,
+"dest": [
+"B Street, Pershing Drive",
+"CA 94 East",
+"Martin Luther King Junior Freeway"
+],
+"m": 15.57,
+"local": 15.57
+},
+{
+"st": "CA",
+"ref": "16A",
+"n": 16,
+"lat": 32.7239588,
+"lon": -117.1507838,
+"dest": [
+"CA 163 North",
+"Escondido"
+],
+"m": 16.0,
+"local": 16.0
+},
+{
+"st": "CA",
+"ref": "15C",
+"n": 15,
+"lat": 32.7240367,
+"lon": -117.1516282,
+"dest": [
+"Pershing Drive, B Street"
+],
+"m": 16.06,
+"local": 16.06
+},
+{
+"st": "CA",
+"ref": "16B",
+"n": 16,
+"lat": 32.7241306,
+"lon": -117.1561048,
+"dest": [
+"6th Avenue",
+"Downtown San Diego"
+],
+"m": 16.42,
+"local": 16.42
+},
+{
+"st": "CA",
+"ref": "16",
+"n": 16,
+"lat": 32.723302,
+"lon": -117.1584868,
+"dest": [
+"CA 163 North",
+"Escondido, 10th Avenue"
+],
+"m": 16.63,
+"local": 16.63
+},
+{
+"st": "CA",
+"ref": "17A",
+"n": 17,
+"lat": 32.7231279,
+"lon": -117.1631487,
+"dest": [
+"San Diego Airport, Hawthorn Street"
+],
+"m": 17.0,
+"local": 17.0
+},
+{
+"st": "CA",
+"ref": "17",
+"n": 17,
+"lat": 32.727074,
+"lon": -117.1677423,
+"dest": [
+"Front Street, Civic Center, 2nd Avenue"
+],
+"m": 17.28,
+"local": 17.28
+},
+{
+"st": "CA",
+"ref": "17B",
+"n": 17,
+"lat": 32.7306707,
+"lon": -117.1706369,
+"dest": [
+"India Street"
+],
+"m": 17.5,
+"local": 17.5
+},
+{
+"st": "CA",
+"ref": "18A",
+"n": 18,
+"lat": 32.7329188,
+"lon": -117.1725664,
+"dest": [
+"Pacific Highway",
+"San Diego Airport, Sassafras Street"
+],
+"m": 18.0,
+"local": 18.0
+},
+{
+"st": "CA",
+"ref": "18B",
+"n": 18,
+"lat": 32.7371259,
+"lon": -117.176257,
+"dest": [
+"Washington Street"
+],
+"m": 18.29,
+"local": 18.29
+},
+{
+"st": "CA",
+"ref": "19",
+"n": 19,
+"lat": 32.7460192,
+"lon": -117.1898469,
+"dest": [
+"Old Town Avenue"
+],
+"m": 19.0,
+"local": 19.0
+},
+{
+"st": "CA",
+"ref": "20",
+"n": 20,
+"lat": 32.7541287,
+"lon": -117.2004419,
+"dest": [
+"I 8",
+"El Centro",
+"I 8 East",
+"El Centro, Rosecrans Street South"
+],
+"m": 20.0,
+"local": 20.0
+},
+{
+"st": "CA",
+"ref": "21",
+"n": 21,
+"lat": 32.7672309,
+"lon": -117.2057279,
+"dest": [
+"Sea World Drive, Tecolote Road"
+],
+"m": 21.0,
+"local": 21.0
+},
+{
+"st": "CA",
+"ref": "22",
+"n": 22,
+"lat": 32.7872683,
+"lon": -117.2069563,
+"dest": [
+"Clairemont Drive, Mission Bay Drive",
+"Clairemont Drive, East Mission Bay Drive"
+],
+"m": 22.0,
+"local": 22.0
+},
+{
+"st": "CA",
+"ref": "23A",
+"n": 23,
+"lat": 32.7966007,
+"lon": -117.2092217,
+"dest": [
+"Grand Avenue, Garnet Avenue"
+],
+"m": 23.0,
+"local": 23.0
+},
+{
+"st": "CA",
+"ref": "23B",
+"n": 23,
+"lat": 32.8040075,
+"lon": -117.2135155,
+"dest": [
+"Balboa Avenue East"
+],
+"m": 23.59,
+"local": 23.59
+},
+{
+"st": "CA",
+"ref": "23",
+"n": 23,
+"lat": 32.8129656,
+"lon": -117.2210174,
+"dest": [
+"Balboa Avenue, Garnet Avenue"
+],
+"m": 24.38,
+"local": 24.38
+},
+{
+"st": "CA",
+"ref": "26A",
+"n": 26,
+"lat": 32.832394,
+"lon": -117.232651,
+"dest": [
+"La Jolla Parkway West"
+],
+"m": 26.0,
+"local": 26.0
+},
+{
+"st": "CA",
+"ref": "26B",
+"n": 26,
+"lat": 32.835449,
+"lon": -117.233467,
+"dest": [
+"CA 52 East"
+],
+"m": 26.17,
+"local": 26.17
+},
+{
+"st": "CA",
+"ref": "26",
+"n": 26,
+"lat": 32.8424219,
+"lon": -117.2366518,
+"dest": [
+"CA 52 East"
+],
+"m": 26.58,
+"local": 26.58
+},
+{
+"st": "CA",
+"ref": "27",
+"n": 27,
+"lat": 32.8453075,
+"lon": -117.2361546,
+"dest": [
+"Gilman Drive, La Jolla Colony Drive"
+],
+"m": 27.0,
+"local": 27.0
+},
+{
+"st": "CA",
+"ref": "28A",
+"n": 28,
+"lat": 32.8649059,
+"lon": -117.2297948,
+"dest": [
+"Nobel Drive"
+],
+"m": 28.0,
+"local": 28.0
+},
+{
+"st": "CA",
+"ref": "28B",
+"n": 28,
+"lat": 32.8689327,
+"lon": -117.2293728,
+"dest": [
+"La Jolla Village Drive"
+],
+"m": 28.18,
+"local": 28.18
+},
+{
+"st": "CA",
+"ref": "28",
+"n": 28,
+"lat": 32.8758493,
+"lon": -117.2289844,
+"dest": [
+"La Jolla Village Drive"
+],
+"m": 28.48,
+"local": 28.48
+},
+{
+"st": "CA",
+"ref": "29",
+"n": 29,
+"lat": 32.8830923,
+"lon": -117.2280061,
+"dest": [
+"Genesee Avenue"
+],
+"m": 29.0,
+"local": 29.0
+},
+{
+"st": "CA",
+"ref": "30",
+"n": 30,
+"lat": 32.8948356,
+"lon": -117.2265304,
+"dest": [
+"Sorrento Valley Road"
+],
+"m": 30.0,
+"local": 30.0
+},
+{
+"st": "CA",
+"ref": "31",
+"n": 31,
+"lat": 32.9084292,
+"lon": -117.2267514,
+"dest": [],
+"m": 31.0,
+"local": 31.0
+},
+{
+"st": "CA",
+"ref": "33B",
+"n": 33,
+"lat": 32.9296408,
+"lon": -117.2405761,
+"dest": [
+"Carmel Valley Road"
+],
+"m": 31.81,
+"local": 31.81
+},
+{
+"st": "CA",
+"ref": "32",
+"n": 32,
+"lat": 32.9354804,
+"lon": -117.2416331,
+"dest": [
+"Local Bypass"
+],
+"m": 32.0,
+"local": 32.0
+},
+{
+"st": "CA",
+"ref": "33",
+"n": 33,
+"lat": 32.9364205,
+"lon": -117.241706,
+"dest": [
+"CA 56 East",
+"Carmel Valley Road, Beaches"
+],
+"m": 33.0,
+"local": 33.0
+},
+{
+"st": "CA",
+"ref": "34",
+"n": 34,
+"lat": 32.9471784,
+"lon": -117.2430345,
+"dest": [
+"Del Mar Heights Road"
+],
+"m": 34.0,
+"local": 34.0
+},
+{
+"st": "CA",
+"ref": "36",
+"n": 36,
+"lat": 32.9759811,
+"lon": -117.2514626,
+"dest": [
+"Via De La Valle",
+"Via de la Valle"
+],
+"m": 36.0,
+"local": 36.0
+},
+{
+"st": "CA",
+"ref": "37",
+"n": 37,
+"lat": 32.991327,
+"lon": -117.2557649,
+"dest": [
+"Lomas Santa Fe Drive",
+"CR S8"
+],
+"m": 37.0,
+"local": 37.0
+},
+{
+"st": "CA",
+"ref": "39",
+"n": 39,
+"lat": 33.0088425,
+"lon": -117.2626305,
+"dest": [
+"Manchester Avenue"
+],
+"m": 39.0,
+"local": 39.0
+},
+{
+"st": "CA",
+"ref": "40",
+"n": 40,
+"lat": 33.0230961,
+"lon": -117.2734171,
+"dest": [
+"Birmingham Drive"
+],
+"m": 40.0,
+"local": 40.0
+},
+{
+"st": "CA",
+"ref": "41A",
+"n": 41,
+"lat": 33.0336043,
+"lon": -117.2794944,
+"dest": [
+"Santa Fe Drive"
+],
+"m": 41.0,
+"local": 41.0
+},
+{
+"st": "CA",
+"ref": "41B",
+"n": 41,
+"lat": 33.0451889,
+"lon": -117.2860858,
+"dest": [
+"CR-S9",
+"Encinitas Boulevard"
+],
+"m": 41.88,
+"local": 41.88
+},
+{
+"st": "CA",
+"ref": "43",
+"n": 43,
+"lat": 33.0621509,
+"lon": -117.2911765,
+"dest": [
+"Leucadia Boulevard"
+],
+"m": 43.0,
+"local": 43.0
+},
+{
+"st": "CA",
+"ref": "44",
+"n": 44,
+"lat": 33.0815166,
+"lon": -117.2970353,
+"dest": [
+"La Costa Avenue"
+],
+"m": 44.0,
+"local": 44.0
+},
+{
+"st": "CA",
+"ref": "45",
+"n": 45,
+"lat": 33.1006335,
+"lon": -117.3086032,
+"dest": [
+"Poinsettia Lane, Aviara Parkway"
+],
+"m": 45.0,
+"local": 45.0
+},
+{
+"st": "CA",
+"ref": "47",
+"n": 47,
+"lat": 33.1183606,
+"lon": -117.3196975,
+"dest": [
+"Palomar Airport Road"
+],
+"m": 47.0,
+"local": 47.0
+},
+{
+"st": "CA",
+"ref": "48",
+"n": 48,
+"lat": 33.1316962,
+"lon": -117.32762,
+"dest": [
+"Cannon Road"
+],
+"m": 48.0,
+"local": 48.0
+},
+{
+"st": "CA",
+"ref": "49",
+"n": 49,
+"lat": 33.1491829,
+"lon": -117.3345488,
+"dest": [
+"Tamarack Avenue"
+],
+"m": 49.0,
+"local": 49.0
+},
+{
+"st": "CA",
+"ref": "50",
+"n": 50,
+"lat": 33.1605371,
+"lon": -117.3406902,
+"dest": [
+"Carlsbad Village Drive"
+],
+"m": 50.0,
+"local": 50.0
+},
+{
+"st": "CA",
+"ref": "51A",
+"n": 51,
+"lat": 33.1678705,
+"lon": -117.3444123,
+"dest": [
+"Las Flores Drive"
+],
+"m": 51.0,
+"local": 51.0
+},
+{
+"st": "CA",
+"ref": "51B",
+"n": 51,
+"lat": 33.1749632,
+"lon": -117.3495639,
+"dest": [
+"CA 78 East",
+"Escondido",
+"Escondido, Vista Way"
+],
+"m": 51.23,
+"local": 51.23
+},
+{
+"st": "CA",
+"ref": "51C",
+"n": 51,
+"lat": 33.1774069,
+"lon": -117.3513803,
+"dest": [
+"Vista Way",
+"Cassidy Street"
+],
+"m": 51.41,
+"local": 51.41
+},
+{
+"st": "CA",
+"ref": "52",
+"n": 52,
+"lat": 33.1900826,
+"lon": -117.3619132,
+"dest": [
+"Oceanside Boulevard"
+],
+"m": 52.0,
+"local": 52.0
+},
+{
+"st": "CA",
+"ref": "53",
+"n": 53,
+"lat": 33.196889,
+"lon": -117.367637,
+"dest": [
+"Mission Avenue"
+],
+"m": 53.0,
+"local": 53.0
+},
+{
+"st": "CA",
+"ref": "54A",
+"n": 54,
+"lat": 33.2025945,
+"lon": -117.3784056,
+"dest": [
+"CA 76 East",
+"Coast Highway"
+],
+"m": 54.0,
+"local": 54.0
+},
+{
+"st": "CA",
+"ref": "54B",
+"n": 54,
+"lat": 33.207636,
+"lon": -117.3852987,
+"dest": [
+"Vandegrift Boulevard, Camp Pendleton",
+"Coast Highway"
+],
+"m": 54.35,
+"local": 54.35
+},
+{
+"st": "CA",
+"ref": "54C",
+"n": 54,
+"lat": 33.2099231,
+"lon": -117.386757,
+"dest": [
+"Harbor Drive",
+"Harbor Drive, Vandegrift Boulevard, Camp Pendleton"
+],
+"m": 54.68,
+"local": 54.68
+},
+{
+"st": "CA",
+"ref": "62",
+"n": 62,
+"lat": 33.296848,
+"lon": -117.4619582,
+"dest": [
+"Las Pulgas Road"
+],
+"m": 62.0,
+"local": 62.0
+},
+{
+"st": "CA",
+"ref": "71",
+"n": 71,
+"lat": 33.3842663,
+"lon": -117.5796216,
+"dest": [
+"San Onofre, Basilone Road"
+],
+"m": 71.0,
+"local": 71.0
+},
+{
+"st": "CA",
+"ref": "72",
+"n": 72,
+"lat": 33.3929274,
+"lon": -117.591084,
+"dest": [
+"Cristianitos Road"
+],
+"m": 72.0,
+"local": 72.0
+},
+{
+"st": "CA",
+"ref": "73",
+"n": 73,
+"lat": 33.4102741,
+"lon": -117.6006138,
+"dest": [
+"Avenida Magdalena",
+"Avenida Calafia"
+],
+"m": 73.0,
+"local": 73.0
+},
+{
+"st": "CA",
+"ref": "74",
+"n": 74,
+"lat": 33.4150428,
+"lon": -117.6029866,
+"dest": [
+"El Camino Real"
+],
+"m": 74.0,
+"local": 74.0
+},
+{
+"st": "CA",
+"ref": "75",
+"n": 75,
+"lat": 33.4247529,
+"lon": -117.60884,
+"dest": [
+"Avenida Presidio",
+"San Clemente",
+"Avenida Palizada"
+],
+"m": 75.0,
+"local": 75.0
+},
+{
+"st": "CA",
+"ref": "76",
+"n": 76,
+"lat": 33.4365129,
+"lon": -117.6185213,
+"dest": [
+"Avenida Pico"
+],
+"m": 76.0,
+"local": 76.0
+},
+{
+"st": "CA",
+"ref": "77",
+"n": 77,
+"lat": 33.4429181,
+"lon": -117.6282915,
+"dest": [
+"Avenida Vista Hermosa"
+],
+"m": 77.0,
+"local": 77.0
+},
+{
+"st": "CA",
+"ref": "78",
+"n": 78,
+"lat": 33.4569019,
+"lon": -117.6525097,
+"dest": [
+"Camino de Estrella"
+],
+"m": 78.0,
+"local": 78.0
+},
+{
+"st": "CA",
+"ref": "79",
+"n": 79,
+"lat": 33.4627676,
+"lon": -117.6629449,
+"dest": [
+"CA 1",
+"Camino Las Ramblas, Pacific Coast Highway",
+"Pacific Coast Highway, Camino Las Ramblas"
+],
+"m": 79.0,
+"local": 79.0
+},
+{
+"st": "CA",
+"ref": "81",
+"n": 81,
+"lat": 33.4858845,
+"lon": -117.6660428,
+"dest": [
+"Camino Capistrano"
+],
+"m": 81.0,
+"local": 81.0
+},
+{
+"st": "CA",
+"ref": "82",
+"n": 82,
+"lat": 33.4983944,
+"lon": -117.6584474,
+"dest": [
+"CA 74",
+"Ortega Highway, San Juan Capistrano"
+],
+"m": 82.0,
+"local": 82.0
+},
+{
+"st": "CA",
+"ref": "83",
+"n": 83,
+"lat": 33.5173958,
+"lon": -117.6642062,
+"dest": [
+"Junipero Serra Road"
+],
+"m": 83.0,
+"local": 83.0
+},
+{
+"st": "CA",
+"ref": "85A",
+"n": 85,
+"lat": 33.5370994,
+"lon": -117.6745442,
+"dest": [],
+"m": 85.0,
+"local": 85.0
+},
+{
+"st": "CA",
+"ref": "85B",
+"n": 85,
+"lat": 33.5438101,
+"lon": -117.6733886,
+"dest": [
+"Avery Parkway"
+],
+"m": 85.32,
+"local": 85.32
+},
+{
+"st": "CA",
+"ref": "85",
+"n": 85,
+"lat": 33.5512269,
+"lon": -117.6730135,
+"dest": [
+"Avery Parkway"
+],
+"m": 85.66,
+"local": 85.66
+},
+{
+"st": "CA",
+"ref": "86",
+"n": 86,
+"lat": 33.554836,
+"lon": -117.6727629,
+"dest": [
+"Crown Valley Parkway"
+],
+"m": 86.0,
+"local": 86.0
+},
+{
+"st": "CA",
+"ref": "88",
+"n": 88,
+"lat": 33.5748695,
+"lon": -117.6717073,
+"dest": [
+"Oso Parkway"
+],
+"m": 88.0,
+"local": 88.0
+},
+{
+"st": "CA",
+"ref": "89",
+"n": 89,
+"lat": 33.5956151,
+"lon": -117.6734733,
+"dest": [
+"La Paz Road"
+],
+"m": 89.0,
+"local": 89.0
+},
+{
+"st": "CA",
+"ref": "90",
+"n": 90,
+"lat": 33.6025582,
+"lon": -117.6870141,
+"dest": [
+"Alicia Parkway"
+],
+"m": 90.0,
+"local": 90.0
+},
+{
+"st": "CA",
+"ref": "91",
+"n": 91,
+"lat": 33.6117499,
+"lon": -117.7039001,
+"dest": [
+"El Toro Road"
+],
+"m": 91.0,
+"local": 91.0
+},
+{
+"st": "CA",
+"ref": "92A",
+"n": 92,
+"lat": 33.6235678,
+"lon": -117.7158842,
+"dest": [
+"Lake Forest Drive"
+],
+"m": 92.0,
+"local": 92.0
+},
+{
+"st": "CA",
+"ref": "94A",
+"n": 94,
+"lat": 33.6390322,
+"lon": -117.7303116,
+"dest": [],
+"m": 94.0,
+"local": 94.0
+},
+{
+"st": "CA",
+"ref": "92",
+"n": 92,
+"lat": 33.6513879,
+"lon": -117.7406391,
+"dest": [],
+"m": 94.44,
+"local": 94.44
+},
+{
+"st": "CA",
+"ref": "94B",
+"n": 94,
+"lat": 33.6523301,
+"lon": -117.7410064,
+"dest": [
+"Alton Parkway"
+],
+"m": 94.47,
+"local": 94.47
+},
+{
+"st": "CA",
+"ref": "94",
+"n": 94,
+"lat": 33.6562059,
+"lon": -117.7445017,
+"dest": [
+"Alton Parkway"
+],
+"m": 94.61,
+"local": 94.61
+},
+{
+"st": "CA",
+"ref": "95",
+"n": 95,
+"lat": 33.6643279,
+"lon": -117.7504802,
+"dest": [
+"CA 133 North",
+"Riverside",
+"CA 133 South",
+"Laguna Beach, Barranca Parkway"
+],
+"m": 95.0,
+"local": 95.0
+},
+{
+"st": "CA",
+"ref": "96",
+"n": 96,
+"lat": 33.6769738,
+"lon": -117.7572449,
+"dest": [
+"Sand Canyon Avenue"
+],
+"m": 96.0,
+"local": 96.0
+},
+{
+"st": "CA",
+"ref": "96A",
+"n": 96,
+"lat": 33.6796838,
+"lon": -117.7605953,
+"dest": [
+"Sand Canyon Avenue"
+],
+"m": 96.28,
+"local": 96.28
+},
+{
+"st": "CA",
+"ref": "96B",
+"n": 96,
+"lat": 33.6814865,
+"lon": -117.7626231,
+"dest": [
+"CA 133 North",
+"Santa Margarita"
+],
+"m": 96.46,
+"local": 96.46
+},
+{
+"st": "CA",
+"ref": "97",
+"n": 97,
+"lat": 33.6867349,
+"lon": -117.7660739,
+"dest": [
+"Jeffrey Road"
+],
+"m": 97.0,
+"local": 97.0
+},
+{
+"st": "CA",
+"ref": "99",
+"n": 99,
+"lat": 33.7069606,
+"lon": -117.7793572,
+"dest": [
+"Culver Drive"
+],
+"m": 99.0,
+"local": 99.0
+},
+{
+"st": "CA",
+"ref": "100",
+"n": 100,
+"lat": 33.7167143,
+"lon": -117.7906673,
+"dest": [
+"Jamboree Road"
+],
+"m": 100.0,
+"local": 100.0
+},
+{
+"st": "CA",
+"ref": "101A",
+"n": 101,
+"lat": 33.7249093,
+"lon": -117.8025617,
+"dest": [
+"Tustin Ranch Road"
+],
+"m": 101.0,
+"local": 101.0
+},
+{
+"st": "CA",
+"ref": "101B",
+"n": 101,
+"lat": 33.7315116,
+"lon": -117.8122267,
+"dest": [
+"Red Hill Avenue, Tustin",
+"Red Hill Avenue"
+],
+"m": 101.37,
+"local": 101.37
+},
+{
+"st": "CA",
+"ref": "103A",
+"n": 103,
+"lat": 33.7397634,
+"lon": -117.8309844,
+"dest": [
+"CA 55 North",
+"Riverside, Anaheim"
+],
+"m": 101.87,
+"local": 101.87
+},
+{
+"st": "CA",
+"ref": "103B",
+"n": 103,
+"lat": 33.7403045,
+"lon": -117.8325007,
+"dest": [
+"CA 55 South"
+],
+"m": 101.91,
+"local": 101.91
+},
+{
+"st": "CA",
+"ref": "102",
+"n": 102,
+"lat": 33.7411154,
+"lon": -117.8355048,
+"dest": [
+"Newport Avenue"
+],
+"m": 102.0,
+"local": 102.0
+},
+{
+"st": "CA",
+"ref": "103",
+"n": 103,
+"lat": 33.7416553,
+"lon": -117.8370539,
+"dest": [
+"CA 55 South",
+"Newport Beach"
+],
+"m": 103.0,
+"local": 103.0
+},
+{
+"st": "CA",
+"ref": "103C",
+"n": 103,
+"lat": 33.7448031,
+"lon": -117.8417068,
+"dest": [
+"First Street, Fourth Street"
+],
+"m": 103.42,
+"local": 103.42
+},
+{
+"st": "CA",
+"ref": "104A",
+"n": 104,
+"lat": 33.7508214,
+"lon": -117.8454913,
+"dest": [
+"Fourth Street, First Street"
+],
+"m": 104.0,
+"local": 104.0
+},
+{
+"st": "CA",
+"ref": "104",
+"n": 104,
+"lat": 33.7534676,
+"lon": -117.8483005,
+"dest": [
+"Grand Avenue, Santa Ana Boulevard"
+],
+"m": 104.23,
+"local": 104.23
+},
+{
+"st": "CA",
+"ref": "104B",
+"n": 104,
+"lat": 33.7569484,
+"lon": -117.8571036,
+"dest": [
+"Santa Ana Boulevard, Grand Avenue"
+],
+"m": 104.75,
+"local": 104.75
+},
+{
+"st": "CA",
+"ref": "105A",
+"n": 105,
+"lat": 33.7578399,
+"lon": -117.8580917,
+"dest": [
+"17th Street",
+"Penn Way, 17th Street"
+],
+"m": 105.0,
+"local": 105.0
+},
+{
+"st": "CA",
+"ref": "105B",
+"n": 105,
+"lat": 33.7648415,
+"lon": -117.8655214,
+"dest": [
+"Main Street, Broadway"
+],
+"m": 105.39,
+"local": 105.39
+},
+{
+"st": "CA",
+"ref": "106",
+"n": 106,
+"lat": 33.773985,
+"lon": -117.8719173,
+"dest": [
+"CA 22 West",
+"Long Beach"
+],
+"m": 106.0,
+"local": 106.0
+},
+{
+"st": "CA",
+"ref": "107A",
+"n": 107,
+"lat": 33.7800458,
+"lon": -117.8770963,
+"dest": [
+"CA 57 North",
+"Pomona",
+"CA 22 East",
+"Orange, La Veta Avenue, Bristol Street"
+],
+"m": 107.0,
+"local": 107.0
+},
+{
+"st": "CA",
+"ref": "107B",
+"n": 107,
+"lat": 33.7866712,
+"lon": -117.8847087,
+"dest": [
+"Chapman Avenue",
+"CA 22 West",
+"Garden Grove"
+],
+"m": 107.46,
+"local": 107.46
+},
+{
+"st": "CA",
+"ref": "107C",
+"n": 107,
+"lat": 33.7890276,
+"lon": -117.8867599,
+"dest": [
+"State College Boulevard, The City Drive",
+"State College Boulevard, The City Drive, Chapman Avenue"
+],
+"m": 108.32,
+"local": 108.32
+},
+{
+"st": "CA",
+"ref": "109",
+"n": 109,
+"lat": 33.7994345,
+"lon": -117.8977166,
+"dest": [
+"Katella Avenue, Disney Way"
+],
+"m": 109.0,
+"local": 109.0
+},
+{
+"st": "CA",
+"ref": "109A",
+"n": 109,
+"lat": 33.8069001,
+"lon": -117.9067705,
+"dest": [
+"Katella Avenue, Orangewood Avenue"
+],
+"m": 109.58,
+"local": 109.58
+},
+{
+"st": "CA",
+"ref": "109B",
+"n": 109,
+"lat": 33.8092509,
+"lon": -117.9092454,
+"dest": [
+"Disney Way, Anaheim Boulevard"
+],
+"m": 109.75,
+"local": 109.75
+},
+{
+"st": "CA",
+"ref": "110",
+"n": 110,
+"lat": 33.8129541,
+"lon": -117.9124862,
+"dest": [
+"Harbor Boulevard, Ball Road"
+],
+"m": 110.0,
+"local": 110.0
+},
+{
+"st": "CA",
+"ref": "110A",
+"n": 110,
+"lat": 33.8173609,
+"lon": -117.9176483,
+"dest": [
+"Harbor Boulevard"
+],
+"m": 110.22,
+"local": 110.22
+},
+{
+"st": "CA",
+"ref": "110B",
+"n": 110,
+"lat": 33.8262658,
+"lon": -117.926131,
+"dest": [
+"Disneyland Drive, Ball Road"
+],
+"m": 110.64,
+"local": 110.64
+},
+{
+"st": "CA",
+"ref": "111",
+"n": 111,
+"lat": 33.8292053,
+"lon": -117.9284531,
+"dest": [
+"Lincoln Avenue"
+],
+"m": 111.0,
+"local": 111.0
+},
+{
+"st": "CA",
+"ref": "112",
+"n": 112,
+"lat": 33.834369,
+"lon": -117.9360134,
+"dest": [
+"Euclid Street"
+],
+"m": 112.0,
+"local": 112.0
+},
+{
+"st": "CA",
+"ref": "113A",
+"n": 113,
+"lat": 33.8418228,
+"lon": -117.952402,
+"dest": [
+"Brookhurst Street, La Palma Avenue"
+],
+"m": 113.0,
+"local": 113.0
+},
+{
+"st": "CA",
+"ref": "113B",
+"n": 113,
+"lat": 33.843563,
+"lon": -117.955497,
+"dest": [
+"La Palma Avenue East"
+],
+"m": 113.14,
+"local": 113.14
+},
+{
+"st": "CA",
+"ref": "113",
+"n": 113,
+"lat": 33.8475567,
+"lon": -117.9634166,
+"dest": [
+"Brookhurst Street, La Palma Avenue"
+],
+"m": 113.5,
+"local": 113.5
+},
+{
+"st": "CA",
+"ref": "113C",
+"n": 113,
+"lat": 33.8524041,
+"lon": -117.9720886,
+"dest": [
+"CA 91 West",
+"Artesia"
+],
+"m": 113.89,
+"local": 113.89
+},
+{
+"st": "CA",
+"ref": "114",
+"n": 114,
+"lat": 33.8538194,
+"lon": -117.9743325,
+"dest": [
+"CA 91 East",
+"Magnolia Avenue"
+],
+"m": 114.0,
+"local": 114.0
+},
+{
+"st": "CA",
+"ref": "114A",
+"n": 114,
+"lat": 33.8571773,
+"lon": -117.9816748,
+"dest": [
+"Magnolia Avenue"
+],
+"m": 114.45,
+"local": 114.45
+},
+{
+"st": "CA",
+"ref": "114B",
+"n": 114,
+"lat": 33.8609687,
+"lon": -117.9892149,
+"dest": [
+"CA 91 East",
+"Riverside"
+],
+"m": 114.89,
+"local": 114.89
+},
+{
+"st": "CA",
+"ref": "115",
+"n": 115,
+"lat": 33.8623568,
+"lon": -117.9907078,
+"dest": [
+"Auto Center Drive"
+],
+"m": 115.0,
+"local": 115.0
+},
+{
+"st": "CA",
+"ref": "116",
+"n": 116,
+"lat": 33.865668,
+"lon": -117.9965298,
+"dest": [
+"CA 39",
+"Beach Boulevard"
+],
+"m": 116.0,
+"local": 116.0
+},
+{
+"st": "CA",
+"ref": "117",
+"n": 117,
+"lat": 33.8706301,
+"lon": -118.0057323,
+"dest": [
+"Artesia Boulevard",
+"Artesia Boulevard, Knott Avenue"
+],
+"m": 117.0,
+"local": 117.0
+},
+{
+"st": "CA",
+"ref": "118",
+"n": 118,
+"lat": 33.8819979,
+"lon": -118.0251104,
+"dest": [
+"Valley View Ave, N Firestone Blvd",
+"Valley View Avenue"
+],
+"m": 118.0,
+"local": 118.0
+},
+{
+"st": "CA",
+"ref": "119",
+"n": 119,
+"lat": 33.8908514,
+"lon": -118.0412386,
+"dest": [
+"Carmenita Road"
+],
+"m": 119.0,
+"local": 119.0
+},
+{
+"st": "CA",
+"ref": "120B",
+"n": 120,
+"lat": 33.9001733,
+"lon": -118.0578761,
+"dest": [
+"Rosecrans Avenue"
+],
+"m": 120.0,
+"local": 120.0
+},
+{
+"st": "CA",
+"ref": "120",
+"n": 120,
+"lat": 33.9056744,
+"lon": -118.0660698,
+"dest": [
+"Rosecrans Avenue"
+],
+"m": 120.6,
+"local": 120.6
+},
+{
+"st": "CA",
+"ref": "121",
+"n": 121,
+"lat": 33.9103431,
+"lon": -118.0703535,
+"dest": [
+"Norwalk Boulevard, Imperial Highway"
+],
+"m": 121.0,
+"local": 121.0
+},
+{
+"st": "CA",
+"ref": "122",
+"n": 122,
+"lat": 33.9204622,
+"lon": -118.0825045,
+"dest": [
+"Imperial Highway, Norwalk Boulevard"
+],
+"m": 122.0,
+"local": 122.0
+},
+{
+"st": "CA",
+"ref": "123",
+"n": 123,
+"lat": 33.9321373,
+"lon": -118.0901758,
+"dest": [
+"Florence Avenue"
+],
+"m": 123.0,
+"local": 123.0
+},
+{
+"st": "CA",
+"ref": "124",
+"n": 124,
+"lat": 33.944723,
+"lon": -118.0991004,
+"dest": [
+"I 605 North, I 605 South",
+"San Gabriel River Freeway"
+],
+"m": 124.0,
+"local": 124.0
+},
+{
+"st": "CA",
+"ref": "125",
+"n": 125,
+"lat": 33.9562841,
+"lon": -118.109395,
+"dest": [
+"CA 19",
+"Lakewood Boulevard, Rosemead Boulevard"
+],
+"m": 125.0,
+"local": 125.0
+},
+{
+"st": "CA",
+"ref": "126A",
+"n": 126,
+"lat": 33.9627839,
+"lon": -118.1183861,
+"dest": [
+"Paramount Boulevard",
+"Paramount Boulevard, Downey"
+],
+"m": 126.0,
+"local": 126.0
+},
+{
+"st": "CA",
+"ref": "126B",
+"n": 126,
+"lat": 33.9737494,
+"lon": -118.123706,
+"dest": [
+"Slauson Avenue"
+],
+"m": 126.98,
+"local": 126.98
+},
+{
+"st": "CA",
+"ref": "128A",
+"n": 128,
+"lat": 33.9845784,
+"lon": -118.1335038,
+"dest": [
+"Garfield Avenue"
+],
+"m": 128.0,
+"local": 128.0
+},
+{
+"st": "CA",
+"ref": "128B",
+"n": 128,
+"lat": 33.995754,
+"lon": -118.1452873,
+"dest": [
+"Washington Boulevard"
+],
+"m": 128.51,
+"local": 128.51
+},
+{
+"st": "CA",
+"ref": "129",
+"n": 129,
+"lat": 34.0065318,
+"lon": -118.1553412,
+"dest": [
+"Atlantic Boulevard North",
+"Atlantic Boulevard, Eastern Avenue"
+],
+"m": 129.0,
+"local": 129.0
+},
+{
+"st": "CA",
+"ref": "130A",
+"n": 130,
+"lat": 34.0101294,
+"lon": -118.159736,
+"dest": [
+"I 710 South",
+"Atlantic Boulevard South, Long Beach Freeway South",
+"Triggs Street"
+],
+"m": 130.0,
+"local": 130.0
+},
+{
+"st": "CA",
+"ref": "130C",
+"n": 130,
+"lat": 34.0149004,
+"lon": -118.1690925,
+"dest": [
+"I 710 North",
+"Pasadena"
+],
+"m": 130.42,
+"local": 130.42
+},
+{
+"st": "CA",
+"ref": "130B",
+"n": 130,
+"lat": 34.0146693,
+"lon": -118.1683901,
+"dest": [
+"Eastern Avenue",
+"I 710 South",
+"Long Beach"
+],
+"m": 130.58,
+"local": 130.58
+},
+{
+"st": "CA",
+"ref": "131A",
+"n": 131,
+"lat": 34.0194456,
+"lon": -118.1798727,
+"dest": [
+"Olympic Boulevard"
+],
+"m": 131.0,
+"local": 131.0
+},
+{
+"st": "CA",
+"ref": "131",
+"n": 131,
+"lat": 34.0202327,
+"lon": -118.188239,
+"dest": [
+"Indiana Street"
+],
+"m": 131.55,
+"local": 131.55
+},
+{
+"st": "CA",
+"ref": "131B",
+"n": 131,
+"lat": 34.0200539,
+"lon": -118.1911134,
+"dest": [
+"Ditman Avenue"
+],
+"m": 131.73,
+"local": 131.73
+},
+{
+"st": "CA",
+"ref": "132",
+"n": 132,
+"lat": 34.0207429,
+"lon": -118.1943856,
+"dest": [
+"Calzona Street",
+"Indiana Street"
+],
+"m": 132.0,
+"local": 132.0
+},
+{
+"st": "CA",
+"ref": "133",
+"n": 133,
+"lat": 34.025116,
+"lon": -118.2045752,
+"dest": [
+"Grande Vista Avenue"
+],
+"m": 133.0,
+"local": 133.0
+},
+{
+"st": "CA",
+"ref": "134B",
+"n": 134,
+"lat": 34.0290627,
+"lon": -118.2132553,
+"dest": [
+"Soto Street",
+"CA 60 East",
+"Pomona"
+],
+"m": 134.0,
+"local": 134.0
+},
+{
+"st": "CA",
+"ref": "134C",
+"n": 134,
+"lat": 34.0319851,
+"lon": -118.2189206,
+"dest": [
+"Seventh Street"
+],
+"m": 134.16,
+"local": 134.16
+},
+{
+"st": "CA",
+"ref": "134A",
+"n": 134,
+"lat": 34.0314629,
+"lon": -118.2198085,
+"dest": [
+"Soto Street"
+],
+"m": 134.16,
+"local": 134.16
+},
+{
+"st": "CA",
+"ref": "135A",
+"n": 135,
+"lat": 34.0408218,
+"lon": -118.2184964,
+"dest": [
+"Fourth Street"
+],
+"m": 135.0,
+"local": 135.0
+},
+{
+"st": "CA",
+"ref": "135B",
+"n": 135,
+"lat": 34.047287,
+"lon": -118.214553,
+"dest": [
+"Cesar Chavez Avenue"
+],
+"m": 135.17,
+"local": 135.17
+},
+{
+"st": "CA",
+"ref": "135C",
+"n": 135,
+"lat": 34.0511029,
+"lon": -118.2139046,
+"dest": [
+"I 10 East",
+"San Bernardino Freeway, San Bernardino",
+"Mission Road"
+],
+"m": 135.54,
+"local": 135.54
+},
+{
+"st": "CA",
+"ref": "136B",
+"n": 136,
+"lat": 34.068768,
+"lon": -118.2167832,
+"dest": [
+"Broadway"
+],
+"m": 136.0,
+"local": 136.0
+},
+{
+"st": "CA",
+"ref": "136A",
+"n": 136,
+"lat": 34.0665392,
+"lon": -118.2162127,
+"dest": [
+"Main Street"
+],
+"m": 136.15,
+"local": 136.15
+},
+{
+"st": "CA",
+"ref": "137B",
+"n": 137,
+"lat": 34.074196,
+"lon": -118.2193017,
+"dest": [
+"CA 110 North",
+"Pasadena, Arroyo Seco Parkway"
+],
+"m": 137.0,
+"local": 137.0
+},
+{
+"st": "CA",
+"ref": "137A",
+"n": 137,
+"lat": 34.0830646,
+"lon": -118.2280086,
+"dest": [
+"CA 110 North",
+"Arroyo Seco Parkway, Pasadena"
+],
+"m": 137.4,
+"local": 137.4
+},
+{
+"st": "CA",
+"ref": "138",
+"n": 138,
+"lat": 34.0915116,
+"lon": -118.2397004,
+"dest": [
+"Stadium Way"
+],
+"m": 138.0,
+"local": 138.0
+},
+{
+"st": "CA",
+"ref": "140A",
+"n": 140,
+"lat": 34.1080794,
+"lon": -118.2587401,
+"dest": [
+"Fletcher Drive"
+],
+"m": 140.0,
+"local": 140.0
+},
+{
+"st": "CA",
+"ref": "140",
+"n": 140,
+"lat": 34.1099031,
+"lon": -118.261933,
+"dest": [
+"Glendale Boulevard"
+],
+"m": 140.25,
+"local": 140.25
+},
+{
+"st": "CA",
+"ref": "140B",
+"n": 140,
+"lat": 34.1152994,
+"lon": -118.2685532,
+"dest": [
+"Glendale Boulevard"
+],
+"m": 140.85,
+"local": 140.85
+},
+{
+"st": "CA",
+"ref": "141A",
+"n": 141,
+"lat": 34.1170889,
+"lon": -118.2692217,
+"dest": [
+"Los Feliz Boulevard"
+],
+"m": 141.0,
+"local": 141.0
+},
+{
+"st": "CA",
+"ref": "141B",
+"n": 141,
+"lat": 34.1215755,
+"lon": -118.2715884,
+"dest": [
+"Griffith Park Drive"
+],
+"m": 141.19,
+"local": 141.19
+},
+{
+"st": "CA",
+"ref": "141",
+"n": 141,
+"lat": 34.1279196,
+"lon": -118.2738191,
+"dest": [
+"Los Feliz Boulevard"
+],
+"m": 141.45,
+"local": 141.45
+},
+{
+"st": "CA",
+"ref": "142",
+"n": 142,
+"lat": 34.1384773,
+"lon": -118.2766182,
+"dest": [
+"Colorado Street",
+"Colorado Street, South Pacific Avenue, San Fernando Road"
+],
+"m": 142.0,
+"local": 142.0
+},
+{
+"st": "CA",
+"ref": "144A",
+"n": 144,
+"lat": 34.147252,
+"lon": -118.2790667,
+"dest": [
+"CA 134 East",
+"Zoo Drive",
+"Pasadena, Los Angeles Zoo, Autry National Center"
+],
+"m": 144.0,
+"local": 144.0
+},
+{
+"st": "CA",
+"ref": "144",
+"n": 144,
+"lat": 34.1548861,
+"lon": -118.2888255,
+"dest": [
+"CA 134 East",
+"Glendale, Pasadena"
+],
+"m": 144.5,
+"local": 144.5
+},
+{
+"st": "CA",
+"ref": "145A",
+"n": 145,
+"lat": 34.1616847,
+"lon": -118.2933651,
+"dest": [
+"Western Avenue"
+],
+"m": 145.0,
+"local": 145.0
+},
+{
+"st": "CA",
+"ref": "145B",
+"n": 145,
+"lat": 34.1673524,
+"lon": -118.3001092,
+"dest": [
+"Alameda Avenue"
+],
+"m": 145.46,
+"local": 145.46
+},
+{
+"st": "CA",
+"ref": "146A",
+"n": 146,
+"lat": 34.1768246,
+"lon": -118.3078246,
+"dest": [
+"Olive Avenue, Downtown",
+"Verdugo Avenue"
+],
+"m": 146.0,
+"local": 146.0
+},
+{
+"st": "CA",
+"ref": "146B",
+"n": 146,
+"lat": 34.1821377,
+"lon": -118.3146966,
+"dest": [
+"Burbank Boulevard"
+],
+"m": 146.48,
+"local": 146.48
+},
+{
+"st": "CA",
+"ref": "147B",
+"n": 147,
+"lat": 34.1893548,
+"lon": -118.3240937,
+"dest": [
+"Empire Avenue, San Fernando Boulevard"
+],
+"m": 147.0,
+"local": 147.0
+},
+{
+"st": "CA",
+"ref": "148",
+"n": 148,
+"lat": 34.1989362,
+"lon": -118.337782,
+"dest": [
+"Buena Vista Street"
+],
+"m": 148.0,
+"local": 148.0
+},
+{
+"st": "CA",
+"ref": "149",
+"n": 149,
+"lat": 34.2104458,
+"lon": -118.3462836,
+"dest": [
+"Hollywood Way",
+"Hollywood Way, Hollywood Burbank Airport"
+],
+"m": 149.0,
+"local": 149.0
+},
+{
+"st": "CA",
+"ref": "150A",
+"n": 150,
+"lat": 34.2204365,
+"lon": -118.357327,
+"dest": [
+"Glenoaks Boulevard"
+],
+"m": 150.0,
+"local": 150.0
+},
+{
+"st": "CA",
+"ref": "150B",
+"n": 150,
+"lat": 34.2219186,
+"lon": -118.362812,
+"dest": [
+"Sunland Boulevard"
+],
+"m": 150.31,
+"local": 150.31
+},
+{
+"st": "CA",
+"ref": "150",
+"n": 150,
+"lat": 34.222419,
+"lon": -118.3701171,
+"dest": [
+"Sunland Boulevard"
+],
+"m": 150.69,
+"local": 150.69
+},
+{
+"st": "CA",
+"ref": "151",
+"n": 151,
+"lat": 34.2239491,
+"lon": -118.3722763,
+"dest": [
+"Penrose Street"
+],
+"m": 151.0,
+"local": 151.0
+},
+{
+"st": "CA",
+"ref": "152",
+"n": 152,
+"lat": 34.2267701,
+"lon": -118.3808548,
+"dest": [
+"Lankershim Boulevard, Tuxford Street",
+"Lankershim Boulevard"
+],
+"m": 152.0,
+"local": 152.0
+},
+{
+"st": "CA",
+"ref": "153",
+"n": 153,
+"lat": 34.2309156,
+"lon": -118.3991073,
+"dest": [
+"Sheldon Street"
+],
+"m": 153.0,
+"local": 153.0
+},
+{
+"st": "CA",
+"ref": "153A",
+"n": 153,
+"lat": 34.2313326,
+"lon": -118.4028291,
+"dest": [
+"Sheldon Street"
+],
+"m": 153.13,
+"local": 153.13
+},
+{
+"st": "CA",
+"ref": "153B",
+"n": 153,
+"lat": 34.2326603,
+"lon": -118.4083342,
+"dest": [
+"Branford Street",
+"CA 170 South",
+"Hollywood"
+],
+"m": 153.39,
+"local": 153.39
+},
+{
+"st": "CA",
+"ref": "154",
+"n": 154,
+"lat": 34.2420253,
+"lon": -118.4192848,
+"dest": [
+"Osborne Street"
+],
+"m": 154.0,
+"local": 154.0
+},
+{
+"st": "CA",
+"ref": "155A",
+"n": 155,
+"lat": 34.2494213,
+"lon": -118.4270965,
+"dest": [
+"Terra Bella Street"
+],
+"m": 155.0,
+"local": 155.0
+},
+{
+"st": "CA",
+"ref": "155B",
+"n": 155,
+"lat": 34.2534698,
+"lon": -118.431404,
+"dest": [
+"Van Nuys Boulevard"
+],
+"m": 155.32,
+"local": 155.32
+},
+{
+"st": "CA",
+"ref": "156B",
+"n": 156,
+"lat": 34.2620739,
+"lon": -118.4402149,
+"dest": [
+" Paxton Street"
+],
+"m": 156.0,
+"local": 156.0
+},
+{
+"st": "CA",
+"ref": "156A",
+"n": 156,
+"lat": 34.2603591,
+"lon": -118.4387356,
+"dest": [
+"CA 118 West, CA 118 East",
+"Paxton Street"
+],
+"m": 156.16,
+"local": 156.16
+},
+{
+"st": "CA",
+"ref": "157A",
+"n": 157,
+"lat": 34.2708351,
+"lon": -118.4475802,
+"dest": [
+"Brand Boulevard"
+],
+"m": 157.0,
+"local": 157.0
+},
+{
+"st": "CA",
+"ref": "157B",
+"n": 157,
+"lat": 34.2735154,
+"lon": -118.4495629,
+"dest": [
+"San Fernando, Mission Boulevard"
+],
+"m": 157.09,
+"local": 157.09
+},
+{
+"st": "CA",
+"ref": "157",
+"n": 157,
+"lat": 34.2794714,
+"lon": -118.4556342,
+"dest": [
+"San Fernando Mission Boulevard",
+"San Fernando"
+],
+"m": 157.33,
+"local": 157.33
+},
+{
+"st": "CA",
+"ref": "158",
+"n": 158,
+"lat": 34.2964088,
+"lon": -118.4730214,
+"dest": [],
+"m": 158.0,
+"local": 158.0
+},
+{
+"st": "CA",
+"ref": "159A",
+"n": 159,
+"lat": 34.3007564,
+"lon": -118.4770188,
+"dest": [
+"Roxford Street East"
+],
+"m": 159.0,
+"local": 159.0
+},
+{
+"st": "CA",
+"ref": "159B",
+"n": 159,
+"lat": 34.3012244,
+"lon": -118.4775119,
+"dest": [
+"Roxford Street"
+],
+"m": 159.05,
+"local": 159.05
+},
+{
+"st": "CA",
+"ref": "159",
+"n": 159,
+"lat": 34.3056249,
+"lon": -118.4820234,
+"dest": [
+"Roxford Street"
+],
+"m": 159.52,
+"local": 159.52
+},
+{
+"st": "CA",
+"ref": "161A",
+"n": 161,
+"lat": 34.320049,
+"lon": -118.494872,
+"dest": [
+"I 210 East",
+"Foothill Freeway",
+"Pasadena"
+],
+"m": 161.0,
+"local": 161.0
+},
+{
+"st": "CA",
+"ref": "162",
+"n": 162,
+"lat": 34.3308526,
+"lon": -118.5062062,
+"dest": [
+"CA 14 North",
+"Palmdale, Lancaster"
+],
+"m": 162.0,
+"local": 162.0
+},
+{
+"st": "CA",
+"ref": "161B",
+"n": 161,
+"lat": 34.3357189,
+"lon": -118.5110167,
+"dest": [
+"Balboa Boulevard, San Fernando Road"
+],
+"m": 162.16,
+"local": 162.16
+},
+{
+"st": "CA",
+"ref": "163",
+"n": 163,
+"lat": 34.3398824,
+"lon": -118.5189646,
+"dest": [],
+"m": 163.0,
+"local": 163.0
+},
+{
+"st": "CA",
+"ref": "166",
+"n": 166,
+"lat": 34.3596526,
+"lon": -118.5541037,
+"dest": [
+"Calgrove Boulevard"
+],
+"m": 166.0,
+"local": 166.0
+},
+{
+"st": "CA",
+"ref": "167",
+"n": 167,
+"lat": 34.3753496,
+"lon": -118.5631867,
+"dest": [
+"Lyons Avenue, Pico Canyon Road"
+],
+"m": 167.0,
+"local": 167.0
+},
+{
+"st": "CA",
+"ref": "168",
+"n": 168,
+"lat": 34.3909233,
+"lon": -118.5702903,
+"dest": [
+"McBean Parkway"
+],
+"m": 168.0,
+"local": 168.0
+},
+{
+"st": "CA",
+"ref": "169",
+"n": 169,
+"lat": 34.4051617,
+"lon": -118.5747439,
+"dest": [
+"Valencia Boulevard"
+],
+"m": 169.0,
+"local": 169.0
+},
+{
+"st": "CA",
+"ref": "170",
+"n": 170,
+"lat": 34.4194615,
+"lon": -118.5811984,
+"dest": [
+"Magic Mountain Parkway"
+],
+"m": 170.0,
+"local": 170.0
+},
+{
+"st": "CA",
+"ref": "171",
+"n": 171,
+"lat": 34.4351955,
+"lon": -118.5931416,
+"dest": [
+"Rye Canyon Road"
+],
+"m": 171.0,
+"local": 171.0
+},
+{
+"st": "CA",
+"ref": "172",
+"n": 172,
+"lat": 34.4406357,
+"lon": -118.6001923,
+"dest": [
+"CA 126 West",
+"Newhall Ranch Road"
+],
+"m": 172.0,
+"local": 172.0
+},
+{
+"st": "CA",
+"ref": "173",
+"n": 173,
+"lat": 34.4519116,
+"lon": -118.6148052,
+"dest": [
+"Hasley Canyon Road"
+],
+"m": 173.0,
+"local": 173.0
+},
+{
+"st": "CA",
+"ref": "176A",
+"n": 176,
+"lat": 34.4871252,
+"lon": -118.6171334,
+"dest": [
+"Parker Road"
+],
+"m": 176.0,
+"local": 176.0
+},
+{
+"st": "CA",
+"ref": "176B",
+"n": 176,
+"lat": 34.4924045,
+"lon": -118.6210886,
+"dest": [
+"Lake Hughes Road, Castaic"
+],
+"m": 176.42,
+"local": 176.42
+},
+{
+"st": "CA",
+"ref": "176",
+"n": 176,
+"lat": 34.4990663,
+"lon": -118.6263518,
+"dest": [
+"Lake Hughes Road",
+"Castaic"
+],
+"m": 176.95,
+"local": 176.95
+},
+{
+"st": "CA",
+"ref": "183",
+"n": 183,
+"lat": 34.5669443,
+"lon": -118.6861554,
+"dest": [
+"Templin Highway"
+],
+"m": 183.0,
+"local": 183.0
+},
+{
+"st": "CA",
+"ref": "185",
+"n": 185,
+"lat": 34.5890356,
+"lon": -118.711777,
+"dest": [
+"Brake Check Area"
+],
+"m": 185.0,
+"local": 185.0
+},
+{
+"st": "CA",
+"ref": "191",
+"n": 191,
+"lat": 34.6650378,
+"lon": -118.761728,
+"dest": [
+"Vista Del Lago Road"
+],
+"m": 191.0,
+"local": 191.0
+},
+{
+"st": "CA",
+"ref": "195",
+"n": 195,
+"lat": 34.7052704,
+"lon": -118.7947861,
+"dest": [
+"Smokey Bear Road"
+],
+"m": 195.0,
+"local": 195.0
+},
+{
+"st": "CA",
+"ref": "198",
+"n": 198,
+"lat": 34.7595763,
+"lon": -118.79596,
+"dest": [
+"Quail Lake Road"
+],
+"m": 198.0,
+"local": 198.0
+},
+{
+"st": "CA",
+"ref": "199",
+"n": 199,
+"lat": 34.770932,
+"lon": -118.8035593,
+"dest": [
+"CA 138 East",
+"Lancaster, Palmdale"
+],
+"m": 199.0,
+"local": 199.0
+},
+{
+"st": "CA",
+"ref": "202",
+"n": 202,
+"lat": 34.7945861,
+"lon": -118.8476958,
+"dest": [
+"Gorman"
+],
+"m": 202.0,
+"local": 202.0
+},
+{
+"st": "CA",
+"ref": "204",
+"n": 204,
+"lat": 34.8020443,
+"lon": -118.8760962,
+"dest": [],
+"m": 204.0,
+"local": 204.0
+},
+{
+"st": "CA",
+"ref": "205",
+"n": 205,
+"lat": 34.8135958,
+"lon": -118.8844192,
+"dest": [
+"Frazier Mountain Park Road"
+],
+"m": 205.0,
+"local": 205.0
+},
+{
+"st": "CA",
+"ref": "207",
+"n": 207,
+"lat": 34.8310814,
+"lon": -118.8678071,
+"dest": [
+"Lebec"
+],
+"m": 207.0,
+"local": 207.0
+},
+{
+"st": "CA",
+"ref": "210",
+"n": 210,
+"lat": 34.8750191,
+"lon": -118.892352,
+"dest": [
+"Fort Tejon"
+],
+"m": 210.0,
+"local": 210.0
+},
+{
+"st": "CA",
+"ref": "215",
+"n": 215,
+"lat": 34.9400867,
+"lon": -118.9302025,
+"dest": [
+"Grapevine"
+],
+"m": 215.0,
+"local": 215.0
+},
+{
+"st": "CA",
+"ref": "219A",
+"n": 219,
+"lat": 34.9834102,
+"lon": -118.9441679,
+"dest": [
+"Laval Road East"
+],
+"m": 219.0,
+"local": 219.0
+},
+{
+"st": "CA",
+"ref": "219B",
+"n": 219,
+"lat": 34.9867603,
+"lon": -118.9452869,
+"dest": [
+"Laval Road West"
+],
+"m": 219.31,
+"local": 219.31
+},
+{
+"st": "CA",
+"ref": "221",
+"n": 221,
+"lat": 35.0065337,
+"lon": -118.9515395,
+"dest": [],
+"m": 221.0,
+"local": 221.0
+},
+{
+"st": "CA",
+"ref": "225",
+"n": 225,
+"lat": 35.0561734,
+"lon": -118.9955524,
+"dest": [
+"CA 166",
+"Maricopa, Taft",
+"Mettler, Maricopa"
+],
+"m": 225.0,
+"local": 225.0
+},
+{
+"st": "CA",
+"ref": "228",
+"n": 228,
+"lat": 35.091902,
+"lon": -119.0337441,
+"dest": [
+"Copus Road"
+],
+"m": 228.0,
+"local": 228.0
+},
+{
+"st": "CA",
+"ref": "234",
+"n": 234,
+"lat": 35.1588134,
+"lon": -119.1074491,
+"dest": [
+"Old River Road"
+],
+"m": 234.0,
+"local": 234.0
+},
+{
+"st": "CA",
+"ref": "239",
+"n": 239,
+"lat": 35.205827,
+"lon": -119.1591546,
+"dest": [
+"CA 223",
+"Bear Mountain Boulevard",
+"Arvin",
+"Bear Mountain Boulevard, Arvin"
+],
+"m": 239.0,
+"local": 239.0
+},
+{
+"st": "CA",
+"ref": "244",
+"n": 244,
+"lat": 35.263445,
+"lon": -119.2204228,
+"dest": [
+"CA 119",
+"Taft Highway",
+"Pumpkin Center, Lamont"
+],
+"m": 244.0,
+"local": 244.0
+},
+{
+"st": "CA",
+"ref": "246",
+"n": 246,
+"lat": 35.2905762,
+"lon": -119.2493244,
+"dest": [
+"CA 43",
+"Shafter, Wasco",
+"Taft, Maricopa"
+],
+"m": 246.0,
+"local": 246.0
+},
+{
+"st": "CA",
+"ref": "253",
+"n": 253,
+"lat": 35.3524197,
+"lon": -119.3321686,
+"dest": [
+"Stockdale Highway"
+],
+"m": 253.0,
+"local": 253.0
+},
+{
+"st": "CA",
+"ref": "257",
+"n": 257,
+"lat": 35.3990735,
+"lon": -119.3973015,
+"dest": [
+"CA 58",
+"Buttonwillow, McKittrick",
+"Bakersfield"
+],
+"m": 257.0,
+"local": 257.0
+},
+{
+"st": "CA",
+"ref": "262",
+"n": 262,
+"lat": 35.4396488,
+"lon": -119.4528312,
+"dest": [
+"7th Standard Road, Rowlee Road"
+],
+"m": 262.0,
+"local": 262.0
+},
+{
+"st": "CA",
+"ref": "263",
+"n": 263,
+"lat": 35.457398,
+"lon": -119.477871,
+"dest": [
+"Buttonwillow, McKittrick"
+],
+"m": 263.0,
+"local": 263.0
+},
+{
+"st": "CA",
+"ref": "268",
+"n": 268,
+"lat": 35.4971119,
+"lon": -119.531458,
+"dest": [
+"Lerdo Highway"
+],
+"m": 268.0,
+"local": 268.0
+},
+{
+"st": "CA",
+"ref": "278",
+"n": 278,
+"lat": 35.6116397,
+"lon": -119.6496141,
+"dest": [
+"CA 46",
+"Lost Hills, Paso Robles",
+"Lost Hills, Wasco"
+],
+"m": 278.0,
+"local": 278.0
+},
+{
+"st": "CA",
+"ref": "288",
+"n": 288,
+"lat": 35.7281592,
+"lon": -119.736327,
+"dest": [
+"Twisselman Road"
+],
+"m": 288.0,
+"local": 288.0
+},
+{
+"st": "CA",
+"ref": "305",
+"n": 305,
+"lat": 35.9321815,
+"lon": -119.9093707,
+"dest": [
+"Utica Avenue",
+"Alpaugh"
+],
+"m": 305.0,
+"local": 305.0
+},
+{
+"st": "CA",
+"ref": "309",
+"n": 309,
+"lat": 35.9785107,
+"lon": -119.9568505,
+"dest": [
+"CA 41",
+"Kettleman City, Fresno",
+"Paso Robles, Kettleman City"
+],
+"m": 309.0,
+"local": 309.0
+},
+{
+"st": "CA",
+"ref": "319",
+"n": 319,
+"lat": 36.0751011,
+"lon": -120.0989347,
+"dest": [
+"CA 269",
+"Lassen Avenue"
+],
+"m": 319.0,
+"local": 319.0
+},
+{
+"st": "CA",
+"ref": "325",
+"n": 325,
+"lat": 36.133629,
+"lon": -120.1548564,
+"dest": [
+"Jayne Avenue"
+],
+"m": 325.0,
+"local": 325.0
+},
+{
+"st": "CA",
+"ref": "334",
+"n": 334,
+"lat": 36.2507507,
+"lon": -120.2414805,
+"dest": [
+"CA 198",
+"Lemoore, Hanford"
+],
+"m": 334.0,
+"local": 334.0
+},
+{
+"st": "CA",
+"ref": "337",
+"n": 337,
+"lat": 36.2916105,
+"lon": -120.2672697,
+"dest": [
+"CA 33 South, CA 145 North",
+"Kerman",
+"Coalinga"
+],
+"m": 337.0,
+"local": 337.0
+},
+{
+"st": "CA",
+"ref": "349",
+"n": 349,
+"lat": 36.433713,
+"lon": -120.3920801,
+"dest": [
+"CA 33 North",
+"Derrick Avenue",
+"Mendota"
+],
+"m": 349.0,
+"local": 349.0
+},
+{
+"st": "CA",
+"ref": "357",
+"n": 357,
+"lat": 36.528563,
+"lon": -120.4847656,
+"dest": [
+"Kamm Avenue"
+],
+"m": 357.0,
+"local": 357.0
+},
+{
+"st": "CA",
+"ref": "365",
+"n": 365,
+"lat": 36.6020588,
+"lon": -120.5819968,
+"dest": [
+"Manning Avenue"
+],
+"m": 365.0,
+"local": 365.0
+},
+{
+"st": "CA",
+"ref": "368",
+"n": 368,
+"lat": 36.6365381,
+"lon": -120.6203253,
+"dest": [
+"Panoche Road"
+],
+"m": 368.0,
+"local": 368.0
+},
+{
+"st": "CA",
+"ref": "372",
+"n": 372,
+"lat": 36.6836776,
+"lon": -120.6564707,
+"dest": [
+"Russell Avenue"
+],
+"m": 372.0,
+"local": 372.0
+},
+{
+"st": "CA",
+"ref": "379",
+"n": 379,
+"lat": 36.774401,
+"lon": -120.7214773,
+"dest": [
+"Shields Avenue"
+],
+"m": 379.0,
+"local": 379.0
+},
+{
+"st": "CA",
+"ref": "385",
+"n": 385,
+"lat": 36.8469427,
+"lon": -120.7713602,
+"dest": [
+"Nees Avenue",
+"Firebaugh"
+],
+"m": 385.0,
+"local": 385.0
+},
+{
+"st": "CA",
+"ref": "386",
+"n": 386,
+"lat": 36.8605009,
+"lon": -120.7807152,
+"dest": [
+"Rest Area"
+],
+"m": 386.0,
+"local": 386.0
+},
+{
+"st": "CA",
+"ref": "391",
+"n": 391,
+"lat": 36.928407,
+"lon": -120.8382133,
+"dest": [
+"CA 165 North",
+"Mercy Springs Road",
+"Los Banos"
+],
+"m": 391.0,
+"local": 391.0
+},
+{
+"st": "CA",
+"ref": "403A",
+"n": 403,
+"lat": 37.0536601,
+"lon": -120.9666264,
+"dest": [
+"CA 152 East, CA 33 South",
+"Los Banos"
+],
+"m": 403.0,
+"local": 403.0
+},
+{
+"st": "CA",
+"ref": "403B",
+"n": 403,
+"lat": 37.0566382,
+"lon": -120.9695065,
+"dest": [
+"CA 152 West",
+"Gilroy, Hollister, San Jose",
+"Monterey, Hollister"
+],
+"m": 403.22,
+"local": 403.22
+},
+{
+"st": "CA",
+"ref": "407",
+"n": 407,
+"lat": 37.1044874,
+"lon": -121.0141154,
+"dest": [
+"CA 33",
+"Santa Nella, Gustine",
+"Santa Nella, Gilroy"
+],
+"m": 407.0,
+"local": 407.0
+},
+{
+"st": "CA",
+"ref": "418",
+"n": 418,
+"lat": 37.2426393,
+"lon": -121.0878219,
+"dest": [
+"CA 140",
+"Gustine, Merced"
+],
+"m": 418.0,
+"local": 418.0
+},
+{
+"st": "CA",
+"ref": "423",
+"n": 423,
+"lat": 37.322755,
+"lon": -121.1089072,
+"dest": [
+"Stuhr Road"
+],
+"m": 423.0,
+"local": 423.0
+},
+{
+"st": "CA",
+"ref": "428",
+"n": 428,
+"lat": 37.3945638,
+"lon": -121.1360263,
+"dest": [
+"Fink Road"
+],
+"m": 428.0,
+"local": 428.0
+},
+{
+"st": "CA",
+"ref": "434",
+"n": 434,
+"lat": 37.4608634,
+"lon": -121.1776663,
+"dest": [
+"Diablo Grande Parkway, Sperry Avenue"
+],
+"m": 434.0,
+"local": 434.0
+},
+{
+"st": "CA",
+"ref": "441",
+"n": 441,
+"lat": 37.5380368,
+"lon": -121.2646997,
+"dest": [
+"Howard Road",
+"Ingram Creek"
+],
+"m": 441.0,
+"local": 441.0
+},
+{
+"st": "CA",
+"ref": "445",
+"n": 445,
+"lat": 37.5807458,
+"lon": -121.3201387,
+"dest": [
+"Rest Area"
+],
+"m": 445.0,
+"local": 445.0
+},
+{
+"st": "CA",
+"ref": "446",
+"n": 446,
+"lat": 37.5922963,
+"lon": -121.335146,
+"dest": [],
+"m": 446.0,
+"local": 446.0
+},
+{
+"st": "CA",
+"ref": "449A",
+"n": 449,
+"lat": 37.6328842,
+"lon": -121.3428427,
+"dest": [
+"CA 132 East",
+"Modesto"
+],
+"m": 449.0,
+"local": 449.0
+},
+{
+"st": "CA",
+"ref": "449B",
+"n": 449,
+"lat": 37.638215,
+"lon": -121.3428586,
+"dest": [
+"CA 132 West",
+"San Francisco"
+],
+"m": 449.31,
+"local": 449.31
+},
+{
+"st": "CA",
+"ref": "452",
+"n": 452,
+"lat": 37.6820488,
+"lon": -121.3431199,
+"dest": [
+"CA 33 South",
+"Vernalis"
+],
+"m": 452.0,
+"local": 452.0
+},
+{
+"st": "CA",
+"ref": "457",
+"n": 457,
+"lat": 37.7433077,
+"lon": -121.3435002,
+"dest": [
+"Kasson Road"
+],
+"m": 457.0,
+"local": 457.0
+},
+{
+"st": "CA",
+"ref": "458A",
+"n": 458,
+"lat": 37.7624195,
+"lon": -121.3386406,
+"dest": [
+"11th Street"
+],
+"m": 458.0,
+"local": 458.0
+},
+{
+"st": "CA",
+"ref": "458B",
+"n": 458,
+"lat": 37.7698382,
+"lon": -121.3284446,
+"dest": [],
+"m": 458.88,
+"local": 458.88
+},
+{
+"st": "CA",
+"ref": "460",
+"n": 460,
+"lat": 37.7791143,
+"lon": -121.3151039,
+"dest": [],
+"m": 460.0,
+"local": 460.0
+},
+{
+"st": "CA",
+"ref": "461",
+"n": 461,
+"lat": 37.785183,
+"lon": -121.3061826,
+"dest": [
+"CA 120 East",
+"Manteca, Sonora"
+],
+"m": 461.0,
+"local": 461.0
+},
+{
+"st": "CA",
+"ref": "462",
+"n": 462,
+"lat": 37.8077419,
+"lon": -121.2968789,
+"dest": [
+"East Louise Avenue"
+],
+"m": 462.0,
+"local": 462.0
+},
+{
+"st": "CA",
+"ref": "463",
+"n": 463,
+"lat": 37.821956,
+"lon": -121.2916222,
+"dest": [
+"Lathrop Road"
+],
+"m": 463.0,
+"local": 463.0
+},
+{
+"st": "CA",
+"ref": "465",
+"n": 465,
+"lat": 37.851531,
+"lon": -121.2829,
+"dest": [
+"Roth Road",
+"Roth Road, Sharpe Depot"
+],
+"m": 465.0,
+"local": 465.0
+},
+{
+"st": "CA",
+"ref": "467A",
+"n": 467,
+"lat": 37.8725381,
+"lon": -121.2775085,
+"dest": [
+"El Dorado Street"
+],
+"m": 467.0,
+"local": 467.0
+},
+{
+"st": "CA",
+"ref": "467B",
+"n": 467,
+"lat": 37.8790333,
+"lon": -121.2782845,
+"dest": [
+"West Mathews Road"
+],
+"m": 467.38,
+"local": 467.38
+},
+{
+"st": "CA",
+"ref": "468",
+"n": 468,
+"lat": 37.8928186,
+"lon": -121.282095,
+"dest": [
+"French Camp Road, Arch Airport Road",
+"French Camp Road"
+],
+"m": 468.0,
+"local": 468.0
+},
+{
+"st": "CA",
+"ref": "469",
+"n": 469,
+"lat": 37.909663,
+"lon": -121.288147,
+"dest": [
+"Downing Avenue, Carolyn Weston Boulevard",
+"Downing Avenue"
+],
+"m": 469.0,
+"local": 469.0
+},
+{
+"st": "CA",
+"ref": "470",
+"n": 470,
+"lat": 37.9236155,
+"lon": -121.2932331,
+"dest": [
+"Eighth Street"
+],
+"m": 470.0,
+"local": 470.0
+},
+{
+"st": "CA",
+"ref": "471",
+"n": 471,
+"lat": 37.9331706,
+"lon": -121.2966379,
+"dest": [
+"CA 4 West",
+"Charter Way"
+],
+"m": 471.0,
+"local": 471.0
+},
+{
+"st": "CA",
+"ref": "472",
+"n": 472,
+"lat": 37.9418671,
+"lon": -121.2982542,
+"dest": [
+"CA 4 East",
+"Fresno Avenue, Navy Drive",
+"Downtown Stockton",
+"CA 4",
+"Fresno Avenue"
+],
+"m": 472.0,
+"local": 472.0
+},
+{
+"st": "CA",
+"ref": "473",
+"n": 473,
+"lat": 37.9536274,
+"lon": -121.3095768,
+"dest": [
+"Pershing Avenue",
+"Oak Street, Fremont Street"
+],
+"m": 473.0,
+"local": 473.0
+},
+{
+"st": "CA",
+"ref": "474A",
+"n": 474,
+"lat": 37.9562579,
+"lon": -121.3234155,
+"dest": [
+"Monte Diablo Avenue"
+],
+"m": 474.0,
+"local": 474.0
+},
+{
+"st": "CA",
+"ref": "474B",
+"n": 474,
+"lat": 37.961863,
+"lon": -121.3342646,
+"dest": [
+"Country Club Boulevard, Alpine Avenue",
+"Alpine Avenue, Country Club Boulevard"
+],
+"m": 474.9,
+"local": 474.9
+},
+{
+"st": "CA",
+"ref": "476",
+"n": 476,
+"lat": 37.9808403,
+"lon": -121.3418212,
+"dest": [
+"March Lane"
+],
+"m": 476.0,
+"local": 476.0
+},
+{
+"st": "CA",
+"ref": "477",
+"n": 477,
+"lat": 38.001651,
+"lon": -121.3500475,
+"dest": [
+"Benjamin Holt Drive"
+],
+"m": 477.0,
+"local": 477.0
+},
+{
+"st": "CA",
+"ref": "478",
+"n": 478,
+"lat": 38.0183447,
+"lon": -121.3571808,
+"dest": [
+"Hammer Lane"
+],
+"m": 478.0,
+"local": 478.0
+},
+{
+"st": "CA",
+"ref": "481",
+"n": 481,
+"lat": 38.0546248,
+"lon": -121.371448,
+"dest": [
+"Eight Mile Road"
+],
+"m": 481.0,
+"local": 481.0
+},
+{
+"st": "CA",
+"ref": "485",
+"n": 485,
+"lat": 38.1117709,
+"lon": -121.3953139,
+"dest": [
+"CA 12",
+"Lodi, Fairfield"
+],
+"m": 485.0,
+"local": 485.0
+},
+{
+"st": "CA",
+"ref": "487",
+"n": 487,
+"lat": 38.1419966,
+"lon": -121.3990721,
+"dest": [
+"Turner Road"
+],
+"m": 487.0,
+"local": 487.0
+},
+{
+"st": "CA",
+"ref": "490",
+"n": 490,
+"lat": 38.1862801,
+"lon": -121.4023695,
+"dest": [
+"Peltier Road"
+],
+"m": 490.0,
+"local": 490.0
+},
+{
+"st": "CA",
+"ref": "493",
+"n": 493,
+"lat": 38.222772,
+"lon": -121.428281,
+"dest": [
+"Walnut Grove Road"
+],
+"m": 493.0,
+"local": 493.0
+},
+{
+"st": "CA",
+"ref": "498",
+"n": 498,
+"lat": 38.2815426,
+"lon": -121.4571519,
+"dest": [
+"Twin Cities Road"
+],
+"m": 498.0,
+"local": 498.0
+},
+{
+"st": "CA",
+"ref": "504",
+"n": 504,
+"lat": 38.370778,
+"lon": -121.475656,
+"dest": [
+"Hood-Franklin Road",
+"Hood Franklin Road"
+],
+"m": 504.0,
+"local": 504.0
+},
+{
+"st": "CA",
+"ref": "506",
+"n": 506,
+"lat": 38.40475,
+"lon": -121.482723,
+"dest": [
+"Elk Grove Boulevard"
+],
+"m": 506.0,
+"local": 506.0
+},
+{
+"st": "CA",
+"ref": "508",
+"n": 508,
+"lat": 38.4229255,
+"lon": -121.4865504,
+"dest": [
+"Laguna Boulevard"
+],
+"m": 508.0,
+"local": 508.0
+},
+{
+"st": "CA",
+"ref": "510",
+"n": 510,
+"lat": 38.4623416,
+"lon": -121.4954986,
+"dest": [
+"Cosumnes River Boulevard"
+],
+"m": 510.0,
+"local": 510.0
+},
+{
+"st": "CA",
+"ref": "512",
+"n": 512,
+"lat": 38.4779115,
+"lon": -121.5075546,
+"dest": [
+"Pocket Road, Meadowview Road, Freeport"
+],
+"m": 512.0,
+"local": 512.0
+},
+{
+"st": "CA",
+"ref": "513",
+"n": 513,
+"lat": 38.490105,
+"lon": -121.514136,
+"dest": [
+"Florin Road"
+],
+"m": 513.0,
+"local": 513.0
+},
+{
+"st": "CA",
+"ref": "514",
+"n": 514,
+"lat": 38.519589,
+"lon": -121.521948,
+"dest": [
+"43rd Avenue"
+],
+"m": 514.0,
+"local": 514.0
+},
+{
+"st": "CA",
+"ref": "515",
+"n": 515,
+"lat": 38.5222678,
+"lon": -121.5215644,
+"dest": [
+"Fruitridge Road, Seamas Avenue"
+],
+"m": 515.0,
+"local": 515.0
+},
+{
+"st": "CA",
+"ref": "516",
+"n": 516,
+"lat": 38.5388807,
+"lon": -121.5124852,
+"dest": [
+"Sutterville Road",
+"Sutterville Road, William Land Park, Sacramento Zoo"
+],
+"m": 516.0,
+"local": 516.0
+},
+{
+"st": "CA",
+"ref": "518",
+"n": 518,
+"lat": 38.559758,
+"lon": -121.514072,
+"dest": [
+"US 50, I 80 East",
+"San Francisco, South Lake Tahoe"
+],
+"m": 518.0,
+"local": 518.0
+},
+{
+"st": "CA",
+"ref": "519A",
+"n": 519,
+"lat": 38.5661288,
+"lon": -121.5130913,
+"dest": [
+"Q Street"
+],
+"m": 519.0,
+"local": 519.0
+},
+{
+"st": "CA",
+"ref": "519B",
+"n": 519,
+"lat": 38.5799684,
+"lon": -121.5052668,
+"dest": [
+"J Street, Downtown",
+"Downtown, J Street"
+],
+"m": 519.47,
+"local": 519.47
+},
+{
+"st": "CA",
+"ref": "520",
+"n": 520,
+"lat": 38.593844,
+"lon": -121.504063,
+"dest": [
+"Richards Boulevard"
+],
+"m": 520.0,
+"local": 520.0
+},
+{
+"st": "CA",
+"ref": "521A",
+"n": 521,
+"lat": 38.605254,
+"lon": -121.507268,
+"dest": [
+"Garden Highway"
+],
+"m": 521.0,
+"local": 521.0
+},
+{
+"st": "CA",
+"ref": "521",
+"n": 521,
+"lat": 38.6095646,
+"lon": -121.5097855,
+"dest": [
+"Garden Highway"
+],
+"m": 521.23,
+"local": 521.23
+},
+{
+"st": "CA",
+"ref": "521B",
+"n": 521,
+"lat": 38.6117439,
+"lon": -121.510613,
+"dest": [
+"West El Camino Avenue"
+],
+"m": 521.33,
+"local": 521.33
+},
+{
+"st": "CA",
+"ref": "522",
+"n": 522,
+"lat": 38.6189284,
+"lon": -121.5142784,
+"dest": [
+"I 80 West, I 80 East",
+"San Francisco, Reno",
+"I 80 East, I 80 West",
+"Reno, San Francisco"
+],
+"m": 522.0,
+"local": 522.0
+},
+{
+"st": "CA",
+"ref": "524",
+"n": 524,
+"lat": 38.6386184,
+"lon": -121.5235289,
+"dest": [
+"Arena Boulevard"
+],
+"m": 524.0,
+"local": 524.0
+},
+{
+"st": "CA",
+"ref": "525A",
+"n": 525,
+"lat": 38.6519269,
+"lon": -121.5308086,
+"dest": [
+"Del Paso Road"
+],
+"m": 525.0,
+"local": 525.0
+},
+{
+"st": "CA",
+"ref": "525B",
+"n": 525,
+"lat": 38.6649619,
+"lon": -121.5379454,
+"dest": [
+"CA 99 North, CA 70",
+"Yuba City, Marysville"
+],
+"m": 525.91,
+"local": 525.91
+},
+{
+"st": "CA",
+"ref": "527",
+"n": 527,
+"lat": 38.6713679,
+"lon": -121.5621476,
+"dest": [
+"Metro Air Parkway"
+],
+"m": 527.0,
+"local": 527.0
+},
+{
+"st": "CA",
+"ref": "528",
+"n": 528,
+"lat": 38.671369,
+"lon": -121.5862087,
+"dest": [
+"Sacramento International Airport"
+],
+"m": 528.0,
+"local": 528.0
+},
+{
+"st": "CA",
+"ref": "531",
+"n": 531,
+"lat": 38.6734361,
+"lon": -121.6337082,
+"dest": [
+"Road 22"
+],
+"m": 531.0,
+"local": 531.0
+},
+{
+"st": "CA",
+"ref": "536",
+"n": 536,
+"lat": 38.6738914,
+"lon": -121.7235388,
+"dest": [
+"Road 102, Knights Landing",
+"County Road 102"
+],
+"m": 536.0,
+"local": 536.0
+},
+{
+"st": "CA",
+"ref": "537",
+"n": 537,
+"lat": 38.6746216,
+"lon": -121.7411993,
+"dest": [
+"CA 113 South",
+"Main Street, Woodland"
+],
+"m": 537.0,
+"local": 537.0
+},
+{
+"st": "CA",
+"ref": "538",
+"n": 538,
+"lat": 38.6928386,
+"lon": -121.757431,
+"dest": [
+"CA 113 North",
+"Yuba City"
+],
+"m": 538.0,
+"local": 538.0
+},
+{
+"st": "CA",
+"ref": "540",
+"n": 540,
+"lat": 38.7010447,
+"lon": -121.781427,
+"dest": [
+"West Street"
+],
+"m": 540.0,
+"local": 540.0
+},
+{
+"st": "CA",
+"ref": "541",
+"n": 541,
+"lat": 38.7157799,
+"lon": -121.7971779,
+"dest": [
+"CA 16 West",
+"Esparto"
+],
+"m": 541.0,
+"local": 541.0
+},
+{
+"st": "CA",
+"ref": "542",
+"n": 542,
+"lat": 38.7319937,
+"lon": -121.8144346,
+"dest": [
+"Yolo"
+],
+"m": 542.0,
+"local": 542.0
+},
+{
+"st": "CA",
+"ref": "548",
+"n": 548,
+"lat": 38.790863,
+"lon": -121.8756797,
+"dest": [
+"Zamora"
+],
+"m": 548.0,
+"local": 548.0
+},
+{
+"st": "CA",
+"ref": "553",
+"n": 553,
+"lat": 38.8517941,
+"lon": -121.9440703,
+"dest": [],
+"m": 553.0,
+"local": 553.0
+},
+{
+"st": "CA",
+"ref": "554",
+"n": 554,
+"lat": 38.8588298,
+"lon": -121.9509701,
+"dest": [
+"County Road 8"
+],
+"m": 554.0,
+"local": 554.0
+},
+{
+"st": "CA",
+"ref": "556",
+"n": 556,
+"lat": 38.8780295,
+"lon": -121.9708556,
+"dest": [
+"Dunnigan"
+],
+"m": 556.0,
+"local": 556.0
+},
+{
+"st": "CA",
+"ref": "559",
+"n": 559,
+"lat": 38.9221677,
+"lon": -121.99782,
+"dest": [
+"County Line Road"
+],
+"m": 559.0,
+"local": 559.0
+},
+{
+"st": "CA",
+"ref": "566",
+"n": 566,
+"lat": 39.0099725,
+"lon": -122.0522537,
+"dest": [
+"Arbuckle, College City",
+"College City"
+],
+"m": 566.0,
+"local": 566.0
+},
+{
+"st": "CA",
+"ref": "567",
+"n": 567,
+"lat": 39.021487,
+"lon": -122.0615202,
+"dest": [
+"Putnam Lateral"
+],
+"m": 567.0,
+"local": 567.0
+},
+{
+"st": "CA",
+"ref": "569",
+"n": 569,
+"lat": 39.0532198,
+"lon": -122.0822388,
+"dest": [
+"Hahn Road"
+],
+"m": 569.0,
+"local": 569.0
+},
+{
+"st": "CA",
+"ref": "575",
+"n": 575,
+"lat": 39.1270372,
+"lon": -122.130515,
+"dest": [
+"Husted Road"
+],
+"m": 575.0,
+"local": 575.0
+},
+{
+"st": "CA",
+"ref": "577",
+"n": 577,
+"lat": 39.1539257,
+"lon": -122.1420881,
+"dest": [
+"Williams"
+],
+"m": 577.0,
+"local": 577.0
+},
+{
+"st": "CA",
+"ref": "578",
+"n": 578,
+"lat": 39.1630768,
+"lon": -122.1476374,
+"dest": [
+"CA 20",
+"Colusa, Clear Lake"
+],
+"m": 578.0,
+"local": 578.0
+},
+{
+"st": "CA",
+"ref": "586",
+"n": 586,
+"lat": 39.2721884,
+"lon": -122.1821589,
+"dest": [
+"Maxwell Road"
+],
+"m": 586.0,
+"local": 586.0
+},
+{
+"st": "CA",
+"ref": "588",
+"n": 588,
+"lat": 39.317201,
+"lon": -122.194464,
+"dest": [
+"Maxwell"
+],
+"m": 588.0,
+"local": 588.0
+},
+{
+"st": "CA",
+"ref": "591",
+"n": 591,
+"lat": 39.3448706,
+"lon": -122.1946914,
+"dest": [
+"Delevan Road"
+],
+"m": 591.0,
+"local": 591.0
+},
+{
+"st": "CA",
+"ref": "595",
+"n": 595,
+"lat": 39.403371,
+"lon": -122.194973,
+"dest": [
+"Norman Road, Princeton"
+],
+"m": 595.0,
+"local": 595.0
+},
+{
+"st": "CA",
+"ref": "601",
+"n": 601,
+"lat": 39.4913569,
+"lon": -122.1958916,
+"dest": [
+"County Road 57"
+],
+"m": 601.0,
+"local": 601.0
+},
+{
+"st": "CA",
+"ref": "603",
+"n": 603,
+"lat": 39.5208268,
+"lon": -122.2143797,
+"dest": [
+"CA 162",
+"Willows, Oroville"
+],
+"m": 603.0,
+"local": 603.0
+},
+{
+"st": "CA",
+"ref": "607",
+"n": 607,
+"lat": 39.57928,
+"lon": -122.210721,
+"dest": [
+"County Road 39"
+],
+"m": 607.0,
+"local": 607.0
+},
+{
+"st": "CA",
+"ref": "610",
+"n": 610,
+"lat": 39.621208,
+"lon": -122.2054959,
+"dest": [
+"Artois"
+],
+"m": 610.0,
+"local": 610.0
+},
+{
+"st": "CA",
+"ref": "614",
+"n": 614,
+"lat": 39.6789807,
+"lon": -122.204496,
+"dest": [
+"County Road 27",
+"CR 27"
+],
+"m": 614.0,
+"local": 614.0
+},
+{
+"st": "CA",
+"ref": "618",
+"n": 618,
+"lat": 39.7368773,
+"lon": -122.2055902,
+"dest": [
+"County Road 16"
+],
+"m": 618.0,
+"local": 618.0
+},
+{
+"st": "CA",
+"ref": "619",
+"n": 619,
+"lat": 39.7470987,
+"lon": -122.2054268,
+"dest": [
+"CA 32 East",
+"Orland, Chico"
+],
+"m": 619.0,
+"local": 619.0
+},
+{
+"st": "CA",
+"ref": "621",
+"n": 621,
+"lat": 39.7807301,
+"lon": -122.2043393,
+"dest": [
+"County Road 7",
+"CR 7",
+"Road 7"
+],
+"m": 621.0,
+"local": 621.0
+},
+{
+"st": "CA",
+"ref": "628",
+"n": 628,
+"lat": 39.8785607,
+"lon": -122.1999462,
+"dest": [
+"Liberal Avenue, Road 99 W"
+],
+"m": 628.0,
+"local": 628.0
+},
+{
+"st": "CA",
+"ref": "630",
+"n": 630,
+"lat": 39.90285,
+"lon": -122.2000363,
+"dest": [
+"South Avenue"
+],
+"m": 630.0,
+"local": 630.0
+},
+{
+"st": "CA",
+"ref": "631",
+"n": 631,
+"lat": 39.9253183,
+"lon": -122.200089,
+"dest": [
+"Corning, Corning Road"
+],
+"m": 631.0,
+"local": 631.0
+},
+{
+"st": "CA",
+"ref": "633",
+"n": 633,
+"lat": 39.95333,
+"lon": -122.200114,
+"dest": [
+"Finnell Avenue",
+"Richfield",
+"Richfield, Finnell Avenue"
+],
+"m": 633.0,
+"local": 633.0
+},
+{
+"st": "CA",
+"ref": "636",
+"n": 636,
+"lat": 39.9964207,
+"lon": -122.2050956,
+"dest": [
+"Tehama, Los Molinos, Gyle Road"
+],
+"m": 636.0,
+"local": 636.0
+},
+{
+"st": "CA",
+"ref": "642",
+"n": 642,
+"lat": 40.0800066,
+"lon": -122.2164614,
+"dest": [
+"Proberta, Gerber, Flores Avenue"
+],
+"m": 642.0,
+"local": 642.0
+},
+{
+"st": "CA",
+"ref": "647",
+"n": 647,
+"lat": 40.1508657,
+"lon": -122.2230447,
+"dest": [
+"Red Bluff"
+],
+"m": 647.0,
+"local": 647.0
+},
+{
+"st": "CA",
+"ref": "647A",
+"n": 647,
+"lat": 40.1578479,
+"lon": -122.223523,
+"dest": [
+"Red Bluff"
+],
+"m": 647.46,
+"local": 647.46
+},
+{
+"st": "CA",
+"ref": "647B",
+"n": 647,
+"lat": 40.1621938,
+"lon": -122.2229307,
+"dest": [
+"Diamond Avenue"
+],
+"m": 647.74,
+"local": 647.74
+},
+{
+"st": "CA",
+"ref": "649",
+"n": 649,
+"lat": 40.1775728,
+"lon": -122.2224222,
+"dest": [
+"CA 36 East, CA 36 West, CA 99",
+"Chico, Redbluff, Lassen Park",
+"Chico, Lassen National Park"
+],
+"m": 649.0,
+"local": 649.0
+},
+{
+"st": "CA",
+"ref": "650",
+"n": 650,
+"lat": 40.189795,
+"lon": -122.232626,
+"dest": [
+"Adobe Road"
+],
+"m": 650.0,
+"local": 650.0
+},
+{
+"st": "CA",
+"ref": "651",
+"n": 651,
+"lat": 40.2059854,
+"lon": -122.2455378,
+"dest": [
+"Red Bluff"
+],
+"m": 651.0,
+"local": 651.0
+},
+{
+"st": "CA",
+"ref": "652",
+"n": 652,
+"lat": 40.2162624,
+"lon": -122.2498638,
+"dest": [
+"Wilcox Golf Road"
+],
+"m": 652.0,
+"local": 652.0
+},
+{
+"st": "CA",
+"ref": "653",
+"n": 653,
+"lat": 40.2329577,
+"lon": -122.2550754,
+"dest": [
+"Jellys Ferry Road"
+],
+"m": 653.0,
+"local": 653.0
+},
+{
+"st": "CA",
+"ref": "657",
+"n": 657,
+"lat": 40.288764,
+"lon": -122.2783876,
+"dest": [
+"Auction Yard Road, Hooker Creek Road"
+],
+"m": 657.0,
+"local": 657.0
+},
+{
+"st": "CA",
+"ref": "659",
+"n": 659,
+"lat": 40.3241475,
+"lon": -122.2807685,
+"dest": [
+"Sunset Hills Drive, Auction Yard Road"
+],
+"m": 659.0,
+"local": 659.0
+},
+{
+"st": "CA",
+"ref": "662",
+"n": 662,
+"lat": 40.363743,
+"lon": -122.283625,
+"dest": [
+"Bowman Road, Cottonwood",
+"Bowman Road"
+],
+"m": 662.0,
+"local": 662.0
+},
+{
+"st": "CA",
+"ref": "664",
+"n": 664,
+"lat": 40.386034,
+"lon": -122.2849465,
+"dest": [
+"Gas Point Road, Balls Ferry Road",
+"Gas Point Road"
+],
+"m": 664.0,
+"local": 664.0
+},
+{
+"st": "CA",
+"ref": "665",
+"n": 665,
+"lat": 40.4100372,
+"lon": -122.2809154,
+"dest": [
+"Cottonwood"
+],
+"m": 665.0,
+"local": 665.0
+},
+{
+"st": "CA",
+"ref": "667A",
+"n": 667,
+"lat": 40.4242697,
+"lon": -122.2825584,
+"dest": [
+"Anderson, Deschutes Road, Factory Outlet Drive"
+],
+"m": 667.0,
+"local": 667.0
+},
+{
+"st": "CA",
+"ref": "667B",
+"n": 667,
+"lat": 40.434596,
+"lon": -122.2857428,
+"dest": [
+"Factory Outlet Drive, Deschutes Road"
+],
+"m": 667.34,
+"local": 667.34
+},
+{
+"st": "CA",
+"ref": "667",
+"n": 667,
+"lat": 40.4406218,
+"lon": -122.2879104,
+"dest": [
+"Deschutes Road, Factory Outlet Drive"
+],
+"m": 667.55,
+"local": 667.55
+},
+{
+"st": "CA",
+"ref": "668",
+"n": 668,
+"lat": 40.4484133,
+"lon": -122.2894014,
+"dest": [
+"Central Anderson, Lassen National Park",
+"Central Anderson"
+],
+"m": 668.0,
+"local": 668.0
+},
+{
+"st": "CA",
+"ref": "670",
+"n": 670,
+"lat": 40.4652373,
+"lon": -122.3043271,
+"dest": [
+"Riverside Avenue"
+],
+"m": 670.0,
+"local": 670.0
+},
+{
+"st": "CA",
+"ref": "673",
+"n": 673,
+"lat": 40.5021269,
+"lon": -122.3355544,
+"dest": [
+"Knighton Road"
+],
+"m": 673.0,
+"local": 673.0
+},
+{
+"st": "CA",
+"ref": "675",
+"n": 675,
+"lat": 40.5343722,
+"lon": -122.3495905,
+"dest": [
+"Bechelli Lane"
+],
+"m": 675.0,
+"local": 675.0
+},
+{
+"st": "CA",
+"ref": "677",
+"n": 677,
+"lat": 40.5669921,
+"lon": -122.359901,
+"dest": [
+"Cypress Avenue"
+],
+"m": 677.0,
+"local": 677.0
+},
+{
+"st": "CA",
+"ref": "678",
+"n": 678,
+"lat": 40.5776923,
+"lon": -122.3603237,
+"dest": [
+"CA 44",
+"Hilltop Drive",
+"Eureka, Susanville"
+],
+"m": 678.0,
+"local": 678.0
+},
+{
+"st": "CA",
+"ref": "678A",
+"n": 678,
+"lat": 40.585117,
+"lon": -122.360698,
+"dest": [
+"CA 44 East",
+"Hilltop Drive, Lassen National Park"
+],
+"m": 678.42,
+"local": 678.42
+},
+{
+"st": "CA",
+"ref": "678B",
+"n": 678,
+"lat": 40.5901148,
+"lon": -122.3607444,
+"dest": [
+"CA 44 West"
+],
+"m": 678.71,
+"local": 678.71
+},
+{
+"st": "CA",
+"ref": "680",
+"n": 680,
+"lat": 40.6088734,
+"lon": -122.3619864,
+"dest": [
+"Lake Boulevard",
+"CA 299"
+],
+"m": 680.0,
+"local": 680.0
+},
+{
+"st": "CA",
+"ref": "681",
+"n": 681,
+"lat": 40.620069,
+"lon": -122.36551,
+"dest": [
+"Twin View Boulevard"
+],
+"m": 681.0,
+"local": 681.0
+},
+{
+"st": "CA",
+"ref": "681A",
+"n": 681,
+"lat": 40.626016,
+"lon": -122.3677755,
+"dest": [
+"Twin View Boulevard"
+],
+"m": 681.28,
+"local": 681.28
+},
+{
+"st": "CA",
+"ref": "681B",
+"n": 681,
+"lat": 40.6330956,
+"lon": -122.3682342,
+"dest": [
+"CA 273",
+"Market Street"
+],
+"m": 681.59,
+"local": 681.59
+},
+{
+"st": "CA",
+"ref": "682",
+"n": 682,
+"lat": 40.6386484,
+"lon": -122.3659067,
+"dest": [
+"Oasis Road"
+],
+"m": 682.0,
+"local": 682.0
+},
+{
+"st": "CA",
+"ref": "684",
+"n": 684,
+"lat": 40.6608322,
+"lon": -122.3566261,
+"dest": [
+"Pine Grove Avenue"
+],
+"m": 684.0,
+"local": 684.0
+},
+{
+"st": "CA",
+"ref": "685",
+"n": 685,
+"lat": 40.6741883,
+"lon": -122.3505018,
+"dest": [
+"CA 151",
+"Shasta Dam Boulevard"
+],
+"m": 685.0,
+"local": 685.0
+},
+{
+"st": "CA",
+"ref": "687",
+"n": 687,
+"lat": 40.7025805,
+"lon": -122.339014,
+"dest": [
+"Mountain Gate"
+],
+"m": 687.0,
+"local": 687.0
+},
+{
+"st": "CA",
+"ref": "689",
+"n": 689,
+"lat": 40.7279368,
+"lon": -122.3219182,
+"dest": [
+"Fawndale Road"
+],
+"m": 689.0,
+"local": 689.0
+},
+{
+"st": "CA",
+"ref": "690",
+"n": 690,
+"lat": 40.7490273,
+"lon": -122.3169927,
+"dest": [
+"Bridge Bay Road"
+],
+"m": 690.0,
+"local": 690.0
+},
+{
+"st": "CA",
+"ref": "692",
+"n": 692,
+"lat": 40.770017,
+"lon": -122.313638,
+"dest": [
+"Turntable Bay Road"
+],
+"m": 692.0,
+"local": 692.0
+},
+{
+"st": "CA",
+"ref": "693",
+"n": 693,
+"lat": 40.791681,
+"lon": -122.3236615,
+"dest": [
+"Packers Bay Road"
+],
+"m": 693.0,
+"local": 693.0
+},
+{
+"st": "CA",
+"ref": "695",
+"n": 695,
+"lat": 40.8037772,
+"lon": -122.3226085,
+"dest": [
+"Shasta Caverns Road"
+],
+"m": 695.0,
+"local": 695.0
+},
+{
+"st": "CA",
+"ref": "698",
+"n": 698,
+"lat": 40.8465651,
+"lon": -122.3349604,
+"dest": [
+"Gillman Road",
+"Salt Creek Road"
+],
+"m": 698.0,
+"local": 698.0
+},
+{
+"st": "CA",
+"ref": "702",
+"n": 702,
+"lat": 40.8892673,
+"lon": -122.3834052,
+"dest": [
+"Lakeshore Drive"
+],
+"m": 702.0,
+"local": 702.0
+},
+{
+"st": "CA",
+"ref": "704",
+"n": 704,
+"lat": 40.9065961,
+"lon": -122.3838691,
+"dest": [
+"Riverview Drive"
+],
+"m": 704.0,
+"local": 704.0
+},
+{
+"st": "CA",
+"ref": "707",
+"n": 707,
+"lat": 40.940032,
+"lon": -122.42478,
+"dest": [
+"Vollmers"
+],
+"m": 707.0,
+"local": 707.0
+},
+{
+"st": "CA",
+"ref": "710",
+"n": 710,
+"lat": 40.97816,
+"lon": -122.432499,
+"dest": [
+"Slate Creek Road"
+],
+"m": 710.0,
+"local": 710.0
+},
+{
+"st": "CA",
+"ref": "712",
+"n": 712,
+"lat": 40.995388,
+"lon": -122.419204,
+"dest": [
+"Pollard Flat"
+],
+"m": 712.0,
+"local": 712.0
+},
+{
+"st": "CA",
+"ref": "714",
+"n": 714,
+"lat": 41.024452,
+"lon": -122.396629,
+"dest": [
+"Gibson Road"
+],
+"m": 714.0,
+"local": 714.0
+},
+{
+"st": "CA",
+"ref": "718",
+"n": 718,
+"lat": 41.0684879,
+"lon": -122.3603964,
+"dest": [
+"Sims Road"
+],
+"m": 718.0,
+"local": 718.0
+},
+{
+"st": "CA",
+"ref": "720",
+"n": 720,
+"lat": 41.0933071,
+"lon": -122.3466965,
+"dest": [
+"Flume Creek Road"
+],
+"m": 720.0,
+"local": 720.0
+},
+{
+"st": "CA",
+"ref": "721",
+"n": 721,
+"lat": 41.106645,
+"lon": -122.333385,
+"dest": [
+"Conant Road",
+"conant road"
+],
+"m": 721.0,
+"local": 721.0
+},
+{
+"st": "CA",
+"ref": "723",
+"n": 723,
+"lat": 41.121442,
+"lon": -122.326654,
+"dest": [
+"Sweetbrier Avenue"
+],
+"m": 723.0,
+"local": 723.0
+},
+{
+"st": "CA",
+"ref": "724",
+"n": 724,
+"lat": 41.14658,
+"lon": -122.317169,
+"dest": [
+"Castella"
+],
+"m": 724.0,
+"local": 724.0
+},
+{
+"st": "CA",
+"ref": "726",
+"n": 726,
+"lat": 41.159341,
+"lon": -122.2956412,
+"dest": [
+"Soda Creek Road"
+],
+"m": 726.0,
+"local": 726.0
+},
+{
+"st": "CA",
+"ref": "727",
+"n": 727,
+"lat": 41.169928,
+"lon": -122.297699,
+"dest": [
+"Crag View Drive"
+],
+"m": 727.0,
+"local": 727.0
+},
+{
+"st": "CA",
+"ref": "728",
+"n": 728,
+"lat": 41.178888,
+"lon": -122.293067,
+"dest": [
+"Crag View Drive"
+],
+"m": 728.0,
+"local": 728.0
+},
+{
+"st": "CA",
+"ref": "729",
+"n": 729,
+"lat": 41.1908593,
+"lon": -122.2853386,
+"dest": [
+"I 5 Business",
+"Dunsmuir"
+],
+"m": 729.0,
+"local": 729.0
+},
+{
+"st": "CA",
+"ref": "730",
+"n": 730,
+"lat": 41.2129134,
+"lon": -122.2740489,
+"dest": [
+"Central Dunsmuir"
+],
+"m": 730.0,
+"local": 730.0
+},
+{
+"st": "CA",
+"ref": "732",
+"n": 732,
+"lat": 41.2336769,
+"lon": -122.2719158,
+"dest": [
+"Siskiyou Avenue, Dunsmuir Avenue",
+"I 5 Business"
+],
+"m": 732.0,
+"local": 732.0
+},
+{
+"st": "CA",
+"ref": "734",
+"n": 734,
+"lat": 41.2558188,
+"lon": -122.2674475,
+"dest": [
+"Mott Road"
+],
+"m": 734.0,
+"local": 734.0
+},
+{
+"st": "CA",
+"ref": "736",
+"n": 736,
+"lat": 41.282733,
+"lon": -122.297824,
+"dest": [
+"McCloud"
+],
+"m": 736.0,
+"local": 736.0
+},
+{
+"st": "CA",
+"ref": "737",
+"n": 737,
+"lat": 41.2866895,
+"lon": -122.3048382,
+"dest": [
+"I 5 Business",
+"Mount Shasta"
+],
+"m": 737.0,
+"local": 737.0
+},
+{
+"st": "CA",
+"ref": "738",
+"n": 738,
+"lat": 41.3071785,
+"lon": -122.3183631,
+"dest": [
+"Central Mount Shasta"
+],
+"m": 738.0,
+"local": 738.0
+},
+{
+"st": "CA",
+"ref": "740",
+"n": 740,
+"lat": 41.334809,
+"lon": -122.335033,
+"dest": [
+"Mount Shasta"
+],
+"m": 740.0,
+"local": 740.0
+},
+{
+"st": "CA",
+"ref": "741",
+"n": 741,
+"lat": 41.3406181,
+"lon": -122.3399656,
+"dest": [
+"Abrams Lake Road"
+],
+"m": 741.0,
+"local": 741.0
+},
+{
+"st": "CA",
+"ref": "743",
+"n": 743,
+"lat": 41.3656775,
+"lon": -122.3675394,
+"dest": [
+"Summit Drive",
+"Summit Drive, Truck Village Drive"
+],
+"m": 743.0,
+"local": 743.0
+},
+{
+"st": "CA",
+"ref": "745",
+"n": 745,
+"lat": 41.3930885,
+"lon": -122.3759187,
+"dest": [
+"South Weed"
+],
+"m": 745.0,
+"local": 745.0
+},
+{
+"st": "CA",
+"ref": "747",
+"n": 747,
+"lat": 41.4153805,
+"lon": -122.3822039,
+"dest": [
+"US 97",
+"South Weed Boulevard, Klamath Falls",
+"South Weed Boulevard"
+],
+"m": 747.0,
+"local": 747.0
+},
+{
+"st": "CA",
+"ref": "748",
+"n": 748,
+"lat": 41.4220082,
+"lon": -122.3905657,
+"dest": [
+"North Weed Boulevard"
+],
+"m": 748.0,
+"local": 748.0
+},
+{
+"st": "CA",
+"ref": "751",
+"n": 751,
+"lat": 41.439381,
+"lon": -122.432694,
+"dest": [
+"Edgewood, Gazelle"
+],
+"m": 751.0,
+"local": 751.0
+},
+{
+"st": "CA",
+"ref": "753",
+"n": 753,
+"lat": 41.4719143,
+"lon": -122.4518255,
+"dest": [
+"Weed Airport Road"
+],
+"m": 753.0,
+"local": 753.0
+},
+{
+"st": "CA",
+"ref": "759",
+"n": 759,
+"lat": 41.549125,
+"lon": -122.483275,
+"dest": [
+"Louie Road"
+],
+"m": 759.0,
+"local": 759.0
+},
+{
+"st": "CA",
+"ref": "766",
+"n": 766,
+"lat": 41.643069,
+"lon": -122.5327,
+"dest": [
+"Montague, Grenada"
+],
+"m": 766.0,
+"local": 766.0
+},
+{
+"st": "CA",
+"ref": "770",
+"n": 770,
+"lat": 41.665473,
+"lon": -122.606181,
+"dest": [
+"Easy Street, Shamrock Road"
+],
+"m": 770.0,
+"local": 770.0
+},
+{
+"st": "CA",
+"ref": "773",
+"n": 773,
+"lat": 41.700837,
+"lon": -122.641765,
+"dest": [
+"CA 3",
+"Yreka"
+],
+"m": 773.0,
+"local": 773.0
+},
+{
+"st": "CA",
+"ref": "775",
+"n": 775,
+"lat": 41.7284109,
+"lon": -122.6339846,
+"dest": [
+"Central Yreka"
+],
+"m": 775.0,
+"local": 775.0
+},
+{
+"st": "CA",
+"ref": "776",
+"n": 776,
+"lat": 41.736799,
+"lon": -122.630118,
+"dest": [
+"Yreka, Montague",
+"I 5 Business, CA 3"
+],
+"m": 776.0,
+"local": 776.0
+},
+{
+"st": "CA",
+"ref": "786",
+"n": 786,
+"lat": 41.852069,
+"lon": -122.569831,
+"dest": [
+"Klamath Highway"
+],
+"m": 786.0,
+"local": 786.0
+},
+{
+"st": "CA",
+"ref": "789",
+"n": 789,
+"lat": 41.8968914,
+"lon": -122.5642298,
+"dest": [
+"Henley, Hornbrook"
+],
+"m": 789.0,
+"local": 789.0
+},
+{
+"st": "CA",
+"ref": "790",
+"n": 790,
+"lat": 41.9165121,
+"lon": -122.572106,
+"dest": [
+"Hornbrook Highway, Ditch Creek Road"
+],
+"m": 790.0,
+"local": 790.0
+},
+{
+"st": "CA",
+"ref": "793",
+"n": 793,
+"lat": 41.951664,
+"lon": -122.590101,
+"dest": [
+"Bailey Hill Road"
+],
+"m": 793.0,
+"local": 793.0
+},
+{
+"st": "CA",
+"ref": "796",
+"n": 796,
+"lat": 41.9895955,
+"lon": -122.6078263,
+"dest": [
+"Hilt Road"
+],
+"m": 796.0,
+"local": 796.0
+},
+{
+"st": "OR",
+"ref": "1",
+"n": 1,
+"lat": 42.0159171,
+"lon": -122.6132801,
+"dest": [
+"OR 273",
+"Siskiyou Summit"
+],
+"m": 797.97,
+"local": 1.0
+},
+{
+"st": "OR",
+"ref": "6",
+"n": 6,
+"lat": 42.0736187,
+"lon": -122.6056169,
+"dest": [
+"OR 273",
+"Mount Ashland"
+],
+"m": 802.97,
+"local": 6.0
+},
+{
+"st": "OR",
+"ref": "11",
+"n": 11,
+"lat": 42.152153,
+"lon": -122.643726,
+"dest": [
+"OR 99",
+"Siskiyou Boulevard, Ashland"
+],
+"m": 807.97,
+"local": 11.0
+},
+{
+"st": "OR",
+"ref": "14",
+"n": 14,
+"lat": 42.1824156,
+"lon": -122.6640071,
+"dest": [
+"OR 66",
+"Ashland, Klamath Falls"
+],
+"m": 810.97,
+"local": 14.0
+},
+{
+"st": "OR",
+"ref": "19",
+"n": 19,
+"lat": 42.226929,
+"lon": -122.737765,
+"dest": [
+"Valley View Road, Ashland",
+"Ashland"
+],
+"m": 815.97,
+"local": 19.0
+},
+{
+"st": "OR",
+"ref": "21",
+"n": 21,
+"lat": 42.2425805,
+"lon": -122.7693547,
+"dest": [
+"Talent"
+],
+"m": 817.97,
+"local": 21.0
+},
+{
+"st": "OR",
+"ref": "24",
+"n": 24,
+"lat": 42.2773766,
+"lon": -122.8108313,
+"dest": [
+"Phoenix"
+],
+"m": 820.97,
+"local": 24.0
+},
+{
+"st": "OR",
+"ref": "27",
+"n": 27,
+"lat": 42.3088951,
+"lon": -122.8457718,
+"dest": [
+"South Medford"
+],
+"m": 823.97,
+"local": 27.0
+},
+{
+"st": "OR",
+"ref": "30",
+"n": 30,
+"lat": 42.3459022,
+"lon": -122.8750587,
+"dest": [
+"OR 62",
+"North Medford, Crater Lake",
+"Crater Lake Highway, Medford, Klamath Falls"
+],
+"m": 826.97,
+"local": 30.0
+},
+{
+"st": "OR",
+"ref": "33",
+"n": 33,
+"lat": 42.375375,
+"lon": -122.9000342,
+"dest": [
+"Central Point"
+],
+"m": 829.97,
+"local": 33.0
+},
+{
+"st": "OR",
+"ref": "35",
+"n": 35,
+"lat": 42.403885,
+"lon": -122.93819,
+"dest": [
+"OR 99 South, OR 140",
+"Central Point, Blackwell Road"
+],
+"m": 831.97,
+"local": 35.0
+},
+{
+"st": "OR",
+"ref": "40",
+"n": 40,
+"lat": 42.425215,
+"lon": -123.039116,
+"dest": [
+"OR 99",
+"Scenic Byway, Gold Hill",
+"Gold Hill"
+],
+"m": 836.97,
+"local": 40.0
+},
+{
+"st": "OR",
+"ref": "43",
+"n": 43,
+"lat": 42.430166,
+"lon": -123.093277,
+"dest": [
+"OR 99",
+"Rouge River Route",
+"OR 99, OR 234",
+"Gold Hill, Crater Lake"
+],
+"m": 839.97,
+"local": 43.0
+},
+{
+"st": "OR",
+"ref": "45A",
+"n": 45,
+"lat": 42.420739,
+"lon": -123.120119,
+"dest": [
+"OR 99",
+"Rouge River Route"
+],
+"m": 841.97,
+"local": 45.0
+},
+{
+"st": "OR",
+"ref": "45B",
+"n": 45,
+"lat": 42.414428,
+"lon": -123.127943,
+"dest": [
+"Valley of the Rouge State Park"
+],
+"m": 842.49,
+"local": 45.51
+},
+{
+"st": "OR",
+"ref": "48",
+"n": 48,
+"lat": 42.4285774,
+"lon": -123.1664775,
+"dest": [
+"City of Rogue River"
+],
+"m": 844.97,
+"local": 48.0
+},
+{
+"st": "OR",
+"ref": "55",
+"n": 55,
+"lat": 42.4379318,
+"lon": -123.2868339,
+"dest": [
+"US 199",
+"Redwood Highway, Ocean Beaches, Crescent City"
+],
+"m": 851.97,
+"local": 55.0
+},
+{
+"st": "OR",
+"ref": "58",
+"n": 58,
+"lat": 42.4628816,
+"lon": -123.3187671,
+"dest": [
+"OR 99",
+"Redwood Highway, Grants Pass, City Center"
+],
+"m": 854.97,
+"local": 58.0
+},
+{
+"st": "OR",
+"ref": "61",
+"n": 61,
+"lat": 42.4931732,
+"lon": -123.362847,
+"dest": [
+"Merlin"
+],
+"m": 857.97,
+"local": 61.0
+},
+{
+"st": "OR",
+"ref": "66",
+"n": 66,
+"lat": 42.5627802,
+"lon": -123.3718093,
+"dest": [
+"Hugo"
+],
+"m": 862.97,
+"local": 66.0
+},
+{
+"st": "OR",
+"ref": "71",
+"n": 71,
+"lat": 42.6314665,
+"lon": -123.3816675,
+"dest": [
+"Sunny Valley"
+],
+"m": 867.97,
+"local": 71.0
+},
+{
+"st": "OR",
+"ref": "76",
+"n": 76,
+"lat": 42.687144,
+"lon": -123.3913625,
+"dest": [
+"Wolf Creek"
+],
+"m": 872.97,
+"local": 76.0
+},
+{
+"st": "OR",
+"ref": "78",
+"n": 78,
+"lat": 42.7150789,
+"lon": -123.3690325,
+"dest": [
+"Speaker Road"
+],
+"m": 874.97,
+"local": 78.0
+},
+{
+"st": "OR",
+"ref": "80",
+"n": 80,
+"lat": 42.7454057,
+"lon": -123.3706784,
+"dest": [
+"Glendale"
+],
+"m": 876.97,
+"local": 80.0
+},
+{
+"st": "OR",
+"ref": "83",
+"n": 83,
+"lat": 42.7657844,
+"lon": -123.3372558,
+"dest": [
+"Barton Road"
+],
+"m": 879.97,
+"local": 83.0
+},
+{
+"st": "OR",
+"ref": "86",
+"n": 86,
+"lat": 42.7772737,
+"lon": -123.2834394,
+"dest": [
+"Quines Creek Road",
+"Quines Creek Road, Barton Road"
+],
+"m": 882.97,
+"local": 86.0
+},
+{
+"st": "OR",
+"ref": "88",
+"n": 88,
+"lat": 42.7968355,
+"lon": -123.255968,
+"dest": [
+"Azalea, Galesville Reservoir"
+],
+"m": 884.97,
+"local": 88.0
+},
+{
+"st": "OR",
+"ref": "95",
+"n": 95,
+"lat": 42.8907131,
+"lon": -123.2385012,
+"dest": [
+"Canyon Creek"
+],
+"m": 891.97,
+"local": 95.0
+},
+{
+"st": "OR",
+"ref": "98",
+"n": 98,
+"lat": 42.9219891,
+"lon": -123.2770052,
+"dest": [
+"Canyonville, Days Creek"
+],
+"m": 894.97,
+"local": 98.0
+},
+{
+"st": "OR",
+"ref": "99",
+"n": 99,
+"lat": 42.9339776,
+"lon": -123.2839747,
+"dest": [
+"North Canyonville, Stanton Park",
+"North Canyonville, Crater Lake"
+],
+"m": 895.97,
+"local": 99.0
+},
+{
+"st": "OR",
+"ref": "101",
+"n": 101,
+"lat": 42.9479995,
+"lon": -123.3132488,
+"dest": [
+"Riddle",
+"Riddle, Stanton Park"
+],
+"m": 897.97,
+"local": 101.0
+},
+{
+"st": "OR",
+"ref": "102",
+"n": 102,
+"lat": 42.947971,
+"lon": -123.3262589,
+"dest": [
+"Gazley Road"
+],
+"m": 898.97,
+"local": 102.0
+},
+{
+"st": "OR",
+"ref": "103",
+"n": 103,
+"lat": 42.969491,
+"lon": -123.336935,
+"dest": [
+"OR 99",
+"Tri City, Myrtle Creek",
+"Tri CIty, Riddle"
+],
+"m": 899.97,
+"local": 103.0
+},
+{
+"st": "OR",
+"ref": "106",
+"n": 106,
+"lat": 43.0042273,
+"lon": -123.3105794,
+"dest": [
+"Weaver Road"
+],
+"m": 902.97,
+"local": 106.0
+},
+{
+"st": "OR",
+"ref": "108",
+"n": 108,
+"lat": 43.0218862,
+"lon": -123.2997093,
+"dest": [
+"Myrtle Creek",
+"OR 99"
+],
+"m": 904.97,
+"local": 108.0
+},
+{
+"st": "OR",
+"ref": "110",
+"n": 110,
+"lat": 43.0334704,
+"lon": -123.3259087,
+"dest": [
+"Boomer Hill Road"
+],
+"m": 906.97,
+"local": 110.0
+},
+{
+"st": "OR",
+"ref": "112",
+"n": 112,
+"lat": 43.0598462,
+"lon": -123.3418475,
+"dest": [
+"OR 99",
+"Dillard, Coos Bay, Rest Area",
+"Dillard, Winston"
+],
+"m": 908.97,
+"local": 112.0
+},
+{
+"st": "OR",
+"ref": "113",
+"n": 113,
+"lat": 43.0719739,
+"lon": -123.3555779,
+"dest": [
+"Clarks Branch Road",
+"Round Prairie"
+],
+"m": 909.97,
+"local": 113.0
+},
+{
+"st": "OR",
+"ref": "119",
+"n": 119,
+"lat": 43.1545728,
+"lon": -123.3650388,
+"dest": [
+"OR 99 South, OR 42 West",
+"Winston, Coos Bay"
+],
+"m": 915.97,
+"local": 119.0
+},
+{
+"st": "OR",
+"ref": "120",
+"n": 120,
+"lat": 43.165034,
+"lon": -123.3653948,
+"dest": [
+"OR 99 North",
+"South Roseburg",
+"Green District, Roseburg"
+],
+"m": 916.97,
+"local": 120.0
+},
+{
+"st": "OR",
+"ref": "121",
+"n": 121,
+"lat": 43.1749859,
+"lon": -123.3705131,
+"dest": [
+"McLain Avenue"
+],
+"m": 917.97,
+"local": 121.0
+},
+{
+"st": "OR",
+"ref": "123",
+"n": 123,
+"lat": 43.1950305,
+"lon": -123.3612799,
+"dest": [
+"Fairgrounds, Umpqua Park"
+],
+"m": 919.97,
+"local": 123.0
+},
+{
+"st": "OR",
+"ref": "124",
+"n": 124,
+"lat": 43.2094934,
+"lon": -123.3565937,
+"dest": [
+"OR 138 East",
+"City Center, Diamond Lake"
+],
+"m": 920.97,
+"local": 124.0
+},
+{
+"st": "OR",
+"ref": "125",
+"n": 125,
+"lat": 43.2217399,
+"lon": -123.3590845,
+"dest": [
+"Garden Valley Boulevard",
+"Roseburg"
+],
+"m": 921.97,
+"local": 125.0
+},
+{
+"st": "OR",
+"ref": "127",
+"n": 127,
+"lat": 43.2439895,
+"lon": -123.3602263,
+"dest": [
+"Edenbower Boulevard",
+"North Roseburg"
+],
+"m": 923.97,
+"local": 127.0
+},
+{
+"st": "OR",
+"ref": "129",
+"n": 129,
+"lat": 43.2898816,
+"lon": -123.3545667,
+"dest": [
+"Winchester, Wilbur",
+"OR 99",
+"Winchester, North Roseburg"
+],
+"m": 925.97,
+"local": 129.0
+},
+{
+"st": "OR",
+"ref": "135",
+"n": 135,
+"lat": 43.364994,
+"lon": -123.3290689,
+"dest": [
+"Sutherlin",
+"Wilbur"
+],
+"m": 931.97,
+"local": 135.0
+},
+{
+"st": "OR",
+"ref": "136",
+"n": 136,
+"lat": 43.3830938,
+"lon": -123.338117,
+"dest": [
+"OR 138",
+"Sutherlin, Elkton",
+"OR 138 West"
+],
+"m": 932.97,
+"local": 136.0
+},
+{
+"st": "OR",
+"ref": "138",
+"n": 138,
+"lat": 43.4108891,
+"lon": -123.3293687,
+"dest": [
+"Oakland"
+],
+"m": 934.97,
+"local": 138.0
+},
+{
+"st": "OR",
+"ref": "140",
+"n": 140,
+"lat": 43.4397354,
+"lon": -123.316015,
+"dest": [
+"OR 99",
+"Oakland"
+],
+"m": 936.97,
+"local": 140.0
+},
+{
+"st": "OR",
+"ref": "142",
+"n": 142,
+"lat": 43.4586519,
+"lon": -123.3232453,
+"dest": [
+"Metz Hill"
+],
+"m": 938.97,
+"local": 142.0
+},
+{
+"st": "OR",
+"ref": "146",
+"n": 146,
+"lat": 43.5102412,
+"lon": -123.3161408,
+"dest": [
+"Rice Valley"
+],
+"m": 942.97,
+"local": 146.0
+},
+{
+"st": "OR",
+"ref": "148",
+"n": 148,
+"lat": 43.5369488,
+"lon": -123.2922191,
+"dest": [
+"Rice Hill"
+],
+"m": 944.97,
+"local": 148.0
+},
+{
+"st": "OR",
+"ref": "150",
+"n": 150,
+"lat": 43.558962,
+"lon": -123.2823386,
+"dest": [
+"OR 99",
+"Yoncalla, Drain"
+],
+"m": 946.97,
+"local": 150.0
+},
+{
+"st": "OR",
+"ref": "154",
+"n": 154,
+"lat": 43.6054657,
+"lon": -123.2249469,
+"dest": [
+"Scotts Valley, Elkhead"
+],
+"m": 950.97,
+"local": 154.0
+},
+{
+"st": "OR",
+"ref": "159",
+"n": 159,
+"lat": 43.6702905,
+"lon": -123.2023551,
+"dest": [
+"Elk Creek,  Cox Road"
+],
+"m": 955.97,
+"local": 159.0
+},
+{
+"st": "OR",
+"ref": "160",
+"n": 160,
+"lat": 43.6802123,
+"lon": -123.1975149,
+"dest": [
+"Salt Springs Road"
+],
+"m": 956.97,
+"local": 160.0
+},
+{
+"st": "OR",
+"ref": "161",
+"n": 161,
+"lat": 43.7044372,
+"lon": -123.2060086,
+"dest": [
+"Anlauf,  Lorane"
+],
+"m": 957.97,
+"local": 161.0
+},
+{
+"st": "OR",
+"ref": "162",
+"n": 162,
+"lat": 43.7084436,
+"lon": -123.2171901,
+"dest": [
+"OR 38,  OR 99",
+"Drain,  Elkton"
+],
+"m": 958.97,
+"local": 162.0
+},
+{
+"st": "OR",
+"ref": "163",
+"n": 163,
+"lat": 43.7217801,
+"lon": -123.2082779,
+"dest": [
+"Curtin,  Lorane"
+],
+"m": 959.97,
+"local": 163.0
+},
+{
+"st": "OR",
+"ref": "170",
+"n": 170,
+"lat": 43.7520876,
+"lon": -123.1316141,
+"dest": [
+"OR 99",
+"Cottage Grove"
+],
+"m": 966.97,
+"local": 170.0
+},
+{
+"st": "OR",
+"ref": "172",
+"n": 172,
+"lat": 43.7741671,
+"lon": -123.0598555,
+"dest": [
+"Sixth Street, Cottage Grove Lake"
+],
+"m": 968.97,
+"local": 172.0
+},
+{
+"st": "OR",
+"ref": "174",
+"n": 174,
+"lat": 43.8048472,
+"lon": -123.0426363,
+"dest": [
+"Cottage Grove, Dorena Lake"
+],
+"m": 970.97,
+"local": 174.0
+},
+{
+"st": "OR",
+"ref": "176",
+"n": 176,
+"lat": 43.8293498,
+"lon": -123.0310479,
+"dest": [
+"Saginaw"
+],
+"m": 972.97,
+"local": 176.0
+},
+{
+"st": "OR",
+"ref": "182",
+"n": 182,
+"lat": 43.9133156,
+"lon": -123.0128217,
+"dest": [
+"OR 222",
+"Creswell"
+],
+"m": 978.97,
+"local": 182.0
+},
+{
+"st": "OR",
+"ref": "186",
+"n": 186,
+"lat": 43.9656292,
+"lon": -123.0117145,
+"dest": [
+"Dillard Road",
+"Goshen"
+],
+"m": 982.97,
+"local": 186.0
+},
+{
+"st": "OR",
+"ref": "188A",
+"n": 188,
+"lat": 43.9922839,
+"lon": -123.0057326,
+"dest": [
+"OR 58",
+"Willamette Highway",
+"Oakridge"
+],
+"m": 984.97,
+"local": 188.0
+},
+{
+"st": "OR",
+"ref": "188B",
+"n": 188,
+"lat": 43.9996312,
+"lon": -123.0111273,
+"dest": [
+"OR 99 South",
+"Goshen"
+],
+"m": 985.27,
+"local": 188.3
+},
+{
+"st": "OR",
+"ref": "188",
+"n": 188,
+"lat": 44.0011468,
+"lon": -123.0158344,
+"dest": [
+"OR 58",
+"Oakridge, Klamath Falls, Goshen"
+],
+"m": 985.39,
+"local": 188.42
+},
+{
+"st": "OR",
+"ref": "189",
+"n": 189,
+"lat": 44.0102612,
+"lon": -123.0218213,
+"dest": [
+"OR 225",
+"30th Avenue",
+"South Eugene"
+],
+"m": 985.97,
+"local": 189.0
+},
+{
+"st": "OR",
+"ref": "191",
+"n": 191,
+"lat": 44.0348835,
+"lon": -123.0386977,
+"dest": [
+"OR 126 Business East",
+"Glenwood Boulevard",
+"Downtown Springfield"
+],
+"m": 987.97,
+"local": 191.0
+},
+{
+"st": "OR",
+"ref": "192",
+"n": 192,
+"lat": 44.0382718,
+"lon": -123.0479565,
+"dest": [
+"OR 99, OR 126 Business West",
+"University of Oregon, Downtown Eugene"
+],
+"m": 988.97,
+"local": 192.0
+},
+{
+"st": "OR",
+"ref": "194A",
+"n": 194,
+"lat": 44.0589913,
+"lon": -123.0494976,
+"dest": [
+"OR 126 East",
+"Springfield, McKenzie River",
+"Springfield"
+],
+"m": 990.97,
+"local": 194.0
+},
+{
+"st": "OR",
+"ref": "194B",
+"n": 194,
+"lat": 44.0631723,
+"lon": -123.0490074,
+"dest": [
+"I 105, OR 126 West",
+"Eugene"
+],
+"m": 991.12,
+"local": 194.15
+},
+{
+"st": "OR",
+"ref": "195B",
+"n": 195,
+"lat": 44.0882838,
+"lon": -123.046421,
+"dest": [
+"OR 569",
+"Beltline Road West",
+"Florence, Oregon Coast"
+],
+"m": 991.97,
+"local": 195.0
+},
+{
+"st": "OR",
+"ref": "199",
+"n": 199,
+"lat": 44.1306349,
+"lon": -123.0500422,
+"dest": [
+"Coburg"
+],
+"m": 995.97,
+"local": 199.0
+},
+{
+"st": "OR",
+"ref": "209",
+"n": 209,
+"lat": 44.2763176,
+"lon": -123.0606981,
+"dest": [
+"Harrisburg, Junction City"
+],
+"m": 1005.97,
+"local": 209.0
+},
+{
+"st": "OR",
+"ref": "216",
+"n": 216,
+"lat": 44.3855809,
+"lon": -123.06106,
+"dest": [
+"OR 228",
+"Halsey, Brownsville"
+],
+"m": 1012.97,
+"local": 216.0
+},
+{
+"st": "OR",
+"ref": "228",
+"n": 228,
+"lat": 44.5509516,
+"lon": -123.0616245,
+"dest": [
+"OR 34",
+"Lebanon, Corvallis"
+],
+"m": 1024.97,
+"local": 228.0
+},
+{
+"st": "OR",
+"ref": "233",
+"n": 233,
+"lat": 44.6291754,
+"lon": -123.0618907,
+"dest": [
+"US 20",
+"Santiam Highway",
+"Lebanon, Sweet Home"
+],
+"m": 1029.97,
+"local": 233.0
+},
+{
+"st": "OR",
+"ref": "234",
+"n": 234,
+"lat": 44.6395621,
+"lon": -123.062254,
+"dest": [
+"Fair-Expo, Knox Butte"
+],
+"m": 1030.97,
+"local": 234.0
+},
+{
+"st": "OR",
+"ref": "234A",
+"n": 234,
+"lat": 44.6425308,
+"lon": -123.062747,
+"dest": [
+"Fair-Expo, Knox Butte"
+],
+"m": 1031.09,
+"local": 234.12
+},
+{
+"st": "OR",
+"ref": "234B",
+"n": 234,
+"lat": 44.6466686,
+"lon": -123.0626034,
+"dest": [
+"OR 99E",
+"Albany"
+],
+"m": 1031.25,
+"local": 234.28
+},
+{
+"st": "OR",
+"ref": "235",
+"n": 235,
+"lat": 44.6667772,
+"lon": -123.0585524,
+"dest": [
+"Viewcrest",
+"Millersburg"
+],
+"m": 1031.97,
+"local": 235.0
+},
+{
+"st": "OR",
+"ref": "237",
+"n": 237,
+"lat": 44.6979805,
+"lon": -123.0521736,
+"dest": [
+"Viewcrest"
+],
+"m": 1033.97,
+"local": 237.0
+},
+{
+"st": "OR",
+"ref": "238",
+"n": 238,
+"lat": 44.7012681,
+"lon": -123.0518674,
+"dest": [
+"OR 164",
+"South Jefferson",
+"Scio, Millersburg"
+],
+"m": 1034.97,
+"local": 238.0
+},
+{
+"st": "OR",
+"ref": "239",
+"n": 239,
+"lat": 44.7203271,
+"lon": -123.0541919,
+"dest": [
+"Dever-Conner"
+],
+"m": 1035.97,
+"local": 239.0
+},
+{
+"st": "OR",
+"ref": "242",
+"n": 242,
+"lat": 44.758345,
+"lon": -123.0491999,
+"dest": [
+"Talbot Road"
+],
+"m": 1038.97,
+"local": 242.0
+},
+{
+"st": "OR",
+"ref": "243",
+"n": 243,
+"lat": 44.7747967,
+"lon": -123.0422935,
+"dest": [
+"Ankeny Hill"
+],
+"m": 1039.97,
+"local": 243.0
+},
+{
+"st": "OR",
+"ref": "244",
+"n": 244,
+"lat": 44.7905093,
+"lon": -123.0357086,
+"dest": [
+"OR 164",
+"North Jefferson",
+"Jefferson"
+],
+"m": 1040.97,
+"local": 244.0
+},
+{
+"st": "OR",
+"ref": "248",
+"n": 248,
+"lat": 44.8398181,
+"lon": -123.0082334,
+"dest": [
+"Sunnyside, Turner"
+],
+"m": 1044.97,
+"local": 248.0
+},
+{
+"st": "OR",
+"ref": "249",
+"n": 249,
+"lat": 44.8448249,
+"lon": -123.008753,
+"dest": [
+"Commercial Street"
+],
+"m": 1045.97,
+"local": 249.0
+},
+{
+"st": "OR",
+"ref": "252",
+"n": 252,
+"lat": 44.8792508,
+"lon": -122.9991728,
+"dest": [
+"Kuebler Boulevard",
+"Kuebler Boulevard Southeast"
+],
+"m": 1048.97,
+"local": 252.0
+},
+{
+"st": "OR",
+"ref": "253",
+"n": 253,
+"lat": 44.9111353,
+"lon": -122.9871017,
+"dest": [
+"OR 22, OR 99E Business",
+"Detroit Lake, Bend"
+],
+"m": 1049.97,
+"local": 253.0
+},
+{
+"st": "OR",
+"ref": "256",
+"n": 256,
+"lat": 44.9450361,
+"lon": -122.9901487,
+"dest": [
+"OR 213",
+"Market Street",
+"Silverton"
+],
+"m": 1052.97,
+"local": 256.0
+},
+{
+"st": "OR",
+"ref": "258",
+"n": 258,
+"lat": 44.9802121,
+"lon": -122.9922371,
+"dest": [
+"OR 99E North",
+"Portland Road",
+"OR 99E",
+"Pacific Highway East",
+"North Salem, Fairgrounds, Amphitheater"
+],
+"m": 1054.97,
+"local": 258.0
+},
+{
+"st": "OR",
+"ref": "260",
+"n": 260,
+"lat": 44.9979771,
+"lon": -123.0001832,
+"dest": [
+"Chemawa Road",
+"Keizer"
+],
+"m": 1056.97,
+"local": 260.0
+},
+{
+"st": "OR",
+"ref": "260A",
+"n": 260,
+"lat": 45.0053608,
+"lon": -122.9967861,
+"dest": [
+"OR 99E Business",
+"Salem Parkway"
+],
+"m": 1057.4,
+"local": 260.42
+},
+{
+"st": "OR",
+"ref": "260B",
+"n": 260,
+"lat": 45.010531,
+"lon": -122.9940018,
+"dest": [
+"Chemawa Road Northeast",
+"Keizer"
+],
+"m": 1057.7,
+"local": 260.72
+},
+{
+"st": "OR",
+"ref": "263",
+"n": 263,
+"lat": 45.0463136,
+"lon": -122.9742951,
+"dest": [
+"Brooks, Gervais"
+],
+"m": 1059.97,
+"local": 263.0
+},
+{
+"st": "OR",
+"ref": "271",
+"n": 271,
+"lat": 45.1478141,
+"lon": -122.8837503,
+"dest": [
+"OR 214, OR 219",
+"Woodburn, Molalla",
+"Woodburn, Silverton"
+],
+"m": 1067.97,
+"local": 271.0
+},
+{
+"st": "OR",
+"ref": "278",
+"n": 278,
+"lat": 45.2294281,
+"lon": -122.8111497,
+"dest": [
+"Donald, Aurora",
+"Ehlen Road Northeast",
+"Aurora"
+],
+"m": 1074.97,
+"local": 278.0
+},
+{
+"st": "OR",
+"ref": "282",
+"n": 282,
+"lat": 45.280267,
+"lon": -122.7695149,
+"dest": [
+"Canby"
+],
+"m": 1078.97,
+"local": 282.0
+},
+{
+"st": "OR",
+"ref": "282A",
+"n": 282,
+"lat": 45.2854491,
+"lon": -122.7694911,
+"dest": [
+"OR 551",
+"Canby, Hubbard"
+],
+"m": 1079.2,
+"local": 282.23
+},
+{
+"st": "OR",
+"ref": "282B",
+"n": 282,
+"lat": 45.2886202,
+"lon": -122.769501,
+"dest": [
+"Charboneau District"
+],
+"m": 1079.34,
+"local": 282.37
+},
+{
+"st": "OR",
+"ref": "283",
+"n": 283,
+"lat": 45.2997002,
+"lon": -122.7690482,
+"dest": [
+"Wilsonville Road"
+],
+"m": 1079.97,
+"local": 283.0
+},
+{
+"st": "OR",
+"ref": "286",
+"n": 286,
+"lat": 45.3314679,
+"lon": -122.7691047,
+"dest": [
+"Elligsen Road, Boones Ferry Road"
+],
+"m": 1082.97,
+"local": 286.0
+},
+{
+"st": "OR",
+"ref": "288",
+"n": 288,
+"lat": 45.3650696,
+"lon": -122.7593409,
+"dest": [
+"I 205 North",
+"Oregon City"
+],
+"m": 1084.97,
+"local": 288.0
+},
+{
+"st": "OR",
+"ref": "289",
+"n": 289,
+"lat": 45.3792042,
+"lon": -122.7536494,
+"dest": [
+"Nyberg Street, Tualatin-Sherwood Road"
+],
+"m": 1085.97,
+"local": 289.0
+},
+{
+"st": "OR",
+"ref": "290",
+"n": 290,
+"lat": 45.3936422,
+"lon": -122.7481321,
+"dest": [
+"Lower Boones Ferry Road"
+],
+"m": 1086.97,
+"local": 290.0
+},
+{
+"st": "OR",
+"ref": "291",
+"n": 291,
+"lat": 45.4052385,
+"lon": -122.7441056,
+"dest": [
+"Carman Drive"
+],
+"m": 1087.97,
+"local": 291.0
+},
+{
+"st": "OR",
+"ref": "292A",
+"n": 292,
+"lat": 45.4169023,
+"lon": -122.7439227,
+"dest": [
+"OR 217",
+"Tigard, Beaverton"
+],
+"m": 1088.97,
+"local": 292.0
+},
+{
+"st": "OR",
+"ref": "292B",
+"n": 292,
+"lat": 45.4205664,
+"lon": -122.7439488,
+"dest": [
+"Kruse Way, 72nd Avenue"
+],
+"m": 1089.19,
+"local": 292.22
+},
+{
+"st": "OR",
+"ref": "292",
+"n": 292,
+"lat": 45.4260509,
+"lon": -122.7442611,
+"dest": [
+"OR 217 North",
+"Kruse Way, Lake Oswego"
+],
+"m": 1089.51,
+"local": 292.54
+},
+{
+"st": "OR",
+"ref": "293",
+"n": 293,
+"lat": 45.4312735,
+"lon": -122.7440607,
+"dest": [
+"Haines Street"
+],
+"m": 1089.97,
+"local": 293.0
+},
+{
+"st": "OR",
+"ref": "294",
+"n": 294,
+"lat": 45.4378773,
+"lon": -122.7439305,
+"dest": [
+"OR 99W North",
+"Barbur Boulevard",
+"OR 99W South",
+"Tigard, Newberg, McMinnville, Lincoln City"
+],
+"m": 1090.97,
+"local": 294.0
+},
+{
+"st": "OR",
+"ref": "295",
+"n": 295,
+"lat": 45.4561692,
+"lon": -122.7120285,
+"dest": [
+"Taylors Ferry Road",
+"Capitol Highway"
+],
+"m": 1091.97,
+"local": 295.0
+},
+{
+"st": "OR",
+"ref": "296A",
+"n": 296,
+"lat": 45.4632112,
+"lon": -122.6998791,
+"dest": [
+"Barbur Boulevard"
+],
+"m": 1092.97,
+"local": 296.0
+},
+{
+"st": "OR",
+"ref": "296B",
+"n": 296,
+"lat": 45.4663698,
+"lon": -122.6940355,
+"dest": [
+"Multnomah Boulevard"
+],
+"m": 1093.53,
+"local": 296.56
+},
+{
+"st": "OR",
+"ref": "297",
+"n": 297,
+"lat": 45.4657807,
+"lon": -122.6946728,
+"dest": [
+"Terwilliger Boulevard"
+],
+"m": 1093.97,
+"local": 297.0
+},
+{
+"st": "OR",
+"ref": "298",
+"n": 298,
+"lat": 45.4873172,
+"lon": -122.6784608,
+"dest": [
+"Corbett Avenue"
+],
+"m": 1094.97,
+"local": 298.0
+},
+{
+"st": "OR",
+"ref": "299A",
+"n": 299,
+"lat": 45.4927145,
+"lon": -122.6736505,
+"dest": [
+"OR 43",
+"Macadam Avenue, Ross Island Bridge",
+"Lake Oswego"
+],
+"m": 1095.97,
+"local": 299.0
+},
+{
+"st": "OR",
+"ref": "299B",
+"n": 299,
+"lat": 45.498655,
+"lon": -122.6732026,
+"dest": [],
+"m": 1096.07,
+"local": 299.09
+},
+{
+"st": "OR",
+"ref": "300",
+"n": 300,
+"lat": 45.5120044,
+"lon": -122.667318,
+"dest": [
+"I 84 East, US 30 East",
+"The Dalles, Portland Airport"
+],
+"m": 1096.97,
+"local": 300.0
+},
+{
+"st": "OR",
+"ref": "300B",
+"n": 300,
+"lat": 45.5250354,
+"lon": -122.6654709,
+"dest": [
+"US 26 East, OR 99E",
+"OMSI, Oregon City"
+],
+"m": 1097.76,
+"local": 300.79
+},
+{
+"st": "OR",
+"ref": "301",
+"n": 301,
+"lat": 45.5286395,
+"lon": -122.6653626,
+"dest": [
+"I 84, US 30 East",
+"The Dalles"
+],
+"m": 1097.97,
+"local": 301.0
+},
+{
+"st": "OR",
+"ref": "302A",
+"n": 302,
+"lat": 45.5319725,
+"lon": -122.665242,
+"dest": [
+"Moda Center, Broadway-Weidler Street",
+"Broadway, Weidler Street, Moda Center"
+],
+"m": 1098.97,
+"local": 302.0
+},
+{
+"st": "OR",
+"ref": "302C",
+"n": 302,
+"lat": 45.5424746,
+"lon": -122.6734638,
+"dest": [
+"Greeley Avenue, Swan Island"
+],
+"m": 1099.31,
+"local": 302.34
+},
+{
+"st": "OR",
+"ref": "302B",
+"n": 302,
+"lat": 45.5407617,
+"lon": -122.671502,
+"dest": [
+"I 405 West, US 30 West",
+"Saint Helens",
+"I 405, US 30 West",
+"Beaverton, Saint Helens"
+],
+"m": 1099.42,
+"local": 302.44
+},
+{
+"st": "OR",
+"ref": "303",
+"n": 303,
+"lat": 45.5536018,
+"lon": -122.678543,
+"dest": [
+"Interstate Avenue, Swan Island",
+"Alberta Street, Swan Island"
+],
+"m": 1099.97,
+"local": 303.0
+},
+{
+"st": "OR",
+"ref": "304",
+"n": 304,
+"lat": 45.5671684,
+"lon": -122.6785333,
+"dest": [
+"Rosa Parks Way"
+],
+"m": 1100.97,
+"local": 304.0
+},
+{
+"st": "OR",
+"ref": "305A",
+"n": 305,
+"lat": 45.5746707,
+"lon": -122.6785612,
+"dest": [
+"US 30 Bypass",
+"Lombard Street East"
+],
+"m": 1101.97,
+"local": 305.0
+},
+{
+"st": "OR",
+"ref": "305B",
+"n": 305,
+"lat": 45.5772755,
+"lon": -122.67853,
+"dest": [
+"US 30 Bypass",
+"Lombard Street West"
+],
+"m": 1102.24,
+"local": 305.27
+},
+{
+"st": "OR",
+"ref": "306A",
+"n": 306,
+"lat": 45.5842796,
+"lon": -122.6791148,
+"dest": [
+"Columbia Boulevard"
+],
+"m": 1102.97,
+"local": 306.0
+},
+{
+"st": "OR",
+"ref": "306B",
+"n": 306,
+"lat": 45.5908647,
+"lon": -122.6820956,
+"dest": [
+"Victory Boulevard, Expo Center"
+],
+"m": 1103.38,
+"local": 306.41
+},
+{
+"st": "OR",
+"ref": "306",
+"n": 306,
+"lat": 45.5986886,
+"lon": -122.6844284,
+"dest": [
+"Interstate Avenue, Portland International Raceway"
+],
+"m": 1103.86,
+"local": 306.88
+},
+{
+"st": "OR",
+"ref": "307",
+"n": 307,
+"lat": 45.5952921,
+"lon": -122.6840679,
+"dest": [
+"OR 99E South",
+"Martin Luther King Jr. Boulevard, Marine Drive",
+"Martin Luther King Junior Boulevard, Marine Drive"
+],
+"m": 1103.97,
+"local": 307.0
+},
+{
+"st": "OR",
+"ref": "308",
+"n": 308,
+"lat": 45.6097878,
+"lon": -122.6799766,
+"dest": [
+"Hayden Island",
+"Hayden Island, ODOT Permits"
+],
+"m": 1104.97,
+"local": 308.0
+},
+{
+"st": "WA",
+"ref": "1B",
+"n": 1,
+"lat": 45.622767,
+"lon": -122.671897,
+"dest": [
+"City Center, Convention Center"
+],
+"m": 1106.47,
+"local": 1.0
+},
+{
+"st": "WA",
+"ref": "1A",
+"n": 1,
+"lat": 45.6216657,
+"lon": -122.672919,
+"dest": [
+"SR 14 East",
+"Camas"
+],
+"m": 1106.56,
+"local": 1.09
+},
+{
+"st": "WA",
+"ref": "1D;1C",
+"n": 1,
+"lat": 45.6278561,
+"lon": -122.6670885,
+"dest": [
+"SR 501",
+"4th Plain Boulevard, Mill Plain Boulevard"
+],
+"m": 1106.69,
+"local": 1.22
+},
+{
+"st": "WA",
+"ref": "1C",
+"n": 1,
+"lat": 45.6358855,
+"lon": -122.6626046,
+"dest": [
+"SR 501",
+"City Center, Mill Plain Boulevard, Port of Vancouver"
+],
+"m": 1107.0,
+"local": 1.53
+},
+{
+"st": "WA",
+"ref": "1D",
+"n": 1,
+"lat": 45.6419708,
+"lon": -122.6620107,
+"dest": [
+"4th Plain Boulevard"
+],
+"m": 1107.23,
+"local": 1.76
+},
+{
+"st": "WA",
+"ref": "2",
+"n": 2,
+"lat": 45.644643,
+"lon": -122.6616924,
+"dest": [
+"SR 500 East",
+"39th Street"
+],
+"m": 1107.47,
+"local": 2.0
+},
+{
+"st": "WA",
+"ref": "3",
+"n": 3,
+"lat": 45.6538452,
+"lon": -122.663078,
+"dest": [
+"Northeast Highway 99",
+"Main Street"
+],
+"m": 1108.47,
+"local": 3.0
+},
+{
+"st": "WA",
+"ref": "4",
+"n": 4,
+"lat": 45.6727214,
+"lon": -122.6643945,
+"dest": [
+"Northeast 78th Street"
+],
+"m": 1109.47,
+"local": 4.0
+},
+{
+"st": "WA",
+"ref": "5",
+"n": 5,
+"lat": 45.6877252,
+"lon": -122.6638155,
+"dest": [
+"Northeast 99th Street"
+],
+"m": 1110.47,
+"local": 5.0
+},
+{
+"st": "WA",
+"ref": "7A",
+"n": 7,
+"lat": 45.7142141,
+"lon": -122.6532023,
+"dest": [
+"Northeast 134th Street, Washington State University Vancouver"
+],
+"m": 1112.47,
+"local": 7.0
+},
+{
+"st": "WA",
+"ref": "7B",
+"n": 7,
+"lat": 45.7181428,
+"lon": -122.6548144,
+"dest": [
+"Northeast 139th Street"
+],
+"m": 1112.69,
+"local": 7.22
+},
+{
+"st": "WA",
+"ref": "7",
+"n": 7,
+"lat": 45.7296356,
+"lon": -122.6563307,
+"dest": [],
+"m": 1113.32,
+"local": 7.85
+},
+{
+"st": "WA",
+"ref": "9",
+"n": 9,
+"lat": 45.7468034,
+"lon": -122.6613485,
+"dest": [
+"Northeast 179th Street, Clark County Event Center",
+"Northeast 179th Street"
+],
+"m": 1114.47,
+"local": 9.0
+},
+{
+"st": "WA",
+"ref": "11",
+"n": 11,
+"lat": 45.7653314,
+"lon": -122.6671044,
+"dest": [
+"SR 502 East",
+"Rest Area, Battle Ground",
+"Battle Ground"
+],
+"m": 1116.47,
+"local": 11.0
+},
+{
+"st": "WA",
+"ref": "14",
+"n": 14,
+"lat": 45.8114858,
+"lon": -122.6837162,
+"dest": [
+"SR 501 South",
+"Pioneer Street, Ridgefield"
+],
+"m": 1119.47,
+"local": 14.0
+},
+{
+"st": "WA",
+"ref": "16",
+"n": 16,
+"lat": 45.8480069,
+"lon": -122.7007008,
+"dest": [
+"La Center, Cowlitz Reservation"
+],
+"m": 1121.47,
+"local": 16.0
+},
+{
+"st": "WA",
+"ref": "21",
+"n": 21,
+"lat": 45.9026699,
+"lon": -122.7406564,
+"dest": [
+"SR 503 East",
+"Woodland, Cougar"
+],
+"m": 1126.47,
+"local": 21.0
+},
+{
+"st": "WA",
+"ref": "22",
+"n": 22,
+"lat": 45.9238025,
+"lon": -122.7535697,
+"dest": [
+"Dike Access Road"
+],
+"m": 1127.47,
+"local": 22.0
+},
+{
+"st": "WA",
+"ref": "27",
+"n": 27,
+"lat": 45.9770089,
+"lon": -122.8214571,
+"dest": [
+"Todd Road",
+"Port of Kalama",
+"Todd Road, Port of Kalama"
+],
+"m": 1132.47,
+"local": 27.0
+},
+{
+"st": "WA",
+"ref": "30",
+"n": 30,
+"lat": 46.0039218,
+"lon": -122.8440575,
+"dest": [
+"Kalama"
+],
+"m": 1135.47,
+"local": 30.0
+},
+{
+"st": "WA",
+"ref": "32",
+"n": 32,
+"lat": 46.0378352,
+"lon": -122.8576651,
+"dest": [
+"Kalama River Road"
+],
+"m": 1137.47,
+"local": 32.0
+},
+{
+"st": "WA",
+"ref": "39",
+"n": 39,
+"lat": 46.1407842,
+"lon": -122.8975093,
+"dest": [
+"SR 4 West",
+"Allen Street, Kelso",
+"Allen Street Kelso"
+],
+"m": 1144.47,
+"local": 39.0
+},
+{
+"st": "WA",
+"ref": "40",
+"n": 40,
+"lat": 46.1532533,
+"lon": -122.9011989,
+"dest": [
+"North Kelso Avenue"
+],
+"m": 1145.47,
+"local": 40.0
+},
+{
+"st": "WA",
+"ref": "42",
+"n": 42,
+"lat": 46.1807307,
+"lon": -122.8989154,
+"dest": [
+"Lexington Bridge Drive"
+],
+"m": 1147.47,
+"local": 42.0
+},
+{
+"st": "WA",
+"ref": "46",
+"n": 46,
+"lat": 46.2289353,
+"lon": -122.8879119,
+"dest": [
+"Headquarters Road, Pleasant Hill Road",
+"Headquarters Road"
+],
+"m": 1151.47,
+"local": 46.0
+},
+{
+"st": "WA",
+"ref": "48",
+"n": 48,
+"lat": 46.2564683,
+"lon": -122.8846278,
+"dest": [
+"I 5 Business Loop",
+"Castle Rock",
+"Interstate 5 Business Route"
+],
+"m": 1153.47,
+"local": 48.0
+},
+{
+"st": "WA",
+"ref": "49",
+"n": 49,
+"lat": 46.280129,
+"lon": -122.8999024,
+"dest": [
+"SR 411 South, SR 504 East",
+"Castle Rock, Toutle",
+"SR 504",
+"Castle Rock"
+],
+"m": 1154.47,
+"local": 49.0
+},
+{
+"st": "WA",
+"ref": "52",
+"n": 52,
+"lat": 46.3201154,
+"lon": -122.9145357,
+"dest": [
+"Barnes Drive, Toutle Park Road",
+"Barnes Driv, Toutle Park Road"
+],
+"m": 1157.47,
+"local": 52.0
+},
+{
+"st": "WA",
+"ref": "57",
+"n": 57,
+"lat": 46.3854411,
+"lon": -122.9031272,
+"dest": [
+"Jackson Highway",
+"Jackson Highway,  Barnes Drive"
+],
+"m": 1162.47,
+"local": 57.0
+},
+{
+"st": "WA",
+"ref": "59",
+"n": 59,
+"lat": 46.416136,
+"lon": -122.8904616,
+"dest": [
+"SR 506 West",
+"Vader, Ryderwood"
+],
+"m": 1164.47,
+"local": 59.0
+},
+{
+"st": "WA",
+"ref": "60",
+"n": 60,
+"lat": 46.4342586,
+"lon": -122.8892437,
+"dest": [
+"Toledo Vader Road"
+],
+"m": 1165.47,
+"local": 60.0
+},
+{
+"st": "WA",
+"ref": "63",
+"n": 63,
+"lat": 46.4710531,
+"lon": -122.8839653,
+"dest": [
+"SR 505",
+"Winlock, Toledo"
+],
+"m": 1168.47,
+"local": 63.0
+},
+{
+"st": "WA",
+"ref": "68",
+"n": 68,
+"lat": 46.5432591,
+"lon": -122.8765083,
+"dest": [
+"US 12 East",
+"Morton, Yakima"
+],
+"m": 1173.47,
+"local": 68.0
+},
+{
+"st": "WA",
+"ref": "71",
+"n": 71,
+"lat": 46.5793214,
+"lon": -122.8841778,
+"dest": [
+"SR 508 East",
+"Onalaska, Napavine"
+],
+"m": 1176.47,
+"local": 71.0
+},
+{
+"st": "WA",
+"ref": "72",
+"n": 72,
+"lat": 46.6020782,
+"lon": -122.9044837,
+"dest": [
+"Rush Road"
+],
+"m": 1177.47,
+"local": 72.0
+},
+{
+"st": "WA",
+"ref": "74",
+"n": 74,
+"lat": 46.6226258,
+"lon": -122.9283543,
+"dest": [
+"Labree Road"
+],
+"m": 1179.47,
+"local": 74.0
+},
+{
+"st": "WA",
+"ref": "76",
+"n": 76,
+"lat": 46.643093,
+"lon": -122.9532806,
+"dest": [
+"13th Street, Southwest Parkland Drive",
+"Southwest Parkland Drive",
+"13th Street"
+],
+"m": 1181.47,
+"local": 76.0
+},
+{
+"st": "WA",
+"ref": "77",
+"n": 77,
+"lat": 46.6563455,
+"lon": -122.9768639,
+"dest": [
+"SR 6 West",
+"West Main Street",
+"Pe Ell, Raymond"
+],
+"m": 1182.47,
+"local": 77.0
+},
+{
+"st": "WA",
+"ref": "79",
+"n": 79,
+"lat": 46.6729831,
+"lon": -122.9778997,
+"dest": [
+"Chamber Way"
+],
+"m": 1184.47,
+"local": 79.0
+},
+{
+"st": "WA",
+"ref": "81",
+"n": 81,
+"lat": 46.7000267,
+"lon": -122.9715485,
+"dest": [
+"SR 507 North",
+"Mellen Street, City Center"
+],
+"m": 1186.47,
+"local": 81.0
+},
+{
+"st": "WA",
+"ref": "82",
+"n": 82,
+"lat": 46.7182338,
+"lon": -122.9761641,
+"dest": [
+"Harrison Avenue, Factory Outlet Way"
+],
+"m": 1187.47,
+"local": 82.0
+},
+{
+"st": "WA",
+"ref": "88",
+"n": 88,
+"lat": 46.7997684,
+"lon": -123.0086725,
+"dest": [
+"US 12 West",
+"Aberdeen, Tenino"
+],
+"m": 1193.47,
+"local": 88.0
+},
+{
+"st": "WA",
+"ref": "95",
+"n": 95,
+"lat": 46.8924358,
+"lon": -122.9620494,
+"dest": [
+"SR 121",
+"Littlerock, Maytown",
+"SR 121 North"
+],
+"m": 1200.47,
+"local": 95.0
+},
+{
+"st": "WA",
+"ref": "99",
+"n": 99,
+"lat": 46.946966,
+"lon": -122.9390726,
+"dest": [
+"SR 121 South",
+"93rd Avenue"
+],
+"m": 1204.47,
+"local": 99.0
+},
+{
+"st": "WA",
+"ref": "101",
+"n": 101,
+"lat": 46.9759876,
+"lon": -122.9303086,
+"dest": [
+"Tumwater Boulevard, Olympia Airport"
+],
+"m": 1206.47,
+"local": 101.0
+},
+{
+"st": "WA",
+"ref": "102",
+"n": 102,
+"lat": 46.9967531,
+"lon": -122.9139282,
+"dest": [
+"Trosper Road, Black Lake"
+],
+"m": 1207.47,
+"local": 102.0
+},
+{
+"st": "WA",
+"ref": "103",
+"n": 103,
+"lat": 47.0084611,
+"lon": -122.907144,
+"dest": [
+"Deschutes Way, 2nd Avenue"
+],
+"m": 1208.47,
+"local": 103.0
+},
+{
+"st": "WA",
+"ref": "104",
+"n": 104,
+"lat": 47.017136,
+"lon": -122.9058372,
+"dest": [
+"US 101 North",
+"Aberdeen, Port Angeles",
+"US 101"
+],
+"m": 1209.47,
+"local": 104.0
+},
+{
+"st": "WA",
+"ref": "105",
+"n": 105,
+"lat": 47.0260293,
+"lon": -122.8976141,
+"dest": [
+"State Capitol, Olympia City Center"
+],
+"m": 1210.47,
+"local": 105.0
+},
+{
+"st": "WA",
+"ref": "107",
+"n": 107,
+"lat": 47.0403137,
+"lon": -122.8584497,
+"dest": [
+"Pacific Avenue"
+],
+"m": 1212.47,
+"local": 107.0
+},
+{
+"st": "WA",
+"ref": "108",
+"n": 108,
+"lat": 47.044597,
+"lon": -122.843318,
+"dest": [
+"Sleater-Kinney Road, College Street",
+"Sleater-Kinney Road South, College Street"
+],
+"m": 1213.47,
+"local": 108.0
+},
+{
+"st": "WA",
+"ref": "109",
+"n": 109,
+"lat": 47.0471582,
+"lon": -122.821542,
+"dest": [
+"Martin Way",
+"Martin Way, College Street, Sleater-Kinney Road North"
+],
+"m": 1214.47,
+"local": 109.0
+},
+{
+"st": "WA",
+"ref": "111",
+"n": 111,
+"lat": 47.061035,
+"lon": -122.7798084,
+"dest": [
+"SR 510 East",
+"Marvin Road North, Marvin Road South, Yelm",
+"Marvin Road, Yelm"
+],
+"m": 1216.47,
+"local": 111.0
+},
+{
+"st": "WA",
+"ref": "114",
+"n": 114,
+"lat": 47.0679344,
+"lon": -122.7247419,
+"dest": [
+"Nisqually"
+],
+"m": 1219.47,
+"local": 114.0
+},
+{
+"st": "WA",
+"ref": "116",
+"n": 116,
+"lat": 47.0814423,
+"lon": -122.6752703,
+"dest": [
+"Mounts Road, Old Nisqually"
+],
+"m": 1221.47,
+"local": 116.0
+},
+{
+"st": "WA",
+"ref": "118",
+"n": 118,
+"lat": 47.087213,
+"lon": -122.647519,
+"dest": [
+"City Center, Center Drive"
+],
+"m": 1223.47,
+"local": 118.0
+},
+{
+"st": "WA",
+"ref": "119",
+"n": 119,
+"lat": 47.0911125,
+"lon": -122.6304617,
+"dest": [
+"Steilacoom-DuPont Road, Clark Road",
+"Steilacoom, DuPont Road"
+],
+"m": 1224.47,
+"local": 119.0
+},
+{
+"st": "WA",
+"ref": "122A",
+"n": 122,
+"lat": 47.1162365,
+"lon": -122.560958,
+"dest": [
+"Berkeley Street, Madigan"
+],
+"m": 1227.47,
+"local": 122.0
+},
+{
+"st": "WA",
+"ref": "122B",
+"n": 122,
+"lat": 47.1238815,
+"lon": -122.547973,
+"dest": [
+"Thorne Lane, JBLM Logistics Gate"
+],
+"m": 1228.2,
+"local": 122.73
+},
+{
+"st": "WA",
+"ref": "124",
+"n": 124,
+"lat": 47.134134,
+"lon": -122.530558,
+"dest": [
+"Gravelly Lake Drive"
+],
+"m": 1229.47,
+"local": 124.0
+},
+{
+"st": "WA",
+"ref": "125",
+"n": 125,
+"lat": 47.143887,
+"lon": -122.5103371,
+"dest": [
+"Bridgeport Way, McChord Field"
+],
+"m": 1230.47,
+"local": 125.0
+},
+{
+"st": "WA",
+"ref": "127",
+"n": 127,
+"lat": 47.1586605,
+"lon": -122.4843965,
+"dest": [
+"SR 512 East",
+"South Tacoma Way, Puyallup"
+],
+"m": 1232.47,
+"local": 127.0
+},
+{
+"st": "WA",
+"ref": "128",
+"n": 128,
+"lat": 47.175822,
+"lon": -122.466873,
+"dest": [
+"South 84th Street"
+],
+"m": 1233.47,
+"local": 128.0
+},
+{
+"st": "WA",
+"ref": "129",
+"n": 129,
+"lat": 47.1862991,
+"lon": -122.4633504,
+"dest": [
+"South 72nd Street",
+"South 72 Street, South 84 Street"
+],
+"m": 1234.47,
+"local": 129.0
+},
+{
+"st": "WA",
+"ref": "130",
+"n": 130,
+"lat": 47.2010738,
+"lon": -122.4614216,
+"dest": [
+"South 56th Street, University Place",
+"South 56th Street"
+],
+"m": 1235.47,
+"local": 130.0
+},
+{
+"st": "WA",
+"ref": "132",
+"n": 132,
+"lat": 47.2157546,
+"lon": -122.4627115,
+"dest": [
+"SR 16 West",
+"Gig Harbor, Bremerton, South 38th Street"
+],
+"m": 1237.47,
+"local": 132.0
+},
+{
+"st": "WA",
+"ref": "132A",
+"n": 132,
+"lat": 47.2310784,
+"lon": -122.455666,
+"dest": [
+"I 5 South",
+"South 38th Street, Tacoma Mall"
+],
+"m": 1238.17,
+"local": 132.7
+},
+{
+"st": "WA",
+"ref": "132B",
+"n": 132,
+"lat": 47.2305331,
+"lon": -122.4514767,
+"dest": [
+"SR 16 West",
+"Gig Harbor, Bremerton"
+],
+"m": 1238.28,
+"local": 132.81
+},
+{
+"st": "WA",
+"ref": "133",
+"n": 133,
+"lat": 47.2266723,
+"lon": -122.463041,
+"dest": [
+"I 705 North, SR 7 South",
+"City Center",
+"SR 7 South, I 705 North",
+"City Center, Tacoma Dome"
+],
+"m": 1238.47,
+"local": 133.0
+},
+{
+"st": "WA",
+"ref": "134",
+"n": 134,
+"lat": 47.2383551,
+"lon": -122.4166525,
+"dest": [
+"Portland Avenue"
+],
+"m": 1239.47,
+"local": 134.0
+},
+{
+"st": "WA",
+"ref": "135",
+"n": 135,
+"lat": 47.2388224,
+"lon": -122.4125142,
+"dest": [
+"SR 167 North",
+"Puyallup",
+"Puyallup, Portland Avenue"
+],
+"m": 1240.47,
+"local": 135.0
+},
+{
+"st": "WA",
+"ref": "136A",
+"n": 136,
+"lat": 47.2413881,
+"lon": -122.3898669,
+"dest": [
+"20th Street East"
+],
+"m": 1241.47,
+"local": 136.0
+},
+{
+"st": "WA",
+"ref": "136B",
+"n": 136,
+"lat": 47.2412239,
+"lon": -122.3866372,
+"dest": [
+"Port of Tacoma"
+],
+"m": 1241.57,
+"local": 136.1
+},
+{
+"st": "WA",
+"ref": "136",
+"n": 136,
+"lat": 47.2406979,
+"lon": -122.3752538,
+"dest": [
+"Port of Tacoma"
+],
+"m": 1241.91,
+"local": 136.44
+},
+{
+"st": "WA",
+"ref": "137",
+"n": 137,
+"lat": 47.2405864,
+"lon": -122.363,
+"dest": [
+"SR 99 North",
+"Fife,  54th Avenue East",
+"54th Avenue East, Fife"
+],
+"m": 1242.47,
+"local": 137.0
+},
+{
+"st": "WA",
+"ref": "138",
+"n": 138,
+"lat": 47.2481492,
+"lon": -122.3337774,
+"dest": [],
+"m": 1243.47,
+"local": 138.0
+},
+{
+"st": "WA",
+"ref": "142A",
+"n": 142,
+"lat": 47.2851849,
+"lon": -122.3078309,
+"dest": [
+"SR 18 East",
+"Auburn, Muckleshoot Reservation",
+"Auburn"
+],
+"m": 1247.47,
+"local": 142.0
+},
+{
+"st": "WA",
+"ref": "142B",
+"n": 142,
+"lat": 47.2884184,
+"lon": -122.306784,
+"dest": [
+"SR 18 West",
+"South 348th Street"
+],
+"m": 1247.59,
+"local": 142.12
+},
+{
+"st": "WA",
+"ref": "143",
+"n": 143,
+"lat": 47.3109178,
+"lon": -122.2989492,
+"dest": [
+"Federal Way, South 320th Street"
+],
+"m": 1248.47,
+"local": 143.0
+},
+{
+"st": "WA",
+"ref": "147",
+"n": 147,
+"lat": 47.3530272,
+"lon": -122.2958158,
+"dest": [
+"South 272nd Street"
+],
+"m": 1252.47,
+"local": 147.0
+},
+{
+"st": "WA",
+"ref": "149",
+"n": 149,
+"lat": 47.3856146,
+"lon": -122.2899995,
+"dest": [
+"SR 516 East",
+"Kent, Des Moines",
+"SR 516"
+],
+"m": 1254.47,
+"local": 149.0
+},
+{
+"st": "WA",
+"ref": "150",
+"n": 150,
+"lat": 47.4032823,
+"lon": -122.2922805,
+"dest": [],
+"m": 1255.47,
+"local": 150.0
+},
+{
+"st": "WA",
+"ref": "151",
+"n": 151,
+"lat": 47.4163304,
+"lon": -122.2895729,
+"dest": [
+"South 200th Street, Military Road"
+],
+"m": 1256.47,
+"local": 151.0
+},
+{
+"st": "WA",
+"ref": "152",
+"n": 152,
+"lat": 47.4286067,
+"lon": -122.2749088,
+"dest": [
+"South 188th Street, Orillia Road South",
+"South 188th Street, Orillia Road"
+],
+"m": 1257.47,
+"local": 152.0
+},
+{
+"st": "WA",
+"ref": "153",
+"n": 153,
+"lat": 47.453481,
+"lon": -122.2640848,
+"dest": [
+"Tukwila, Southcenter Parkway"
+],
+"m": 1258.47,
+"local": 153.0
+},
+{
+"st": "WA",
+"ref": "154A",
+"n": 154,
+"lat": 47.4642919,
+"lon": -122.2665502,
+"dest": [
+"I 405 North",
+"Renton"
+],
+"m": 1259.47,
+"local": 154.0
+},
+{
+"st": "WA",
+"ref": "154B",
+"n": 154,
+"lat": 47.4720895,
+"lon": -122.269129,
+"dest": [
+"SR 518",
+"Seattle-Tacoma International Airport, Southcenter, Southcenter Boulevard"
+],
+"m": 1260.32,
+"local": 154.85
+},
+{
+"st": "WA",
+"ref": "156",
+"n": 156,
+"lat": 47.4776742,
+"lon": -122.2710549,
+"dest": [
+"SR 599 North",
+"Tukwila",
+"Tukwila, Interurban Avenue"
+],
+"m": 1261.47,
+"local": 156.0
+},
+{
+"st": "WA",
+"ref": "157",
+"n": 157,
+"lat": 47.4994846,
+"lon": -122.2737557,
+"dest": [
+"Martin Luther King Way",
+"SR 900 East"
+],
+"m": 1262.47,
+"local": 157.0
+},
+{
+"st": "WA",
+"ref": "158",
+"n": 158,
+"lat": 47.5056214,
+"lon": -122.279706,
+"dest": [
+"East Marginal Way, Airport Way",
+"Boeing Access Road, East Marginal Way"
+],
+"m": 1263.47,
+"local": 158.0
+},
+{
+"st": "WA",
+"ref": "161",
+"n": 161,
+"lat": 47.5418981,
+"lon": -122.303539,
+"dest": [
+"Swift Avenue, Albro Place",
+"Albro Place, Swift Avenue"
+],
+"m": 1266.47,
+"local": 161.0
+},
+{
+"st": "WA",
+"ref": "162",
+"n": 162,
+"lat": 47.5488208,
+"lon": -122.3121706,
+"dest": [
+"Corson Avenue, Michigan Street"
+],
+"m": 1267.47,
+"local": 162.0
+},
+{
+"st": "WA",
+"ref": "163",
+"n": 163,
+"lat": 47.5665278,
+"lon": -122.3205139,
+"dest": [
+"West Seattle Bridge, Columbian Way, Port of Seattle"
+],
+"m": 1268.47,
+"local": 163.0
+},
+{
+"st": "WA",
+"ref": "163A",
+"n": 163,
+"lat": 47.5772954,
+"lon": -122.319676,
+"dest": [
+"West Seattle Bridge, Columbian Way"
+],
+"m": 1268.99,
+"local": 163.52
+},
+{
+"st": "WA",
+"ref": "163B",
+"n": 163,
+"lat": 47.5800558,
+"lon": -122.3193062,
+"dest": [
+"Forest Avenue, 6th Avenue South"
+],
+"m": 1269.13,
+"local": 163.66
+},
+{
+"st": "WA",
+"ref": "164A",
+"n": 164,
+"lat": 47.5871322,
+"lon": -122.320144,
+"dest": [
+"I 90 East, I 5 North",
+"Dearborn Street, James Street, Madison Street, Spokane"
+],
+"m": 1269.47,
+"local": 164.0
+},
+{
+"st": "WA",
+"ref": "164B",
+"n": 164,
+"lat": 47.5897829,
+"lon": -122.3206958,
+"dest": [
+"East Martinez Drive"
+],
+"m": 1269.6,
+"local": 164.13
+},
+{
+"st": "WA",
+"ref": "165",
+"n": 165,
+"lat": 47.6058628,
+"lon": -122.3286672,
+"dest": [
+"Seneca Street"
+],
+"m": 1270.47,
+"local": 165.0
+},
+{
+"st": "WA",
+"ref": "164",
+"n": 164,
+"lat": 47.6072293,
+"lon": -122.3302197,
+"dest": [
+"Bellevue, Spokane"
+],
+"m": 1270.6,
+"local": 165.13
+},
+{
+"st": "WA",
+"ref": "165A",
+"n": 165,
+"lat": 47.6105663,
+"lon": -122.3313755,
+"dest": [
+"James Street"
+],
+"m": 1270.86,
+"local": 165.39
+},
+{
+"st": "WA",
+"ref": "165B",
+"n": 165,
+"lat": 47.6132488,
+"lon": -122.3304551,
+"dest": [
+"Union Street"
+],
+"m": 1271.07,
+"local": 165.6
+},
+{
+"st": "WA",
+"ref": "166",
+"n": 166,
+"lat": 47.6132613,
+"lon": -122.3300279,
+"dest": [
+"Olive Way",
+"Stewart Street, Denny Way"
+],
+"m": 1271.47,
+"local": 166.0
+},
+{
+"st": "WA",
+"ref": "167",
+"n": 167,
+"lat": 47.619143,
+"lon": -122.3282363,
+"dest": [
+" Mercer Street, Seattle Center",
+"Mercer Street, Seattle Center"
+],
+"m": 1272.47,
+"local": 167.0
+},
+{
+"st": "WA",
+"ref": "168A",
+"n": 168,
+"lat": 47.6322503,
+"lon": -122.3241107,
+"dest": [
+"Lakeview Boulevard",
+"Boylston Avenue, Roanoke Street"
+],
+"m": 1273.47,
+"local": 168.0
+},
+{
+"st": "WA",
+"ref": "168B",
+"n": 168,
+"lat": 47.6385371,
+"lon": -122.3226326,
+"dest": [
+"SR 520",
+"Bellevue, Kirkland",
+"SR 520 East",
+"Montlake, Bellevue, Kirkland"
+],
+"m": 1273.58,
+"local": 168.11
+},
+{
+"st": "WA",
+"ref": "169",
+"n": 169,
+"lat": 47.6566543,
+"lon": -122.322316,
+"dest": [
+"Northeast 50th Street, Northeast 45th Street"
+],
+"m": 1274.47,
+"local": 169.0
+},
+{
+"st": "WA",
+"ref": "170",
+"n": 170,
+"lat": 47.6698218,
+"lon": -122.3217291,
+"dest": [
+"Ravenna Boulevard, Northeast 65th Street"
+],
+"m": 1275.47,
+"local": 170.0
+},
+{
+"st": "WA",
+"ref": "171",
+"n": 171,
+"lat": 47.6771411,
+"lon": -122.320418,
+"dest": [
+"SR 522",
+"Bothell, Lake City Way",
+"Northeast 71st Street, Northeast 65th Street"
+],
+"m": 1276.47,
+"local": 171.0
+},
+{
+"st": "WA",
+"ref": "172",
+"n": 172,
+"lat": 47.6860289,
+"lon": -122.3250493,
+"dest": [
+"North 85th Street, Aurora Avenue North",
+"North 85th Street, Northeast 80th Street"
+],
+"m": 1277.47,
+"local": 172.0
+},
+{
+"st": "WA",
+"ref": "173",
+"n": 173,
+"lat": 47.7036258,
+"lon": -122.3294124,
+"dest": [
+"Northgate Way, 1st Avenue Northeast",
+"North Seattle College"
+],
+"m": 1278.47,
+"local": 173.0
+},
+{
+"st": "WA",
+"ref": "174",
+"n": 174,
+"lat": 47.7198462,
+"lon": -122.324185,
+"dest": [
+"Northeast 130th Street, Roosevelt Way"
+],
+"m": 1279.47,
+"local": 174.0
+},
+{
+"st": "WA",
+"ref": "175",
+"n": 175,
+"lat": 47.7294461,
+"lon": -122.3241182,
+"dest": [
+"SR 523",
+"Northeast 145th Street",
+"Northeast 145th Street, 5th Avenue Northeast"
+],
+"m": 1280.47,
+"local": 175.0
+},
+{
+"st": "WA",
+"ref": "176",
+"n": 176,
+"lat": 47.7534145,
+"lon": -122.3301069,
+"dest": [
+"Northeast 175th Street",
+"Shoreline",
+"Shoreline, Shoreline Community College"
+],
+"m": 1281.47,
+"local": 176.0
+},
+{
+"st": "WA",
+"ref": "177",
+"n": 177,
+"lat": 47.7719471,
+"lon": -122.3201972,
+"dest": [
+"SR 104",
+"Edmonds, Lake Forest Park"
+],
+"m": 1282.47,
+"local": 177.0
+},
+{
+"st": "WA",
+"ref": "178",
+"n": 178,
+"lat": 47.7802936,
+"lon": -122.317071,
+"dest": [
+"236th Street Southwest",
+"Mountlake Terrace"
+],
+"m": 1283.47,
+"local": 178.0
+},
+{
+"st": "WA",
+"ref": "179",
+"n": 179,
+"lat": 47.7955928,
+"lon": -122.3153706,
+"dest": [
+"220th Street Southwest",
+"Mountlake Terrace"
+],
+"m": 1284.47,
+"local": 179.0
+},
+{
+"st": "WA",
+"ref": "181A",
+"n": 181,
+"lat": 47.8099783,
+"lon": -122.2992438,
+"dest": [
+"Lynnwood, 44th Avenue West"
+],
+"m": 1286.47,
+"local": 181.0
+},
+{
+"st": "WA",
+"ref": "181B",
+"n": 181,
+"lat": 47.817989,
+"lon": -122.2843095,
+"dest": [
+"SR 524",
+"196th Street Southwest"
+],
+"m": 1286.86,
+"local": 181.39
+},
+{
+"st": "WA",
+"ref": "181",
+"n": 181,
+"lat": 47.8312685,
+"lon": -122.2633037,
+"dest": [
+"SR 524",
+"196th Street Southwest",
+"Lynnwood, Brier, Edmonds Community College"
+],
+"m": 1287.46,
+"local": 181.99
+},
+{
+"st": "WA",
+"ref": "182",
+"n": 182,
+"lat": 47.8260768,
+"lon": -122.2690969,
+"dest": [
+"I 405 South",
+"Bellevue, Renton, Bothell, Kirkland"
+],
+"m": 1287.47,
+"local": 182.0
+},
+{
+"st": "WA",
+"ref": "183",
+"n": 183,
+"lat": 47.8434151,
+"lon": -122.258872,
+"dest": [
+"164th Street Southwest",
+"Alderwood Mall Parkway, 164th Street Southwest",
+"Mill Creek, Park & Ride"
+],
+"m": 1288.47,
+"local": 183.0
+},
+{
+"st": "WA",
+"ref": "186",
+"n": 186,
+"lat": 47.8790859,
+"lon": -122.2369323,
+"dest": [
+"SR 96 East",
+"128th Street Southwest"
+],
+"m": 1291.47,
+"local": 186.0
+},
+{
+"st": "WA",
+"ref": "189",
+"n": 189,
+"lat": 47.9072939,
+"lon": -122.210816,
+"dest": [],
+"m": 1294.47,
+"local": 189.0
+},
+{
+"st": "WA",
+"ref": "192",
+"n": 192,
+"lat": 47.9528589,
+"lon": -122.1991933,
+"dest": [
+"Broadway, 41st Street",
+"Everett City Center, Naval Station, Port of Everett",
+"41st Street, Evergreen Way"
+],
+"m": 1297.47,
+"local": 192.0
+},
+{
+"st": "WA",
+"ref": "193",
+"n": 193,
+"lat": 47.9730979,
+"lon": -122.1915747,
+"dest": [
+"Pacific Avenue",
+"City Center"
+],
+"m": 1298.47,
+"local": 193.0
+},
+{
+"st": "WA",
+"ref": "194",
+"n": 194,
+"lat": 47.9769267,
+"lon": -122.1903006,
+"dest": [
+"US 2 East",
+"Snohomish, Wenatchee",
+"Everett Avenue",
+"Wenatchee, Everett Station, Angel Of The Winds Arena"
+],
+"m": 1299.47,
+"local": 194.0
+},
+{
+"st": "WA",
+"ref": "195",
+"n": 195,
+"lat": 47.9875468,
+"lon": -122.1829607,
+"dest": [
+"Marine View Drive",
+"Everett Community College"
+],
+"m": 1300.47,
+"local": 195.0
+},
+{
+"st": "WA",
+"ref": "198",
+"n": 198,
+"lat": 48.0381765,
+"lon": -122.1784632,
+"dest": [
+"SR 529",
+"State Avenue"
+],
+"m": 1303.47,
+"local": 198.0
+},
+{
+"st": "WA",
+"ref": "199",
+"n": 199,
+"lat": 48.0488349,
+"lon": -122.1837001,
+"dest": [
+"SR 528 East",
+"Marysville",
+"Marysville, Tulalip"
+],
+"m": 1304.47,
+"local": 199.0
+},
+{
+"st": "WA",
+"ref": "200",
+"n": 200,
+"lat": 48.070432,
+"lon": -122.184644,
+"dest": [
+"88th Street Northeast, Quil Ceda Way"
+],
+"m": 1305.47,
+"local": 200.0
+},
+{
+"st": "WA",
+"ref": "202",
+"n": 202,
+"lat": 48.0958732,
+"lon": -122.184733,
+"dest": [
+"116th Street Northeast"
+],
+"m": 1307.47,
+"local": 202.0
+},
+{
+"st": "WA",
+"ref": "206",
+"n": 206,
+"lat": 48.1467645,
+"lon": -122.187684,
+"dest": [
+"SR 531",
+"172nd Street Northeast"
+],
+"m": 1311.47,
+"local": 206.0
+},
+{
+"st": "WA",
+"ref": "208",
+"n": 208,
+"lat": 48.1854347,
+"lon": -122.200462,
+"dest": [
+"SR 530 East",
+"Arlington, Darrington",
+"Arlington, Darrington, Sauk-Suiattle Reservation"
+],
+"m": 1313.47,
+"local": 208.0
+},
+{
+"st": "WA",
+"ref": "210",
+"n": 210,
+"lat": 48.2057564,
+"lon": -122.214081,
+"dest": [
+"236th Street Northeast"
+],
+"m": 1315.47,
+"local": 210.0
+},
+{
+"st": "WA",
+"ref": "212",
+"n": 212,
+"lat": 48.2356534,
+"lon": -122.2377813,
+"dest": [
+"SR 532 West",
+"Stanwood, Camano Island"
+],
+"m": 1317.47,
+"local": 212.0
+},
+{
+"st": "WA",
+"ref": "215",
+"n": 215,
+"lat": 48.2644532,
+"lon": -122.2645525,
+"dest": [
+"300th Street Northwest"
+],
+"m": 1320.47,
+"local": 215.0
+},
+{
+"st": "WA",
+"ref": "218",
+"n": 218,
+"lat": 48.3045934,
+"lon": -122.3116076,
+"dest": [
+"Starbird Road"
+],
+"m": 1323.47,
+"local": 218.0
+},
+{
+"st": "WA",
+"ref": "221",
+"n": 221,
+"lat": 48.3365941,
+"lon": -122.3343104,
+"dest": [
+"SR 534 East",
+"Lake McMurray"
+],
+"m": 1326.47,
+"local": 221.0
+},
+{
+"st": "WA",
+"ref": "224",
+"n": 224,
+"lat": 48.3774026,
+"lon": -122.3353547,
+"dest": [
+"Old Highway 99 South"
+],
+"m": 1329.47,
+"local": 224.0
+},
+{
+"st": "WA",
+"ref": "225",
+"n": 225,
+"lat": 48.3958118,
+"lon": -122.3303703,
+"dest": [
+"Anderson Road"
+],
+"m": 1330.47,
+"local": 225.0
+},
+{
+"st": "WA",
+"ref": "226",
+"n": 226,
+"lat": 48.4141185,
+"lon": -122.33151,
+"dest": [
+"SR 536 West",
+"Kincaid Street"
+],
+"m": 1331.47,
+"local": 226.0
+},
+{
+"st": "WA",
+"ref": "227",
+"n": 227,
+"lat": 48.4322187,
+"lon": -122.3410323,
+"dest": [
+"SR 538 East",
+"College Way"
+],
+"m": 1332.47,
+"local": 227.0
+},
+{
+"st": "WA",
+"ref": "229",
+"n": 229,
+"lat": 48.4473786,
+"lon": -122.3411272,
+"dest": [
+"George Hopper Road"
+],
+"m": 1334.47,
+"local": 229.0
+},
+{
+"st": "WA",
+"ref": "230",
+"n": 230,
+"lat": 48.4650098,
+"lon": -122.3415587,
+"dest": [
+"SR 20",
+"Anacortes,  Burlington",
+"Burlington, Anacortes"
+],
+"m": 1335.47,
+"local": 230.0
+},
+{
+"st": "WA",
+"ref": "231",
+"n": 231,
+"lat": 48.4823028,
+"lon": -122.3402257,
+"dest": [
+"SR 11 North",
+"Chuckanut Drive Bow,  Edison,  Burlington",
+"Chuckanut Drive, Burlington"
+],
+"m": 1336.47,
+"local": 231.0
+},
+{
+"st": "WA",
+"ref": "232",
+"n": 232,
+"lat": 48.5040435,
+"lon": -122.3370446,
+"dest": [
+"Cook Road,  Sedro-Woolley"
+],
+"m": 1337.47,
+"local": 232.0
+},
+{
+"st": "WA",
+"ref": "236",
+"n": 236,
+"lat": 48.5541326,
+"lon": -122.3502863,
+"dest": [
+"Bow-Edison,  Bow Hill Road"
+],
+"m": 1341.47,
+"local": 236.0
+},
+{
+"st": "WA",
+"ref": "240",
+"n": 240,
+"lat": 48.6176873,
+"lon": -122.354728,
+"dest": [
+"Alger"
+],
+"m": 1345.47,
+"local": 240.0
+},
+{
+"st": "WA",
+"ref": "242",
+"n": 242,
+"lat": 48.644893,
+"lon": -122.3642038,
+"dest": [
+"Nulle Road, South Lake Samish"
+],
+"m": 1347.47,
+"local": 242.0
+},
+{
+"st": "WA",
+"ref": "246",
+"n": 246,
+"lat": 48.6882484,
+"lon": -122.3999237,
+"dest": [
+"North Lake Samish"
+],
+"m": 1351.47,
+"local": 246.0
+},
+{
+"st": "WA",
+"ref": "250",
+"n": 250,
+"lat": 48.7112673,
+"lon": -122.4754726,
+"dest": [
+"SR 11 South",
+"Old Fairhaven Parkway, Chuckanut Drive, Alaska Marine Highway",
+"Old Fairhaven Parkway,  Chuckanut Drive,  Alaska Marine Highway"
+],
+"m": 1355.47,
+"local": 250.0
+},
+{
+"st": "WA",
+"ref": "252",
+"n": 252,
+"lat": 48.7254574,
+"lon": -122.4736882,
+"dest": [
+"Samish Way, Western Washington University"
+],
+"m": 1357.47,
+"local": 252.0
+},
+{
+"st": "WA",
+"ref": "253",
+"n": 253,
+"lat": 48.7454382,
+"lon": -122.465782,
+"dest": [
+"Lakeway Drive"
+],
+"m": 1358.47,
+"local": 253.0
+},
+{
+"st": "WA",
+"ref": "254",
+"n": 254,
+"lat": 48.7536981,
+"lon": -122.4621888,
+"dest": [
+"Iowa Street, State Street",
+"State Street, Ohio Street"
+],
+"m": 1359.47,
+"local": 254.0
+},
+{
+"st": "WA",
+"ref": "255",
+"n": 255,
+"lat": 48.7685755,
+"lon": -122.4623612,
+"dest": [
+"SR 542 East",
+"Sunset Drive, Mount Baker"
+],
+"m": 1360.47,
+"local": 255.0
+},
+{
+"st": "WA",
+"ref": "256",
+"n": 256,
+"lat": 48.7818747,
+"lon": -122.4788825,
+"dest": [
+"SR 539",
+"SR 539 North",
+"Meridian Street, Bellis Fair - Mall Parkway"
+],
+"m": 1361.47,
+"local": 256.0
+},
+{
+"st": "WA",
+"ref": "257",
+"n": 257,
+"lat": 48.7836035,
+"lon": -122.4979416,
+"dest": [
+"Northwest Avenue"
+],
+"m": 1362.47,
+"local": 257.0
+},
+{
+"st": "WA",
+"ref": "258",
+"n": 258,
+"lat": 48.786603,
+"lon": -122.510541,
+"dest": [
+"Bakerview Road, Bellingham International Airport"
+],
+"m": 1363.47,
+"local": 258.0
+},
+{
+"st": "WA",
+"ref": "260",
+"n": 260,
+"lat": 48.8137213,
+"lon": -122.5445753,
+"dest": [
+"Slater Road,  Lummi Island"
+],
+"m": 1365.47,
+"local": 260.0
+},
+{
+"st": "WA",
+"ref": "262",
+"n": 262,
+"lat": 48.845218,
+"lon": -122.5740803,
+"dest": [
+"Main Street,  Ferndale City Center",
+"Main Street,  City Center"
+],
+"m": 1367.47,
+"local": 262.0
+},
+{
+"st": "WA",
+"ref": "263",
+"n": 263,
+"lat": 48.8551741,
+"lon": -122.5839951,
+"dest": [
+"Portal Way"
+],
+"m": 1368.47,
+"local": 263.0
+},
+{
+"st": "WA",
+"ref": "266",
+"n": 266,
+"lat": 48.8893467,
+"lon": -122.5923227,
+"dest": [
+"SR 548 North",
+"Grandview Road Custer",
+"Grandview Road"
+],
+"m": 1371.47,
+"local": 266.0
+},
+{
+"st": "WA",
+"ref": "270",
+"n": 270,
+"lat": 48.9329329,
+"lon": -122.6564495,
+"dest": [
+"Birch Bay, Lynden",
+"Lynden, Birch Bay"
+],
+"m": 1375.47,
+"local": 270.0
+},
+{
+"st": "WA",
+"ref": "274",
+"n": 274,
+"lat": 48.9726972,
+"lon": -122.720395,
+"dest": [
+"Peace Portal Drive, Semiahmoo"
+],
+"m": 1379.47,
+"local": 274.0
+},
+{
+"st": "WA",
+"ref": "275",
+"n": 275,
+"lat": 48.9845541,
+"lon": -122.7331845,
+"dest": [
+"SR 543 North",
+"H Street – Truck Customs"
+],
+"m": 1380.47,
+"local": 275.0
+},
+{
+"st": "WA",
+"ref": "276",
+"n": 276,
+"lat": 48.9958204,
+"lon": -122.7485772,
+"dest": [
+"SR 548 South",
+"Blaine City Center, Peace Arch State Park"
+],
+"m": 1381.47,
+"local": 276.0
+}
+]

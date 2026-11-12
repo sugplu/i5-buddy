@@ -1,0 +1,207 @@
+/* listen module: push-to-talk voice commands.
+   The listening panel drops from the top (the mic lives top right), which keeps the bottom of the screen free
+   for the app's toast. The reply caption sits right under the header while a spoken answer plays.
+   Night is the default; the day theme only changes the scrim. Tokens from app.css only. */
+
+/* header mic: same 42px look as Settings, with a 46px hit area */
+#micBtn{position:relative;color:var(--fg-2)}
+#micBtn::after{content:"";position:absolute;inset:-2px;border-radius:calc(var(--radius) - 2px)}
+#micBtn[aria-expanded="true"]{color:var(--accent)}
+
+/* ---------- overlay ---------- */
+.lsn{--ring:var(--accent);--ring-fg:var(--accent-fg);position:fixed;inset:0;z-index:23;display:flex;justify-content:center;align-items:flex-start;
+  padding:calc(env(safe-area-inset-top,0px) + 8px) max(10px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 10px) max(10px,env(safe-area-inset-left,0px));
+  animation:lsn-fade .16s ease-out}
+.lsn.out{opacity:0;transition:opacity .14s ease-in}
+.lsn-scrim{position:absolute;inset:0;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);touch-action:none}
+.lsn-scrim::before{content:"";position:absolute;inset:0;background:var(--bg);opacity:.84}
+:root[data-theme="light"] .lsn-scrim::before{background:var(--fg);opacity:.45}
+
+.lsn-panel{position:relative;width:100%;max-width:560px;max-height:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  background:var(--surface);color:var(--fg);border:1px solid var(--line);border-top:5px solid var(--ring);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:14px 16px 16px;display:grid;justify-items:center;gap:10px;text-align:center;animation:lsn-drop .22s cubic-bezier(.2,.8,.3,1)}
+.lsn-panel:focus{outline:none}
+.lsn-panel>*{min-width:0}
+/* head: the ring and what we heard; body: examples, answers or the command list (side by side on a phone on its side) */
+.lsn-head,.lsn-body{width:100%;min-width:0;display:grid;justify-items:center;gap:10px}
+.lsn-head>*,.lsn-body>*{min-width:0}
+
+/* state colors: yellow while listening, sign green when understood, muted when not, red on errors */
+.lsn[data-state="done"]{--ring:var(--sign);--ring-fg:var(--sign-fg)}
+.lsn[data-state="unknown"],.lsn[data-tone="soft"]{--ring:var(--muted);--ring-fg:var(--fg)}
+.lsn[data-tone="hard"]{--ring:var(--danger);--ring-fg:var(--sign-fg)}
+.lsn[data-mode="help"]{--ring:var(--sign);--ring-fg:var(--sign-fg)}
+
+/* ---------- the pulsing ring ---------- */
+.lsn-orb{position:relative;width:150px;height:150px;display:grid;place-items:center;flex:none;margin:2px 0 -2px}
+.lsn-orb::before{content:"";position:absolute;width:108px;height:108px;border-radius:50%;background:var(--ring);opacity:.16;transition:transform .18s ease-out}
+.lsn-wave{position:absolute;width:84px;height:84px;border-radius:50%;border:3px solid var(--ring);opacity:0;pointer-events:none}
+.lsn[data-state="listening"] .lsn-wave{animation:lsn-wave 2.1s cubic-bezier(.15,.6,.35,1) infinite}
+.lsn[data-state="listening"] .lsn-wave:nth-of-type(2){animation-delay:.7s}
+.lsn[data-state="listening"] .lsn-wave:nth-of-type(3){animation-delay:1.4s}
+.lsn[data-hear] .lsn-wave{animation-duration:1.15s!important}
+.lsn-core{position:relative;width:84px;height:84px;border-radius:50%;border:0;padding:0;background:var(--ring);color:var(--ring-fg);
+  display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .15s ease-out,background-color .2s,opacity .2s}
+.lsn-core .ic{width:38px;height:38px;display:none}
+.lsn-core[data-icon="mic"] .ic-mic,.lsn-core[data-icon="ok"] .ic-ok,.lsn-core[data-icon="q"] .ic-q,.lsn-core[data-icon="off"] .ic-off{display:block}
+.lsn-core:active{transform:scale(.95)}
+.lsn-core:disabled{cursor:default}
+.lsn[data-state="starting"] .lsn-core,.lsn[data-state="waiting"] .lsn-core{opacity:.6}
+.lsn[data-state="unknown"] .lsn-core,.lsn[data-tone="soft"] .lsn-core{background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--line)}
+.lsn[data-state="done"] .lsn-orb::before{opacity:.22}
+.lsn-orb.bump::before{transform:scale(1.13)}
+.lsn-orb.bump .lsn-core{transform:scale(1.05)}
+.lsn[data-mode="help"] .lsn-orb{width:84px;height:84px;margin:0}
+.lsn[data-mode="help"] .lsn-orb::before{display:none}
+.lsn[data-mode="help"] .lsn-core{width:64px;height:64px}
+.lsn[data-mode="help"] .lsn-core .ic{width:30px;height:30px}
+.lsn[data-mode="answer"] .lsn-orb{width:124px;height:124px}
+.lsn[data-mode="answer"] .lsn-orb::before{width:92px;height:92px}
+.lsn[data-mode="answer"] .lsn-wave,.lsn[data-mode="answer"] .lsn-core{width:72px;height:72px}
+.lsn[data-mode="answer"] .lsn-core .ic{width:32px;height:32px}
+
+/* ---------- words ---------- */
+.lsn-title{margin:0;font-size:1.45rem;line-height:1.15;font-weight:900;text-wrap:balance;max-width:24ch;overflow-wrap:break-word}
+.lsn-said{margin:0;font-size:1.2rem;font-weight:700;line-height:1.3;color:var(--fg);max-width:30ch;overflow-wrap:anywhere}
+.lsn-said:empty{display:none}
+.lsn-said .int,.lsn-said.is-int{color:var(--muted)}
+.lsn-hint{margin:0;color:var(--muted);font-size:.92rem;line-height:1.35;max-width:34ch}
+.lsn-hint:empty{display:none}
+.lsn[data-state="unknown"] .lsn-hint{color:var(--fg-2);font-weight:700}
+.lsn-q{margin:0;color:var(--fg-2);font-weight:700;max-width:36ch}
+
+/* ---------- examples ---------- */
+.lsn-try{width:100%;display:grid;gap:10px;justify-items:center;margin-top:4px;padding-top:12px;border-top:1px solid var(--line);transition:opacity .2s}
+.lsn-sub{margin:0;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.lsn-exs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.lsn-ex{min-height:44px;padding:9px 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font-weight:700;font-size:.92rem;line-height:1.2}
+.lsn-ex:active,.lsn-cmd:active,.lsn-choice:active{transform:translateY(1px)}
+.lsn-all{min-height:44px;padding:6px 12px}
+.lsn[data-state="done"] .lsn-try{opacity:.35;pointer-events:none}
+
+/* ---------- buttons ---------- */
+.lsn-acts{width:100%;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px;margin-top:2px}
+.lsn-acts button{min-height:50px}
+/* the command list is long: keep Talk and Close in reach while it scrolls */
+.lsn[data-mode="help"] .lsn-acts{position:sticky;bottom:-16px;z-index:1;margin:0 -16px -16px;padding:12px 16px 16px;width:auto;justify-self:stretch;
+  background:var(--surface);border-top:1px solid var(--line)}
+
+/* ---------- trivia answers ---------- */
+.lsn-choices{width:100%;list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lsn-choice{width:100%;display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px 8px 8px;border-radius:calc(var(--radius) - 2px);
+  border:2px solid var(--line);background:var(--surface-2);color:var(--fg);text-align:left;font-weight:700;font-size:1rem;line-height:1.25}
+.lsn-choice b{flex:none;width:34px;height:34px;border-radius:calc(var(--radius) - 6px);display:grid;place-items:center;background:var(--fg);color:var(--bg);font-family:var(--mono);font-weight:700}
+.lsn-choice span{min-width:0;overflow-wrap:anywhere}
+.lsn-choice[aria-pressed="true"]{border-color:var(--sign)}
+.lsn-choice[aria-pressed="true"] b{background:var(--sign);color:var(--sign-fg)}
+.lsn-choice:disabled{cursor:default}
+.lsn[data-state="done"] .lsn-choice[aria-pressed="false"],.lsn[data-mode="answer"][data-state="unknown"] .lsn-choice,
+.lsn[data-mode="answer"][data-state="error"] .lsn-choice{opacity:.45}
+
+/* ---------- all commands ---------- */
+.lsn-help{width:100%;display:grid;gap:14px;text-align:left;margin-top:2px}
+.lsn-group{display:grid;gap:7px}
+.lsn-group .lsn-sub{padding-left:2px}
+.lsn-group ul{list-style:none;margin:0;padding:0;background:var(--surface-2);border:1px solid var(--line);border-radius:calc(var(--radius) - 2px);overflow:hidden}
+.lsn-group li+li{border-top:1px solid var(--line)}
+.lsn-cmd{width:100%;min-height:46px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border:0;background:none;color:var(--fg);font-weight:700;text-align:left;line-height:1.25}
+.lsn-cmd::after{content:"";flex:none;width:7px;height:7px;border-top:2px solid var(--link);border-right:2px solid var(--link);transform:rotate(45deg);margin-right:3px}
+
+/* ---------- the spoken reply, captioned under the header ---------- */
+.lsn-reply{position:fixed;z-index:13;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 66px);max-width:600px;margin:0 auto;
+  padding:0 max(14px,env(safe-area-inset-right,0px)) 0 max(14px,env(safe-area-inset-left,0px));pointer-events:none;animation:lsn-drop .22s ease-out}
+.lsn-reply-card{pointer-events:auto;display:flex;align-items:flex-start;gap:12px;background:var(--surface);color:var(--fg);border:1px solid var(--line);
+  border-left:5px solid var(--accent);border-radius:var(--radius);box-shadow:var(--shadow);padding:10px 2px 10px 12px}
+.lsn-eq{flex:none;display:flex;align-items:flex-end;gap:3px;height:18px;margin-top:4px}
+.lsn-eq i{width:4px;height:100%;border-radius:2px;background:var(--accent);transform-origin:50% 100%;transform:scaleY(.35)}
+.lsn-reply[data-speaking] .lsn-eq i{animation:lsn-eq .9s ease-in-out infinite}
+.lsn-reply[data-speaking] .lsn-eq i:nth-child(2){animation-delay:.15s}
+.lsn-reply[data-speaking] .lsn-eq i:nth-child(3){animation-delay:.3s}
+.lsn-reply-tx{flex:1;min-width:0;display:grid;gap:3px}
+.lsn-reply-q{font-size:.74rem;font-weight:800;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lsn-reply-a{margin:0;font-size:.98rem;line-height:1.42;color:var(--fg);max-height:9.9em;overflow-y:auto;overscroll-behavior:contain}
+.lsn-reply-x{flex:none;width:44px;height:44px;margin:-8px 0 -8px;border:0;background:none;color:var(--muted);display:grid;place-items:center;border-radius:calc(var(--radius) - 4px)}
+.lsn-reply-x svg{width:20px;height:20px}
+.lsn-reply-x:active{background:var(--surface-2)}
+
+@keyframes lsn-fade{from{opacity:0}}
+@keyframes lsn-drop{from{transform:translateY(-14px);opacity:0}}
+@keyframes lsn-wave{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.8);opacity:0}}
+@keyframes lsn-eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+
+/* trivia on a shorter phone: the four answers can push Cancel off screen, so it stays pinned to the bottom,
+   and a smaller ring leaves room for the answers */
+@media (max-height:760px){
+  .lsn[data-mode="answer"] .lsn-acts{position:sticky;bottom:-16px;z-index:1;margin:0 -16px -16px;padding:10px 16px 16px;width:auto;justify-self:stretch;
+    background:var(--surface);border-top:1px solid var(--line)}
+  .lsn[data-mode="answer"] .lsn-panel,.lsn[data-mode="answer"] .lsn-head{gap:8px}
+  .lsn[data-mode="answer"] .lsn-orb{width:96px;height:96px;margin:0}
+  .lsn[data-mode="answer"] .lsn-orb::before{width:74px;height:74px}
+  .lsn[data-mode="answer"] .lsn-wave,.lsn[data-mode="answer"] .lsn-core{width:58px;height:58px}
+  .lsn[data-mode="answer"] .lsn-core .ic{width:28px;height:28px}
+  .lsn[data-mode="answer"] .lsn-title{font-size:1.3rem}
+}
+/* short screens: a smaller ring so Cancel stays in reach */
+@media (max-height:560px){
+  .lsn-panel{gap:8px;padding-top:10px}
+  .lsn-orb,.lsn[data-mode="answer"] .lsn-orb{width:96px;height:96px;margin:0}
+  .lsn-orb::before,.lsn[data-mode="answer"] .lsn-orb::before{width:74px;height:74px}
+  .lsn-wave,.lsn-core,.lsn[data-mode="answer"] .lsn-wave,.lsn[data-mode="answer"] .lsn-core{width:58px;height:58px}
+  .lsn-core .ic,.lsn[data-mode="answer"] .lsn-core .ic{width:28px;height:28px}
+  .lsn-title{font-size:1.25rem}
+  .lsn-try{padding-top:8px;gap:8px}
+  .lsn-q{font-size:.92rem}
+}
+@media (max-height:560px) and (min-width:520px){
+  .lsn-choices{grid-template-columns:1fr 1fr}
+  .lsn-choice{min-height:46px}
+}
+/* very short and narrow: one row of example chips that scrolls sideways, and the buttons pinned to the bottom */
+@media (max-height:440px) and (max-width:559px){
+  .lsn-orb,.lsn[data-mode="answer"] .lsn-orb{width:76px;height:76px}
+  .lsn-orb::before,.lsn[data-mode="answer"] .lsn-orb::before{width:62px;height:62px}
+  .lsn-wave,.lsn-core,.lsn[data-mode="answer"] .lsn-wave,.lsn[data-mode="answer"] .lsn-core{width:50px;height:50px}
+  .lsn-core .ic,.lsn[data-mode="answer"] .lsn-core .ic{width:24px;height:24px}
+  .lsn[data-mode="answer"] .lsn-orb,.lsn[data-mode="answer"] .lsn-hint{display:none}
+  .lsn-try{border-top:0;padding-top:0;margin-top:-2px;gap:6px}
+  .lsn-exs{width:100%;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:0 2px 2px}
+  .lsn-exs::-webkit-scrollbar{display:none}
+  .lsn-ex{flex:none}
+  .lsn-acts{position:sticky;bottom:-16px;z-index:1;margin:0 -16px -16px;padding:10px 16px 16px;width:auto;justify-self:stretch;
+    background:var(--surface);border-top:1px solid var(--line)}
+}
+/* a phone on its side: the ring and what we heard on the left; examples, answers or the commands and the buttons on
+   the right. The left side stays put while a long list scrolls, and the buttons stay pinned to the bottom. */
+@media (max-height:500px) and (min-width:560px){
+  .lsn{align-items:center}
+  .lsn-panel{max-width:780px;grid-template-columns:minmax(200px,5fr) minmax(0,7fr);grid-template-rows:auto 1fr;column-gap:20px;row-gap:10px;
+    align-items:start;padding:12px 16px 14px;border-top-width:4px}
+  .lsn-head{grid-column:1;grid-row:1 / span 2;align-self:start;position:sticky;top:0;gap:6px;padding-top:2px}
+  .lsn-body{grid-column:2;grid-row:1;gap:8px}
+  .lsn-acts,.lsn[data-mode="help"] .lsn-acts,.lsn[data-mode="answer"] .lsn-acts{grid-column:2;grid-row:2;align-self:end;position:sticky;bottom:-14px;z-index:1;
+    margin:0 0 -14px;padding:8px 0 14px;width:100%;justify-self:stretch;background:var(--surface);border-top:0}
+  .lsn-body[hidden]+.lsn-acts{grid-row:1 / span 2}
+  .lsn-orb,.lsn[data-mode="answer"] .lsn-orb,.lsn[data-mode="help"] .lsn-orb{width:96px;height:96px;margin:0}
+  .lsn-orb::before,.lsn[data-mode="answer"] .lsn-orb::before{width:72px;height:72px}
+  .lsn-wave,.lsn-core,.lsn[data-mode="answer"] .lsn-wave,.lsn[data-mode="answer"] .lsn-core,.lsn[data-mode="help"] .lsn-core{width:56px;height:56px}
+  .lsn-core .ic,.lsn[data-mode="answer"] .lsn-core .ic,.lsn[data-mode="help"] .lsn-core .ic{width:26px;height:26px}
+  .lsn-title{font-size:1.2rem}
+  .lsn-said{font-size:1.05rem}
+  .lsn-q{font-size:.9rem;line-height:1.35}
+  .lsn-try{margin-top:0;padding-top:0;border-top:0;gap:8px}
+  .lsn-exs{gap:6px}
+  .lsn-ex{padding:8px 12px;font-size:.88rem}
+  .lsn-choices{grid-template-columns:1fr 1fr;gap:6px}
+  .lsn-choice{min-height:46px;padding:6px 10px 6px 6px;font-size:.94rem}
+  .lsn-choice b{width:30px;height:30px}
+  .lsn-acts button{min-height:46px}
+  .lsn-help{margin-top:0;gap:10px}
+}
+
+/* app.css turns every animation off for reduced motion; show a still ring instead of a pulse */
+@media (prefers-reduced-motion:reduce){
+  .lsn[data-state="listening"] .lsn-wave{opacity:.45;transform:scale(1.3)}
+  .lsn[data-state="listening"] .lsn-wave:nth-of-type(2){opacity:.22;transform:scale(1.6)}
+  .lsn[data-state="listening"] .lsn-wave:nth-of-type(3){display:none}
+  .lsn-reply[data-speaking] .lsn-eq i{transform:scaleY(.8)}
+}

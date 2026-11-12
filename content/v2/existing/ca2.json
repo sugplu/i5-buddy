@@ -1,0 +1,206 @@
+{
+ "places": [
+  {
+   "mi": 71,
+   "name": "San Onofre nuclear plant",
+   "cat": "odd",
+   "side": "W",
+   "visible": true,
+   "where": "Basilone Rd exit",
+   "text": "Those two big round domes by the beach belong to the San Onofre nuclear power plant. A leak in new equipment shut it down in early 2012, and the owner decided in 2013 to close it for good. Crews have been taking it apart ever since, and the domes themselves are scheduled to come down, so they may not be here much longer.",
+   "src": "https://www.kpbs.org/news/environment/2025/12/16/demolishing-of-domes-next-up-as-decommissioning-of-san-onofre-nears-end"
+  },
+  {
+   "mi": 72,
+   "name": "La Cristianita",
+   "cat": "hist",
+   "side": "E",
+   "visible": false,
+   "where": "Cristianitos Rd exit",
+   "text": "Up Cristianitos Road, on July 22, 1769, a priest traveling with the Portola expedition baptized a dying Native child. It is remembered as the first Christian baptism in California. The Spanish named the spot Los Cristianitos, the little Christians, and that's where this road's name comes from.",
+   "src": "https://ohp.parks.ca.gov/ListedResources/Detail/562"
+  },
+  {
+   "mi": 75,
+   "name": "San Clemente",
+   "cat": "town",
+   "side": null,
+   "visible": true,
+   "where": "Avenida Palizada / Avenida Pico exits",
+   "text": "In 1925, a former Seattle mayor named Ole Hanson set out to build a Spanish Village by the Sea on empty hills halfway between Los Angeles and San Diego. His plan called for white plaster and red tile, and early buildings had to pass an architectural review. Notice how many white walls and red roofs are still climbing these hills.",
+   "src": "https://sanclementehistoricalsociety.org/the-legend-of-ole-hanson/"
+  },
+  {
+   "mi": 82,
+   "name": "Mission San Juan Capistrano",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Ortega Hwy (SR 74) exit",
+   "text": "Just west of the freeway is Mission San Juan Capistrano, founded in 1776. Its Great Stone Church took about nine years to build and collapsed in an earthquake in December 1812, killing around 40 people inside. The ruins were never rebuilt. The mission's small Serra Chapel is described as the oldest building in California still in use, and the mission is famous for its spring swallows.",
+   "src": "https://californiamissionsfoundation.org/mission-san-juan-capistrano/"
+  },
+  {
+   "mi": 83,
+   "name": "Putuidem village",
+   "cat": "hist",
+   "side": null,
+   "visible": false,
+   "where": "Junipero Serra Rd exit",
+   "text": "Long before the mission, this valley was home to the Acjachemen people. Their mother village, Putuidem, stood just off where I-5 runs now, about a mile north of the mission. It was lived in for about 600 years, from around the year 1200 until 1776, when people were moved to the mission.",
+   "src": "https://en.wikipedia.org/wiki/Putuidem"
+  },
+  {
+   "mi": 85,
+   "name": "Rancho Mission Viejo",
+   "cat": "farm",
+   "side": "E",
+   "visible": false,
+   "where": "Avery Pkwy / Crown Valley Pkwy exits",
+   "text": "In 1882, an Irish immigrant named Richard O'Neill went in with a partner to buy a huge ranch in this corner of California. His descendants still run part of it as a working cattle ranch, the largest left in Orange County. It also grows citrus and avocados, even as new neighborhoods have gone up around it.",
+   "src": "https://en.wikipedia.org/wiki/Rancho_Mission_Viejo,_California"
+  },
+  {
+   "mi": 88,
+   "name": "Saddleback",
+   "cat": "nature",
+   "side": "E",
+   "visible": true,
+   "where": "Oso Pkwy / La Paz Rd exits",
+   "text": "Look east for two peaks with a dip between them, like a saddle. That's Saddleback. The higher one, Santiago Peak, is 5,689 feet, the highest point in Orange County. The lower one is named for Helena Modjeska, a famous Polish stage actress who lived in a canyon below it in the late 1800s.",
+   "src": "https://en.wikipedia.org/wiki/Modjeska_Peak"
+  },
+  {
+   "mi": 103,
+   "name": "Orange County's orange groves",
+   "cat": "farm",
+   "side": null,
+   "visible": false,
+   "where": "Santa Ana area",
+   "text": "Around 1948, Orange County had more than 67,000 acres of Valencia oranges, over five million trees. The flat land you're crossing was almost all groves. A tree virus called Quick Decline and a flood of new homes ended that era, and by 2004 fewer than 100 acres of citrus were still being picked.",
+   "src": "https://www.orangecountyhistory.org/wp/?p=231"
+  },
+  {
+   "mi": 109,
+   "name": "Disneyland",
+   "cat": "odd",
+   "side": "W",
+   "visible": false,
+   "where": "Disney Way / Harbor Blvd exits",
+   "text": "Walt Disney built Disneyland on 160 acres of orange and walnut groves right next to this freeway. On opening day, July 17, 1955, traffic backed up about seven miles on the Santa Ana Freeway, which is the road you're on now. The park sits just southwest of the freeway, hidden behind its own berm.",
+   "src": "https://www.history.com/news/disneylands-disastrous-opening-day-60-years-ago"
+  },
+  {
+   "mi": 116,
+   "name": "Knott's chicken and boysenberries",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Beach Blvd (SR 39) exit, about 2 miles south",
+   "text": "Knott's Berry Farm started as a berry stand. In the early 1930s, Walter Knott rescued six scraggly plants from a local grower named Rudolph Boysen and grew them into the boysenberry. In 1934, his wife Cordelia served her first fried chicken dinners on her wedding china. That first day she sold eight of them, at 65 cents each, and a theme park grew up around the lines.",
+   "src": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm"
+  },
+  {
+   "mi": 125,
+   "name": "Oldest McDonald's",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Lakewood Blvd exit, at Florence Ave",
+   "text": "A short drive south, at Lakewood Boulevard and Florence Avenue in Downey, is the oldest McDonald's still operating. It opened in August 1953 with the original golden arches, and its sign shows Speedee, a little hamburger-headed chef who was the mascot before Ronald McDonald. There's a small museum next to the walk-up windows.",
+   "src": "https://sah-archipedia.org/node/82929"
+  },
+  {
+   "mi": 128,
+   "name": "The Citadel",
+   "cat": "odd",
+   "side": "E",
+   "visible": true,
+   "where": "Washington Blvd exit, Commerce",
+   "text": "That long wall that looks like an ancient palace is real 1929 architecture. It was built for the Samson Tire and Rubber Company and copies the palace of an Assyrian king, Sargon II. Tires were made here until 1978, and since 1990 it's been an outlet mall.",
+   "src": "https://en.wikipedia.org/wiki/Citadel_Outlets"
+  },
+  {
+   "mi": 134,
+   "name": "East Los Angeles Interchange",
+   "cat": "odd",
+   "side": null,
+   "visible": true,
+   "where": "I-10 / SR 60 / US 101 junctions",
+   "text": "You're driving through a tangle of ramps where four freeways meet. A 2008 count put more than half a million vehicles a day through its southern part, and it's often called the busiest freeway interchange in the world. Building it in the 1960s cut through the Boyle Heights neighborhood right around you.",
+   "src": "https://en.wikipedia.org/wiki/East_Los_Angeles_Interchange"
+  },
+  {
+   "mi": 135,
+   "name": "Philippe the Original",
+   "cat": "stop",
+   "side": "W",
+   "visible": false,
+   "where": "Cesar Chavez Ave exit, near Union Station",
+   "text": "A couple of miles west, near Union Station, Philippe's has been serving sandwiches since 1908. It claims to have invented the French dip, roast beef on a roll dipped in meat juice, though another downtown spot, Cole's, makes the same claim. The floor is still sprinkled with sawdust.",
+   "src": "https://en.wikipedia.org/wiki/Philippe%27s"
+  },
+  {
+   "mi": 136,
+   "name": "Yaanga and the Tongva",
+   "cat": "hist",
+   "side": "W",
+   "visible": false,
+   "where": "Main St / Broadway exits",
+   "text": "Near today's downtown, close to the Los Angeles River, stood Yaanga, believed to be the largest village of the Tongva people. The Tongva lived across more than 4,000 square miles they call Tovangar, the whole Los Angeles basin. When Spanish settlers founded the pueblo of Los Angeles beside Yaanga in 1781, the village was eventually pushed out.",
+   "src": "https://www.laalmanac.com/history/hi03ae.php"
+  }
+ ],
+ "zones": [
+  {
+   "from": 54,
+   "to": 72,
+   "label": "Camp Pendleton coast",
+   "text": "About 17 miles of open hills and beach with almost no buildings, because it's all Marine Corps training land. The hills are green after winter rains and golden by summer."
+  },
+  {
+   "from": 72,
+   "to": 90,
+   "label": "South Orange County hills",
+   "text": "Red-tile-roofed San Clemente gives way to the mission valley of San Juan Capistrano and the rolling ranch land below Saddleback. Cattle, citrus, and avocados are still raised on the old ranch east of the freeway."
+  },
+  {
+   "from": 90,
+   "to": 125,
+   "label": "Old orange-grove plain",
+   "text": "Wide flat land that was almost all orange groves into the 1940s, now Irvine, Santa Ana, Anaheim, and Buena Park. Saddleback rises behind you on clear days."
+  },
+  {
+   "from": 125,
+   "to": 150,
+   "label": "Los Angeles and the river",
+   "text": "Factories and rail yards give way to downtown's freeway tangle, then the Los Angeles River and Griffith Park's wild hills. Watch for herons in the soft-bottomed river past Elysian Park."
+  }
+ ],
+ "trivia": [
+  {
+   "mi": 116,
+   "q": "How many fried chicken dinners did Cordelia Knott serve on her very first day in 1934?",
+   "choices": [
+    "Eight",
+    "Fifty",
+    "One hundred",
+    "Five hundred"
+   ],
+   "answer": 0,
+   "why": "She served eight dinners at 65 cents each, and a theme park grew from there."
+  },
+  {
+   "mi": 125,
+   "q": "Who was the mascot on the sign at the oldest operating McDonald's in Downey?",
+   "choices": [
+    "Ronald McDonald",
+    "Grimace",
+    "Speedee",
+    "The Hamburglar"
+   ],
+   "answer": 2,
+   "why": "Speedee, a little hamburger-headed chef, was McDonald's mascot before Ronald."
+  }
+ ]
+}
