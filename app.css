@@ -228,3 +228,16 @@ body.glance .next h2{font-size:2rem}
 body.glance .big-btn{min-height:96px;font-size:1.15rem}
 @media (min-width:700px){ .next .count{font-size:2.8rem} }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Dominares brand touches (brand kit: emerald #00B070 marks, #2FD394 text on dark, #007A4D text on light) */
+:root{--dom:#2FD394;--dom-mark:#00B070}
+:root[data-theme="light"]{--dom:#007A4D;--dom-mark:#00B070}
+.byline{font-size:.75rem;color:var(--dom);text-decoration:none;letter-spacing:.02em}
+.byline:hover{text-decoration:underline}
+.made-by{display:flex;align-items:center;gap:12px;padding:12px;margin:6px 0 10px;border:1px solid var(--line);border-radius:12px;background:#000;color:#fff;text-decoration:none}
+.made-by .dom-mark{width:34px;height:30px;color:var(--dom-mark);flex:none}
+.made-by span{display:grid;gap:2px}
+.made-by b{font-size:.95rem;letter-spacing:.04em}
+.made-by small{font-size:.78rem;color:#2FD394}
+.moved{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:#000;color:#fff;border:1px solid #00B070;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.35}
+.moved a{color:#2FD394;font-weight:700}

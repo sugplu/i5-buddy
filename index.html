@@ -3,16 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>I-5 Buddy</title>
+<title>I-5 Buddy: the narrated California I-5 road-trip guide, by Dominares</title>
 <meta name="description" content="A road-trip buddy for all 797 miles of Interstate 5 in California, from the Mexico border to the Oregon line. It follows you by GPS and tells you about the orchards, history and landmarks you pass.">
 <meta name="theme-color" content="#0b6e3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="I-5 Buddy">
-<meta property="og:title" content="I-5 Buddy">
-<meta property="og:description" content="Your narrated road-trip guide to I-5 through California.">
-<meta property="og:image" content="icons/icon-512.png">
+<meta name="author" content="Dominares">
+<meta name="application-name" content="I-5 Buddy">
+<link rel="canonical" href="https://i5.dominares.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="I-5 Buddy by Dominares">
+<meta property="og:url" content="https://i5.dominares.org/">
+<meta property="og:title" content="I-5 Buddy, by Dominares">
+<meta property="og:description" content="Your narrated road-trip guide to I-5 through California. Free, works offline. i5.dominares.org">
+<meta property="og:image" content="https://i5.dominares.org/icons/icon-512.png">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"I-5 Buddy","url":"https://i5.dominares.org/","applicationCategory":"TravelApplication","operatingSystem":"Any (web app for iPhone, Android and desktop)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free narrated road-trip guide to all of Interstate 5 in California. It follows you by GPS and tells you about the orchards, history and landmarks you pass.","image":"https://i5.dominares.org/icons/icon-512.png","publisher":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"},"author":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"}}</script>
+<script>/* I-5 Buddy moved from sugplu.github.io to i5.dominares.org (2026-11-12). Send browsers there; installed copies get a notice instead. */
+(function(){var h=location.hostname;if(!/github\.io$/.test(h))return;var to="https://i5.dominares.org"+location.pathname.replace(/^\/i5-buddy/,"")+location.search+location.hash;var installed=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;if(!installed){location.replace(to);return}window.__i5Moved=to})();</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -189,12 +199,15 @@
   </div>
 
   <h3 class="sub">About</h3>
+  <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
+  <p class="fine">Share I-5 Buddy with anyone driving I-5: <b>i5.dominares.org</b></p>
   <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData. <span id="dataVersion"></span></p>
 </aside>
 
 <aside class="sheet" id="moreSheet" hidden aria-label="Details" role="dialog" aria-modal="true"></aside>
 
 <div class="toast" id="toast" role="status" hidden></div>
+<div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>
 <div class="update" id="updateBar" hidden>A new version is ready. <button class="link" id="updateBtn">Reload</button></div>
 </div>
 
@@ -208,6 +221,7 @@
   </symbol>
 </svg>
 
+<script>if(window.__i5Moved){var b=document.getElementById("movedBar");document.getElementById("movedLink").href=window.__i5Moved;b.hidden=false}</script>
 <script src="data/i5.js"></script>
 <script type="module" src="js/main.js"></script>
 <noscript>I-5 Buddy needs JavaScript turned on.</noscript>

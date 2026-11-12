@@ -357,6 +357,9 @@ function renderNext() {
       const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
     }
     card.append(stats);
+    const by = el("a", "byline", "I-5 Buddy is made by Dominares · i5.dominares.org");
+    by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener";
+    card.append(by);
     return;
   }
   // Nothing left this way, or GPS has us past an end of the road: the end-of-the-road card. (Past the end, the last

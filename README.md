@@ -4,7 +4,7 @@ A narrated road-trip buddy for all 797 miles of Interstate 5 in California, from
 Oregon line. It follows you by GPS and speaks up before each landmark ("In about 2 miles, on your right: …"), with a
 "Tell me more" story for each one, the landscape as it changes, the season's crops, and live road info.
 
-Live at **https://sugplu.github.io/i5-buddy/**. It's a phone web app (PWA): open the link, add it to the home screen,
+Live at **https://i5.dominares.org/** (made by Dominares). The Cloudflare Worker `i5-buddy` serves that address from this repo's GitHub Pages build, so a release is still just a push; the old https://sugplu.github.io/i5-buddy/ address forwards there. Worker source: `/Volumes/sugsair/dominares/i5-buddy-worker/`. It's a phone web app (PWA): open the link, add it to the home screen,
 and it works offline after that. No account, no tracking; everything stays on the phone.
 
 ## What it does

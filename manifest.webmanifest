@@ -1,7 +1,8 @@
 {
   "name": "I-5 Buddy",
   "short_name": "I-5 Buddy",
-  "description": "A narrated road-trip buddy for all 797 miles of I-5 in California, Mexico to Oregon. Follows you by GPS and tells you about the orchards, history and landmarks you pass.",
+  "description": "A narrated road-trip buddy for all 797 miles of I-5 in California, Mexico to Oregon. Follows you by GPS and tells you about the orchards, history and landmarks you pass. Made by Dominares.",
+  "developer": {"name": "Dominares", "url": "https://dominares.org/"},
   "start_url": "./",
   "scope": "./",
   "id": "./",
