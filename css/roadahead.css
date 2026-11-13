@@ -6,7 +6,7 @@ body.glance #roadAhead{display:none!important}
 .ra-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
 .ra-title{margin:0;font-size:1.1rem;font-weight:900;line-height:1.15;min-width:0}
 .ra-seg{display:inline-flex;flex:none;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);padding:2px}
-.ra-seg button{min-height:40px;padding:0 12px;border:0;border-radius:99px;background:none;color:var(--muted);font-weight:800;font-size:.82rem;white-space:nowrap}
+.ra-seg button{min-height:44px;padding:0 12px;border:0;border-radius:99px;background:none;color:var(--muted);font-weight:800;font-size:.82rem;white-space:nowrap}
 .ra-seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
 
 /* the three big numbers */
@@ -57,6 +57,7 @@ body.glance #roadAhead{display:none!important}
 .ra-wx .vis i{font-style:normal;font-size:1rem;line-height:1.1}
 .ra-wx .vis b{font:700 .7rem/1.2 var(--mono)}
 .ra-tr .vis{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);border:2px solid var(--surface);box-shadow:var(--shadow);font-weight:900;font-size:.8rem}
+.ra-warn{width:14px;height:14px;display:block}
 .ra-tr.severe .vis{background:var(--danger);color:var(--sign-fg)}
 .ra-pt[aria-pressed="true"] .vis{outline:3px solid var(--fg);outline-offset:1px}
 

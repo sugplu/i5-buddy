@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy Road ahead module test</title>
+<!--
+  Drives js/roadahead.js inside the real app. Results: bottom bar + console "[test-roadahead] ...".
+  ?s=      all (default) | view (leaves the chart for a screenshot; ?view=pre|north|south|trip|wx|selected, ?m= ?dir=)
+  ?theme=  dark | light       ?w= ?h=  iframe size (default 390 x 844)
+  Checks: the whole road before a trip (named climbs, the ends from the data), the next 50 miles in both directions
+  (profile order, top, steepest grade against the road data), the destination toggle, redraw only every half mile,
+  forecast chips and traffic markers (tap to read, clusters, direction, ramps left out), the ride marker (and falling back
+  to a dot), the screen-reader text, tokens-only CSS, touch targets and layout at 390 px.
+  The app loads as srcdoc with service-worker registration stubbed (see test-live.html).
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:390px;height:844px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search), SCEN = Q.get("s") || "all", THEME = Q.get("theme") || "dark";
+const f = document.getElementById("f");
+f.style.width = (+(Q.get("w") || 390)) + "px";
+f.style.height = (+(Q.get("h") || 844)) + "px";
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 6000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) throw new Error("timed out waiting"); await wait(step); }
+}
+const checks = [];
+function log(...a) { console.log("[test-roadahead] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); }
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + extra : ""}`); }
+function finish() {
+  const bad = checks.filter(c => !c[1]).length, bar = document.getElementById("bar");
+  bar.className = bad ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${THEME} · ${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  log(bad ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+const $ = (doc, sel) => doc.querySelector(sel);
+
+async function boot() {
+  localStorage.clear();
+  localStorage.setItem("i5b:settings", JSON.stringify({ live: false, theme: THEME, narr: false }));
+  const html = await (await fetch("../index.html", { cache: "no-store" })).text();
+  const stub = `<base href="${new URL("../", location.href).href}"><script>try{Object.defineProperty(navigator.serviceWorker,"register",{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}<\/script>`;
+  f.srcdoc = html.replace(/<head>/i, "<head>" + stub);
+  await until(() => f.contentDocument && f.contentDocument.readyState === "complete" && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api.roadahead, 20000);
+  await wait(200);
+  const win = f.contentWindow, doc = f.contentDocument, api = win.I5BUDDY.api;
+  api.settings.theme = THEME; doc.documentElement.dataset.theme = THEME;
+  return { win, doc, api };
+}
+const NAV = (win, name, value) => Object.defineProperty(win.navigator, name, { configurable: true, value, writable: true });
+
+const SCENARIOS = {
+  async all({ win, doc, api }) {
+    const R = () => $(doc, "#roadAhead"), st = () => api.roadahead.state();
+    const D = api.data, E = D.ELEV, ENDS = D.ENDS;
+    const rd = () => api.roadahead;
+    const tile = n => txt(R().querySelectorAll(".ra-stat")[n]);
+    const pos = (m, dir = "N") => api.setPosition(m, { dir, speed: 63, jumped: true });
+    // --- before a trip: the whole road
+    check("Road ahead is shown on the Drive tab before a trip", !R().hidden && R().firstChild);
+    check("before a trip: the whole road, with no toggle", st().pre === true && /The whole road/.test(txt(R().querySelector(".ra-title"))) && R().querySelector(".ra-seg").hidden);
+    check("the big climbs are named", st().flags.length >= 2 && st().flags.some(f => /Tejon/.test(f.name || "")) && st().flags.every(f => f.ft > 1500), JSON.stringify(st().flags));
+    check("the ends come from the data", txt(R().querySelector(".ra-axis")).includes(ENDS.S.short) && txt(R().querySelector(".ra-axis")).includes(ENDS.N.short), txt(R().querySelector(".ra-axis")));
+    check("the top of the whole road is the highest mile in the data", st().top.ft === Math.max(...E), `${st().top.ft} vs ${Math.max(...E)}`);
+    check("no Canada, Washington or old mileage anywhere", !/Canad|Washington|1,381/.test(R().textContent), "");
+    check("a screen-reader summary names both ends", new RegExp(ENDS.S.long).test(txt(R().querySelector(".ra-sr"))) && new RegExp(ENDS.N.long).test(txt(R().querySelector(".ra-sr"))), txt(R().querySelector(".ra-sr")).slice(0, 200));
+    // --- the next 50 miles, northbound, toward the Tejon summit (mile 204)
+    pos(188, "N");
+    await wait(100);
+    const s = st();
+    log("northbound 188", s);
+    const sum = D.summitAhead(188, "N", 50);
+    check("50 miles in the direction of travel", s.mode === "near" && s.L === 50 && s.dir === "N");
+    check("the top is the same summit the road data finds", sum && s.top.ft === sum.ft && Math.abs(s.top.d - (sum.m - 188)) <= 1.01, JSON.stringify([s.top, sum]));
+    check("the summit has its name", /Tejon Pass/.test(s.top.name || ""), String(s.top.name));
+    // independent grade: feet per mile / 5280 over 3 miles, from the elevation list
+    const el = x => { const i = Math.floor(x), f = x - i; return E[i] + (E[Math.min(E.length - 1, i + 1)] - E[i]) * f; };
+    let gmax = 0;
+    for (let t = 0; t <= 50; t++) { const a = Math.max(0, t - 1.5), b = Math.min(50, t + 1.5); gmax = Math.max(gmax, Math.abs((el(188 + b) - el(188 + a)) / ((b - a) * 5280) * 100)); }
+    check("the steepest grade matches the elevation data (within 0.7 point)", s.steep && Math.abs(s.steep.pct - gmax) < 0.7, `${s.steep && s.steep.pct.toFixed(2)} vs ${gmax.toFixed(2)}`);
+    check("a 7% grade reads as steep: the steepest is the descent off the summit", s.steep.kind === "descent" && s.steep.pct >= 6, JSON.stringify(s.steep));
+    check("big numbers: Climb, Top, Steepest", /^CLIMB\s*[\d,]+\s*ft/.test(tile(0)) && /^TOP\s*4,186\s*ft\s*in 1[5-7] mi/.test(tile(1)) && /^STEEPEST\s*[67]%\s*descent in \d+ mi/.test(tile(2)), [tile(0), tile(1), tile(2)].join(" | "));
+    check("climb is plausible: more than the rise to the summit minus noise", s.climb > 900 && s.climb < 3000, String(s.climb));
+    check("a flag at the summit says its height", [...R().querySelectorAll(".ra-flag")].some(f => /4,186 ft/.test(txt(f))), [...R().querySelectorAll(".ra-flag")].map(txt).join("|"));
+    check("grade labels read like '7% grade, 6 mi'", [...R().querySelectorAll(".ra-grade")].some(g => /▼ \d+% grade, \d+ mi/.test(txt(g))), [...R().querySelectorAll(".ra-grade")].map(txt).join("|"));
+    check("the chart has a filled profile, tinted bands and a colored line", R().querySelectorAll(".ra-b").length >= 2 && R().querySelectorAll(".ra-seg").length >= 2 && !!R().querySelector(".ra-line"));
+    check("the steepest bit is drawn very steep and the flat start easy", R().querySelector(".ra-b3, .ra-b2") && R().querySelector(".ra-b0"));
+    check("your position is a dot (no rides module)", !!R().querySelector(".ra-me i") && !R().querySelector(".ra-me.ride"));
+    // profile order: southbound runs toward lower miles
+    const pn = rd()._profile(188, 1, 50), ps = rd()._profile(238, -1, 50);
+    check("northbound profile starts at your mile and climbs to the summit", pn.e[0] === D.elevAt(188) && pn.e.indexOf(Math.max(...pn.e)) === 16, String(pn.e.indexOf(Math.max(...pn.e))));
+    check("southbound profile starts at your mile and runs toward lower miles", ps.e[0] === D.elevAt(238) && ps.e.indexOf(Math.max(...ps.e)) === 34 && ps.e[50] === D.elevAt(188), `${ps.e.indexOf(Math.max(...ps.e))} ${ps.e[50]} ${D.elevAt(188)}`);
+    pos(238, "S");
+    await wait(100);
+    check("southbound from mile 238: the top is the same summit, 34 miles on", st().dir === "S" && st().top.ft === Math.max(...E) && Math.abs(st().top.d - 34) <= 1.01 && /in 3[345] mi/.test(tile(1)), `${JSON.stringify(st().top)} | ${tile(1)}`);
+    pos(560, "N");
+    await wait(100);
+    check("a flat stretch says it is gentle", st().steep === null && /Gentle/.test(tile(2)) && R().querySelectorAll(".ra-grade").length === 0, tile(2));
+    check("a flat stretch has no summit flag", R().querySelectorAll(".ra-flag").length === 0);
+    // --- the toggle
+    api.S.dest = { name: "Redding", m: 677 };
+    pos(188, "N");
+    await wait(100);
+    const seg = R().querySelector(".ra-seg");
+    check("with a destination ahead the toggle offers it", !seg.hidden && /Next 50 mi/.test(txt(seg)) && /To Redding/.test(txt(seg)), txt(seg));
+    const bTrip = [...seg.querySelectorAll("button")].find(b => /To Redding/.test(b.textContent));
+    bTrip.click();
+    await wait(100);
+    check("the whole trip: from your mile to the destination", st().mode === "trip" && Math.abs(st().L - (677 - 188)) < 0.01 && /Redding/.test(txt(R().querySelector(".ra-axis"))) && [...seg.querySelectorAll("button")][1].getAttribute("aria-pressed") === "true", JSON.stringify([st().mode, st().L]));
+    check("and the choice is remembered", JSON.parse(localStorage.getItem("i5b:roadahead:mode")) === "trip");
+    check("the whole trip still names its summit", st().flags.some(f => /Tejon/.test(f.name || "")));
+    [...seg.querySelectorAll("button")][0].click();
+    await wait(100);
+    check("back to the next 50 miles", st().mode === "near" && st().L === 50);
+    api.S.dest = null;
+    pos(188, "N");
+    await wait(100);
+    check("without a destination the toggle goes to the end of the road", /To (Oregon|the end)/.test(txt(R().querySelector(".ra-seg"))), txt(R().querySelector(".ra-seg")));
+    pos(770, "N");
+    await wait(100);
+    check("near the end of the road the toggle goes away and the chart stops at the end", R().querySelector(".ra-seg").hidden && Math.abs(st().L - (D.MAX_M - 770)) < 0.01, `${st().L} vs ${D.MAX_M - 770}`);
+    // --- redraw every half mile, not on every fix
+    pos(300, "N");
+    await wait(100);
+    let r0 = st().renders;
+    api.setPosition(300.2, { dir: "N", speed: 63 });
+    api.setPosition(300.4, { dir: "N", speed: 63 });
+    check("moves under half a mile do not redraw", st().renders === r0, `${st().renders} vs ${r0}`);
+    api.setPosition(300.6, { dir: "N", speed: 63 });
+    check("half a mile does", st().renders === r0 + 1, `${st().renders} vs ${r0}`);
+    api.setPosition(300.7, { dir: "N", speed: 63 });
+    check("and the count restarts from there", st().renders === r0 + 1);
+    api.setPosition(300.7, { dir: "S", speed: 63 });
+    check("turning around redraws at once", st().renders === r0 + 2 && st().dir === "S");
+    pos(188, "N");
+    await wait(100);
+    // --- forecasts and traffic only with live info on
+    check("live info off: no forecast chips and no traffic markers", !R().querySelector(".ra-wx") && !R().querySelector(".ra-tr"));
+    api.settings.live = true; api.saveSettings();
+    api.live.weatherAlong = () => [{ m: 203, d: 15, city: "Lebec", tempF: 41, short: "Rain And Snow Showers Likely", icon: "🌨️", emoji: "🌨️" }, { m: 228, d: 40, city: "Bakersfield", tempF: 63, short: "Mostly Sunny", icon: "⛅", emoji: "⛅" }];
+    api.bus.emit("live:update", {});
+    await wait(100);
+    const chips = [...R().querySelectorAll(".ra-wx")];
+    check("two forecast chips with temperatures, left to right by distance", chips.length === 2 && /41°/.test(txt(chips[0])) && /63°/.test(txt(chips[1])) && parseFloat(chips[0].style.left) < parseFloat(chips[1].style.left), chips.map(txt).join("|"));
+    check("chips are real buttons at least 44 px", chips.every(c => c.tagName === "BUTTON" && c.getBoundingClientRect().width >= 43.5 && c.getBoundingClientRect().height >= 43.5));
+    chips[0].click();
+    await wait(60);
+    check("tapping a chip reads the forecast", /Near Lebec, about 15 miles ahead: 41°, rain and snow showers likely\./.test(txt(R().querySelector(".ra-read"))) && R().querySelector(".ra-read").classList.contains("sel"), txt(R().querySelector(".ra-read")));
+    R().querySelector(".ra-wx[aria-pressed=true]").click();
+    await wait(60);
+    check("tapping it again goes back to the summary", !R().querySelector(".ra-read").classList.contains("sel") && /Up [\d,]+ ft, down [\d,]+ ft/.test(txt(R().querySelector(".ra-read"))), txt(R().querySelector(".ra-read")));
+    const inc = (id, kind, title, m, extra = {}) => ({ id, kind, title, detail: "", m, dir: "N", d: m - 188, source: "chp", ...extra });
+    api.bus.emit("traffic", { incidents: [
+      inc("c1", "crash", "Crash", 207, { detail: "At Grapevine Rd" }),
+      inc("c2", "lane", "Lane closed", 207.4, { detail: "1 of 4 lanes", until: "6:59am Nov 13, 2026" }),
+      inc("c3", "hazard", "Hazard in the road", 225),
+      inc("c4", "crash", "Crash", 215, { dir: "S" }),
+      inc("c5", "closure", "Off-ramp closed", 210),
+      inc("c6", "crash", "Crash", 150),
+    ], updated: new Date().toISOString(), sources: { chp: true, caltrans: true } });
+    await wait(100);
+    const marks = [...R().querySelectorAll(".ra-tr")];
+    log("markers", marks.map(txt), marks.map(m => m.getAttribute("aria-label")));
+    check("incidents ahead in my direction: two markers (a cluster of two, and one more)", marks.length === 2 && st().traffic === 3 && st().clusters === 2, `${marks.length} ${st().traffic}`);
+    check("the other direction, a ramp closure and one behind me are left out", !marks.some(m => /Off-ramp|150/.test(m.getAttribute("aria-label"))) && st().traffic === 3);
+    check("the cluster shows its count and a crash marker is danger red", txt(marks[0]) === "2" && marks[0].classList.contains("severe") && !marks[1].classList.contains("severe"));
+    check("markers are real buttons at least 44 px", marks.every(c => c.tagName === "BUTTON" && c.getBoundingClientRect().width >= 43.5 && c.getBoundingClientRect().height >= 43.5));
+    marks[0].click();
+    await wait(60);
+    const readTxt = txt(R().querySelector(".ra-read"));
+    check("tapping a marker shows the incident's words", /Crash, 19 mi ahead\. At Grapevine Rd/.test(readTxt) && /Lane closed/.test(readTxt) && /Until 6:59am Nov 13, 2026/.test(readTxt) && R().querySelector(".ra-tr[aria-pressed=true]"), readTxt);
+    check("it is announced politely", R().querySelector(".ra-read").getAttribute("aria-live") === "polite");
+    marks[0].click();
+    await wait(60);
+    api.bus.emit("traffic", { incidents: [], updated: new Date().toISOString(), sources: { chp: true, caltrans: true } });
+    await wait(60);
+    check("no incidents: no markers", !R().querySelector(".ra-tr"));
+    // --- your ride
+    api.ride = { svg: () => '<svg viewBox="0 0 10 10" id="fakeRide" aria-hidden="true"><rect width="10" height="10"/></svg>' };
+    api.bus.emit("ride", {});
+    await wait(60);
+    check("with the rides module you are your ride", !!R().querySelector(".ra-me.ride svg#fakeRide") && !R().querySelector(".ra-me i"));
+    api.ride = { svg: () => { const e = doc.createElementNS("http://www.w3.org/2000/svg", "svg"); e.id = "elRide"; return e; } };
+    api.bus.emit("ride", {});
+    await wait(60);
+    check("an element works too", !!R().querySelector(".ra-me.ride svg#elRide"));
+    api.ride = { svg: () => { throw new Error("broken ride"); } };
+    api.bus.emit("ride", {});
+    await wait(60);
+    check("a broken ride falls back to the dot", !!R().querySelector(".ra-me i") && !R().querySelector(".ra-me.ride"));
+    api.ride = undefined;
+    // --- screen readers
+    pos(188, "N");
+    await wait(100);
+    const sr = R().querySelector(".ra-sr"), srText = txt(sr), cs = win.getComputedStyle(sr);
+    log("sr", srText);
+    check("the summary is visually hidden but not removed", cs.position === "absolute" && parseFloat(cs.width) <= 1 && cs.display !== "none" && cs.visibility !== "hidden");
+    check("it says the same facts as the tiles", /northbound/.test(srText) && srText.includes("4,186 feet") && /Tejon Pass/.test(srText) && /steepest descent is a [67] percent grade/.test(srText) && /The steepest climb/.test(srText), srText);
+    check("the chart picture itself is hidden from screen readers (the text says it)", R().querySelector(".ra-svg").getAttribute("aria-hidden") === "true");
+    check("buttons have names", [...R().querySelectorAll("button")].every(b => (b.getAttribute("aria-label") || b.textContent).trim().length > 2));
+    // --- style and layout
+    const css = await (await fetch("../css/roadahead.css")).text();
+    const bare = css.replace(/\/\*[\s\S]*?\*\//g, "");
+    check("the stylesheet uses tokens only (no hex or rgb colors)", !/#[0-9a-fA-F]{3,8}\b|rgba?\(/.test(bare), (bare.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g) || []).join(" "));
+    check("it honors reduced motion", /prefers-reduced-motion:no-preference/.test(bare));
+    const small = [...R().querySelectorAll("button")].filter(b => b.offsetParent).map(b => [b, b.getBoundingClientRect()]).filter(([, q]) => q.height < 43.5 || q.width < 43.5);
+    check("touch targets are at least 44 px", !small.length, small.map(([b, q]) => `${txt(b)} ${Math.round(q.width)}x${Math.round(q.height)}`).join(", "));
+    check("no horizontal overflow in the card", R().scrollWidth <= R().clientWidth + 1, `${R().scrollWidth} vs ${R().clientWidth}`);
+    check("no em dashes or exclamation marks in the words", !/[—!]/.test(R().textContent), "");
+    // --- it never throws without the other modules (api.live missing)
+    const live = api.live; api.live = undefined;
+    api.settings.live = true;
+    api.bus.emit("live:update", {});
+    pos(200, "N");
+    await wait(60);
+    check("without api.live it still draws (no chips)", !R().querySelector(".ra-wx") && !R().hidden);
+    api.live = live;
+    check("tab switch back to Drive redraws if the position moved meanwhile", (() => { api.ui.go("map"); pos(260, "N"); const before = st().renders; api.ui.go("drive"); return st().renders > before || st().m0 === 260; })());
+  },
+  async view({ win, doc, api }) {
+    const v = Q.get("view") || "north";
+    const pos = (m, dir = "N") => api.setPosition(m, { dir, speed: 63, jumped: true });
+    api.ui.go("drive");
+    if (v !== "pre") pos(+(Q.get("m") || (v === "south" ? 238 : 188)), Q.get("dir") || (v === "south" ? "S" : "N"));
+    if (v === "trip") { api.S.dest = { name: "Redding", m: 677 }; pos(120, "N"); api.roadahead.setMode("trip"); }
+    if (v === "wx" || v === "selected") {
+      api.settings.live = true; api.saveSettings();
+      api.live.weatherAlong = () => [{ m: 203, d: 15, city: "Lebec", tempF: 41, short: "Rain And Snow Showers Likely", icon: "🌨️", emoji: "🌨️" }, { m: 228, d: 40, city: "Bakersfield", tempF: 63, short: "Mostly Sunny", icon: "⛅", emoji: "⛅" }];
+      api.bus.emit("traffic", { incidents: [{ id: "a", kind: "crash", title: "Crash", detail: "At Grapevine Rd", m: 207, dir: "N", d: 19 }, { id: "b", kind: "hazard", title: "Hazard in the road", detail: "", m: 223, dir: "N", d: 35 }], updated: new Date().toISOString(), sources: { chp: true, caltrans: true } });
+      if (v === "selected") { await wait(100); doc.querySelector(".ra-tr").click(); }
+    }
+    await wait(300);
+    doc.querySelector("#roadAhead").scrollIntoView();
+    check("view ready", true);
+  },
+};
+
+(async () => {
+  try {
+    const ctx = await boot();
+    await SCENARIOS[SCEN](ctx);
+    if (SCEN === "all") {
+      const de = ctx.doc.documentElement;
+      check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+    }
+  } catch (e) {
+    check("test ran", false, String((e && e.stack) || e).replace(/\n\s*/g, " | "));
+  }
+  finish();
+})();
+</script>
+</body>
+</html>

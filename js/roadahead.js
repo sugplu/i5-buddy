@@ -41,6 +41,12 @@ function sv(tag, attrs, cls) {
   for (const k in attrs || {}) e.setAttribute(k, String(attrs[k]));
   return e;
 }
+/** A small warning triangle (decorative). */
+function warnIcon() {
+  const i = sv("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", focusable: "false" }, "ra-warn");
+  i.append(sv("path", { d: "M12 2.6 1.4 20.8h21.2L12 2.6Zm-1.1 6.6h2.2v6.1h-2.2V9.2Zm0 7.7h2.2v2.2h-2.2v-2.2Z", fill: "currentColor", "fill-rule": "evenodd" }));
+  return i;
+}
 function warn(e) { try { console.warn("[roadahead]", (e && e.message) || e); } catch {} }
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const ft = n => `${Math.round(n).toLocaleString("en-US")} ft`;
@@ -386,7 +392,8 @@ function render(force) {
     b.type = "button";
     b.setAttribute("aria-pressed", String(sel === id));
     b.setAttribute("aria-label", c.items.length > 1 ? `${c.items.length} traffic incidents, first ${trWords(first)}` : trWords(first));
-    const v = el("span", "vis", c.items.length > 1 ? String(c.items.length) : "!");
+    const v = el("span", "vis");
+    if (c.items.length > 1) v.textContent = String(c.items.length); else v.append(warnIcon());
     b.append(v);
     b.addEventListener("click", () => select(id));
     ov.append(pos(b, c.x, lineY(clamp(first.x, 0, L))));
