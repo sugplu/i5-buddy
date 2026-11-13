@@ -514,7 +514,6 @@ export function init(a) {
     on("pos", () => { computeMotion(); });
     on("mode", () => { computeMotion(); maybeInviteSoon(); });
     on("tab", t => { if (t === "drive") maybeInviteSoon(); else dismissInvite(); });
-    on("ride", () => {});
     computeMotion();
     setTimeout(maybeInvite, 1800);
   } catch (e) { warn(e); }

@@ -311,8 +311,8 @@ function addScene(map, T, api, ses) {
       map.addLayer({
         id: "pins-" + t, type: "circle", source: "pins", minzoom: z, filter: ["==", ["get", "tier"], t],
         paint: {
-          "circle-color": colour, "circle-radius": ["interpolate", ["linear"], ["zoom"], 7, 4.5, 12, 8, 15, 10.5],
-          "circle-stroke-color": T.signFg, "circle-stroke-width": 2, "circle-pitch-alignment": "viewport",
+          "circle-color": colour, "circle-radius": ["interpolate", ["linear"], ["zoom"], 7, 3.5, 12, 6, 15, 8.5],
+          "circle-stroke-color": T.signFg, "circle-stroke-width": 1.8, "circle-pitch-alignment": "viewport",
         },
       });
     });
