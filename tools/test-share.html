@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy share module test</title>
+<!--
+  Drives js/share.js inside the real app. Results: bottom bar + console "[test-share] ...".
+  ?s=      all (default) | view (leaves the share sheet open for a screenshot; ?view=app|place|place-sheet)
+  ?theme=  dark | light       ?w= ?h=  iframe size (default 390 x 844)
+  Checks: the header button, Web Share (called with the exact data, a cancelled share does nothing, a failed or missing
+  one opens the sheet), the sheet (copy link, the invite message, Text message and Email links, copy fallback),
+  the Share button on a place sheet and what it shares, #place=<id> deep links (opens once, hash removed, unknown ids
+  and junk ignored), and the old-address redirect keeping the hash.
+  The app loads as srcdoc with service-worker registration stubbed (see test-live.html).
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:390px;height:844px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search), SCEN = Q.get("s") || "all", THEME = Q.get("theme") || "dark";
+const f = document.getElementById("f");
+f.style.width = (+(Q.get("w") || 390)) + "px";
+f.style.height = (+(Q.get("h") || 844)) + "px";
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 6000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) throw new Error("timed out waiting"); await wait(step); }
+}
+const checks = [];
+function log(...a) { console.log("[test-share] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); }
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + extra : ""}`); }
+function finish() {
+  const bad = checks.filter(c => !c[1]).length, bar = document.getElementById("bar");
+  bar.className = bad ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${THEME} · ${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  log(bad ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+const $ = (doc, sel) => doc.querySelector(sel);
+
+async function boot() {
+  localStorage.clear();
+  localStorage.setItem("i5b:settings", JSON.stringify({ live: false, theme: THEME, narr: false }));
+  const html = await (await fetch("../index.html", { cache: "no-store" })).text();
+  const stub = `<base href="${new URL("../", location.href).href}"><script>try{Object.defineProperty(navigator.serviceWorker,"register",{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}<\/script>`;
+  f.srcdoc = html.replace(/<head>/i, "<head>" + stub);
+  await until(() => f.contentDocument && f.contentDocument.readyState === "complete" && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api.share, 20000);
+  await wait(200);
+  const win = f.contentWindow, doc = f.contentDocument, api = win.I5BUDDY.api;
+  api.settings.theme = THEME; doc.documentElement.dataset.theme = THEME;
+  return { win, doc, api };
+}
+const NAV = (win, name, value) => Object.defineProperty(win.navigator, name, { configurable: true, value, writable: true });
+
+const SCENARIOS = {
+  async all({ win, doc, api }) {
+    const sheet = () => $(doc, "#shareSheet");
+    const open = () => sheet() && !sheet().hidden;
+    const APP = { title: "I-5 Buddy", text: "I-5 Buddy: a free narrated guide to I-5 in California.", url: "https://i5.dominares.org/" };
+    const INVITE = "I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/";
+    const btn = $(doc, "#shareBtn");
+    // --- the header button
+    check("share button is shown with an icon and a label", !btn.hidden && !!btn.querySelector("svg") && /Share/.test(btn.getAttribute("aria-label")));
+    const r = btn.getBoundingClientRect();
+    check("share button is at least 44 px", r.width >= 43.5 && r.height >= 43.5, `${Math.round(r.width)}x${Math.round(r.height)}`);
+    // --- Web Share: the exact data, and no sheet
+    const calls = [];
+    NAV(win, "share", async d => { calls.push(d); });
+    NAV(win, "canShare", () => true);
+    btn.click();
+    await wait(150);
+    check("Web Share is called once with the title, text and address", calls.length === 1 && JSON.stringify(calls[0]) === JSON.stringify(APP), JSON.stringify(calls));
+    check("and our sheet stays closed", !open());
+    // --- the user cancels: nothing more happens
+    NAV(win, "share", async () => { throw new win.DOMException("cancelled", "AbortError"); });
+    btn.click();
+    await wait(150);
+    check("a cancelled share (AbortError) does nothing more", !open() && $(doc, "#toast").hidden);
+    // --- it fails: our sheet opens
+    NAV(win, "share", async () => { throw new win.DOMException("no", "NotAllowedError"); });
+    btn.click();
+    await wait(250);
+    check("a failed share opens the sheet", open());
+    const sh = sheet();
+    const shText = txt(sh);
+    log("sheet", shText);
+    check("the sheet has Copy link, an invite message and three actions", /Copy link/.test(shText) && txt($(doc, "#shareMsg")) === INVITE && /Text message/.test(shText) && /Email/.test(shText) && /Copy message/.test(shText), shText);
+    check("the link shown is i5.dominares.org", /i5\.dominares\.org/.test(txt($(doc, ".sh-url"))) && !/https/.test(txt($(doc, ".sh-url"))));
+    const links = [...sh.querySelectorAll("a")];
+    const sms = links.find(a => /^sms:/.test(a.getAttribute("href"))), mail = links.find(a => /^mailto:/.test(a.getAttribute("href")));
+    check("Text message link is sms:?&body= with the invite", sms && sms.getAttribute("href") === "sms:?&body=" + encodeURIComponent(INVITE), sms && sms.getAttribute("href"));
+    check("Email link is mailto:?subject=&body= with the invite", mail && /^mailto:\?subject=[^&]+&body=/.test(mail.getAttribute("href")) && mail.getAttribute("href").endsWith("&body=" + encodeURIComponent(INVITE)), mail && mail.getAttribute("href"));
+    check("no em dashes and no exclamation marks in the sheet", !/[—!]/.test(shText), shText);
+    // --- copy
+    const copied = [];
+    NAV(win, "clipboard", { writeText: async t => { copied.push(t); } });
+    [...sh.querySelectorAll("button")].find(b => /Copy link/.test(b.textContent)).click();
+    await wait(200);
+    check("Copy link copies the address and says so", copied[0] === "https://i5.dominares.org/" && /Link copied/.test(txt($(doc, "#toast"))) && !$(doc, "#toast").hidden, `${copied[0]} · ${txt($(doc, "#toast"))}`);
+    [...sh.querySelectorAll("button")].find(b => /Copy message/.test(b.textContent)).click();
+    await wait(200);
+    check("Copy message copies the invite and says so", copied[1] === INVITE && /Message copied/.test(txt($(doc, "#toast"))), `${copied[1]} · ${txt($(doc, "#toast"))}`);
+    // clipboard missing: the old way, and when that fails too, honest words
+    NAV(win, "clipboard", undefined);
+    let execd = 0;
+    doc.execCommand = c => { execd++; return true; };
+    [...sh.querySelectorAll("button")].find(b => /Copy link/.test(b.textContent)).click();
+    await wait(200);
+    check("without the clipboard API it falls back to a copy command", execd === 1 && /Link copied/.test(txt($(doc, "#toast"))), `${execd} · ${txt($(doc, "#toast"))}`);
+    doc.execCommand = () => false;
+    [...sh.querySelectorAll("button")].find(b => /Copy link/.test(b.textContent)).click();
+    await wait(200);
+    check("if nothing can copy it says so plainly", /Couldn't copy/.test(txt($(doc, "#toast"))), txt($(doc, "#toast")));
+    // touch targets and layout
+    const small = [...sh.querySelectorAll("button, a")].filter(b => b.offsetParent).map(b => [b, b.getBoundingClientRect()]).filter(([, q]) => q.height < 43.5 || q.width < 43.5);
+    check("share sheet touch targets are at least 44 px", !small.length, small.map(([b, q]) => `${txt(b)} ${Math.round(q.width)}x${Math.round(q.height)}`).join(", "));
+    check("share sheet has no horizontal overflow", sh.scrollWidth <= sh.clientWidth + 1, `${sh.scrollWidth} vs ${sh.clientWidth}`);
+    [...sh.querySelectorAll("button")].find(b => /^Close$/.test(b.textContent)).click();
+    await wait(100);
+    check("Close closes the sheet", !open());
+    // --- no Web Share at all: the sheet opens straight away
+    NAV(win, "share", undefined);
+    btn.click();
+    await wait(250);
+    check("without Web Share the button opens the sheet", open());
+    api.ui.closeSheet();
+    // --- a place sheet gets a Share button
+    const p = api.data.PLACES.find(x => x.id === "ca309-kettleman") || api.data.PLACES.find(x => x.text && x.text.length > 60);
+    api.ui.placeSheet(p);
+    await wait(150);
+    const more = $(doc, "#moreSheet");
+    const act = [...more.querySelectorAll(".acts button")].find(b => /Share/.test(b.textContent));
+    check("a place sheet has a Share button next to Hear it", !!act && /Hear it/.test(txt(more.querySelector(".acts"))), txt(more.querySelector(".acts")));
+    const calls2 = [];
+    NAV(win, "share", async d => { calls2.push(d); });
+    act.click();
+    await wait(150);
+    const want = { title: p.name, text: api.share.placeLine(p), url: "https://i5.dominares.org/#place=" + encodeURIComponent(p.id) };
+    check("it shares the place name, one short line and its #place link", calls2.length === 1 && JSON.stringify(calls2[0]) === JSON.stringify(want), JSON.stringify(calls2[0]));
+    check("the line is one short sentence from the place's own text", want.text.length <= 142 && p.text.startsWith(want.text.replace(/…$/, "").slice(0, 30)) && !/[—!]/.test(want.text), want.text);
+    check("the place sheet stays open after a Web Share", !more.hidden);
+    NAV(win, "share", undefined);
+    act.click();
+    await wait(250);
+    check("without Web Share the place's own sheet opens", open() && new RegExp("Share " + p.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(txt($(doc, "#shareSheet .sheet-head"))) && txt($(doc, "#shareMsg")).includes("#place=" + p.id), txt($(doc, "#shareSheet")).slice(0, 200));
+    const smsP = [...sheet().querySelectorAll("a")].find(a => /^sms:/.test(a.getAttribute("href")));
+    check("its message has the name, the line and the link", decodeURIComponent(smsP.getAttribute("href")).includes(p.name) && decodeURIComponent(smsP.getAttribute("href")).includes("https://i5.dominares.org/#place=" + p.id));
+    api.ui.closeSheet();
+    // --- deep links
+    const target = api.data.PLACES.find(x => x.id !== p.id && x.name && x.m > 300 && x.m < 400);
+    win.location.hash = "#place=" + target.id;
+    await wait(400);
+    const mo = $(doc, "#moreSheet");
+    check("#place=<id> opens that place's sheet", !mo.hidden && txt(mo.querySelector(".sheet-head")).includes(target.name), txt(mo.querySelector(".sheet-head")));
+    check("and removes the hash so it opens once", !/place=/.test(win.location.hash), win.location.hash);
+    api.ui.closeSheet();
+    check("opening from the same address again does nothing", api.share.openFromHash() === false && mo.hidden);
+    win.location.hash = "#place=no-such-place-here";
+    await wait(300);
+    check("an unknown id is ignored", mo.hidden && !open());
+    win.location.hash = "#place=%E0%A4%A";
+    await wait(300);
+    check("a broken address is ignored", mo.hidden && !open());
+    win.location.hash = "#place=" + encodeURIComponent("<img src=x onerror=alert(1)>");
+    await wait(300);
+    check("junk characters in the id are ignored", mo.hidden && !open());
+    win.location.hash = "#something-else";
+    await wait(200);
+    check("other hashes are left alone", win.location.hash === "#something-else" && mo.hidden);
+    // --- the old-address redirect keeps the hash
+    const html = await (await fetch("../index.html")).text();
+    const redirect = (html.split("\n").find(l => /var h=location\.hostname/.test(l)) || "");
+    check("the old-address redirect forwards the #hash too", /github\\\.io/.test(redirect) && /location\.search\+location\.hash/.test(redirect), redirect.slice(0, 200));
+  },
+  async view({ win, doc, api }) {
+    const v = Q.get("view") || "app";
+    NAV(win, "share", undefined);
+    if (v === "app") $(doc, "#shareBtn").click();
+    else {
+      const p = api.data.PLACES.find(x => x.id === "ca309-kettleman") || api.data.PLACES[100];
+      api.ui.placeSheet(p);
+      await wait(150);
+      if (v === "place") [...$(doc, "#moreSheet").querySelectorAll(".acts button")].find(b => /Share/.test(b.textContent)).click();
+    }
+    await wait(500);
+    check("view ready", true);
+  },
+};
+
+(async () => {
+  try {
+    const ctx = await boot();
+    await SCENARIOS[SCEN](ctx);
+    if (SCEN === "all") {
+      const de = ctx.doc.documentElement;
+      check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+    }
+  } catch (e) {
+    check("test ran", false, String((e && e.stack) || e).replace(/\n\s*/g, " | "));
+  }
+  finish();
+})();
+</script>
+</body>
+</html>

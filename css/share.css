@@ -1,1 +1,21 @@
-/* css/share.css: placeholder from the 2.5.0 scaffold (tokens from app.css only). */
+/* Share (js/share.js): the header button, the fallback sheet and the Share button on place sheets. Only app.css tokens. */
+
+#shareBtn{min-width:44px;min-height:44px}
+#shareBtn svg{width:22px;height:22px}
+.share-act{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.share-ic{width:20px;height:20px;flex:none}
+
+.share-sheet .sh-sec{display:grid;gap:10px}
+.share-sheet .sub{margin:0}
+.sh-link{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:var(--radius);
+  background:var(--surface-2);border:1px solid var(--line)}
+.sh-url{min-width:0;font-family:var(--mono);font-weight:600;font-size:.88rem;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-copy{padding:10px 16px;min-height:48px;white-space:nowrap}
+.sh-msg{margin:0;padding:12px 14px;border-radius:var(--radius);background:var(--surface-2);border-left:5px solid var(--accent);color:var(--fg);line-height:1.45;overflow-wrap:anywhere;user-select:text;-webkit-user-select:text}
+.sh-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sh-acts .sh-btn:last-child{grid-column:1/-1}
+.sh-btn{display:grid;place-items:center;text-align:center;text-decoration:none;color:var(--fg);padding:12px 10px;min-height:50px}
+@media (min-width:420px){
+  .sh-acts{grid-template-columns:repeat(3,1fr)}
+  .sh-acts .sh-btn:last-child{grid-column:auto}
+}
