@@ -995,6 +995,8 @@ const SCENARIOS = {
     const trRows = [...doc.querySelectorAll("#liveBlock .lv-tr-row")];
     log("traffic rows", trRows.map(txt));
     check("Traffic ahead lists the incidents within 60 miles in my direction", trRows.length > 0 && trRows.length <= aheadN.length && (trRows.length === aheadN.length || trRows.length === 5), `${trRows.length} of ${aheadN.length}`);
+    const trBox = $(doc, ".lv-tr");
+    check("the Traffic ahead container is a labelled group, not a list (its children are buttons, not list items)", trBox.getAttribute("role") === "group" && trBox.getAttribute("aria-label") === "Traffic ahead" && !trBox.querySelector("[role=listitem]") && [...trBox.children].every(c => c.localName === "button"), trBox.getAttribute("role"));
     check("rows have distance, direction words and detail", trRows.every(r => /\d(\.\d)? mi|here/.test(txt(r)) && /Northbound lanes|Both directions/.test(txt(r))), txt(trRows[0]));
     check("no southbound-only incident shows going north", !/Southbound lanes/.test(txt($(doc, ".lv-trsec"))));
     check("a closure row shows its until time", [...doc.querySelectorAll(".lv-tr-row")].some(r => /until \d+:\d\d[ap]m/.test(txt(r))) || aheadN.every(i => !i.until));

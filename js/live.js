@@ -1433,7 +1433,7 @@ function buildBlock() {
   dom.trSec = section("lv-trsec", "Traffic ahead");
   dom.trSec.hidden = true;
   dom.trList = el("div", "lv-tr");
-  dom.trList.setAttribute("role", "list");
+  dom.trList.setAttribute("role", "group");          // the children are plain buttons, so not a "list" (it would promise listitems)
   dom.trList.setAttribute("aria-label", "Traffic ahead");
   dom.trMore = btn("lv-more", "", () => { trExpanded = !trExpanded; render(); });
   dom.trMore.hidden = true;
