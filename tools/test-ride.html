@@ -13,7 +13,8 @@
     picker   Settings > Your ride > Change: pick kind, colour, badge, nickname; saved in the store, "ride" bus events,
              survives a reload of the module, the Drive sign slot and the Settings row show it
     invite   the first-run invitation appears once, with Pick / Not now, and never again; it goes at once when the car moves,
-             the mode becomes gps or demo, or Start GPS or Demo drive is tapped, and it only shows with tracking off or by hand
+             the mode becomes gps or demo, or Start GPS or Demo drive is tapped, and it only shows with tracking off or by hand and
+             once there is a position (not on the welcome card)
     moving   no invitation while the car is moving or GPS is on, even stopped; by hand and still it shows, only once
     glance   (run with &w=375&h=780: a 360 px page) every landscape zone's name fits on the sign, in normal and glance mode
     motion   moving / idle / sleepy states on the slot and the "ride:state" event; reduced-motion rules exist in the CSS
@@ -257,6 +258,10 @@ async function sceneInvite(api, R, doc) {
   const slot = doc.getElementById("rideSlot");
   check("nothing saved yet: the default ride is on the sign", !!slot.querySelector("svg") && R.get().kind === "compact");
   await sleep(3200);
+  check("no position yet (the welcome card is up): no invitation, so Install app and Start GPS stay on the first screen", !doc.querySelector(".ride-invite") && api.store.get("rideInvited", false) !== true);
+  api.setPosition(300, { dir: "N", speed: 0, jumped: true });       // a position: the welcome card is gone
+  api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
+  await sleep(2500);
   const inv = doc.querySelector(".ride-invite");
   check("the first-run invitation shows while the car is parked", !!inv);
   if (inv) {
@@ -306,7 +311,7 @@ async function sceneMoving(api, R, doc) {
   api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
   await sleep(2500);
   check("stopped at a light with GPS still on: no invitation (it is for tracking off or by hand)", !doc.querySelector(".ride-invite") && api.store.get("rideInvited", false) !== true);
-  api.S.mode = "manual"; api.bus.emit("mode", "manual");
+  api.S.m = 100; api.S.mode = "manual"; api.bus.emit("mode", "manual");
   await sleep(2500);
   check("by hand and still: it shows now", !!doc.querySelector(".ride-invite"));
   check("... and is marked as shown", api.store.get("rideInvited", false) === true);

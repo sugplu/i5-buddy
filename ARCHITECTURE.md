@@ -283,7 +283,9 @@ car starts moving and then stop, so nothing endless moves beside the mile; the S
 eyelid on the headlight, floating "z z"); `prefers-reduced-motion` turns every animation off and the states still read from the
 art. "Moving" means GPS or demo with speed of at least 3 mph; "sleepy" means tracking is off, or it has been stopped for a
 minute. The first-run invitation ("Pick your ride? It rides along on the map." with Pick / Not now) appears once, under the
-sign, only while tracking is off or by hand (`S.mode` off or manual), the car is still and no sheet is open; the flag is
+sign, only while tracking is off or by hand (`S.mode` off or manual), the car is still, no sheet is open and there is a position
+(`S.m`; with none the welcome card is up, and an invitation in the flow would push its Install app and Start GPS below the tab bar of
+a short phone tab); the flag is
 `rideInvited` in the store. It goes away at once when the car moves (`isMoving()` or `S.speed` at least 3), when the mode becomes gps
 or demo, or when Start GPS or Demo drive is tapped. It is not modal and takes no focus.
 

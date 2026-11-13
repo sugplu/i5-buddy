@@ -472,6 +472,8 @@ function maybeInvite() {
     if (api.store.get(SEEN_KEY, false)) return;
     if (hasSaved()) { api.store.set(SEEN_KEY, true); return; }
     if (carBusy()) return;                               // only while tracking is off (or by hand) and the car is still
+    if (S().m == null) return;                           // no position yet: the welcome card is up, and its Install app and Start GPS
+                                                         // must stay on the first screen of a short phone tab (the card would push them down)
     if (sheetOpen()) return;
     const view = document.getElementById("view-drive");
     if (!view || view.hidden) return;
