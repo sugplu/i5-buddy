@@ -163,7 +163,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | listen.js | `#micBtn` (header button, hidden until supported); may append an overlay element to `document.body` |
 | roadahead.js | `#roadAhead` (Drive, under the look buttons) |
 | feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
-| share.js | `#shareBtn` (header button), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
+| share.js | `#shareBtn` (header button; css hides it below 380 px wide, where it wrapped the title), `#shareRow` (Settings > About, right after `#feedbackRow`: a "Share I-5 Buddy" button at every width), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
 | ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideInvite` (under the sign: the one-time "Pick your ride?"), `#rideRow` (Settings > Display), `#rideSheet` |
 
 ### Traffic, Road ahead, feedback and share (2.5.0)
@@ -216,7 +216,7 @@ If the sheet is closed and reopened while a send is still on its way, the answer
 run whichever form is showing: a reopened form that still holds the sent message shows the thanks, one the person has started
 changing keeps its new text (saved again as the draft) and gets its Send button back.
 
-**Share (js/share.js).** The header button uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
+**Share (js/share.js).** The header button (below 380 px wide it is hidden, and Settings > About's `#shareRow` button does the same at every width) uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
 without Web Share, or when it fails for any reason except the user cancelling (AbortError) or a share already being open
 (InvalidStateError, a double tap: nothing more happens), `#shareSheet` opens (copy link, invite message,
 Text message `sms:?&body=`, Email `mailto:`, Copy). A "Share" button is appended to each place sheet's `acts` through the

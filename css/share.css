@@ -2,6 +2,10 @@
 
 #shareBtn{min-width:44px;min-height:44px}
 #shareBtn svg{width:22px;height:22px}
+/* a 360 px phone has no room for it beside the title, the status line and the pill: Settings > About has the same button */
+@media (max-width:379px){#shareBtn{display:none}}
+.sh-row{gap:6px}
+.sh-open{width:100%}
 .share-act{display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .share-ic{width:20px;height:20px;flex:none}
 

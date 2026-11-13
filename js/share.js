@@ -1,5 +1,6 @@
-// I-5 Buddy sharing (module). Owns the header button #shareBtn, the sheet #shareSheet, the "Share" button it adds to
-// every place sheet (via the "place:sheet" bus event) and the #place=<id> deep links.
+// I-5 Buddy sharing (module). Owns the header button #shareBtn (hidden by css below 380 px wide), the "Share I-5 Buddy" button
+// in #shareRow (Settings > About, every width), the sheet #shareSheet, the "Share" button it adds to every place sheet (via
+// the "place:sheet" bus event) and the #place=<id> deep links.
 //
 //   Share I-5 Buddy   The header button uses the phone's own share sheet (Web Share). Without it, or when it fails
 //                     (anything but the user cancelling), #shareSheet opens: copy the link, "Invite a friend" with a ready
@@ -188,6 +189,17 @@ function close() {
   try { if (lastOpener && lastOpener.isConnected) lastOpener.focus({ preventScroll: true }); } catch {}
 }
 
+/* ---------- the row in Settings > About ---------- */
+function buildRow() {
+  const row = document.getElementById("shareRow");
+  if (!row) return;
+  row.replaceChildren();
+  row.classList.add("sh-row");
+  const b = btn("secondary share-act sh-open", "", () => { shareApp(); });
+  b.append(icon("share-ic"), document.createTextNode("Share I-5 Buddy"));
+  row.append(b);
+}
+
 /* ---------- a Share button on each place sheet ---------- */
 function onPlaceSheet(e) {
   try {
@@ -233,6 +245,7 @@ export function init(a) {
       b.hidden = false;
       b.addEventListener("click", () => { shareApp(); });
     }
+    buildRow();
     if (bus) bus.on("place:sheet", onPlaceSheet);
     window.addEventListener("hashchange", () => { openFromHash(); });
     api.share = { shareApp, sharePlace, openFromHash, placeLine, placeLink, placeIdFromHash };

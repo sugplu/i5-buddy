@@ -72,6 +72,40 @@ const SCENARIOS = {
     check("share button is shown with an icon and a label", !btn.hidden && !!btn.querySelector("svg") && /Share/.test(btn.getAttribute("aria-label")));
     const r = btn.getBoundingClientRect();
     check("share button is at least 44 px", r.width >= 43.5 && r.height >= 43.5, `${Math.round(r.width)}x${Math.round(r.height)}`);
+    // --- a 360 px phone: the header has no room for the button (it wrapped the title and squeezed the status line)
+    const brandB = $(doc, ".brand b"), statusT = $(doc, "#statusText");
+    const lineCount = n => { const r = doc.createRange(); r.selectNodeContents(n); return new Set([...r.getClientRects()].map(q => Math.round(q.top))).size; };
+    const widths = {};
+    for (const wpx of [390, 380, 379, 360]) {
+      f.style.width = wpx + "px";
+      await wait(120);
+      widths[wpx] = { shown: win.getComputedStyle(btn).display !== "none", title: lineCount(brandB), status: Math.round(statusT.getBoundingClientRect().width) };
+    }
+    log("header by width", widths);
+    check("the header Share button shows at 380 px and wider, and hides below that", widths[390].shown && widths[380].shown && !widths[379].shown && !widths[360].shown, JSON.stringify(widths));
+    check("at 360 px the I-5 Buddy title stays on one line and the status line has room", widths[360].title === 1 && widths[360].status >= 110, JSON.stringify(widths[360]));
+    f.style.width = "390px";
+    await wait(120);
+    // --- Settings > About has the same button, at every width
+    const shareRow = $(doc, "#shareRow");
+    check("Settings > About has a Share I-5 Buddy button right after Send feedback", !!shareRow && $(doc, "#feedbackRow").nextElementSibling === shareRow && /^Share I-5 Buddy$/.test(txt(shareRow.querySelector("button"))) && !!shareRow.querySelector("button svg"), txt(shareRow));
+    $(doc, "#openSettings").click();
+    await wait(300);
+    const rb = shareRow.querySelector("button"), rr = rb.getBoundingClientRect();
+    check("that button is at least 44 px tall", rr.height >= 43.5 && rr.width >= 43.5, `${Math.round(rr.width)}x${Math.round(rr.height)}`);
+    const callsR = [];
+    NAV(win, "share", async d => { callsR.push(d); });
+    NAV(win, "canShare", () => true);
+    rb.click();
+    await wait(150);
+    check("it shares the same title, text and address as the header button", callsR.length === 1 && JSON.stringify(callsR[0]) === JSON.stringify(APP), JSON.stringify(callsR));
+    NAV(win, "share", undefined);
+    rb.click();
+    await wait(250);
+    check("without Web Share it opens the share sheet", open());
+    api.ui.closeSheet();
+    api.ui.go("drive");
+    await wait(100);
     // --- Web Share: the exact data, and no sheet
     const calls = [];
     NAV(win, "share", async d => { calls.push(d); });
