@@ -1048,7 +1048,7 @@ const SCENARIOS = {
     const strip = [...doc.querySelectorAll("#liveAlerts .lv-al")].map(txt);
     log("strip with a warning and a crash", strip);
     check("a weather warning and a crash are both in the strip; traffic does not push the warning out", strip.some(r => /Winter Storm Warning/.test(r)) && strip.some(r => /^Crash, \d+ mi ahead/.test(r)), strip.join(" | ").slice(0, 300));
-    check("an advisory waits behind the red items", !strip.some(r => /^Wind Advisory/.test(r)) && /Show \d+ more/.test(txt($(doc, ".lv-more"))), strip.join(" | ").slice(0, 200));
+    check("the advisory comes after the red items, and a lone row is not hidden behind 'Show 1 more'", strip.length === 4 && /^Wind Advisory/.test(strip[3]) && strip.slice(0, 3).every(r => !/^Wind Advisory/.test(r)) && !$(doc, "#liveAlerts .lv-more"), strip.join(" | ").slice(0, 200));
     // --- a quiet stretch
     api.setPosition(300, { dir: "N", speed: 63, jumped: true });
     await wait(300);
@@ -1293,6 +1293,22 @@ const SCENARIOS = {
     const upd = T.parseAlert(alertsFor(710).features[0]);
     WSW.v = 1;
     check("parseAlert keeps the ids an update replaces", upd && upd.id === "urn:oid:mock.wsw.3" && upd.refs.join() === "urn:oid:mock.wsw.1,urn:oid:mock.wsw.2", upd && JSON.stringify(upd.refs));
+    // the alerts strip: which rows show before "Show N more" (a red row is never hidden)
+    {
+      const W = "warn", A = "adv", K = a => T.stripKeep(a.split(" ").filter(Boolean).map(x => (x === "R" ? W : A)));
+      check("strip cut: a yellow chain control first, then two red rows and an advisory: the second red row stays", K("Y R R Y") === 4, String(K("Y R R Y")));
+      check("strip cut: ... and with two more advisories the cut falls after the last red row", K("Y R R Y Y") === 3, String(K("Y R R Y Y")));
+      check("strip cut: all red rows are all shown", K("R R R R R") === 5 && K("R R R R") === 4, `${K("R R R R R")} ${K("R R R R")}`);
+      check("strip cut: one red row and three calm ones: two show, two wait", K("R Y Y Y") === 2 && K("R Y Y Y Y") === 2, `${K("R Y Y Y")} ${K("R Y Y Y Y")}`);
+      check("strip cut: a red row far down is reached", K("Y Y Y R Y Y") === 4 && K("Y Y Y Y Y R") === 6, `${K("Y Y Y R Y Y")} ${K("Y Y Y Y Y R")}`);
+      check("strip cut: three rows or fewer are never cut", K("Y Y Y") === 3 && K("R Y") === 2 && K("R") === 1 && K("") === 0);
+      let hid = 0;
+      for (let n = 0; n < 8; n++) for (let bits = 0; bits < (1 << n); bits++) {
+        const kinds = Array.from({ length: n }, (_, i) => (bits >> i & 1 ? W : A)), k = T.stripKeep(kinds);
+        if (k < n && (kinds.lastIndexOf(W) >= k || k < 2 || n - k < 2)) hid++;
+      }
+      check("strip cut: over every red/calm pattern up to 7 rows, no red row is ever hidden and no lone row hides behind the button", hid === 0, String(hid));
+    }
     // traffic: normalising, corridor snapping
     {
       const fxu = await trafficFixture();

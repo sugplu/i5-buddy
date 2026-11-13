@@ -1375,10 +1375,19 @@ function renderAlerts(groups, list, tlist = []) {
     $alerts.replaceChildren(box);
   }
   // more than three rows: show two, but never hide a red one (a warning, a crash, a closure, a chain control level 2)
-  const keep = Math.min(rows.length - 1, Math.max(2, rows.filter(r => r.kind === "warn").length));
-  const items = rows.length > 3 && !expanded ? rows.slice(0, keep) : rows;
-  if (rows.length > 3) items.push({ k: "more", more: true, n: rows.length - keep });
+  const keep = stripKeep(rows.map(r => r.kind));
+  const items = keep < rows.length && !expanded ? rows.slice(0, keep) : rows.slice();
+  if (keep < rows.length) items.push({ k: "more", more: true, n: rows.length - keep });
   sync(box, items, makeRow, updateRow);
+}
+/** How many alert rows show before "Show N more", given every row's kind in order ("warn" is red). At least two, and
+    never fewer than up to the LAST red row (a yellow chain control can come first, and every row can be red); one row
+    alone behind the button saves nothing, so that shows all. Pure. */
+function stripKeep(kinds) {
+  const lastRed = kinds.reduce((n, k, i) => (k === "warn" ? i + 1 : n), 0);
+  let keep = Math.max(2, lastRed);
+  if (keep >= kinds.length - 1) keep = kinds.length;
+  return keep;
 }
 function makeRow(it) {
   if (it.more) {
@@ -1996,5 +2005,5 @@ export function init(a) {
 
 // Pure helpers, exported for tools/test-live.html (plus camsSeen, the IntersectionObserver callback, which headless
 // test runs cannot always trigger by scrolling).
-export const _test = { parseTraffic, snapTraffic, trSpeech, trUrl, cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList,
+export const _test = { stripKeep, parseTraffic, snapTraffic, trSpeech, trUrl, cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList,
   camsSeen: entries => safe(camsSeen)(entries), camOnScreen: li => onScreen.has(li) };
