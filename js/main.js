@@ -352,6 +352,8 @@ function renderNext() {
     card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()),
       el("h2", null, `Your guide to all ${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`),
       el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. Tap Start GPS on the road, or take a demo drive from the couch.`));
+    const inst = el("div", "welcome-install"); inst.hidden = true; // Install app, or the iPhone tip (updateInstall)
+    card.append(inst);
     const stats = el("div", "welcome-stats");
     for (const [n, l] of [[PLACES.length, "landmarks"], [data.CAMS.length, "live cameras"], [data.SERVICES.length, "exits with services"]]) {
       const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
@@ -360,6 +362,7 @@ function renderNext() {
     const by = el("a", "byline", "I-5 Buddy is made by Dominares · i5.dominares.org");
     by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener";
     card.append(by);
+    updateInstall();
     return;
   }
   // Nothing left this way, or GPS has us past an end of the road: the end-of-the-road card. (Past the end, the last
@@ -637,7 +640,7 @@ function syncSettingsUI() {
   $("manN").setAttribute("aria-pressed", S.dir === "N"); $("manS").setAttribute("aria-pressed", S.dir === "S");
 }
 bus.on("voices", () => { if (!$("settings").hidden) syncSettingsUI(); });
-$("openSettings").onclick = () => { syncSettingsUI(); openSheet($("settings")); };
+$("openSettings").onclick = () => { syncSettingsUI(); updateInstall(); openSheet($("settings")); };
 $("closeSettings").onclick = closeSheet;
 $("voice").onchange = e => { settings.voice = e.target.value; saveSettings(); voice.unlock(); voice.say("This is how I'll sound on the road.", { now: true }); };
 $("rate").oninput = e => { settings.rate = +e.target.value; $("rateOut").textContent = settings.rate.toFixed(2).replace(/0$/, "") + "×"; saveSettings(); };
@@ -665,9 +668,56 @@ $("resetYes").onclick = () => {
   $("resetConfirm").hidden = true; toast("Passport cleared"); ribbonBuilt = false; queueRender();
 };
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
-const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
-$("installHint").textContent = standalone ? "Installed on this phone." :
-  /iphone|ipad/i.test(navigator.userAgent) ? "To install: tap Share, then Add to Home Screen." : "To install: open the browser menu and choose Install app or Add to Home screen.";
+
+/* ---------- install ---------- */
+// Chrome and Edge offer to install the app with a beforeinstallprompt event; index.html keeps it in window.__i5Install
+// (it can come before this module runs). While there is one, an Install app button shows in the welcome card and in
+// Settings. iPhone and iPad have no such offer, so the welcome card shows a one-line tip instead. Both go away once
+// the app is installed or is running as the installed app. Nothing is stored or sent anywhere.
+const IOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (/macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1); // iPadOS says Macintosh
+const APP_MODES = ["standalone", "fullscreen", "minimal-ui", "window-controls-overlay"];
+let installedHere = false; // the browser said "appinstalled" in this tab
+const runningInstalled = () => navigator.standalone === true || APP_MODES.some(m => matchMedia(`(display-mode: ${m})`).matches);
+const ICON_INSTALL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg>';
+const ICON_SHARE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.6 4.2 4.2-1.4 1.4L13 6.4V15h-2V6.4L9.2 8.2 7.8 6.8 12 2.6ZM5 10h4v2H7v8h10v-8h-2v-2h4v12H5V10Z" fill="currentColor"/></svg>';
+function updateInstall() {
+  const installed = installedHere || runningInstalled();
+  const offer = installed ? null : window.__i5Install || null;
+  $("installApp").hidden = !offer;
+  const hint = $("installHint");
+  hint.textContent = installed ? "Installed on this device." : offer ? "" :
+    IOS ? "To install: tap Share, then Add to Home Screen." : "To install: open the browser menu and choose Install app or Add to Home screen.";
+  hint.hidden = !hint.textContent;
+  const slot = document.querySelector("#nextCard .welcome-install");
+  if (!slot) return;
+  const want = offer ? "offer" : IOS && !installed ? "ios" : "";
+  if (slot.dataset.show === want) return;
+  slot.dataset.show = want; slot.innerHTML = "";
+  if (want === "offer") {
+    const b = el("button", "secondary install-btn"); b.type = "button";
+    b.innerHTML = ICON_INSTALL; b.append("Install app"); b.onclick = installApp;
+    slot.append(b);
+  } else if (want === "ios") {
+    const tip = el("p", "install-tip", "Tip: tap Share");
+    const ic = el("span", "ic"); ic.innerHTML = ICON_SHARE;
+    tip.append(ic, ", then Add to Home Screen.");
+    slot.append(tip);
+  }
+  slot.hidden = !want;
+}
+async function installApp() {
+  const offer = window.__i5Install;
+  if (!offer) return;
+  window.__i5Install = null; // each offer opens the browser's install dialog once
+  updateInstall();
+  try { await offer.prompt(); await offer.userChoice; } catch {}
+  updateInstall(); // if they said no, the browser may offer again later (i5:install)
+}
+$("installApp").onclick = installApp;
+addEventListener("i5:install", updateInstall);
+addEventListener("appinstalled", () => { installedHere = true; window.__i5Install = null; updateInstall(); toast("I-5 Buddy is installed."); });
+for (const m of APP_MODES) { try { matchMedia(`(display-mode: ${m})`).addEventListener("change", updateInstall); } catch {} }
+updateInstall();
 
 /* ---------- offline photos ---------- */
 $("savePhotos").onclick = async () => {

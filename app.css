@@ -113,6 +113,14 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .welcome-stats div{background:var(--surface-2);border-radius:10px;padding:10px;display:grid;gap:2px}
 .welcome-stats b{font-family:var(--mono);font-size:1.25rem}
 .welcome-stats span{font-size:.75rem;color:var(--muted);line-height:1.2}
+/* install: the button (welcome card and Settings) and the iPhone tip */
+.install-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.install-btn svg{width:20px;height:20px;flex:none;color:var(--link)}
+.welcome-install{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.welcome-install .install-btn{min-height:46px;padding:10px 18px}
+.next .install-tip{margin:0;color:var(--muted);font-size:.86rem;font-weight:600;line-height:1.35}
+.install-tip .ic svg{width:17px;height:17px;vertical-align:-3px;margin-left:3px;color:var(--link)}
+#installRow .install-btn{justify-self:start}
 .farm{--c:var(--farm)}.hist{--c:var(--hist)}.nature{--c:var(--nature)}.town{--c:var(--town)}.stop{--c:var(--stop)}.odd{--c:var(--odd)}
 
 /* photos */
@@ -240,5 +248,7 @@ body.glance .big-btn{min-height:96px;font-size:1.15rem}
 .made-by span{display:grid;gap:2px}
 .made-by b{font-size:.95rem;letter-spacing:.04em}
 .made-by small{font-size:.78rem;color:#2FD394}
+.also-from{margin:0 0 4px;font-size:.88rem;color:var(--fg-2)}
+.also-from a{color:var(--dom);font-weight:800;text-underline-offset:2px}
 .moved{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:#000;color:#fff;border:1px solid #00B070;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.35}
 .moved a{color:#2FD394;font-weight:700}

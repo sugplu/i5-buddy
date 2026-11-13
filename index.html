@@ -29,6 +29,9 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"I-5 Buddy","url":"https://i5.dominares.org/","applicationCategory":"TravelApplication","operatingSystem":"Any (web app for iPhone, Android and desktop)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free narrated road-trip guide to all of Interstate 5 in California. It follows you by GPS and tells you about the orchards, history and landmarks you pass.","image":"https://i5.dominares.org/icons/icon-512.png","publisher":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"},"author":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"}}</script>
 <script>/* I-5 Buddy moved from sugplu.github.io to i5.dominares.org (2026-11-12). Send browsers there; installed copies get a notice instead. */
 (function(){var h=location.hostname;if(!/github\.io$/.test(h))return;var to="https://i5.dominares.org"+location.pathname.replace(/^\/i5-buddy/,"")+location.search+location.hash;var installed=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;if(!installed){location.replace(to);return}window.__i5Moved=to})();</script>
+<script>/* Chrome and Edge (Android and desktop) offer to install the app with this event, sometimes before main.js runs.
+   Keep it for the Install app buttons (main.js shows them) instead of the browser's own banner. Nothing is sent anywhere. */
+addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i5Install=e;dispatchEvent(new Event("i5:install"))});</script>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -197,7 +200,10 @@
     <span id="offlineText">The app and all stories work offline once installed.</span>
     <button class="secondary" id="savePhotos">Save photos for offline</button>
   </div>
-  <div class="field" id="installHint"></div>
+  <div class="field" id="installRow">
+    <span id="installHint"></span>
+    <button class="secondary install-btn" id="installApp" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg>Install app</button>
+  </div>
 
   <div id="settingsExtra"></div>
 
@@ -209,6 +215,7 @@
 
   <h3 class="sub">About</h3>
   <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
+  <p class="also-from">Also from Dominares: <a href="https://linasystems.org/" target="_blank" rel="noopener">Lina</a>, the AI front desk for businesses</p>
   <p class="fine">Share I-5 Buddy with anyone driving I-5: <b>i5.dominares.org</b></p>
   <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData. <span id="dataVersion"></span></p>
 </aside>

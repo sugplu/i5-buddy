@@ -101,6 +101,37 @@ async function run() {
     ok(txt("statusText") === `${ENDS.S.short} to ${ENDS.N.short}`, `header: "${txt("statusText")}"`);
   }
 
+  // 0b. the browser's install offer (Chrome, Edge) puts Install app in the welcome card and in Settings; it opens the
+  //     install dialog once and goes away once the app is installed. And on a 390x844 phone, with that button in the
+  //     welcome card, Start GPS is on the first screen, clear of the tab bar.
+  {
+    const frame = document.getElementById("f");
+    win.addEventListener("beforeinstallprompt", e => { if (e.isTrusted) e.stopImmediatePropagation(); }, true); // only this test's offer
+    const offer = new win.Event("beforeinstallprompt", { cancelable: true });
+    let prompts = 0;
+    offer.prompt = () => { prompts++; return Promise.resolve(); };
+    offer.userChoice = Promise.resolve({ outcome: "accepted", platform: "web" });
+    win.dispatchEvent(offer);
+    await sleep(100);
+    const instBtn = () => doc.querySelector("#nextCard .welcome-install button");
+    const shown = id => { const e = doc.getElementById(id); return !!e && !e.hidden; };
+    ok(offer.defaultPrevented && instBtn()?.textContent.trim() === "Install app" && shown("installApp"),
+      "install offer: Install app in the welcome card and in Settings, browser banner held back");
+    frame.style.width = "390px"; frame.style.height = "844px";
+    await sleep(300);
+    const b = doc.getElementById("startGps").getBoundingClientRect(), t = doc.querySelector(".tabs").getBoundingClientRect();
+    ok(win.scrollY === 0 && b.height >= 44 && b.top >= 0 && b.bottom <= t.top,
+      `390x844 first screen: Start GPS (${Math.round(b.top)} to ${Math.round(b.bottom)} px) is clear of the tab bar (from ${Math.round(t.top)} px)`);
+    frame.style.width = ""; frame.style.height = "";
+    await sleep(100);
+    instBtn()?.click();
+    await sleep(50);
+    ok(prompts === 1 && !instBtn() && !shown("installApp"), `Install app opens the install dialog once (${prompts}), then hides`);
+    win.dispatchEvent(new win.Event("appinstalled"));
+    await sleep(50);
+    ok(!shown("installApp") && txt("installHint") === "Installed on this device.", `installed: no Install app button; Settings says "${txt("installHint")}"`);
+  }
+
   const G = fakeGeo();
   win.__I5_FAKE_GEO__ = G;
 
