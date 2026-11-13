@@ -766,7 +766,7 @@ const TR_ROWS = 6;               // rows in the list before "Show more"
 const TR_KINDS = ["crash", "closure", "hazard", "lane", "other"];
 const TR_SRC = { chp: "CHP", caltrans: "Caltrans" };
 const TR_SRC_LONG = { chp: "California Highway Patrol", caltrans: "Caltrans" };
-let tr = { items: [], updated: 0, fetched: 0, sources: { chp: false, caltrans: false }, err: false, tried: false };
+let tr = { items: [], updated: 0, fetched: 0, sources: { chp: false, caltrans: false }, chpT: 0, err: false, tried: false };
 let trBusy = false, trAt = 0, trExpanded = false;
 
 function trUrl() {
@@ -814,6 +814,11 @@ const trT = () => (tr.updated ? Math.min(tr.updated, tr.fetched || tr.updated) :
 const trHave = () => tr.fetched > 0;
 const trOld = () => trHave() && now() - trT() > TR_OLD;
 const trSources = () => Object.keys(TR_SRC).filter(k => tr.sources[k]);
+// CHP is the only source of crashes. When an answer says CHP is not answering, the CHP items from the last good answer
+// stay (for up to TR_KEEP), each marked old and aged from that CHP answer (tr.chpT), never from the list's own time.
+const chpKept = it => it.source === "chp" && !tr.sources.chp;
+const itOld = it => trOld() || chpKept(it);
+const itT = it => (chpKept(it) && tr.chpT ? tr.chpT : trT());
 const trOffline = () => navigator.onLine === false;
 const isRamp = it => /ramp/i.test(it.title);
 const isSevere = it => it.kind === "crash" || (it.kind === "closure" && !isRamp(it));
@@ -828,7 +833,7 @@ function trWords(d) { return d < 0.5 ? "right here" : d < 1.5 ? "1 mi ahead" : `
 function trKindIcon(it) { return it.kind === "crash" ? "crash" : it.kind === "closure" ? "closure" : it.kind === "lane" ? "cone" : it.kind === "hazard" ? "warn" : "info"; }
 function trStripList(list) { return list.filter(it => it.kind !== "other" && !(it.kind === "closure" && isRamp(it))).slice(0, TR_STRIP); }
 function trSub(it) {
-  return [trOld() && `As of ${ago(trT())}`, it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+  return [itOld(it) && `As of ${ago(itT(it))}`, it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
 }
 /** What to say once a crash or closure is close: the nearest one that has not been announced, and the ones right
     behind it (a work zone often has half a dozen ramp and lane closures within a mile or two: one sentence). */
@@ -839,7 +844,7 @@ function trSpeech(first, more) {
 }
 function talkTraffic(list) {
   if (!trHave() || trOld()) return;
-  const cand = list.filter(it => isSevere(it) && it.d >= 0 && it.d <= TR_SPEAK && !it.ids.some(i => wasSaid("traffic:" + i)));
+  const cand = list.filter(it => isSevere(it) && !itOld(it) && it.d >= 0 && it.d <= TR_SPEAK && !it.ids.some(i => wasSaid("traffic:" + i)));
   if (!cand.length) return;
   const first = cand[0], group = cand.filter(x => x.d - first.d <= 2);
   const key = "traffic:" + first.id, text = trSpeech(first, group.length - 1);
@@ -862,8 +867,15 @@ async function loadTraffic(g) {
     const p = parseTraffic(await r.json());
     if (!p) throw new Error("not a traffic answer");
     if (g !== gen) return false;
-    tr = { items: snapTraffic(p.items), updated: p.updated, fetched: now(), sources: p.sources, err: false, tried: true };
-    store.set("live:traffic", { v: 1, updated: tr.updated, fetched: tr.fetched, sources: tr.sources, items: tr.items });
+    const fetched = now(), items = snapTraffic(p.items);
+    // CHP answered: this is its time. CHP did not: keep its earlier items (if they are not too old) and its earlier time.
+    const chpT = p.sources.chp ? (p.updated ? Math.min(p.updated, fetched) : fetched) : tr.chpT;
+    if (!p.sources.chp && chpT && fetched - chpT < TR_KEEP) {
+      const have = new Set(items.flatMap(i => i.ids));
+      for (const it of tr.items) if (it.source === "chp" && !it.ids.some(i => have.has(i))) items.push(it);
+    }
+    tr = { items, updated: p.updated, fetched, sources: p.sources, chpT, err: false, tried: true };
+    store.set("live:traffic", { v: 1, updated: tr.updated, fetched: tr.fetched, sources: tr.sources, chpT: tr.chpT, items: tr.items });
     return true;
   } catch {
     if (g === gen) { tr.err = true; tr.tried = true; }
@@ -891,16 +903,21 @@ async function doTraffic() {
 function trafficEvent() {
   return { incidents: trList(), updated: tr.updated ? new Date(tr.updated).toISOString() : tr.fetched ? new Date(tr.fetched).toISOString() : null, sources: { ...tr.sources } };
 }
-/** Every incident on the corridor with its mile `m` and, when the position is known, `d` (miles ahead in your direction). */
+/** Every incident on the corridor with its mile `m` and, when the position is known, `d` (miles ahead in your direction);
+    `old` says it is not current (the list is old, or it is a CHP item kept while CHP is not answering) and `asOf` is when
+    it was last confirmed (ms). */
 function trList() {
-  return tr.items.map(it => ({ ...it, ids: it.ids.slice(), d: S && S.m != null ? ahead(S.m, S.dir, it.m) : null }));
+  return tr.items.map(it => ({ ...it, ids: it.ids.slice(), d: S && S.m != null ? ahead(S.m, S.dir, it.m) : null, old: itOld(it), asOf: itT(it) || null }));
 }
 function loadTrafficSnap() {
   const s = store.get("live:traffic", null);
   if (!s || s.v !== 1 || !Array.isArray(s.items) || !(now() - s.fetched < TR_KEEP)) return;
   const items = s.items.filter(it => it && typeof it.id === "string" && isFinite(it.m) && Array.isArray(it.ids) && TR_KINDS.includes(it.kind));
   const src = s.sources && typeof s.sources === "object" ? s.sources : {};
-  tr = { items, updated: +s.updated || 0, fetched: +s.fetched || 0, sources: { chp: src.chp === true, caltrans: src.caltrans === true }, err: false, tried: false };
+  const chpOk = src.chp === true, upd = +s.updated || 0, fet = +s.fetched || 0;
+  const chpT = chpOk ? (upd ? Math.min(upd, fet) : fet) : (+s.chpT || 0);
+  const keep = chpOk || (chpT > 0 && now() - chpT < TR_KEEP);       // CHP items kept from long ago are not shown as news
+  tr = { items: keep ? items : items.filter(it => it.source !== "chp"), updated: upd, fetched: fet, sources: { chp: chpOk, caltrans: src.caltrans === true }, chpT, err: false, tried: false };
 }
 
 /* rendering: the lower block's "Traffic ahead" list */
@@ -915,7 +932,7 @@ function trRow(it) {
   return b;
 }
 function trUpdate(n, it) {
-  n.className = "lv-tr-row " + (isSevere(it) ? "warn" : "adv") + (trOld() ? " old" : "");
+  n.className = "lv-tr-row " + (isSevere(it) ? "warn" : "adv") + (itOld(it) ? " old" : "");
   n.dataset.k = it.id;
   const ic = n.firstChild, tx = n.children[1];
   const k = trKindIcon(it);
@@ -923,7 +940,7 @@ function trUpdate(n, it) {
   const set = (node, t) => { if (node.textContent !== t) node.textContent = t; };
   set(tx.firstChild.firstChild, it.title);
   set(tx.firstChild.lastChild, it.d < 0.5 ? "here" : fmtMi(it.d) + " mi");
-  const sub = [dirWords(it.dir), it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+  const sub = [chpKept(it) && `As of ${ago(itT(it))}`, dirWords(it.dir), it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
   set(tx.lastChild, sub);
   n.setAttribute("aria-label", `${it.title}, ${trWords(it.d)}. ${sub}`);
 }
@@ -931,6 +948,7 @@ function renderTraffic(list) {
   const sec = dom.trSec;
   const have = trHave(), good = have && trSources().length > 0;
   const off = trOffline(), old = trOld();
+  const chpDown = good && !tr.sources.chp;      // Caltrans answered, CHP (the only source of crashes) did not
   let msg = "", src = "";
   if (!have) {
     // never answered: say nothing while the first request is out, a plain note when it failed or there is no signal
@@ -944,8 +962,12 @@ function renderTraffic(list) {
   sec.hidden = false;
   const names = trSources().map(k => TR_SRC[k]);
   if (!good) msg = "The traffic sources aren't answering right now.";
-  else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.` : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
-  if (off && list.length) msg = "";
+  else if (chpDown) {
+    // never "no crashes": without CHP nothing is known about crashes
+    msg = list.some(it => it.source === "chp") ? `Crash reports (CHP) aren't answering right now, so anything from CHP here is older.${old ? "" : " Caltrans closures are current."}`
+      : `Crash reports (CHP) aren't answering right now. Only Caltrans closures are shown${list.length ? "." : `, and none are reported ahead for ${TR_RANGE} miles.`}`;
+  } else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.` : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
+  if (off && list.length && !chpDown) msg = "";
   src = good ? `Traffic: ${names.join(" · ")} · updated ${ago(trT())}${old ? " (old)" : ""}` : "";
   if (off) src = `Traffic needs a connection. ${good ? `Showing the list from ${ago(trT())}.` : ""}`.trim();
   if (old && list.length && !off) src += " · this list may be out of date";
@@ -974,7 +996,7 @@ function trafficSheet(id) {
       it.detail && el("p", "lv-sh-lead", it.detail),
       it.until && el("p", "lv-sh-lead", `Expected until ${it.until}.`),
       it.started && el("p", "lv-sh-meta", `Reported ${when(new Date(it.started).toISOString())}.`),
-      el("p", "lv-sh-meta", `Source: ${TR_SRC_LONG[it.source] || "California Highway Patrol"}. Traffic updated ${ago(trT())}.`),
+      el("p", "lv-sh-meta", chpKept(it) ? `Source: ${TR_SRC_LONG.chp}, which isn't answering right now. This report is from ${ago(itT(it))}.` : `Source: ${TR_SRC_LONG[it.source] || "California Highway Patrol"}. Traffic updated ${ago(trT())}.`),
     ].filter(Boolean));
   });
 }

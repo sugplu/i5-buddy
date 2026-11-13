@@ -1131,6 +1131,38 @@ const SCENARIOS = {
     win.dispatchEvent(new win.Event("online"));
     await wait(1500);
     check("back online: it asks again at once", T.calls.length === cOff + 1, `${T.calls.length} vs ${cOff}`);
+    // --- CHP (the only source of crashes) stops answering while Caltrans still does
+    const mMain = mileOf("chp:261112RD0156");
+    const nSaid = () => said.filter(s => /^traffic:/.test(s.id || "")).length;
+    const spoken0 = nSaid();
+    T.edit = b => { b.sources.chp = false; b.incidents = b.incidents.filter(i => i.source !== "chp"); };
+    api.setPosition(mPaliz + 8, { dir: "S", speed: 63, jumped: true });
+    await nextFetch();
+    await wait(300);
+    const msgD = txt($(doc, ".lv-trmsg")), rowsD = [...doc.querySelectorAll("#liveBlock .lv-tr-row")];
+    log("chp down:", msgD, "|", rowsD.map(txt));
+    check("CHP down: says plainly that crash reports are not answering, never 'No crashes'", /Crash reports \(CHP\) aren't answering right now/.test(msgD) && !/No crashes/.test(txt($(doc, ".lv-trsec"))), msgD);
+    check("CHP down: the source line names Caltrans only", txt($(doc, ".lv-trsrc")) === "Traffic: Caltrans · updated just now", txt($(doc, ".lv-trsrc")));
+    const crashRow = rowsD.find(r => /^Crash/.test(txt(r)));
+    check("CHP down: the earlier crash stays, dimmed, with its age", !!crashRow && crashRow.classList.contains("old") && /As of \d+ min ago/.test(txt(crashRow)), crashRow && txt(crashRow));
+    check("CHP down: Caltrans rows are not marked old", rowsD.some(r => !/^Crash|^Hazard/.test(txt(r))) ? rowsD.filter(r => !/^Crash|^Hazard|^Fire|^Wind/.test(txt(r))).every(r => !r.classList.contains("old")) : true);
+    const kept = api.live.traffic().filter(i => i.source === "chp");
+    check("CHP down: api.live.traffic() still has the CHP items, flagged old with their time", kept.length > 5 && kept.every(i => i.old === true && i.asOf > 0) && api.live.traffic().filter(i => i.source === "caltrans").every(i => i.old === false), `${kept.length}`);
+    check("CHP down: the answer's sources say so", api.live.trafficInfo().sources.chp === false && api.live.trafficInfo().sources.caltrans === true);
+    api.setPosition(mMain - 6, { dir: "N", speed: 63, jumped: true });
+    await wait(500);
+    check("CHP down: a kept crash 6 miles ahead is on screen but never spoken", nSaid() === spoken0 && /Crash, \d+ mi ahead/.test(txt($(doc, "#liveAlerts"))) && /As of/.test(txt($(doc, "#liveAlerts"))), `${nSaid()} vs ${spoken0} | ${txt($(doc, "#liveAlerts")).slice(0, 100)}`);
+    api.setPosition(300, { dir: "N", speed: 63, jumped: true });
+    await wait(300);
+    const msgQ = txt($(doc, ".lv-trmsg"));
+    check("CHP down on a quiet stretch: still not 'No crashes'", /Crash reports \(CHP\) aren't answering right now\. Only Caltrans closures are shown, and none are reported ahead for 60 miles\./.test(msgQ) && !/No crashes/.test(msgQ), msgQ);
+    // --- CHP comes back: current again, and a crash close ahead is spoken once
+    T.edit = null;
+    await nextFetch();
+    api.setPosition(mMain - 6, { dir: "N", speed: 63, jumped: true });
+    await wait(500);
+    check("CHP back: the crash row is current and the note is gone", !/aren't answering/.test(txt($(doc, ".lv-trsec"))) && ![...doc.querySelectorAll("#liveBlock .lv-tr-row")].some(r => r.classList.contains("old")) && txt($(doc, ".lv-trsrc")) === "Traffic: CHP · Caltrans · updated just now", txt($(doc, ".lv-trsrc")));
+    check("CHP back: that crash is spoken once now", nSaid() === spoken0 + 1, `${nSaid()} vs ${spoken0}`);
   },
   async unit(api, win, doc, net) {
     // the app's own instance of js/live.js (initialized, so geo/data are wired): load it from inside the iframe

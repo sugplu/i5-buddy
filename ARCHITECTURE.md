@@ -149,7 +149,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | `place:sheet` | `{place, sheet, acts}` | main.js built a place details sheet; a module may append buttons to `acts` |
 | `ride` | `{ride}` | ride.js: the user picked or changed their ride (see `api.ride`) |
 | `ride:state` | `{state}` | ride.js: the ride started moving, rests awake, or fell asleep (`"moving"`, `"idle"`, `"sleepy"`) |
-| `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived. `incidents`: every incident on the corridor (within 0.5 mi of I-5), each `{id, ids, source, kind, title, detail, lat, lon, started, dir, until, m, d}` (`d` = miles ahead in your direction, negative behind, null without a position); `updated`: ISO string; `sources`: `{chp, caltrans}` |
+| `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived. `incidents`: every incident on the corridor (within 0.5 mi of I-5), each `{id, ids, source, kind, title, detail, lat, lon, started, dir, until, m, d, old, asOf}` (`d` = miles ahead in your direction, negative behind, null without a position; `old` = not current, either the whole list is old or it is a CHP item kept while CHP is not answering; `asOf` = when it was last confirmed, ms); `updated`: ISO string; `sources`: `{chp, caltrans}` |
 | `live:update` | snapshot | live.js: a weather / alerts / chain refresh finished (roadahead.js redraws its forecast chips) |
 
 ### Containers owned by each module (do not touch other markup)
@@ -182,7 +182,11 @@ or lane closures in `#liveAlerts` (ramp-only closures are left out of the strip;
 not a ramp, `--accent` otherwise), a "Traffic ahead" list at the top of `#liveBlock` (distance, "Northbound lanes", detail,
 "until ...", tap for a sheet), and a source line `Traffic: CHP · Caltrans · updated 2 min ago` naming only the sources that
 answered (class `lv-trsrc`, separate from the existing `lv-src`). Nothing ahead: "No crashes or closures reported ahead for
-60 miles." Data older than 15 min (judged from the server's `updated`, else the fetch time) says "(old)", dims the list and is
+60 miles", said only when `sources.chp` is true, because CHP is the only source of crashes. When an answer has `chp: false`
+(Caltrans answered), the block says plainly that crash reports (CHP) aren't answering right now and only Caltrans closures are
+shown, never "no crashes"; the CHP items from the last good answer stay (for up to an hour), each marked old with its own age
+("As of 12 min ago", from the last CHP answer, kept in `live:traffic` as `chpT`), dimmed, and never spoken. Data older than
+15 min (judged from the server's `updated`, else the fetch time) says "(old)", dims the list and is
 never spoken; offline says "Traffic needs a connection" and keeps the old list.
 Speech: when a crash or a closure that is not a ramp first comes within 10 mi ahead it is said once (`traffic:<id>`, prio 2,
 only with `settings.narr` on, `S.offRoute` false and fresh data) and the same words go to a toast. Several incidents within
