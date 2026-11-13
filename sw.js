@@ -2,7 +2,7 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.3.0"; // 2.3.0: Dominares branding, new home at i5.dominares.org
+const VERSION = "i5b-v2.4.0"; // 2.4.0: link preview picture, Install app button, Start GPS clear of the tab bar, Lina in About
 const SHELL = [
   "./", "index.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js",
@@ -10,6 +10,7 @@ const SHELL = [
   "css/live.css", "css/map.css", "css/play.css", "css/trip.css", "css/listen.css",
   "fonts/overpass.woff2", "fonts/overpass-mono.woff2",
   "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
+  "icons/og-1200x630.png", "icons/screenshot-drive.jpg", "icons/screenshot-map.jpg",
 ];
 const PHOTOS = "i5b-photos";
 
