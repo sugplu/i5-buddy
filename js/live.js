@@ -120,6 +120,9 @@ function link(cls, text, href) {
 const ICONS = {
   warn: "M12 2.6 1.4 20.8h21.2L12 2.6Zm-1.1 6.6h2.2v6.1h-2.2V9.2Zm0 7.7h2.2v2.2h-2.2v-2.2Z",
   info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1.1 4.9h2.2v2.2h-2.2V6.9Zm0 4h2.2v6.2h-2.2v-6.2Z",
+  crash: "M12 1.5l2.4 4.6 5.1-1.2-1.3 5.1 4.8 2.3-4.8 2.3 1.3 5.1-5.1-1.2L12 22.5l-2.4-4.6-5.1 1.2 1.3-5.1L1 12l4.8-2.3-1.3-5.1 5.1 1.2L12 1.5Zm-1 6.5v5h2V8h-2Zm0 6.5v2h2v-2h-2Z",
+  closure: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20ZM6.5 10.8h11v2.4h-11v-2.4Z",
+  cone: "M12 2.5 9.2 11h5.6L12 2.5ZM8.6 12.8 7.4 16.5h9.2l-1.2-3.7H8.6ZM4.5 18l-.7 3.5h16.4l-.7-3.5H4.5Z",
   chain: "M9.2 14.8a1 1 0 0 1 0-1.4l4.2-4.2a1 1 0 1 1 1.4 1.4l-4.2 4.2a1 1 0 0 1-1.4 0Zm-2.1 6a4.5 4.5 0 0 1-3.2-7.7l2.5-2.5a1 1 0 1 1 1.4 1.4l-2.5 2.5a2.5 2.5 0 0 0 3.5 3.5l2.5-2.5a1 1 0 1 1 1.4 1.4l-2.5 2.5a4.5 4.5 0 0 1-3.1 1.4Zm9-6.8a1 1 0 0 1-.7-1.7l2.5-2.5a2.5 2.5 0 0 0-3.5-3.5l-2.5 2.5a1 1 0 1 1-1.4-1.4L13 4.9a4.5 4.5 0 0 1 6.4 6.4l-2.5 2.5a1 1 0 0 1-.8.2Z",
 };
 /** A decorative bit (emoji, chevron, dot) that screen readers should skip. */
@@ -742,6 +745,250 @@ function syncCamTimer() {
   if (!want && T.cam) { clearInterval(T.cam); T.cam = 0; }
 }
 
+/* ---------- traffic (CHP incidents and Caltrans lane closures, from i5.dominares.org) ---------- */
+// One list for all of California's I-5, fetched on its own 2-minute rhythm (not part of the weather and Caltrans
+// refresh above, so its failures never touch "Live info unavailable"). The request carries no location: the phone
+// snaps each incident to the road and keeps the ones ahead. A failure is quiet; the last good list stays, marked old.
+const TR_EVERY = 2 * 60e3;       // fetch this often while live info is on and the page is visible
+const TR_TIMEOUT = 10e3;
+const TR_OLD = 15 * 60e3;        // older than this: say so, and never speak from it
+const TR_KEEP = 60 * 60e3;       // a saved copy older than this is dropped at start
+const TR_ROAD = 0.5;             // an incident farther than this from the I-5 line is not on I-5
+const TR_BACK = 0.3;             // just passed still counts as "right here"
+const TR_RANGE = 60;             // the list covers this many miles ahead
+const TR_SPEAK = 10;             // a crash or closure is announced once it is this close
+const TR_STRIP = 2;              // cards in the alerts strip
+const TR_ROWS = 6;               // rows in the list before "Show more"
+const TR_KINDS = ["crash", "closure", "hazard", "lane", "other"];
+const TR_SRC = { chp: "CHP", caltrans: "Caltrans" };
+const TR_SRC_LONG = { chp: "California Highway Patrol", caltrans: "Caltrans" };
+let tr = { items: [], updated: 0, fetched: 0, sources: { chp: false, caltrans: false }, err: false, tried: false };
+let trBusy = false, trAt = 0, trExpanded = false;
+
+function trUrl() {
+  let host = "";
+  try { host = location.hostname; } catch {}
+  return host === "i5.dominares.org" ? "/api/traffic" : "https://i5.dominares.org/api/traffic";
+}
+const clip = (s, n) => String(s == null ? "" : s).replace(/\s+/g, " ").trim().slice(0, n);
+/** The server's JSON -> {updated (ms or 0), sources, items}, or null when it is not a traffic answer. Pure. */
+function parseTraffic(j) {
+  if (!j || typeof j !== "object" || !Array.isArray(j.incidents)) return null;
+  const items = [], seen = new Set();
+  for (const r of j.incidents.slice(0, 600)) {
+    if (!r || typeof r !== "object") continue;
+    const lat = +r.lat, lon = +r.lon, id = clip(r.id, 80);
+    if (!id || r.lat == null || r.lon == null || !isFinite(lat) || !isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180 || seen.has(id)) continue;
+    seen.add(id);
+    const kind = TR_KINDS.includes(r.kind) ? r.kind : "other";
+    const src = r.source === "chp" || r.source === "caltrans" ? r.source : /^caltrans:/.test(id) ? "caltrans" : "chp";
+    const st = r.started ? Date.parse(r.started) : NaN;
+    items.push({ id, source: src, kind, title: clip(r.title, 80) || ({ crash: "Crash", closure: "Road closed", lane: "Lane closed", hazard: "Hazard" }[kind] || "Traffic incident"),
+      detail: clip(r.detail, 220), lat, lon, started: isFinite(st) ? st : null, dir: r.dir === "N" || r.dir === "S" ? r.dir : null, until: clip(r.until, 60) });
+  }
+  const up = j.updated ? Date.parse(j.updated) : NaN;
+  const s = j.sources && typeof j.sources === "object" ? j.sources : {};
+  return { updated: isFinite(up) ? up : 0, sources: { chp: s.chp === true, caltrans: s.caltrans === true }, items };
+}
+/** Keep what lies on I-5 (within TR_ROAD of the line), give it a corridor mile, and fold the same event reported
+    twice (same place, kind, direction and words) into one entry that remembers every id. */
+function snapTraffic(items) {
+  const out = [], byKey = new Map();
+  for (const it of items) {
+    let r = null;
+    try { r = geo.locate(it.lat, it.lon, null); } catch {}
+    if (!r || r.m == null || !(r.dist <= TR_ROAD)) continue;
+    const key = [it.kind, it.dir, it.title, it.detail, it.lat.toFixed(4), it.lon.toFixed(4)].join("|");
+    const prev = byKey.get(key);
+    if (prev) { prev.ids.push(it.id); continue; }
+    const o = { ...it, m: r.m, ids: [it.id] };
+    byKey.set(key, o); out.push(o);
+  }
+  return out;
+}
+const trT = () => (tr.updated ? Math.min(tr.updated, tr.fetched || tr.updated) : tr.fetched) || 0;
+const trHave = () => tr.fetched > 0;
+const trOld = () => trHave() && now() - trT() > TR_OLD;
+const trSources = () => Object.keys(TR_SRC).filter(k => tr.sources[k]);
+const trOffline = () => navigator.onLine === false;
+const isRamp = it => /ramp/i.test(it.title);
+const isSevere = it => it.kind === "crash" || (it.kind === "closure" && !isRamp(it));
+const dirWords = dir => (dir === "N" ? "Northbound lanes" : dir === "S" ? "Southbound lanes" : "Both directions");
+/** Incidents on the road for the driver: ahead (from just behind to TR_RANGE miles), in their direction, nearest first. */
+function trAhead(range = TR_RANGE) {
+  if (S.m == null) return [];
+  return tr.items.map(it => ({ ...it, d: ahead(S.m, S.dir, it.m) }))
+    .filter(it => it.d >= -TR_BACK && it.d <= range && (!it.dir || it.dir === S.dir)).sort((a, b) => a.d - b.d);
+}
+function trWords(d) { return d < 0.5 ? "right here" : d < 1.5 ? "1 mi ahead" : `${Math.round(d)} mi ahead`; }
+function trSaidMiles(d) { return d < 0.5 ? "right ahead" : d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`; }
+function trKindIcon(it) { return it.kind === "crash" ? "crash" : it.kind === "closure" ? "closure" : it.kind === "lane" ? "cone" : it.kind === "hazard" ? "warn" : "info"; }
+function trStripList(list) { return list.filter(it => it.kind !== "other" && !(it.kind === "closure" && isRamp(it))).slice(0, TR_STRIP); }
+function trSub(it) {
+  return [trOld() && `As of ${ago(trT())}`, it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+}
+/** What to say once a crash or closure is close: the nearest one that has not been announced, and the ones right
+    behind it (a work zone often has half a dozen ramp and lane closures within a mile or two: one sentence). */
+function trSpeech(first, more) {
+  const what = first.kind === "crash" ? "crash" : clip(first.title, 40).toLowerCase();
+  return `Heads up: ${what} ahead, ${trSaidMiles(first.d)}${more > 0 ? `, and ${more} more incident${more === 1 ? "" : "s"} close by` : ""}.`;
+}
+function talkTraffic(list) {
+  if (!trHave() || trOld()) return;
+  const cand = list.filter(it => isSevere(it) && it.d >= 0 && it.d <= TR_SPEAK && !it.ids.some(i => wasSaid("traffic:" + i)));
+  if (!cand.length) return;
+  const first = cand[0], group = cand.filter(x => x.d - first.d <= 2);
+  const key = "traffic:" + first.id, text = trSpeech(first, group.length - 1);
+  speak(key, text, { id: key, prio: 2 }, () => {
+    const t = now();
+    for (const g of group) for (const i of g.ids) said["traffic:" + i] = t;
+    saveSaid();
+    try { ui.toast && ui.toast(text, 5000); } catch {}
+  });
+}
+
+/* network */
+async function loadTraffic(g) {
+  const ac = new AbortController();
+  inflight.add(ac);
+  const timer = setTimeout(() => ac.abort(), TR_TIMEOUT);
+  try {
+    const r = await fetch(trUrl(), { signal: ac.signal, cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const p = parseTraffic(await r.json());
+    if (!p) throw new Error("not a traffic answer");
+    if (g !== gen) return false;
+    tr = { items: snapTraffic(p.items), updated: p.updated, fetched: now(), sources: p.sources, err: false, tried: true };
+    store.set("live:traffic", { v: 1, updated: tr.updated, fetched: tr.fetched, sources: tr.sources, items: tr.items });
+    return true;
+  } catch {
+    if (g === gen) { tr.err = true; tr.tried = true; }
+    return false;
+  } finally {
+    clearTimeout(timer);
+    inflight.delete(ac);
+  }
+}
+function maybeTraffic() {
+  if (!on || S.m == null || document.hidden || trBusy || trOffline()) return;
+  if (now() - trAt < TR_EVERY) return;
+  doTraffic();
+}
+async function doTraffic() {
+  trBusy = true; trAt = now();
+  const g = gen;
+  let ok = false;
+  try { ok = await loadTraffic(g); } catch { ok = false; }
+  trBusy = false;
+  if (g !== gen || !on) return;
+  safe(render)();
+  if (ok) { try { bus.emit("traffic", trafficEvent()); } catch (e) { warn(e); } }
+}
+function trafficEvent() {
+  return { incidents: trList(), updated: tr.updated ? new Date(tr.updated).toISOString() : tr.fetched ? new Date(tr.fetched).toISOString() : null, sources: { ...tr.sources } };
+}
+/** Every incident on the corridor with its mile `m` and, when the position is known, `d` (miles ahead in your direction). */
+function trList() {
+  return tr.items.map(it => ({ ...it, ids: it.ids.slice(), d: S && S.m != null ? ahead(S.m, S.dir, it.m) : null }));
+}
+function loadTrafficSnap() {
+  const s = store.get("live:traffic", null);
+  if (!s || s.v !== 1 || !Array.isArray(s.items) || !(now() - s.fetched < TR_KEEP)) return;
+  const items = s.items.filter(it => it && typeof it.id === "string" && isFinite(it.m) && Array.isArray(it.ids) && TR_KINDS.includes(it.kind));
+  const src = s.sources && typeof s.sources === "object" ? s.sources : {};
+  tr = { items, updated: +s.updated || 0, fetched: +s.fetched || 0, sources: { chp: src.chp === true, caltrans: src.caltrans === true }, err: false, tried: false };
+}
+
+/* rendering: the lower block's "Traffic ahead" list */
+function trRow(it) {
+  const b = btn("lv-tr-row", "", () => trafficSheet(b.dataset.k));
+  const ic = el("span", "lv-tr-ic");
+  const tx = el("span", "lv-tr-tx");
+  const top = el("span", "lv-tr-top");
+  top.append(el("b"), el("span", "lv-tr-d"));
+  tx.append(top, el("small", "lv-tr-sub"));
+  b.append(ic, tx, deco("span", "lv-chev", "›"));
+  return b;
+}
+function trUpdate(n, it) {
+  n.className = "lv-tr-row " + (isSevere(it) ? "warn" : "adv") + (trOld() ? " old" : "");
+  n.dataset.k = it.id;
+  const ic = n.firstChild, tx = n.children[1];
+  const k = trKindIcon(it);
+  if (ic.dataset.ic !== k) { ic.dataset.ic = k; ic.replaceChildren(icon(k)); }
+  const set = (node, t) => { if (node.textContent !== t) node.textContent = t; };
+  set(tx.firstChild.firstChild, it.title);
+  set(tx.firstChild.lastChild, it.d < 0.5 ? "here" : fmtMi(it.d) + " mi");
+  const sub = [dirWords(it.dir), it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+  set(tx.lastChild, sub);
+  n.setAttribute("aria-label", `${it.title}, ${trWords(it.d)}. ${sub}`);
+}
+function renderTraffic(list) {
+  const sec = dom.trSec;
+  const have = trHave(), good = have && trSources().length > 0;
+  const off = trOffline(), old = trOld();
+  let msg = "", src = "";
+  if (!have) {
+    // never answered: say nothing while the first request is out, a plain note when it failed or there is no signal
+    msg = off ? "Traffic needs a connection." : tr.err ? "Traffic isn't available right now. I'll try again in a couple of minutes." : "";
+    sec.hidden = !msg;
+    dom.trList.replaceChildren(); dom.trMore.hidden = true; dom.trSrc.hidden = true;
+    if (dom.trMsg.textContent !== msg) dom.trMsg.textContent = msg;
+    dom.trMsg.hidden = !msg;
+    return;
+  }
+  sec.hidden = false;
+  const names = trSources().map(k => TR_SRC[k]);
+  if (!good) msg = "The traffic sources aren't answering right now.";
+  else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.` : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
+  if (off && list.length) msg = "";
+  src = good ? `Traffic: ${names.join(" · ")} · updated ${ago(trT())}${old ? " (old)" : ""}` : "";
+  if (off) src = `Traffic needs a connection. ${good ? `Showing the list from ${ago(trT())}.` : ""}`.trim();
+  if (old && list.length && !off) src += " · this list may be out of date";
+  const shown = list.length > TR_ROWS && !trExpanded ? list.slice(0, TR_ROWS - 1) : list;
+  sync(dom.trList, shown.map(it => ({ ...it, k: it.id })), trRow, trUpdate);
+  dom.trList.hidden = !shown.length;
+  dom.trList.classList.toggle("old", old);
+  dom.trMore.hidden = list.length <= TR_ROWS;
+  if (!dom.trMore.hidden) {
+    dom.trMore.textContent = trExpanded ? "Show fewer" : `Show ${list.length - shown.length} more`;
+    dom.trMore.setAttribute("aria-expanded", String(trExpanded));
+  }
+  if (dom.trMsg.textContent !== msg) dom.trMsg.textContent = msg;
+  dom.trMsg.hidden = !msg;
+  dom.trMsg.classList.toggle("old", old);
+  if (dom.trSrc.textContent !== src) dom.trSrc.textContent = src;
+  dom.trSrc.hidden = !src;
+}
+function trafficSheet(id) {
+  const it = trAhead(1e3).find(x => x.id === id);
+  if (!it) return;
+  showSheet(it.title, (sh) => {
+    const w = trWords(it.d);
+    sh.append(...[
+      el("p", "lv-sh-title", `${w[0].toUpperCase()}${w.slice(1)}${it.d >= 0.5 ? `, about ${fmtMi(it.d)} miles` : ""}`),
+      el("p", "lv-sh-meta", dirWords(it.dir)),
+      it.detail && el("p", "lv-sh-lead", it.detail),
+      it.until && el("p", "lv-sh-lead", `Expected until ${it.until}.`),
+      it.started && el("p", "lv-sh-meta", `Reported ${when(new Date(it.started).toISOString())}.`),
+      el("p", "lv-sh-meta", `Source: ${TR_SRC_LONG[it.source] || "California Highway Patrol"}. Traffic updated ${ago(trT())}.`),
+    ].filter(Boolean));
+  });
+}
+
+/** Forecast points the live module already has, for the Road ahead chart (no extra weather requests). */
+function weatherAlong() {
+  try {
+    if (settings.live !== true || S.m == null) return [];
+    return wxVisible().map(w => {
+      const p = periodsNow(w, 1)[0];
+      const tempF = p && p.temp != null ? (/C/i.test(p.unit) ? Math.round(p.temp * 9 / 5 + 32) : +p.temp) : null;
+      const e = wxIcon(p && p.short, !p || p.day);
+      return { m: w.m, d: w.d, city: w.city, tempF, short: p ? p.short : "", icon: e, emoji: e, t: w.t };
+    });
+  } catch (e) { warn(e); return []; }
+}
+
 /* ---------- speech ---------- */
 // Only a chain control, a warning or the sign you are passing is spoken without being asked, and each only once.
 // "Once" starts when it actually plays: voice.say() resolves false without playing when a later now:true item
@@ -800,6 +1047,7 @@ function talk(jumped, groups, list, sign) {
   talkChains(groups);
   talkAlerts(list);
   talkSign(jumped, sign);
+  talkTraffic(trAhead());
 }
 
 /** Every active checkpoint for a direction, in travel order, behind you too (they tie an area together). */
@@ -1000,8 +1248,9 @@ function render(jumped = false) {
   if (settings.live !== true) { renderAsk(); return; }
   if (asked) { asked = null; $block.replaceChildren(); }
   const groups = chainsAhead(), list = alertsVisible(), sign = nextSign();
-  renderAlerts(groups, list);
-  renderBlock(sign);
+  const tlist = trAhead();
+  renderAlerts(groups, list, tlist);
+  renderBlock(sign, tlist);
   syncCamTimer();
   talk(jumped, groups, list, sign);
 }
@@ -1072,7 +1321,7 @@ function focusableBefore(node) {
 }
 
 /* alerts strip (#liveAlerts) */
-function renderAlerts(groups, list) {
+function renderAlerts(groups, list, tlist = []) {
   const rows = [];
   if (groups.length) {
     // one row for chain controls: the nearest level, then any other level further on
@@ -1081,6 +1330,9 @@ function renderAlerts(groups, list) {
       k: "cc", kind: groups.some(x => x.level >= 2) ? "warn" : "adv", ic: "chain", title: chainTitle(g), open: chainSheet,
       sub: [now() - g.t > STALE && `As of ${ago(g.t)}`, ...rest.map(x => `Then ${x.status} near ${chainWhere(x)}, ${fmtMi(x.d)} mi`), g.desc || R_LEVELS[g.level]].filter(Boolean).join(". "),
     });
+  }
+  for (const it of trStripList(tlist)) {
+    rows.push({ k: "tr:" + it.id, kind: isSevere(it) ? "warn" : "adv", ic: trKindIcon(it), title: `${it.title}, ${trWords(it.d)}`, sub: trSub(it), open: () => trafficSheet(it.id) });
   }
   for (const a of list) {
     const sub = [now() - a.t > STALE && `As of ${ago(a.t)}`, alertWhen(a), areaList(a.area).join("; ")];
@@ -1139,6 +1391,19 @@ function section(cls, title, action) {
 function buildBlock() {
   dom = {};
   const root = el("div", "lv");
+  // traffic: CHP incidents and Caltrans closures ahead
+  dom.trSec = section("lv-trsec", "Traffic ahead");
+  dom.trSec.hidden = true;
+  dom.trList = el("div", "lv-tr");
+  dom.trList.setAttribute("role", "list");
+  dom.trList.setAttribute("aria-label", "Traffic ahead");
+  dom.trMore = btn("lv-more", "", () => { trExpanded = !trExpanded; render(); });
+  dom.trMore.hidden = true;
+  dom.trMsg = el("p", "lv-trmsg");
+  dom.trMsg.hidden = true;
+  dom.trSrc = el("p", "lv-trsrc");
+  dom.trSrc.hidden = true;
+  dom.trSec.append(dom.trList, dom.trMore, dom.trMsg, dom.trSrc);
   // freeway sign
   dom.signSec = section("lv-signsec", "Freeway sign ahead", btn("lv-link", "Hear it", () => {
     const s = nextSign(); if (!s || !voice) return;
@@ -1180,7 +1445,7 @@ function buildBlock() {
   });
   dom.foot.append(dom.footText, dom.footBtn);
   dom.src = el("p", "lv-src", `Sources: ${["National Weather Service", ...agencies()].join(", ")}.`);
-  root.append(dom.signSec, dom.wxSec, dom.camSec, dom.foot, dom.src);
+  root.append(dom.trSec, dom.signSec, dom.wxSec, dom.camSec, dom.foot, dom.src);
   $block.replaceChildren(root);
   if ("IntersectionObserver" in window) {
     try { io = new IntersectionObserver(safe(camsSeen), { rootMargin: "120px" }); } catch { io = null; }
@@ -1200,9 +1465,10 @@ function camsSeen(entries) {
     if (img && img.getAttribute("src")) reloadImg(img, li.dataset.k, b, li);
   }
 }
-function renderBlock(sign) {
+function renderBlock(sign, tlist = []) {
   if (!dom || !dom.signSec.isConnected) buildBlock();
   $block.hidden = false;
+  renderTraffic(tlist);
   renderSign(sign);
   renderWx();
   renderCams();
@@ -1589,9 +1855,14 @@ function snapshot() {
     };
   } catch (e) { warn(e); return { updated: null, failing: true, weather: [], alerts: [], chains: [], sign: null }; }
 }
+/** Traffic state for other modules and tests. */
+function trafficInfo() {
+  return { have: trHave(), updated: trT() || null, old: trOld(), offline: trOffline(), err: tr.err, busy: trBusy, sources: { ...tr.sources }, n: tr.items.length };
+}
 function status() {
   return {
     on, m: S && S.m, dir: S && S.dir, busy, fails, okT, netT, fetchM, tried, src: JSON.parse(JSON.stringify(src)),
+    traffic: { n: tr.items.length, have: trHave(), err: tr.err, busy: trBusy, at: trAt, t: trT(), sources: { ...tr.sources } },
     wx: wx.length, alerts: alerts.length, chains: S && S.m != null ? chainsAhead().length : 0,
     sign: S && S.m != null ? !!nextSign() : false, cc: Object.keys(cc), cms: Object.keys(cms), skip: Object.keys(skip),
     area: JSON.parse(JSON.stringify(area)), pending: [...pending], retry: Object.keys(retryAt).filter(k => retryAt[k] > now()),
@@ -1605,6 +1876,7 @@ function onPos(p) {
   posOk = true;
   render(!!(p && p.jumped));
   maybeRefresh();
+  maybeTraffic();
 }
 /** A new mode: wait for a position before saying anything (Start GPS keeps the last session's mile until the
     first fix), and give items that a Stop pushed back a fresh start. */
@@ -1619,7 +1891,8 @@ function onSettings() {
     on = true;
     force = true;                     // check now (or at the 2-minute mark), whatever the cadence says
     retryAt = {};
-    startTimers(); maybeRefresh();
+    trAt = 0;
+    startTimers(); maybeRefresh(); maybeTraffic();
   } else if (!want && on) {
     on = false; gen++;
     // the refresh in flight is dropped: it does not count toward the cadence or the 2-minute rule
@@ -1638,7 +1911,7 @@ function onTab(name) {
 }
 function startTimers() {
   if (T.tick || document.hidden) return;
-  T.tick = setInterval(safe(() => { render(); maybeRefresh(); }), TICK);
+  T.tick = setInterval(safe(() => { render(); maybeRefresh(); maybeTraffic(); }), TICK);
 }
 function stopTimers() {
   if (T.tick) { clearInterval(T.tick); T.tick = 0; }
@@ -1652,6 +1925,7 @@ function onVisibility() {
   startTimers();
   render();
   maybeRefresh();
+  maybeTraffic();
   refreshCams(false);
   if (sheet && !sheet.hidden && sheetCam) { reloadImg(sheetCam.img, sheetCam.url, sheetCam.fig); startSheetTimer(); }
 }
@@ -1673,14 +1947,17 @@ export function init(a) {
       if ((d === "N" || d === "S") && a && [a.lv, a.from, a.end, a.t].every(x => typeof x === "number" && isFinite(x)) && now() - a.t < SAID_TTL) area[d] = a;
     }
     try { loadSnap(); } catch (e) { warn(e); }
-    api.live = { weatherText, refresh, alertsText, roadText, signText: signTextSaid, snapshot, status };
+    try { loadTrafficSnap(); } catch (e) { warn(e); }
+    api.live = { weatherText, refresh, alertsText, roadText, signText: signTextSaid, snapshot, status, weatherAlong,
+      traffic: () => trList(), trafficInfo };
     bus.on("pos", safe(onPos));
     bus.on("settings", safe(onSettings));
     bus.on("tab", safe(onTab));
     bus.on("mode", safe(onMode));
     bus.on("trip:end", safe(() => { said = {}; area = {}; retryAt = {}; saveSaid(); })); // a new trip hears active warnings again
     document.addEventListener("visibilitychange", safe(onVisibility));
-    window.addEventListener("online", safe(() => { if (on) { fails = Math.min(fails, 1); maybeRefresh(); } }));
+    window.addEventListener("online", safe(() => { if (on) { fails = Math.min(fails, 1); trAt = 0; maybeRefresh(); maybeTraffic(); render(); } }));
+    window.addEventListener("offline", safe(() => { if (on) render(); }));
     let rz = 0;
     window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(safe(alignWx), 150); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(safe(alignWx)).catch(() => {});
@@ -1690,5 +1967,5 @@ export function init(a) {
 
 // Pure helpers, exported for tools/test-live.html (plus camsSeen, the IntersectionObserver callback, which headless
 // test runs cannot always trigger by scrolling).
-export const _test = { cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList,
+export const _test = { parseTraffic, snapTraffic, trSpeech, trUrl, cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList,
   camsSeen: entries => safe(camsSeen)(entries), camOnScreen: li => onScreen.has(li) };

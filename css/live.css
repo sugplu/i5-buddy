@@ -156,3 +156,24 @@
   .lv-cms-face .lv-cms-pg{grid-area:auto;opacity:1}
   .lv-cms-face .lv-cms-pg[data-p="2"]{margin-top:10px;padding-top:10px;border-top:1px dashed var(--accent)}
 }
+
+/* ---------- traffic ahead (CHP incidents, Caltrans closures) ---------- */
+.lv-tr{display:grid;gap:8px}
+.lv-tr-row{--k:var(--accent);--kf:var(--accent-fg);position:relative;display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:12px;
+  width:100%;min-height:60px;margin:0;padding:10px 12px 10px 15px;border:0;border-radius:calc(var(--radius) - 2px);background:var(--surface);color:var(--fg);
+  text-align:left;box-shadow:var(--shadow);overflow:hidden}
+.lv-tr-row.warn{--k:var(--danger);--kf:var(--sign-fg)}
+.lv-tr-row::after{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--k)}
+.lv-tr-row:active{background:var(--surface-2)}
+.lv-tr-row>*{position:relative}
+.lv-tr-ic{width:38px;height:38px;border-radius:calc(var(--radius) - 4px);background:var(--k);color:var(--kf);display:grid;place-items:center}
+.lv-tr-ic svg{width:22px;height:22px}
+.lv-tr-tx{display:grid;gap:3px;min-width:0}
+.lv-tr-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.lv-tr-top b{font-weight:900;font-size:.98rem;line-height:1.2;min-width:0}
+.lv-tr-d{font-family:var(--mono);font-weight:700;font-size:.9rem;color:var(--fg);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lv-tr-sub{color:var(--fg-2);font-size:.8rem;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+.lv-tr.old .lv-tr-row{opacity:.62}
+.lv-trmsg{margin:0;padding:12px 14px;border-radius:var(--radius);background:var(--surface);color:var(--fg-2);box-shadow:var(--shadow);font-weight:600}
+.lv-trmsg.old{color:var(--muted)}
+.lv-trsrc{margin:0;color:var(--muted);font-size:.78rem;line-height:1.35}
