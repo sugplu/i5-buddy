@@ -29,7 +29,7 @@
 .ride-slot .ride-svg{width:46px;height:auto;filter:drop-shadow(0 0 1.2px rgba(255,255,255,.85))}
 
 /* the first-run invitation, under the sign: one line and two buttons, never a blocker */
-.ride-invite{position:absolute;top:100%;margin-top:10px;z-index:6;box-sizing:border-box;background:var(--surface);color:var(--fg);border:1px solid var(--line);
+.ride-invite{position:absolute;top:100%;z-index:6;box-sizing:border-box;background:var(--surface);color:var(--fg);border:1px solid var(--line);
   border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);display:grid;gap:10px;text-align:left;font-weight:700}
 .ride-invite::before{content:"";position:absolute;top:-7px;left:calc(var(--ride-arrow,40px) - 7px);width:12px;height:12px;background:var(--surface);
   border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
@@ -65,13 +65,13 @@
 .ride-opt-name{font-size:.66rem;font-weight:800;line-height:1.1;color:var(--muted);text-align:center}
 .ride-opt[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
 .ride-opt[aria-pressed="true"] .ride-opt-name{color:var(--fg)}
-.ride-colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;justify-items:center}
+.ride-colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 8px;justify-items:center;padding:4px 0}
 .ride-sw{width:44px;height:44px;border-radius:50%;background:var(--ride-c);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line);padding:0}
 .ride-sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--accent),0 0 0 6px var(--surface)}
 .ride-field label{font-weight:800}
 .ride-input{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px 12px;font:inherit;font-weight:600;min-height:48px;width:100%;box-sizing:border-box}
 .ride-input::placeholder{color:var(--muted);font-weight:500}
-.ride-emoji{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px}
+.ride-emoji{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .ride-chip{min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);font-size:1.35rem;line-height:1;padding:0}
 .ride-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
 .ride-done{width:100%}

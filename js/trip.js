@@ -1007,6 +1007,15 @@ function ppCover() {
   const since = sinceTime();
   tt.append(el("h2", "pp-title", "I-5 Passport"), el("p", "pp-since", since ? `Collecting since ${fmtDay(since, true)}` : `${endToEnd()}, one stamp at a time`));
   top.append(shieldSvg("pp-shield"), tt);
+  try { // the ride (ride.js) and its nickname, if that module is loaded
+    if (A.ride && A.ride.svg) {
+      const pr = el("div", "pp-ride");
+      pr.append(A.ride.svg({ size: 64 }));
+      const nm = A.ride.get().name;
+      if (nm) pr.append(el("small", null, nm));
+      top.append(pr);
+    }
+  } catch (e) { warn("passport ride", e); }
   sec.append(top);
 
   // the stats read like a highway distance sign
@@ -1583,6 +1592,28 @@ function drawCard(kind) {
   g.fillText("I-5 Buddy", rx + rw, fy);
   return cv;
 }
+/** The ride rides along the top edge of the card's green sign, nickname beside it. The art is an SVG: it loads through an
+    Image from a data: URL (CSS variables do not reach it there), and the card is left as it was if that fails or is slow. */
+async function addRide(cv) {
+  try {
+    if (!A.ride || !A.ride.svg) return;
+    const g = cv.getContext("2d"), T = tokens(), r = A.ride.get();
+    const img = new Image();
+    const ok = await new Promise(res => {
+      const t = setTimeout(() => res(false), 2500);
+      img.onload = () => { clearTimeout(t); res(true); };
+      img.onerror = () => { clearTimeout(t); res(false); };
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(A.ride.svg({ size: 420, zz: false, markup: true }));
+    });
+    if (!ok) return;
+    const w = 105, h = 70, right = 1032 - 70, top = 48 - Math.round(h * 66 / 80) + 1;   // wheels on the sign's top edge
+    g.drawImage(img, right - w, top, w, h);
+    if (r.name) {
+      g.textAlign = "right"; g.textBaseline = "alphabetic"; g.fillStyle = T.muted; g.font = `800 28px ${T.display}`;
+      g.fillText(r.name, right - w - 14, 38);
+    }
+  } catch (e) { warn("card ride", e); }
+}
 function spacedWidth(g, text, sp) {
   const chars = [...String(text)];
   return chars.reduce((a, c) => a + g.measureText(c).width, 0) + sp * Math.max(0, chars.length - 1);
@@ -1633,6 +1664,7 @@ async function renderShare() {
   if (seq !== shareSeq) return;
   let cv = null;
   try { cv = drawCard(shareKind); } catch (e) { warn("card", e); }
+  if (cv) { await addRide(cv); if (seq !== shareSeq) return; }
   if (!cv) { cap.textContent = "This browser can't draw the card. Copy the summary instead."; return; }
   cv.setAttribute("role", "img");
   cv.setAttribute("aria-label", "Share card. " + text);
@@ -1770,6 +1802,7 @@ export function init(api) {
   on("place:stamp", onStamp);
   on("passport:reset", onReset);
   on("badge", () => markPassport());
+  on("ride", () => markPassport());
   on("settings", () => queueStrip());
   on("dest", () => { syncDest(); queueStrip(); });
   on("tab", name => {
@@ -1809,7 +1842,7 @@ export function init(api) {
     coverage: () => ({ miles: covCount, of: NBITS }),
     summary: kind => safe("summary", summaryText)(kind),
     share: kind => safe("share", openShare)(kind),
-    card: async kind => { await fontsReady(); const cv = drawCard(kind || defaultKind()); return cv ? new Promise(r => cv.toBlob(r, "image/png")) : null; },
+    card: async kind => { await fontsReady(); const cv = drawCard(kind || defaultKind()); if (cv) await addRide(cv); return cv ? new Promise(r => cv.toBlob(r, "image/png")) : null; },
     setClock: fn => { clock = typeof fn === "function" ? fn : () => Date.now(); }, // tests only
   };
 }

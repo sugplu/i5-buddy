@@ -482,7 +482,9 @@ function maybeInvite() {
     slotEl.append(inviteEl);
     const a = board.getBoundingClientRect(), b = slotEl.getBoundingClientRect();
     inviteEl.style.left = Math.round(a.left - b.left + 10) + "px";
+    inviteEl.style.top = Math.round(a.bottom - b.top + 10) + "px";   // just under the sign
     inviteEl.style.width = Math.round(a.width - 20) + "px";
+    inviteEl.style.setProperty("--ride-arrow", Math.round(b.left - (a.left + 10) + b.width / 2) + "px");
     inviteTimer = setTimeout(dismissInvite, 16000);
   } catch (e) { warn(e); }
 }
