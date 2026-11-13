@@ -968,9 +968,8 @@ function trafficSheet(id) {
   const it = trAhead(1e3).find(x => x.id === id);
   if (!it) return;
   showSheet(it.title, (sh) => {
-    const w = trWords(it.d);
     sh.append(...[
-      el("p", "lv-sh-title", `${w[0].toUpperCase()}${w.slice(1)}${it.d >= 0.5 ? `, about ${fmtMi(it.d)} miles` : ""}`),
+      el("p", "lv-sh-title", it.d < 0.5 ? "Right here" : it.d < 1.5 ? "About a mile ahead" : `About ${Math.round(it.d)} miles ahead`),
       el("p", "lv-sh-meta", dirWords(it.dir)),
       it.detail && el("p", "lv-sh-lead", it.detail),
       it.until && el("p", "lv-sh-lead", `Expected until ${it.until}.`),

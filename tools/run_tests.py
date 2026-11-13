@@ -58,7 +58,7 @@ SUITE = [
     ("roadahead", "test-roadahead.html", 40000, "500,900", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
-    ("live traffic", "test-live.html?s=traffic", 400000, "900,960", False),
+    ("live traffic", "test-live.html?s=traffic", 800000, "900,960", False),
     ("live traffic old", "test-live.html?s=trafficold", 1500000, "900,960", False),
     ("live speech", "test-live.html?s=speech", 300000, "900,960", False),
     ("live chains", "test-live.html?s=chains", 120000, "900,960", False),

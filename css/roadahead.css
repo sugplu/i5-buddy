@@ -18,6 +18,7 @@ body.glance #roadAhead{display:none!important}
 .ra-stat.descent{--k:var(--nature)}
 .ra-stat small{font-size:.64rem;letter-spacing:.14em;font-weight:800;color:var(--muted);line-height:1.2}
 .ra-stat b{font-family:var(--mono);font-weight:700;font-size:1.36rem;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ra-stat b.word{font-size:1.08rem;padding-top:.18rem}
 .ra-stat b em{font-style:normal;font-weight:600;font-size:.72rem;color:var(--muted);margin-left:3px}
 .ra-stat span{font-size:.74rem;line-height:1.25;color:var(--fg-2);overflow-wrap:anywhere}
 

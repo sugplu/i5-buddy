@@ -277,6 +277,7 @@ function render(force) {
   const plotBot = H - 6;
   let lo = Math.min(...pr.s), hi = Math.max(...pr.s);
   if (hi - lo < 700) { const mid = (hi + lo) / 2; lo = mid - 350; hi = mid + 350; }
+  if (lo < 0) { hi -= lo; lo = 0; }                      // nothing on I-5 is below sea level: no negative feet on the scale
   const yOf = v => plotBot - 16 - (v - lo) / (hi - lo) * (plotBot - 16 - plotTop);
   const xOf = x => XL + clamp(x, 0, L) / L * (XR - XL);
   const k = Math.max(1, Math.ceil(pr.L / MAX_PTS));
@@ -422,14 +423,16 @@ function render(force) {
   const stats = el("div", "ra-stats");
   const tile = (label, value, sub, cls, unit) => {
     const t = el("div", "ra-stat" + (cls ? " " + cls : ""));
-    const b = el("b", null, value);
+    const b = el("b", unit || /%$/.test(value) ? null : "word", value);
     if (unit) b.append(el("em", null, unit));
     t.append(el("small", null, label), b, el("span", null, sub || ""));
     return t;
   };
   const num = n => Math.round(n).toLocaleString("en-US");
   const scope = p.pre ? "the whole road" : p.trip ? `to ${p.tripName}` : `next ${Math.round(L)} mi`;
-  const topSub = p.pre ? (an.top.name || `mile ${Math.round(an.top.m)}`) : an.top.d < 0.5 ? "right here" : `in ${mi(an.top.d)}${an.top.name && an.top.d >= 1.5 ? " · " + shortName(an.top.name) : ""}`;
+  // a name only for a real high point (a flag is drawn); on a gentle stretch the nearest landscape name would mislead
+  const named = long || flags.length > 0;
+  const topSub = p.pre ? (an.top.name || `mile ${Math.round(an.top.m)}`) : an.top.d < 0.5 ? "right here" : `in ${mi(an.top.d)}${named && an.top.name && an.top.d >= 1.5 ? " · " + shortName(an.top.name) : ""}`;
   stats.append(
     an.up < 60 ? tile("CLIMB", "Flat", scope) : tile("CLIMB", num(an.up), an.down >= 60 ? `${ft(an.down)} down` : scope, "", " ft"),
     tile("TOP", num(an.top.ft), topSub, "", " ft"),
@@ -446,7 +449,7 @@ function render(force) {
   read.textContent = selText || summaryLine(p, an);
   read.classList.toggle("sel", !!selText);
   // screen-reader paragraph
-  const sr = el("p", "ra-sr", srText(p, an, wx, trf));
+  const sr = el("p", "ra-sr", srText(p, an, wx, trf, named));
 
   body.replaceChildren(stats, chart, ax, leg, read, sr);
   // header bits
@@ -486,12 +489,12 @@ function select(id) {
   const b = [...root.querySelectorAll(".ra-pt")].find(x => x.getAttribute("aria-pressed") === "true");
   if (b) { try { b.focus({ preventScroll: true }); } catch {} }
 }
-function srText(p, an, wx, trf) {
+function srText(p, an, wx, trf, named) {
   const s = [];
   if (p.pre) s.push(`The whole road, from ${(data.ENDS && data.ENDS.S.long) || "the start"} to ${(data.ENDS && data.ENDS.N.long) || "the end"}.`);
   else s.push(`Road ahead, ${p.trip ? "to " + p.tripName : "the next " + Math.round(p.L) + " miles"}, ${S.dir === "N" ? "northbound" : "southbound"}.`);
   s.push(an.up < 60 ? "The road is flat." : `You climb ${Math.round(an.up).toLocaleString("en-US")} feet and descend ${Math.round(an.down).toLocaleString("en-US")} feet.`);
-  s.push(`The highest point is ${Math.round(an.top.ft).toLocaleString("en-US")} feet${p.pre ? "" : an.top.d < 0.5 ? ", right here" : ", " + miWords(an.top.d) + " ahead"}${an.top.name ? ", at " + an.top.name : ""}.`);
+  s.push(`The highest point is ${Math.round(an.top.ft).toLocaleString("en-US")} feet${p.pre ? "" : an.top.d < 0.5 ? ", right here" : ", " + miWords(an.top.d) + " ahead"}${named && an.top.name ? ", at " + an.top.name : ""}.`);
   if (an.climb) s.push(`The steepest climb is a ${Math.round(an.climb.pct)} percent grade for ${Math.round(an.climb.len)} miles${p.pre ? ", near mile " + Math.round(an.climb.m) : ", starting " + miWords(an.climb.a) + " ahead"}.`);
   if (an.desc) s.push(`The steepest descent is a ${Math.round(an.desc.pct)} percent grade for ${Math.round(an.desc.len)} miles${p.pre ? ", near mile " + Math.round(an.desc.m) : ", starting " + miWords(an.desc.a) + " ahead"}.`);
   if (!an.climb && !an.desc) s.push("There are no hard hills.");
