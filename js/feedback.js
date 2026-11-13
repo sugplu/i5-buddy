@@ -242,16 +242,23 @@ async function submit() {
     result = { ok: false, text: e && e.name === "AbortError" ? "That took too long. Check your connection and try again." : "That didn't go through. Check your connection and try again." };
   } finally { clearTimeout(timer); }
   sending = false;
-  if (form !== f) return;                       // the sheet was rebuilt meanwhile
+  // The message is gone whichever form is showing: the sheet may have been closed and reopened while it was on its way,
+  // which builds a new form (filled from the saved draft). So the side effects of a success never depend on `f`.
   if (result.ok) {
     store.set("feedback:who", { name: String(vals.name).trim().slice(0, MAX_NAME), email: String(vals.email).trim().slice(0, MAX_EMAIL) });
     store.del("feedback:draft");
     clearTimeout(saveTimer);
-    done();
+  }
+  const cur = form;                             // the form on screen now: `f`, or the one built by a reopen
+  if (!cur) return;
+  // a reopened form that still holds what was sent is that message; one the person has since changed is something new
+  const same = cur === f || cur.msg.value.trim() === String(vals.message).trim();
+  if (result.ok) {
+    if (same) done();
+    else { cur.state = "idle"; paint(); saveDraft(); }   // keep the new text, and save it again (the draft was just deleted)
   } else {
-    form.state = "error"; paint();
-    setStatus(result.text, "error");
-    form.status.hidden = false;
+    cur.state = same ? "error" : "idle"; paint();
+    if (same) { setStatus(result.text, "error"); cur.status.hidden = false; }
   }
 }
 function done() {

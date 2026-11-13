@@ -212,6 +212,9 @@ counter) and a visually hidden `website` honeypot. Only on Send it POSTs `{name,
 `/api/feedback` (same origin rule as traffic); the app version is read from `sw.js`'s `VERSION` line (constant `2.5.0` as a
 fallback). States: sending, thanks, the server's own error words (text kept), offline (Send disabled), 15 s timeout. Name and
 email are remembered after a send (`feedback:who`) and an unsent draft is kept (`feedback:draft`), both via `api.store`.
+If the sheet is closed and reopened while a send is still on its way, the answer's side effects (save who, delete the draft)
+run whichever form is showing: a reopened form that still holds the sent message shows the thanks, one the person has started
+changing keeps its new text (saved again as the draft) and gets its Send button back.
 
 **Share (js/share.js).** The header button uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
 without Web Share, or when it fails for any reason except the user cancelling, `#shareSheet` opens (copy link, invite message,

@@ -216,6 +216,41 @@ const SCENARIOS = {
     check("sheet has no horizontal overflow", S().scrollWidth <= S().clientWidth + 1, `${S().scrollWidth} vs ${S().clientWidth}`);
     check("no em dashes and no exclamation marks in the sheet", !/[—!]/.test(txt(S())), txt(S()));
     check("every field has a label", ["fbName", "fbEmail", "fbMsg"].every(id => S().querySelector(`label[for=${id}]`)));
+    // --- the sheet is closed while a send is in flight, then reopened: the new form must not stay stuck on Sending
+    net.mode = "ok"; net.delay = 2000;
+    const reopen = async () => { api.ui.closeSheet(); await wait(100); open0.click(); await wait(150); };
+    const draftNow = () => JSON.parse(localStorage.getItem("i5b:feedback:draft") || "null");
+    const calls0 = net.calls.length;
+    await reopen();
+    type(win, field("#fbMsg"), "Sent while the sheet was closed.");
+    field(".fb-send").click();
+    await wait(450);                                  // the request is out and the draft is saved
+    await reopen();
+    check("reopened while a send is in flight: the new form says Sending and holds the draft", field(".fb-send").disabled && /Sending/.test(txt(field(".fb-send"))) && field("#fbMsg").value === "Sent while the sheet was closed.", txt(field(".fb-send")));
+    await wait(2200);
+    check("when it goes through, the reopened sheet shows the thanks, not a form stuck on Sending", /Thanks\./.test(txt(S())) && !S().querySelector("form"), txt(S()).slice(0, 100));
+    check("the sent draft is deleted and the name and email are saved", draftNow() === null && (JSON.parse(localStorage.getItem("i5b:feedback:who") || "null") || {}).email === "ada@example.com");
+    S().querySelector(".fb-done .primary").click();
+    await wait(100);
+    open0.click();
+    await wait(150);
+    check("the next form is empty and ready (nothing left to send twice)", field("#fbMsg").value === "" && !field(".fb-send").disabled && net.calls.length === calls0 + 1, `${net.calls.length - calls0} sent`);
+    net.mode = "down";
+    type(win, field("#fbMsg"), "This one cannot be delivered.");
+    field(".fb-send").click();
+    await wait(450);
+    await reopen();
+    await wait(2200);
+    check("when it fails, the reopened form is usable again, with its text and the reason", !field(".fb-send").disabled && /Send/.test(txt(field(".fb-send"))) && field("#fbMsg").value === "This one cannot be delivered." && /Check your connection/.test(txt(field(".fb-status"))), txt(field(".fb-status")));
+    net.mode = "ok";
+    field(".fb-send").click();
+    await wait(450);
+    await reopen();
+    type(win, field("#fbMsg"), "Something new I started after reopening.");
+    await wait(2200);
+    await wait(500);
+    check("success while the reopened form holds something new: that text stays, Send works, and it is saved as the draft", field("#fbMsg").value === "Something new I started after reopening." && !field(".fb-send").disabled && !!S().querySelector("form") && draftNow() && draftNow().message === "Something new I started after reopening.", `${field("#fbMsg") && field("#fbMsg").value} | ${JSON.stringify(draftNow())}`);
+    net.delay = 250;
   },
   async view({ win, doc, api }) {
     const v = Q.get("view") || "form";
