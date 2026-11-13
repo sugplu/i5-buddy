@@ -12,8 +12,9 @@
     art      every vehicle in every colour is valid SVG; facing, rotation, badge and name handling
     picker   Settings > Your ride > Change: pick kind, colour, badge, nickname; saved in the store, "ride" bus events,
              survives a reload of the module, the Drive sign slot and the Settings row show it
-    invite   the first-run invitation appears once, with Pick / Not now, and never again
-    moving   no invitation while the car is moving; it waits for a stop and still shows only once
+    invite   the first-run invitation appears once, with Pick / Not now, and never again; it goes at once when the car moves,
+             the mode becomes gps or demo, or Start GPS or Demo drive is tapped, and it only shows with tracking off or by hand
+    moving   no invitation while the car is moving or GPS is on, even stopped; by hand and still it shows, only once
     motion   moving / idle / sleepy states on the slot and the "ride:state" event; reduced-motion rules exist in the CSS
     passport the passport header shows the ride and its nickname, and the share card gets the ride picture
   Results go to the console as "[test-ride] PASS/FAIL ..." and end with "ALL PASS (n)" or "FAILED n".
@@ -99,7 +100,7 @@ async function run(f) {
 
   if (scene === "art") await sceneArt(api, R, doc);
   else if (scene === "picker") await scenePicker(api, R, w, doc, events);
-  else if (scene === "invite") await sceneInvite(api, R, doc);
+  else if (scene === "invite") { await sceneInvite(api, R, doc); await sceneInviteGoes(api, R, doc); }
   else if (scene === "moving") await sceneMoving(api, R, doc);
   else if (scene === "motion") await sceneMotion(api, R, w, doc);
   else if (scene === "passport") await scenePassport(api, R, w, doc);
@@ -302,7 +303,10 @@ async function sceneMoving(api, R, doc) {
   await sleep(300);
   api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
   await sleep(2500);
-  check("stopped: it shows now", !!doc.querySelector(".ride-invite"));
+  check("stopped at a light with GPS still on: no invitation (it is for tracking off or by hand)", !doc.querySelector(".ride-invite") && api.store.get("rideInvited", false) !== true);
+  api.S.mode = "manual"; api.bus.emit("mode", "manual");
+  await sleep(2500);
+  check("by hand and still: it shows now", !!doc.querySelector(".ride-invite"));
   check("... and is marked as shown", api.store.get("rideInvited", false) === true);
   [...doc.querySelectorAll(".ride-invite button")].find(b => b.textContent === "Not now")?.click();
   api.S.speed = 60; api.bus.emit("pos", { m: 100, dir: "N", speed: 60 });
@@ -311,6 +315,55 @@ async function sceneMoving(api, R, doc) {
   await sleep(2500);
   check("once only: it does not come back", !doc.querySelector(".ride-invite"));
   api.S.mode = "off";
+}
+
+/* ---------- the invitation goes away when the car moves or tracking starts ---------- */
+async function sceneInviteGoes(api, R, doc) {
+  const w = doc.defaultView;
+  const again = async () => {                                   // clear the flag and start a fresh module: it shows once more
+    dismissAll();
+    api.store.del("rideInvited");
+    const mod = await new w.Function("return import('" + w.location.origin + "/js/ride.js?go=" + Date.now() + Math.random() + "')")();
+    mod.init(Object.create(api, { ride: { value: undefined, writable: true, configurable: true, enumerable: true } }));
+    await sleep(3200);
+  };
+  const dismissAll = () => { for (const e of doc.querySelectorAll(".ride-invite")) e.remove(); };
+  const shown = () => doc.querySelectorAll(".ride-invite").length === 1;
+  api.S.mode = "off"; api.S.speed = null;
+  await again();
+  check("tracking off and still: the invitation shows", shown());
+  api.S.mode = "manual"; api.S.speed = 12; api.bus.emit("pos", { m: 100, dir: "N", speed: 12 });
+  await sleep(100);
+  check("a position fix at 12 mph takes it away at once", !shown());
+  api.S.speed = 0; api.S.mode = "off";
+  await again();
+  check("shown again for the next check", shown());
+  api.S.mode = "demo"; api.bus.emit("mode", "demo");
+  await sleep(100);
+  check("the mode becoming demo takes it away at once", !shown());
+  api.S.mode = "off";
+  await again();
+  check("shown again for the third check", shown());
+  api.S.mode = "gps"; api.bus.emit("mode", "gps");
+  await sleep(100);
+  check("the mode becoming gps takes it away at once", !shown());
+  await sleep(2500);
+  check("... and it does not come back while tracking", !shown());
+  api.S.mode = "off";
+  await again();
+  check("shown again for the last check", shown());
+  const ev = new w.Event("click", { bubbles: false, cancelable: true });
+  // main.js's own handler (Start GPS really starting) is not wanted here: a capture listener added last runs after ride.js's own capture listener and stops the rest
+  doc.getElementById("startGps").addEventListener("click", e => e.stopImmediatePropagation(), { capture: true, once: true });
+  doc.getElementById("startGps").dispatchEvent(ev);
+  await sleep(50);
+  check("tapping Start GPS takes it away at once, before any mode change", !shown() && api.S.mode === "off");
+  const startDemo = doc.getElementById("startDemo");
+  await again();
+  startDemo.addEventListener("click", e => e.stopImmediatePropagation(), { capture: true, once: true });
+  startDemo.dispatchEvent(new w.Event("click", { bubbles: false, cancelable: true }));
+  await sleep(50);
+  check("tapping Demo drive too", !shown() && api.S.mode === "off");
 }
 
 /* ---------- moving, idle, asleep ---------- */

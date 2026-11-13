@@ -295,6 +295,7 @@ function computeMotion() {
     applyMotionClass();
     try { api.bus.emit("ride:state", { state: motion }); } catch {}
   }
+  if (inviteEl && carBusy()) dismissInvite();                             // the car started moving: the invitation goes
 }
 function applyMotionClass() {
   for (const e of [slotEl, rowEl]) {
@@ -456,6 +457,11 @@ function close() { try { api.ui.closeSheet(); } catch {} }
 
 /* ---------- the first-run invitation ---------- */
 function sheetOpen() { return !!document.querySelector(".sheet:not([hidden])"); }
+/** Tracking is on (GPS or a demo drive) or the car is moving: no first-run invitation under the sign now. */
+function carBusy() {
+  const st = S();
+  return st.mode === "gps" || st.mode === "demo" || isMoving() || (num(st.speed) && st.speed >= MOVING_MPH);
+}
 function dismissInvite() {
   clearTimeout(inviteTimer);
   if (inviteEl) { inviteEl.remove(); inviteEl = null; }
@@ -465,9 +471,7 @@ function maybeInvite() {
     if (inviteEl || !slotEl || slotEl.hidden) return;
     if (api.store.get(SEEN_KEY, false)) return;
     if (hasSaved()) { api.store.set(SEEN_KEY, true); return; }
-    const st = S();
-    if (num(st.speed) && st.speed >= 8) return;          // never while driving; it waits for a stop
-    if (st.mode === "gps" || st.mode === "demo") { if (isMoving()) return; }
+    if (carBusy()) return;                               // only while tracking is off (or by hand) and the car is still
     if (sheetOpen()) return;
     const view = document.getElementById("view-drive");
     if (!view || view.hidden) return;
@@ -512,8 +516,10 @@ export function init(a) {
     renderSlot(); renderRow();
     const on = (evt, fn) => { try { api.bus.on(evt, e => { try { fn(e); } catch (err) { warn(err); } }); } catch (e) { warn(e); } };
     on("pos", () => { computeMotion(); });
-    on("mode", () => { computeMotion(); maybeInviteSoon(); });
+    on("mode", m => { if (m === "gps" || m === "demo") dismissInvite(); computeMotion(); maybeInviteSoon(); });
     on("tab", t => { if (t === "drive") maybeInviteSoon(); else dismissInvite(); });
+    // tapping Start GPS or Demo drive takes the invitation away at once (the mode change would too)
+    for (const id of ["startGps", "startDemo"]) { const b = document.getElementById(id); if (b) b.addEventListener("click", dismissInvite, true); }
     computeMotion();
     setTimeout(maybeInvite, 1800);
   } catch (e) { warn(e); }

@@ -278,8 +278,9 @@ is plain CSS on classes the host element carries: `ride-moving` (bounce, turning
 eyelid on the headlight, floating "z z"); `prefers-reduced-motion` turns every animation off and the states still read from the
 art. "Moving" means GPS or demo with speed of at least 3 mph; "sleepy" means tracking is off, or it has been stopped for a
 minute. The first-run invitation ("Pick your ride? It rides along on the map." with Pick / Not now) appears once, under the
-sign, only while the car is not moving and no sheet is open; the flag is `rideInvited` in the store. It is not modal and
-takes no focus.
+sign, only while tracking is off or by hand (`S.mode` off or manual), the car is still and no sheet is open; the flag is
+`rideInvited` in the store. It goes away at once when the car moves (`isMoving()` or `S.speed` at least 3), when the mode becomes gps
+or demo, or when Start GPS or Demo drive is tapped. It is not modal and takes no focus.
 
 map.js uses `api.ride` if it is there: the "you" marker becomes the ride, facing left or right by the heading (`S.heading`
 in GPS mode, else the road bearing plus the direction) and tilted at most about 40 degrees, so it is never upside down; without
