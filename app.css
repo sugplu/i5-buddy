@@ -145,7 +145,7 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .primary{background:var(--accent);color:var(--accent-fg)}
 .secondary{background:var(--surface-2);border-color:var(--line)}
 .secondary[aria-pressed="false"]{opacity:.65}
-.primary:disabled,.secondary:disabled{opacity:.5}
+.primary:disabled,.secondary:disabled,.secondary[aria-disabled="true"]{opacity:.5}
 .demo-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
 .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px}
 .seg button{border:0;background:none;padding:8px 12px;border-radius:7px;font-weight:700;color:var(--muted);min-height:38px}
@@ -210,7 +210,9 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .sheet-head .link{min-height:44px;min-width:44px}
 .field{display:grid;gap:8px;font-weight:700}
 .field output{font-family:var(--mono);color:var(--link);font-weight:600;margin-left:6px}
-.field select{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px;font:inherit;font-weight:500;max-width:100%}
+/* width:100% and min-width:0: a select is as wide as its longest option ("Grandma (English (United Kingdom)) (en-GB)"),
+   which otherwise widens the whole Settings sheet past a 360 to 390 px screen */
+.field select{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px;font:inherit;font-weight:500;width:100%;min-width:0}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .toggle{display:flex;gap:10px;align-items:center;font-weight:600}
 .toggle input{width:22px;height:22px;accent-color:var(--accent);flex:none}
@@ -246,12 +248,14 @@ body.glance .big-btn{min-height:96px;font-size:1.15rem}
 :root[data-theme="light"]{--dom:#007A4D;--dom-mark:#00B070}
 .byline{font-size:.75rem;color:var(--dom);text-decoration:none;letter-spacing:.02em}
 .byline:hover{text-decoration:underline}
-.made-by{display:flex;align-items:center;gap:12px;padding:12px;margin:6px 0 10px;border:1px solid var(--line);border-radius:12px;background:#000;color:#fff;text-decoration:none}
+/* About: Made by Dominares, and under it the family's other product, each one link of at least 44 px */
+.family{display:grid;gap:8px;margin:6px 0 10px}
+.made-by{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#000;color:#fff;text-decoration:none}
 .made-by .dom-mark{width:34px;height:30px;color:var(--dom-mark);flex:none}
 .made-by span{display:grid;gap:2px}
 .made-by b{font-size:.95rem;letter-spacing:.04em}
 .made-by small{font-size:.78rem;color:#2FD394}
-.also-from{margin:0 0 4px;font-size:.88rem;color:var(--fg-2)}
-.also-from a{color:var(--dom);font-weight:800;text-underline-offset:2px}
+.also-from{display:flex;align-items:center;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font-size:.88rem;line-height:1.35;color:var(--fg-2);text-decoration:none}
+.also-from b{color:var(--dom);font-weight:800}
 .moved{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:#000;color:#fff;border:1px solid #00B070;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.35}
 .moved a{color:#2FD394;font-weight:700}

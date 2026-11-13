@@ -349,11 +349,13 @@ function renderNext() {
     card.className = "next welcome"; card.innerHTML = "";
     const names = STATES.map(s => s.name);
     const states = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
-    card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()),
-      el("h2", null, `Your guide to all ${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`),
+    const h2 = el("h2", null, `Your guide to all ${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`);
+    h2.tabIndex = -1; // takes the focus when the Install app button under it goes away (updateInstall)
+    // Install app, or the iPhone tip (updateInstall), right under the headline: in a phone's browser tab, which is
+    // shorter than the screen, that keeps it above the tab bar.
+    const inst = el("div", "welcome-install"); inst.hidden = true;
+    card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()), h2, inst,
       el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. Tap Start GPS on the road, or take a demo drive from the couch.`));
-    const inst = el("div", "welcome-install"); inst.hidden = true; // Install app, or the iPhone tip (updateInstall)
-    card.append(inst);
     const stats = el("div", "welcome-stats");
     for (const [n, l] of [[PLACES.length, "landmarks"], [data.CAMS.length, "live cameras"], [data.SERVICES.length, "exits with services"]]) {
       const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
@@ -673,45 +675,70 @@ $("dataVersion").textContent = `Data version ${data.D.version}.`;
 /* ---------- install ---------- */
 // Chrome and Edge offer to install the app with a beforeinstallprompt event; index.html keeps it in window.__i5Install
 // (it can come before this module runs). While there is one, an Install app button shows in the welcome card and in
-// Settings. iPhone and iPad have no such offer, so the welcome card shows a one-line tip instead. Both go away once
-// the app is installed or is running as the installed app. Nothing is stored or sent anywhere.
-const IOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (/macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1); // iPadOS says Macintosh
+// Settings. iPhone and iPad have no such offer, so the welcome card shows a one-line tip instead; in an app's own
+// browser (Instagram, Facebook and so on) Share has no Add to Home Screen, so the tip says to open the page in Safari.
+// Both go away once the app is installed or is running as the installed app. Nothing is stored or sent anywhere.
 const APP_MODES = ["standalone", "fullscreen", "minimal-ui", "window-controls-overlay"];
-let installedHere = false; // the browser said "appinstalled" in this tab
+let installedHere = false; // the browser said "appinstalled" in this tab, or the person accepted its install dialog
+let asking = false;        // the browser's install dialog is open
 const runningInstalled = () => navigator.standalone === true || APP_MODES.some(m => matchMedia(`(display-mode: ${m})`).matches);
+// read when needed, not once at load (tools/e2e.html tries an iPhone and an in-app browser)
+const onIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (/macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1); // iPadOS says Macintosh
+const inAppBrowser = () => /FBAN|FBAV|FB_IAB|Instagram|LinkedInApp|GSA\/|Snapchat|Pinterest|Line\/|musical_ly|TikTok|Twitter/.test(navigator.userAgent);
 const ICON_INSTALL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg>';
 const ICON_SHARE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.6 4.2 4.2-1.4 1.4L13 6.4V15h-2V6.4L9.2 8.2 7.8 6.8 12 2.6ZM5 10h4v2H7v8h10v-8h-2v-2h4v12H5V10Z" fill="currentColor"/></svg>';
+const markBusy = (b, busy) => busy ? b.setAttribute("aria-disabled", "true") : b.removeAttribute("aria-disabled");
 function updateInstall() {
   const installed = installedHere || runningInstalled();
   const offer = installed ? null : window.__i5Install || null;
-  $("installApp").hidden = !offer;
+  const busy = asking && !installed;
+  const ios = !installed && onIOS(), inApp = ios && inAppBrowser();
+  const was = document.activeElement; // an Install app button with the focus, which may go away below
+  const hadFocus = was && (was.id === "installApp" || !!was.closest?.(".welcome-install")) ? was : null;
+  const btn = $("installApp");
+  btn.hidden = !offer && !busy; markBusy(btn, busy);
   const hint = $("installHint");
-  hint.textContent = installed ? "Installed on this device." : offer ? "" :
-    IOS ? "To install: tap Share, then Add to Home Screen." : "To install: open the browser menu and choose Install app or Add to Home screen.";
+  hint.textContent = installed ? "Installed on this device." : offer || busy ? "" :
+    inApp ? "To install: open this page in Safari, tap Share, then Add to Home Screen." :
+    ios ? "To install: tap Share, then Add to Home Screen." : "To install: open the browser menu and choose Install app or Add to Home screen.";
   hint.hidden = !hint.textContent;
   const slot = document.querySelector("#nextCard .welcome-install");
-  if (!slot) return;
-  const want = offer ? "offer" : IOS && !installed ? "ios" : "";
-  if (slot.dataset.show === want) return;
-  slot.dataset.show = want; slot.innerHTML = "";
-  if (want === "offer") {
-    const b = el("button", "secondary install-btn"); b.type = "button";
-    b.innerHTML = ICON_INSTALL; b.append("Install app"); b.onclick = installApp;
-    slot.append(b);
-  } else if (want === "ios") {
-    const tip = el("p", "install-tip", "Tip: tap Share");
-    const ic = el("span", "ic"); ic.innerHTML = ICON_SHARE;
-    tip.append(ic, ", then Add to Home Screen.");
-    slot.append(tip);
+  if (slot) {
+    const want = offer || busy ? "offer" : inApp ? "inapp" : ios ? "ios" : "";
+    if (slot.dataset.show !== want) {
+      slot.dataset.show = want; slot.innerHTML = "";
+      if (want === "offer") {
+        const b = el("button", "secondary install-btn"); b.type = "button";
+        b.innerHTML = ICON_INSTALL; b.append("Install app"); b.onclick = installApp;
+        slot.append(b);
+      } else if (want === "ios") {
+        const tip = el("p", "install-tip", "Tip: tap Share");
+        const ic = el("span", "ic"); ic.innerHTML = ICON_SHARE;
+        tip.append(ic, ", then Add to Home Screen.");
+        slot.append(tip);
+      } else if (want === "inapp") slot.append(el("p", "install-tip", "Tip: open this page in Safari to add it to your Home Screen."));
+      slot.hidden = !want;
+    }
+    const b = slot.querySelector("button");
+    b && markBusy(b, busy);
   }
-  slot.hidden = !want;
+  // The focused Install app button went away (installed, or the offer was used): keep the focus where it was, on the
+  // Settings line that replaces it, or on the welcome card's headline.
+  if (hadFocus && (!hadFocus.isConnected || hadFocus.hidden)) {
+    const to = hadFocus.id === "installApp" ? hint : document.querySelector("#nextCard.welcome h2");
+    to && to.focus({ preventScroll: true });
+  }
 }
 async function installApp() {
   const offer = window.__i5Install;
-  if (!offer) return;
+  if (!offer || asking) return;
   window.__i5Install = null; // each offer opens the browser's install dialog once
-  updateInstall();
-  try { await offer.prompt(); await offer.userChoice; } catch {}
+  asking = true; updateInstall(); // the button stays (busy) while the dialog is open, so the focus stays on it
+  try {
+    await offer.prompt();
+    if ((await offer.userChoice)?.outcome === "accepted") installedHere = true;
+  } catch {}
+  asking = false;
   updateInstall(); // if they said no, the browser may offer again later (i5:install)
 }
 $("installApp").onclick = installApp;

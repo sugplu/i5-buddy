@@ -19,6 +19,6 @@
   ],
   "screenshots": [
     {"src": "icons/screenshot-drive.jpg", "sizes": "540x1170", "type": "image/jpeg", "form_factor": "narrow", "label": "Drive: the next landmark, which side of the road it is on and how far to go"},
-    {"src": "icons/screenshot-map.jpg", "sizes": "540x1170", "type": "image/jpeg", "form_factor": "narrow", "label": "Map: every landmark along I-5 in California"}
+    {"src": "icons/screenshot-map.jpg", "sizes": "540x1170", "type": "image/jpeg", "form_factor": "narrow", "label": "Map: the landmarks along I-5 in California, and where you are"}
   ]
 }

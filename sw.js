@@ -2,7 +2,7 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.5.0"; // 2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map
+const VERSION = "i5b-v2.5.0"; // 2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map (2.4.1: the link preview and install screenshots are not cached)
 const SHELL = [
   "./", "index.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js",
@@ -12,7 +12,8 @@ const SHELL = [
   "css/roadahead.css", "css/feedback.css", "css/share.css", "css/ride.css", "css/map3d.css",
   "fonts/overpass.woff2", "fonts/overpass-mono.woff2",
   "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
-  "icons/og-1200x630.png", "icons/screenshot-drive.jpg", "icons/screenshot-map.jpg",
+  // Not cached: icons/og-1200x630.png (the link preview, read only by other sites) and icons/screenshot-*.jpg (read only
+  // by the browser's install sheet, which is online). The app never shows them, so a first install skips ~265 KB.
 ];
 const PHOTOS = "i5b-photos";
 

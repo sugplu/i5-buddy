@@ -86,8 +86,9 @@ python3 tools/images.py           # -> img/*.jpg + tools/images.json (then run b
 
 The link-preview picture (what a shared link shows in Messages, Slack and so on) is `icons/og-1200x630.png`, drawn
 from `tools/og-image.html` with the app's own tokens and font. After changing that page, run `python3 tools/og_image.py`
-(headless Chrome) and bump `VERSION` in `sw.js`. The install screenshots `icons/screenshot-*.jpg` are captures of a demo
-drive (Drive and Map tabs) at 360x780 CSS pixels, scale 1.5.
+(headless Chrome) and bump `VERSION` in `sw.js`. The install screenshots `icons/screenshot-*.jpg` (540x1170, listed in
+the manifest) come from `python3 tools/manifest_shots.py`: a demo drive, Drive and Map tabs, on a 390x845 screen at
+18/13 scale. The script names the stops and checks that the header fits and the map marker covers no label.
 
 Research helpers used to write and fact-check content: `tools/wiki.py` (Wikipedia search/page/coords/near) and
 `tools/where.py LAT LON` (corridor mile, state exit-mile, distance from I-5, side of the road).
