@@ -201,7 +201,9 @@ the toggle, everything to `S.dest` (else the end of the road); the whole road be
 position, and mile 0 would put the ride at the Mexico border). Grade = feet per mile / 5280 x 100
 over a 3-mile window; climb and descent ignore wiggles under 30 ft (80 ft on long views). Colors: easy under 2%, moderate 2-4,
 steep 4-6, very steep 6+ (`--nature`, `--accent`, `--hist`, `--danger`). It reads `api.live.weatherAlong()` and the `traffic`
-event at draw time (so load order does not matter), uses `api.ride.svg()` for your marker when it exists (else a dot) and
+event at draw time (so load order does not matter); traffic that is old (`api.live.trafficInfo().old`, or an incident's own `old`
+flag, a CHP item kept while CHP is not answering) is drawn dimmed with a dashed ring, and its label and the readout start "As of 20 min
+ago:"; it looks again every 30 s, so markers dim when parked data turns old, uses `api.ride.svg()` for your marker when it exists (else a dot) and
 redraws when the mile changes by half a mile, the direction flips, or the settings, traffic, weather, ride or destination
 change. `api.roadahead.state()` gives the last drawing's numbers (used by tools/test-roadahead.html).
 

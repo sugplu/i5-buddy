@@ -19,6 +19,7 @@ const GRADE_MIN = 3;                  // label a climb or descent only when it i
 const MOVE_MI = 0.5;                  // redraw after moving this far
 const MAX_PTS = 160;                  // points drawn
 const BACK = 0.3;                     // an incident this far behind still counts
+const TICK = 30e3;                    // look again for old traffic this often
 
 let api = null, S = null, settings = null, bus = null, store = null, data = {}, ui = {};
 let root = null, head = null, body = null, group = null, btnNear = null, btnTrip = null;
@@ -202,9 +203,24 @@ function weatherPoints(L, pre) {
   } catch (e) { warn(e); return []; }
 }
 const isRamp = it => /ramp/i.test(it.title || "");
+/** live.js's traffic state ({old, updated, ...}), or null when that module is not there. */
+function trafficInfo() {
+  try { const f = api.live && api.live.trafficInfo; return typeof f === "function" ? (f() || null) : null; } catch { return null; }
+}
+/** "20 min ago", "1 h 5 min ago". */
+function agoWords(t) {
+  const m = Math.max(1, Math.round((Date.now() - t) / 60e3));
+  if (m < 60) return `${m} min ago`;
+  const h = Math.floor(m / 60), r = m % 60;
+  return r ? `${h} h ${r} min ago` : `${h} h ago`;
+}
+/** Incidents ahead in the driver's direction. Each says whether it is old (the whole traffic list is, or live.js kept it
+    from an earlier answer while its source was not answering) and, then, when it was last confirmed. */
 function trafficPoints(L, pre) {
   if (pre || settings.live !== true) return [];
-  return traffic.filter(it => it && Number.isFinite(it.m) && !isRamp(it) && (!it.dir || it.dir === S.dir)).map(it => ({ ...it, x: dirAhead(it.m) }))
+  const info = trafficInfo(), allOld = !!(info && info.old);
+  return traffic.filter(it => it && Number.isFinite(it.m) && !isRamp(it) && (!it.dir || it.dir === S.dir))
+    .map(it => { const old = allOld || it.old === true; return { ...it, x: dirAhead(it.m), old, asOf: old ? (Number(it.asOf) || (info && Number(info.updated)) || null) : null }; })
     .filter(it => it.x >= -BACK && it.x <= L).sort((a, b) => a.x - b.x);
 }
 const isSevere = it => it.kind === "crash" || it.kind === "closure";
@@ -214,12 +230,12 @@ function clusters(list, L) {
   for (const it of list) {
     const x = XL + clamp(it.x, 0, L) / L * (XR - XL);
     const c = out[out.length - 1];
-    if (c && x - c.x < 15) { c.items.push(it); c.severe = c.severe || isSevere(it); } else out.push({ x, items: [it], severe: isSevere(it) });
+    if (c && x - c.x < 15) { c.items.push(it); c.severe = c.severe || isSevere(it); c.old = c.old && !!it.old; } else out.push({ x, items: [it], severe: isSevere(it), old: !!it.old });
   }
   return out;
 }
 function trWords(it) {
-  return `${it.title || "Traffic"}, ${mi(Math.max(0, it.x))}${it.x < 0.5 ? "" : " ahead"}${it.detail ? `. ${it.detail}` : ""}${it.until ? `. Until ${it.until}` : ""}`;
+  return `${it.old ? `As of ${it.asOf ? agoWords(it.asOf) : "a while ago"}: ` : ""}${it.title || "Traffic"}, ${mi(Math.max(0, it.x))}${it.x < 0.5 ? "" : " ahead"}${it.detail ? `. ${it.detail}` : ""}${it.until ? `. Until ${it.until}` : ""}`;
 }
 
 /* ---------- drawing ---------- */
@@ -389,7 +405,7 @@ function render(force) {
   // traffic
   for (const c of trf) {
     const first = c.items[0], id = "tr:" + first.id;
-    const b = el("button", "ra-pt ra-tr" + (c.severe ? " severe" : ""));
+    const b = el("button", "ra-pt ra-tr" + (c.severe ? " severe" : "") + (c.old ? " old" : ""));
     b.type = "button";
     b.setAttribute("aria-pressed", String(sel === id));
     b.setAttribute("aria-label", c.items.length > 1 ? `${c.items.length} traffic incidents, first ${trWords(first)}` : trWords(first));
@@ -510,7 +526,10 @@ function signature() {
   let w = "";
   try { const f = api.live && api.live.weatherAlong; if (settings.live === true && typeof f === "function") w = (f() || []).map(x => `${Math.round(x.m)}:${x.tempF}:${x.short}`).join(","); } catch {}
   const r = (() => { try { return api.ride && api.ride.get ? JSON.stringify(api.ride.get()) : ""; } catch { return ""; } })();
-  return [S.m == null ? "pre" : S.dir, settings.live === true ? "live" : "off", mode, S.dest ? `${S.dest.name}@${S.dest.m}` : "", traffic.map(t => t.id).join(","), w, r, sel || ""].join("|");
+  // old traffic: the flag, and its age in whole minutes (the readout and labels say how old it is)
+  const ti = settings.live === true ? trafficInfo() : null;
+  const tOld = ti && ti.old ? `old${Math.floor((Date.now() - (Number(ti.updated) || 0)) / 60e3)}` : "";
+  return [S.m == null ? "pre" : S.dir, settings.live === true ? "live" : "off", mode, S.dest ? `${S.dest.name}@${S.dest.m}` : "", traffic.map(t => t.id + (t.old ? "~" : "")).join(","), tOld, w, r, sel || ""].join("|");
 }
 
 /* ---------- events ---------- */
@@ -569,6 +588,9 @@ export function init(a) {
     });
     bus.on("trip:end", () => { try { dirty = true; refreshIfChanged(); } catch (e) { warn(e); } });
     document.addEventListener("visibilitychange", () => { try { if (!document.hidden) refreshIfChanged(); } catch {} });
+    // nothing is emitted while traffic simply ages (a parked car, no new answer): look again every 30 s, so the markers dim
+    // when the data turns old and their "as of" minutes keep up
+    setInterval(() => { try { if (!document.hidden) refreshIfChanged(); } catch {} }, TICK);
     api.roadahead = { render: () => render(true), state: () => last, setMode, _profile: profile };
     render(true);
   } catch (e) { warn(e); }

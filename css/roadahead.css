@@ -60,6 +60,7 @@ body.glance #roadAhead{display:none!important}
 .ra-tr .vis{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);border:2px solid var(--surface);box-shadow:var(--shadow);font-weight:900;font-size:.8rem}
 .ra-warn{width:14px;height:14px;display:block}
 .ra-tr.severe .vis{background:var(--danger);color:var(--sign-fg)}
+.ra-tr.old .vis{opacity:.55;border:2px dashed var(--fg-2)}
 .ra-pt[aria-pressed="true"] .vis{outline:3px solid var(--fg);outline-offset:1px}
 
 /* you */

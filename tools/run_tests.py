@@ -61,7 +61,7 @@ SUITE = [
     ("map light", "test-map.html?scene=whole&theme=light", 30000, "900,960", False),
     ("share", "test-share.html", 40000, "500,900", True),
     ("feedback", "test-feedback.html", 60000, "500,900", True),
-    ("roadahead", "test-roadahead.html", 40000, "500,900", True),
+    ("roadahead", "test-roadahead.html", 90000, "500,900", True),
     ("ride art", "test-ride.html?scene=art", 30000, "900,960", True),
     ("ride picker", "test-ride.html?scene=picker", 40000, "900,960", True),
     ("ride invite", "test-ride.html?scene=invite", 60000, "900,960", False),

@@ -191,6 +191,37 @@ const SCENARIOS = {
     api.bus.emit("traffic", { incidents: [], updated: new Date().toISOString(), sources: { chp: true, caltrans: true } });
     await wait(60);
     check("no incidents: no markers", !R().querySelector(".ra-tr"));
+    // --- old traffic is dimmed and says how old it is (the whole list old, or one item kept from an earlier answer)
+    const liveInfo = api.live.trafficInfo;
+    const sources = { chp: true, caltrans: true };
+    const oldMarks = () => [...R().querySelectorAll(".ra-tr")];
+    api.bus.emit("traffic", { incidents: [inc("o1", "crash", "Crash", 207, { detail: "At Grapevine Rd" }), inc("o2", "hazard", "Hazard in the road", 225)], updated: new Date().toISOString(), sources });
+    await wait(60);
+    check("current traffic: markers are not dimmed and say nothing about age", oldMarks().length === 2 && oldMarks().every(m => !m.classList.contains("old") && !/As of/.test(m.getAttribute("aria-label"))), oldMarks().map(m => m.getAttribute("aria-label")).join(" | "));
+    api.live.trafficInfo = () => ({ have: true, old: true, updated: Date.now() - 20 * 60e3, sources });
+    api.bus.emit("live:update", {});
+    await wait(60);
+    log("old markers", oldMarks().map(m => m.getAttribute("aria-label")));
+    check("old traffic: markers are dimmed and the label says as of N min ago", oldMarks().length === 2 && oldMarks().every(m => m.classList.contains("old") && /^As of 2\d min ago: /.test(m.getAttribute("aria-label"))), oldMarks().map(m => m.getAttribute("aria-label")).join(" | "));
+    oldMarks()[0].click();
+    await wait(60);
+    check("old traffic: the readout says how old it is", /^As of 2\d min ago: Crash, 19 mi ahead\. At Grapevine Rd/.test(txt(R().querySelector(".ra-read"))), txt(R().querySelector(".ra-read")));
+    check("old traffic: the screen-reader text says so too", /Traffic: As of 2\d min ago: Crash, 19 mi ahead/.test(txt(R().querySelector(".ra-sr"))), txt(R().querySelector(".ra-sr")).slice(-160));
+    oldMarks()[0].click();
+    api.live.trafficInfo = () => ({ have: true, old: false, updated: Date.now(), sources });
+    api.bus.emit("live:update", {});
+    await wait(60);
+    check("fresh again: the markers redraw current", oldMarks().length === 2 && oldMarks().every(m => !m.classList.contains("old") && !/As of/.test(m.getAttribute("aria-label"))));
+    api.live.trafficInfo = () => ({ have: true, old: true, updated: Date.now() - 16 * 60e3, sources });
+    await wait(31e3);
+    check("with no event at all, the 30 s check notices the data turned old", oldMarks().length === 2 && oldMarks().every(m => m.classList.contains("old") && /^As of 1[67] min ago: /.test(m.getAttribute("aria-label"))), oldMarks().map(m => m.getAttribute("aria-label")).join(" | "));
+    api.live.trafficInfo = () => ({ have: true, old: false, updated: Date.now(), sources: { chp: false, caltrans: true } });
+    api.bus.emit("traffic", { incidents: [inc("o1", "crash", "Crash", 207, { detail: "At Grapevine Rd", old: true, asOf: Date.now() - 12 * 60e3 }), inc("o2", "lane", "Lane closed", 225, { source: "caltrans" })], updated: new Date().toISOString(), sources: { chp: false, caltrans: true } });
+    await wait(60);
+    check("a CHP crash kept while CHP is down is dimmed with its own age; the Caltrans item next to it is current", oldMarks().length === 2 && oldMarks()[0].classList.contains("old") && /^As of 1[23] min ago: Crash/.test(oldMarks()[0].getAttribute("aria-label")) && !oldMarks()[1].classList.contains("old") && !/As of/.test(oldMarks()[1].getAttribute("aria-label")), oldMarks().map(m => m.getAttribute("aria-label")).join(" | "));
+    api.live.trafficInfo = liveInfo;
+    api.bus.emit("traffic", { incidents: [], updated: new Date().toISOString(), sources });
+    await wait(60);
     // --- your ride
     api.ride = { svg: () => '<svg viewBox="0 0 10 10" id="fakeRide" aria-hidden="true"><rect width="10" height="10"/></svg>' };
     api.bus.emit("ride", {});
