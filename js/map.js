@@ -64,6 +64,8 @@ const prefs = { places: true, cams: false, rest: true, follow: false };
 let sel = null, you = null, destM = null;
 let youShown = null, youAnim = null, lastPosAt = 0, posGap = 500; // where the marker is drawn while it glides to `you`
 let youDrawn = null;               // what the marker's DOM shows now, so sub-pixel moves cost nothing
+let rideFace = null;               // which way the ride (ride.js) faces on the map: "right" or "left"
+const three = { on: false, busy: false, host: null, btn: null, mod: null, note: null, noteTimer: 0 }; // the 3D terrain view (map3d.js)
 const youAt = () => youShown || you;
 let raf = 0, lastK = 0, motion = null, cityBoxes = [];
 let camG = null, restG = null, labelG = null;
@@ -147,6 +149,8 @@ export function init(a) {
     on("passport:reset", onStamps);
     on("dest", () => { if (built) updateYou(); }); // set or cleared on the Drive tab or by voice
     on("settings", onSettings);
+    on("ride", onRide);               // ride.js: a new vehicle, colour, badge or name
+    on("ride:state", onRide);         // ... or it fell asleep / woke up
     on("speaking", s => { speakingId = s && s.id ? s.id : null; refreshHearButton(); });
     api.map = publicApi();
     const v = document.getElementById("view-map");
@@ -197,6 +201,10 @@ function publicApi() {
     get view() { return { z: V.z, cx: V.cx, cy: V.cy, W: V.W, H: V.H }; },
     get layers() { return { places: prefs.places, cams: prefs.cams, rest: prefs.rest }; },
     get follow() { return prefs.follow; },
+    /** The 3D terrain view: open it, close it (back to the 2D map), or ask whether it is showing. */
+    open3d: safe(() => open3d()),
+    close3d: safe(() => close3d()),
+    get is3d() { return three.on; },
     get selected() { return sel ? { type: sel.type, item: sel.item || null, m: sel.m } : null; },
   };
 }
@@ -477,8 +485,12 @@ function buildSvg() {
   L.dest.innerHTML = '<path class="mp-dest-pole" d="M0 0V-19"/><path class="mp-dest-flag" d="M0 -19h11l-3 4 3 4H0Z"/><circle class="mp-dest-base" r="3"/>';
   L.you = sv("g", { class: "mp-you", display: "none" });
   L.you.innerHTML = '<circle class="mp-you-pulse" r="10"/><circle class="mp-you-shadow" r="11.5"/>' +
-    '<g class="mp-you-dir"><path d="M0 -22 7.4 -10.6 0 -13.6 -7.4 -10.6Z"/></g><circle class="mp-you-core" r="7.5"/>';
+    '<g class="mp-you-dir"><path d="M0 -22 7.4 -10.6 0 -13.6 -7.4 -10.6Z"/></g><circle class="mp-you-core" r="7.5"/>' +
+    '<g class="mp-ride" display="none"><g class="mp-ride-rot"><g class="mp-ride-art"></g></g></g>'; // the ride, when ride.js is loaded
   L.youDir = L.you.querySelector(".mp-you-dir");
+  L.ride = L.you.querySelector(".mp-ride");
+  L.rideRot = L.you.querySelector(".mp-ride-rot");
+  L.rideArt = L.you.querySelector(".mp-ride-art");
   world.append(L.rest, L.cams, L.dots, L.sel, L.labels, L.cities, L.dest, L.you);
 
   for (const c of CITIES) {
@@ -537,6 +549,9 @@ function buildControls() {
   zOutBtn = button("mp-zb", { html: ICON.minus, label: "Zoom out", title: "Zoom out", onClick: () => zoomBy(0.5) });
   const fit = button("mp-zb", { html: ICON.fit, label: "Whole road", title: "Whole road", onClick: () => wholeRoad() });
   zoom.append(zInBtn, zOutBtn, fit);
+  three.btn = button("mp-zb mp-3dbtn", { text: "3D", label: "3D terrain map", title: "3D terrain map", onClick: () => toggle3d() });
+  three.btn.setAttribute("aria-pressed", "false");
+  zoom.append(three.btn);
 
   const loc = el("div", "mp-loc");
   const near = button("mp-pill", { html: ICON.locate, text: "Near me", onClick: () => nearMe() });
@@ -568,7 +583,9 @@ function buildLegend() {
   const me = el("li");
   me.innerHTML = '<svg class="mp-glyph" viewBox="-10 -10 20 20" aria-hidden="true"><circle class="mp-you-core" r="6.5"/></svg>';
   me.append("You");
+  L.legendYou = me;
   ul.append(me);
+  setTimeout(safe(updateLegendYou), 0);
   return ul;
 }
 
@@ -593,6 +610,7 @@ function show() {
 }
 function hide() {
   onScreen = false;
+  close3d();            // the 3D map is removed when you leave the Map tab (memory, battery)
   motion = null;
   youAnim = null;
   if (you) youShown = { x: you.x, y: you.y };
@@ -962,21 +980,71 @@ function updateYou(draw = true) {
   if (dm !== destM) { destM = dm; drawDest(); }
   if (draw) drawYou();
 }
+/** The ride (ride.js) as the marker: which way it faces, how far it tilts, and whether it is moving or asleep.
+    Never assumes ride.js loaded: null means "draw the plain marker". The art is a side view, so it never turns upside
+    down: it faces left or right by the heading and only tilts a little (nose up when heading north). */
+function rideBits() {
+  const ra = api && api.ride;
+  if (!you || !ra || typeof ra.svg !== "function" || typeof ra.get !== "function") return null;
+  const st = S();
+  let h = null;
+  if (st.mode === "gps" && num(st.heading)) h = st.heading;
+  if (h == null) {
+    try { const b = api.geo && api.geo.bearingAt ? api.geo.bearingAt(you.m) : null; if (num(b)) h = (b + (st.dir === "S" ? 180 : 0)) % 360; } catch {}
+  }
+  if (h == null) h = ((you.ang % 360) + 360) % 360;
+  const rad = h * Math.PI / 180, dx = Math.sin(rad), dy = -Math.cos(rad);
+  rideFace = Math.abs(dx) > 0.25 ? (dx > 0 ? "right" : "left") : (st.dir === "S" ? "left" : "right");
+  const along = rideFace === "right" ? Math.max(0, dx) : Math.max(0, -dx);
+  let tilt = Math.atan2(dy, along) * 180 / Math.PI;     // -90 (north) .. 90 (south) for a right-facing ride
+  if (rideFace === "left") tilt = -tilt;
+  tilt = Math.round(tilt * 0.45 * 2) / 2;
+  let state = "idle";
+  try { if (typeof ra.state === "function") state = ra.state(); } catch {}
+  let key = "";
+  try { key = JSON.stringify(ra.get()) + rideFace; } catch {}
+  return { ra, face: rideFace, tilt, state, key };
+}
 /** Draw the marker where it is shown. Moves under a third of a pixel are skipped: they cost a repaint and show nothing. */
 function drawYou() {
   if (!L.you) return;
   if (!you) { if (youDrawn !== false) { L.you.setAttribute("display", "none"); youDrawn = false; } return; }
   const st = S(), at = youShown || you, k = kNow();
   const ang = Math.round(you.ang * 10) / 10, live = st.mode === "gps" || st.mode === "demo", lost = !!st.offRoute;
+  const rb = rideBits(), rk = rb ? rb.key : "", tilt = rb ? rb.tilt : 0, rs = rb ? rb.state : "";
   const d = youDrawn;
-  if (d && d.k === k && d.live === live && d.lost === lost && Math.abs(d.ang - ang) < 0.5 &&
+  if (d && d.k === k && d.live === live && d.lost === lost && Math.abs(d.ang - ang) < 0.5 && d.rk === rk && d.tilt === tilt && d.rs === rs &&
     Math.abs(at.x - d.x) * k < 0.3 && Math.abs(at.y - d.y) * k < 0.3) return;
   L.you.removeAttribute("display");
   L.you.setAttribute("transform", `translate(${r2(at.x)} ${r2(at.y)}) scale(${1 / k})`);
   if (!d || d.ang !== ang) L.youDir.setAttribute("transform", `rotate(${ang})`);
   if (!d || d.live !== live) L.you.classList.toggle("live", live);
   if (!d || d.lost !== lost) L.you.classList.toggle("lost", lost);
-  youDrawn = { x: at.x, y: at.y, k, ang, live, lost };
+  if (!d || d.rk !== rk) {
+    L.you.classList.toggle("has-ride", !!rb);
+    if (rb) {
+      L.ride.removeAttribute("display");
+      try { L.rideArt.innerHTML = `<g transform="translate(-23 -21)">${rb.ra.svg({ markup: true, size: 46, facing: rb.face })}</g>`; } catch (e) { warn(e); }
+    } else { L.ride.setAttribute("display", "none"); L.rideArt.textContent = ""; }
+  }
+  if (rb && (!d || d.tilt !== tilt)) L.rideRot.setAttribute("transform", `rotate(${tilt})`);
+  if (!d || d.rs !== rs) for (const c of ["moving", "idle", "sleepy"]) L.you.classList.toggle("ride-" + c, rs === c);
+  youDrawn = { x: at.x, y: at.y, k, ang, live, lost, rk, tilt, rs };
+}
+/** The ride changed, or woke up or fell asleep: redraw the marker and the legend's "You". */
+function onRide() {
+  if (!built) return;
+  updateLegendYou();
+  drawYou();
+}
+function updateLegendYou() {
+  if (!L.legendYou) return;
+  const ra = api && api.ride;
+  const old = L.legendYou.firstElementChild;
+  if (!old) return;
+  if (ra && typeof ra.svg === "function") {
+    old.replaceWith(ra.svg({ size: 30, zz: false }));
+  }
 }
 /** Run the "here you are" pulse again (it runs a few times when tracking starts or the map opens, then rests). */
 function pingYou() {
@@ -1127,7 +1195,7 @@ function onWheel(e) {
 }
 
 function onKey(e) {
-  if (e.target !== mapEl || e.altKey || e.metaKey || e.ctrlKey) return;
+  if (e.target !== mapEl || e.altKey || e.metaKey || e.ctrlKey || three.on) return;
   const step = 0.2;
   switch (e.key) {
     case "ArrowLeft": panBy(-V.W * step, 0); break;
@@ -1345,6 +1413,54 @@ function ensureVisible(x, y, z) {
   if (zz === V.z && sx > mx && sx < V.W - mx && sy > my && sy < V.H - my) return;
   if (prefs.follow) setFollow(false, true);
   flyTo(x, y, zz, 700);
+}
+
+/* ---------- the 3D terrain view ---------- */
+/** The 3D button: open the 3D map (MapLibre, loaded only now) or go back to 2D. */
+function toggle3d() { if (three.on || three.busy) close3d(); else open3d(); }
+const NOTE_3D = "The 3D map needs a connection and 3D graphics. Here\u2019s the regular map.";
+async function open3d() {
+  if (three.on || three.busy || !built || !mapEl) return false;
+  three.busy = true; three.on = true;
+  mapEl.classList.add("mp-3d-on");
+  if (three.btn) three.btn.setAttribute("aria-pressed", "true");
+  clearNote();
+  const host = three.host = el("div", "mp-3d-host");
+  mapEl.append(host);
+  let ok = false;
+  try {
+    const mod = three.mod = three.mod || await import("./map3d.js");
+    if (three.host !== host) { try { mod.close(); } catch {} return false; } // closed (tab left, or 2D tapped) while loading
+    ok = !!(await mod.open(api, host, { onExit: reason => { if (three.host === host) { close3d(); if (reason !== "user") showNote(NOTE_3D); } } }));
+  } catch (e) { warn(e); ok = false; }
+  three.busy = false;
+  if (three.host !== host) return false;
+  if (!ok) { close3d(); showNote(NOTE_3D); return false; }
+  return true;
+}
+/** Back to the 2D map: the MapLibre map is removed (map.remove()) so it stops using memory and battery. */
+function close3d() {
+  if (!three.on && !three.host) return;
+  three.on = false;
+  const host = three.host;
+  three.host = null;
+  try { if (three.mod) three.mod.close(); } catch (e) { warn(e); }
+  if (host) host.remove();
+  if (mapEl) mapEl.classList.remove("mp-3d-on");
+  if (three.btn) three.btn.setAttribute("aria-pressed", "false");
+  if (onScreen) { lastK = 0; render(); }
+}
+function showNote(text) {
+  clearNote();
+  if (!mapEl) return;
+  const n = three.note = el("p", "mp-3d-note", text);
+  n.setAttribute("role", "status");
+  mapEl.append(n);
+  three.noteTimer = setTimeout(safe(clearNote), 9000);
+}
+function clearNote() {
+  clearTimeout(three.noteTimer);
+  if (three.note) { three.note.remove(); three.note = null; }
 }
 
 /* ---------- live updates from the app ---------- */

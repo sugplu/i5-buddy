@@ -196,3 +196,21 @@
 .mp-mini.cam .mp-mini-h{stroke:var(--bg);stroke-width:7.5px}
 .mp-mini.cam .mp-mini-f{stroke:var(--fg-2);stroke-width:4.5px}
 :root[data-theme="light"] .mp-mini.cam .mp-mini-h{stroke:var(--surface)}
+
+/* the ride (ride.js) as the "you" marker: the plain dot and arrow step aside */
+.mp-you.has-ride .mp-you-core,.mp-you.has-ride .mp-you-dir,.mp-you.has-ride .mp-you-shadow{display:none}
+.mp-ride{pointer-events:none}
+.mp-you.has-ride.lost .mp-ride-art{opacity:.55;filter:grayscale(1)}
+#view-map .mp-ride .ride-svg{filter:none}
+.mp-legend .ride-svg{width:30px;height:auto;filter:none}
+
+/* the 3D map: its button is the last one in the zoom group; the 2D controls step aside while it is open */
+.mp-ctls{z-index:3}
+.mp-3dbtn{font-weight:900;font-size:.9rem;letter-spacing:.02em}
+.mp-3dbtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+.mp-3d-on .mp-svg{visibility:hidden}
+.mp-3d-on .mp-zb:not(.mp-3dbtn),.mp-3d-on .mp-scale,.mp-3d-on .mp-loc{display:none}
+.mp-3d-on .mp-3dbtn{border-top:0}
+.mp-3d-host{position:absolute;inset:0;z-index:1;background:var(--bg)}
+.mp-3d-note{position:absolute;left:10px;right:64px;top:10px;z-index:4;margin:0;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow);font-weight:700;font-size:.88rem;line-height:1.3}
