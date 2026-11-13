@@ -949,6 +949,7 @@ function renderTraffic(list) {
   const have = trHave(), good = have && trSources().length > 0;
   const off = trOffline(), old = trOld();
   const chpDown = good && !tr.sources.chp;      // Caltrans answered, CHP (the only source of crashes) did not
+  const ctDown = good && tr.sources.chp && !tr.sources.caltrans; // CHP answered, Caltrans (the lane closures) did not
   let msg = "", src = "";
   if (!have) {
     // never answered: say nothing while the first request is out, a plain note when it failed or there is no signal
@@ -966,7 +967,9 @@ function renderTraffic(list) {
     // never "no crashes": without CHP nothing is known about crashes
     msg = list.some(it => it.source === "chp") ? `Crash reports (CHP) aren't answering right now, so anything from CHP here is older.${old ? "" : " Caltrans closures are current."}`
       : `Crash reports (CHP) aren't answering right now. Only Caltrans closures are shown${list.length ? "." : `, and none are reported ahead for ${TR_RANGE} miles.`}`;
-  } else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.` : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
+  } else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.`
+    : ctDown ? `No crashes reported ahead for ${TR_RANGE} miles. Lane closures (Caltrans) aren't answering right now.`
+    : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
   if (off && list.length && !chpDown) msg = "";
   src = good ? `Traffic: ${names.join(" · ")} · updated ${ago(trT())}${old ? " (old)" : ""}` : "";
   if (off) src = `Traffic needs a connection. ${good ? `Showing the list from ${ago(trT())}.` : ""}`.trim();

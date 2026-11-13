@@ -1165,6 +1165,14 @@ const SCENARIOS = {
     await wait(500);
     check("CHP back: the crash row is current and the note is gone", !/aren't answering/.test(txt($(doc, ".lv-trsec"))) && ![...doc.querySelectorAll("#liveBlock .lv-tr-row")].some(r => r.classList.contains("old")) && txt($(doc, ".lv-trsrc")) === "Traffic: CHP · Caltrans · updated just now", txt($(doc, ".lv-trsrc")));
     check("CHP back: that crash is spoken once now", nSaid() === spoken0 + 1, `${nSaid()} vs ${spoken0}`);
+    // --- Caltrans down: a quiet stretch says nothing about closures it cannot know
+    T.edit = b => { b.sources.caltrans = false; b.incidents = b.incidents.filter(i => i.source !== "caltrans"); };
+    await nextFetch();
+    api.setPosition(300, { dir: "N", speed: 63, jumped: true });
+    await wait(300);
+    const msgC = txt($(doc, ".lv-trmsg"));
+    check("Caltrans down on a quiet stretch: no crashes, and the closures plainly unknown", msgC === "No crashes reported ahead for 60 miles. Lane closures (Caltrans) aren't answering right now.", msgC);
+    T.edit = null;
   },
   async unit(api, win, doc, net) {
     // the app's own instance of js/live.js (initialized, so geo/data are wired): load it from inside the iframe
