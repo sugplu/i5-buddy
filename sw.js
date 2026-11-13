@@ -17,8 +17,13 @@ const SHELL = [
 ];
 const PHOTOS = "i5b-photos";
 
+// Each shell file is asked for with ?v=<VERSION>, so a CDN copy of the previous release (the i5.dominares.org Worker keeps
+// files at the edge for a few minutes) can never end up in this release's offline cache; it is stored under its plain
+// address, which is what the app asks for.
+const fresh = u => u + (u.includes("?") ? "&" : "?") + "v=" + encodeURIComponent(VERSION);
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(VERSION).then(c => Promise.all(SHELL.map(u => c.add(new Request(u, { cache: "reload" })).catch(() => {})))));
+  e.waitUntil(caches.open(VERSION).then(c => Promise.all(SHELL.map(u =>
+    fetch(new Request(fresh(u), { cache: "reload" })).then(r => (r.ok ? c.put(u, r) : null)).catch(() => {})))));
 });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
