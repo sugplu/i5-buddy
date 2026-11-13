@@ -23,6 +23,8 @@
 
 /* on the Drive sign, beside the mile */
 .ride-slot{position:relative;flex:none;align-self:flex-end;margin:0 -8px -2px}   /* eats most of the two 18 px gaps beside it: the passing-name column keeps its room */
+/* glance mode is for big type: the ride would squeeze the PASSING column and push long zone names past the board at 360 px */
+body.glance .ride-slot{display:none}
 .ride-slot-btn{background:none;border:0;padding:2px 2px 0;min-width:46px;min-height:44px;display:grid;place-items:end center;border-radius:12px;color:inherit}
 .ride-slot-btn:active{background:rgba(255,255,255,.16)}
 .ride-slot-btn:focus-visible{outline-color:var(--sign-fg)}

@@ -272,7 +272,8 @@ api.ride = {
 }
 ```
 
-Where it shows: `#rideSlot` on the Drive sign (a 46 px button that opens the picker), `#rideRow` in Settings > Display, the
+Where it shows: `#rideSlot` on the Drive sign (a 46 px button that opens the picker; hidden in glance mode, where it squeezed the PASSING
+column and pushed long zone names past the board at 360 px), `#rideRow` in Settings > Display, the
 `#rideSheet` picker, the Map tab's position marker (map.js), the passport header and the trip share card (trip.js). Animation
 is plain CSS on classes the host element carries: `ride-moving` (bounce, turning wheels), `ride-idle`, `ride-sleepy` (shut
 eyelid on the headlight, floating "z z"); `prefers-reduced-motion` turns every animation off and the states still read from the

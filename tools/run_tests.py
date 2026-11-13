@@ -66,6 +66,7 @@ SUITE = [
     ("ride picker", "test-ride.html?scene=picker", 40000, "900,960", True),
     ("ride invite", "test-ride.html?scene=invite", 60000, "900,960", False),
     ("ride moving", "test-ride.html?scene=moving", 60000, "900,960", False),
+    ("ride glance", "test-ride.html?scene=glance&w=375&h=780", 60000, "900,960", False),
     ("ride motion", "test-ride.html?scene=motion", 40000, "900,960", False),
     ("ride passport", "test-ride.html?scene=passport", 40000, "900,960", False),
     ("ride light", "test-ride.html?scene=picker&theme=light", 40000, "900,960", False),

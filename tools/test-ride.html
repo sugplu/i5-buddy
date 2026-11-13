@@ -8,13 +8,14 @@
   Test bench for js/ride.js (the rides: vehicles, picker, Drive sign slot, Settings row, first-run invitation).
   Loads the app in a phone-sized iframe and drives it through I5BUDDY.api.
 
-  Query: ?scene=art|picker|invite|moving|motion|passport   &theme=dark|light   &w=390&h=844   &log (show the log)
+  Query: ?scene=art|picker|invite|moving|motion|passport|glance   &theme=dark|light   &w=390&h=844   &log (show the log)
     art      every vehicle in every colour is valid SVG; facing, rotation, badge and name handling
     picker   Settings > Your ride > Change: pick kind, colour, badge, nickname; saved in the store, "ride" bus events,
              survives a reload of the module, the Drive sign slot and the Settings row show it
     invite   the first-run invitation appears once, with Pick / Not now, and never again; it goes at once when the car moves,
              the mode becomes gps or demo, or Start GPS or Demo drive is tapped, and it only shows with tracking off or by hand
     moving   no invitation while the car is moving or GPS is on, even stopped; by hand and still it shows, only once
+    glance   (run with &w=375&h=780: a 360 px page) every landscape zone's name fits on the sign, in normal and glance mode
     motion   moving / idle / sleepy states on the slot and the "ride:state" event; reduced-motion rules exist in the CSS
     passport the passport header shows the ride and its nickname, and the share card gets the ride picture
   Results go to the console as "[test-ride] PASS/FAIL ..." and end with "ALL PASS (n)" or "FAILED n".
@@ -103,6 +104,7 @@ async function run(f) {
   else if (scene === "invite") { await sceneInvite(api, R, doc); await sceneInviteGoes(api, R, doc); }
   else if (scene === "moving") await sceneMoving(api, R, doc);
   else if (scene === "motion") await sceneMotion(api, R, w, doc);
+  else if (scene === "glance") await sceneGlance(api, R, w, doc);
   else if (scene === "passport") await scenePassport(api, R, w, doc);
   else check("known scene", false, scene);
 
@@ -364,6 +366,54 @@ async function sceneInviteGoes(api, R, doc) {
   startDemo.dispatchEvent(new w.Event("click", { bubbles: false, cancelable: true }));
   await sleep(50);
   check("tapping Demo drive too", !shown() && api.S.mode === "off");
+}
+
+/* ---------- glance mode at 360 px: nothing on the sign runs past the board, for every landscape zone ----------
+   Run it with w=375: the iframe's 15 px scrollbar leaves the page 360 px wide, as on a small phone. */
+async function sceneGlance(api, R, w, doc) {
+  api.store.set("rideInvited", true);
+  api.ui.go("drive");
+  const board = doc.getElementById("signBoard"), slot = doc.getElementById("rideSlot"), de = doc.documentElement;
+  const glanceBtn = doc.getElementById("glanceBtn");
+  const zones = api.data.ZONES;
+  check("the page is 360 px wide, as a small phone", Math.abs(de.clientWidth - 360) <= 1, String(de.clientWidth));
+  check("there are many landscape zones to sweep", zones.length >= 60, String(zones.length));
+  const sweep = async () => {
+    const bad = [];
+    for (const z of zones) {
+      const m = Math.max(0.5, Math.min(api.data.MAX_M - 0.5, (z.from + z.to) / 2));
+      api.setPosition(m, { dir: "N", speed: 0, jumped: true });
+      await sleep(25);
+      const bb = board.getBoundingClientRect();
+      let worst = 0, who = "";
+      for (const n of board.querySelectorAll("*")) {
+        if (!n.getClientRects().length || n.closest(".ribbon")) continue;      // the progress ribbon clips its own ticks
+        const over = n.getBoundingClientRect().right - bb.right;
+        if (over > worst) { worst = over; who = n.id || n.className || n.tagName; }
+      }
+      const txt = doc.getElementById("nearText").textContent;
+      if (worst > 0.5 || board.scrollWidth > board.clientWidth + 1 || de.scrollWidth > de.clientWidth) bad.push(`${txt} (+${worst.toFixed(1)}px ${who})`);
+    }
+    return bad;
+  };
+  check("normal mode: the ride is on the sign", getComputedStyle(slot).display !== "none" && !slot.hidden);
+  let bad = await sweep();
+  check(`normal mode at 360 px: all ${zones.length} zone names fit on the sign`, bad.length === 0, `${bad.length}: ${bad.slice(0, 4).join(" | ")}`);
+  if (!doc.body.classList.contains("glance")) glanceBtn.click();
+  await sleep(50);
+  check("glance mode is on", doc.body.classList.contains("glance") && glanceBtn.getAttribute("aria-pressed") === "true");
+  check("glance mode: the ride is not drawn on the sign (it squeezed the passing column)", getComputedStyle(slot).display === "none");
+  bad = await sweep();
+  check(`glance mode at 360 px: all ${zones.length} zone names fit on the sign`, bad.length === 0, `${bad.length}: ${bad.slice(0, 4).join(" | ")}`);
+  check("glance mode: no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+  const long = "Extraordinarilylongunbrokenplacenamethatcannotwrap Valley Junction";
+  doc.getElementById("nearText").textContent = long;
+  await sleep(30);
+  const bb = board.getBoundingClientRect(), nb = doc.getElementById("nearText").getBoundingClientRect();
+  check("an unbroken long word wraps inside the board instead of pushing out (the guard)", nb.right <= bb.right + 0.5 && board.scrollWidth <= board.clientWidth + 1, `${nb.right} vs ${bb.right}`);
+  glanceBtn.click();
+  await sleep(30);
+  check("leaving glance mode brings the ride back to the sign", getComputedStyle(slot).display !== "none");
 }
 
 /* ---------- moving, idle, asleep ---------- */
