@@ -229,7 +229,7 @@ card is unchanged if that fails).
 
 map.js adds a "3D" button as the last button of the map's zoom group. Tapping it injects the MapLibre stylesheet, `css/map3d.css`
 and the MapLibre script (`vendor/maplibre/`, pinned in `vendor/maplibre/VERSION`) and calls `open(api, host, {onExit})`; none of
-that is loaded at start-up or cached by `sw.js`. `open` resolves `true` when the first map tile arrives and `false` when 3D
+that is loaded at start-up or precached in `sw.js` SHELL (the worker's network-first rule keeps a copy after first use). `open` resolves `true` when the first map tile arrives and `false` when 3D
 cannot run: no WebGL, the script or the style failed to load, or no tile arrived within 12 seconds (single failed tiles on
 the road are ignored). map.js then shows "The 3D map needs a connection and 3D graphics. Here's the regular map." and the 2D map is
 back; `close()` runs `map.remove()` and also happens when you leave the Map tab or tap 3D again. In the test suite every outside

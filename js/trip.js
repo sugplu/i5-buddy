@@ -1607,6 +1607,9 @@ async function addRide(cv) {
       img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(A.ride.svg({ size: 420, zz: false, markup: true }));
     });
     if (!ok) return;
+    // A browser that taints a canvas for an SVG image would let drawImage succeed and make toBlob fail later, which would
+    // break sharing altogether: try the picture on a scratch canvas first and only use it if its pixels can be read.
+    try { const t = document.createElement("canvas"); t.width = t.height = 8; const tg = t.getContext("2d"); tg.drawImage(img, 0, 0, 8, 8); tg.getImageData(0, 0, 1, 1); } catch { return; }
     const w = 130, h = 87, x = 1032 - 38 - w, y = 48 + 396 - 22 - h;      // the sign is 984 x 396 at (48, 48), see drawCard
     g.drawImage(img, x, y, w, h);
     if (r.name) {
