@@ -25,7 +25,14 @@ and it works offline after that. No account, no tracking; everything stays on th
   text or email), a Share button on every landmark, links like `i5.dominares.org/#place=<id>` that open one landmark, and
   "Send feedback" in Settings (name, email, message) that goes to the Dominares team.
 - **Ahead**: every landmark ahead with photos, filters, sources; or gas, food and rest areas ahead.
-- **Map**: the whole road on a zoomable map with every landmark, camera and rest area.
+- **Map**: the whole road on a zoomable map with every landmark, camera and rest area. **3D**: a tilted terrain map (hills,
+  hillshade, sky) that follows your car, with landmark pins you can tap and a "Fly the road" button that glides the
+  camera along the next 30 miles. It loads map pictures from OpenFreeMap and AWS terrain tiles only while it is open,
+  and falls back to the regular map when there is no connection or no 3D graphics.
+- **Your ride**: pick one of eight hand-drawn vehicles (compact car, camper van, pickup, convertible, motorhome,
+  motorcycle, EV hatchback, family bus) in eight colours, with a driver badge (an emoji or two letters) and a nickname.
+  It rides on the Drive sign (bouncing while you drive, dozing when parked), as your marker on the map, and on the
+  passport and its share card. Settings > Display > Your ride, or tap it on the sign.
 - **Passport**: a stamp for every landmark you pass, regions, badges, trip log, a shareable trip card.
 - **Play**: road bingo tuned to the region, trivia about the road, I-spy scores.
 - **Voice commands** (where the browser supports it): "what's on my left", "tell me more", "next gas", "how far to Redding".
@@ -58,6 +65,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `content/v2/logs/` | Fact-check change logs. |
 | `img/` | Landmark photos (Wikimedia Commons, free licenses; credits in `tools/images.json` and on each photo). |
 | `tools/` | Data pipeline and tests (below). |
+| `vendor/maplibre/` | MapLibre GL JS 5.24.0 (BSD-3-Clause; `maplibre-gl.js`, `.css`, `LICENSE.txt`, `VERSION`), loaded only when the 3D map is opened and never cached with the app shell. To update: download the `maplibre-gl-<version>.tgz` from the npm registry and copy those three files from `dist/` (and the license), then update `VERSION`. |
 | `sw.js`, `manifest.webmanifest`, `icons/`, `fonts/` | Offline support, install info (with two phone screenshots for Android's install sheet), icons, the link-preview picture, Overpass font (SIL OFL). |
 
 ## Data pipeline
@@ -97,7 +105,7 @@ python3 tools/run_tests.py --only geometry # one of them
 #   /tools/test.html   geometry: GPS -> corridor mile at California exits; places past the ends are off the road (ALL PASS)
 #   /tools/e2e.html    fake GPS drives: narration timing, sides, off-route, glitches, the halfway point,
 #                      the end of the road at the Oregon line and at the Mexico border, demo, modules (ALL PASS)
-#   /tools/test-{live,map,play,trip,listen}.html   per-module pages
+#   /tools/test-{live,map,play,trip,listen,ride}.html   per-module pages (test-map also covers the ride marker and the 3D fallback)
 ```
 
 When you change any app file, bump `VERSION` in `sw.js` so installed phones pick up the update.

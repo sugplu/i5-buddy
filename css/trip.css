@@ -140,6 +140,9 @@
 .pp-cover-top{display:flex;align-items:center;gap:12px}
 .pp-shield{width:44px;height:47px;flex:none}
 .pp-cover-tt{min-width:0}
+.pp-ride{margin-left:auto;flex:none;display:grid;justify-items:center;max-width:84px}   /* the ride (ride.js) and its nickname */
+.pp-ride .ride-svg{width:64px;height:auto;filter:drop-shadow(0 0 1.2px rgba(255,255,255,.85))}
+.pp-ride small{font-size:.66rem;font-weight:800;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.95}
 .pp-title{margin:0;font-size:1.45rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;line-height:1.05}
 .pp-since{margin:2px 0 0;font-size:.8rem;font-weight:700;opacity:.85}
 .pp-dist{margin:0;display:grid;border-top:2px solid var(--sign-fg);border-bottom:2px solid var(--sign-fg);padding:4px 0}

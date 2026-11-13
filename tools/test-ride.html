@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ride module test</title>
+<!--
+  Test bench for js/ride.js (the rides: vehicles, picker, Drive sign slot, Settings row, first-run invitation).
+  Loads the app in a phone-sized iframe and drives it through I5BUDDY.api.
+
+  Query: ?scene=art|picker|invite|moving|motion|passport   &theme=dark|light   &w=390&h=844   &log (show the log)
+    art      every vehicle in every colour is valid SVG; facing, rotation, badge and name handling
+    picker   Settings > Your ride > Change: pick kind, colour, badge, nickname; saved in the store, "ride" bus events,
+             survives a reload of the module, the Drive sign slot and the Settings row show it
+    invite   the first-run invitation appears once, with Pick / Not now, and never again
+    moving   no invitation while the car is moving; it waits for a stop and still shows only once
+    motion   moving / idle / sleepy states on the slot and the "ride:state" event; reduced-motion rules exist in the CSS
+    passport the passport header shows the ride and its nickname, and the share card gets the ride picture
+  Results go to the console as "[test-ride] PASS/FAIL ..." and end with "ALL PASS (n)" or "FAILED n".
+  Headless Chrome notes: as test-map.html (timers only, virtual time).
+-->
+<style>
+  html,body{margin:0;background:#3a3f3c;font:12px/1.35 ui-monospace,Menlo,monospace;color:#dfe8e2}
+  #f{display:block;border:0;background:#000}
+  #out{position:fixed;left:0;right:0;bottom:0;max-height:45%;overflow:auto;margin:0;padding:4px 8px;background:rgba(0,0,0,.85);white-space:pre-wrap;display:none;z-index:9}
+  body.log #out{display:block}
+</style>
+</head>
+<body>
+<pre id="out"></pre>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const scene = q.get("scene") || "picker";
+const theme = q.get("theme") === "light" ? "light" : "dark";
+const W = +q.get("w") || 390, H = +q.get("h") || 844;
+const out = document.getElementById("out");
+if (q.has("log")) document.body.classList.add("log");
+let fails = 0, passes = 0;
+const log = s => { console.log("[test-ride] " + s); out.textContent += s + "\n"; };
+const check = (name, ok, info = "") => { ok ? passes++ : fails++; log(`${ok ? "PASS" : "FAIL"} ${name}${info ? " (" + info + ")" : ""}`); };
+const skip = (name, why) => log(`SKIPPED ${name} (${why})`);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const done = () => log(fails ? `FAILED ${fails} (passed ${passes})` : `ALL PASS (${passes})`);
+
+boot();
+
+function boot() {
+  const f = document.createElement("iframe");
+  f.id = "f"; f.title = "I-5 Buddy"; f.src = "../index.html";
+  f.style.width = W + "px"; f.style.height = H + "px";
+  // a fresh profile: the first-run invitation must be able to show
+  document.body.prepend(f);
+  let started = false;
+  const start = () => { if (started) return; started = true; run(f).catch(e => { check("scene ran", false, e && (e.stack || e.message)); done(); }); };
+  f.addEventListener("load", async () => {
+    if (started) return;
+    const w = f.contentWindow, sw = w.navigator.serviceWorker;
+    if (sw && !sw.controller) {
+      let changed = false;
+      sw.addEventListener("controllerchange", () => { changed = true; });
+      const t0 = performance.now();
+      for (let i = 0; !changed && !started && i < 4e6 && (i < 4e5 || performance.now() - t0 < 6000); i++) await yieldTask();
+      await new Promise(r => setTimeout(r, 0));
+    }
+    if (w.I5BUDDY) start();
+  });
+}
+const chan = new MessageChannel(), yields = [];
+chan.port1.onmessage = () => { const r = yields.shift(); r && r(); };
+function yieldTask() { return new Promise(r => { yields.push(r); chan.port2.postMessage(0); }); }
+
+/** Resolve when ride.js has called init (it sets api.ride). */
+function rideReady(api) {
+  if (api.ride) return Promise.resolve();
+  return new Promise(resolve => {
+    Object.defineProperty(api, "ride", { configurable: true, enumerable: true, get: () => undefined,
+      set(v) { Object.defineProperty(api, "ride", { value: v, writable: true, configurable: true, enumerable: true }); resolve(); } });
+  });
+}
+
+async function run(f) {
+  const w = f.contentWindow, doc = f.contentDocument;
+  w.addEventListener("error", e => check("no uncaught error in the app", false, e.message));
+  w.addEventListener("unhandledrejection", e => check("no unhandled rejection in the app", false, e.reason && e.reason.message));
+  const api = w.I5BUDDY && w.I5BUDDY.api;
+  if (!api) throw new Error("I5BUDDY.api missing");
+  // the invitation checks start from a clean slate, before the module's first-run timer fires
+  const first = scene === "invite" || scene === "moving";
+  if (first) { api.store.del("ride"); api.store.del("rideInvited"); }
+  await rideReady(api);
+  if (scene === "moving") { api.S.mode = "gps"; api.S.speed = 62; api.bus.emit("pos", { m: api.S.m || 100, dir: "N", speed: 62 }); }
+  try { api.voice.say = () => Promise.resolve(false); api.voice.unlock = () => {}; } catch {}
+  api.settings.theme = theme;
+  doc.documentElement.dataset.theme = theme;
+  const R = api.ride;
+  check("api.ride exposes get, svg and list", typeof R.get === "function" && typeof R.svg === "function" && typeof R.list === "function");
+  const events = [];
+  api.bus.on("ride", e => events.push(e));
+
+  if (scene === "art") await sceneArt(api, R, doc);
+  else if (scene === "picker") await scenePicker(api, R, w, doc, events);
+  else if (scene === "invite") await sceneInvite(api, R, doc);
+  else if (scene === "moving") await sceneMoving(api, R, doc);
+  else if (scene === "motion") await sceneMotion(api, R, w, doc);
+  else if (scene === "passport") await scenePassport(api, R, w, doc);
+  else check("known scene", false, scene);
+
+  // layout checks every scene shares
+  const de = doc.documentElement;
+  check("no sideways scroll", de.scrollWidth <= de.clientWidth + 1, `${de.scrollWidth} vs ${de.clientWidth}`);
+  done();
+}
+
+/* ---------- art ---------- */
+async function sceneArt(api, R, doc) {
+  const L = R.list();
+  check("eight vehicles", L.kinds.length === 8, L.kinds.map(k => k.id).join(","));
+  check("six to eight colours", L.colors.length >= 6 && L.colors.length <= 8, String(L.colors.length));
+  const parser = new DOMParser();
+  let bad = 0, total = 0, fillBad = 0;
+  for (const k of L.kinds) for (const c of L.colors) {
+    total++;
+    const m = R.svg({ kind: k.id, color: c.id, size: 120, markup: true });
+    const d = parser.parseFromString(m, "image/svg+xml");
+    const ok = !d.querySelector("parsererror") && d.documentElement.localName === "svg" && d.documentElement.getAttribute("viewBox") === "0 0 120 80" &&
+      d.documentElement.getAttribute("xmlns") === "http://www.w3.org/2000/svg" && !/undefined|NaN|\[object/.test(m) && d.querySelectorAll("path,rect,circle,ellipse").length > 10;
+    if (!ok) { bad++; log(`  bad: ${k.id} ${c.id}`); }
+    if (!m.includes(c.hex)) fillBad++;   // the body colour is the chosen paint
+  }
+  check(`all ${total} vehicle and colour pairs are valid SVG`, bad === 0, bad + " bad");
+  check("the body colour is the chosen paint in every pair", fillBad === 0, fillBad + " missing");
+  // different kinds really are different drawings
+  const sigs = new Set(L.kinds.map(k => R.svg({ kind: k.id, color: "sky", markup: true })));
+  check("each vehicle is its own drawing", sigs.size === 8);
+  // brand safety: no text other than the badge and the sleepy z's
+  const el = R.svg({ kind: "camper", color: "mint", size: 64 });
+  check("svg() returns an element by default", el && el.nodeType === 1 && el.localName === "svg" && el.getAttribute("width") === "64" && el.getAttribute("height") === "42.7", el && el.getAttribute("height"));
+  check("a size is honoured", R.svg({ size: 32, markup: true }).includes('width="32"'));
+  // badge: one emoji or up to two letters; name: up to 20 characters; markup is escaped
+  const b1 = R.svg({ badge: "😎", markup: true }), b2 = R.svg({ badge: "jsx", markup: true }), b3 = R.svg({ badge: "<script>", markup: true });
+  check("an emoji badge is drawn", b1.includes("😎"));
+  check("a letter badge keeps two letters, capitalised", b2.includes(">JS<") && !b2.includes("JSX"));
+  check("badge markup is escaped", !b3.includes("<script") && !b3.includes("&lt;script"), b3.match(/>(\w{0,3})<\/text>/) && b3.match(/>(\w{0,3})<\/text>/)[1]);
+  const lab = R.svg({ label: 'A "quote" <b>', markup: true });
+  check("an accessible name is escaped", lab.includes("&quot;quote&quot;") && !lab.includes("<b>"));
+  check("without a label the picture is decoration", R.svg({ markup: true }).includes('aria-hidden="true"'));
+  // facing left mirrors the body but not the badge
+  const left = R.svg({ badge: "AB", facing: "left", markup: true });
+  check("facing left mirrors the body", left.includes("translate(120 0) scale(-1 1)"));
+  check("... and not the badge text", /<text transform="translate\([\d.]+ [\d.]+\) scale\(-1 1\)"[^>]*>AB</.test(left));
+  check("rotation is applied", R.svg({ rotate: 20, markup: true }).includes("rotate(20 60 60)"));
+  check("the sleepy z z can be left out", !R.svg({ zz: false, markup: true }).includes("ride-zz") && R.svg({ markup: true }).includes("ride-zz"));
+  // set(): invalid values fall back, names are capped, whitespace collapses
+  R.set({ kind: "nope", color: "nope", badge: "!!", name: "  A   very   long   nickname   that   keeps   going   " });
+  const g = R.get();
+  check("an unknown kind and colour fall back to the defaults", g.kind === "compact" && g.color === "sunny", JSON.stringify(g));
+  check("a badge with no letters or emoji is empty", g.badge === "");
+  check("a nickname is capped at 20 characters and tidied", g.name.length <= 20 && !/\s{2}/.test(g.name) && g.name === g.name.trim() && g.name.startsWith("A very long"), JSON.stringify(g.name));
+  R.set({ name: "<b>Hi</b>" });
+  check("angle brackets never survive in a nickname", !/[<>]/.test(R.get().name), R.get().name);
+  check("get() hands out a copy", (() => { const x = R.get(); x.kind = "rv"; return R.get().kind !== "rv"; })());
+}
+
+/* ---------- picker ---------- */
+async function scenePicker(api, R, w, doc, events) {
+  const slot = doc.getElementById("rideSlot"), row = doc.getElementById("rideRow"), sheet = doc.getElementById("rideSheet");
+  check("#rideSlot is shown on the Drive sign", slot && !slot.hidden && !!slot.querySelector("svg.ride-svg"));
+  const sb = slot.querySelector("button");
+  check("the slot is a labelled button of at least 44 px", sb && /Your ride/.test(sb.getAttribute("aria-label")) && sb.getBoundingClientRect().height >= 43.5 && sb.getBoundingClientRect().width >= 43.5,
+    sb && `${sb.getBoundingClientRect().width}x${sb.getBoundingClientRect().height}`);
+  const sr = slot.getBoundingClientRect(), board = doc.getElementById("signBoard").getBoundingClientRect();
+  check("the slot sits inside the sign", sr.width > 0 && sr.left >= board.left && sr.right <= board.right && sr.top >= board.top && sr.bottom <= board.bottom + 4);
+  const art = slot.querySelector("svg").getBoundingClientRect();
+  check("the ride on the sign is 40 to 48 px wide", art.width >= 39.5 && art.width <= 48.5, String(art.width));
+  check("#rideRow shows the current ride and a Change button", /Your ride/.test(row.textContent) && !!row.querySelector("svg") && /Change/.test(row.textContent));
+
+  // Settings > Your ride > Change
+  doc.getElementById("openSettings").click();
+  await sleep(50);
+  const go = row.querySelector("button");
+  check("Change is a 44 px button", go.getBoundingClientRect().height >= 43.5, String(go.getBoundingClientRect().height));
+  go.click();
+  await sleep(60);
+  check("the picker opens", !sheet.hidden && /Pick your ride/.test(sheet.textContent));
+  check("... and replaces Settings", doc.getElementById("settings").hidden);
+  const opts = [...sheet.querySelectorAll(".ride-opt")], sws = [...sheet.querySelectorAll(".ride-sw")];
+  check("a grid of all eight vehicles", opts.length === 8 && opts.every(o => o.querySelector("svg")));
+  check("a swatch for every colour", sws.length === R.list().colors.length);
+  check("every picker button is at least 44 px", [...sheet.querySelectorAll("button")].every(b => { const r = b.getBoundingClientRect(); return r.width >= 43.5 && r.height >= 43.5; }),
+    [...sheet.querySelectorAll("button")].filter(b => { const r = b.getBoundingClientRect(); return r.width < 43.5 || r.height < 43.5; }).map(b => b.className + ":" + b.getBoundingClientRect().width.toFixed(0) + "x" + b.getBoundingClientRect().height.toFixed(0)).join(" "));
+  check("exactly one vehicle and one colour are pressed", opts.filter(o => o.getAttribute("aria-pressed") === "true").length === 1 && sws.filter(o => o.getAttribute("aria-pressed") === "true").length === 1);
+  check("the live preview is big", sheet.querySelector(".ride-big svg").getBoundingClientRect().width >= 150);
+  const n0 = events.length;
+
+  opts.find(o => o.dataset.kind === "camper").click();
+  await sleep(20);
+  check("choosing a vehicle changes the ride", R.get().kind === "camper" && opts.find(o => o.dataset.kind === "camper").getAttribute("aria-pressed") === "true");
+  sws.find(s => s.dataset.color === "grape").click();
+  await sleep(20);
+  check("choosing a colour changes the ride", R.get().color === "grape" && sws.find(s => s.dataset.color === "grape").getAttribute("aria-pressed") === "true");
+  check("the preview follows the choice", sheet.querySelector(".ride-big svg").outerHTML.includes("#8a63d2") && /Grape camper van/.test(sheet.querySelector(".ride-cap").textContent), sheet.querySelector(".ride-cap").textContent);
+  check("the vehicle buttons are drawn in the chosen colour", opts[0].querySelector("svg").outerHTML.includes("#8a63d2"));
+  sheet.querySelector(".ride-chip").click();                 // the first badge idea
+  await sleep(20);
+  check("a badge idea sets the badge", R.get().badge === "😎", R.get().badge);
+  const bi = sheet.querySelector("#rideBadge");
+  bi.value = "zq9"; bi.dispatchEvent(new w.Event("input", { bubbles: true }));
+  await sleep(20);
+  check("typing a badge keeps two letters", R.get().badge === "ZQ", R.get().badge);
+  const ni = sheet.querySelector("#rideName");
+  check("the nickname field allows 20 characters", ni.maxLength === 20);
+  ni.value = "Gertrude the Great, and her trusty cat"; ni.dispatchEvent(new w.Event("input", { bubbles: true }));
+  await sleep(20);
+  check("typing a nickname keeps 20 characters", R.get().name === "Gertrude the Great,", JSON.stringify(R.get().name));
+  check("the preview caption shows the nickname", /Gertrude/.test(sheet.querySelector(".ride-cap").textContent));
+
+  const got = R.get();
+  check("api.ride.get() returns the whole ride", got.kind === "camper" && got.color === "grape" && got.badge === "ZQ" && got.name === "Gertrude the Great,", JSON.stringify(got));
+  const saved = api.store.get("ride", null);
+  check("it is saved with api.store", saved && saved.kind === "camper" && saved.color === "grape" && saved.badge === "ZQ" && saved.name === got.name, JSON.stringify(saved));
+  check('the bus "ride" event fired for every change', events.length - n0 >= 5 && events[events.length - 1].ride.name === got.name && events[events.length - 1].ride.kind === "camper", String(events.length - n0));
+  check('... only when something changed', (() => { const n = events.length; R.set({ kind: "camper" }); return events.length === n; })());
+  check("the Drive slot shows the new ride", slot.querySelector("svg").outerHTML.includes("#8a63d2") && /Grape camper van/.test(slot.querySelector("button").getAttribute("aria-label")) && /Gertrude/.test(slot.querySelector("button").getAttribute("aria-label")));
+  check("the Settings row shows it", /Gertrude/.test(row.textContent) && row.querySelector("svg").outerHTML.includes("#8a63d2"));
+
+  // a reload of the module keeps it
+  const mod = await new w.Function("return import('" + w.location.origin + "/js/ride.js?again=" + Date.now() + "')")();
+  const api2 = Object.create(api, { ride: { value: undefined, writable: true, configurable: true, enumerable: true } });
+  mod.init(api2);
+  const again = api2.ride && api2.ride.get();
+  check("it survives a reload of the module", again && JSON.stringify(again) === JSON.stringify(got), JSON.stringify(again));
+  check("the Drive slot is drawn again with the saved ride", slot.querySelector("svg").outerHTML.includes("#8a63d2"));
+
+  // Done closes
+  [...sheet.querySelectorAll("button")].find(b => b.textContent === "Done" && b.classList.contains("ride-done")).click();
+  await sleep(30);
+  check("Done closes the picker", sheet.hidden);
+
+  // tapping the ride on the Drive sign opens it too
+  api.ui.go("drive");
+  slot.querySelector("button").click();
+  await sleep(60);
+  check("tapping the ride on the sign opens the picker", !sheet.hidden);
+  api.ui.closeSheet();
+  await sleep(20);
+
+  // a keyboard user can reach and press the buttons: real <button>s with names
+  check("buttons are real buttons with names", [...sheet.querySelectorAll("button")].every(b => b.localName === "button" && (b.textContent.trim() || b.getAttribute("aria-label"))));
+  check("both inputs have labels", sheet.querySelector('label[for="rideBadge"]') && sheet.querySelector('label[for="rideName"]'));
+}
+
+/* ---------- first-run invitation ---------- */
+async function sceneInvite(api, R, doc) {
+  const slot = doc.getElementById("rideSlot");
+  check("nothing saved yet: the default ride is on the sign", !!slot.querySelector("svg") && R.get().kind === "compact");
+  await sleep(3200);
+  const inv = doc.querySelector(".ride-invite");
+  check("the first-run invitation shows while the car is parked", !!inv);
+  if (inv) {
+    check("it says what the ride does", inv.textContent.includes("Pick your ride? It rides along on the map."), inv.textContent.slice(0, 80));
+    const bs = [...inv.querySelectorAll("button")];
+    check("with Pick and Not now, 44 px tall", bs.map(b => b.textContent).join("|") === "Pick|Not now" && bs.every(b => b.getBoundingClientRect().height >= 43.5));
+    check("it is not modal: no backdrop, no focus taken", doc.getElementById("sheetBack").hidden && !inv.contains(doc.activeElement));
+    const r = inv.getBoundingClientRect(), bd = doc.getElementById("signBoard").getBoundingClientRect();
+    check("it sits within the page width", r.left >= 0 && r.right <= doc.documentElement.clientWidth + 1, `${r.left}..${r.right}`);
+    check("it is anchored under the sign", Math.abs(r.top - bd.bottom - 10) < 6, `${r.top} vs ${bd.bottom}`);
+  }
+  check("it was marked as shown at once", api.store.get("rideInvited", false) === true);
+  [...doc.querySelectorAll(".ride-invite button")].find(b => b.textContent === "Not now")?.click();
+  await sleep(20);
+  check("Not now dismisses it", !doc.querySelector(".ride-invite"));
+  check("... and picks nothing", api.store.get("ride", null) === null);
+  api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive"); api.bus.emit("mode", "off");
+  await sleep(2500);
+  check("it never shows again", !doc.querySelector(".ride-invite"));
+  // Pick opens the picker: reset the flag and ask again through a fresh module
+  api.store.del("rideInvited");
+  const w = doc.defaultView;
+  const mod = await new w.Function("return import('" + w.location.origin + "/js/ride.js?inv=" + Date.now() + "')")();
+  mod.init(Object.create(api, { ride: { value: undefined, writable: true, configurable: true, enumerable: true } }));
+  await sleep(3200);
+  const inv2 = doc.querySelector(".ride-invite");
+  check("a fresh start with the flag cleared shows it once more", !!inv2);
+  [...doc.querySelectorAll(".ride-invite button")].find(b => b.textContent === "Pick")?.click();
+  await sleep(80);
+  check("Pick opens the picker and closes the invitation", !doc.getElementById("rideSheet").hidden && !doc.querySelector(".ride-invite"));
+  api.ui.closeSheet();
+}
+
+/* ---------- never while driving ---------- */
+async function sceneMoving(api, R, doc) {
+  const w = doc.defaultView;
+  check("the car is moving", api.S.mode === "gps" && api.S.speed === 62);
+  await sleep(3500);
+  check("no invitation while driving fast", !doc.querySelector(".ride-invite"));
+  check("... and it is not used up", api.store.get("rideInvited", false) !== true);
+  check("the ride is moving on the sign", R.state() === "moving" && doc.getElementById("rideSlot").classList.contains("ride-moving"), R.state());
+  api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
+  await sleep(2500);
+  check("changing tabs while driving does not show it either", !doc.querySelector(".ride-invite"));
+  api.S.speed = 0; api.bus.emit("pos", { m: api.S.m || 100, dir: "N", speed: 0 });
+  await sleep(300);
+  api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
+  await sleep(2500);
+  check("stopped: it shows now", !!doc.querySelector(".ride-invite"));
+  check("... and is marked as shown", api.store.get("rideInvited", false) === true);
+  [...doc.querySelectorAll(".ride-invite button")].find(b => b.textContent === "Not now")?.click();
+  api.S.speed = 60; api.bus.emit("pos", { m: 100, dir: "N", speed: 60 });
+  api.S.speed = 0; api.bus.emit("pos", { m: 100, dir: "N", speed: 0 });
+  api.bus.emit("tab", "ahead"); api.bus.emit("tab", "drive");
+  await sleep(2500);
+  check("once only: it does not come back", !doc.querySelector(".ride-invite"));
+  api.S.mode = "off";
+}
+
+/* ---------- moving, idle, asleep ---------- */
+async function sceneMotion(api, R, w, doc) {
+  const slot = doc.getElementById("rideSlot");
+  api.store.set("rideInvited", true);
+  const states = [];
+  api.bus.on("ride:state", e => states.push(e.state));
+  check("parked (tracking off): asleep", R.state() === "sleepy" && slot.classList.contains("ride-sleepy"), R.state());
+  check("the sleepy z z is in the picture", !!slot.querySelector(".ride-zz"));
+  const zz = w.getComputedStyle(slot.querySelector(".ride-zz")).opacity;
+  check("... and shown while asleep", zz === "1", zz);
+  check("the sleepy lid is shown on the headlight", w.getComputedStyle(slot.querySelector(".ride-lid")).opacity === "1");
+  R.sleepAfterMs = 400;
+  api.S.mode = "gps"; api.S.speed = 55; api.S.m = 200;
+  api.bus.emit("mode", "gps"); api.bus.emit("pos", { m: 200, dir: "N", speed: 55 });
+  check("driving: moving", R.state() === "moving" && slot.classList.contains("ride-moving") && !slot.classList.contains("ride-sleepy"), R.state());
+  check("... and the ride is awake: no z z, no lid", w.getComputedStyle(slot.querySelector(".ride-zz")).opacity === "0" && w.getComputedStyle(slot.querySelector(".ride-lid")).opacity === "0");
+  const reduceQuery = w.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const bob = w.getComputedStyle(slot.querySelector(".ride-art")).animationName;
+  if (reduceQuery) skip("the ride bobs while moving", "this browser asks for reduced motion");
+  else check("the ride bobs gently while moving", bob === "ride-bob", bob);
+  const spin = w.getComputedStyle(slot.querySelector(".ride-wheel")).animationName;
+  if (!reduceQuery) check("the wheels turn while moving", spin === "ride-spin", spin);
+  api.S.speed = 0; api.bus.emit("pos", { m: 200, dir: "N", speed: 0 });
+  check("stopped at once: awake but still", R.state() === "idle" && slot.classList.contains("ride-idle"), R.state());
+  await sleep(700);
+  check("stopped for a while: asleep", R.state() === "sleepy" && slot.classList.contains("ride-sleepy"), R.state());
+  check('the bus announces each change ("ride:state")', states.join(",") === "moving,idle,sleepy" || states.join(",") === "sleepy,moving,idle,sleepy" || /moving,idle,sleepy$/.test(states.join(",")), states.join(","));
+  api.S.speed = 40; api.bus.emit("pos", { m: 201, dir: "N", speed: 40 });
+  check("moving again wakes it", R.state() === "moving");
+  api.S.mode = "off"; api.bus.emit("mode", "off");
+  check("tracking off: it sleeps", R.state() === "sleepy");
+  // the row on Settings shows the same states
+  check("no animation is needed to read the state: the classes are on the row too", doc.getElementById("rideRow").classList.contains("ride-sleepy"));
+  // reduced motion: the stylesheet turns every animation off
+  let found = false;
+  for (const ss of [...doc.styleSheets]) {
+    let rules = [];
+    try { rules = [...ss.cssRules]; } catch { continue; }
+    for (const r of rules) if (r.type === 4 && /prefers-reduced-motion:\s*reduce/.test(r.conditionText || r.media.mediaText) && [...r.cssRules].some(x => /\.ride-svg/.test(x.selectorText || "") && /none/.test(x.style.animation || x.style.animationName || x.cssText))) found = true;
+  }
+  check("prefers-reduced-motion turns the ride animations off (rule in ride.css)", found);
+}
+
+/* ---------- passport ---------- */
+async function scenePassport(api, R, w, doc) {
+  R.set({ kind: "pickup", color: "tomato", badge: "😎", name: "Big Red" });
+  api.ui.go("passport");
+  await sleep(450);
+  const cover = doc.querySelector("#view-passport .pp-cover");
+  check("the passport cover is drawn", !!cover);
+  const pr = cover && cover.querySelector(".pp-ride");
+  check("the ride is on the passport header", !!(pr && pr.querySelector("svg") && pr.querySelector("svg").outerHTML.includes("#e5483f")));
+  check("with its nickname", pr && /Big Red/.test(pr.textContent), pr && pr.textContent);
+  const rr = pr && pr.getBoundingClientRect(), cr = cover.getBoundingClientRect();
+  check("it fits inside the cover", rr && rr.left >= cr.left && rr.right <= cr.right && rr.top >= cr.top && rr.bottom <= cr.bottom, rr && `${rr.left}..${rr.right} in ${cr.left}..${cr.right}`);
+  R.set({ color: "sky", name: "" });
+  await sleep(450);
+  check("changing the ride updates the passport", doc.querySelector("#view-passport .pp-ride svg").outerHTML.includes("#3fa7e0"));
+  // the share card (a canvas) gets the ride drawn on it
+  let blob = null, blobNo = null;
+  try {
+    blob = await api.trip.card("all");
+    R.set({ color: "sky" });
+    const real = api.ride; api.ride = undefined;
+    blobNo = await api.trip.card("all");
+    api.ride = real;
+  } catch (e) { check("share card drawn", false, e && e.message); }
+  check("the share card is drawn with the ride", blob && blob.size > 20000, blob && String(blob.size));
+  check("... and still draws without the ride module", blobNo && blobNo.size > 20000, blobNo && String(blobNo.size));
+  check("the ride changes the card's pixels", blob && blobNo && blob.size !== blobNo.size, `${blob && blob.size} vs ${blobNo && blobNo.size}`);
+}
+</script>
+</body>
+</html>

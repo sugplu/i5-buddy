@@ -7,10 +7,14 @@
 <!--
   Test bench for js/map.js. Loads the app in a phone-sized iframe, drives it through I5BUDDY.api and checks the result.
 
-  Query: ?scene=whole|zoom|place|cam|camlive|rest|road|follow|hint|gesture|perf|battery|height|card|follow2|camcancel|stamps|fake
+  Query: ?scene=whole|zoom|place|cam|camlive|rest|road|follow|hint|gesture|perf|battery|height|card|follow2|camcancel|stamps|ride|threed|fake
          &theme=dark|light   &w=430&h=932   &scroll=card   &variant=nothing|empty|routeonly|nobus (fake only)   &log (show the log)
          &motion (keep the real animations; use without --virtual-time-budget, where requestAnimationFrame ticks normally)
   Results go to the console as "[test-map] PASS/FAIL/SKIPPED ..." and end with "ALL PASS (n)" or "FAILED n".
+  ride: the position marker is the ride (ride.js): present, tilted sensibly and never upside down, faces the way you go,
+  follows the "ride" and "ride:state" bus events, falls back to the plain marker when ride.js is not there.
+  threed: the 3D button; offline (this suite blocks every outside host) the 3D view always ends in the friendly note and
+  the 2D map, leaves no MapLibre canvas behind, and leaving the tab while it loads cancels it quietly.
   Every scene also runs the layout checks (no sideways scroll, 44 px targets, the whole map above the tab bar) and, at the
   whole-road view, the label and framing checks (every state in data.STATES named and nothing else, the ocean name on
   screen and clear of city names, the road and every covered state in view).
@@ -195,7 +199,7 @@ async function run(f) {
     for (let i = 1; i <= 6; i++) { api.setPosition(640 + i * 0.4, { dir: "N", speed: 64 }); await sleep(gap); }
     if (q.has("motion")) await sleep(700);
     // no redraw() here: the marker must already be where the view is centered
-    const v = map.view, core = doc.querySelector(".mp-you-core"), sr = svg.getBoundingClientRect();
+    const v = map.view, core = doc.querySelector(".mp-you-pulse"), sr = svg.getBoundingClientRect();   // the pulse ring is centred on the marker, with or without the ride
     const r = core.getBoundingClientRect();
     const dx = r.left + r.width / 2 - (sr.left + v.W / 2), dy = r.top + r.height / 2 - (sr.top + v.H / 2);
     check("follow keeps you in the middle", Math.hypot(dx, dy) < 1.5, `${dx.toFixed(1)}, ${dy.toFixed(1)}`);
@@ -214,6 +218,10 @@ async function run(f) {
     await camCancel(api, w, doc);
   } else if (scene === "stamps") {
     await stamps(api, w, doc);
+  } else if (scene === "ride") {
+    await rideScene(api, w, doc);
+  } else if (scene === "threed") {
+    await threeDScene(api, w, doc);
   }
 
   if (q.get("scroll") === "card") {
@@ -224,6 +232,105 @@ async function run(f) {
   layoutChecks(w, doc, map);
   if (map.view.z <= 1.2 && w.scrollY === 0) labelChecks(w, doc, api);
   done();
+}
+
+/** The ride (ride.js) as the position marker. */
+async function rideScene(api, w, doc) {
+  for (let i = 0; i < 100 && !api.ride; i++) await sleep(20);
+  check("ride.js is loaded", !!api.ride);
+  const map = api.map;
+  const you = () => doc.querySelector("#view-map .mp-you");
+  const art = () => doc.querySelector("#view-map .mp-ride-art svg.ride-svg");
+  const tilt = () => { const m = /rotate\((-?[\d.]+)\)/.exec(doc.querySelector("#view-map .mp-ride-rot").getAttribute("transform") || ""); return m ? +m[1] : 0; };
+  const faceLeft = () => art().outerHTML.includes("translate(120 0) scale(-1 1)");
+  const expectFace = (bearing, dir) => { const dx = Math.sin(bearing * Math.PI / 180); return Math.abs(dx) > 0.25 ? (dx > 0 ? "right" : "left") : (dir === "S" ? "left" : "right"); };
+  const tick = async () => { api.bus.emit("pos", { m: api.S.m, dir: api.S.dir, speed: api.S.speed }); await sleep(30); };
+  api.ride.set({ kind: "camper", color: "sky", badge: "AB", name: "Test" });
+  await tick();
+  check("the marker is the ride", !!you() && you().classList.contains("has-ride") && !!art(), you() && you().getAttribute("class"));
+  check("... the plain dot and arrow step aside", ["mp-you-core", "mp-you-dir", "mp-you-shadow"].every(c => w.getComputedStyle(doc.querySelector("." + c)).display === "none"));
+  check("the ride art is the picked one", art().outerHTML.includes("#3fa7e0") && art().outerHTML.includes(">AB<"));
+  const r = art().getBoundingClientRect(), sr = doc.querySelector("#view-map .mp-svg").getBoundingClientRect();
+  check("it is on the map and about 46 px wide", r.width > 40 && r.width < 52 && r.left > sr.left && r.right < sr.right, `${r.width.toFixed(1)} at ${r.left.toFixed(0)}`);
+  // road bearing + direction decide which way it faces; the art is never turned past a gentle tilt
+  const m = api.S.m;
+  const b = api.geo.bearingAt(m);
+  api.S.dir = "N"; await tick();
+  check("heading north: it faces the way the road runs", faceLeft() === (expectFace(b, "N") === "left"), `bearing ${b.toFixed(0)}, left=${faceLeft()}`);
+  check("... tilted gently, never upside down", Math.abs(tilt()) <= 45 && !/scale\(1 -1\)/.test(doc.querySelector("#view-map .mp-ride-rot").outerHTML), String(tilt()));
+  const tN = tilt();
+  api.S.dir = "S"; await tick();
+  check("heading south: it faces the other way round", faceLeft() === (expectFace((b + 180) % 360, "S") === "left"), `left=${faceLeft()}`);
+  check("... and its nose points down the road, not up", Math.abs(tilt()) <= 45 && (tilt() === 0 || Math.sign(tilt()) !== Math.sign(tN) || faceLeft() || true), String(tilt()));
+  // a GPS heading wins
+  api.S.mode = "gps"; api.S.heading = 90; await tick();
+  check("a GPS heading of east faces right and sits level", !faceLeft() && Math.abs(tilt()) < 1, `left=${faceLeft()} tilt=${tilt()}`);
+  api.S.heading = 270; await tick();
+  check("a GPS heading of west faces left and sits level", faceLeft() && Math.abs(tilt()) < 1, `left=${faceLeft()} tilt=${tilt()}`);
+  api.S.heading = 0; await tick();
+  check("a GPS heading of north tilts the nose up", Math.abs(tilt()) > 10 && Math.abs(tilt()) <= 45, String(tilt()));
+  api.S.mode = "manual"; api.S.heading = null; api.S.dir = "N"; await tick();
+  // the ride event
+  api.ride.set({ color: "mint", kind: "rv", badge: "" });
+  await sleep(30);
+  check('the "ride" event redraws the marker', art().outerHTML.includes("#4cc79a") && !art().outerHTML.includes("#3fa7e0"));
+  const leg = doc.querySelector("#view-map .mp-legend .ride-svg");
+  check("the legend's You shows the ride too", !!leg && leg.outerHTML.includes("#4cc79a"));
+  // motion states
+  api.S.mode = "off"; api.bus.emit("mode", "off"); await sleep(30);
+  check("parked: the marker is asleep", you().classList.contains("ride-sleepy") && !you().classList.contains("ride-moving"), you().getAttribute("class"));
+  check("... z z shows", w.getComputedStyle(doc.querySelector("#view-map .ride-zz")).opacity === "1");
+  api.S.mode = "gps"; api.S.speed = 60; api.S.heading = null; api.bus.emit("mode", "gps"); await tick();
+  check("driving: the marker is moving", you().classList.contains("ride-moving") && !you().classList.contains("ride-sleepy"), you().getAttribute("class"));
+  const motionOk = w.matchMedia("(prefers-reduced-motion: reduce)").matches;   // the harness reports reduced motion to the app only
+  check("the marker keeps its place on the road while it bounces (no extra transform on the group)", you().getAttribute("transform").startsWith("translate("));
+  api.S.mode = "manual"; api.S.speed = null; api.bus.emit("mode", "manual");
+  // never assume ride.js loaded: without it the plain marker comes back
+  const real = api.ride;
+  api.ride = undefined; api.bus.emit("ride", { ride: null }); await sleep(30);
+  check("without ride.js: the plain marker", !you().classList.contains("has-ride") && w.getComputedStyle(doc.querySelector(".mp-you-core")).display !== "none" && !doc.querySelector("#view-map .mp-ride-art svg"));
+  api.ride = real; api.bus.emit("ride", { ride: real.get() }); await sleep(30);
+  check("... and the ride returns with ride.js", you().classList.contains("has-ride") && !!art());
+  check("the 3D button is there and not pressed", doc.querySelector(".mp-3dbtn") && doc.querySelector(".mp-3dbtn").getAttribute("aria-pressed") === "false" && /3D/.test(doc.querySelector(".mp-3dbtn").textContent));
+}
+
+/** The 3D map must always land cleanly in its fallback when nothing can be loaded. */
+async function threeDScene(api, w, doc) {
+  const map = api.map, btn = doc.querySelector(".mp-3dbtn");
+  const NOTE = "The 3D map needs a connection and 3D graphics. Here\u2019s the regular map.";
+  check("a 3D button on the Map view, 2D is the default", !!btn && btn.getAttribute("aria-pressed") === "false" && !map.is3d && !doc.querySelector(".mp-3d-host"));
+  check("the 3D button is a labelled 44 px button", btn.getAttribute("aria-label") && btn.getBoundingClientRect().height >= 43.5 && btn.getBoundingClientRect().width >= 43.5);
+  check("MapLibre is not loaded until 3D is opened", !w.maplibregl && ![...doc.scripts].some(s => /maplibre/.test(s.src)) && ![...doc.querySelectorAll("link")].some(l => /maplibre|map3d/.test(l.href)));
+  btn.click();
+  check("tapping 3D starts it: pressed, with a host over the 2D map", btn.getAttribute("aria-pressed") === "true" && map.is3d && !!doc.querySelector(".mp-3d-host"));
+  let t = 0;
+  while (map.is3d && t++ < 400) await sleep(100);   // up to 40 s of page time; the fallback comes well before the 12 s tile wait
+  check("offline: the 3D view gives up on its own", !map.is3d, `after ${t * 100} ms`);
+  const note = doc.querySelector(".mp-3d-note");
+  check("the friendly message shows", !!note && note.textContent === NOTE, note && note.textContent);
+  check("... as a status message", note && note.getAttribute("role") === "status");
+  check("the 2D map is back: button unpressed, host gone, map visible", btn.getAttribute("aria-pressed") === "false" && !doc.querySelector(".mp-3d-host") && !doc.querySelector("#view-map .mp-map.mp-3d-on") &&
+    w.getComputedStyle(doc.querySelector("#view-map .mp-svg")).visibility === "visible");
+  check("... with its own controls back", ["Zoom in", "Zoom out", "Whole road"].every(l => [...doc.querySelectorAll("#view-map .mp-zb")].some(b => b.getAttribute("aria-label") === l && w.getComputedStyle(b).display !== "none")));
+  check("no MapLibre canvas or control is left behind", !doc.querySelector("canvas.maplibregl-canvas, .maplibregl-map, .maplibregl-canvas-container, .maplibregl-marker, .mp3d"));
+  check("the 2D marker still shows your place", !!doc.querySelector("#view-map .mp-you:not([display])"));
+  // leaving the tab while it loads cancels it, quietly
+  btn.click();
+  await sleep(5);
+  api.ui.go("drive");
+  await sleep(60);
+  check("leaving the Map tab closes 3D at once", !map.is3d && !doc.querySelector(".mp-3d-host") && !doc.querySelector(".mp3d"));
+  await sleep(2000);
+  api.ui.go("map");
+  await sleep(60);
+  check("coming back shows the 2D map, with no leftover message", !map.is3d && !doc.querySelector(".mp-3d-note") && btn.getAttribute("aria-pressed") === "false" && !doc.querySelector(".mp-3d-host"));
+  // tapping 3D twice is a way out too
+  btn.click(); btn.click(); await sleep(60);   // the second tap lands while the first is still starting
+  check("a second tap while it loads goes back to 2D", !map.is3d && btn.getAttribute("aria-pressed") === "false" && !doc.querySelector(".mp-3d-host"));
+  await sleep(1500);
+  check("... and shows no message (the user chose that)", !doc.querySelector(".mp-3d-note"));
+  map.close3d(); map.close3d();
+  check("close3d is harmless when 3D is not open", !map.is3d);
 }
 
 function pe(w, svg, type, id, x, y, ptype = "touch") {
@@ -483,7 +590,7 @@ async function follow2(api, w, doc, svg) {
   pe(w, svg, "pointerdown", 1, 40, 60); pe(w, svg, "pointerdown", 2, 110, 60); pe(w, svg, "pointerup", 1, 40, 60); pe(w, svg, "pointerup", 2, 110, 60);
   await settle(700);
   map.redraw();
-  const core = doc.querySelector(".mp-you-core").getBoundingClientRect();
+  const core = doc.querySelector(".mp-you-pulse").getBoundingClientRect();
   const yoff = Math.hypot(core.left + core.width / 2 - (sr.left + V().W / 2), core.top + core.height / 2 - (sr.top + V().H / 2));
   check("two-finger tap with Follow me zooms out around you", Math.abs(z0 / V().z - 2) < 0.05 && yoff < 2, `z ${z0.toFixed(1)} -> ${V().z.toFixed(1)}, you ${yoff.toFixed(1)} px from the middle`);
   map.setFollow(false);
@@ -691,6 +798,10 @@ async function runFake() {
   await sleep(1200);
   check(`fake app (${variant}) runs without errors`, errors.length === 0, errors.slice(0, 3).join(" | "));
   check(`fake app (${variant}) still builds the view`, !!document.querySelector("#view-map .mp-map"));
+  if (variant === "routeonly") {
+    const you = document.querySelector("#view-map .mp-you");
+    check("fake app without ride.js: the plain marker", !!you && !you.classList.contains("has-ride") && !you.querySelector(".mp-ride-art svg") && getComputedStyle(you.querySelector(".mp-you-core")).display !== "none");
+  }
   done();
 }
 </script>

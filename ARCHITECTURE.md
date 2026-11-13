@@ -28,6 +28,7 @@ js/feedback.js        MODULE: "Send feedback" sheet (name, email, message) to /a
 js/share.js           MODULE: share the app, invite a friend, share one place (deep link #place=<id>)
 js/ride.js            MODULE: "Pick your ride": cute recolorable vehicles that ride along on the sign, map and passport
 js/map3d.js           3D terrain map (MapLibre in vendor/maplibre/, loaded only when the user opens 3D from map.js)
+vendor/maplibre/      MapLibre GL JS (js, css, license, VERSION); fetched on demand by map3d.js, not in sw.js SHELL
 sw.js                 offline cache
 ```
 
@@ -147,6 +148,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | `badge` | `{id, name}` | trip.js unlocked a badge |
 | `place:sheet` | `{place, sheet, acts}` | main.js built a place details sheet; a module may append buttons to `acts` |
 | `ride` | `{ride}` | ride.js: the user picked or changed their ride (see `api.ride`) |
+| `ride:state` | `{state}` | ride.js: the ride started moving, rests awake, or fell asleep (`"moving"`, `"idle"`, `"sleepy"`) |
 | `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived. `incidents`: every incident on the corridor (within 0.5 mi of I-5), each `{id, ids, source, kind, title, detail, lat, lon, started, dir, until, m, d}` (`d` = miles ahead in your direction, negative behind, null without a position); `updated`: ISO string; `sources`: `{chp, caltrans}` |
 | `live:update` | snapshot | live.js: a weather / alerts / chain refresh finished (roadahead.js redraws its forecast chips) |
 
@@ -232,6 +234,64 @@ github.io address's redirect already forwards `location.hash`.
 - Text style for the UI and spoken lines: plain, warm, specific, no exclamation marks except real celebrations (bingo,
   badges), no em dashes.
 
+## Rides (js/ride.js)
+
+Eight original vehicles drawn in SVG (compact car, camper van, pickup truck, convertible, motorhome, motorcycle, EV hatchback,
+family bus), each in eight paint colours, with an optional driver badge (one emoji or up to two letters, drawn as the driver's
+face) and a nickname (up to 20 characters). The saved ride lives in `api.store` under `ride` as `{kind, color, badge, name}`
+(`kind` and `color` are ids from `api.ride.list()`; anything invalid falls back to the defaults, so a bad value can never
+break the art). The art uses literal fills in a 120 x 80 box facing right, so it works as a plain SVG string everywhere,
+including as a `data:` URL on a canvas (the passport share card), where CSS variables do not reach. `facing: "left"` mirrors
+the body, never the badge text.
+
+```js
+api.ride = {
+  get(),          // {kind, color, badge, name}  (a copy)
+  svg(opts),      // <svg> element, or markup with {markup: true}. opts: kind, color, badge, name (default: the saved ride),
+                  //   size (px width; height is 2/3), facing "right"|"left", rotate (deg), zz (default true: the hidden sleepy "z z"),
+                  //   label (accessible name; without it the picture is aria-hidden)
+  list(),         // {kinds: [{id, name}], colors: [{id, name, hex}]}
+  set(patch),     // validated merge, saved, emits "ride"; returns false when nothing changed
+  open(),         // opens the picker (#rideSheet)
+  state(),        // "moving" | "idle" | "sleepy"
+  sleepAfterMs,   // how long a stop lasts before the ride dozes (60000; tests lower it)
+}
+```
+
+Where it shows: `#rideSlot` on the Drive sign (a 46 px button that opens the picker), `#rideRow` in Settings > Display, the
+`#rideSheet` picker, the Map tab's position marker (map.js), the passport header and the trip share card (trip.js). Animation
+is plain CSS on classes the host element carries: `ride-moving` (bounce, turning wheels), `ride-idle`, `ride-sleepy` (shut
+eyelid on the headlight, floating "z z"); `prefers-reduced-motion` turns every animation off and the states still read from the
+art. "Moving" means GPS or demo with speed of at least 3 mph; "sleepy" means tracking is off, or it has been stopped for a
+minute. The first-run invitation ("Pick your ride? It rides along on the map." with Pick / Not now) appears once, under the
+sign, only while the car is not moving and no sheet is open; the flag is `rideInvited` in the store. It is not modal and
+takes no focus.
+
+map.js uses `api.ride` if it is there: the "you" marker becomes the ride, facing left or right by the heading (`S.heading`
+in GPS mode, else the road bearing plus the direction) and tilted at most about 40 degrees, so it is never upside down; without
+ride.js the old dot and arrow stay. trip.js adds the ride and nickname to the passport header (`.pp-ride`) and draws the ride
+in the sign's bottom right corner of the share card (`addRide`, through an `Image` from a `data:` URL, with a timeout; the
+card is unchanged if that fails).
+
+## The 3D map (js/map3d.js)
+
+map.js adds a "3D" button as the last button of the map's zoom group. Tapping it injects the MapLibre stylesheet, `css/map3d.css`
+and the MapLibre script (`vendor/maplibre/`, pinned in `vendor/maplibre/VERSION`) and calls `open(api, host, {onExit})`; none of
+that is loaded at start-up or precached in `sw.js` SHELL (the worker's network-first rule keeps a copy after first use). `open` resolves `true` when the first map tile arrives and `false` when 3D
+cannot run: no WebGL, the script or the style failed to load, or no tile arrived within 12 seconds (single failed tiles on
+the road are ignored). map.js then shows "The 3D map needs a connection and 3D graphics. Here's the regular map." and the 2D map is
+back; `close()` runs `map.remove()` and also happens when you leave the Map tab or tap 3D again. In the test suite every outside
+host is blocked, so the 3D view always lands in that fallback (with or without WebGL).
+
+What it draws: OpenFreeMap's `liberty` style (darkened colour by colour at night, since MapLibre has no dark switch), Terrarium terrain from
+`s3.amazonaws.com/elevation-tiles-prod` (exaggeration 1.4) with a hillshade and sky, the I-5 line from `data.ROUTE` with a glow,
+landmark pins (a circle layer in four tiers by zoom; the closest-spaced tier only appears when zoomed in; tap one for
+`api.ui.placeSheet`), and the ride as a MapLibre marker standing on a ground marker (`rotationAlignment: "map"`) that points
+the way you are heading. Camera: pitch 60, zoom about 12, following the car with the bearing set to the heading while moving;
+dragging stops following and shows "Follow me". "Fly the road" glides the camera along the next 30 miles in the travel direction
+in about 26 seconds (a Stop button flies back to the car; with `prefers-reduced-motion` it jumps to the stretch ahead instead).
+Attribution is drawn by the module itself: "© OpenStreetMap contributors, OpenFreeMap · Terrain: Mapzen/AWS Terrain Tiles". Colours come from the app's tokens read with `getComputedStyle` (MapLibre paint cannot read CSS variables).
+
 ## Testing
 
 Serve the folder: `python3 -m http.server 8765 --bind 127.0.0.1` (from the repo root; may already be running).
@@ -246,7 +306,7 @@ CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 A test page can load `../index.html` in an iframe, then drive it through `iframe.contentWindow.I5BUDDY.api`
 (for example `api.setPosition(740, {dir: "N", speed: 65, jumped: true})`, `api.ui.go("map")`, `api.S.mode = "demo"`).
-`python3 tools/run_tests.py [--quick] [--only NAME]` runs every page in its SUITE list in headless Chrome.
+`python3 tools/run_tests.py [--quick] [--only NAME]` runs every page in its SUITE list in headless Chrome. `tools/test-ride.html` (scenes art, picker, invite, moving, motion, passport) covers the rides; `tools/test-map.html?scene=ride` and `?scene=threed` cover the ride marker and the 3D button's fallback.
 `tools/test.html` holds the geometry tests: California exit numbers, and places in Oregon and Washington must come out
 off the road (they are checked against their own exit numbers when the build covers them). `tools/e2e.html` drives
 fake GPS tracks through the app, including across the Oregon line and into Mexico. Both must keep saying ALL PASS, and
