@@ -1,1 +1,77 @@
-/* css/ride.css: placeholder from the 2.5.0 scaffold (tokens from app.css only). */
+/* css/ride.css: rides (js/ride.js). Tokens from app.css only; the vehicles' own paint colours live in the SVG art. */
+
+/* the art: a 120 x 80 box, overflow visible so the sleepy "z z" can float past the edge */
+.ride-svg{display:block;overflow:visible;max-width:100%}
+.ride-art,.ride-wheel,.ride-zz text{transform-box:fill-box;transform-origin:center}
+/* dark vehicles need a light edge on the dark theme, and everything needs one on the green sign */
+:root .ride-svg{filter:drop-shadow(0 0 1.3px rgba(255,255,255,.55))}
+:root[data-theme="light"] .ride-svg{filter:drop-shadow(0 0 1px rgba(255,255,255,.9))}
+
+@keyframes ride-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes ride-spin{to{transform:rotate(360deg)}}
+@keyframes ride-z{0%{opacity:0;transform:translate(0,4px)}25%{opacity:1}100%{opacity:0;transform:translate(3px,-8px)}}
+.ride-moving .ride-art{animation:ride-bob .46s ease-in-out infinite}
+.ride-moving .ride-wheel{animation:ride-spin .55s linear infinite}
+.ride-sleepy .ride-zz{opacity:1}
+.ride-sleepy .ride-lid{opacity:1}
+.ride-sleepy .ride-zz .z1{animation:ride-z 2.6s ease-out infinite}
+.ride-sleepy .ride-zz .z2{animation:ride-z 2.6s ease-out 1.1s infinite}
+@media (prefers-reduced-motion:reduce){
+  .ride-svg *,.ride-svg{animation:none!important}
+  .ride-sleepy .ride-zz{opacity:1}
+}
+
+/* on the Drive sign, beside the mile */
+.ride-slot{position:relative;flex:none;align-self:flex-end;margin:0 -2px -2px}
+.ride-slot-btn{background:none;border:0;padding:2px 2px 0;min-width:48px;min-height:44px;display:grid;place-items:end center;border-radius:12px;color:inherit}
+.ride-slot-btn:active{background:rgba(255,255,255,.16)}
+.ride-slot-btn:focus-visible{outline-color:var(--sign-fg)}
+.ride-slot .ride-svg{width:46px;height:auto;filter:drop-shadow(0 0 1.2px rgba(255,255,255,.85))}
+
+/* the first-run invitation, under the sign: one line and two buttons, never a blocker */
+.ride-invite{position:absolute;top:100%;margin-top:10px;z-index:6;box-sizing:border-box;background:var(--surface);color:var(--fg);border:1px solid var(--line);
+  border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);display:grid;gap:10px;text-align:left;font-weight:700}
+.ride-invite::before{content:"";position:absolute;top:-7px;left:calc(var(--ride-arrow,40px) - 7px);width:12px;height:12px;background:var(--surface);
+  border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
+.ride-invite p{margin:0}
+.ride-invite-acts{display:flex;gap:8px}
+.ride-invite-acts button{flex:1;padding:10px;min-height:44px}
+
+/* Settings > Display */
+.ride-row{gap:8px}
+.ride-row-line{display:flex;align-items:center;gap:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.ride-row-art{flex:none;width:56px}
+.ride-row-art .ride-svg{width:56px;height:auto}
+.ride-row-txt{flex:1;min-width:0;display:grid;line-height:1.2}
+.ride-row-txt b,.ride-row-txt small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ride-row-txt small{color:var(--muted);font-weight:600;font-size:.8rem}
+.ride-row-go{padding:10px 16px;min-height:44px;font-size:.95rem}
+
+/* the picker */
+.ride-stage{background:var(--surface-2);border-radius:var(--radius);padding:14px 14px 12px;display:grid;justify-items:center;gap:6px;overflow:hidden;
+  background-image:linear-gradient(to bottom,transparent 62%,color-mix(in srgb,var(--sign) 16%,transparent))}
+.ride-big{position:relative;z-index:1;width:168px;max-width:100%}
+.ride-big .ride-svg{width:100%;height:auto}
+.ride-big .ride-art{animation:ride-bob 1.8s ease-in-out infinite}
+.ride-road{width:100%;height:10px;margin-top:-22px;border-radius:5px;background:var(--line);position:relative}
+.ride-road::after{content:"";position:absolute;left:8px;right:8px;top:4px;height:2px;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 14px,transparent 14px 28px)}
+.ride-cap{margin:2px 0 0;font-weight:800;text-align:center;min-height:1.4em}
+.ride-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ride-opt{background:var(--surface-2);border:2px solid var(--line);border-radius:12px;padding:6px 2px 5px;display:grid;justify-items:center;gap:2px;min-height:76px;
+  color:var(--fg)}
+.ride-opt-art{display:block;width:100%;padding:0 4px;box-sizing:border-box}
+.ride-opt-art .ride-svg{width:100%;height:auto;filter:none}
+.ride-opt-name{font-size:.66rem;font-weight:800;line-height:1.1;color:var(--muted);text-align:center}
+.ride-opt[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
+.ride-opt[aria-pressed="true"] .ride-opt-name{color:var(--fg)}
+.ride-colors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;justify-items:center}
+.ride-sw{width:44px;height:44px;border-radius:50%;background:var(--ride-c);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line);padding:0}
+.ride-sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--accent),0 0 0 6px var(--surface)}
+.ride-field label{font-weight:800}
+.ride-input{background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:10px 12px;font:inherit;font-weight:600;min-height:48px;width:100%;box-sizing:border-box}
+.ride-input::placeholder{color:var(--muted);font-weight:500}
+.ride-emoji{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px}
+.ride-chip{min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);font-size:1.35rem;line-height:1;padding:0}
+.ride-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
+.ride-done{width:100%}
