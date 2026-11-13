@@ -492,6 +492,7 @@ function placeSheet(p) {
   acts.append(h1);
   if (p.more) { const h2 = el("button", "secondary", "Tell me more"); h2.onclick = () => { voice.unlock(); tellMore(p); }; acts.append(h2); }
   sh.append(acts);
+  bus.emit("place:sheet", { place: p, sheet: sh, acts }); // modules may add buttons to `acts` (share.js adds Share)
   const src = el("p", "fine");
   for (const u of [p.src, p.src2].filter(Boolean)) {
     const a = el("a", null, (() => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return "source"; } })());
@@ -769,7 +770,7 @@ window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools
 
 applyTheme();
 render();
-for (const name of ["live", "map", "play", "trip", "listen"]) {
+for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride"]) {
   import(`./${name}.js`).then(mod => {
     try { mod.init(api); } catch (e) { console.error(`[${name}] init failed`, e); }
   }).catch(e => console.warn(`[${name}] not loaded`, e?.message || e));

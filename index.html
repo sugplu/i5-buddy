@@ -41,6 +41,10 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <link rel="stylesheet" href="css/play.css">
 <link rel="stylesheet" href="css/trip.css">
 <link rel="stylesheet" href="css/listen.css">
+<link rel="stylesheet" href="css/roadahead.css">
+<link rel="stylesheet" href="css/feedback.css">
+<link rel="stylesheet" href="css/share.css">
+<link rel="stylesheet" href="css/ride.css">
 </head>
 <body>
 <div class="app">
@@ -52,6 +56,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <button class="icon-btn" id="micBtn" hidden aria-label="Talk to I-5 Buddy">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z" fill="currentColor"/></svg>
   </button>
+  <button class="icon-btn" id="shareBtn" type="button" hidden aria-label="Share I-5 Buddy"></button>
   <button class="icon-btn" id="openSettings" aria-label="Settings">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.4-2.5.1-1-.1-1 2.1-1.6-2-3.4-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3h-4l-.4 2.6c-.6.3-1.2.6-1.7 1l-2.5-1-2 3.4L6.5 11l-.1 1 .1 1-2.1 1.6 2 3.4 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.4-2.2-1.6Z" fill="currentColor"/></svg>
   </button>
@@ -71,6 +76,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     </div>
     <div class="mile-row">
       <div class="mile"><small id="mileLabel">MILE</small><output id="mile">--</output></div>
+      <span class="ride-slot" id="rideSlot" hidden></span>
       <div class="near"><small>PASSING</small><span id="nearText">Ready when you are</span></div>
     </div>
     <div class="sign-foot">
@@ -97,6 +103,8 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     <button class="big-btn" id="lookLeft"><span class="arrow">◀</span>What's on my left?</button>
     <button class="big-btn" id="lookRight">What's on my right?<span class="arrow">▶</span></button>
   </div>
+
+  <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden></section>
 
   <div class="controls" id="runControls" hidden>
     <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
@@ -179,8 +187,8 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <label class="toggle"><input type="checkbox" id="kidMode"> Kid mode: I-spy challenges</label>
 
   <h3 class="sub">Live road info</h3>
-  <label class="toggle"><input type="checkbox" id="liveOn"> Weather, chain controls, freeway signs and cameras ahead</label>
-  <small class="hint">When on, the app asks the National Weather Service for forecasts at points ahead of you and loads Caltrans road data and camera images. Nothing else leaves your phone.</small>
+  <label class="toggle"><input type="checkbox" id="liveOn"> Traffic, weather, chain controls, freeway signs and cameras ahead</label>
+  <small class="hint">When on, the app asks the National Weather Service for forecasts at points ahead of you and loads Caltrans road data and camera images. Traffic (California Highway Patrol incidents and Caltrans lane closures) comes as one list for all of I-5 from i5.dominares.org, so that request never says where you are. Nothing else leaves your phone.</small>
 
   <h3 class="sub">Display</h3>
   <div class="field">Theme
@@ -188,6 +196,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
       <button data-theme-set="auto">Day/night</button><button data-theme-set="dark">Dark</button><button data-theme-set="light">Light</button>
     </div>
   </div>
+  <div class="field" id="rideRow"></div>
 
   <h3 class="sub">Position by hand</h3>
   <label class="field" for="manual">Milepost <output id="manualOut">--</output><input type="range" id="manual" min="0" max="797" step="1" value="300"></label>
@@ -214,13 +223,17 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   </div>
 
   <h3 class="sub">About</h3>
+  <div class="field" id="feedbackRow"></div>
   <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
   <p class="also-from">Also from Dominares: <a href="https://linasystems.org/" target="_blank" rel="noopener">Lina</a>, the AI front desk for businesses</p>
   <p class="fine">Share I-5 Buddy with anyone driving I-5: <b>i5.dominares.org</b></p>
-  <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData. <span id="dataVersion"></span></p>
+  <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans, California Highway Patrol. 3D map: terrain from Mapzen/AWS Terrain Tiles, map from OpenFreeMap and OpenStreetMap contributors; it loads map pictures from those services only while it is open. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData. <span id="dataVersion"></span></p>
 </aside>
 
 <aside class="sheet" id="moreSheet" hidden aria-label="Details" role="dialog" aria-modal="true"></aside>
+<aside class="sheet" id="feedbackSheet" hidden aria-label="Send feedback" role="dialog" aria-modal="true"></aside>
+<aside class="sheet" id="shareSheet" hidden aria-label="Share" role="dialog" aria-modal="true"></aside>
+<aside class="sheet" id="rideSheet" hidden aria-label="Pick your ride" role="dialog" aria-modal="true"></aside>
 
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>

@@ -2,12 +2,14 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.4.0"; // 2.4.0: link preview picture, Install app button, Start GPS clear of the tab bar, Lina in About
+const VERSION = "i5b-v2.5.0"; // 2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map
 const SHELL = [
   "./", "index.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js",
   "js/live.js", "js/map.js", "js/play.js", "js/trip.js", "js/listen.js",
+  "js/roadahead.js", "js/feedback.js", "js/share.js", "js/ride.js", "js/map3d.js",
   "css/live.css", "css/map.css", "css/play.css", "css/trip.css", "css/listen.css",
+  "css/roadahead.css", "css/feedback.css", "css/share.css", "css/ride.css", "css/map3d.css",
   "fonts/overpass.woff2", "fonts/overpass-mono.woff2",
   "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png",
   "icons/og-1200x630.png", "icons/screenshot-drive.jpg", "icons/screenshot-map.jpg",
@@ -29,6 +31,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return; // live data and camera images go straight to the network
+  if (url.pathname.includes("/api/")) return; // /api/traffic and /api/feedback are live: never cached, never served stale
   if (url.pathname.includes("/img/")) {
     // photos: cache first, then network (and remember it)
     e.respondWith(caches.open(PHOTOS).then(async c => {

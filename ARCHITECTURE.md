@@ -2,7 +2,10 @@
 
 A static PWA, no build step, no dependencies. Plain ES modules. Hosted on GitHub Pages. Targets iOS Safari 15+ and
 Chrome on Android 100+, and must keep working offline (except live data). Everything stays on the phone; the only
-network calls are the static files, opt-in live data (weather.gov, Caltrans) and Wikimedia photos already in `img/`.
+network calls are the static files, opt-in live data (weather.gov, Caltrans, and `/api/traffic` on i5.dominares.org:
+CHP incidents and Caltrans lane closures for all of I-5, so the request carries no location), feedback the user sends
+(`/api/feedback`), Wikimedia photos already in `img/`, and map pictures (terrain and basemap tiles) only while the 3D
+map is open. The server side is the Cloudflare Worker `i5-buddy` (source outside this repo, see README).
 
 ```
 index.html            markup and containers (its head keeps the browser's install offer for the Install app buttons)
@@ -20,6 +23,11 @@ js/map.js             MODULE: interactive map of the whole road
 js/play.js            MODULE: road bingo, trivia, I-spy
 js/trip.js            MODULE: destination + ETA, trip log, badges, passport screen, share card
 js/listen.js          MODULE: push-to-talk voice commands
+js/roadahead.js       MODULE: "Road ahead" chart: elevation profile, grades, passes, weather and traffic along the way
+js/feedback.js        MODULE: "Send feedback" sheet (name, email, message) to /api/feedback
+js/share.js           MODULE: share the app, invite a friend, share one place (deep link #place=<id>)
+js/ride.js            MODULE: "Pick your ride": cute recolorable vehicles that ride along on the sign, map and passport
+js/map3d.js           3D terrain map (MapLibre in vendor/maplibre/, loaded only when the user opens 3D from map.js)
 sw.js                 offline cache
 ```
 
@@ -137,6 +145,9 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | `speaking` | `{id, text}` or `null` | speech started / stopped |
 | `passport:reset` | `{}` | user cleared the passport |
 | `badge` | `{id, name}` | trip.js unlocked a badge |
+| `place:sheet` | `{place, sheet, acts}` | main.js built a place details sheet; a module may append buttons to `acts` |
+| `ride` | `{ride}` | ride.js: the user picked or changed their ride (see `api.ride`) |
+| `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived (incidents already on the corridor, with `m`) |
 
 ### Containers owned by each module (do not touch other markup)
 
@@ -147,6 +158,10 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | play.js | `#view-play` (whole view), `#spotCard` (Drive, under the next-landmark card) |
 | trip.js | `#view-passport` (whole view), `#destStrip` (Drive, under the sign), may append rows to `#settingsExtra` |
 | listen.js | `#micBtn` (header button, hidden until supported); may append an overlay element to `document.body` |
+| roadahead.js | `#roadAhead` (Drive, under the look buttons) |
+| feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
+| share.js | `#shareBtn` (header button), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
+| ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideRow` (Settings > Display), `#rideSheet` |
 
 ### Rules for module code
 
