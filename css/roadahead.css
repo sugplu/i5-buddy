@@ -1,1 +1,89 @@
-/* css/roadahead.css: placeholder from the 2.5.0 scaffold (tokens from app.css only). */
+/* Road ahead (js/roadahead.js): elevation profile, numbers, markers. Only app.css tokens; both themes. */
+
+.ra{display:grid;gap:12px;padding:14px 14px 12px;border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);min-width:0;overflow:hidden}
+body.glance #roadAhead{display:none!important}
+
+.ra-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px}
+.ra-title{margin:0;font-size:1.1rem;font-weight:900;line-height:1.15;min-width:0}
+.ra-seg{display:inline-flex;flex:none;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);padding:2px}
+.ra-seg button{min-height:40px;padding:0 12px;border:0;border-radius:99px;background:none;color:var(--muted);font-weight:800;font-size:.82rem;white-space:nowrap}
+.ra-seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg)}
+
+/* the three big numbers */
+.ra-stats{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr) minmax(0,.9fr);gap:8px}
+.ra-stat{display:grid;align-content:start;gap:2px;min-width:0;padding:10px 10px 9px;border-radius:calc(var(--radius) - 4px);background:var(--surface-2);box-shadow:inset 0 3px 0 var(--k,var(--line))}
+.ra-stat:nth-child(1){--k:var(--hist)}
+.ra-stat:nth-child(2){--k:var(--accent)}
+.ra-stat:nth-child(3){--k:var(--danger)}
+.ra-stat.descent{--k:var(--nature)}
+.ra-stat small{font-size:.64rem;letter-spacing:.14em;font-weight:800;color:var(--muted);line-height:1.2}
+.ra-stat b{font-family:var(--mono);font-weight:700;font-size:1.36rem;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ra-stat b em{font-style:normal;font-weight:600;font-size:.72rem;color:var(--muted);margin-left:3px}
+.ra-stat span{font-size:.74rem;line-height:1.25;color:var(--fg-2);overflow-wrap:anywhere}
+
+/* the chart */
+.ra-chart{position:relative;margin:0 -4px}
+.ra-svg{display:block;width:100%;height:auto}
+.ra-ov{position:absolute;inset:0;pointer-events:none}
+.ra-ov>*{position:absolute;transform:translate(-50%,-50%)}
+.ra-b{opacity:.55}
+.ra-b0{fill:var(--nature)}
+.ra-b1{fill:var(--accent)}
+.ra-b2{fill:var(--hist)}
+.ra-b3{fill:var(--danger)}
+.ra-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 5}
+.ra-gl{fill:var(--muted);font:600 9px var(--mono)}
+.ra-glow{fill:none;stroke:var(--fg);stroke-width:7;stroke-linejoin:round;stroke-linecap:round;opacity:.1}
+.ra-seg{fill:none;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round}
+.ra-s0{stroke:var(--nature)}
+.ra-s1{stroke:var(--accent)}
+.ra-s2{stroke:var(--hist)}
+.ra-s3{stroke:var(--danger)}
+.ra-line{fill:none;stroke:var(--fg);stroke-width:1.5;opacity:.92;stroke-linejoin:round;stroke-linecap:round}
+.ra-lead,.ra-stem,.ra-tick{stroke:var(--fg-2);stroke-width:1;stroke-dasharray:2 3;opacity:.7}
+.ra-peak{fill:var(--fg);stroke:var(--surface);stroke-width:1.5}
+
+.ra-flag{padding:3px 9px 2px;border-radius:99px;background:var(--fg);color:var(--bg);font:700 .7rem/1.3 var(--mono);white-space:nowrap}
+.ra-grade{display:inline-flex;align-items:center;gap:2px;padding:3px 9px 2px;border-radius:99px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+  color:var(--fg);font-weight:800;font-size:.7rem;line-height:1.3;white-space:nowrap}
+.ra-grade i{font-style:normal;font-size:.6rem;margin-right:3px}
+.ra-grade.up i{color:var(--hist)}
+.ra-grade.down i{color:var(--nature)}
+
+/* tappable markers: a 44 px target around a small visible mark */
+.ra-pt{width:44px;height:44px;margin:0;padding:0;border:0;background:none;display:grid;place-items:center;pointer-events:auto;color:var(--fg)}
+.ra-pt .vis{display:grid;place-items:center}
+.ra-wx .vis{grid-auto-flow:row;gap:0;min-width:40px;padding:2px 5px 1px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);box-shadow:var(--shadow)}
+.ra-wx .vis i{font-style:normal;font-size:1rem;line-height:1.1}
+.ra-wx .vis b{font:700 .7rem/1.2 var(--mono)}
+.ra-tr .vis{width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--accent-fg);border:2px solid var(--surface);box-shadow:var(--shadow);font-weight:900;font-size:.8rem}
+.ra-tr.severe .vis{background:var(--danger);color:var(--sign-fg)}
+.ra-pt[aria-pressed="true"] .vis{outline:3px solid var(--fg);outline-offset:1px}
+
+/* you */
+.ra-me{display:block;pointer-events:none}
+.ra-me i{display:block;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--accent),var(--shadow)}
+.ra-me.ride{transform:translate(-50%,-84%)}
+.ra-me .ra-ride{display:block;width:40px;height:auto;max-height:34px}
+@media (prefers-reduced-motion:no-preference){
+  .ra-me:not(.ride) i{animation:raPing 2.4s ease-out infinite}
+  @keyframes raPing{0%{box-shadow:0 0 0 2px var(--accent),0 0 0 2px color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 2px var(--accent),0 0 0 14px transparent}}
+}
+
+.ra-axis{position:relative;height:16px;margin:-6px 0 0}
+.ra-axis span{position:absolute;top:0;transform:translateX(-50%);font:600 .68rem/1.2 var(--mono);color:var(--muted);white-space:nowrap}
+.ra-axis span.l{transform:translateX(-35%)}
+.ra-axis span.r{transform:translateX(-65%)}
+
+.ra-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.72rem;font-weight:700;color:var(--muted)}
+.ra-legend li{display:inline-flex;align-items:center;gap:6px}
+.ra-sw{display:inline-block;width:12px;height:12px;border-radius:4px}
+.ra-sw.ra-b0{background:var(--nature)}
+.ra-sw.ra-b1{background:var(--accent)}
+.ra-sw.ra-b2{background:var(--hist)}
+.ra-sw.ra-b3{background:var(--danger)}
+
+.ra-read{margin:0;padding:10px 12px;border-radius:calc(var(--radius) - 4px);background:var(--surface-2);color:var(--fg-2);font-size:.9rem;line-height:1.4;min-height:3.1em}
+.ra-read.sel{color:var(--fg);font-weight:700;box-shadow:inset 4px 0 0 var(--accent)}
+
+.ra-sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
