@@ -164,7 +164,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | roadahead.js | `#roadAhead` (Drive, under the look buttons) |
 | feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
 | share.js | `#shareBtn` (header button), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
-| ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideRow` (Settings > Display), `#rideSheet` |
+| ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideInvite` (under the sign: the one-time "Pick your ride?"), `#rideRow` (Settings > Display), `#rideSheet` |
 
 ### Traffic, Road ahead, feedback and share (2.5.0)
 

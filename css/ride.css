@@ -28,8 +28,9 @@
 .ride-slot-btn:focus-visible{outline-color:var(--sign-fg)}
 .ride-slot .ride-svg{width:46px;height:auto;filter:drop-shadow(0 0 1.2px rgba(255,255,255,.85))}
 
-/* the first-run invitation, under the sign: one line and two buttons, never a blocker */
-.ride-invite{position:absolute;top:100%;z-index:6;box-sizing:border-box;background:var(--surface);color:var(--fg);border:1px solid var(--line);
+/* the first-run invitation in #rideInvite, in the flow under the sign: one line and two buttons, never a blocker,
+   never covering the alerts below */
+.ride-invite{position:relative;margin:0 0 12px;box-sizing:border-box;background:var(--surface);color:var(--fg);border:1px solid var(--line);
   border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);display:grid;gap:10px;text-align:left;font-weight:700}
 .ride-invite::before{content:"";position:absolute;top:-7px;left:calc(var(--ride-arrow,40px) - 7px);width:12px;height:12px;background:var(--surface);
   border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}

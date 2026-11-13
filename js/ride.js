@@ -471,7 +471,8 @@ function maybeInvite() {
     if (sheetOpen()) return;
     const view = document.getElementById("view-drive");
     if (!view || view.hidden) return;
-    const board = slotEl.closest(".sign-board") || slotEl.parentElement;
+    const host = document.getElementById("rideInvite");
+    if (!host) return;
     api.store.set(SEEN_KEY, true);                       // once only, even if it is ignored
     inviteEl = el("div", "ride-invite");
     inviteEl.setAttribute("role", "group");
@@ -480,12 +481,11 @@ function maybeInvite() {
     const acts = el("div", "ride-invite-acts");
     acts.append(btn("primary", "Pick", () => { dismissInvite(); open(); }), btn("secondary", "Not now", dismissInvite));
     inviteEl.append(acts);
-    slotEl.append(inviteEl);
-    const a = board.getBoundingClientRect(), b = slotEl.getBoundingClientRect();
-    inviteEl.style.left = Math.round(a.left - b.left + 10) + "px";
-    inviteEl.style.top = Math.round(a.bottom - b.top + 10) + "px";   // just under the sign
-    inviteEl.style.width = Math.round(a.width - 20) + "px";
-    inviteEl.style.setProperty("--ride-arrow", Math.round(b.left - (a.left + 10) + b.width / 2) + "px");
+    // In the page's flow just under the sign (#rideInvite), never floating over the alerts below it; the little arrow
+    // points up at the ride on the sign.
+    host.append(inviteEl);
+    const b = slotEl.getBoundingClientRect(), h = inviteEl.getBoundingClientRect();
+    inviteEl.style.setProperty("--ride-arrow", Math.round(Math.max(20, Math.min(h.width - 20, b.left - h.left + b.width / 2))) + "px");
     inviteTimer = setTimeout(dismissInvite, 16000);
   } catch (e) { warn(e); }
 }
