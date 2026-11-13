@@ -33,6 +33,9 @@
 }
 *{box-sizing:border-box}
 html,body{height:100%}
+/* The top bar is taller by the top safe-area inset (it carries it, see .top), so whatever scrolls into view lands that
+   much lower too: module scroll-margins (72 px and so on) are measured for the bar without it. 0 on most screens. */
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--display);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
 button{font:inherit;color:inherit;cursor:pointer}
 a{color:inherit}

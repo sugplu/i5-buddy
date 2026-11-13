@@ -669,7 +669,11 @@ function nextTrivia() {
   if (cur && wasSpoken) readQuestion();
   if (!T) return;
   // the new question is shorter than the answered one: bring its top back into view
-  try { if (T.box.getBoundingClientRect().top < 72) (T.stats.hidden ? T.box : T.stats).scrollIntoView({ block: "start" }); } catch { /* old browsers */ }
+  // (12 px under the sticky top bar, which is taller by the safe-area inset on a phone with a notch)
+  try {
+    const bar = document.querySelector("header.top"), roof = (bar ? bar.getBoundingClientRect().bottom : 60) + 12;
+    if (T.box.getBoundingClientRect().top < roof) (T.stats.hidden ? T.box : T.stats).scrollIntoView({ block: "start" });
+  } catch { /* old browsers */ }
   const h3 = T.box.querySelector(".pl-qt");
   h3 && h3.focus({ preventScroll: true });
 }
