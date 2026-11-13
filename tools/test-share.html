@@ -85,6 +85,25 @@ const SCENARIOS = {
     btn.click();
     await wait(150);
     check("a cancelled share (AbortError) does nothing more", !open() && $(doc, "#toast").hidden);
+    // --- a share is already open (a double tap): InvalidStateError is not a failure, like a cancel
+    NAV(win, "share", async () => { throw new win.DOMException("a share is already open", "InvalidStateError"); });
+    btn.click();
+    await wait(150);
+    check("InvalidStateError (a share is already open) does nothing more, like a cancel", !open() && $(doc, "#toast").hidden);
+    // --- and a second tap while one is still open does not start another
+    let release = null;
+    const calls3 = [];
+    NAV(win, "share", d => { calls3.push(d); return new Promise(res => { release = res; }); });
+    btn.click(); btn.click(); btn.click();
+    await wait(100);
+    check("three quick taps while a share is open start only one", calls3.length === 1 && !open(), String(calls3.length));
+    release();
+    await wait(100);
+    btn.click();
+    await wait(100);
+    check("once it closes, the next tap shares again", calls3.length === 2, String(calls3.length));
+    release();
+    await wait(100);
     // --- it fails: our sheet opens
     NAV(win, "share", async () => { throw new win.DOMException("no", "NotAllowedError"); });
     btn.click();

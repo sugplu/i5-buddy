@@ -217,7 +217,8 @@ run whichever form is showing: a reopened form that still holds the sent message
 changing keeps its new text (saved again as the draft) and gets its Send button back.
 
 **Share (js/share.js).** The header button uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
-without Web Share, or when it fails for any reason except the user cancelling, `#shareSheet` opens (copy link, invite message,
+without Web Share, or when it fails for any reason except the user cancelling (AbortError) or a share already being open
+(InvalidStateError, a double tap: nothing more happens), `#shareSheet` opens (copy link, invite message,
 Text message `sms:?&body=`, Email `mailto:`, Copy). A "Share" button is appended to each place sheet's `acts` through the
 `place:sheet` event and shares `{place.name, first sentence, https://i5.dominares.org/#place=<id>}`. The first sentence ends at a period or question mark
 that really ends one: not after a lone capital initial ("J. B. Lankershim", "B.F. Sisk Dam") or an abbreviation (Dr, St, Mt, U.S, Gov

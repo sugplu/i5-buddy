@@ -76,16 +76,23 @@ function placeLine(p) {
 const appData = () => ({ title: TITLE, text: TEXT, url: SITE });
 const placeData = p => ({ title: p.name, text: placeLine(p), url: placeLink(p) });
 
-/** Web Share. "shared", "cancelled" (the user closed it: do nothing more), or "none" (missing or failed: use our sheet). */
+/** Web Share. "shared", "cancelled" (the user closed it, or a share was already open: do nothing more), "busy" (a share of ours
+    is still open: a second tap does nothing) or "none" (missing or failed: use our sheet). */
+let sharing = 0, shareAt = 0, shareSeq = 0;   // sharing: the token of the Web Share a tap opened, while it is still open
+const SHARE_LOCK_MS = 60e3;                   // a share promise that never settles must not lock the buttons for good
 async function nativeShare(d) {
   if (typeof navigator.share !== "function") return "none";
+  if (sharing && Date.now() - shareAt < SHARE_LOCK_MS) return "busy";
+  const tok = ++shareSeq;
   try {
     if (typeof navigator.canShare === "function" && !navigator.canShare(d)) return "none";
+    sharing = tok; shareAt = Date.now();
     await navigator.share(d);
     return "shared";
   } catch (e) {
-    return e && e.name === "AbortError" ? "cancelled" : "none";
-  }
+    // AbortError: the person closed the share sheet. InvalidStateError: a share was already open (a double tap).
+    return e && (e.name === "AbortError" || e.name === "InvalidStateError") ? "cancelled" : "none";
+  } finally { if (sharing === tok) sharing = 0; }
 }
 async function shareApp() {
   const r = await nativeShare(appData());
