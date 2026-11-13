@@ -5,12 +5,13 @@
 <title>I-5 Buddy link preview (1200x630)</title>
 <!--
   The link-preview picture (og:image, twitter:image): icons/og-1200x630.png.
-  Drawn with the app's own night tokens and Overpass font (../app.css), the Interstate shield and the green sign board.
+  Drawn with the app's own night tokens and Overpass font (../app.css), the Interstate shield and the green sign board,
+  with Made by Dominares and its mark (as in the app's About card) beside the address.
   No photos. The ribbon has a tick for every other landmark ahead of the dot, read from ../data/i5.js.
 
   To re-render after a change:  python3 tools/og_image.py   (headless Chrome; writes icons/og-1200x630.png at
   exactly 1200x630), then bump VERSION in sw.js. To look at it, serve the repo root and open /tools/og-image.html.
-  Keep the shield below in step with the #shield symbol in index.html.
+  Keep the shield and the Dominares mark below in step with index.html (the #shield symbol, the About card's mark).
 -->
 <link rel="stylesheet" href="../app.css">
 <style>
@@ -35,6 +36,9 @@
   .og-ribbon .you{position:absolute;top:2px;left:38%;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:var(--accent);border:4px solid #fff;box-shadow:0 0 0 5px rgba(0,0,0,.15)}
   /* the address, in the app's link yellow */
   .og-url{position:absolute;left:60px;bottom:60px;margin:0;font-family:var(--mono);font-weight:700;font-size:46px;line-height:1;color:var(--accent);letter-spacing:.01em}
+  /* the parent brand, as in the app's About card: the Dominares mark in emerald, the words in the byline's green */
+  .og-by{position:absolute;right:60px;bottom:58px;margin:0;display:flex;align-items:center;gap:14px;font-weight:800;font-size:32px;line-height:1;color:var(--dom);letter-spacing:.02em}
+  .og-by svg{width:52px;height:46px;flex:none;color:var(--dom-mark)}
 </style>
 </head>
 <body>
@@ -55,6 +59,7 @@
   </div>
 </div>
 <p class="og-url">i5.dominares.org</p>
+<p class="og-by"><svg viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg>Made by Dominares</p>
 <script src="../data/i5.js"></script>
 <script>
   // a tick for the landmarks still ahead of the dot, like the app's ribbon (every other one: at this size all 375
