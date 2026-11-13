@@ -1,8 +1,10 @@
 // I-5 Buddy: the 3D terrain map. map.js imports this lazily and only when the user taps "3D" on the Map tab; nothing
 // here (and none of MapLibre, vendor/maplibre/) is loaded at start-up or cached with the app shell.
 //
-//   open(api, host, {onExit}) -> Promise<boolean>   true once the first map picture has arrived; false when 3D cannot run
-//                                                   (no WebGL, the script or style failed, no tiles within 12 s)
+//   open(api, host, {onExit, onFail}) -> Promise<boolean>   true once the first map picture has arrived; false when 3D cannot
+//                                                   run (this browser is too old, no WebGL, the script or style failed, no
+//                                                   tiles within 12 s). onFail(reason) runs just before a false: "browser"
+//                                                   (too old for MapLibre) or "connection" (anything else)
 //   close()                                         remove the MapLibre map (map.remove()) and everything around it
 //
 // What it draws: OpenFreeMap's "liberty" basemap, Mapzen/AWS Terrarium terrain (exaggeration 1.4) with a hillshade, the
@@ -48,6 +50,11 @@ function loadLib() {
   });
   libPromise.catch(() => {});
   return libPromise;
+}
+/** MapLibre 5 calls Object.hasOwn and Array.prototype.at without a fallback, in the page and in its worker (so a polyfill in
+    the page would not help). Both arrived in iOS 15.4 and Chrome 93; on iOS 15.0 to 15.3 the 3D map could never start. */
+export function browserTooOld() {
+  return typeof Object.hasOwn !== "function" || typeof [].at !== "function";
 }
 function webglOK() {
   try {
@@ -102,6 +109,8 @@ function shorten(name) {
 /* ---------- open ---------- */
 export async function open(api, host, opts = {}) {
   close();
+  // before anything is loaded: say plainly that the browser is too old, instead of blaming the connection
+  if (browserTooOld()) { try { opts.onFail && opts.onFail("browser"); } catch {} return false; }
   const ses = cur = { api, host, opts, alive: true, off: [], timers: [], raf: 0, map: null, follow: true, flying: null, face: null, sprite: null, tiles: 0, done: false };
   try {
     if (!webglOK()) return giveUp(ses);

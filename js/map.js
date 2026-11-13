@@ -1420,6 +1420,7 @@ function ensureVisible(x, y, z) {
 /** The 3D button: open the 3D map (MapLibre, loaded only now) or go back to 2D. */
 function toggle3d() { if (three.on) close3d(); else open3d(); }
 const NOTE_3D = "The 3D map needs a connection and 3D graphics. Here\u2019s the regular map.";
+const NOTE_3D_OLD = "The 3D map needs a newer browser (on iPhone, iOS 15.4 or later). Here\u2019s the regular map.";
 async function open3d() {
   if (three.on || !built || !mapEl) return false;
   three.on = true; three.busy = true;
@@ -1432,9 +1433,10 @@ async function open3d() {
   try {
     const mod = three.mod = three.mod || await import("./map3d.js");
     if (!mine()) return false;
-    const ok = !!(await mod.open(api, host, { onExit: reason => { if (mine()) { close3d(); if (reason !== "user") showNote(NOTE_3D); } } }));
+    let why = "";                                // map3d says why it gave up: "browser" (too old) or "connection"
+    const ok = !!(await mod.open(api, host, { onFail: r => { why = r; }, onExit: reason => { if (mine()) { close3d(); if (reason !== "user") showNote(NOTE_3D); } } }));
     if (!mine()) return false;
-    if (!ok) { close3d(); showNote(NOTE_3D); return false; }
+    if (!ok) { close3d(); showNote(why === "browser" ? NOTE_3D_OLD : NOTE_3D); return false; }
     return true;
   } catch (e) {
     warn(e);

@@ -301,8 +301,24 @@ async function threeDScene(api, w, doc) {
   check("a 3D button on the Map view, 2D is the default", !!btn && btn.getAttribute("aria-pressed") === "false" && !map.is3d && !doc.querySelector(".mp-3d-host"));
   check("the 3D button is a labelled 44 px button", btn.getAttribute("aria-label") && btn.getBoundingClientRect().height >= 43.5 && btn.getBoundingClientRect().width >= 43.5);
   check("MapLibre is not loaded until 3D is opened", !w.maplibregl && ![...doc.scripts].some(s => /maplibre/.test(s.src)) && ![...doc.querySelectorAll("link")].some(l => /maplibre|map3d/.test(l.href)));
+  // --- a browser without Object.hasOwn or Array.prototype.at (iOS 15.0 to 15.3) cannot run MapLibre 5: a clear note, and nothing is loaded
+  const NOTE_OLD = "The 3D map needs a newer browser (on iPhone, iOS 15.4 or later). Here\u2019s the regular map.";
+  const loadedLib = () => !!w.maplibregl || [...doc.scripts].some(s => /maplibre/.test(s.src)) || [...doc.querySelectorAll("link")].some(l => /maplibre/.test(l.href));
+  for (const [what, hide, restore] of [
+    ["Object.hasOwn", () => { w.__hasOwn = w.Object.hasOwn; delete w.Object.hasOwn; }, () => { w.Object.hasOwn = w.__hasOwn; }],
+    ["Array.prototype.at", () => { w.__at = w.Array.prototype.at; delete w.Array.prototype.at; }, () => { w.Array.prototype.at = w.__at; }],
+  ]) {
+    hide();
+    btn.click();
+    await sleep(300);
+    const oldNote = doc.querySelector(".mp-3d-note");
+    check(`without ${what}: the note says the 3D map needs a newer browser (not the connection)`, !!oldNote && oldNote.textContent === NOTE_OLD, oldNote && oldNote.textContent);
+    check(`... as a status message that does not blame the connection`, oldNote && oldNote.getAttribute("role") === "status" && !/connection/.test(oldNote.textContent));
+    check(`... the regular map is back (button unpressed, no host) and MapLibre was never loaded`, !map.is3d && btn.getAttribute("aria-pressed") === "false" && !doc.querySelector(".mp-3d-host") && !loadedLib());
+    restore();
+  }
   btn.click();
-  check("tapping 3D starts it: pressed, with a host over the 2D map", btn.getAttribute("aria-pressed") === "true" && map.is3d && !!doc.querySelector(".mp-3d-host"));
+  check("tapping 3D starts it: pressed, with a host over the 2D map", btn.getAttribute("aria-pressed") === "true" && map.is3d && !!doc.querySelector(".mp-3d-host") && !doc.querySelector(".mp-3d-note"));
   let t = 0;
   while (map.is3d && t++ < 400) await sleep(100);   // up to 40 s of page time; the fallback comes well before the 12 s tile wait
   check("offline: the 3D view gives up on its own", !map.is3d, `after ${t * 100} ms`);
