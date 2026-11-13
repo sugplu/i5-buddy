@@ -8,7 +8,7 @@ Run:  python3 tools/run_tests.py [--quick] [--only NAME] [-j 4] [--base URL]
 A test passes when its page title, or a console line, says ALL PASS / PASS and nothing says FAIL.
 Scenario lists come from the headers of each tools/test-*.html page.
 """
-import concurrent.futures as cf, functools, http.server, os, re, subprocess, sys, tempfile, threading, time
+import concurrent.futures as cf, functools, http.server, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, time
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +22,12 @@ def serve():
     for the app never prints a result (UNKNOWN)."""
     class Server(http.server.ThreadingHTTPServer):
         request_queue_size = 128
+
+        def server_bind(self):
+            # http.server's own server_bind asks socket.getfqdn() for a host name, a reverse DNS lookup that can hang
+            # for minutes on a Mac whose resolver is stalled; nothing here needs the name.
+            socketserver.TCPServer.server_bind(self)
+            self.server_name, self.server_port = "127.0.0.1", self.server_address[1]
 
         def handle_error(self, request, client_address):
             if not isinstance(sys.exc_info()[1], ConnectionError):  # a browser hanging up mid-file is normal
@@ -101,6 +107,9 @@ def run(test):
         dom, err = p.stdout, p.stderr
     except subprocess.TimeoutExpired:
         return name, "TIMEOUT", "", time.time() - t0
+    finally:
+        # each page gets a fresh Chrome profile (about 6 MB); a full run left 40 of them behind
+        shutil.rmtree(prof, ignore_errors=True)
     title = (re.search(r"<title>(.*?)</title>", dom, re.S) or [None, ""])[1].strip()
     console = [m for m in re.findall(r'CONSOLE[^"]*"(.*?)", source', err)]
     errors = [c for c in console if re.search(r"Uncaught|TypeError|ReferenceError|SyntaxError", c)]
