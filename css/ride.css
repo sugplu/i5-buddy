@@ -48,8 +48,8 @@
 .ride-row-go{padding:10px 16px;min-height:44px;font-size:.95rem}
 
 /* the picker */
-.ride-stage{background:var(--surface-2);border-radius:var(--radius);padding:14px 14px 12px;display:grid;justify-items:center;gap:6px;overflow:hidden;
-  background-image:linear-gradient(to bottom,transparent 62%,color-mix(in srgb,var(--sign) 16%,transparent))}
+.ride-stage{background:var(--surface-2);border-radius:var(--radius);padding:14px 14px 12px;display:grid;justify-items:center;gap:6px;overflow:hidden}
+@supports (color:color-mix(in srgb,red 50%,blue)){.ride-stage{background-image:linear-gradient(to bottom,transparent 62%,color-mix(in srgb,var(--sign) 16%,transparent))}}
 .ride-big{position:relative;z-index:1;width:168px;max-width:100%}
 .ride-big .ride-svg{width:100%;height:auto}
 .ride-big .ride-art{animation:ride-bob 1.8s ease-in-out infinite}

@@ -69,7 +69,7 @@ body.glance #roadAhead{display:none!important}
 .ra-me .ra-ride{display:block;width:46px;height:auto}
 @media (prefers-reduced-motion:no-preference){
   .ra-me:not(.ride) i{animation:raPing 2.4s ease-out infinite}
-  @keyframes raPing{0%{box-shadow:0 0 0 2px var(--accent),0 0 0 2px color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 2px var(--accent),0 0 0 14px transparent}}
+  @keyframes raPing{0%{box-shadow:0 0 0 2px var(--accent),0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 2px var(--accent),0 0 0 14px transparent}}
 }
 
 .ra-axis{position:relative;height:16px;margin:-6px 0 0}

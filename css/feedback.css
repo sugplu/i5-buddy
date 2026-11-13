@@ -23,7 +23,10 @@
 .fb-hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
 
 .fb-status{margin:0;padding:10px 12px;border-radius:calc(var(--radius) - 2px);background:var(--surface-2);color:var(--fg-2);font-weight:700;font-size:.92rem;line-height:1.35}
-.fb-status[data-kind="error"]{background:color-mix(in srgb,var(--danger) 16%,var(--surface));color:var(--fg);box-shadow:inset 4px 0 0 var(--danger)}
+.fb-status[data-kind="error"]{background:var(--surface-2);color:var(--fg);box-shadow:inset 4px 0 0 var(--danger)}
+/* a color-mix() with var() inside is valid at parse time on iOS 15-16.1 and then computes to transparent, so the tint
+   lives behind @supports and the solid color above stays the fallback */
+@supports (color:color-mix(in srgb,red 50%,blue)){.fb-status[data-kind="error"]{background:color-mix(in srgb,var(--danger) 16%,var(--surface))}}
 .fb-status[data-kind="off"]{box-shadow:inset 4px 0 0 var(--accent)}
 .fb-send{width:100%}
 .fb-ver{text-align:center}

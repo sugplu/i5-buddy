@@ -16,7 +16,8 @@
 .mp3d-btn.fly{background:var(--accent);color:var(--accent-fg);border-color:transparent}
 .mp3d-btn.stop{background:var(--danger);color:#fff;border-color:transparent}
 .mp3d-attrib{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:4px 10px 5px;font-size:.64rem;line-height:1.3;font-weight:600;color:var(--fg-2);
-  background:var(--bg);background:color-mix(in srgb,var(--bg) 82%,transparent)}
+  background:var(--bg)}
+@supports (color:color-mix(in srgb,red 50%,blue)){.mp3d-attrib{background:color-mix(in srgb,var(--bg) 82%,transparent)}}
 .mp3d-attrib a{color:inherit;text-underline-offset:2px}
 
 /* the ride standing on its ground marker */
