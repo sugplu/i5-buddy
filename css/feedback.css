@@ -16,8 +16,10 @@
 .fb-field input[aria-invalid="true"],.fb-field textarea[aria-invalid="true"]{border-color:var(--danger)}
 .fb-hint,.fb-count{margin:0;color:var(--muted);font-size:.8rem;line-height:1.35}
 .fb-count{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
-.fb-count.near{color:var(--danger);font-weight:700}
-.fb-err{margin:0;color:var(--danger);font-weight:700;font-size:.88rem;line-height:1.35}
+/* --danger text on --surface is 4.13:1 at night, under AA's 4.5:1 for small text: the words are --fg (14.6:1) and a danger bar marks them,
+   as .fb-status[data-kind=error] does below */
+.fb-count.near{color:var(--fg);font-weight:700;padding-right:10px;box-shadow:inset -4px 0 0 var(--danger)}
+.fb-err{margin:0;color:var(--fg);font-weight:700;font-size:.88rem;line-height:1.35;padding:2px 0 2px 12px;box-shadow:inset 4px 0 0 var(--danger)}
 
 /* the bot trap: off screen, not display:none (some bots skip hidden fields), never focusable or announced */
 .fb-hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}

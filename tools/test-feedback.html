@@ -125,6 +125,20 @@ const SCENARIOS = {
     submit();
     await wait(100);
     check("a message over 2000 characters is refused", net.calls.length === 0 && /under 2,000 characters/.test(txt(field("#fbMsgErr"))), txt(field("#fbMsgErr")));
+    // the error text and the nearly-full counter must be readable (AA: 4.5:1 for small text) and marked by a danger bar, not by color alone
+    {
+      const rgb = c => (/rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(c) || []).slice(1, 4).map(Number);
+      const lumn = ([r, g, b]) => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+      const ratio = (a, b) => { const x = lumn(a), y = lumn(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+      const bg = rgb(win.getComputedStyle(S()).backgroundColor);
+      const dangerHex = win.getComputedStyle(doc.documentElement).getPropertyValue("--danger").trim();
+      const dRgb = [1, 3, 5].map(i => parseInt(dangerHex.slice(i, i + 2), 16));
+      check("the counter is in its 'nearly full' state", field(".fb-count").classList.contains("near"), txt(field("#fbCount")));
+      for (const [what, node] of [["error text", field("#fbMsgErr")], ["nearly-full counter", field(".fb-count")]]) {
+        const cs = win.getComputedStyle(node), r = ratio(rgb(cs.color), bg);
+        check(`${what}: at least 4.5:1 on the sheet (${THEME}) and marked by a danger bar`, r >= 4.5 && cs.boxShadow.includes(`rgb(${dRgb.join(", ")})`), `${r.toFixed(2)} ${cs.boxShadow}`);
+      }
+    }
     type(win, field("#fbMsg"), "abcde");
     check("the counter follows the typing", txt(field("#fbCount")) === "5 / 2,000", txt(field("#fbCount")));
     type(win, field("#fbName"), "n".repeat(81));
