@@ -80,6 +80,13 @@
   <div id="destStrip"></div>
   <div id="liveAlerts"></div>
 
+  <!-- Start GPS sits above the next card so it is on the first screen of a phone, clear of the tab bar,
+       whatever the card below holds (the welcome card, or a landmark with its photo). -->
+  <div class="controls" id="startControls">
+    <button class="primary" id="startGps">Start GPS</button>
+    <button class="secondary" id="startDemo">Demo drive</button>
+  </div>
+
   <article class="next" id="nextCard"></article>
   <div id="spotCard"></div>
 
@@ -88,10 +95,6 @@
     <button class="big-btn" id="lookRight">What's on my right?<span class="arrow">▶</span></button>
   </div>
 
-  <div class="controls" id="startControls">
-    <button class="primary" id="startGps">Start GPS</button>
-    <button class="secondary" id="startDemo">Demo drive</button>
-  </div>
   <div class="controls" id="runControls" hidden>
     <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
     <button class="secondary" id="stopTrip">End trip</button>
