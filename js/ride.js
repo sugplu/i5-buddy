@@ -230,8 +230,9 @@ function markup(o, saved) {
   const body = `<g class="ride-art">${o.facing === "left" ? `<g transform="translate(120 0) scale(-1 1)">${art}</g>` : art}</g>`;
   const rot = num(o.rotate) && o.rotate ? `<g transform="rotate(${r1(o.rotate)} 60 60)">` + body + "</g>" : body;
   const ground = `<ellipse class="ride-shadow" cx="60" cy="68" rx="46" ry="3.2" fill="#000" opacity=".22"/>`;
+  const zx = o.facing === "left" ? [24, 12] : [82, 94];
   const zz = o.zz === false ? "" :
-    `<g class="ride-zz" opacity="0" fill="${OUT}" font-family="Overpass,system-ui,sans-serif" font-weight="900"><text class="z1" x="${o.facing === "left" ? 22 : 84}" y="17" font-size="13">z</text><text class="z2" x="${o.facing === "left" ? 12 : 96}" y="8" font-size="9">z</text></g>`;
+    `<g class="ride-zz" opacity="0" fill="#fff" stroke="${OUT}" stroke-width="3.2" paint-order="stroke" stroke-linejoin="round" font-family="Overpass,system-ui,sans-serif" font-weight="900"><text class="z1" x="${zx[0]}" y="14" font-size="22">z</text><text class="z2" x="${zx[1]}" y="2" font-size="16">z</text></g>`;
   const name = o.label ? ` role="img" aria-label="${esc(o.label)}"` : ` aria-hidden="true" focusable="false"`;
   return `<svg xmlns="${NS}" class="ride-svg" viewBox="0 0 120 80" width="${r1(size)}" height="${r1(size * 2 / 3)}"${name}>${ground}${rot}${zz}</svg>`;
 }

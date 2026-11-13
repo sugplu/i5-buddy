@@ -1592,8 +1592,9 @@ function drawCard(kind) {
   g.fillText("I-5 Buddy", rx + rw, fy);
   return cv;
 }
-/** The ride rides along the top edge of the card's green sign, nickname beside it. The art is an SVG: it loads through an
-    Image from a data: URL (CSS variables do not reach it there), and the card is left as it was if that fails or is slow. */
+/** The ride sits in the bottom right corner of the card's green sign, nickname beside it. The art is an SVG: it loads
+    through an Image from a data: URL (CSS variables do not reach it there), and the card is left as it was if that fails
+    or is slow. */
 async function addRide(cv) {
   try {
     if (!A.ride || !A.ride.svg) return;
@@ -1606,11 +1607,12 @@ async function addRide(cv) {
       img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(A.ride.svg({ size: 420, zz: false, markup: true }));
     });
     if (!ok) return;
-    const w = 105, h = 70, right = 1032 - 70, top = 48 - Math.round(h * 66 / 80) + 1;   // wheels on the sign's top edge
-    g.drawImage(img, right - w, top, w, h);
+    const w = 130, h = 87, x = 1032 - 38 - w, y = 48 + 396 - 22 - h;      // the sign is 984 x 396 at (48, 48), see drawCard
+    g.drawImage(img, x, y, w, h);
     if (r.name) {
-      g.textAlign = "right"; g.textBaseline = "alphabetic"; g.fillStyle = T.muted; g.font = `800 28px ${T.display}`;
-      g.fillText(r.name, right - w - 14, 38);
+      g.textAlign = "right"; g.textBaseline = "alphabetic"; g.fillStyle = T.signFg; g.globalAlpha = 0.9; g.font = `800 28px ${T.display}`;
+      g.fillText(r.name, x - 14, y + h - 14);
+      g.globalAlpha = 1;
     }
   } catch (e) { warn("card ride", e); }
 }
