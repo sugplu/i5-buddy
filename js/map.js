@@ -611,6 +611,7 @@ function show() {
 function hide() {
   onScreen = false;
   close3d();            // the 3D map is removed when you leave the Map tab (memory, battery)
+  clearNote();
   motion = null;
   youAnim = null;
   if (you) youShown = { x: you.x, y: you.y };
@@ -1417,31 +1418,34 @@ function ensureVisible(x, y, z) {
 
 /* ---------- the 3D terrain view ---------- */
 /** The 3D button: open the 3D map (MapLibre, loaded only now) or go back to 2D. */
-function toggle3d() { if (three.on || three.busy) close3d(); else open3d(); }
+function toggle3d() { if (three.on) close3d(); else open3d(); }
 const NOTE_3D = "The 3D map needs a connection and 3D graphics. Here\u2019s the regular map.";
 async function open3d() {
-  if (three.on || three.busy || !built || !mapEl) return false;
-  three.busy = true; three.on = true;
+  if (three.on || !built || !mapEl) return false;
+  three.on = true; three.busy = true;
   mapEl.classList.add("mp-3d-on");
   if (three.btn) three.btn.setAttribute("aria-pressed", "true");
   clearNote();
   const host = three.host = el("div", "mp-3d-host");
   mapEl.append(host);
-  let ok = false;
+  const mine = () => three.host === host;        // false once the user went back to 2D or left the tab
   try {
     const mod = three.mod = three.mod || await import("./map3d.js");
-    if (three.host !== host) { try { mod.close(); } catch {} return false; } // closed (tab left, or 2D tapped) while loading
-    ok = !!(await mod.open(api, host, { onExit: reason => { if (three.host === host) { close3d(); if (reason !== "user") showNote(NOTE_3D); } } }));
-  } catch (e) { warn(e); ok = false; }
-  three.busy = false;
-  if (three.host !== host) return false;
-  if (!ok) { close3d(); showNote(NOTE_3D); return false; }
-  return true;
+    if (!mine()) return false;
+    const ok = !!(await mod.open(api, host, { onExit: reason => { if (mine()) { close3d(); if (reason !== "user") showNote(NOTE_3D); } } }));
+    if (!mine()) return false;
+    if (!ok) { close3d(); showNote(NOTE_3D); return false; }
+    return true;
+  } catch (e) {
+    warn(e);
+    if (mine()) { close3d(); showNote(NOTE_3D); }
+    return false;
+  } finally { if (mine()) three.busy = false; }
 }
 /** Back to the 2D map: the MapLibre map is removed (map.remove()) so it stops using memory and battery. */
 function close3d() {
   if (!three.on && !three.host) return;
-  three.on = false;
+  three.on = false; three.busy = false;
   const host = three.host;
   three.host = null;
   try { if (three.mod) three.mod.close(); } catch (e) { warn(e); }
