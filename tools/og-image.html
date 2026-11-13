@@ -6,7 +6,7 @@
 <!--
   The link-preview picture (og:image, twitter:image): icons/og-1200x630.png.
   Drawn with the app's own night tokens and Overpass font (../app.css), the Interstate shield and the green sign board.
-  No photos. The ribbon ticks are the real landmarks, read from ../data/i5.js.
+  No photos. The ribbon has a tick for every other landmark ahead of the dot, read from ../data/i5.js.
 
   To re-render after a change:  python3 tools/og_image.py   (headless Chrome; writes icons/og-1200x630.png at
   exactly 1200x630), then bump VERSION in sw.js. To look at it, serve the repo root and open /tools/og-image.html.
@@ -26,7 +26,7 @@
   .og-shield{width:166px;height:178px;display:block;grid-row:1 / span 2;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
   .og-name{margin:2px 0 0;font-weight:900;font-size:136px;line-height:1;letter-spacing:-.005em;white-space:nowrap}
   .og-line{margin:18px 0 0;font-weight:700;font-size:41px;line-height:1.18;text-wrap:balance;max-width:820px}
-  /* the route ribbon from the app, one tick per landmark */
+  /* the route ribbon from the app, with a tick for every other landmark ahead of the dot */
   .og-ribbon{position:absolute;left:60px;right:60px;bottom:50px;height:30px}
   .og-ribbon .track{position:absolute;left:0;right:0;top:11px;height:8px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
   .og-ribbon .ca{position:absolute;inset:0;background:var(--st-ca);opacity:.42}
