@@ -6,7 +6,7 @@
 <title>I-5 Buddy live module test</title>
 <!--
   Drives the live module (js/live.js) inside the real app and checks it. Results: bottom bar + console "[test-live] ...".
-  ?s=      mock (default) | optin | cadence | timers | south | north | la | fail | nopos | end | real | unit
+  ?s=      mock (default) | traffic | trafficold | optin | cadence | timers | south | north | la | fail | nopos | end | real | unit
            speech | chains | alertupd | deadzone | partial | nowx | srcfail | toggle | retry | camvis
            (north: the last miles before the Oregon line and past it; la: a Caltrans camera strip and side-by-side weather)
   ?theme=  dark | light       ?view= top | more | block | wx | cams | sheet-cam | sheet-alert | sheet-chain | sheet-wx
@@ -15,6 +15,8 @@
   ?next=1  (sheet-cam) taps "Farther"          ?sw=1 loads index.html itself, with its service worker
   ?speech=real  keeps the browser's own speechSynthesis (default: a fake one, so voice.js's queue really runs)
   ?dbg=1   (speech) logs every synthesizer event and every item voice.js starts, with times
+  traffic, trafficold: /api/traffic answers from tools/traffic-sample.json (rewritten to the current time); the other
+  scenarios leave it unanswered, like a phone with no route to the server.
   Mocked scenarios answer weather.gov and Caltrans from tools/live/*.json (real feeds saved earlier; statuses edited to
   show chain controls and a two-page sign). s=real uses the network. Long virtual budgets: s=timers 400000,
   s=speech 300000, s=alertupd 900000, s=retry 1500000, s=camvis 150000.
@@ -260,6 +262,14 @@ function editCMS(d, signs) {
   return d;
 }
 
+/* ---------- fake /api/traffic (tools/traffic-sample.json: 24 real incidents, rewritten to be current) ---------- */
+let trafficFx = null;
+async function trafficFixture() {
+  if (!trafficFx) trafficFx = await (await fetch("traffic-sample.json")).json();
+  return JSON.parse(JSON.stringify(trafficFx));
+}
+const TRAFFIC_SCEN = /^traffic/.test(SCEN);
+
 /* ---------- network: mock (default) or real, always recorded ---------- */
 function installNet(win, api) {
   const calls = [];
@@ -274,8 +284,23 @@ function installNet(win, api) {
     const t = setTimeout(res, ms);
     signal && signal.addEventListener("abort", () => { clearTimeout(t); rej(new DOMException("aborted", "AbortError")); });
   });
+  // net.traffic.mode: ok | fail | 500 | bad | hang;  age: ms the server's "updated" lags;  edit(body): change the answer
+  net.traffic = { calls: [], mode: "ok", age: 0, edit: null };
   win.fetch = async (url, opts = {}) => {
     url = String(url && url.url || url);
+    if (/\/api\/traffic(\?|$)/.test(url) && TRAFFIC_SCEN) {
+      const T = net.traffic;
+      T.calls.push({ url, t: Date.now(), method: opts.method || "GET", body: opts.body == null ? null : opts.body, headers: opts.headers || null });
+      await delay(40, opts.signal);
+      if (T.mode === "fail") throw new TypeError("Failed to fetch");
+      if (T.mode === "500") return R({ error: "down" }, 500, "application/json");
+      if (T.mode === "bad") return R("<html><h1>Bad gateway</h1></html>", 200, "text/html");
+      if (T.mode === "hang") await delay(120e3, opts.signal);
+      const body = await trafficFixture();
+      body.updated = iso(Date.now() - T.age);
+      if (T.edit) T.edit(body);
+      return R(body, 200, "application/json");
+    }
     if (!/^https:\/\/(api\.weather\.gov|cwwp2\.dot\.ca\.gov)\//.test(url)) return real(url, opts);
     calls.push({ url, t: Date.now() });
     if (SCEN === "real") return real(url, opts);
@@ -927,6 +952,181 @@ const SCENARIOS = {
     check("real: weather shown", doc.querySelectorAll(".lv-wxpt").length >= 1);
     log("weatherText:", api.live.weatherText());
   },
+  async traffic(api, win, doc, net) {
+    const T = net.traffic;
+    const fx = await trafficFixture();
+    const mileOf = id => { const r = fx.incidents.find(i => i.id === id); return win.I5BUDDY.locate(r.lat, r.lon).m; };
+    const mOrange = mileOf("chp:261112OC0630"), mLebec = mileOf("caltrans:C5HA-138"), mMain = mileOf("chp:261112RD0156");
+    log("miles", { mOrange, mLebec, mMain });
+    // two Lebec closures become full-road closures: a cluster that must be announced in one sentence
+    T.edit = b => { for (const i of b.incidents) if (i.id === "caltrans:C5HA-143" || i.id === "caltrans:C5HA-141") i.title = "Road closed"; };
+    const events = [];
+    api.bus.on("traffic", e => events.push(e));
+    const said = stubSay(api);
+    api.setMode("demo");
+    api.setPosition(mOrange - 20, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    await until(() => api.live.status().traffic.have, 6000);
+    await wait(200);
+    // --- the request
+    check("one traffic request", T.calls.length === 1, String(T.calls.length));
+    const c = T.calls[0];
+    check("it goes to i5.dominares.org/api/traffic, a plain GET", c.url === "https://i5.dominares.org/api/traffic" && c.method === "GET" && c.body == null, c.url);
+    check("it carries no location (no query, no body)", !/[?&]/.test(c.url) && c.body == null && !/lat|lon/i.test(c.url));
+    // --- the corridor list
+    const all = api.live.traffic();
+    log("corridor incidents", all.map(i => `${i.id.slice(0, 22)} ${i.kind} ${i.dir || "*"} m${i.m.toFixed(1)} d${i.d.toFixed(1)}`));
+    check("the corridor list has mile and distance on each incident", all.length > 15 && all.every(i => isFinite(i.m) && isFinite(i.d) && Array.isArray(i.ids)), String(all.length));
+    check("the same event reported twice is one entry that keeps both ids", all.some(i => i.ids.length === 2 && /Orangethorpe/.test(i.detail)) && all.filter(i => /Orangethorpe/.test(i.detail)).length === 1);
+    check("every incident is within a mile of the road line", all.every(i => api.geo.locate(i.lat, i.lon).dist <= 0.5));
+    check("the traffic event fired with incidents, updated and sources", events.length === 1 && events[0].incidents.length === all.length
+      && events[0].incidents.every(i => isFinite(i.m) && isFinite(i.d)) && /^\d{4}-\d\d-\d\dT/.test(events[0].updated) && events[0].sources.chp === true && events[0].sources.caltrans === true, JSON.stringify(events[0] && { n: events[0].incidents.length, u: events[0].updated, s: events[0].sources }));
+    // --- weather points for the chart come from what live already has
+    const wa = api.live.weatherAlong();
+    check("weatherAlong gives the forecast points with m, temperature, words and an icon", wa.length === 2 && wa.every(w => isFinite(w.m) && isFinite(w.tempF) && w.short && w.icon), JSON.stringify(wa.map(w => [w.m, w.tempF, w.short, w.icon])));
+    // --- on screen going north from 20 miles before Orangethorpe
+    const rows = [...doc.querySelectorAll("#liveAlerts .lv-al")].map(txt);
+    log("strip", rows);
+    const aheadN = all.filter(i => i.d >= -0.3 && i.d <= 60 && (!i.dir || i.dir === "N"));
+    check("the strip shows traffic cards, nearest first", rows.length >= 1 && rows.some(r => /^(Crash|Hazard|Lane closed|Road closed|Fire|Wind)[^,]*, \d+ mi ahead/.test(r)), rows.join(" | "));
+    check("a crash card is danger red", [...doc.querySelectorAll("#liveAlerts .lv-al.warn")].some(n => /^Crash/.test(txt(n))));
+    check("at most two traffic cards in the strip", [...doc.querySelectorAll("#liveAlerts .lv-al")].filter(n => n.dataset.k && n.dataset.k.startsWith("tr:")).length <= 2);
+    const trRows = [...doc.querySelectorAll("#liveBlock .lv-tr-row")];
+    log("traffic rows", trRows.map(txt));
+    check("Traffic ahead lists the incidents within 60 miles in my direction", trRows.length > 0 && trRows.length <= aheadN.length && (trRows.length === aheadN.length || trRows.length === 5), `${trRows.length} of ${aheadN.length}`);
+    check("rows have distance, direction words and detail", trRows.every(r => /\d(\.\d)? mi|here/.test(txt(r)) && /Northbound lanes|Both directions/.test(txt(r))), txt(trRows[0]));
+    check("no southbound-only incident shows going north", !/Southbound lanes/.test(txt($(doc, ".lv-trsec"))));
+    check("a closure row shows its until time", [...doc.querySelectorAll(".lv-tr-row")].some(r => /until \d+:\d\d[ap]m/.test(txt(r))) || aheadN.every(i => !i.until));
+    check("source line names only the true sources and says when", txt($(doc, ".lv-trsrc")) === "Traffic: CHP · Caltrans · updated just now", txt($(doc, ".lv-trsrc")));
+    check("an incident row opens a sheet with its words", await (async () => { trRows[0].click(); await wait(250); const sh = $(doc, ".lv-sheet"); const ok = sh && !sh.hidden && /Source: /.test(txt(sh)); if (api.ui.closeSheet) api.ui.closeSheet(); return ok; })());
+    // --- nothing is spoken yet (nearest crash is 20 miles away)
+    check("nothing spoken while the crash is 20 miles away", !said.some(s => /^traffic:/.test(s.id || "")), JSON.stringify(said.map(s => s.id)));
+    // --- speak once per incident when it first comes within about 10 miles
+    api.setPosition(mOrange - 9, { dir: "N", speed: 63 });
+    await wait(300);
+    let sp = said.filter(s => /^traffic:/.test(s.id || ""));
+    check("a crash 9 miles ahead is announced once, short, prio 2, with a stable id", sp.length === 1 && /^Heads up: crash ahead, in about \d+ miles\.$/.test(sp[0].text) && sp[0].prio === 2 && /^traffic:chp:/.test(sp[0].id), JSON.stringify(sp));
+    check("and the same words are on screen", /Heads up: crash ahead/.test(txt($(doc, "#toast"))) && !$(doc, "#toast").hidden, txt($(doc, "#toast")));
+    api.setPosition(mOrange - 6, { dir: "N", speed: 63 });
+    await wait(300);
+    api.setPosition(mOrange - 3, { dir: "N", speed: 63 });
+    await wait(300);
+    sp = said.filter(s => /^traffic:/.test(s.id || ""));
+    check("driving closer does not repeat it", sp.length === 1, String(sp.length));
+    // --- the next fetch (2 minutes later) does not repeat it either, and a position that moves back is quiet too
+    await wait(150e3);
+    check("traffic is fetched again after 2 minutes (not before)", T.calls.length === 2 && T.calls[1].t - T.calls[0].t >= 119e3, T.calls.map(x => x.t - T.calls[0].t).join(","));
+    api.setPosition(mOrange - 9, { dir: "N", speed: 63, jumped: true });
+    await wait(300);
+    check("a second fetch and a jump back stay quiet", said.filter(s => /^traffic:/.test(s.id || "")).length === 1);
+    // --- Lebec: ramp closures, a lane closure and two full closures in one cluster: one sentence
+    api.setPosition(mLebec - 8, { dir: "N", speed: 63, jumped: true });
+    await wait(300);
+    sp = said.filter(s => /^traffic:/.test(s.id || ""));
+    log("lebec speech", sp.map(s => s.text));
+    check("a cluster of closures is announced in one sentence", sp.length === 2 && /^Heads up: road closed ahead, in about \d+ miles, and 1 more incident close by\.$/.test(sp[1].text), JSON.stringify(sp.map(s => s.text)));
+    api.setPosition(mLebec - 4, { dir: "N", speed: 63 });
+    await wait(300);
+    check("the cluster is not repeated as you close in", said.filter(s => /^traffic:/.test(s.id || "")).length === 2);
+    // --- no speech with narration off, or off the road
+    const nSpoke = () => said.filter(s => /^traffic:/.test(s.id || "")).length;
+    api.settings.narr = false; api.saveSettings();
+    api.setPosition(mMain - 8, { dir: "N", speed: 63, jumped: true });
+    await wait(400);
+    check("narration off: the crash 8 miles ahead is on screen but not spoken", nSpoke() === 2 && /Crash, \d+ mi ahead/.test(txt($(doc, "#liveAlerts"))), txt($(doc, "#liveAlerts")).slice(0, 120));
+    api.S.offRoute = true;
+    api.setPosition(mMain - 8, { dir: "N", speed: 63, jumped: true, offRoute: true });
+    api.settings.narr = true; api.saveSettings();
+    await wait(400);
+    check("off the road: not spoken", nSpoke() === 2, String(nSpoke()));
+    api.S.offRoute = false;
+    api.setPosition(mMain - 7.5, { dir: "N", speed: 63, jumped: true });
+    await wait(500);
+    check("back on the road: spoken once", nSpoke() === 3, String(nSpoke()));
+    // --- a quiet stretch
+    api.setPosition(300, { dir: "N", speed: 63, jumped: true });
+    await wait(300);
+    check("no incident within 60 miles: says so plainly", /No crashes or closures reported ahead for 60 miles\./.test(txt($(doc, ".lv-trmsg"))) && !doc.querySelector(".lv-tr-row"), txt($(doc, ".lv-trsec")).slice(0, 160));
+    check("and the strip has no traffic cards", ![...doc.querySelectorAll("#liveAlerts .lv-al")].some(n => n.dataset.k && n.dataset.k.startsWith("tr:")));
+    // --- the other direction: only incidents in my direction (or both) and only ahead of me (lower miles)
+    api.setPosition(mOrange + 25, { dir: "S", speed: 63, jumped: true });
+    await wait(300);
+    const rowsS = [...doc.querySelectorAll("#liveBlock .lv-tr-row")].map(txt);
+    log("southbound rows", rowsS);
+    check("southbound: no northbound-only incident", rowsS.length > 0 && !rowsS.some(r => /Northbound lanes/.test(r)), rowsS.join(" | "));
+    check("southbound: Palizada crash is ahead (lower mile)", rowsS.some(r => /Crash/.test(r) && /Southbound lanes/.test(r)) || all.every(i => !(i.kind === "crash" && i.dir === "S" && i.d !== null)), rowsS[0]);
+    // --- turning live off clears it and stops asking
+    const calls = T.calls.length;
+    api.settings.live = false; api.saveSettings();
+    await wait(150e3);
+    check("live off: the traffic list is gone and nothing is fetched", !doc.querySelector(".lv-tr-row") && T.calls.length === calls, `${T.calls.length} vs ${calls}`);
+  },
+  async trafficold(api, win, doc, net) {
+    const T = net.traffic;
+    const fx = await trafficFixture();
+    const mileOf = id => { const r = fx.incidents.find(i => i.id === id); return win.I5BUDDY.locate(r.lat, r.lon).m; };
+    const mOrange = mileOf("chp:261112OC0630"), mPaliz = mileOf("chp:261112OC0632");
+    const said = stubSay(api);
+    const nextFetch = async () => { const c = T.calls.length; await until(() => T.calls.length > c, 200e3, 1000); await wait(500); return T.calls.length - c; };
+    // --- the very first request fails: a plain note, no list, and nothing about a "live info" failure
+    T.mode = "fail";
+    api.setMode("demo");
+    api.setPosition(mOrange - 20, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    await wait(300);
+    check("first request failed: a quiet note, no list", /Traffic isn't available right now/.test(txt($(doc, ".lv-trmsg"))) && !doc.querySelector(".lv-tr-row") && (!$(doc, ".lv-trsrc") || $(doc, ".lv-trsrc").hidden), txt($(doc, ".lv-trsec")));
+    check("weather still fine: the footer does not say unavailable", !/unavailable/i.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
+    check("no cards in the strip for traffic", ![...doc.querySelectorAll("#liveAlerts .lv-al")].some(n => n.dataset.k && n.dataset.k.startsWith("tr:")));
+    // --- it comes back
+    T.mode = "ok";
+    await nextFetch();
+    await wait(200);
+    const n0 = doc.querySelectorAll(".lv-tr-row").length;
+    check("the next try works and the list appears", n0 > 0 && !/isn't available/.test(txt($(doc, ".lv-trsec"))), String(n0));
+    const have = api.live.traffic().length;
+    // --- a 500, an HTML answer: the last good list stays
+    T.mode = "500";
+    await nextFetch();
+    check("a server error keeps the last good list on screen", api.live.traffic().length === have && doc.querySelectorAll(".lv-tr-row").length === n0 && api.live.trafficInfo().err === true, `${api.live.traffic().length}/${doc.querySelectorAll(".lv-tr-row").length}`);
+    check("and still says when it was updated", /^Traffic: CHP · Caltrans · updated (\d+ min ago|just now)$/.test(txt($(doc, ".lv-trsrc"))), txt($(doc, ".lv-trsrc")));
+    T.mode = "bad";
+    await nextFetch();
+    check("an answer that is not traffic keeps it too", api.live.traffic().length === have && doc.querySelectorAll(".lv-tr-row").length === n0);
+    // --- a request that never answers is cut off after 10 s
+    T.mode = "hang";
+    const c0 = T.calls.length;
+    await until(() => T.calls.length > c0, 200e3, 1000);
+    check("a request is out and the page waits quietly", api.live.trafficInfo().busy === true);
+    await wait(11e3);
+    check("a hanging request is abandoned after 10 seconds and the page is not stuck", api.live.trafficInfo().busy === false && api.live.trafficInfo().err === true && api.live.traffic().length === have, JSON.stringify(api.live.trafficInfo()));
+    // --- server data 20 minutes old: say so, never speak from it
+    T.mode = "ok"; T.age = 20 * 60e3;
+    await nextFetch();
+    await wait(200);
+    check("data older than 15 minutes says it is old", /updated 2\d min ago \(old\)/.test(txt($(doc, ".lv-trsrc"))) && $(doc, ".lv-tr").classList.contains("old"), txt($(doc, ".lv-trsrc")));
+    check("an old list is marked old in the strip too", [...doc.querySelectorAll("#liveAlerts .lv-al")].some(n => /As of 2\d min ago/.test(txt(n))), [...doc.querySelectorAll("#liveAlerts .lv-al")].map(txt).join(" | ").slice(0, 160));
+    api.setPosition(mPaliz + 8, { dir: "S", speed: 63, jumped: true });
+    await wait(500);
+    check("old data is never spoken", !said.some(s => /^traffic:/.test(s.id || "")), JSON.stringify(said.map(s => s.id)));
+    // --- fresh again, then no connection
+    T.age = 0;
+    await nextFetch();
+    await wait(300);
+    check("fresh data again: spoken once now", said.filter(s => /^traffic:/.test(s.id || "")).length === 1);
+    Object.defineProperty(win.navigator, "onLine", { configurable: true, get: () => false });
+    win.dispatchEvent(new win.Event("offline"));
+    await wait(300);
+    check("offline: says traffic needs a connection and keeps the list", /Traffic needs a connection/.test(txt($(doc, ".lv-trsrc"))) && doc.querySelectorAll(".lv-tr-row").length > 0, txt($(doc, ".lv-trsrc")));
+    const cOff = T.calls.length;
+    await wait(150e3);
+    check("offline: no request is made", T.calls.length === cOff);
+    Object.defineProperty(win.navigator, "onLine", { configurable: true, get: () => true });
+    win.dispatchEvent(new win.Event("online"));
+    await wait(1500);
+    check("back online: it asks again at once", T.calls.length === cOff + 1, `${T.calls.length} vs ${cOff}`);
+  },
   async unit(api, win, doc, net) {
     // the app's own instance of js/live.js (initialized, so geo/data are wired): load it from inside the iframe
     const s = doc.createElement("script");
@@ -1056,6 +1256,27 @@ const SCENARIOS = {
     const upd = T.parseAlert(alertsFor(710).features[0]);
     WSW.v = 1;
     check("parseAlert keeps the ids an update replaces", upd && upd.id === "urn:oid:mock.wsw.3" && upd.refs.join() === "urn:oid:mock.wsw.1,urn:oid:mock.wsw.2", upd && JSON.stringify(upd.refs));
+    // traffic: normalising, corridor snapping
+    {
+      const fxu = await trafficFixture();
+      const pt = T.parseTraffic(fxu);
+      check("parseTraffic reads the sample: 24 incidents, both sources, updated as a time", pt && pt.items.length === 24 && pt.sources.chp && pt.sources.caltrans && pt.updated > 0, pt && JSON.stringify({ n: pt.items.length, s: pt.sources }));
+      check("parseTraffic keeps kind, dir, title, detail and until", pt.items.some(i => i.kind === "closure" && i.dir === "N" && i.title === "Off-ramp closed" && /Tejon/.test(i.detail) && /Apr 21, 2027/.test(i.until)) && pt.items.some(i => i.kind === "hazard" && i.dir === null));
+      check("parseTraffic: not an object, no list", T.parseTraffic(null) === null && T.parseTraffic("x") === null && T.parseTraffic({}) === null && T.parseTraffic({ incidents: "no" }) === null);
+      const junk = T.parseTraffic({ updated: "garbage", sources: { chp: "yes" }, incidents: [null, 5, { id: "", lat: 37, lon: -120 }, { id: "a", lat: "x", lon: 1 }, { id: "b", lat: null, lon: 1 },
+        { id: "c", lat: 91, lon: 0 }, { id: "d", lat: 37, lon: -120, kind: "weird", dir: "E", title: "  Odd   thing  ", detail: 5 }, { id: "d", lat: 37, lon: -120 }, { id: "caltrans:e", lat: 37, lon: -120 }] });
+      check("parseTraffic drops junk, unknown kind becomes other, bad dir becomes null, duplicate ids once", junk.items.map(i => i.id).join() === "d,caltrans:e" && junk.items[0].kind === "other" && junk.items[0].dir === null && junk.items[0].title === "Odd thing" && junk.items[1].source === "caltrans", JSON.stringify(junk.items.map(i => [i.id, i.kind, i.dir, i.title])));
+      check("parseTraffic: a bad updated time is 0 and only true sources count", junk.updated === 0 && junk.sources.chp === false && junk.sources.caltrans === false);
+      const off = { id: "far", kind: "crash", title: "Crash", detail: "", lat: 37.75, lon: -119.59, started: null, dir: "N", until: "", source: "chp" };   // Yosemite: nowhere near I-5
+      const snapped = T.snapTraffic([...pt.items, off]);
+      check("snapTraffic drops incidents that are not on I-5", !snapped.some(i => i.id === "far") && snapped.length > 15 && snapped.every(i => isFinite(i.m)), String(snapped.length));
+      check("snapTraffic folds the same event reported twice (Orangethorpe, Palizada, Poinsettia)", snapped.filter(i => /Orangethorpe/.test(i.detail)).length === 1 && snapped.filter(i => /Palizada/.test(i.detail)).length === 1 && snapped.filter(i => /Poinsettia/.test(i.detail)).length === 1 && snapped.length === pt.items.filter(i => i.id !== "far").length - 3, String(snapped.length));
+      check("snapTraffic: the miles make sense (Lebec near the Grapevine, Main St north of Redding)", snapped.some(i => /Lebec/.test(i.detail) && i.m > 195 && i.m < 215) && snapped.some(i => /Main St/.test(i.detail) && i.m > 600 && i.m < 700), JSON.stringify(snapped.filter(i => /Lebec|Main St/.test(i.detail)).map(i => i.m.toFixed(1))));
+      check("the request URL is same-origin only on i5.dominares.org", T.trUrl() === "https://i5.dominares.org/api/traffic", T.trUrl());
+      check("trSpeech: one, and with company", T.trSpeech({ kind: "crash", title: "Crash", d: 6.2 }, 0) === "Heads up: crash ahead, in about 6 miles."
+        && T.trSpeech({ kind: "closure", title: "Road closed", d: 0.2 }, 2) === "Heads up: road closed just ahead, and 2 more incidents close by."
+        && T.trSpeech({ kind: "crash", title: "Crash", d: 1 }, 1) === "Heads up: crash ahead, in about a mile, and 1 more incident close by.");
+    }
   },
 };
 

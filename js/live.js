@@ -821,7 +821,6 @@ function trAhead(range = TR_RANGE) {
     .filter(it => it.d >= -TR_BACK && it.d <= range && (!it.dir || it.dir === S.dir)).sort((a, b) => a.d - b.d);
 }
 function trWords(d) { return d < 0.5 ? "right here" : d < 1.5 ? "1 mi ahead" : `${Math.round(d)} mi ahead`; }
-function trSaidMiles(d) { return d < 0.5 ? "right ahead" : d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`; }
 function trKindIcon(it) { return it.kind === "crash" ? "crash" : it.kind === "closure" ? "closure" : it.kind === "lane" ? "cone" : it.kind === "hazard" ? "warn" : "info"; }
 function trStripList(list) { return list.filter(it => it.kind !== "other" && !(it.kind === "closure" && isRamp(it))).slice(0, TR_STRIP); }
 function trSub(it) {
@@ -831,7 +830,8 @@ function trSub(it) {
     behind it (a work zone often has half a dozen ramp and lane closures within a mile or two: one sentence). */
 function trSpeech(first, more) {
   const what = first.kind === "crash" ? "crash" : clip(first.title, 40).toLowerCase();
-  return `Heads up: ${what} ahead, ${trSaidMiles(first.d)}${more > 0 ? `, and ${more} more incident${more === 1 ? "" : "s"} close by` : ""}.`;
+  const where = first.d < 0.5 ? "just ahead" : `ahead, ${first.d < 1.5 ? "in about a mile" : `in about ${Math.round(first.d)} miles`}`;
+  return `Heads up: ${what} ${where}${more > 0 ? `, and ${more} more incident${more === 1 ? "" : "s"} close by` : ""}.`;
 }
 function talkTraffic(list) {
   if (!trHave() || trOld()) return;
