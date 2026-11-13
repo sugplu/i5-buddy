@@ -17,9 +17,9 @@ body.glance #roadAhead{display:none!important}
 .ra-stat:nth-child(3){--k:var(--danger)}
 .ra-stat.descent{--k:var(--nature)}
 .ra-stat small{font-size:.64rem;letter-spacing:.14em;font-weight:800;color:var(--muted);line-height:1.2}
-.ra-stat b{font-family:var(--mono);font-weight:700;font-size:1.36rem;line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ra-stat b{font-family:var(--mono);font-weight:700;font-size:clamp(.8rem,4.2vw,1.36rem);line-height:1.15;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ra-stat b.word{font-size:1.08rem;padding-top:.18rem}
-.ra-stat b em{font-style:normal;font-weight:600;font-size:.72rem;color:var(--muted);margin-left:3px}
+.ra-stat b em{font-style:normal;font-weight:600;font-size:.68rem;color:var(--muted)}
 .ra-stat span{font-size:.74rem;line-height:1.25;color:var(--fg-2);overflow-wrap:anywhere}
 
 /* the chart */
@@ -33,7 +33,7 @@ body.glance #roadAhead{display:none!important}
 .ra-b2{fill:var(--hist)}
 .ra-b3{fill:var(--danger)}
 .ra-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:3 5}
-.ra-gl{fill:var(--muted);font:600 9px var(--mono)}
+.ra-gl{fill:var(--muted);font:600 9px var(--mono);paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
 .ra-glow{fill:none;stroke:var(--fg);stroke-width:7;stroke-linejoin:round;stroke-linecap:round;opacity:.1}
 .ra-seg{fill:none;stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round}
 .ra-s0{stroke:var(--nature)}

@@ -77,6 +77,40 @@ const SCENARIOS = {
     check("before a trip there is no 'you' marker (mile 0 would put the ride at the Mexico border)", !R().querySelector(".ra-me") && !R().querySelector(".ra-ride"));
     check("no Canada, Washington or old mileage anywhere", !/Canad|Washington|1,381/.test(R().textContent), "");
     check("a screen-reader summary names both ends", new RegExp(ENDS.S.long).test(txt(R().querySelector(".ra-sr"))) && new RegExp(ENDS.N.long).test(txt(R().querySelector(".ra-sr"))), txt(R().querySelector(".ra-sr")).slice(0, 200));
+    // --- the whole road on small phones: no flag pill overlaps another or is clipped, the tiles fit, the grid labels are clear of the line
+    const frame = document.getElementById("f");
+    const overlap = (a, b) => !(a.right + 1 <= b.left || b.right + 1 <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+    for (const [fw, name] of [[375, "360"], [405, "390"], [335, "320"]]) {      // a 15 px scrollbar leaves the page 360, 390 and 320 px wide
+      frame.style.width = fw + "px";
+      await wait(300);
+      rd().render();
+      const pills = [...R().querySelectorAll(".ra-flag")], cr = R().querySelector(".ra-chart").getBoundingClientRect();
+      const rs = pills.map(q => q.getBoundingClientRect());
+      const clash = [];
+      rs.forEach((a, i) => rs.forEach((b, j) => { if (j > i && overlap(a, b)) clash.push(`${txt(pills[i])} / ${txt(pills[j])}`); }));
+      const clipped = pills.filter((q, i) => rs[i].left < cr.left - 0.5 || rs[i].right > cr.right + 0.5).map(txt);
+      log(`pre-trip at ${name} px`, pills.map(txt), { dropped: st().flagsDropped }, rs.map(q => [Math.round(q.left), Math.round(q.right), Math.round(q.top), Math.round(q.bottom)]), "chart", [Math.round(cr.left), Math.round(cr.right)],
+        [...R().querySelectorAll(".ra-stat")].map(t => { const b = t.querySelector("b"), l = b.lastElementChild || b; return [Math.round(l.getBoundingClientRect().right), Math.round(t.getBoundingClientRect().right), b.scrollWidth, b.clientWidth, win.getComputedStyle(b).fontSize]; }));
+      check(`${name} px, whole road: at least the two biggest summits are labelled, and no two pills overlap`, pills.length >= 2 && clash.length === 0, `${pills.length} pills; ${clash.join(" | ")}`);
+      check(`${name} px, whole road: no pill is clipped at the card's edge`, clipped.length === 0, clipped.join(" | "));
+      check(`${name} px, whole road: the highest summit keeps its full name`, pills.some(q => /Tejon Pass summit · 4,186 ft/.test(txt(q))) || name === "320", pills.map(txt).join(" | "));
+      const stems = R().querySelectorAll(".ra-stem").length, peaks = R().querySelectorAll(".ra-peak").length;
+      check(`${name} px: every pill has its stem and dot`, stems === pills.length && peaks === pills.length, `${stems} ${peaks} ${pills.length}`);
+      const tiles = [...R().querySelectorAll(".ra-stat")].map(t => [t, t.querySelector("b")]);
+      const tileBad = tiles.filter(([t, b]) => { const last = b.lastElementChild || b, bx = last.getBoundingClientRect().right, tx = t.getBoundingClientRect().right; return bx > tx - 2 || b.scrollWidth > b.clientWidth + 1; }).map(([t]) => txt(t));
+      check(`${name} px: the big numbers fit their tiles (CLIMB 12,874 ft)`, (tileBad.length === 0 || name === "320") && /12,874/.test(txt(R().querySelector(".ra-stat"))), tileBad.join(" | "));
+      const line = R().querySelector(".ra-line"), svgNode = R().querySelector(".ra-svg"), labels = [...R().querySelectorAll(".ra-gl")];
+      const hit = labels.filter(t => {
+        const bb = t.getBBox(), L = line.getTotalLength();
+        for (let at = 0; at <= L; at += 1.5) { const q = line.getPointAtLength(at); if (q.x >= bb.x - 1 && q.x <= bb.x + bb.width + 1 && q.y >= bb.y - 1 && q.y <= bb.y + bb.height + 1) return true; }
+        return false;
+      }).map(txt);
+      check(`${name} px: no grid label has the profile line running through it, and they are drawn on top of it`, labels.length > 0 && hit.length === 0 && labels.every(t => line.compareDocumentPosition(t) & 4), `${labels.length} labels; crossed: ${hit.join(",")}`);
+      check(`${name} px: nothing makes the page scroll sideways`, doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, `${doc.documentElement.scrollWidth} vs ${doc.documentElement.clientWidth}`);
+    }
+    frame.style.width = "390px";
+    await wait(300);
+    rd().render();
     // --- the next 50 miles, northbound, toward the Tejon summit (mile 204)
     pos(188, "N");
     await wait(100);

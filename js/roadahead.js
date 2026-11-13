@@ -267,8 +267,50 @@ function xTicks(L, pre, endLabel) {
   out.push([L, endLabel || `${Math.round(L)} mi`]);
   return out;
 }
-/** The label's width in chart units, roughly. */
+/** The label's width in chart units, roughly (a monospace pill is about 7.7 units a character). */
 const lw = (text, k = 5.6) => String(text).length * k + 14;
+/** Put the flag pills on the chart, in pixels, after the chart is in the page. Biggest summit first: each pill goes in the first
+    of the rows where it is clear of every pill already in that row, clamped inside the chart (never clipped at an edge); a pill
+    that fits nowhere shows just its height ("1,745 ft"); one that still fits nowhere is left out (stem and dot too), so the
+    lowest-prominence summit is the one that goes. Returns false when the chart has no size yet (its tab is hidden). */
+function placeFlags(chart, svg, items, { top, rows }) {
+  if (!items.length) return true;
+  const cw = chart.getBoundingClientRect().width, laid = cw > 0;
+  const px = laid ? cw : W, k = px / W, EDGE = 3, GAP = 6;
+  for (const it of items) {
+    // the width of both wordings, measured (or, with no layout, estimated at 7.7 units a character)
+    it.pill.textContent = it.label; it.w = laid ? it.pill.getBoundingClientRect().width : lw(it.label, 7.7);
+    it.pill.textContent = it.short; it.ws = laid ? it.pill.getBoundingClientRect().width : lw(it.short, 7.7);
+    it.pill.textContent = it.label;
+  }
+  // two rows must not touch: step them by at least a pill's height (the chart is scaled down on a small screen, the pills are not)
+  const rowStep = Math.max(22, ((laid ? Math.max(...items.map(it => it.pill.getBoundingClientRect().height)) : 20) + 3) / k);
+  const rowsIn = Array.from({ length: Math.max(1, rows) }, () => []);
+  for (const it of items.slice().sort((a, b) => b.prom - a.prom)) {
+    for (const [text, w] of [[it.label, it.w], [it.short, it.ws]]) {
+      if (it.placed) break;
+      for (let r = 0; r < rowsIn.length && !it.placed; r++) {
+        const c = clamp(it.x * k, EDGE + w / 2, px - EDGE - w / 2);
+        if (rowsIn[r].every(q => Math.abs(c - q.c) >= (w + q.w) / 2 + GAP)) {
+          rowsIn[r].push({ c, w });
+          it.placed = { text, c, w, r };
+        }
+      }
+    }
+  }
+  for (const it of items) {
+    if (!it.placed) { it.pill.remove(); continue; }
+    const { text, c, w, r } = it.placed, fy = top - 14 - r * rowStep;
+    if (it.pill.textContent !== text) it.pill.textContent = text;
+    it.pill.style.left = (c / px * 100).toFixed(2) + "%";
+    it.pill.style.top = (fy / H * 100).toFixed(2) + "%";
+    // the stem runs from the pill's underside down to the summit's dot (slanted a little when the pill was nudged sideways)
+    const sx = clamp(it.x, (c - w / 2 + 10) / k, (c + w / 2 - 10) / k);
+    svg.append(sv("line", { x1: sx.toFixed(1), x2: it.x.toFixed(1), y1: (fy + 8).toFixed(1), y2: (it.y - 1).toFixed(1) }, "ra-stem"),
+      sv("circle", { cx: it.x.toFixed(1), cy: it.y.toFixed(1), r: 3.2 }, "ra-peak"));
+  }
+  return laid;
+}
 
 function render(force) {
   if (!root) return;
@@ -317,15 +359,14 @@ function render(force) {
   clip.append(sv("path", { d: areaD }));
   defs.append(fade, sheen, clip);
   svg.append(defs);
-  // grid
+  // grid: the dashed lines go under the profile; their labels are drawn on top of it (below), on the side where the line is out of the way
   const stepFt = niceStep(hi - lo);
+  const gridLabels = [];
   for (let v = Math.ceil(lo / stepFt) * stepFt; v < hi; v += stepFt) {
     const y = yOf(v);
     if (y < plotTop + 12 || y > plotBot - 18) continue;
     svg.append(sv("line", { x1: XL, x2: XR, y1: y.toFixed(1), y2: y.toFixed(1) }, "ra-grid"));
-    const t = sv("text", { x: XR, y: (y - 3).toFixed(1), "text-anchor": "end" }, "ra-gl");
-    t.textContent = `${v.toLocaleString("en-US")} ft`;
-    svg.append(t);
+    gridLabels.push([v, y]);
   }
   // tinted bands, clipped to the area
   const g = sv("g", { "clip-path": "url(#raClip)" });
@@ -343,6 +384,22 @@ function render(force) {
   svg.append(sv("path", { d: lineD }, "ra-glow"));
   for (const r of runs) svg.append(sv("path", { d: smoothPath(pts.slice(r.i0, Math.min(pts.length, r.i1 + 2))) }, "ra-seg ra-s" + r.c));
   svg.append(sv("path", { d: lineD }, "ra-line"));
+  // the "2,000 ft" labels, above the profile with a halo; right side by default, left when the line runs through the right
+  const crosses = (x0, x1, y0, y1) => {
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1];
+      if (b[0] < x0 || a[0] > x1) continue;
+      if (Math.max(a[1], b[1]) >= y0 && Math.min(a[1], b[1]) <= y1) return true;
+    }
+    return false;
+  };
+  for (const [v, y] of gridLabels) {
+    const text = `${v.toLocaleString("en-US")} ft`, tw = text.length * 5.5 + 2;
+    const left = crosses(XR - tw, XR, y - 12, y + 1) && !crosses(XL, XL + tw, y - 12, y + 1);
+    const t = sv("text", { x: left ? XL + 2 : XR, y: (y - 3).toFixed(1), "text-anchor": left ? "start" : "end" }, "ra-gl");
+    t.textContent = text;
+    svg.append(t);
+  }
 
   // markers (HTML on top of the svg, positioned in percent so they scale with it)
   const ov = el("div", "ra-ov");
@@ -365,22 +422,16 @@ function render(force) {
     pill.setAttribute("aria-hidden", "true");
     ov.append(pos(pill, cx, y + 10));
   }
-  // flags: the highest points
-  let prevFlagX = -999, flagRow = 0;
-  for (const f of flags) {
-    const x = xOf(f.d), y = yOf(f.ft);
+  // flags: the highest points. Each pill is created here and placed by placeFlags() once the chart is on screen, when
+  // the real width of every pill is known (the pills are in a monospace font and the chart scales with the screen).
+  const flagItems = flags.map(f => {
     const nm = f.name && f.name.length > 17 ? f.name.slice(0, 16).replace(/\s+\S*$/, "") || f.name.slice(0, 16) : f.name;
     const label = long && nm ? `${nm} · ${ft(f.ft)}` : ft(f.ft);
-    const w = lw(label, 5.6);
-    const cx = clamp(x, XL + w / 2, XR - w / 2);
-    flagRow = Math.abs(cx - prevFlagX) < (w + 40) && prevFlagX > -999 ? flagRow ^ 1 : 0;
-    prevFlagX = cx;
-    const fy = plotTop - 14 - flagRow * 22;
-    svg.append(sv("line", { x1: x.toFixed(1), x2: x.toFixed(1), y1: (fy + 8).toFixed(1), y2: (y - 1).toFixed(1) }, "ra-stem"), sv("circle", { cx: x.toFixed(1), cy: y.toFixed(1), r: 3.2 }, "ra-peak"));
     const pill = el("span", "ra-flag", label);
     pill.setAttribute("aria-hidden", "true");
-    ov.append(pos(pill, cx, fy));
-  }
+    ov.append(pill);
+    return { f, x: xOf(f.d), y: yOf(f.ft), label, short: ft(f.ft), prom: f.prom || 0, pill };
+  });
   // weather chips (top lane), nudged apart
   if (wx.length) {
     const items = wx.map(w => ({ w, x: xOf(w.x) })).sort((a, b) => a.x - b.x);
@@ -470,6 +521,9 @@ function render(force) {
   const sr = el("p", "ra-sr", srText(p, an, wx, trf, named));
 
   body.replaceChildren(stats, chart, ax, leg, read, sr);
+  const measured = placeFlags(chart, svg, flagItems, { top: plotTop, rows: flagRows });
+  last.flags = flagItems.filter(it => it.placed).map(it => ({ ft: it.f.ft, d: it.f.d, name: it.f.name }));
+  last.flagsDropped = flagItems.filter(it => !it.placed).length;
   // header bits
   head.querySelector(".ra-title").textContent = p.pre ? "The whole road" : "Road ahead";
   group.hidden = !p.canToggle;
@@ -479,7 +533,7 @@ function render(force) {
     btnNear.setAttribute("aria-pressed", String(!p.trip));
     btnTrip.setAttribute("aria-pressed", String(!!p.trip));
   }
-  lastM = S.m; lastDir = S.dir; lastSig = signature(); dirty = false;
+  lastM = S.m; lastDir = S.dir; lastSig = signature(); dirty = flagItems.length > 0 && !measured;   // not laid out (tab hidden): draw again when shown
 }
 const shortName = (s, n = 18) => (String(s).length > n ? String(s).slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : String(s));
 
@@ -591,6 +645,9 @@ export function init(a) {
     // nothing is emitted while traffic simply ages (a parked car, no new answer): look again every 30 s, so the markers dim
     // when the data turns old and their "as of" minutes keep up
     setInterval(() => { try { if (!document.hidden) refreshIfChanged(); } catch {} }, TICK);
+    // a turned phone changes the chart's width: the flag pills are placed in pixels, so draw again
+    let rz = 0;
+    window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { try { if (tab === "drive") render(true); else dirty = true; } catch (e) { warn(e); } }, 200); });
     api.roadahead = { render: () => render(true), state: () => last, setMode, _profile: profile };
     render(true);
   } catch (e) { warn(e); }

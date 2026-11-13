@@ -204,7 +204,10 @@ steep 4-6, very steep 6+ (`--nature`, `--accent`, `--hist`, `--danger`). It read
 event at draw time (so load order does not matter); traffic that is old (`api.live.trafficInfo().old`, or an incident's own `old`
 flag, a CHP item kept while CHP is not answering) is drawn dimmed with a dashed ring, and its label and the readout start "As of 20 min
 ago:"; it looks again every 30 s, so markers dim when parked data turns old, uses `api.ride.svg()` for your marker when it exists (else a dot) and
-redraws when the mile changes by half a mile, the direction flips, or the settings, traffic, weather, ride or destination
+The flag pills (the big summits) are placed in pixels once the chart is on screen: biggest summit first, in the first of two rows
+where they do not touch, clamped inside the chart; one that does not fit shows only its height, and the last resort is leaving the
+smallest summit out (a resize redraws). The grid labels ("2,000 ft") are drawn on top of the profile, on the side the line avoids.
+It redraws when the mile changes by half a mile, the direction flips, or the settings, traffic, weather, ride or destination
 change. `api.roadahead.state()` gives the last drawing's numbers (used by tools/test-roadahead.html).
 
 **Feedback (js/feedback.js).** Settings > About button opens `#feedbackSheet`: Name (optional), Email, Message (2000 characters,
