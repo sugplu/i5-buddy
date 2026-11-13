@@ -159,6 +159,18 @@ const SCENARIOS = {
     const badIds = api.data.PLACES.filter(q => api.share.placeIdFromHash(new URL(api.share.placeLink(q)).hash) !== q.id);
     check("every place id survives the share link and the #place parser", badIds.length === 0 && api.data.PLACES.length > 300, `${badIds.length} bad of ${api.data.PLACES.length}: ${badIds.slice(0, 3).map(q => q.id).join(",")}`);
     check("every place id is unique", new Set(api.data.PLACES.map(q => q.id)).size === api.data.PLACES.length);
+    // --- the one line about a place ends at a real sentence end, not at an initial or an abbreviation
+    const line = text => api.share.placeLine({ text });
+    check("an initial is not a sentence end ('J. B. Lankershim', 'William S. Hart')", line("In 1874, J. B. Lankershim and Isaac Van Nuys began farming. Then came more.") === "In 1874, J. B. Lankershim and Isaac Van Nuys began farming." && line("The ranch of William S. Hart is a park. It has trails.") === "The ranch of William S. Hart is a park.");
+    check("neither are dotted initials or titles ('B.F. Sisk Dam', 'Dr. James Fulton', 'the St. Francis Dam', 'U.S. 99')", line("West of the freeway, B.F. Sisk Dam holds back a lake. More.") === "West of the freeway, B.F. Sisk Dam holds back a lake." && line("Dr. James Fulton built a spa. It closed.") === "Dr. James Fulton built a spa." && line("In 1928 the St. Francis Dam failed. Many died.") === "In 1928 the St. Francis Dam failed." && line("Once it was U.S. 99. Now it is I-5.") === "Once it was U.S. 99.");
+    check("a period before a lowercase word is not a sentence end; a question mark is", line("The sign says Calif. is big. Next.") === "The sign says Calif. is big." && line("Why is it dry? Because of the hills. More.") === "Why is it dry?");
+    check("with no real end the whole text is used, and the 140-character cap still applies", line("Built by Dr. Smith and Sr.") === "Built by Dr. Smith and Sr." && line("A".repeat(10) + " " + "word ".repeat(40)).length <= 141 && /…$/.test(line("word ".repeat(60))));
+    const ABB = "Dr|St|Mt|Ft|Jr|Sr|Mr|Mrs|Ms|No|U\\.S|Gov";
+    const lines = api.data.PLACES.map(q => [q.id, api.share.placeLine(q)]);
+    const endsBad = lines.filter(([, l]) => { const b = l.replace(/…$/, ""); return /(?:^|[\s(])[A-Z]\.$/.test(b) || new RegExp(`(?:^|[\\s(])(?:${ABB})\\.$`).test(b) || /(?:^|\s)(?:[A-Z]\.)+[A-Z]\.$/.test(b); });
+    check("over every place: no share line ends in a single capital letter and a period, or in an abbreviation", endsBad.length === 0 && lines.length > 300, `${endsBad.length} bad: ${endsBad.slice(0, 3).map(([id, l]) => id + " " + l.slice(-30)).join(" | ")}`);
+    check("over every place: each line is one short sentence (at most 141 characters, ends with . ? or …)", lines.every(([, l]) => l.length > 10 && l.length <= 141 && /[.?…]$/.test(l)), lines.filter(([, l]) => !(l.length > 10 && l.length <= 141 && /[.?…]$/.test(l))).slice(0, 2).map(x => x.join(" ")).join(" | "));
+    check("the places that gave fragments now read as whole thoughts (ca152, ca405, ca172, ca123)", ["ca152", "ca405", "ca172", "ca123"].every(pre => { const q = api.data.PLACES.find(x => x.id.startsWith(pre + "-")); const l = q && api.share.placeLine(q); return l && l.length > 50; }) && /^In 1874, J\. B\. Lankershim and Isaac Van Nuys/.test(line(api.data.PLACES.find(x => x.id.startsWith("ca152-")).text)));
     const target = api.data.PLACES.find(x => x.id !== p.id && x.name && x.m > 300 && x.m < 400);
     win.location.hash = "#place=" + target.id;
     await wait(400);

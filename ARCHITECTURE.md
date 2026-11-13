@@ -219,7 +219,10 @@ changing keeps its new text (saved again as the draft) and gets its Send button 
 **Share (js/share.js).** The header button uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
 without Web Share, or when it fails for any reason except the user cancelling, `#shareSheet` opens (copy link, invite message,
 Text message `sms:?&body=`, Email `mailto:`, Copy). A "Share" button is appended to each place sheet's `acts` through the
-`place:sheet` event and shares `{place.name, first sentence, https://i5.dominares.org/#place=<id>}`. `#place=<id>` deep links
+`place:sheet` event and shares `{place.name, first sentence, https://i5.dominares.org/#place=<id>}`. The first sentence ends at a period or question mark
+that really ends one: not after a lone capital initial ("J. B. Lankershim", "B.F. Sisk Dam") or an abbreviation (Dr, St, Mt, U.S, Gov
+and so on), and the next character must start a sentence (found by looping over matches: no regex lookbehind, which iOS 15.0 to
+15.3 cannot parse); at most about 140 characters. `#place=<id>` deep links
 (on load and on `hashchange`) open `ui.placeSheet(place)` once and the hash is removed with `history.replaceState`; the old
 github.io address's redirect already forwards `location.hash`.
 

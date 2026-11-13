@@ -45,11 +45,31 @@ function warn(e) { try { console.warn("[share]", (e && e.message) || e); } catch
 
 /* ---------- what gets shared ---------- */
 const placeLink = p => `${SITE}#place=${encodeURIComponent(p.id)}`;
+// A period after one of these, or after a lone capital letter (an initial: "J. B. Lankershim", "B.F. Sisk Dam"), does not end a sentence.
+const ABBREVIATIONS = ["Dr", "St", "Mt", "Ft", "Jr", "Sr", "Mr", "Mrs", "Ms", "No", "U.S", "Gov", "Gen", "Lt", "Col", "Capt", "Sgt", "Rev", "Sen", "Rep", "Co", "vs", "v"];
+/** The first sentence of `t` (text with single spaces): up to the first period or question mark that really ends one.
+    A period does not end it when the word before it is an abbreviation or a lone capital initial, or when the next
+    character does not start a sentence (a capital letter, a digit, an opening quote or bracket). No regex lookbehind
+    (iOS 15.0 to 15.3 cannot parse one). With no real end, the whole text. Pure. */
+function firstSentence(t) {
+  const rx = /[.?](?=\s|$)/g;
+  let m;
+  while ((m = rx.exec(t))) {
+    const i = m.index, end = i + 1;
+    if (t[i] === "?") return t.slice(0, end);
+    const word = t.slice(0, i).split(" ").pop().replace(/^["'\u201c\u2018(\[]+/, "");
+    if (/^(?:[A-Z]\.)*[A-Z]$/.test(word) || ABBREVIATIONS.indexOf(word) >= 0) continue;
+    const next = t.slice(end).replace(/^\s+/, "");
+    if (!next) return t.slice(0, end);
+    if (/^["'\u201c\u2018(\[]*[A-Z0-9]/.test(next)) return t.slice(0, end);
+  }
+  return t;
+}
 /** One short line about a place: its first sentence, at most about 140 characters. */
 function placeLine(p) {
   const t = String(p.text || "").replace(/\s+/g, " ").trim();
   if (!t) return "A stop on I-5 in California.";
-  let s = (/^.*?[.?](?=\s|$)/.exec(t) || [t])[0];
+  let s = firstSentence(t);
   if (s.length > 140) { s = s.slice(0, 140).replace(/\s+\S*$/, "").replace(/[,;:\s]+$/, "") + "…"; }
   return s;
 }
@@ -213,4 +233,4 @@ export function init(a) {
   } catch (e) { warn(e); }
 }
 
-export const _test = { placeLine, placeLink, placeIdFromHash, appData, placeData, INVITE };
+export const _test = { firstSentence, ABBREVIATIONS, placeLine, placeLink, placeIdFromHash, appData, placeData, INVITE };
