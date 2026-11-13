@@ -97,7 +97,10 @@ const SCENARIOS = {
     check("grade labels read like '7% grade, 6 mi'", [...R().querySelectorAll(".ra-grade")].some(g => /▼ \d+% grade, \d+ mi/.test(txt(g))), [...R().querySelectorAll(".ra-grade")].map(txt).join("|"));
     check("the chart has a filled profile, tinted bands and a colored line", R().querySelectorAll(".ra-b").length >= 2 && R().querySelectorAll(".ra-seg").length >= 2 && !!R().querySelector(".ra-line"));
     check("the steepest bit is drawn very steep and the flat start easy", R().querySelector(".ra-b3, .ra-b2") && R().querySelector(".ra-b0"));
-    check("your position is a dot (no rides module)", !!R().querySelector(".ra-me i") && !R().querySelector(".ra-me.ride"));
+    // with ride.js loaded (the 2.5.0 build) you are your ride; without it, a dot
+    check("your position is your ride, or a dot without the rides module",
+      api.ride ? !!R().querySelector(".ra-me.ride svg") && !R().querySelector(".ra-me i") : !!R().querySelector(".ra-me i") && !R().querySelector(".ra-me.ride"),
+      api.ride ? "ride" : "dot");
     // profile order: southbound runs toward lower miles
     const pn = rd()._profile(188, 1, 50), ps = rd()._profile(238, -1, 50);
     check("northbound profile starts at your mile and climbs to the summit", pn.e[0] === D.elevAt(188) && pn.e.indexOf(Math.max(...pn.e)) === 16, String(pn.e.indexOf(Math.max(...pn.e))));
