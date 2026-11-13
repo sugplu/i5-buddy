@@ -12,6 +12,9 @@
 @keyframes ride-z{0%{opacity:0;transform:translate(0,4px)}25%{opacity:1}100%{opacity:0;transform:translate(3px,-8px)}}
 .ride-moving .ride-art{animation:ride-bob .46s ease-in-out infinite}
 .ride-moving .ride-wheel{animation:ride-spin .55s linear infinite}
+/* On the Drive sign, right beside the mile, the bob and the spinning wheels play a few times when the car starts moving and then
+   stop: endless motion next to the number a driver reads pulls the eye. The Settings row, the picker and the map keep theirs. */
+.ride-slot.ride-moving .ride-art,.ride-slot.ride-moving .ride-wheel{animation-iteration-count:3}
 .ride-sleepy .ride-zz{opacity:1}
 .ride-sleepy .ride-lid{opacity:1}
 .ride-sleepy .ride-zz .z1{animation:ride-z 2.6s ease-out infinite}

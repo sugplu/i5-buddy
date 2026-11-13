@@ -275,7 +275,8 @@ api.ride = {
 Where it shows: `#rideSlot` on the Drive sign (a 46 px button that opens the picker; hidden in glance mode, where it squeezed the PASSING
 column and pushed long zone names past the board at 360 px), `#rideRow` in Settings > Display, the
 `#rideSheet` picker, the Map tab's position marker (map.js), the passport header and the trip share card (trip.js). Animation
-is plain CSS on classes the host element carries: `ride-moving` (bounce, turning wheels), `ride-idle`, `ride-sleepy` (shut
+is plain CSS on classes the host element carries: `ride-moving` (bounce, turning wheels: on the Drive sign they play three times when the
+car starts moving and then stop, so nothing endless moves beside the mile; the Settings row, the picker and the map keep their motion), `ride-idle`, `ride-sleepy` (shut
 eyelid on the headlight, floating "z z"); `prefers-reduced-motion` turns every animation off and the states still read from the
 art. "Moving" means GPS or demo with speed of at least 3 mph; "sleepy" means tracking is off, or it has been stopped for a
 minute. The first-run invitation ("Pick your ride? It rides along on the map." with Pick / Not now) appears once, under the

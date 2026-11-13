@@ -438,6 +438,10 @@ async function sceneMotion(api, R, w, doc) {
   else check("the ride bobs gently while moving", bob === "ride-bob", bob);
   const spin = w.getComputedStyle(slot.querySelector(".ride-wheel")).animationName;
   if (!reduceQuery) check("the wheels turn while moving", spin === "ride-spin", spin);
+  const cnt = sel => w.getComputedStyle(slot.querySelector(sel)).animationIterationCount;
+  if (!reduceQuery) check("on the Drive sign the bob and the wheels play a few times, then stop (not endless beside the mile)", cnt(".ride-art") === "3" && cnt(".ride-wheel") === "3", `${cnt(".ride-art")} ${cnt(".ride-wheel")}`);
+  const rowArt = doc.querySelector("#rideRow .ride-art"), rowWheel = doc.querySelector("#rideRow .ride-wheel");
+  if (!reduceQuery) check("the Settings row keeps its endless motion", rowArt && w.getComputedStyle(rowArt).animationIterationCount === "infinite" && w.getComputedStyle(rowWheel).animationIterationCount === "infinite");
   api.S.speed = 0; api.bus.emit("pos", { m: 200, dir: "N", speed: 0 });
   check("stopped at once: awake but still", R.state() === "idle" && slot.classList.contains("ride-idle"), R.state());
   await sleep(700);
