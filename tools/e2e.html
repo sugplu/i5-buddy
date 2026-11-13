@@ -101,35 +101,127 @@ async function run() {
     ok(txt("statusText") === `${ENDS.S.short} to ${ENDS.N.short}`, `header: "${txt("statusText")}"`);
   }
 
-  // 0b. the browser's install offer (Chrome, Edge) puts Install app in the welcome card and in Settings; it opens the
-  //     install dialog once and goes away once the app is installed. And on a 390x844 phone, with that button in the
-  //     welcome card, Start GPS is on the first screen, clear of the tab bar.
+  // 0b. Installing. Chrome and Edge send an install offer: Install app then shows in the welcome card, right under the
+  //     headline, and in Settings. iPhones get a one-line tip there instead (in an app's own browser, such as
+  //     Instagram's, a different one: its Share has no Add to Home Screen). None of it shows in the installed app. A tap
+  //     opens the browser's install dialog once, and the focus stays nearby when the button goes. On a 390x844 phone
+  //     Start GPS is on the first screen, clear of the tab bar; in a phone browser's shorter tab so are the button and the tip.
   {
-    const frame = document.getElementById("f");
-    win.addEventListener("beforeinstallprompt", e => { if (e.isTrusted) e.stopImmediatePropagation(); }, true); // only this test's offer
-    const offer = new win.Event("beforeinstallprompt", { cancelable: true });
-    let prompts = 0;
-    offer.prompt = () => { prompts++; return Promise.resolve(); };
-    offer.userChoice = Promise.resolve({ outcome: "accepted", platform: "web" });
-    win.dispatchEvent(offer);
-    await sleep(100);
+    const frame = document.getElementById("f"), nav = win.navigator;
+    const IPHONE = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1";
+    const setUA = ua => { if (ua) Object.defineProperty(nav, "userAgent", { get: () => ua, configurable: true }); else delete nav.userAgent; };
+    const refresh = () => { win.dispatchEvent(new win.Event("i5:install")); return sleep(50); };
+    const slot = () => doc.querySelector("#nextCard .welcome-install");
     const instBtn = () => doc.querySelector("#nextCard .welcome-install button");
     const shown = id => { const e = doc.getElementById(id); return !!e && !e.hidden; };
-    ok(offer.defaultPrevented && instBtn()?.textContent.trim() === "Install app" && shown("installApp"),
+    const size = (w, h) => { frame.style.width = w ? w + "px" : ""; frame.style.height = h ? h + "px" : ""; return sleep(300); };
+    const tipText = () => slot() && !slot().hidden ? slot().textContent : "(none)";
+    const span = e => { if (!e) return "missing"; const b = e.getBoundingClientRect(); return `${Math.round(b.top)} to ${Math.round(b.bottom)} px`; };
+    const tabTop = () => Math.round(doc.querySelector(".tabs").getBoundingClientRect().top);
+    const clear = e => { if (!e) return false; const b = e.getBoundingClientRect(); return win.scrollY === 0 && b.height >= 16 && b.top >= 0 && b.bottom <= tabTop(); };
+    win.addEventListener("beforeinstallprompt", e => { if (e.isTrusted) e.stopImmediatePropagation(); }, true); // only this test's offers
+    win.__i5Install = null;
+    const offer = outcome => {
+      const o = new win.Event("beforeinstallprompt", { cancelable: true });
+      o.prompts = 0; o.prompt = () => { o.prompts++; return Promise.resolve(); };
+      o.userChoice = Promise.resolve({ outcome, platform: "web" });
+      win.dispatchEvent(o);
+      return o;
+    };
+
+    // iPhone, Safari: the tip under the headline, on the first screen of a browser tab
+    setUA(IPHONE); await refresh();
+    ok(tipText() === "Tip: tap Share, then Add to Home Screen." && slot()?.previousElementSibling === doc.querySelector("#nextCard h2")
+      && txt("installHint") === "To install: tap Share, then Add to Home Screen." && !shown("installApp"),
+      `iPhone: under the welcome headline "${tipText()}"; Settings: "${txt("installHint")}"`);
+    await size(390, 664);
+    ok(clear(slot()?.firstElementChild), `390x664 browser tab: the iPhone tip (${span(slot()?.firstElementChild)}) is clear of the tab bar (from ${tabTop()} px)`);
+    await size();
+    setUA(IPHONE.replace("Safari/604.1", "Instagram 380.0.0.29.109 (iPhone15,2; iOS 18_5; en_US)")); await refresh();
+    ok(tipText() === "Tip: open this page in Safari to add it to your Home Screen."
+      && txt("installHint") === "To install: open this page in Safari, tap Share, then Add to Home Screen.", `iPhone, in Instagram's browser: "${tipText()}"`);
+    setUA(IPHONE); Object.defineProperty(nav, "standalone", { value: true, configurable: true }); await refresh();
+    ok(tipText() === "(none)" && txt("installHint") === "Installed on this device.", `iPhone, opened from the Home Screen: no tip (${tipText()}); Settings: "${txt("installHint")}"`);
+    delete nav.standalone; setUA(null); await refresh();
+
+    // Chrome: the offer, but not in the installed app
+    const o1 = offer("dismissed"); await sleep(100);
+    ok(o1.defaultPrevented && instBtn()?.textContent.trim() === "Install app" && shown("installApp"),
       "install offer: Install app in the welcome card and in Settings, browser banner held back");
-    frame.style.width = "390px"; frame.style.height = "844px";
-    await sleep(300);
+    const realMM = win.matchMedia;
+    win.matchMedia = q => /\(display-mode: standalone\)/.test(q) ? { matches: true, media: q, addEventListener() {}, removeEventListener() {} } : realMM.call(win, q);
+    await refresh();
+    ok(!instBtn() && tipText() === "(none)" && !shown("installApp") && txt("installHint") === "Installed on this device.",
+      `running as the installed app (display-mode: standalone): no Install app, even with an offer; Settings: "${txt("installHint")}"`);
+    win.matchMedia = realMM; await refresh();
+
+    await size(390, 844);
     const b = doc.getElementById("startGps").getBoundingClientRect(), t = doc.querySelector(".tabs").getBoundingClientRect();
     ok(win.scrollY === 0 && b.height >= 44 && b.top >= 0 && b.bottom <= t.top,
       `390x844 first screen: Start GPS (${Math.round(b.top)} to ${Math.round(b.bottom)} px) is clear of the tab bar (from ${Math.round(t.top)} px)`);
-    frame.style.width = ""; frame.style.height = "";
-    await sleep(100);
-    instBtn()?.click();
-    await sleep(50);
-    ok(prompts === 1 && !instBtn() && !shown("installApp"), `Install app opens the install dialog once (${prompts}), then hides`);
+    for (const [w, h] of [[390, 664], [360, 700]]) {
+      await size(w, h);
+      ok(instBtn() && clear(instBtn()), `${w}x${h} browser tab: Install app (${instBtn() ? span(instBtn()) : "missing"}) is clear of the tab bar (from ${tabTop()} px)`);
+    }
+    await size();
+
+    // Settings > Install app, then "Not now" in the browser's dialog
+    doc.getElementById("openSettings").click(); await sleep(300);
+    doc.getElementById("installApp").focus(); doc.getElementById("installApp").click(); await sleep(50);
+    const named = e => `${e?.id ? "#" + e.id : e?.tagName} "${(e?.textContent || "").trim().slice(0, 40)}"`;
+    let f = doc.activeElement;
+    ok(o1.prompts === 1 && !shown("installApp") && !instBtn() && f?.id === "installHint" && doc.getElementById("settings").contains(f)
+      && txt("installHint") === "To install: open the browser menu and choose Install app or Add to Home screen.",
+      `Settings > Install app, then Not now: the dialog opened once (${o1.prompts}), the button went and the focus stayed in Settings, on ${named(f)}`);
+    doc.getElementById("closeSettings").click(); await sleep(100);
+
+    // a later offer, accepted from the welcome card
+    const o2 = offer("accepted"); await sleep(100);
+    instBtn()?.focus(); instBtn()?.click(); await sleep(50);
+    f = doc.activeElement;
+    ok(o2.prompts === 1 && !instBtn() && !shown("installApp"), `Install app opens the install dialog once (${o2.prompts}), then hides`);
+    ok(f === doc.querySelector("#nextCard h2"), `the focus moves to the welcome headline above it, ${named(f)}`);
     win.dispatchEvent(new win.Event("appinstalled"));
     await sleep(50);
     ok(!shown("installApp") && txt("installHint") === "Installed on this device.", `installed: no Install app button; Settings says "${txt("installHint")}"`);
+  }
+
+  // 0c. Settings on a 360 px phone, with a voice whose name is long: nothing scrolls sideways, and the About links
+  //     (Made by Dominares, and Lina, which opens in a new tab) are whole tap targets of 44 px or more, on screen.
+  {
+    const frame = document.getElementById("f"), list = api.voice.list;
+    api.voice.list = () => [{ name: "Grandma (English (United Kingdom))", lang: "en-GB", voiceURI: "test:grandma" }];
+    frame.style.width = "360px"; frame.style.height = "780px"; await sleep(300);
+    doc.getElementById("openSettings").click(); await sleep(300);
+    const sheet = doc.getElementById("settings");
+    ok(sheet.scrollWidth <= sheet.clientWidth,
+      `360 px Settings, voice "${doc.getElementById("voice").selectedOptions[0]?.text}": no sideways scroll (${sheet.scrollWidth} px wide in ${sheet.clientWidth} px)`);
+    const lina = sheet.querySelector(".also-from"), made = sheet.querySelector(".made-by"), none = { height: 0, right: Infinity };
+    ok(lina?.tagName === "A" && lina.getAttribute("href") === "https://linasystems.org/" && lina.target === "_blank" && /\bnoopener\b/.test(lina.rel)
+      && lina.textContent === "Also from Dominares: Lina, the AI front desk for businesses",
+      `About: "${lina?.textContent}" links to ${lina?.getAttribute("href")} in a new tab`);
+    const lb = lina ? lina.getBoundingClientRect() : none, mb = made ? made.getBoundingClientRect() : none;
+    ok(lb.height >= 44 && mb.height >= 44 && lb.right <= sheet.clientWidth && mb.right <= sheet.clientWidth,
+      `About links on screen and 44 px or taller: Made by Dominares ${Math.round(mb.height)} px, Lina ${Math.round(lb.height)} px (right edges ${Math.round(mb.right)} and ${Math.round(lb.right)} of ${sheet.clientWidth})`);
+    doc.getElementById("closeSettings").click();
+    api.voice.list = list;
+    frame.style.width = ""; frame.style.height = ""; await sleep(200);
+  }
+
+  // 0d. The link preview: og and twitter tags name a 1200x630 picture at an absolute https address, and the file is here.
+  {
+    const meta = k => doc.querySelector(`meta[property="${k}"], meta[name="${k}"]`)?.content || "";
+    const img = meta("og:image");
+    ok(/^https:\/\/i5\.dominares\.org\/icons\/[\w.-]+\.png$/.test(img) && meta("twitter:image") === img && meta("twitter:card") === "summary_large_image"
+      && meta("og:image:width") === "1200" && meta("og:image:height") === "630" && meta("og:image:alt").length > 20 && meta("twitter:image:alt") === meta("og:image:alt"),
+      `link preview tags: ${img}, ${meta("og:image:width")}x${meta("og:image:height")}, ${meta("twitter:card")}`);
+    // the size from the PNG header: headless Chrome's virtual clock does not wait for an image decode (createImageBitmap)
+    let got = "missing";
+    try {
+      const b = new DataView(await (await fetch("../" + new URL(img).pathname.slice(1))).arrayBuffer());
+      got = b.getUint32(0) === 0x89504e47 ? `${b.getUint32(16)}x${b.getUint32(20)}` : "not a PNG";
+    } catch (e) { got = String(e); }
+    ok(got === "1200x630", `the link preview picture ${new URL(img).pathname} is in the repo, ${got}`);
   }
 
   const G = fakeGeo();
@@ -282,6 +374,26 @@ async function run() {
   // 12. every module loaded
   for (const k of ["live", "play", "listen"]) ok(!!api[k], `module api.${k} present`);
   ok(!!win.document.querySelector("#view-map svg, #view-map canvas") || true, "map module present (built lazily)");
+
+  // 13. Chrome can send its install offer before main.js runs: index.html's head keeps it, and main.js shows Install app
+  //     when it starts. (A copy of index.html that sends a test offer just before main.js. A position is saved by
+  //     now, so there is no welcome card; the button is in Settings.)
+  {
+    const html = await (await fetch("../index.html")).text();
+    const send = '<script>var o=new Event("beforeinstallprompt",{cancelable:true});o.prompt=function(){return Promise.resolve()};' +
+      'o.userChoice=Promise.resolve({outcome:"dismissed"});window.__testOffer=o;dispatchEvent(o)<\/script>';
+    const f2 = document.createElement("iframe");
+    f2.style.cssText = "position:absolute;left:-10000px;top:0;width:390px;height:844px";
+    f2.srcdoc = html.replace("<head>", '<head><base href="../">').replace('<script type="module" src="js/main.js">', send + "$&");
+    document.body.append(f2);
+    let w2 = null;
+    for (let i = 0; i < 100 && !w2; i++) { await sleep(100); if (f2.contentWindow?.I5BUDDY) w2 = f2.contentWindow; }
+    await sleep(300);
+    const btn2 = w2 && w2.document.getElementById("installApp");
+    ok(!!w2 && !!w2.__testOffer && btn2 && !btn2.hidden,
+      `an install offer sent before main.js ran: Install app shows in Settings (${!w2 ? "the copy did not start" : btn2 && !btn2.hidden ? "shown" : "hidden"})`);
+    f2.remove();
+  }
 
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +
     lines.map(l => `<span class="${l.startsWith("PASS") ? "pass" : l.startsWith("FAIL") ? "fail" : "skip"}">${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("\n");
