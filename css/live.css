@@ -28,6 +28,7 @@
 .lv-ask p{margin:0;color:var(--fg-2)}
 .lv-feats{list-style:none;margin:2px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .lv-feats li{display:flex;align-items:center;gap:8px;min-width:0;background:var(--surface-2);border-radius:calc(var(--radius) - 4px);padding:9px 10px;font-weight:700;font-size:.88rem;line-height:1.2}
+.lv-feats li:last-child:nth-child(odd){grid-column:1/-1}
 .lv-feat-ic{font-size:1.15rem;line-height:1;flex:none}
 .lv-ask-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .lv-ask .lv-fine{font-size:.76rem}

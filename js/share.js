@@ -208,7 +208,7 @@ export function init(a) {
     }
     if (bus) bus.on("place:sheet", onPlaceSheet);
     window.addEventListener("hashchange", () => { openFromHash(); });
-    api.share = { shareApp, sharePlace, openFromHash, placeLine, placeLink };
+    api.share = { shareApp, sharePlace, openFromHash, placeLine, placeLink, placeIdFromHash };
     openFromHash();
   } catch (e) { warn(e); }
 }

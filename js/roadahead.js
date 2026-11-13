@@ -181,7 +181,7 @@ function rideNode() {
   try {
     const r = api && api.ride;
     if (r && typeof r.svg === "function") {
-      const v = r.svg();
+      const v = r.svg({ size: 46, facing: "right", zz: false });   // rides.js: <svg> element, faces right like the chart runs
       if (v && v.nodeType === 1) return v.cloneNode(true);
       if (typeof v === "string" && /^\s*<svg/i.test(v)) {
         const tpl = document.createElement("template");
@@ -504,7 +504,7 @@ function srText(p, an, wx, trf) {
 function signature() {
   let w = "";
   try { const f = api.live && api.live.weatherAlong; if (settings.live === true && typeof f === "function") w = (f() || []).map(x => `${Math.round(x.m)}:${x.tempF}:${x.short}`).join(","); } catch {}
-  const r = (() => { try { return api.ride && api.ride.current ? JSON.stringify(api.ride.current()) : ""; } catch { return ""; } })();
+  const r = (() => { try { return api.ride && api.ride.get ? JSON.stringify(api.ride.get()) : ""; } catch { return ""; } })();
   return [S.m == null ? "pre" : S.dir, settings.live === true ? "live" : "off", mode, S.dest ? `${S.dest.name}@${S.dest.m}` : "", traffic.map(t => t.id).join(","), w, r, sel || ""].join("|");
 }
 

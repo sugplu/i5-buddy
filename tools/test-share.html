@@ -155,7 +155,10 @@ const SCENARIOS = {
     const smsP = [...sheet().querySelectorAll("a")].find(a => /^sms:/.test(a.getAttribute("href")));
     check("its message has the name, the line and the link", decodeURIComponent(smsP.getAttribute("href")).includes(p.name) && decodeURIComponent(smsP.getAttribute("href")).includes("https://i5.dominares.org/#place=" + p.id));
     api.ui.closeSheet();
-    // --- deep links
+    // --- deep links: every place id survives the link and the parser
+    const badIds = api.data.PLACES.filter(q => api.share.placeIdFromHash(new URL(api.share.placeLink(q)).hash) !== q.id);
+    check("every place id survives the share link and the #place parser", badIds.length === 0 && api.data.PLACES.length > 300, `${badIds.length} bad of ${api.data.PLACES.length}: ${badIds.slice(0, 3).map(q => q.id).join(",")}`);
+    check("every place id is unique", new Set(api.data.PLACES.map(q => q.id)).size === api.data.PLACES.length);
     const target = api.data.PLACES.find(x => x.id !== p.id && x.name && x.m > 300 && x.m < 400);
     win.location.hash = "#place=" + target.id;
     await wait(400);

@@ -7,6 +7,10 @@
 //                   when the level goes up or for a separate area more than 30 mi past the last checkpoint.
 //   Freeway signs   Caltrans changeable message signs; the next one within 40 miles, read aloud within 3
 //                   (only from data under 15 minutes old: an old copy is shown with its age, never read as current).
+//   Traffic         California Highway Patrol incidents and Caltrans lane closures, one list for all of I-5 from
+//                   i5.dominares.org every 2 minutes (see the traffic section): cards in the alerts strip, a "Traffic ahead"
+//                   list, one spoken heads-up per crash or closure that comes within about 10 miles. Never part of the
+//                   weather/Caltrans refresh below, so it cannot make "Live info unavailable" appear.
 //   Cameras         Live JPEGs from the road data (data.CAMS: Caltrans in California, WSDOT if Washington is in the
 //                   data); a TripCheck link near Oregon, only when Oregon is in data.STATES.
 // Sources and fine print name only the agencies the road data really has (Caltrans for a California-only build).
@@ -1268,7 +1272,7 @@ function renderAsk() {
   h.id = "lvAskTitle";
   const feats = el("ul", "lv-feats");
   feats.setAttribute("aria-label", "Includes");
-  for (const [ic, t] of [["🌦️", "Weather ahead"], ["⛓️", "Chain controls"], ["🛣️", "Freeway signs"], ["📷", "Live cameras"]]) {
+  for (const [ic, t] of [["🚧", "Crashes and closures"], ["🌦️", "Weather ahead"], ["⛓️", "Chain controls"], ["🛣️", "Freeway signs"], ["📷", "Live cameras"]]) {
     const li = el("li"); li.append(deco("span", "lv-feat-ic", ic), document.createTextNode(t)); feats.append(li);
   }
   const acts = el("div", "lv-ask-acts");
@@ -1292,9 +1296,9 @@ function renderAsk() {
   // the fine print names every server the module talks to, from the road data (no WSDOT without Washington)
   const ag = agencies();
   card.append(el("div", "lv-ask-top", "OPTIONAL · USES A LITTLE DATA"), h,
-    el("p", null, "Weather forecasts from the National Weather Service, Caltrans chain controls and freeway signs, and live cameras on the road ahead."),
+    el("p", null, "Crashes and closures from the California Highway Patrol and Caltrans, weather forecasts from the National Weather Service, chain controls and freeway signs, and live cameras on the road ahead."),
     feats, acts,
-    el("p", "lv-fine", ["Points on the road ahead go to weather.gov.", ag.length && `Road data and camera images load from ${andList(ag)} servers.`, "Change it any time in Settings."].filter(Boolean).join(" ")));
+    el("p", "lv-fine", ["Points on the road ahead go to weather.gov.", ag.length && `Road data and camera images load from ${andList(ag)} servers.`, "Crashes and closures come as one list for all of I-5 from i5.dominares.org, so that request never says where you are.", "Change it any time in Settings."].filter(Boolean).join(" ")));
   $block.replaceChildren(card);
   $block.hidden = false;
   asked = card;
@@ -1322,7 +1326,8 @@ function focusableBefore(node) {
 
 /* alerts strip (#liveAlerts) */
 function renderAlerts(groups, list, tlist = []) {
-  const rows = [];
+  const rows = [];                   // order: chain controls, warnings, crashes and closures, advisories, other traffic
+  const tail = [];                   // advisories and calmer traffic go after the red items
   if (groups.length) {
     // one row for chain controls: the nearest level, then any other level further on
     const g = groups[0], rest = groups.slice(1);
@@ -1331,13 +1336,14 @@ function renderAlerts(groups, list, tlist = []) {
       sub: [now() - g.t > STALE && `As of ${ago(g.t)}`, ...rest.map(x => `Then ${x.status} near ${chainWhere(x)}, ${fmtMi(x.d)} mi`), g.desc || R_LEVELS[g.level]].filter(Boolean).join(". "),
     });
   }
-  for (const it of trStripList(tlist)) {
-    rows.push({ k: "tr:" + it.id, kind: isSevere(it) ? "warn" : "adv", ic: trKindIcon(it), title: `${it.title}, ${trWords(it.d)}`, sub: trSub(it), open: () => trafficSheet(it.id) });
-  }
-  for (const a of list) {
+  const trRows = trStripList(tlist).map(it => ({ k: "tr:" + it.id, kind: isSevere(it) ? "warn" : "adv", ic: trKindIcon(it), title: `${it.title}, ${trWords(it.d)}`, sub: trSub(it), open: () => trafficSheet(it.id) }));
+  const wxRows = list.map(a => {
     const sub = [now() - a.t > STALE && `As of ${ago(a.t)}`, alertWhen(a), areaList(a.area).join("; ")];
-    rows.push({ k: "wx:" + a.id, kind: a.kind, ic: a.kind === "warn" ? "warn" : "info", title: a.event, sub: sub.filter(Boolean).join(" · "), open: () => alertSheet(a.id) });
-  }
+    return { k: "wx:" + a.id, kind: a.kind, ic: a.kind === "warn" ? "warn" : "info", title: a.event, sub: sub.filter(Boolean).join(" · "), open: () => alertSheet(a.id) };
+  });
+  rows.push(...wxRows.filter(r => r.kind === "warn"), ...trRows.filter(r => r.kind === "warn"));
+  tail.push(...wxRows.filter(r => r.kind !== "warn"), ...trRows.filter(r => r.kind !== "warn"));
+  rows.push(...tail);
   if (!rows.length) { if ($alerts.firstChild) $alerts.replaceChildren(); $alerts.hidden = true; expanded = false; return; }
   $alerts.hidden = false;
   let box = $alerts.firstElementChild;
@@ -1347,8 +1353,10 @@ function renderAlerts(groups, list, tlist = []) {
     box.setAttribute("aria-label", "Road and weather alerts ahead");
     $alerts.replaceChildren(box);
   }
-  const items = rows.length > 3 && !expanded ? rows.slice(0, 2) : rows;
-  if (rows.length > 3) items.push({ k: "more", more: true, n: rows.length - 2 });
+  // more than three rows: show two, but never hide a red one (a warning, a crash, a closure, a chain control level 2)
+  const keep = Math.min(rows.length - 1, Math.max(2, rows.filter(r => r.kind === "warn").length));
+  const items = rows.length > 3 && !expanded ? rows.slice(0, keep) : rows;
+  if (rows.length > 3) items.push({ k: "more", more: true, n: rows.length - keep });
   sync(box, items, makeRow, updateRow);
 }
 function makeRow(it) {

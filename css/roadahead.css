@@ -65,7 +65,7 @@ body.glance #roadAhead{display:none!important}
 .ra-me{display:block;pointer-events:none}
 .ra-me i{display:block;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--accent),var(--shadow)}
 .ra-me.ride{transform:translate(-50%,-84%)}
-.ra-me .ra-ride{display:block;width:40px;height:auto;max-height:34px}
+.ra-me .ra-ride{display:block;width:46px;height:auto}
 @media (prefers-reduced-motion:no-preference){
   .ra-me:not(.ride) i{animation:raPing 2.4s ease-out infinite}
   @keyframes raPing{0%{box-shadow:0 0 0 2px var(--accent),0 0 0 2px color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 2px var(--accent),0 0 0 14px transparent}}

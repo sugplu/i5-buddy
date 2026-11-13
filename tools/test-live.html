@@ -1044,6 +1044,11 @@ const SCENARIOS = {
     api.setPosition(mMain - 7.5, { dir: "N", speed: 63, jumped: true });
     await wait(500);
     check("back on the road: spoken once", nSpoke() === 3, String(nSpoke()));
+    await refreshNow(api);                    // the weather alerts for this part of the road (Shasta is 50 to 120 miles on)
+    const strip = [...doc.querySelectorAll("#liveAlerts .lv-al")].map(txt);
+    log("strip with a warning and a crash", strip);
+    check("a weather warning and a crash are both in the strip; traffic does not push the warning out", strip.some(r => /Winter Storm Warning/.test(r)) && strip.some(r => /^Crash, \d+ mi ahead/.test(r)), strip.join(" | ").slice(0, 300));
+    check("an advisory waits behind the red items", !strip.some(r => /^Wind Advisory/.test(r)) && /Show \d+ more/.test(txt($(doc, ".lv-more"))), strip.join(" | ").slice(0, 200));
     // --- a quiet stretch
     api.setPosition(300, { dir: "N", speed: 63, jumped: true });
     await wait(300);
