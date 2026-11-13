@@ -54,6 +54,7 @@ SUITE = [
     ("map stamps", "test-map.html?scene=stamps", 30000, "900,960", False),
     ("map light", "test-map.html?scene=whole&theme=light", 30000, "900,960", False),
     ("share", "test-share.html", 40000, "500,900", True),
+    ("feedback", "test-feedback.html", 60000, "500,900", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
     ("live traffic", "test-live.html?s=traffic", 400000, "900,960", False),
