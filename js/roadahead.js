@@ -399,12 +399,14 @@ function render(force) {
     b.addEventListener("click", () => select(id));
     ov.append(pos(b, c.x, lineY(clamp(first.x, 0, L))));
   }
-  // you
-  const me = el("span", "ra-me");
-  me.setAttribute("aria-hidden", "true");
-  const ride = rideNode();
-  if (ride) { me.classList.add("ride"); ride.classList.add("ra-ride"); me.append(ride); } else me.append(el("i"));
-  ov.append(pos(me, xOf(0), lineY(0)));
+  // you (before a trip there is no "you" on the road: mile 0 would put the ride at the Mexico border)
+  if (!p.pre) {
+    const me = el("span", "ra-me");
+    me.setAttribute("aria-hidden", "true");
+    const ride = rideNode();
+    if (ride) { me.classList.add("ride"); ride.classList.add("ra-ride"); me.append(ride); } else me.append(el("i"));
+    ov.append(pos(me, xOf(0), lineY(0)));
+  }
 
   const chart = el("div", "ra-chart");
   chart.append(svg, ov);

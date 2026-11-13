@@ -74,6 +74,7 @@ const SCENARIOS = {
     check("the big climbs are named", st().flags.length >= 2 && st().flags.some(f => /Tejon/.test(f.name || "")) && st().flags.every(f => f.ft > 1500), JSON.stringify(st().flags));
     check("the ends come from the data", txt(R().querySelector(".ra-axis")).includes(ENDS.S.short) && txt(R().querySelector(".ra-axis")).includes(ENDS.N.short), txt(R().querySelector(".ra-axis")));
     check("the top of the whole road is the highest mile in the data", st().top.ft === Math.max(...E), `${st().top.ft} vs ${Math.max(...E)}`);
+    check("before a trip there is no 'you' marker (mile 0 would put the ride at the Mexico border)", !R().querySelector(".ra-me") && !R().querySelector(".ra-ride"));
     check("no Canada, Washington or old mileage anywhere", !/Canad|Washington|1,381/.test(R().textContent), "");
     check("a screen-reader summary names both ends", new RegExp(ENDS.S.long).test(txt(R().querySelector(".ra-sr"))) && new RegExp(ENDS.N.long).test(txt(R().querySelector(".ra-sr"))), txt(R().querySelector(".ra-sr")).slice(0, 200));
     // --- the next 50 miles, northbound, toward the Tejon summit (mile 204)

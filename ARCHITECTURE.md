@@ -197,7 +197,8 @@ API: `api.live.traffic()` (the corridor list with `m` and `d`), `api.live.traffi
 
 **Road ahead (js/roadahead.js, `#roadAhead`).** An SVG elevation profile (the svg is `aria-hidden`; markers, labels and the
 readout are HTML on top, positioned in percent) built from `data.ELEV` in the direction of travel: the next 50 miles or, with
-the toggle, everything to `S.dest` (else the end of the road); the whole road before a trip. Grade = feet per mile / 5280 x 100
+the toggle, everything to `S.dest` (else the end of the road); the whole road before a trip (with no "you" marker then: there is no
+position, and mile 0 would put the ride at the Mexico border). Grade = feet per mile / 5280 x 100
 over a 3-mile window; climb and descent ignore wiggles under 30 ft (80 ft on long views). Colors: easy under 2%, moderate 2-4,
 steep 4-6, very steep 6+ (`--nature`, `--accent`, `--hist`, `--danger`). It reads `api.live.weatherAlong()` and the `traffic`
 event at draw time (so load order does not matter), uses `api.ride.svg()` for your marker when it exists (else a dot) and
