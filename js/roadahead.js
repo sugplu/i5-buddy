@@ -29,6 +29,7 @@ let lastM = null, lastDir = null, lastSig = "", tab = "drive", dirty = true;
 let traffic = [];                     // from the "traffic" bus event: corridor incidents with m
 let sel = null;                       // the tapped marker: "tr:<first id>" | "wx:<m>"
 let renders = 0, last = null;
+let chartPx = 0;                      // the chart's width when it was last drawn (a redraw on resize only when it changed)
 
 const SVGNS = "http://www.w3.org/2000/svg";
 function el(tag, cls, text) {
@@ -523,6 +524,7 @@ function render(force) {
 
   body.replaceChildren(stats, chart, ax, leg, read, sr);
   const measured = placeFlags(chart, svg, flagItems, { top: plotTop, rows: flagRows });
+  chartPx = Math.round(chart.getBoundingClientRect().width);
   last.flags = flagItems.filter(it => it.placed).map(it => ({ ft: it.f.ft, d: it.f.d, name: it.f.name }));
   last.flagsDropped = flagItems.filter(it => !it.placed).length;
   // header bits
@@ -652,9 +654,26 @@ export function init(a) {
     // nothing is emitted while traffic simply ages (a parked car, no new answer): look again every 30 s, so the markers dim
     // when the data turns old and their "as of" minutes keep up
     setInterval(() => { try { if (!document.hidden) refreshIfChanged(); } catch {} }, TICK);
-    // a turned phone changes the chart's width: the flag pills are placed in pixels, so draw again
+    // The flag pills are placed in pixels from their measured width, so draw again when that changes: a turned phone changes
+    // the chart's width (but not iOS Safari's toolbar collapsing mid-scroll, which fires resize too: that would rebuild the chart
+    // under a finger), and the pills' own font (Overpass Mono, font-display swap) may arrive after the first drawing.
     let rz = 0;
-    window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { try { if (tab === "drive") render(true); else dirty = true; } catch (e) { warn(e); } }, 200); });
+    const redraw = () => { try { if (tab === "drive") render(true); else dirty = true; } catch (e) { warn(e); } };
+    window.addEventListener("resize", () => {
+      clearTimeout(rz);
+      rz = setTimeout(() => {
+        try {
+          const c = tab === "drive" && root.querySelector(".ra-chart");
+          if (c && Math.abs(Math.round(c.getBoundingClientRect().width) - chartPx) < 1) return;
+          redraw();
+        } catch (e) { warn(e); }
+      }, 200);
+    });
+    try {
+      const onFonts = () => { if (last && ((last.flags && last.flags.length) || last.flagsDropped)) redraw(); };
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(onFonts).catch(() => {});
+      if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", onFonts);
+    } catch {}
     api.roadahead = { render: () => render(true), state: () => last, setMode, _profile: profile };
     render(true);
   } catch (e) { warn(e); }

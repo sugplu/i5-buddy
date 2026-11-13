@@ -111,6 +111,24 @@ const SCENARIOS = {
     frame.style.width = "390px";
     await wait(300);
     rd().render();
+    // --- when it draws again: a resize that changes the chart's width does; one that does not (iOS toolbar collapsing) must not; the pills' font arriving does
+    {
+      const r1 = st().renders;
+      win.dispatchEvent(new win.Event("resize"));
+      await wait(350);
+      check("a resize event that leaves the chart's width alone does not rebuild it (iOS Safari's toolbar collapsing)", st().renders === r1, `${st().renders} vs ${r1}`);
+      frame.style.width = "375px";
+      await wait(100);
+      win.dispatchEvent(new win.Event("resize"));      // headless virtual time never delivers the browser's own resize event to the iframe
+      await wait(450);
+      check("a real change of width redraws the chart by itself", st().renders > r1, `${st().renders} vs ${r1}`);
+      const r2 = st().renders;
+      win.document.fonts.dispatchEvent(new win.Event("loadingdone"));
+      await wait(50);
+      check("the pills' font arriving (Overpass Mono, font-display swap) redraws them with their real widths", st().renders === r2 + 1, `${st().renders} vs ${r2}`);
+      frame.style.width = "390px";
+      await wait(450);
+    }
     // --- the next 50 miles, northbound, toward the Tejon summit (mile 204)
     pos(188, "N");
     await wait(100);
