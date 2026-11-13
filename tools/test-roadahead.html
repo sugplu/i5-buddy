@@ -127,6 +127,14 @@ const SCENARIOS = {
     check("the steepest grade matches the elevation data (within 0.7 point)", s.steep && Math.abs(s.steep.pct - gmax) < 0.7, `${s.steep && s.steep.pct.toFixed(2)} vs ${gmax.toFixed(2)}`);
     check("a 7% grade reads as steep: the steepest is the descent off the summit", s.steep.kind === "descent" && s.steep.pct >= 6, JSON.stringify(s.steep));
     check("big numbers: Climb, Top, Steepest", /^CLIMB\s*[\d,]+\s*ft/.test(tile(0)) && /^TOP\s*4,186\s*ft\s*in 1[5-7] mi/.test(tile(1)) && /^STEEPEST\s*[67]%\s*descent in \d+ mi/.test(tile(2)), [tile(0), tile(1), tile(2)].join(" | "));
+    {
+      const steepTile = tile(2), srAll = txt(R().querySelector(".ra-sr")), summ = txt(R().querySelector(".ra-read"));
+      const nTile = +((/(?:climb|descent) in (\d+) mi/.exec(steepTile) || [])[1]);
+      const nSr = +((/The steepest (?:climb|descent) is a \d+ percent grade for \d+ miles, starting about (\d+) miles ahead/.exec(srAll.replace(new RegExp(".*" + (s.steep.kind === "climb" ? "The steepest climb" : "The steepest descent")), "The steepest " + (s.steep.kind === "climb" ? "climb" : "descent"))) || [])[1]);
+      const nRead = +((/Steepest: \d+% (?:climb|descent) in (\d+) mi/.exec(summ) || [])[1]);
+      log("steepest distance", { nTile, nSr, nRead, a: s.steep.a, d: s.steep.d });
+      check("the steepest grade says one distance everywhere: where its run starts (tile, summary line and screen-reader text)", nTile > 0 && nTile === nSr && nTile === Math.round(s.steep.a) && nTile !== Math.round(s.steep.d), `${nTile} ${nSr} ${nRead} a=${s.steep.a} d=${s.steep.d}`);
+    }
     check("climb is plausible: more than the rise to the summit minus noise", s.climb > 900 && s.climb < 3000, String(s.climb));
     check("a flag at the summit says its height", [...R().querySelectorAll(".ra-flag")].some(f => /4,186 ft/.test(txt(f))), [...R().querySelectorAll(".ra-flag")].map(txt).join("|"));
     check("grade labels read like '7% grade, 6 mi'", [...R().querySelectorAll(".ra-grade")].some(g => /▼ \d+% grade, \d+ mi/.test(txt(g))), [...R().querySelectorAll(".ra-grade")].map(txt).join("|"));

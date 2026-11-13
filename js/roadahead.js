@@ -5,7 +5,8 @@
 //               everything to your destination (to the end of the road when there is none). Before a trip starts it shows
 //               the whole road from the Mexico border to the Oregon line, with its big climbs named.
 //   Numbers     Climb (feet gained), Top (highest point and how far), Steepest (grade: feet per mile / 5280, smoothed over
-//               3 miles). A visually hidden paragraph says the same for screen readers.
+//               3 miles; its distance is where that run STARTS, in the tile, the summary line and the screen-reader text alike).
+//               A visually hidden paragraph says the same for screen readers.
 //   Along it    Your position (api.ride.svg() when the rides module has loaded, else a dot), forecasts from
 //               api.live.weatherAlong() and incidents from the "traffic" bus event (tap one to read it).
 // It redraws when you move half a mile, and when the settings, the traffic, the weather, the ride or the destination change.
@@ -505,7 +506,7 @@ function render(force) {
   stats.append(
     an.up < 60 ? tile("CLIMB", "Flat", scope) : tile("CLIMB", num(an.up), an.down >= 60 ? `${ft(an.down)} down` : scope, "", " ft"),
     tile("TOP", num(an.top.ft), topSub, "", " ft"),
-    an.steep ? tile("STEEPEST", `${Math.round(an.steep.pct)}%`, p.pre ? `${an.steep.kind === "climb" ? "climb" : "descent"}, ${Math.round(an.steep.len)} mi` : `${an.steep.kind === "climb" ? "climb" : "descent"} in ${mi(an.steep.d)}`, an.steep.kind) : tile("STEEPEST", "Gentle", "no hard hills"),
+    an.steep ? tile("STEEPEST", `${Math.round(an.steep.pct)}%`, p.pre ? `${an.steep.kind === "climb" ? "climb" : "descent"}, ${Math.round(an.steep.len)} mi` : steepWhere(an.steep), an.steep.kind) : tile("STEEPEST", "Gentle", "no hard hills"),
   );
   // legend
   const leg = el("ul", "ra-legend");
@@ -537,11 +538,16 @@ function render(force) {
 }
 const shortName = (s, n = 18) => (String(s).length > n ? String(s).slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : String(s));
 
+/** "climb in 7 mi" / "descent right here": where the steepest run STARTS (the same distance the screen-reader text gives), not its steepest point. */
+function steepWhere(st) {
+  const word = st.kind === "climb" ? "climb" : "descent";
+  return st.a < 0.5 ? `${word} right here` : `${word} in ${mi(st.a)}`;
+}
 function summaryLine(p, an) {
   if (p.pre) return "Tap Start GPS or a demo drive to see the road in front of you.";
   const bits = [];
   bits.push(an.up < 60 && an.down < 60 ? "Flat road ahead." : `Up ${ft(an.up)}, down ${ft(an.down)} over ${p.trip ? "the way to " + p.tripName : p.L === Math.round(p.L) ? Math.round(p.L) + " miles" : "the next miles"}.`);
-  if (an.steep) bits.push(`Steepest: ${Math.round(an.steep.pct)}% ${an.steep.kind === "climb" ? "climb" : "descent"} in ${mi(an.steep.d)}.`);
+  if (an.steep) bits.push(`Steepest: ${Math.round(an.steep.pct)}% ${steepWhere(an.steep)}.`);
   return bits.join(" ");
 }
 function selectedText(wx, trf) {
@@ -561,14 +567,15 @@ function select(id) {
   const b = [...root.querySelectorAll(".ra-pt")].find(x => x.getAttribute("aria-pressed") === "true");
   if (b) { try { b.focus({ preventScroll: true }); } catch {} }
 }
+const startsWords = a => (a < 0.5 ? "starting right here" : `starting ${miWords(a)} ahead`);
 function srText(p, an, wx, trf, named) {
   const s = [];
   if (p.pre) s.push(`The whole road, from ${(data.ENDS && data.ENDS.S.long) || "the start"} to ${(data.ENDS && data.ENDS.N.long) || "the end"}.`);
   else s.push(`Road ahead, ${p.trip ? "to " + p.tripName : "the next " + Math.round(p.L) + " miles"}, ${S.dir === "N" ? "northbound" : "southbound"}.`);
   s.push(an.up < 60 ? "The road is flat." : `You climb ${Math.round(an.up).toLocaleString("en-US")} feet and descend ${Math.round(an.down).toLocaleString("en-US")} feet.`);
   s.push(`The highest point is ${Math.round(an.top.ft).toLocaleString("en-US")} feet${p.pre ? "" : an.top.d < 0.5 ? ", right here" : ", " + miWords(an.top.d) + " ahead"}${named && an.top.name ? ", at " + an.top.name : ""}.`);
-  if (an.climb) s.push(`The steepest climb is a ${Math.round(an.climb.pct)} percent grade for ${Math.round(an.climb.len)} miles${p.pre ? ", near mile " + Math.round(an.climb.m) : ", starting " + miWords(an.climb.a) + " ahead"}.`);
-  if (an.desc) s.push(`The steepest descent is a ${Math.round(an.desc.pct)} percent grade for ${Math.round(an.desc.len)} miles${p.pre ? ", near mile " + Math.round(an.desc.m) : ", starting " + miWords(an.desc.a) + " ahead"}.`);
+  if (an.climb) s.push(`The steepest climb is a ${Math.round(an.climb.pct)} percent grade for ${Math.round(an.climb.len)} miles${p.pre ? ", near mile " + Math.round(an.climb.m) : ", " + startsWords(an.climb.a)}.`);
+  if (an.desc) s.push(`The steepest descent is a ${Math.round(an.desc.pct)} percent grade for ${Math.round(an.desc.len)} miles${p.pre ? ", near mile " + Math.round(an.desc.m) : ", " + startsWords(an.desc.a)}.`);
   if (!an.climb && !an.desc) s.push("There are no hard hills.");
   for (const w of wx) s.push(`Forecast ${w.city ? "near " + w.city + ", " : ""}${miWords(Math.max(0, w.x))} ahead: ${Math.round(w.tempF)} degrees, ${String(w.short || "").toLowerCase()}.`);
   if (trf.length) s.push(`Traffic: ${trf.flatMap(c => c.items).slice(0, 4).map(trWords).join(". ")}.`);
