@@ -140,7 +140,7 @@
   {
    "id": "caltrans:C5LA-3",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Tejon Pass Rest Area - Northbound; Due to Miscellaneous Work",
    "lat": 34.825437,
@@ -152,7 +152,7 @@
   {
    "id": "caltrans:C5LA-8",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Tejon Pass Rest Area - Southbound; Due to Miscellaneous Work",
    "lat": 34.829233,
@@ -164,7 +164,7 @@
   {
    "id": "caltrans:C5HA-143",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "On-ramp closed",
    "detail": "From Northbound / Southbound Lebec Rd; Due to Roadway Excavation",
    "lat": 34.874115,
@@ -176,7 +176,7 @@
   {
    "id": "caltrans:C5HA-144",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "On-ramp closed",
    "detail": "From Northbound / Southbound Lebec Rd; Due to Roadway Excavation",
    "lat": 34.875441,
@@ -188,7 +188,7 @@
   {
    "id": "caltrans:C5HA-141",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Northbound / Southbound Lebec Rd; Due to Roadway Excavation",
    "lat": 34.875558,
@@ -212,7 +212,7 @@
   {
    "id": "caltrans:C5HA-142",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Northbound / Southbound Lebec Rd; Due to Roadway Excavation",
    "lat": 34.873755,
@@ -224,7 +224,7 @@
   {
    "id": "caltrans:C5HA-7",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Truck Escape Ramp (Right); Due to Roadway Excavation",
    "lat": 34.91341,
@@ -236,7 +236,7 @@
   {
    "id": "caltrans:C5VA-16",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "On-ramp closed",
    "detail": "From Northbound Glendale Blvd; Due to Roadway Excavation",
    "lat": 34.112258,
@@ -248,7 +248,7 @@
   {
    "id": "caltrans:C5FA-3",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Northbound Westley Rest Area - Northbound; Due to Rest Area Work",
    "lat": 37.58254,
@@ -260,7 +260,7 @@
   {
    "id": "caltrans:C5FA-4",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To Southbound Westley Rest Area - Southbound; Due to Rest Area Work",
    "lat": 37.582693,
@@ -272,7 +272,7 @@
   {
    "id": "caltrans:C5EB-9",
    "source": "caltrans",
-   "kind": "closure",
+   "kind": "other",
    "title": "Off-ramp closed",
    "detail": "To NB Truck Scales; Due to Highway Construction",
    "lat": 33.350913,

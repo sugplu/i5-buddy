@@ -959,7 +959,7 @@ const SCENARIOS = {
     const mOrange = mileOf("chp:261112OC0630"), mLebec = mileOf("caltrans:C5HA-138"), mMain = mileOf("chp:261112RD0156");
     log("miles", { mOrange, mLebec, mMain });
     // two Lebec closures become full-road closures: a cluster that must be announced in one sentence
-    T.edit = b => { for (const i of b.incidents) if (i.id === "caltrans:C5HA-143" || i.id === "caltrans:C5HA-141") i.title = "Road closed"; };
+    T.edit = b => { for (const i of b.incidents) if (i.id === "caltrans:C5HA-143" || i.id === "caltrans:C5HA-141") { i.title = "Road closed"; i.kind = "closure"; } };
     const events = [];
     api.bus.on("traffic", e => events.push(e));
     const said = stubSay(api);
@@ -1266,7 +1266,7 @@ const SCENARIOS = {
       const fxu = await trafficFixture();
       const pt = T.parseTraffic(fxu);
       check("parseTraffic reads the sample: 24 incidents, both sources, updated as a time", pt && pt.items.length === 24 && pt.sources.chp && pt.sources.caltrans && pt.updated > 0, pt && JSON.stringify({ n: pt.items.length, s: pt.sources }));
-      check("parseTraffic keeps kind, dir, title, detail and until", pt.items.some(i => i.kind === "closure" && i.dir === "N" && i.title === "Off-ramp closed" && /Tejon/.test(i.detail) && /Apr 21, 2027/.test(i.until)) && pt.items.some(i => i.kind === "hazard" && i.dir === null));
+      check("parseTraffic keeps kind, dir, title, detail and until", pt.items.some(i => i.kind === "other" && i.dir === "N" && i.title === "Off-ramp closed" && /Tejon/.test(i.detail) && /Apr 21, 2027/.test(i.until)) && pt.items.some(i => i.kind === "hazard" && i.dir === null));
       check("parseTraffic: not an object, no list", T.parseTraffic(null) === null && T.parseTraffic("x") === null && T.parseTraffic({}) === null && T.parseTraffic({ incidents: "no" }) === null);
       const junk = T.parseTraffic({ updated: "garbage", sources: { chp: "yes" }, incidents: [null, 5, { id: "", lat: 37, lon: -120 }, { id: "a", lat: "x", lon: 1 }, { id: "b", lat: null, lon: 1 },
         { id: "c", lat: 91, lon: 0 }, { id: "d", lat: 37, lon: -120, kind: "weird", dir: "E", title: "  Odd   thing  ", detail: 5 }, { id: "d", lat: 37, lon: -120 }, { id: "caltrans:e", lat: 37, lon: -120 }] });
