@@ -612,7 +612,7 @@ async function auto() {
 
   // summary text and the card
   const text = api.trip.summary("all");
-  ok(/miles driven/.test(text) && text.includes("https://sugplu.github.io/i5-buddy/"), "summary text has numbers and the app URL");
+  ok(/miles driven/.test(text) && text.includes("https://i5.dominares.org/"), "summary text has numbers and the app URL (i5.dominares.org)");
   ok(!/—/.test(text) && !/!/.test(text), "summary has no em dash and no exclamation mark");
   const blob = await settle(api.trip.card("trip"));
   const bmp = await settle(createImageBitmap(blob));
@@ -620,6 +620,7 @@ async function auto() {
   const ct = await cardTexts(W, () => api.trip.card("all"));
   ok(ct.whole.includes(endToEnd) && (!oneState || (ct.spaced.includes((ENDS.S.short + STS[0].name + ENDS.N.short).toUpperCase()) && !/canada/i.test(ct.all))),
     `the all-time card is titled "${endToEnd}", its road labelled ${oneState ? "by its ends" : "by state"} (${ct.spaced.filter(s => /^[A-Z]{4,}$/.test(s)).join(" | ")})`);
+  ok(ct.whole.includes("https://i5.dominares.org/"), "the card's footer prints the app's address, https://i5.dominares.org/");
 
   // the share sheet: the card preview at once, then a share/save button once the PNG is made
   api.trip.share("all");

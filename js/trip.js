@@ -15,7 +15,7 @@
 //   destDone   {name, m, t, miles, start, stamps} once we arrived
 //   tripPrefs  {sayBadges}
 
-const APP_URL = "https://sugplu.github.io/i5-buddy/";
+const APP_URL = "https://i5.dominares.org/";
 const KEEP = 30;               // trips kept in the log
 const RESUME_MS = 45 * 60e3;   // a trip cut off by a closed tab resumes if you start again within this long
 const STEP = 0.05;             // miles: smaller moves are GPS jitter, not driving
