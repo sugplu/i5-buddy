@@ -18,7 +18,7 @@ js/geo.js             GPS -> corridor mile, bearings, sun altitude
 js/voice.js           speech queue + chime
 js/narrator.js        decides what to say and when; user-facing "ask" actions
 js/main.js            boot, GPS/demo/manual, Drive + Ahead screens, settings, offline, Install app, module loading
-js/live.js            MODULE: weather, alerts, chain controls, freeway message signs, live cameras
+js/live.js            MODULE: traffic (CHP + Caltrans closures), weather, alerts, chain controls, freeway message signs, live cameras
 js/map.js             MODULE: interactive map of the whole road
 js/play.js            MODULE: road bingo, trivia, I-spy
 js/trip.js            MODULE: destination + ETA, trip log, badges, passport screen, share card
@@ -147,7 +147,8 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | `badge` | `{id, name}` | trip.js unlocked a badge |
 | `place:sheet` | `{place, sheet, acts}` | main.js built a place details sheet; a module may append buttons to `acts` |
 | `ride` | `{ride}` | ride.js: the user picked or changed their ride (see `api.ride`) |
-| `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived (incidents already on the corridor, with `m`) |
+| `traffic` | `{incidents, updated, sources}` | live.js: a fresh traffic list arrived. `incidents`: every incident on the corridor (within 0.5 mi of I-5), each `{id, ids, source, kind, title, detail, lat, lon, started, dir, until, m, d}` (`d` = miles ahead in your direction, negative behind, null without a position); `updated`: ISO string; `sources`: `{chp, caltrans}` |
+| `live:update` | snapshot | live.js: a weather / alerts / chain refresh finished (roadahead.js redraws its forecast chips) |
 
 ### Containers owned by each module (do not touch other markup)
 
@@ -162,6 +163,53 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
 | share.js | `#shareBtn` (header button), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
 | ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideRow` (Settings > Display), `#rideSheet` |
+
+### Traffic, Road ahead, feedback and share (2.5.0)
+
+**Traffic (js/live.js).** While live info is on, the page is visible, the phone is online and the corridor mile is known, the
+module fetches `GET /api/traffic` (relative on i5.dominares.org, else `https://i5.dominares.org/api/traffic`) now and every
+2 minutes, with a 10 s timeout. It is its own fetch path: it never touches `fails`, the 2-minute weather rule or the
+"Live info unavailable" footer, and a failure is silent (the last good copy stays, saved under `live:traffic`, dropped after
+an hour). The request carries no location: the answer is the whole California I-5 list and the phone does the filtering.
+`parseTraffic` normalises it (junk dropped, unknown `kind` becomes `other`, bad `dir` becomes null); `snapTraffic` snaps each
+incident with `geo.locate`, keeps those within 0.5 mi of the line and folds the same event reported twice (same kind,
+direction, words and place) into one entry that remembers every id (`ids`).
+For the driver an incident counts when it is from 0.3 mi behind to 60 mi ahead and its `dir` is null or equals `S.dir`;
+distance and filter are recomputed on every render, not only on fetch. Screen: the nearest two crashes, closures, hazards
+or lane closures in `#liveAlerts` (ramp-only closures are left out of the strip; `--danger` for a crash or a closure that is
+not a ramp, `--accent` otherwise), a "Traffic ahead" list at the top of `#liveBlock` (distance, "Northbound lanes", detail,
+"until ...", tap for a sheet), and a source line `Traffic: CHP · Caltrans · updated 2 min ago` naming only the sources that
+answered (class `lv-trsrc`, separate from the existing `lv-src`). Nothing ahead: "No crashes or closures reported ahead for
+60 miles." Data older than 15 min (judged from the server's `updated`, else the fetch time) says "(old)", dims the list and is
+never spoken; offline says "Traffic needs a connection" and keeps the old list.
+Speech: when a crash or a closure that is not a ramp first comes within 10 mi ahead it is said once (`traffic:<id>`, prio 2,
+only with `settings.narr` on, `S.offRoute` false and fresh data) and the same words go to a toast. Several incidents within
+2 miles of the first one are folded into the same sentence, and every id in it counts as said (cleared by `trip:end`).
+API: `api.live.traffic()` (the corridor list with `m` and `d`), `api.live.trafficInfo()`, and
+`api.live.weatherAlong()` -> `[{m, d, city, tempF, short, icon, emoji, t}]`, the forecast points the module already has
+(no extra weather requests; empty unless live info is on and the mile is known).
+
+**Road ahead (js/roadahead.js, `#roadAhead`).** An SVG elevation profile (the svg is `aria-hidden`; markers, labels and the
+readout are HTML on top, positioned in percent) built from `data.ELEV` in the direction of travel: the next 50 miles or, with
+the toggle, everything to `S.dest` (else the end of the road); the whole road before a trip. Grade = feet per mile / 5280 x 100
+over a 3-mile window; climb and descent ignore wiggles under 30 ft (80 ft on long views). Colors: easy under 2%, moderate 2-4,
+steep 4-6, very steep 6+ (`--nature`, `--accent`, `--hist`, `--danger`). It reads `api.live.weatherAlong()` and the `traffic`
+event at draw time (so load order does not matter), uses `api.ride.svg()` for your marker when it exists (else a dot) and
+redraws when the mile changes by half a mile, the direction flips, or the settings, traffic, weather, ride or destination
+change. `api.roadahead.state()` gives the last drawing's numbers (used by tools/test-roadahead.html).
+
+**Feedback (js/feedback.js).** Settings > About button opens `#feedbackSheet`: Name (optional), Email, Message (2000 characters,
+counter) and a visually hidden `website` honeypot. Only on Send it POSTs `{name, email, message, version, website}` to
+`/api/feedback` (same origin rule as traffic); the app version is read from `sw.js`'s `VERSION` line (constant `2.5.0` as a
+fallback). States: sending, thanks, the server's own error words (text kept), offline (Send disabled), 15 s timeout. Name and
+email are remembered after a send (`feedback:who`) and an unsent draft is kept (`feedback:draft`), both via `api.store`.
+
+**Share (js/share.js).** The header button uses `navigator.share({title: "I-5 Buddy", text, url: "https://i5.dominares.org/"})`;
+without Web Share, or when it fails for any reason except the user cancelling, `#shareSheet` opens (copy link, invite message,
+Text message `sms:?&body=`, Email `mailto:`, Copy). A "Share" button is appended to each place sheet's `acts` through the
+`place:sheet` event and shares `{place.name, first sentence, https://i5.dominares.org/#place=<id>}`. `#place=<id>` deep links
+(on load and on `hashchange`) open `ui.placeSheet(place)` once and the hash is removed with `history.replaceState`; the old
+github.io address's redirect already forwards `location.hash`.
 
 ### Rules for module code
 

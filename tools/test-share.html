@@ -176,6 +176,8 @@ const SCENARIOS = {
     win.location.hash = "#something-else";
     await wait(200);
     check("other hashes are left alone", win.location.hash === "#something-else" && mo.hidden);
+    const cssText = (await (await fetch("../css/share.css")).text()).replace(/\/\*[\s\S]*?\*\//g, "");
+    check("the stylesheet uses tokens only (no hex or rgb colors)", !/#[0-9a-fA-F]{3,8}\b|rgba?\(/.test(cssText), (cssText.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g) || []).join(" "));
     // --- the old-address redirect keeps the hash
     const html = await (await fetch("../index.html")).text();
     const redirect = (html.split("\n").find(l => /var h=location\.hostname/.test(l)) || "");

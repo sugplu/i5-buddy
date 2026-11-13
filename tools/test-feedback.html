@@ -205,6 +205,8 @@ const SCENARIOS = {
     field(".fb-send").click();
     await wait(500);
     check("a filled honeypot is sent as it is (the server discards it)", JSON.parse(net.calls[net.calls.length - 1].body).website === "http://spam.example");
+    const cssText = (await (await fetch("../css/feedback.css")).text()).replace(/\/\*[\s\S]*?\*\//g, "");
+    check("the stylesheet uses tokens only (no hex or rgb colors)", !/#[0-9a-fA-F]{3,8}\b|rgba?\(/.test(cssText), (cssText.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g) || []).join(" "));
     // --- layout
     api.ui.closeSheet();
     open0.click();

@@ -15,8 +15,15 @@ and it works offline after that. No account, no tracking; everything stays on th
 - **Narration**: chime + spoken heads-up for each landmark (timed to your speed), landscape and seasonal notes, big
   climbs, the halfway point, story time on long empty stretches, kid I-spy challenges. Three chattiness levels.
   Drive past either end of the road (into Oregon, or into Mexico) and it says goodbye once and goes quiet.
-- **Live road info** (opt-in): National Weather Service forecasts and warnings ahead, Caltrans chain controls and the
-  messages on freeway signs ahead, live Caltrans cameras.
+- **Live road info** (opt-in): crashes, closures and hazards ahead from the California Highway Patrol and Caltrans lane
+  closures (one spoken heads-up for a crash or closure when it is about 10 miles away), National Weather Service
+  forecasts and warnings ahead, Caltrans chain controls and the messages on freeway signs ahead, live Caltrans cameras.
+- **Road ahead**: a glanceable chart on the Drive tab of the hills in front of you (next 50 miles, or all the way to your
+  destination; the whole road before a trip): steepness colors, grade %, the highest point, forecast and traffic markers,
+  and big numbers for the climb, the top and the steepest grade.
+- **Share and feedback**: a share button in the top bar (the phone's share sheet, or copy the link / invite a friend by
+  text or email), a Share button on every landmark, links like `i5.dominares.org/#place=<id>` that open one landmark, and
+  "Send feedback" in Settings (name, email, message) that goes to the Dominares team.
 - **Ahead**: every landmark ahead with photos, filters, sources; or gas, food and rest areas ahead.
 - **Map**: the whole road on a zoomable map with every landmark, camera and rest area.
 - **Passport**: a stamp for every landmark you pass, regions, badges, trip log, a shareable trip card.
