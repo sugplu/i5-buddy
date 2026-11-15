@@ -93,7 +93,8 @@ is the same file). `python3 tools/icons.py` makes every icon from it: `icons/ico
 favicon and as the logo inside the app), `icon-512/192.png`, the apple-touch `icon-180.png` and the Android
 `icon-maskable-512.png` (from `icons/app-icon-maskable.svg`, the same drawing shrunk into the safe circle). Then
 re-render the link preview and bump `VERSION` in `sw.js`. Never use a highway route shield: the Interstate shield is
-a registered trademark of AASHTO (the app used it until 2.5.4).
+a registered trademark of AASHTO (the app used it until 2.5.3). The logo may use the road's red, white and blue,
+but never a shield shape or a red band over blue.
 
 The link-preview picture (what a shared link shows in Messages, Slack and so on) is `icons/og-1200x630.png`, drawn
 from `tools/og-image.html` with the app's own tokens and font. After changing that page, run `python3 tools/og_image.py`
