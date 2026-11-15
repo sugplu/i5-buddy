@@ -360,8 +360,8 @@ function renderNext() {
     const states = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
     const h2 = el("h2", null, `Your guide to all ${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`);
     h2.tabIndex = -1; // takes the focus when the Install app button under it goes away (updateInstall)
-    // Install app, or the iPhone tip (updateInstall), right under the headline: in a phone's browser tab, which is
-    // shorter than the screen, that keeps it above the tab bar.
+    // Install app, or on an iPhone or iPad "Get the iPhone app" (updateInstall), right under the headline: in a phone's
+    // browser tab, which is shorter than the screen, that keeps it above the tab bar.
     const inst = el("div", "welcome-install"); inst.hidden = true;
     card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()), h2, inst,
       el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. ${native.NATIVE ? "Tap Start GPS before you pull out" : "Tap Start GPS on the road"}, or take a demo drive from the couch.`));
@@ -689,25 +689,54 @@ $("resetYes").onclick = () => {
 };
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 
-/* ---------- install ---------- */
+/* ---------- install, and the iPhone app ---------- */
 // Chrome and Edge offer to install the app with a beforeinstallprompt event; index.html keeps it in window.__i5Install
 // (it can come before this module runs). While there is one, an Install app button shows in the welcome card and in
-// Settings. iPhone and iPad have no such offer, so the welcome card shows a one-line tip instead; in an app's own
-// browser (Instagram, Facebook and so on) Share has no Add to Home Screen, so the tip says to open the page in Safari.
-// Both go away once the app is installed or is running as the installed app. Nothing is stored or sent anywhere.
+// Settings. iPhone and iPad have no such offer: there the welcome card offers the iPhone app instead (below), and
+// Settings says how to add the page to the Home Screen (in an app's own browser, such as Instagram's, Share has no Add
+// to Home Screen, so it says to open the page in Safari). The install offer goes away once the app is installed or is
+// running as the installed app. Nothing is stored or sent anywhere.
+//
+// The iPhone app (on the App Store since 2026-11-15): in a browser on an iPhone or iPad (Safari, Chrome, an app's own
+// browser, where Safari's App Store banner never shows, or the page added to the Home Screen), the welcome card, right
+// under the headline, and Settings > About show Apple's "Download on the App Store" badge and "Get the iPhone app",
+// one plain link to the app's App Store page. The badge is Apple's artwork, unmodified (icons/app-store-badge.svg,
+// cached with the app), never under 40 px tall, with a quarter of its height clear around it (app.css). Never inside
+// the iPhone app itself.
+const APP_STORE = "https://apps.apple.com/us/app/i-5-buddy/id6834991531";
+const APPLE_TM = "Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.";
 const APP_MODES = ["standalone", "fullscreen", "minimal-ui", "window-controls-overlay"];
 let installedHere = false; // the browser said "appinstalled" in this tab, or the person accepted its install dialog
 let asking = false;        // the browser's install dialog is open
 const runningInstalled = () => navigator.standalone === true || APP_MODES.some(m => matchMedia(`(display-mode: ${m})`).matches);
-// read when needed, not once at load (tools/e2e.html tries an iPhone and an in-app browser)
+// read when needed, not once at load (tools/e2e.html and tools/test-getapp.html try iPhones, iPads and in-app browsers)
 const onIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (/macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1); // iPadOS says Macintosh
 const inAppBrowser = () => /FBAN|FBAV|FB_IAB|Instagram|LinkedInApp|GSA\/|Snapchat|Pinterest|Line\/|musical_ly|TikTok|Twitter/.test(navigator.userAgent);
 const ICON_INSTALL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg>';
-const ICON_SHARE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.6 4.2 4.2-1.4 1.4L13 6.4V15h-2V6.4L9.2 8.2 7.8 6.8 12 2.6ZM5 10h4v2H7v8h10v-8h-2v-2h4v12H5V10Z" fill="currentColor"/></svg>';
 const markBusy = (b, busy) => busy ? b.setAttribute("aria-disabled", "true") : b.removeAttribute("aria-disabled");
+/** "Get the iPhone app": Apple's badge and a short line, one link to the App Store page (a new tab, like every other
+    outside link here, so a drive in this tab carries on). */
+function appStoreLink() {
+  const a = el("a", "get-app");
+  a.href = APP_STORE; a.target = "_blank"; a.rel = "noopener";
+  const img = el("img", "get-app-badge");
+  img.src = "icons/app-store-badge.svg"; img.alt = "Download on the App Store"; img.width = 132; img.height = 44;
+  const t = el("span", "get-app-text");
+  t.append(el("b", null, "Get the iPhone app"), " ", el("small", null, "Free, with every story and photo built in."));
+  a.append(img, t);
+  return a;
+}
+/** Settings > About, first row: the same link and Apple's trademark line, on an iPhone or iPad only. */
+function updateAppRow(show) {
+  const row = $("appRow");
+  if (!row) return;
+  if (show && !row.firstChild) row.append(appStoreLink(), el("small", "hint", APPLE_TM));
+  row.hidden = !show;
+}
 function updateInstall() {
-  if (native.NATIVE) { // the iPhone app is installed already: no Install app row, no Add to Home Screen tip
+  if (native.NATIVE) { // the iPhone app is installed already: no Install app row, no Add to Home Screen tip, no badge
     $("installRow").hidden = true;
+    updateAppRow(false);
     const s = document.querySelector("#nextCard .welcome-install");
     if (s) s.hidden = true;
     return;
@@ -715,7 +744,8 @@ function updateInstall() {
   const installed = installedHere || runningInstalled();
   const offer = installed ? null : window.__i5Install || null;
   const busy = asking && !installed;
-  const ios = !installed && onIOS(), inApp = ios && inAppBrowser();
+  const iphone = onIOS(), ios = !installed && iphone, inApp = ios && inAppBrowser();
+  updateAppRow(iphone);
   const was = document.activeElement; // an Install app button with the focus, which may go away below
   const hadFocus = was && (was.id === "installApp" || !!was.closest?.(".welcome-install")) ? was : null;
   const btn = $("installApp");
@@ -727,19 +757,15 @@ function updateInstall() {
   hint.hidden = !hint.textContent;
   const slot = document.querySelector("#nextCard .welcome-install");
   if (slot) {
-    const want = offer || busy ? "offer" : inApp ? "inapp" : ios ? "ios" : "";
+    // an iPhone or iPad (even with the page on the Home Screen) gets the iPhone app; it never has an install offer
+    const want = offer || busy ? "offer" : iphone ? "store" : "";
     if (slot.dataset.show !== want) {
       slot.dataset.show = want; slot.innerHTML = "";
       if (want === "offer") {
         const b = el("button", "secondary install-btn"); b.type = "button";
         b.innerHTML = ICON_INSTALL; b.append("Install app"); b.onclick = installApp;
         slot.append(b);
-      } else if (want === "ios") {
-        const tip = el("p", "install-tip", "Tip: tap Share");
-        const ic = el("span", "ic"); ic.innerHTML = ICON_SHARE;
-        tip.append(ic, ", then Add to Home Screen.");
-        slot.append(tip);
-      } else if (want === "inapp") slot.append(el("p", "install-tip", "Tip: open this page in Safari to add it to your Home Screen."));
+      } else if (want === "store") slot.append(appStoreLink());
       slot.hidden = !want;
     }
     const b = slot.querySelector("button");

@@ -4,18 +4,23 @@
 //
 //   Share I-5 Buddy   The header button uses the phone's own share sheet (Web Share). Without it, or when it fails
 //                     (anything but the user cancelling), #shareSheet opens: copy the link, "Invite a friend" with a ready
-//                     message and Text message, Email and Copy buttons.
+//                     message and Text message, Email and Copy buttons. The link is i5.dominares.org/get (get/index.html):
+//                     on an iPhone or iPad it opens the App Store at once; on Android and computers it shows how to use
+//                     the web app (one tap to open it).
 //   Share one place   A "Share" button on a place's details sheet shares {name, one short line, #place=<id> link}.
 //   Deep links        https://i5.dominares.org/#place=<id> opens that place's sheet once (on load and on hashchange),
 //                     then the hash is removed so a reload or a share of the page address does not open it again.
 // Nothing is sent anywhere by this module: sharing hands text to the phone's own share or message apps.
 
 const SITE = "https://i5.dominares.org/";
+// Sharing the app itself: the /get link takes an iPhone or iPad straight to the App Store (the iPhone app, in one tap
+// from the message), and shows anyone else the web app. Place links stay on the web app (#place=<id>).
+const GET = "https://i5.dominares.org/get";
 const TITLE = "I-5 Buddy";
 const TEXT = "I-5 Buddy: a free narrated guide to I-5 in California.";
-const INVITE = `I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: ${SITE}`;
+const INVITE = `I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: ${GET}`;
 // the iPhone app talks to passengers: "on our road trip", not "on my drive"
-const INVITE_APP = `I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: ${SITE}`;
+const INVITE_APP = `I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: ${GET}`;
 const inviteText = () => (api && api.native && api.native.NATIVE ? INVITE_APP : INVITE);
 const ICON = "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .24.04.47.09.7L8.04 9.81A3 3 0 1 0 6 15c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08Z";
 
@@ -77,7 +82,7 @@ function placeLine(p) {
   if (s.length > 140) { s = s.slice(0, 140).replace(/\s+\S*$/, "").replace(/[,;:\s]+$/, "") + "…"; }
   return s;
 }
-const appData = () => ({ title: TITLE, text: TEXT, url: SITE });
+const appData = () => ({ title: TITLE, text: TEXT, url: GET });
 const placeData = p => ({ title: p.name, text: placeLine(p), url: placeLink(p) });
 
 /** Web Share. "shared", "cancelled" (the user closed it, or a share was already open: do nothing more), "busy" (a share of ours
@@ -133,7 +138,7 @@ async function copyWithToast(text, done) {
 
 /* ---------- the fallback sheet ---------- */
 function appSheet() {
-  return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: SITE, linkShown: "i5.dominares.org", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a free guide for your drive on I-5" };
+  return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: GET, linkShown: "i5.dominares.org/get", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a free guide for your drive on I-5" };
 }
 function placeSheet(p) {
   const line = placeLine(p), url = placeLink(p);
@@ -256,4 +261,4 @@ export function init(a) {
   } catch (e) { warn(e); }
 }
 
-export const _test = { firstSentence, ABBREVIATIONS, placeLine, placeLink, placeIdFromHash, appData, placeData, INVITE, inviteText };
+export const _test = { firstSentence, ABBREVIATIONS, placeLine, placeLink, placeIdFromHash, appData, placeData, INVITE, INVITE_APP, inviteText, GET };

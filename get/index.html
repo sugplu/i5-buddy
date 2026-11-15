@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>/* i5.dominares.org/get: the one link for posts, QR codes and shared invitations. An iPhone or iPad goes straight
+   to I-5 Buddy on the App Store (iPadOS Safari calls itself a Mac, but a Mac has no touch screen); an Android phone
+   and anything else stay here and see what fits them (data-os, styled below). Without JavaScript the page shows the
+   version for computers, which works for everyone. Nothing is stored or sent. */
+(function(){var ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/i.test(ua)||(/Macintosh/i.test(ua)&&navigator.maxTouchPoints>1);
+document.documentElement.dataset.os=ios?"ios":/Android/i.test(ua)?"android":"other";
+if(ios&&navigator.onLine!==false)location.replace("https://apps.apple.com/us/app/i-5-buddy/id6834991531")})();</script>
+<title>Get I-5 Buddy · the free California I-5 road-trip guide</title>
+<meta name="description" content="Get I-5 Buddy, the free narrated guide to all 797 miles of I-5 in California: the iPhone app on the App Store, or the web app in any browser.">
+<meta name="theme-color" content="#0b6e3f">
+<meta name="author" content="Dominares">
+<meta name="apple-itunes-app" content="app-id=6834991531">
+<link rel="canonical" href="https://i5.dominares.org/get/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="I-5 Buddy by Dominares">
+<meta property="og:url" content="https://i5.dominares.org/get/">
+<meta property="og:title" content="Get I-5 Buddy, by Dominares">
+<meta property="og:description" content="Your narrated road-trip guide to I-5 through California. Free on the App Store for iPhone, and in any browser at i5.dominares.org.">
+<meta property="og:image" content="https://i5.dominares.org/icons/og-1200x630.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The I-5 Buddy logo, a 5 in red and white stripes on blue, on a green highway sign: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i5.dominares.org/icons/og-1200x630.png">
+<meta name="twitter:image:alt" content="The I-5 Buddy logo, a 5 in red and white stripes on blue, on a green highway sign: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/icon-180.png">
+<link rel="stylesheet" href="../app.css">
+<script>/* The app's theme (Settings > Display > Theme), read from this phone's saved settings. "Day/night" follows the sun
+   the way the app does when it has no position yet: geo.js sunAltitude at Sacramento, light above 4 degrees below the horizon. */
+(function(){var t="auto";try{t=(JSON.parse(localStorage.getItem("i5b:settings"))||{}).theme||"auto"}catch(e){}
+if(t!=="dark"&&t!=="light"){var r=Math.PI/180,d=Date.now()/864e5-10957.5,g=(357.529+.98560028*d)*r,q=280.459+.98564736*d,
+L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*r,e=(23.439-3.6e-7*d)*r,dec=Math.asin(Math.sin(e)*Math.sin(L)),
+ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)),ha=(((18.697374558+24.06570982441908*d)%24)*15-121.49)*r-ra,lat=38.58*r;
+t=Math.asin(Math.sin(lat)*Math.sin(dec)+Math.cos(lat)*Math.cos(dec)*Math.cos(ha))/r>-4?"light":"dark"}
+document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==="light"?"#0b6e3f":"#111513"})();</script>
+<style>
+/* Get I-5 Buddy. app.css gives the tokens, fonts and both themes; the layout is support.html's. Every file this page
+   uses is relative to the site root ("../"), so it works at /get/ and at /get. */
+.pv{max-width:680px;margin:0 auto;padding:calc(8px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pv main{padding:0}
+.pv-top{margin-bottom:10px}
+.pv-home{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding-right:8px;text-decoration:none;color:var(--fg)}
+.pv-home .logo{width:34px;height:34px;display:block}
+.pv-home span{display:grid;line-height:1.2}
+.pv-home b{font-size:1.15rem;font-weight:900}
+.pv-home small{color:var(--link);font-size:.82rem;font-weight:800}
+.pv-sign{background:var(--sign);color:var(--sign-fg);border-radius:var(--radius);padding:16px 18px 14px;box-shadow:inset 0 0 0 3px var(--sign),inset 0 0 0 5px var(--sign-edge),var(--shadow)}
+.pv-sign h1{margin:0;font-size:2.2rem;font-weight:900;line-height:1.05}
+.pv main .pv-sign p{margin:6px 0 0;color:var(--sign-fg)}
+.pv h2{margin:26px 0 10px;font-size:1.3rem;font-weight:900;line-height:1.2}
+.pv main p{margin:0 0 10px;color:var(--fg-2)}
+.pv main a{color:var(--link);font-weight:700;text-underline-offset:2px}
+.pv-foot{display:grid;gap:10px;margin-top:30px}
+.gt-intro{margin-top:16px!important}
+/* one of these shows: html[data-os] is set by the script at the top; with no script, the one for computers */
+.gt-for{display:none}
+html:not([data-os]) .gt-other,html[data-os="other"] .gt-other,html[data-os="ios"] .gt-ios,html[data-os="android"] .gt-android{display:block}
+.gt-for{margin-top:6px;padding:2px 16px 8px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--accent)}
+.gt-for h2{margin-top:14px}
+/* Apple's badge as it comes, 54 px tall (never under 40), with a quarter of its height clear around it */
+.pv main .gt-badge{margin:0;padding:14px 0}
+.gt-badge a{display:inline-block;vertical-align:top}
+.gt-badge img{display:block;height:54px;width:auto}
+.pv main .gt-open{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;color:var(--accent-fg);margin:4px 0 14px}
+/* the QR code: dark squares on white, as every camera expects, whatever the theme */
+.gt-qr{display:flex;align-items:center;gap:16px;margin:4px 0 12px;flex-wrap:wrap}
+.gt-qr svg{display:block;width:185px;height:185px;flex:none;background:#fff;border-radius:10px}
+.pv main .gt-qr p{margin:0;flex:1 1 180px}
+.pv main .gt-safety{margin:18px 0 0;padding:10px 14px;border-left:4px solid var(--accent);background:var(--surface);border-radius:10px;color:var(--fg);font-weight:800}
+.pv-foot .fine{text-align:center}
+</style>
+</head>
+<body>
+<div class="pv">
+<header class="pv-top">
+  <a class="pv-home" href="../">
+    <img class="logo" src="../icons/icon.svg" alt="" width="34" height="34">
+    <span><b>I-5 Buddy</b><small>Open the web app</small></span>
+  </a>
+</header>
+
+<main>
+  <div class="pv-sign">
+    <h1>Get I-5 Buddy</h1>
+    <p>The free narrated guide to all 797 miles of I-5 in California.</p>
+  </div>
+  <p class="gt-intro">It follows you by GPS and tells you about the orchards, history and landmarks you pass, from the Mexico border to the Oregon line. No ads, no account, no tracking.</p>
+
+  <section class="gt-for gt-ios" aria-labelledby="gtIos">
+    <h2 id="gtIos">Get the iPhone app</h2>
+    <p>The App Store opens by itself. If it doesn't, tap the badge.</p>
+    <p class="gt-badge"><a href="https://apps.apple.com/us/app/i-5-buddy/id6834991531"><img src="../icons/app-store-badge.svg" alt="Download on the App Store" width="162" height="54"></a></p>
+    <p>Or use it in the browser: <a href="../">open the web app</a>.</p>
+  </section>
+
+  <section class="gt-for gt-android" aria-labelledby="gtAndroid">
+    <h2 id="gtAndroid">On Android</h2>
+    <p>I-5 Buddy for Android is coming to Google Play. You can use it today in Chrome: open i5.dominares.org, then the menu &gt; Install app (or Add to Home screen).</p>
+    <a class="primary gt-open" href="../">Open the web app</a>
+    <p>Want to help test the Android app? Write to <a href="mailto:support@dominares.org?subject=I-5%20Buddy%20Android%20test">support@dominares.org</a>.</p>
+  </section>
+
+  <section class="gt-for gt-other" aria-labelledby="gtOther">
+    <h2 id="gtOther">On iPhone</h2>
+    <p>Get the iPhone app, free on the App Store.</p>
+    <p class="gt-badge"><a href="https://apps.apple.com/us/app/i-5-buddy/id6834991531"><img src="../icons/app-store-badge.svg" alt="Download on the App Store" width="162" height="54"></a></p>
+    <h2>In a browser</h2>
+    <p>On Android or a computer, use I-5 Buddy right in the browser.</p>
+    <a class="primary gt-open" href="../">Open the web app</a>
+    <div class="gt-qr">
+      <!-- https://i5.dominares.org/get at error correction M (version 3, 29 x 29, with the 4-module quiet zone), made
+           offline with the QRCode library in npm's qrcode-terminal 0.12.0 and checked with Apple's CoreImage reader -->
+      <svg viewBox="0 0 37 37" role="img" aria-label="QR code for i5.dominares.org/get" shape-rendering="crispEdges"><path fill="#000" d="M4 4h7v1h-7zM15 4h3v1h-3zM20 4h1v1h-1zM23 4h1v1h-1zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM16 5h4v1h-4zM24 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h1v1h-1zM15 6h3v1h-3zM20 6h5v1h-5zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM17 7h3v1h-3zM22 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM13 8h2v1h-2zM16 8h3v1h-3zM20 8h1v1h-1zM22 8h1v1h-1zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM16 9h3v1h-3zM21 9h4v1h-4zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM14 11h3v1h-3zM18 11h1v1h-1zM21 11h4v1h-4zM4 12h1v1h-1zM7 12h1v1h-1zM9 12h2v1h-2zM12 12h2v1h-2zM16 12h1v1h-1zM19 12h1v1h-1zM22 12h2v1h-2zM25 12h1v1h-1zM27 12h1v1h-1zM4 13h2v1h-2zM7 13h3v1h-3zM12 13h3v1h-3zM16 13h1v1h-1zM18 13h2v1h-2zM25 13h2v1h-2zM29 13h1v1h-1zM32 13h1v1h-1zM5 14h2v1h-2zM8 14h1v1h-1zM10 14h3v1h-3zM15 14h2v1h-2zM20 14h2v1h-2zM23 14h1v1h-1zM25 14h2v1h-2zM28 14h4v1h-4zM7 15h3v1h-3zM12 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM22 15h1v1h-1zM24 15h1v1h-1zM26 15h2v1h-2zM30 15h2v1h-2zM5 16h1v1h-1zM8 16h1v1h-1zM10 16h4v1h-4zM16 16h1v1h-1zM20 16h2v1h-2zM25 16h2v1h-2zM29 16h1v1h-1zM31 16h2v1h-2zM5 17h1v1h-1zM9 17h1v1h-1zM12 17h1v1h-1zM15 17h1v1h-1zM19 17h1v1h-1zM21 17h1v1h-1zM23 17h3v1h-3zM4 18h1v1h-1zM6 18h3v1h-3zM10 18h2v1h-2zM14 18h3v1h-3zM19 18h2v1h-2zM24 18h2v1h-2zM27 18h1v1h-1zM29 18h4v1h-4zM6 19h2v1h-2zM12 19h1v1h-1zM17 19h2v1h-2zM20 19h5v1h-5zM28 19h2v1h-2zM31 19h1v1h-1zM8 20h3v1h-3zM12 20h1v1h-1zM15 20h7v1h-7zM23 20h3v1h-3zM31 20h1v1h-1zM5 21h2v1h-2zM9 21h1v1h-1zM15 21h2v1h-2zM19 21h1v1h-1zM25 21h2v1h-2zM29 21h1v1h-1zM32 21h1v1h-1zM4 22h1v1h-1zM7 22h2v1h-2zM10 22h1v1h-1zM12 22h2v1h-2zM17 22h1v1h-1zM24 22h1v1h-1zM27 22h2v1h-2zM31 22h2v1h-2zM11 23h2v1h-2zM14 23h1v1h-1zM17 23h1v1h-1zM19 23h5v1h-5zM26 23h1v1h-1zM31 23h2v1h-2zM4 24h1v1h-1zM7 24h2v1h-2zM10 24h2v1h-2zM14 24h2v1h-2zM18 24h1v1h-1zM20 24h1v1h-1zM24 24h5v1h-5zM30 24h1v1h-1zM12 25h4v1h-4zM17 25h1v1h-1zM19 25h4v1h-4zM24 25h1v1h-1zM28 25h1v1h-1zM30 25h3v1h-3zM4 26h7v1h-7zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h3v1h-3zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM31 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM12 27h2v1h-2zM15 27h1v1h-1zM17 27h1v1h-1zM20 27h1v1h-1zM24 27h1v1h-1zM28 27h4v1h-4zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM13 28h1v1h-1zM18 28h2v1h-2zM22 28h1v1h-1zM24 28h5v1h-5zM31 28h1v1h-1zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM12 29h1v1h-1zM15 29h6v1h-6zM23 29h1v1h-1zM26 29h1v1h-1zM28 29h3v1h-3zM32 29h1v1h-1zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM13 30h1v1h-1zM18 30h1v1h-1zM27 30h4v1h-4zM32 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM14 31h1v1h-1zM17 31h3v1h-3zM23 31h2v1h-2zM26 31h1v1h-1zM31 31h1v1h-1zM4 32h7v1h-7zM12 32h1v1h-1zM14 32h2v1h-2zM17 32h2v1h-2zM24 32h1v1h-1zM26 32h1v1h-1zM29 32h1v1h-1zM31 32h1v1h-1z"/></svg>
+      <p>On your phone? Point its camera at this code to get I-5 Buddy there.</p>
+    </div>
+  </section>
+
+  <p class="gt-safety">Set it up before you drive. Narration is hands-free; leave the screen to passengers.</p>
+</main>
+
+<footer class="pv-foot">
+  <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
+  <p class="fine">Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc. Google Play and Android are trademarks of Google LLC.</p>
+</footer>
+</div>
+</body>
+</html>

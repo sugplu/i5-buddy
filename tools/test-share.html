@@ -9,7 +9,8 @@
   ?s=      all (default) | view (leaves the share sheet open for a screenshot; ?view=app|place|place-sheet)
   ?theme=  dark | light       ?w= ?h=  iframe size (default 390 x 844)
   Checks: the header button, Web Share (called with the exact data, a cancelled share does nothing, a failed or missing
-  one opens the sheet), the sheet (copy link, the invite message, Text message and Email links, copy fallback),
+  one opens the sheet), the sheet (copy link, the invite message, Text message and Email links, copy fallback), sharing
+  the app uses the i5.dominares.org/get link (in the browser and in the iPhone app's invitation),
   the Share button on a place sheet and what it shares, #place=<id> deep links (opens once, hash removed, unknown ids
   and junk ignored), and the old-address redirect keeping the hash.
   The app loads as srcdoc with service-worker registration stubbed (see test-live.html).
@@ -65,8 +66,11 @@ const SCENARIOS = {
   async all({ win, doc, api }) {
     const sheet = () => $(doc, "#shareSheet");
     const open = () => sheet() && !sheet().hidden;
-    const APP = { title: "I-5 Buddy", text: "I-5 Buddy: a free narrated guide to I-5 in California.", url: "https://i5.dominares.org/" };
-    const INVITE = "I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/";
+    // sharing the app: the /get link (an iPhone or iPad goes straight to the App Store; see get/index.html)
+    const APP = { title: "I-5 Buddy", text: "I-5 Buddy: a free narrated guide to I-5 in California.", url: "https://i5.dominares.org/get" };
+    const INVITE = "I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/get";
+    const mod = await import("../js/share.js");
+    check("the iPhone app's invitation uses the same /get link", mod._test.INVITE_APP === "I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/get" && mod._test.GET === APP.url, mod._test.INVITE_APP);
     const btn = $(doc, "#shareBtn");
     // --- the header button
     check("share button is shown with an icon and a label", !btn.hidden && !!btn.querySelector("svg") && /Share/.test(btn.getAttribute("aria-label")));
@@ -147,7 +151,7 @@ const SCENARIOS = {
     const shText = txt(sh);
     log("sheet", shText);
     check("the sheet has Copy link, an invite message and three actions", /Copy link/.test(shText) && txt($(doc, "#shareMsg")) === INVITE && /Text message/.test(shText) && /Email/.test(shText) && /Copy message/.test(shText), shText);
-    check("the link shown is i5.dominares.org", /i5\.dominares\.org/.test(txt($(doc, ".sh-url"))) && !/https/.test(txt($(doc, ".sh-url"))));
+    check("the link shown is i5.dominares.org/get", txt($(doc, ".sh-url")) === "i5.dominares.org/get", txt($(doc, ".sh-url")));
     const links = [...sh.querySelectorAll("a")];
     const sms = links.find(a => /^sms:/.test(a.getAttribute("href"))), mail = links.find(a => /^mailto:/.test(a.getAttribute("href")));
     check("Text message link is sms:?&body= with the invite", sms && sms.getAttribute("href") === "sms:?&body=" + encodeURIComponent(INVITE), sms && sms.getAttribute("href"));
@@ -158,7 +162,7 @@ const SCENARIOS = {
     NAV(win, "clipboard", { writeText: async t => { copied.push(t); } });
     [...sh.querySelectorAll("button")].find(b => /Copy link/.test(b.textContent)).click();
     await wait(200);
-    check("Copy link copies the address and says so", copied[0] === "https://i5.dominares.org/" && /Link copied/.test(txt($(doc, "#toast"))) && !$(doc, "#toast").hidden, `${copied[0]} · ${txt($(doc, "#toast"))}`);
+    check("Copy link copies the address and says so", copied[0] === "https://i5.dominares.org/get" && /Link copied/.test(txt($(doc, "#toast"))) && !$(doc, "#toast").hidden, `${copied[0]} · ${txt($(doc, "#toast"))}`);
     [...sh.querySelectorAll("button")].find(b => /Copy message/.test(b.textContent)).click();
     await wait(200);
     check("Copy message copies the invite and says so", copied[1] === INVITE && /Message copied/.test(txt($(doc, "#toast"))), `${copied[1]} · ${txt($(doc, "#toast"))}`);

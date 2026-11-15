@@ -5,7 +5,10 @@ Oregon line. It follows you by GPS and speaks up before each landmark ("In about
 "Tell me more" story for each one, the landscape as it changes, the season's crops, and live road info.
 
 Live at **https://i5.dominares.org/** (made by Dominares). The Cloudflare Worker `i5-buddy` serves that address from this repo's GitHub Pages build, so a release is still just a push; the old https://sugplu.github.io/i5-buddy/ address forwards there. Worker source: `/Volumes/sugsair/dominares/i5-buddy-worker/`. It's a phone web app (PWA): open the link, add it to the home screen,
-and it works offline after that. No account, no ads, no analytics or tracking scripts, no cookies. Trips, stamps and
+and it works offline after that. The same app is on the App Store for iPhone (https://apps.apple.com/us/app/i-5-buddy/id6834991531,
+since 2026-11-15; the Capacitor project is `/Volumes/sugsair/dominares/i5-buddy-ios/`). The one link to share is
+**https://i5.dominares.org/get**: an iPhone or iPad goes straight to the App Store; Android phones and computers get a
+short page that opens the web app. No account, no ads, no analytics or tracking scripts, no cookies. Trips, stamps and
 settings stay on the phone. What does leave it (the ordinary requests to load the app, opt-in live road info, the 3D map's
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
@@ -25,7 +28,7 @@ map pictures, the browser's own speech services, and feedback you choose to send
   destination; the whole road before a trip): steepness colors, grade %, the highest point, forecast and traffic markers,
   and big numbers for the climb, the top and the steepest grade.
 - **Share and feedback**: a share button in the top bar (the phone's share sheet, or copy the link / invite a friend by
-  text or email), a Share button on every landmark, links like `i5.dominares.org/#place=<id>` that open one landmark, and
+  text or email; it shares i5.dominares.org/get), a Share button on every landmark, links like `i5.dominares.org/#place=<id>` that open one landmark, and
   "Send feedback" in Settings (name, email, message) that goes to the Dominares team.
 - **Ahead**: every landmark ahead with photos, filters, sources; or gas, food and rest areas ahead.
 - **Map**: the whole road on a zoomable map with every landmark, camera and rest area. **3D**: a tilted terrain map (hills,
@@ -63,6 +66,8 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | Path | What it is |
 | --- | --- |
 | `index.html`, `app.css`, `js/`, `css/` | The app. Plain HTML/CSS/ES modules, no build step, no dependencies. |
+| `get/index.html` | i5.dominares.org/get, the link for posts, QR codes and shared invitations: iPhone and iPad straight to the App Store; Android a short page (Google Play is coming, the web app today); computers the App Store badge, the web app and a QR code of the link. Cached with the app shell (sw.js `PAGES`). |
+| `support.html` | The support page (the App Store listing's Support URL): help, contact, and "Get the app". Cached with the app shell. |
 | `privacy.html` | The privacy notice (a standalone page on `app.css`, cached with the app shell), linked from Settings > About, the feedback form, the welcome card and the last line of Drive. When a change makes the app send or store something new, update it with a new effective date and version. |
 | `data/i5.js` | Generated data (route, places, zones, trivia, exits, services, cameras, elevation, map outline). Don't edit; run the build. |
 | `content/v2/*.json` | Researched and fact-checked content, one file per stretch of road (+ `*-gaps.json`). Edit these. |
@@ -70,7 +75,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `img/` | Landmark photos (Wikimedia Commons, free licenses; credits in `tools/images.json` and on each photo). |
 | `tools/` | Data pipeline and tests (below). |
 | `vendor/maplibre/` | MapLibre GL JS 5.24.0 (BSD-3-Clause; `maplibre-gl.js`, `.css`, `LICENSE.txt`, `VERSION`), loaded only when the 3D map is opened and never cached with the app shell. To update: download the `maplibre-gl-<version>.tgz` from the npm registry and copy those three files from `dist/` (and the license), then update `VERSION`. |
-| `sw.js`, `manifest.webmanifest`, `icons/`, `fonts/` | Offline support, install info (with two phone screenshots for Android's install sheet), the logo (`icons/app-icon.svg`) and the icons made from it, the link-preview picture, Overpass font (SIL OFL). |
+| `sw.js`, `manifest.webmanifest`, `icons/`, `fonts/` | Offline support, install info (with two phone screenshots for Android's install sheet, and the iPhone app in `related_applications`), the logo (`icons/app-icon.svg`) and the icons made from it, the link-preview picture, Apple's App Store badge (`icons/app-store-badge.svg`, unmodified), Overpass font (SIL OFL). |
 
 ## Data pipeline
 
@@ -119,6 +124,7 @@ python3 tools/run_tests.py --only geometry # one of them
 #   /tools/e2e.html    fake GPS drives: narration timing, sides, off-route, glitches, the halfway point,
 #                      the end of the road at the Oregon line and at the Mexico border, demo, modules (ALL PASS)
 #   /tools/test-{live,map,play,trip,listen,ride}.html   per-module pages (test-map also covers the ride marker and the 3D fallback)
+#   /tools/test-getapp.html?s=app|get|site   "Get the iPhone app" by browser, i5.dominares.org/get, store tags, sw.js offline pages
 ```
 
 When you change any app file, bump `VERSION` in `sw.js` so installed phones pick up the update.

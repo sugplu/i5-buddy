@@ -109,10 +109,12 @@ async function run() {
   }
 
   // 0b. Installing. Chrome and Edge send an install offer: Install app then shows in the welcome card, right under the
-  //     headline, and in Settings. iPhones get a one-line tip there instead (in an app's own browser, such as
-  //     Instagram's, a different one: its Share has no Add to Home Screen). None of it shows in the installed app. A tap
-  //     opens the browser's install dialog once, and the focus stays nearby when the button goes. On a 390x844 phone
-  //     Start GPS is on the first screen, clear of the tab bar; in a phone browser's shorter tab so are the button and the tip.
+  //     headline, and in Settings. iPhones get "Get the iPhone app" (the App Store badge) there instead, in Safari, in an
+  //     app's own browser such as Instagram's, and from the Home Screen; Settings says how to add the page to the Home
+  //     Screen (in an app's own browser: open it in Safari first, its Share has no Add to Home Screen). The install offer
+  //     never shows in the installed app. A tap opens the browser's install dialog once, and the focus stays nearby when
+  //     the button goes. On a 390x844 phone Start GPS is on the first screen, clear of the tab bar; in a phone browser's
+  //     shorter tab so are the button and the App Store badge. (tools/test-getapp.html checks the badge itself.)
   {
     const frame = document.getElementById("f"), nav = win.navigator;
     const IPHONE = "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1";
@@ -123,6 +125,8 @@ async function run() {
     const shown = id => { const e = doc.getElementById(id); return !!e && !e.hidden; };
     const size = (w, h) => { frame.style.width = w ? w + "px" : ""; frame.style.height = h ? h + "px" : ""; return sleep(300); };
     const tipText = () => slot() && !slot().hidden ? slot().textContent : "(none)";
+    const STORE = "https://apps.apple.com/us/app/i-5-buddy/id6834991531";
+    const getApp = () => { const a = slot() && !slot().hidden && slot().querySelector("a.get-app"); return a && a.href === STORE && /^Get the iPhone app/.test(a.textContent) ? a : null; };
     const span = e => { if (!e) return "missing"; const b = e.getBoundingClientRect(); return `${Math.round(b.top)} to ${Math.round(b.bottom)} px`; };
     const tabTop = () => Math.round(doc.querySelector(".tabs").getBoundingClientRect().top);
     const clear = e => { if (!e) return false; const b = e.getBoundingClientRect(); return win.scrollY === 0 && b.height >= 16 && b.top >= 0 && b.bottom <= tabTop(); };
@@ -136,20 +140,22 @@ async function run() {
       return o;
     };
 
-    // iPhone, Safari: the tip under the headline, on the first screen of a browser tab
+    // iPhone, Safari: "Get the iPhone app" under the headline, on the first screen of a browser tab
     setUA(IPHONE); await refresh();
-    ok(tipText() === "Tip: tap Share, then Add to Home Screen." && slot()?.previousElementSibling === doc.querySelector("#nextCard h2")
+    ok(getApp() && slot()?.previousElementSibling === doc.querySelector("#nextCard h2")
       && txt("installHint") === "To install: tap Share, then Add to Home Screen." && !shown("installApp"),
       `iPhone: under the welcome headline "${tipText()}"; Settings: "${txt("installHint")}"`);
     await size(390, 664);
-    ok(clear(slot()?.firstElementChild), `390x664 browser tab: the iPhone tip (${span(slot()?.firstElementChild)}) is clear of the tab bar (from ${tabTop()} px)`);
+    ok(clear(getApp()), `390x664 browser tab: Get the iPhone app (${span(getApp())}) is clear of the tab bar (from ${tabTop()} px)`);
     await size();
     setUA(IPHONE.replace("Safari/604.1", "Instagram 380.0.0.29.109 (iPhone15,2; iOS 18_5; en_US)")); await refresh();
-    ok(tipText() === "Tip: open this page in Safari to add it to your Home Screen."
-      && txt("installHint") === "To install: open this page in Safari, tap Share, then Add to Home Screen.", `iPhone, in Instagram's browser: "${tipText()}"`);
+    ok(getApp() && txt("installHint") === "To install: open this page in Safari, tap Share, then Add to Home Screen.",
+      `iPhone, in Instagram's browser: "${tipText()}"; Settings: "${txt("installHint")}"`);
     setUA(IPHONE); Object.defineProperty(nav, "standalone", { value: true, configurable: true }); await refresh();
-    ok(tipText() === "(none)" && txt("installHint") === "Installed on this device.", `iPhone, opened from the Home Screen: no tip (${tipText()}); Settings: "${txt("installHint")}"`);
+    ok(getApp() && txt("installHint") === "Installed on this device.", `iPhone, opened from the Home Screen: "${tipText()}"; Settings: "${txt("installHint")}"`);
     delete nav.standalone; setUA(null); await refresh();
+    ok(tipText() === "(none)" && !doc.querySelector("a.get-app:not([hidden] *)") && doc.getElementById("appRow").hidden,
+      `back to this computer's browser: no App Store badge (${tipText()})`);
 
     // Chrome: the offer, but not in the installed app
     const o1 = offer("dismissed"); await sleep(100);

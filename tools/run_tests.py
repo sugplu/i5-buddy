@@ -60,6 +60,10 @@ SUITE = [
     ("map stamps", "test-map.html?scene=stamps", 30000, "900,960", False),
     ("map light", "test-map.html?scene=whole&theme=light", 30000, "900,960", False),
     ("share", "test-share.html", 40000, "500,900", True),
+    # "Get the iPhone app" (welcome card, About) by browser and inside the iPhone app; get/index.html; tags and sw.js
+    ("get app", "test-getapp.html?s=app", 150000, "500,900", True),
+    ("get page", "test-getapp.html?s=get", 60000, "500,900", True),
+    ("get site", "test-getapp.html?s=site", 40000, "500,900", True),
     ("feedback", "test-feedback.html", 60000, "500,900", True),
     ("feedback light", "test-feedback.html?theme=light", 60000, "500,900", False),
     ("roadahead", "test-roadahead.html", 90000, "500,900", True),

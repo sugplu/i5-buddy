@@ -7,6 +7,7 @@
 <meta name="description" content="Help with I-5 Buddy, the California I-5 road-trip guide by Dominares: how to try it, how to use it on the road, and how to reach us.">
 <meta name="theme-color" content="#0b6e3f">
 <meta name="author" content="Dominares">
+<meta name="apple-itunes-app" content="app-id=6834991531">
 <link rel="canonical" href="https://i5.dominares.org/support.html">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -50,6 +51,11 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
 .pv main .pv-when{margin:3px 0 8px;font-size:.74rem;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:var(--link)}
 .pv-foot{display:grid;gap:10px;margin-top:30px}
 .pv-foot .primary{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
+/* Apple's App Store badge as it comes, 48 px tall (never under 40), with a quarter of its height clear around it */
+.pv main .pv-badge{margin:0;padding:12px 0}
+.pv-badge a{display:inline-block;vertical-align:top}
+.pv-badge img{display:block;height:48px;width:auto}
+.pv-foot .fine{text-align:center}
 </style>
 </head>
 <body>
@@ -70,6 +76,11 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <div class="pv-intro">
     <p>I-5 Buddy is made by Dominares. We read every message.</p>
   </div>
+
+  <h2 id="get">Get the app</h2>
+  <p><b>iPhone:</b> get the I-5 Buddy app, free on the App Store.</p>
+  <p class="pv-badge"><a href="https://apps.apple.com/us/app/i-5-buddy/id6834991531"><img src="icons/app-store-badge.svg" alt="Download on the App Store" width="144" height="48"></a></p>
+  <p><b>Android:</b> I-5 Buddy is coming to Google Play. You can use it today in Chrome: open <a href="./">i5.dominares.org</a>, then the menu &gt; Install app (or Add to Home screen).</p>
 
   <h2 id="contact">Contact us</h2>
   <p>Write to <a href="mailto:support@dominares.org">support@dominares.org</a>, or tap Settings &gt; About &gt; Send feedback in the app. We reply by email.</p>
@@ -101,6 +112,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
 <footer class="pv-foot">
   <a class="primary" href="./">Back to I-5 Buddy</a>
   <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
+  <p class="fine">Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc. Google Play and Android are trademarks of Google LLC.</p>
 </footer>
 </div>
 </body>

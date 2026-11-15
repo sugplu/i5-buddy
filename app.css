@@ -116,14 +116,22 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .welcome-stats div{background:var(--surface-2);border-radius:10px;padding:10px;display:grid;gap:2px}
 .welcome-stats b{font-family:var(--mono);font-size:1.25rem}
 .welcome-stats span{font-size:.75rem;color:var(--muted);line-height:1.2}
-/* install: the button (welcome card and Settings) and the iPhone tip */
+/* install: the button (welcome card and Settings) */
 .install-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .install-btn svg{width:20px;height:20px;flex:none;color:var(--link)}
 .welcome-install{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .welcome-install .install-btn{min-height:46px;padding:10px 18px}
-.next .install-tip{margin:0;color:var(--muted);font-size:.86rem;font-weight:600;line-height:1.35}
-.install-tip .ic svg{width:17px;height:17px;vertical-align:-3px;margin-left:3px;color:var(--link)}
 #installRow .install-btn{justify-self:start}
+/* "Get the iPhone app" (main.js appStoreLink: the welcome card and Settings > About, in a browser on an iPhone or iPad):
+   Apple's badge as it comes (44 px tall, never under Apple's 40), with a quarter of its height (11 px) clear on every
+   side, then the words, all one link. Beside the badge the words wrap; on a very narrow screen they go under it. */
+.get-app{display:flex;flex-wrap:wrap;align-items:center;gap:11px 12px;min-height:44px;color:var(--fg);text-decoration:none}
+.get-app-badge{display:block;flex:none;height:44px;width:auto}
+.get-app-text{flex:1 1 130px;min-width:0;display:grid;gap:1px;line-height:1.25}
+.get-app-text b{font-weight:900}
+.get-app-text small{color:var(--muted);font-size:.8rem;font-weight:600}
+.welcome-install .get-app{flex:1 1 100%;margin-block:1px} /* + the card's 10 px gap = 11 px clear above and below the badge */
+.get-app-row{gap:12px}
 .farm{--c:var(--farm)}.hist{--c:var(--hist)}.nature{--c:var(--nature)}.town{--c:var(--town)}.stop{--c:var(--stop)}.odd{--c:var(--odd)}
 
 /* photos */
