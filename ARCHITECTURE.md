@@ -219,7 +219,7 @@ change. `api.roadahead.state()` gives the last drawing's numbers (used by tools/
 
 **Feedback (js/feedback.js).** Settings > About button opens `#feedbackSheet`: Name (optional), Email, Message (2000 characters,
 counter) and a visually hidden `website` honeypot. Only on Send it POSTs `{name, email, message, version, website}` to
-`/api/feedback` (same origin rule as traffic); the app version is read from `sw.js`'s `VERSION` line (constant `2.5.1` as a
+`/api/feedback` (same origin rule as traffic); the app version is read from `sw.js`'s `VERSION` line (constant `2.5.2` as a
 fallback). Beside "We use your email only to reply to you." a Privacy link opens `privacy.html` in a new tab (a 44 px target).
 States: sending, thanks, the server's own error words (text kept), offline (Send disabled), 15 s timeout. Name and
 email are remembered after a send (`feedback:who`) and an unsent draft is kept (`feedback:draft`), both via `api.store`.
