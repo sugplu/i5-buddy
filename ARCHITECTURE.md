@@ -267,6 +267,10 @@ https://apps.apple.com/us/app/i-5-buddy/id6834991531 (id 6834991531). The websit
 - **manifest.webmanifest** names the iPhone app in `related_applications` with `prefer_related_applications: false` (the
   web app stays the one browsers offer to install), and index.html's JSON-LD holds a `MobileApplication` for it beside the
   `WebApplication` (no ratings or reviews until there are some).
+- **support.html's "Get the app"** (the badge; Android: coming to Google Play) is wrapped in `<div data-web-only>`. The
+  iPhone app carries support.html and `native.openDoc` can show it inside the app; openDoc drops every `[data-web-only]`
+  part, so the app never shows an App Store badge for itself or names Android and Google Play (App Review guideline
+  2.3.10). Mark any other website-only part of a page the app carries the same way.
 - **Not yet:** `.well-known/assetlinks.json` (comes with the Android app and Google's signing key).
 - Tests: `tools/test-getapp.html` (`?s=app`, `?s=get`, `?s=site`).
 

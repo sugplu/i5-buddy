@@ -12,10 +12,12 @@
          iPhone app" in a browser on an iPhone or iPad (Safari, Chrome, Instagram's own browser, iPadOS asking for the
          desktop site, the Home Screen), as one link to the App Store page, with the badge unmodified, at least 40 px
          tall and a quarter of its height clear around it; and nowhere on Android, on a computer, or inside the iPhone
-         app (window.Capacitor, which the iPhone app's shell adds before any page script runs).
-   get   get/index.html under each kind of browser: an iPhone or iPad is sent to the App Store at once (the navigation
-         is caught with the Navigation API and stopped), Android and computers see their own words and buttons, and
-         without JavaScript the computer version shows. Also its head: canonical, link preview, theme, byline.
+         app (window.Capacitor, which the iPhone app's shell adds before any page script runs), where support.html
+         opens without its "Get the app" (data-web-only).
+   get   get/index.html under each kind of browser: an iPhone or iPad is sent to the App Store at once, replacing the
+         page in the history (the navigation is caught with the Navigation API and stopped), but not when it says it is
+         offline; Android and computers see their own words and buttons, and without JavaScript the computer version
+         shows. Also its head: canonical, link preview, theme, byline.
    site  What the pages tell browsers and search engines: the App Store banner tag on every page, the manifest's
          related_applications, the JSON-LD, the sitemap, support.html's "Get the app", the badge file is Apple's own,
          no assetlinks.json yet; and sw.js run against a fake cache: install saves get/ and support.html, and offline
@@ -80,7 +82,8 @@ function stubScript(b, opts = {}) {
   ${opts.standalone ? 'try{Object.defineProperty(navigator,"standalone",{configurable:true,value:true})}catch(e){}' : ""}
   ${opts.native ? "window.Capacitor={isNativePlatform:function(){return true},isPluginAvailable:function(){return false},Plugins:{}};" : ""}
   ${opts.sw ? 'try{Object.defineProperty(navigator.serviceWorker,"register",{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}' : ""}
-  ${opts.nav ? 'window.__nav=[];if(window.navigation)navigation.addEventListener("navigate",function(e){var u=e.destination.url;if(/^about:/.test(u))return;window.__nav.push(u);if(e.cancelable)e.preventDefault()});' : ""}
+  ${opts.offline ? 'try{Object.defineProperty(navigator,"onLine",{configurable:true,get:function(){return false}})}catch(e){}' : ""}
+  ${opts.nav ? 'window.__nav=[];window.__navType=[];if(window.navigation)navigation.addEventListener("navigate",function(e){var u=e.destination.url;if(/^about:/.test(u))return;window.__nav.push(u);window.__navType.push(e.navigationType);if(e.cancelable)e.preventDefault()});' : ""}
 })()<\/script>`;
 }
 
@@ -210,18 +213,27 @@ const SCENARIOS = {
       check("the iPhone app: no App Store badge in the welcome card or in About, no install row", !!welcome && (!slot || slot.hidden) && doc.getElementById("appRow").hidden
         && !visibleStoreLinks(doc).length && !doc.querySelector("a.get-app") && doc.getElementById("installRow").hidden, `${visibleStoreLinks(doc).length} links`);
       check("the iPhone app: the App Store banner tag is there but Safari's alone (no code reads it)", !!doc.querySelector('meta[name="apple-itunes-app"]') && !/apple-itunes-app/.test(await (await fetch("../js/main.js")).text()));
+      // support.html shown inside the app (native.js openDoc; the iPhone project's smoke test opens it): its "Get the app"
+      // (data-web-only) is left out: no App Store badge for the app itself, no Android or Google Play (guideline 2.3.10)
+      doc.getElementById("closeSettings").click();
+      await wait(150);
+      api.native.openDoc("support.html");
+      const nd = await until(() => { const d = doc.querySelector(".nv-doc"); return d && !d.hidden && /support@dominares\.org/.test(d.textContent) ? d : null; }, 6000).catch(() => null);
+      check("the iPhone app: support.html inside the app, without Get the app (no App Store badge or link, no Android, no Google Play)", !!nd && !nd.querySelector("#get, [data-web-only]")
+        && !nd.querySelector('a[href^="https://apps.apple.com/"], img[src*="app-store-badge"]') && !/Google Play|Android/.test(nd.textContent) && /Contact us/.test(nd.textContent), nd ? txt(nd).slice(0, 140) : "not shown");
+      api.native.closeDoc();
     }
   },
 
   async get() {
     const src = await (await fetch("../get/index.html", { cache: "no-store" })).text();
     const GET_BASE = new URL("../get/", location.href).href;
-    async function bootGet(b, { scripts = true, size = [390, 844] } = {}) {
+    async function bootGet(b, { scripts = true, size = [390, 844], offline = false } = {}) {
       f.removeAttribute("sandbox");
       if (!scripts) f.setAttribute("sandbox", "allow-same-origin");
       f.style.width = size[0] + "px"; f.style.height = size[1] + "px";
       const loaded = new Promise(r => f.addEventListener("load", r, { once: true }));
-      f.srcdoc = src.replace(/<head>/i, "<head>" + `<base href="${GET_BASE}">` + (scripts ? stubScript(b, { nav: true }) : ""));
+      f.srcdoc = src.replace(/<head>/i, "<head>" + `<base href="${GET_BASE}">` + (scripts ? stubScript(b, { nav: true, offline }) : ""));
       await loaded;
       await until(() => f.contentDocument && f.contentDocument.readyState === "complete", 8000);
       await wait(250);
@@ -231,10 +243,18 @@ const SCENARIOS = {
     // iPhones and iPads: straight to the App Store
     for (const [name, b] of [["iPhone Safari", UA.iphone], ["Chrome on an iPhone", UA.iphoneChrome], ["Instagram's own browser on an iPhone", UA.instagram], ["an iPad", UA.ipad], ["an iPad asking for the desktop site", UA.ipadDesktop]]) {
       const { win, doc } = await bootGet(b);
-      check(`get/ on ${name}: goes to the App Store page at once (location.replace)`, Array.isArray(win.__nav) && win.__nav.length === 1 && win.__nav[0] === STORE, JSON.stringify(win.__nav));
+      // "replace": the App Store page takes get/'s place in the history, so Back never lands on get/ (and its redirect) again
+      check(`get/ on ${name}: goes to the App Store page at once, replacing itself (location.replace)`, Array.isArray(win.__nav) && win.__nav.length === 1 && win.__nav[0] === STORE && win.__navType[0] === "replace", JSON.stringify(win.__nav) + " " + JSON.stringify(win.__navType));
       const ios = sec(doc, "gt-ios"), a = ios && ios.querySelector(`a[href="${STORE}"]`), img = a && a.querySelector("img");
       check(`get/ on ${name}: and shows the badge as the way there if the App Store doesn't open`, doc.documentElement.dataset.os === "ios" && shownEl(ios) && shownEl(a) && !shownEl(sec(doc, "gt-android")) && !shownEl(sec(doc, "gt-other"))
         && !!img && img.alt === "Download on the App Store" && img.getBoundingClientRect().height >= 40, doc.documentElement.dataset.os);
+    }
+    // an iPhone that says it is offline (get/ from the offline cache): no redirect into an error, the badge and the web app
+    {
+      const { win, doc } = await bootGet(UA.iphone, { offline: true });
+      const ios = sec(doc, "gt-ios");
+      check("get/ on an offline iPhone: stays on the page, with the badge and the web app link", Array.isArray(win.__nav) && win.__nav.length === 0 && doc.documentElement.dataset.os === "ios"
+        && shownEl(ios) && shownEl(ios.querySelector(`a[href="${STORE}"]`)) && [...ios.querySelectorAll("a")].some(x => x.getAttribute("href") === "../" && shownEl(x)), JSON.stringify(win.__nav));
     }
     // Android: coming to Google Play, the web app today
     for (const [name, b] of [["Chrome on Android", UA.android], ["Instagram's own browser on Android", UA.androidInstagram]]) {
@@ -333,6 +353,9 @@ const SCENARIOS = {
     while (n && n.tagName !== "H2") { s += " " + txt(n); n = n.nextElementSibling; }
     const sa = sup.querySelector(`main a[href="${STORE}"] img`);
     check("support.html: Get the app, with Apple's badge linked to the App Store page", !!h && txt(h) === "Get the app" && !!sa && sa.getAttribute("src") === "icons/app-store-badge.svg" && sa.alt === "Download on the App Store");
+    const wo = h && h.closest("[data-web-only]");
+    check("support.html: Get the app is for the website only (data-web-only: the iPhone app's copy of the page leaves it out)", !!wo && wo.contains(sa) && /Google Play/.test(wo.textContent)
+      && ![...sup.querySelectorAll("main a[href^='https://apps.apple.com/']")].some(a => !wo.contains(a)) && !/Google Play|Android/.test([...sup.querySelector("main").children].filter(c => c !== wo).map(txt).join(" ")));
     check("support.html: Android is coming to Google Play, use it in Chrome today", /coming to Google Play/.test(s) && /use it today in Chrome/.test(s) && /Install app/.test(s), s.trim());
     check("support.html: Apple's trademark line in the footer", /App Store is a service mark of Apple Inc\./.test(txt(sup.querySelector("footer"))));
     // the badge is Apple's file as it came from Apple's marketing tools (2026-11-15), byte for byte

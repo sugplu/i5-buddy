@@ -77,10 +77,14 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <p>I-5 Buddy is made by Dominares. We read every message.</p>
   </div>
 
+  <!-- data-web-only: the iPhone app carries this page and can show it inside the app (js/native.js openDoc), which
+       leaves this part out: no App Store badge for the app itself, and no Android or Google Play (guideline 2.3.10) -->
+  <div data-web-only>
   <h2 id="get">Get the app</h2>
   <p><b>iPhone:</b> get the I-5 Buddy app, free on the App Store.</p>
   <p class="pv-badge"><a href="https://apps.apple.com/us/app/i-5-buddy/id6834991531"><img src="icons/app-store-badge.svg" alt="Download on the App Store" width="144" height="48"></a></p>
   <p><b>Android:</b> I-5 Buddy is coming to Google Play. You can use it today in Chrome: open <a href="./">i5.dominares.org</a>, then the menu &gt; Install app (or Add to Home screen).</p>
+  </div>
 
   <h2 id="contact">Contact us</h2>
   <p>Write to <a href="mailto:support@dominares.org">support@dominares.org</a>, or tap Settings &gt; About &gt; Send feedback in the app. We reply by email.</p>

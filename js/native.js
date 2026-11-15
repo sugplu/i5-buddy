@@ -10,7 +10,8 @@
 //   init(hooks)           once at start (main.js): the app's own styles (no text selection or page bounce), pages such
 //                         as privacy.html shown inside the app, About without links to other products
 //   openDoc(file, from, hash)  show a page that ships with the app (privacy.html, support.html) in a sheet inside the app:
-//                         works offline, and a drive in progress carries on underneath
+//                         works offline, and a drive in progress carries on underneath. Parts marked data-web-only
+//                         (support.html's "Get the app") are left out.
 //   safetyFirst(go)       the first Start GPS in the app shows the safety line in a sheet; its Start GPS button runs go()
 //   onMode(mode)          the safety line on top of the Drive tab while GPS runs (main.js setMode)
 //   geolocation()         inside the app, a navigator.geolocation stand-in backed by the phone's own location service:
@@ -207,6 +208,8 @@ export async function openDoc(file, from, hash = "") {
   const wrap = el("div", shell || null);
   wrap.append(document.importNode(main, true));
   for (const s of wrap.querySelectorAll("script")) s.remove();
+  // parts of a page for the website only (support.html's "Get the app": the App Store badge and Google Play)
+  for (const n of wrap.querySelectorAll("[data-web-only]")) n.remove();
   const h1 = wrap.querySelector("h1");
   docTitle.textContent = (h1 && h1.textContent.trim()) || (doc.title || "").split(" · ")[0].trim() || "I-5 Buddy";
   docBody.replaceChildren(wrap);
