@@ -4,6 +4,7 @@ import * as data from "./data.js";
 import * as geo from "./geo.js";
 import { voice } from "./voice.js";
 import { narrator, upcoming, announceText, tellMore, hear, look, resetTrip, markHeard } from "./narrator.js";
+import * as native from "./native.js";
 
 const {
   PLACES, CATS, MAX_M, STATES, DESTS, ENDS, SCOPE, zoneAt, stateAt, localMile, regionAt, sideWord, aheadOf, elevAt,
@@ -40,6 +41,9 @@ function closeSheet() {
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
 $("sheetBack").addEventListener("click", closeSheet);
+// The iPhone app: its own styles, its pages (privacy.html) in a sheet inside the app, About without links to other
+// products. Nothing happens in a browser.
+native.init({ store, toast, openSheet, closeSheet });
 
 /** A place photo with its credit. size: "hero" | "thumb" | "full". */
 function photo(p, size = "hero") {
@@ -68,6 +72,7 @@ function applyTheme() {
   }
   document.documentElement.dataset.theme = t;
   document.querySelector('meta[name="theme-color"]').content = t === "light" ? "#0b6e3f" : "#111513";
+  native.statusBar(t); // the iPhone app: status bar text that stays readable on this theme (no-op in a browser)
 }
 setInterval(applyTheme, 5 * 60 * 1000);
 
@@ -96,6 +101,7 @@ function setPosition(m, { speed = null, dir = null, offRoute = false, jumped = f
 function setMode(mode) {
   S.mode = mode;
   bus.emit("mode", mode);
+  native.onMode(mode); // the iPhone app: the safety line on top of Drive while GPS runs
   const on = mode !== "off";
   $("startControls").hidden = on;
   $("runControls").hidden = !on;
@@ -122,9 +128,12 @@ function pastEnd() {
 }
 /** The end of the road we are past right now, or null (only while GPS has us off the road). */
 const atEnd = () => (S.mode === "gps" && S.offRoute ? offEnd : null);
+// Tests can inject a fake GPS; the iPhone app uses the phone's own location service (native.js), else the browser's.
+const geoSource = () => window.__I5_FAKE_GEO__ || native.geolocation() || navigator.geolocation;
 function startGps() {
+  if (native.safetyFirst(startGps)) return; // the iPhone app's first Start GPS: the safety line in a sheet first
   voice.unlock();
-  const G = window.__I5_FAKE_GEO__ || navigator.geolocation; // tests can inject a fake GPS
+  const G = geoSource();
   if (!G) { toast("This browser can't share your location."); return; }
   stopAll(true);
   setMode("gps");
@@ -133,7 +142,7 @@ function startGps() {
   greet();
   watchId = G.watchPosition(onFix, err => {
     if (err.code === 1) {
-      toast("Location is blocked. Allow location for this site in your browser settings.", 5000);
+      toast(native.NATIVE ? native.locationOffText(err) : "Location is blocked. Allow location for this site in your browser settings.", 5000);
       stopAll();
     } else {
       $("statusText").textContent = "Waiting for a GPS signal…";
@@ -216,7 +225,7 @@ function greet(extra = "") {
 }
 
 function stopAll(silent = false) {
-  if (watchId != null) (window.__I5_FAKE_GEO__ || navigator.geolocation).clearWatch(watchId);
+  if (watchId != null) geoSource().clearWatch(watchId);
   clearInterval(demoTimer);
   watchId = null; demoTimer = null; dirVotes = []; anchorM = null; lastFix = null; offCount = 0;
   // A new session starts on the road until two far fixes say otherwise (otherwise a trip that ended off the road
@@ -233,8 +242,8 @@ function stopAll(silent = false) {
 
 /* Keep the screen awake while driving */
 let wake = null;
-async function requestWake() { try { if (!wake) { wake = await navigator.wakeLock?.request("screen"); wake?.addEventListener?.("release", () => { wake = null; }); } } catch { wake = null; } }
-function releaseWake() { try { wake && wake.release(); } catch {} wake = null; }
+async function requestWake() { if (native.NATIVE && await native.keepAwake(true)) return; try { if (!wake) { wake = await navigator.wakeLock?.request("screen"); wake?.addEventListener?.("release", () => { wake = null; }); } } catch { wake = null; } }
+function releaseWake() { if (native.NATIVE) native.keepAwake(false); try { wake && wake.release(); } catch {} wake = null; }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.mode !== "off") requestWake(); });
 
 /* ---------- rendering: Drive ---------- */
@@ -355,7 +364,7 @@ function renderNext() {
     // shorter than the screen, that keeps it above the tab bar.
     const inst = el("div", "welcome-install"); inst.hidden = true;
     card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()), h2, inst,
-      el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. Tap Start GPS on the road, or take a demo drive from the couch.`));
+      el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. ${native.NATIVE ? "Tap Start GPS before you pull out" : "Tap Start GPS on the road"}, or take a demo drive from the couch.`));
     const stats = el("div", "welcome-stats");
     for (const [n, l] of [[PLACES.length, "landmarks"], [data.CAMS.length, "live cameras"], [data.SERVICES.length, "exits with services"]]) {
       const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
@@ -363,8 +372,9 @@ function renderNext() {
     card.append(stats);
     // the byline, and beside it a link that says Privacy on the first screen (privacy.html in a new tab, as in About);
     // short enough that both stay on one line on a 360 px phone
-    const by = el("a", "byline", "Made by Dominares · i5.dominares.org");
-    by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener";
+    // in the iPhone app the byline is plain words: dominares.org sells developer tools, nothing to do with the app
+    const by = native.NATIVE ? el("span", "byline", "Made by Dominares") : el("a", "byline", "Made by Dominares · i5.dominares.org");
+    if (!native.NATIVE) { by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener"; }
     const pv = el("a", "byline", "Privacy");
     pv.href = "privacy.html"; pv.target = "_blank"; pv.rel = "noopener";
     const dot = el("span", null, "·"); dot.setAttribute("aria-hidden", "true");
@@ -696,6 +706,12 @@ const ICON_INSTALL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4
 const ICON_SHARE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2.6 4.2 4.2-1.4 1.4L13 6.4V15h-2V6.4L9.2 8.2 7.8 6.8 12 2.6ZM5 10h4v2H7v8h10v-8h-2v-2h4v12H5V10Z" fill="currentColor"/></svg>';
 const markBusy = (b, busy) => busy ? b.setAttribute("aria-disabled", "true") : b.removeAttribute("aria-disabled");
 function updateInstall() {
+  if (native.NATIVE) { // the iPhone app is installed already: no Install app row, no Add to Home Screen tip
+    $("installRow").hidden = true;
+    const s = document.querySelector("#nextCard .welcome-install");
+    if (s) s.hidden = true;
+    return;
+  }
   const installed = installedHere || runningInstalled();
   const offer = installed ? null : window.__i5Install || null;
   const busy = asking && !installed;
@@ -776,9 +792,14 @@ $("savePhotos").onclick = async () => {
   }
   btn.disabled = false;
 };
+if (native.NATIVE) { // the iPhone app carries every file, photos included
+  $("savePhotos").hidden = true;
+  $("offlineText").textContent = `Everything is on this phone, photos included. Live road info${native.VOICE ? ", voice commands" : ""} and the 3D map need a connection.`;
+}
 
 /* ---------- service worker ---------- */
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
+// Not in the iPhone app: it ships every file and updates through the App Store (and WKWebView has no service worker here).
+if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NATIVE) {
   navigator.serviceWorker.register("sw.js").then(reg => {
     const show = () => { $("updateBar").hidden = false; };
     if (reg.waiting && navigator.serviceWorker.controller) show();
@@ -796,7 +817,7 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
 
 /* ---------- modules (each is optional: if one fails, the rest still work) ---------- */
 export const api = {
-  S, settings, saveSettings, bus, store, voice, narrator, data, geo,
+  S, settings, saveSettings, bus, store, voice, narrator, data, geo, native,
   ui: { $, el, toast, go, openSheet, closeSheet, photo, placeSheet, queueRender },
   setPosition, setMode, startDemo, startGps, stopAll,
 };

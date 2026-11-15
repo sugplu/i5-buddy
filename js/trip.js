@@ -258,7 +258,9 @@ function buildDefs() {
     { id: "night-owl", group: "road", icon: "🦉", name: "Night owl", hint: "Drive 30 minutes between 10 pm and 4 am" },
     { id: "early-bird", group: "road", icon: "🌅", name: "Early bird", hint: "Drive 10 minutes between 5 and 7 am" },
   );
-  list.push(...road);
+  // The iPhone app leaves out the two badges that reward driving habits: late at night, and 500 miles in one go.
+  const appSkip = A && A.native && A.native.NATIVE ? ["long-haul", "night-owl"] : [];
+  list.push(...road.filter(d => !appSkip.includes(d.id)));
   for (const r of REGIONS) {
     const n = (regionPlaces.get(r.id) || []).length;
     if (!n) continue; // no landmarks there yet: nothing to complete
@@ -1670,7 +1672,7 @@ async function renderShare() {
   let cv = null;
   try { cv = drawCard(shareKind); } catch (e) { warn("card", e); }
   if (cv) { await addRide(cv); if (seq !== shareSeq) return; }
-  if (!cv) { cap.textContent = "This browser can't draw the card. Copy the summary instead."; return; }
+  if (!cv) { cap.textContent = A && A.native && A.native.NATIVE ? "Can't draw the card on this iPhone. Copy the summary instead." : "This browser can't draw the card. Copy the summary instead."; return; }
   cv.setAttribute("role", "img");
   cv.setAttribute("aria-label", "Share card. " + text);
   const old = fig.querySelector("canvas");
@@ -1685,6 +1687,9 @@ async function renderShare() {
   try { shareFile = new File([blob], name, { type: "image/png" }); } catch { shareFile = null; }
   let canFiles = false;
   try { canFiles = !!(shareFile && navigator.share && navigator.canShare && navigator.canShare({ files: [shareFile] })); } catch {}
+  // The iPhone app's web view has no downloads, so there "Save picture" could only fail: share the picture through
+  // the iOS share sheet, or leave the button out (Copy summary stays).
+  if (!canFiles && A && A.native && A.native.NATIVE) { go.hidden = true; return; }
   go.lastChild.textContent = canFiles ? "Share picture" : "Save picture";
   go.dataset.mode = canFiles ? "share" : "save";
   go.disabled = false;
@@ -1708,6 +1713,7 @@ function doShare() {
 }
 function download() {
   if (!shareUrl) return;
+  if (A && A.native && A.native.NATIVE) { toast("Couldn't share the picture. Copy the summary instead."); return; } // no downloads in the iPhone app
   const a = el("a");
   a.href = shareUrl;
   a.download = shareFile ? shareFile.name : "i5-buddy.png";

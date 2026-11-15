@@ -1365,6 +1365,7 @@ function showBlocked(code) {
   autoClose(20000);
 }
 function blockedText(code) {
+  if (A && A.native && A.native.NATIVE) return A.native.micOffText(code); // the iPhone app: its own switches in Settings
   const ua = (typeof navigator !== "undefined" && navigator.userAgent) || "";
   const ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   const android = /Android/i.test(ua);
@@ -2135,8 +2136,12 @@ export function init(api) {
   destNamesMemo = placeNamesMemo = null; // started again with another api (the tests do): its data may differ
   const btn = document.getElementById("micBtn");
   const base = { parseCommand, parseAnswer, chooseCommand };
+  // The iPhone app: its own words if the recognizer fails, and native.VOICE false leaves voice commands out there
+  // (the same as a web view without speech recognition).
+  const app = !!(api && api.native && api.native.NATIVE);
+  if (app) ERR.unsupported = ["Voice commands aren't available on this iPhone", "Use the buttons instead.", "hard"];
   try {
-    if (!getSR()) {
+    if (!getSR() || (app && api.native.VOICE === false)) {
       api.listen = Object.assign({ supported: false }, base);
       if (btn) btn.hidden = true;
       return;
