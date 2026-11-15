@@ -46,7 +46,7 @@ button.pl-sq:active{transform:scale(.95)}
 .pl-free.on{background:var(--surface);color:var(--muted);border-color:var(--line)}
 .pl-free.on::after{display:none}
 .pl-free.win{background:var(--sign);color:var(--sign-fg);border-style:solid}
-.pl-free-shield{width:34px;height:36px}
+.pl-free-logo{width:34px;height:34px;display:block}
 .pl-free .pl-sq-t{letter-spacing:.14em}
 @keyframes pl-pop{0%{transform:scale(1)}45%{transform:scale(1.14)}100%{transform:scale(1)}}
 
@@ -64,7 +64,7 @@ button.pl-sq:active{transform:scale(.95)}
   box-shadow:inset 0 0 0 4px var(--sign),inset 0 0 0 7px var(--sign-fg),var(--shadow);padding:20px 30px 22px;display:grid;justify-items:center;gap:6px;
   text-align:center;width:min(100%,340px);animation:pl-sign .6s cubic-bezier(.2,1.5,.4,1) both}
 .pl-win-top{display:flex;align-items:center;gap:8px;font-size:.72rem;font-weight:800;letter-spacing:.14em}
-.pl-win-shield{width:28px;height:30px}
+.pl-win-logo{width:28px;height:28px;display:block}
 .pl-win-t{font-size:4.4rem;font-weight:900;line-height:.95;letter-spacing:.01em;padding-top:4px}
 .pl-win.full .pl-win-t{font-size:3.2rem}
 .pl-win-s{font-weight:800;font-size:1.05rem;opacity:.92}

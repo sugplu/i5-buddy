@@ -1764,7 +1764,7 @@ function roadCard(s) {
   try { region = d.regionAt ? d.regionAt(m) : null; } catch {}
   try { ft = d.elevAt ? d.elevAt(m) : null; } catch {}
   const icon = el("div", "mp-ph mp-ph-road");
-  icon.innerHTML = '<svg viewBox="0 0 58 62" aria-hidden="true"><use href="#shield"/></svg>';
+  icon.innerHTML = '<img src="icons/icon.svg" alt="" draggable="false">';
   const meta = [st && st.name ? st.name : "", lm ? `Mile ${Math.round(lm.mi)}` : `Mile ${Math.round(m)}`, num(ft) ? `${ft.toLocaleString("en-US")} ft` : ""].filter(Boolean).join(" · ");
   cardTop(card, icon, meta, (zone && zone.label) || (region && region.name) || "Interstate 5");
   if (zone && zone.text) card.append(el("p", "mp-text", zone.text));

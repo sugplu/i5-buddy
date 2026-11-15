@@ -22,10 +22,10 @@
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A green highway sign with the Interstate 5 shield: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
+<meta property="og:image:alt" content="The I-5 Buddy logo, a 5 in sunset stripes, on a green highway sign: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://i5.dominares.org/icons/og-1200x630.png">
-<meta name="twitter:image:alt" content="A green highway sign with the Interstate 5 shield: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
+<meta name="twitter:image:alt" content="The I-5 Buddy logo, a 5 in sunset stripes, on a green highway sign: I-5 Buddy, a free guide that tells you about I-5 in California as you drive. i5.dominares.org, made by Dominares.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"I-5 Buddy","url":"https://i5.dominares.org/","applicationCategory":"TravelApplication","operatingSystem":"Any (web app for iPhone, Android and desktop)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"A free narrated road-trip guide to all of Interstate 5 in California. It follows you by GPS and tells you about the orchards, history and landmarks you pass.","image":"https://i5.dominares.org/icons/icon-512.png","publisher":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"},"author":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"}}</script>
 <script>/* I-5 Buddy moved from sugplu.github.io to i5.dominares.org (2026-11-12). Send browsers there; installed copies get a notice instead. */
 (function(){var h=location.hostname;if(!/github\.io$/.test(h))return;var to="https://i5.dominares.org"+location.pathname.replace(/^\/i5-buddy/,"")+location.search+location.hash;var installed=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;if(!installed){location.replace(to);return}window.__i5Moved=to})();</script>
@@ -50,7 +50,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <div class="app">
 
 <header class="top">
-  <svg class="shield" viewBox="0 0 58 62" aria-hidden="true"><use href="#shield"/></svg>
+  <img class="logo" src="icons/icon.svg" alt="" width="34" height="34">
   <div class="brand"><b>I-5 Buddy</b><span id="statusText">Mexico to Oregon</span></div>
   <span class="pill" id="statusPill" data-s="off">OFF</span>
   <button class="icon-btn" id="micBtn" hidden aria-label="Talk to I-5 Buddy">
@@ -248,15 +248,6 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <div class="update" id="updateBar" hidden>A new version is ready. <button class="link" id="updateBtn">Reload</button></div>
 </div>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="shield" viewBox="0 0 58 62">
-    <path d="M4 4 Q29 0 54 4 Q58 36 29 60 Q0 36 4 4Z" fill="#fff"/>
-    <path d="M7 7 Q29 3.5 51 7 L51.6 17 H6.4Z" fill="#c8202f"/>
-    <path d="M6.4 19 H51.6 Q52 38 29 56 Q6 38 6.4 19Z" fill="#1f4aa8"/>
-    <text x="29" y="14.6" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="800" font-size="7" fill="#fff">INTERSTATE</text>
-    <text x="29" y="47" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="900" font-size="27" fill="#fff">5</text>
-  </symbol>
-</svg>
 
 <script>if(window.__i5Moved){var b=document.getElementById("movedBar");document.getElementById("movedLink").href=window.__i5Moved;b.hidden=false}</script>
 <script src="data/i5.js"></script>

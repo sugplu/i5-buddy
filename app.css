@@ -50,7 +50,7 @@ main{flex:1;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:m
 /* top bar. It carries the top safe-area inset itself, so when it sticks to the top of an installed app on a phone
    with a notch or Dynamic Island, its background covers the status bar and the title stays below it. */
 .top{display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) 8px max(14px,env(safe-area-inset-left,0px));position:sticky;top:0;z-index:12;background:var(--bg)}
-.shield{width:34px;height:36px;flex:none}
+.logo{width:34px;height:34px;flex:none;display:block}
 .brand{display:grid;line-height:1.15;min-width:0;flex:1}
 .brand b{font-weight:900;font-size:1.15rem;letter-spacing:.01em}
 .brand span{color:var(--muted);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

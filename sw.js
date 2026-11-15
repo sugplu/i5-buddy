@@ -2,7 +2,7 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.5.3"; // 2.5.3: the iPhone app shell support (js/native.js; nothing changes in a browser), one AI-made photo removed and photo credits cleaned (2.5.2: the privacy notice also covers the iPhone app (version 2026-11-14.2), and support.html (2.5.1: the privacy notice (privacy.html), linked from Settings > About, the feedback form and Drive; narration starts on a voice on the device; weather.gov points count from a 5-mile mark (2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map)
+const VERSION = "i5b-v2.5.4"; // 2.5.4: the new logo (Sunset Stripes, original art) replaces the Interstate shield everywhere, icons made by tools/icons.py, Android maskable icon (2.5.3: the iPhone app shell support (js/native.js; nothing changes in a browser), one AI-made photo removed and photo credits cleaned (2.5.2: the privacy notice also covers the iPhone app (version 2026-11-14.2), and support.html (2.5.1: the privacy notice (privacy.html), linked from Settings > About, the feedback form and Drive; narration starts on a voice on the device; weather.gov points count from a 5-mile mark (2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map))))
 const SHELL = [
   "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js", "js/native.js",

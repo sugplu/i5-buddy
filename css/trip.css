@@ -138,7 +138,7 @@
 .pp-cover{background:var(--sign);color:var(--sign-fg);border-radius:var(--radius);padding:16px 18px 16px;display:grid;gap:12px;
   box-shadow:inset 0 0 0 3px var(--sign),inset 0 0 0 5px var(--sign-fg),var(--shadow)}
 .pp-cover-top{display:flex;align-items:center;gap:12px}
-.pp-shield{width:44px;height:47px;flex:none}
+.pp-logo{width:44px;height:44px;flex:none;display:block}
 .pp-cover-tt{min-width:0}
 .pp-ride{margin-left:auto;flex:none;display:grid;justify-items:center;max-width:84px}   /* the ride (ride.js) and its nickname */
 .pp-ride .ride-svg{width:64px;height:auto;filter:drop-shadow(0 0 1.2px rgba(255,255,255,.85))}

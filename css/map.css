@@ -128,7 +128,7 @@
 .mp-top .photo.thumb{width:64px;height:64px}
 .mp-ph{width:64px;height:64px;border-radius:10px;display:grid;place-items:center;font-size:1.8rem;line-height:1;background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--c,var(--line))}
 .mp-ph .mp-glyph{width:32px;height:32px}
-.mp-ph-road svg{width:34px;height:36px}
+.mp-ph-road img{width:36px;height:36px;display:block}
 .mp-headtxt{display:grid;gap:3px;min-width:0;padding-top:1px}
 .mp-meta{font-size:.7rem;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:var(--c,var(--muted))}
 .mp-camcard .mp-meta,.mp-restcard .mp-meta{color:var(--link)}

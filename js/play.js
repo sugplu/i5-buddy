@@ -45,7 +45,7 @@ function svg(viewBox, inner, cls) {
   s.innerHTML = inner;
   return s;
 }
-const shield = cls => svg("0 0 58 62", '<use href="#shield"/>', cls);
+const logo = cls => h("img", { class: cls, src: "icons/icon.svg", alt: "", draggable: "false" });
 const ICON = {
   eye: '<path d="M12 5C6.5 5 2.6 9.2 1.3 12c1.3 2.8 5.2 7 10.7 7s9.4-4.2 10.7-7C21.4 9.2 17.5 5 12 5Zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Zm0-2.3a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" fill="currentColor"/>',
   speaker: '<path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4ZM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z" fill="currentColor"/>',
@@ -448,7 +448,7 @@ function renderBingo(fresh = []) {
     card.cells.forEach((c, i) => {
       if (c.free) {
         grid.append(h("div", { class: "pl-sq pl-free", role: "img", "aria-label": "Free space" },
-          shield("pl-free-shield"), h("span", { class: "pl-sq-t" }, "FREE")));
+          logo("pl-free-logo"), h("span", { class: "pl-sq-t" }, "FREE")));
       } else {
         grid.append(h("button", { class: "pl-sq", type: "button", "data-i": i, "aria-pressed": "false" },
           h("span", { class: "pl-sq-e", "aria-hidden": "true" }, c.e), h("span", { class: "pl-sq-t" }, c.t)));
@@ -515,7 +515,7 @@ function celebrate(kind, fresh) {
   winEl = h("div", { class: "pl-win" + (full ? " full" : ""), role: "alert", onclick: closeWin },
     conf,
     h("div", { class: "pl-win-sign" },
-      h("div", { class: "pl-win-top" }, shield("pl-win-shield"),
+      h("div", { class: "pl-win-top" }, logo("pl-win-logo"),
         h("span", null, full ? "ROAD BINGO" : `ROAD BINGO · ${card.won.length === 1 ? "FIRST LINE" : `LINE ${card.won.length}`}`)),
       h("b", { class: "pl-win-t" }, title),
       h("span", { class: "pl-win-s" }, sub)));

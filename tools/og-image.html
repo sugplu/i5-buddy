@@ -5,13 +5,14 @@
 <title>I-5 Buddy link preview (1200x630)</title>
 <!--
   The link-preview picture (og:image, twitter:image): icons/og-1200x630.png.
-  Drawn with the app's own night tokens and Overpass font (../app.css), the Interstate shield and the green sign board,
+  Drawn with the app's own night tokens and Overpass font (../app.css), the I-5 Buddy logo and the green sign board,
   with Made by Dominares and its mark (as in the app's About card) beside the address.
   No photos. The ribbon has a tick for every other landmark ahead of the dot, read from ../data/i5.js.
 
   To re-render after a change:  python3 tools/og_image.py   (headless Chrome; writes icons/og-1200x630.png at
   exactly 1200x630), then bump VERSION in sw.js. To look at it, serve the repo root and open /tools/og-image.html.
-  Keep the shield and the Dominares mark below in step with index.html (the #shield symbol, the About card's mark).
+  The logo is ../icons/icon.svg (made by tools/icons.py from icons/app-icon.svg); keep the Dominares mark below in
+  step with index.html (the About card's mark).
 -->
 <link rel="stylesheet" href="../app.css">
 <style>
@@ -24,7 +25,7 @@
   .og-sign{position:absolute;left:56px;right:56px;top:52px;height:404px;border-radius:30px;background:var(--sign);color:var(--sign-fg);
     box-shadow:inset 0 0 0 9px var(--sign),inset 0 0 0 15px var(--sign-edge),0 26px 60px rgba(0,0,0,.55);
     padding:50px 64px 0 58px;display:grid;grid-template-columns:auto 1fr;column-gap:40px;align-content:start}
-  .og-shield{width:166px;height:178px;display:block;grid-row:1 / span 2;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+  .og-logo{width:178px;height:178px;display:block;grid-row:1 / span 2;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
   .og-name{margin:2px 0 0;font-weight:900;font-size:136px;line-height:1;letter-spacing:-.005em;white-space:nowrap}
   .og-line{margin:18px 0 0;font-weight:700;font-size:41px;line-height:1.18;text-wrap:balance;max-width:820px}
   /* the route ribbon from the app, with a tick for every other landmark ahead of the dot */
@@ -43,13 +44,7 @@
 </head>
 <body>
 <div class="og-sign">
-  <svg class="og-shield" viewBox="0 0 58 62" aria-hidden="true">
-    <path d="M4 4 Q29 0 54 4 Q58 36 29 60 Q0 36 4 4Z" fill="#fff"/>
-    <path d="M7 7 Q29 3.5 51 7 L51.6 17 H6.4Z" fill="#c8202f"/>
-    <path d="M6.4 19 H51.6 Q52 38 29 56 Q6 38 6.4 19Z" fill="#1f4aa8"/>
-    <text x="29" y="14.6" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="800" font-size="7" fill="#fff">INTERSTATE</text>
-    <text x="29" y="47" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="900" font-size="27" fill="#fff">5</text>
-  </svg>
+  <img class="og-logo" src="../icons/icon.svg" alt="">
   <h1 class="og-name">I-5 Buddy</h1>
   <p class="og-line">A free guide that tells you about I-5 in California as you drive</p>
   <div class="og-ribbon" id="ribbon" aria-hidden="true">

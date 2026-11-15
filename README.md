@@ -70,7 +70,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `img/` | Landmark photos (Wikimedia Commons, free licenses; credits in `tools/images.json` and on each photo). |
 | `tools/` | Data pipeline and tests (below). |
 | `vendor/maplibre/` | MapLibre GL JS 5.24.0 (BSD-3-Clause; `maplibre-gl.js`, `.css`, `LICENSE.txt`, `VERSION`), loaded only when the 3D map is opened and never cached with the app shell. To update: download the `maplibre-gl-<version>.tgz` from the npm registry and copy those three files from `dist/` (and the license), then update `VERSION`. |
-| `sw.js`, `manifest.webmanifest`, `icons/`, `fonts/` | Offline support, install info (with two phone screenshots for Android's install sheet), icons, the link-preview picture, Overpass font (SIL OFL). |
+| `sw.js`, `manifest.webmanifest`, `icons/`, `fonts/` | Offline support, install info (with two phone screenshots for Android's install sheet), the logo (`icons/app-icon.svg`) and the icons made from it, the link-preview picture, Overpass font (SIL OFL). |
 
 ## Data pipeline
 
@@ -87,6 +87,13 @@ python3 tools/extras.py           # -> tools/extras.json (cameras, services, res
 python3 tools/build.py            # -> data/i5.js for the states in SCOPE (+ tools/build-report.txt with warnings)
 python3 tools/images.py           # -> img/*.jpg + tools/images.json (then run build.py again)
 ```
+
+The logo is one drawing, `icons/app-icon.svg` (a full-bleed 1024 square, original art; the iPhone app's App Store icon
+is the same file). `python3 tools/icons.py` makes every icon from it: `icons/icon.svg` (the rounded tile used as the
+favicon and as the logo inside the app), `icon-512/192.png`, the apple-touch `icon-180.png` and the Android
+`icon-maskable-512.png` (from `icons/app-icon-maskable.svg`, the same drawing shrunk into the safe circle). Then
+re-render the link preview and bump `VERSION` in `sw.js`. Never use a highway route shield: the Interstate shield is
+a registered trademark of AASHTO (the app used it until 2.5.4).
 
 The link-preview picture (what a shared link shows in Messages, Slack and so on) is `icons/og-1200x630.png`, drawn
 from `tools/og-image.html` with the app's own tokens and font. After changing that page, run `python3 tools/og_image.py`

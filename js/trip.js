@@ -985,13 +985,10 @@ function bar(p, label) {
   return b;
 }
 
-function shieldSvg(cls) {
-  const s = document.createElementNS(SVGNS, "svg");
-  s.setAttribute("viewBox", "0 0 58 62"); s.setAttribute("class", cls); s.setAttribute("aria-hidden", "true");
-  const u = document.createElementNS(SVGNS, "use");
-  u.setAttribute("href", "#shield");
-  s.append(u);
-  return s;
+function logoImg(cls) {
+  const i = el("img", cls);
+  i.src = "icons/icon.svg"; i.alt = ""; i.draggable = false;
+  return i;
 }
 
 function sinceTime() {
@@ -1008,7 +1005,7 @@ function ppCover() {
   const tt = el("div", "pp-cover-tt");
   const since = sinceTime();
   tt.append(el("h2", "pp-title", "I-5 Passport"), el("p", "pp-since", since ? `Collecting since ${fmtDay(since, true)}` : `${endToEnd()}, one stamp at a time`));
-  top.append(shieldSvg("pp-shield"), tt);
+  top.append(logoImg("pp-logo"), tt);
   try { // the ride (ride.js) and its nickname, if that module is loaded
     if (A.ride && A.ride.svg) {
       const pr = el("div", "pp-ride");
@@ -1374,12 +1371,10 @@ function summaryText(kind) {
 function tokens() {
   const cs = getComputedStyle(document.documentElement);
   const v = (n, f) => (cs.getPropertyValue(n) || "").trim() || f;
-  const shieldFills = [...document.querySelectorAll("#shield path")].map(p => p.getAttribute("fill"));
   return {
     bg: v("--bg", "#101412"), surface: v("--surface", "#1a201d"), surface2: v("--surface-2", "#232b27"), line: v("--line", "#313b36"),
     fg: v("--fg", "#eef2ee"), fg2: v("--fg-2", "#cfd8d2"), muted: v("--muted", "#93a198"), sign: v("--sign", "#0b6e3f"), signFg: v("--sign-fg", "#ffffff"),
     accent: v("--accent", "#f2c230"), accentFg: v("--accent-fg", "#1b1a10"), link: v("--link", "#f2c230"), stop: v("--stop", "#b496ec"),
-    shieldWhite: shieldFills[0] || "#ffffff", shieldRed: shieldFills[1] || v("--danger", "#c8202f"), shieldBlue: shieldFills[2] || v("--shield", "#1f4aa8"),
     st: { CA: v("--st-ca", "#f2c230"), OR: v("--st-or", "#5cc46f"), WA: v("--st-wa", "#52bdd0") },
     display: v("--display", "system-ui, sans-serif"), mono: v("--mono", "ui-monospace, monospace"),
   };
@@ -1419,28 +1414,28 @@ function fitText(g, text, weight, family, size, maxW, min = 20) {
   for (; size > min; size -= 4) { g.font = `${weight} ${size}px ${family}`; if (g.measureText(text).width <= maxW) break; }
   return size;
 }
-function drawShield(g, x, y, h, T) {
-  const s = h / 62;
-  g.save(); g.translate(x, y); g.scale(s, s);
-  g.beginPath(); g.moveTo(4, 4); g.quadraticCurveTo(29, 0, 54, 4); g.quadraticCurveTo(58, 36, 29, 60); g.quadraticCurveTo(0, 36, 4, 4); g.closePath();
-  g.fillStyle = T.shieldWhite; g.fill();
-  g.beginPath(); g.moveTo(7, 7); g.quadraticCurveTo(29, 3.5, 51, 7); g.lineTo(51.6, 17); g.lineTo(6.4, 17); g.closePath();
-  g.fillStyle = T.shieldRed; g.fill();
-  g.beginPath(); g.moveTo(6.4, 19); g.lineTo(51.6, 19); g.quadraticCurveTo(52, 38, 29, 56); g.quadraticCurveTo(6, 38, 6.4, 19); g.closePath();
-  g.fillStyle = T.shieldBlue; g.fill();
-  g.fillStyle = T.shieldWhite; g.textAlign = "center"; g.textBaseline = "alphabetic";
-  g.font = `800 7px ${T.display}`; g.fillText("INTERSTATE", 29, 14.6);
-  g.font = `900 27px ${T.display}`; g.fillText("5", 29, 47);
+/* The logo on the share card: the app icon's rounded tile as a PNG. A canvas drawn with a same-origin PNG can always
+   be exported; some Safari versions refuse to export one that was drawn with an SVG image. Loaded with the fonts. */
+let LOGO = null;
+function loadLogo() {
+  if (!LOGO) { LOGO = new Image(); LOGO.src = "icons/icon-512.png"; }
+  if (LOGO.complete && LOGO.naturalWidth) return Promise.resolve();
+  return new Promise(r => { LOGO.addEventListener("load", r, { once: true }); LOGO.addEventListener("error", r, { once: true }); });
+}
+function drawLogo(g, x, y, s) {
+  if (!LOGO || !LOGO.complete || !LOGO.naturalWidth) return; // not loaded (offline first run): the sign keeps its text
+  g.save();
+  g.shadowColor = "rgba(0,0,0,.3)"; g.shadowBlur = 20; g.shadowOffsetY = 6;
+  g.drawImage(LOGO, x, y, s, s);
   g.restore();
 }
 
 async function fontsReady() {
   try {
-    if (!document.fonts || !document.fonts.load) return;
-    await Promise.race([
-      Promise.all(['900 64px "Overpass"', '700 64px "Overpass"', '700 40px "Overpass Mono"'].map(f => document.fonts.load(f).catch(() => null))),
-      new Promise(r => setTimeout(r, 1500)),
-    ]);
+    const fonts = document.fonts && document.fonts.load
+      ? ['900 64px "Overpass"', '700 64px "Overpass"', '700 40px "Overpass Mono"'].map(f => document.fonts.load(f).catch(() => null))
+      : [];
+    await Promise.race([Promise.all(fonts.concat(loadLogo())), new Promise(r => setTimeout(r, 1500))]);
   } catch {}
 }
 
@@ -1455,13 +1450,13 @@ function drawCard(kind) {
   g.textBaseline = "alphabetic";
   g.fillStyle = T.bg; g.fillRect(0, 0, W, H);
 
-  // the green sign: shield on the left, kicker + title + date on the right, centered as a block
+  // the green sign: the logo on the left, kicker + title + date on the right, centered as a block
   const sy = M, sh = 396;
   rr(g, M, sy, rw, sh, 40); g.fillStyle = T.sign; g.fill();
   rr(g, M + 16, sy + 16, rw - 32, sh - 32, 28); g.strokeStyle = T.signFg; g.lineWidth = 7; g.stroke();
-  const shH = 216, shW = shH * 58 / 62;
-  drawShield(g, M + 62, sy + (sh - shH) / 2, shH, T);
-  const tx = M + 62 + shW + 46, tw = M + rw - 60 - tx;
+  const lg = 204;
+  drawLogo(g, M + 62, sy + (sh - lg) / 2, lg);
+  const tx = M + 62 + lg + 46, tw = M + rw - 60 - tx;
   let kSize = 30;
   for (; kSize > 18; kSize -= 2) { g.font = `800 ${kSize}px ${F}`; if (spacedWidth(g, C.kicker, 5) <= tw) break; }
   let kick = C.kicker;
