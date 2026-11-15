@@ -1,6 +1,8 @@
 // I-5 Buddy live road info (module). Owns #liveAlerts (top of Drive), #liveBlock (lower Drive) and its own sheet.
 //
-//   Weather ahead   National Weather Service forecasts about 25 and 90 corridor miles ahead.
+//   Weather ahead   National Weather Service forecasts about 25 and 90 corridor miles ahead. Both weather lists are
+//                   counted from the nearest 5-mile mark and sent with 2 decimals (targets, ll), so weather.gov can't
+//                   work the exact spot back out of the points (privacy.html, Live road info).
 //   Weather alerts  NWS active alerts about 10, 50 and 120 miles ahead; each warning is spoken once (its updates,
 //                   which get new ids, stay quiet unless the event changes, e.g. to a Blizzard Warning).
 //   Chain controls  Caltrans feeds for districts in the next 150 miles; spoken once per area and direction, again
@@ -23,6 +25,7 @@
 
 const WX_AHEAD = [25, 90];            // forecast points, corridor miles ahead
 const ALERT_AHEAD = [10, 50, 120];    // alert query points
+const WX_SNAP = 5;                    // weather points are counted from the nearest mark this many miles apart
 const CC_RANGE = 150;                 // chain controls this far ahead
 const CMS_RANGE = 40;                 // the next freeway sign within this
 const CMS_SAY = 3;                    // read the sign aloud within this
@@ -226,14 +229,19 @@ async function getJSON(url, retries = 0) {
   }
 }
 function abortAll() { for (const ac of inflight) { try { ac.abort(); } catch {} } inflight.clear(); }
-const ll = x => String(+(+x).toFixed(4)); // 4 decimals max (weather.gov redirects longer ones)
+// 2 decimals (0.01 degree, well under a mile): weather.gov answers by forecast zone and 2.5 km grid cell, so nothing
+// finer is needed (and it redirects anything over 4 decimals)
+const ll = x => String(+(+x).toFixed(2));
 
 /* ---------- weather ---------- */
-/** Corridor miles `list` ahead of m, clamped to the road, minus near-duplicates (the end of the road). */
+/** Corridor miles `list` ahead of m, clamped to the road, minus near-duplicates (the end of the road). They are counted
+    from the WX_SNAP-mile mark nearest m, not from m itself: weather.gov gets these points, and a fixed distance ahead of
+    the exact spot would give the spot away to within a few yards. */
 function targets(m, dir, list, minSep) {
+  const base = Math.round(m / WX_SNAP) * WX_SNAP;
   const out = [];
   for (const a of list) {
-    const t = clampM(dir === "N" ? m + a : m - a);
+    const t = clampM(dir === "N" ? base + a : base - a);
     if (!out.some(x => Math.abs(x - t) < minSep)) out.push(t);
   }
   return out;

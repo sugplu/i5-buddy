@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy · I-5 Buddy</title>
+<meta name="description" content="The I-5 Buddy privacy notice: what the California I-5 road-trip guide by Dominares sends from your phone, what stays on it, and your choices.">
+<meta name="theme-color" content="#0b6e3f">
+<meta name="author" content="Dominares">
+<link rel="canonical" href="https://i5.dominares.org/privacy.html">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="app.css">
+<script>/* The app's theme (Settings > Display > Theme), read from this phone's saved settings. "Day/night" follows the sun
+   the way the app does when it has no position yet: geo.js sunAltitude at Sacramento, light above 4 degrees below the horizon. */
+(function(){var t="auto";try{t=(JSON.parse(localStorage.getItem("i5b:settings"))||{}).theme||"auto"}catch(e){}
+if(t!=="dark"&&t!=="light"){var r=Math.PI/180,d=Date.now()/864e5-10957.5,g=(357.529+.98560028*d)*r,q=280.459+.98564736*d,
+L=(q+1.915*Math.sin(g)+.02*Math.sin(2*g))*r,e=(23.439-3.6e-7*d)*r,dec=Math.asin(Math.sin(e)*Math.sin(L)),
+ra=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)),ha=(((18.697374558+24.06570982441908*d)%24)*15-121.49)*r-ra,lat=38.58*r;
+t=Math.asin(Math.sin(lat)*Math.sin(dec)+Math.cos(lat)*Math.cos(dec)*Math.cos(ha))/r>-4?"light":"dark"}
+document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==="light"?"#0b6e3f":"#111513"})();</script>
+<style>
+/* The privacy notice. app.css gives the tokens, fonts and both themes; this is only the page's own layout. */
+.pv{max-width:680px;margin:0 auto;padding:calc(8px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pv main{padding:0}
+.pv-top{margin-bottom:10px}
+.pv-home{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding-right:8px;text-decoration:none;color:var(--fg)}
+.pv-home .shield{width:34px;height:36px}
+.pv-home span{display:grid;line-height:1.2}
+.pv-home b{font-size:1.15rem;font-weight:900}
+.pv-home small{color:var(--link);font-size:.82rem;font-weight:800}
+.pv-sign{background:var(--sign);color:var(--sign-fg);border-radius:var(--radius);padding:16px 18px 14px;box-shadow:inset 0 0 0 3px var(--sign),inset 0 0 0 5px var(--sign-edge),var(--shadow)}
+.pv-sign h1{margin:0;font-size:2.2rem;font-weight:900;line-height:1.05}
+.pv main .pv-sign p{margin:6px 0 0;color:var(--sign-fg)}
+.pv main .pv-sign .pv-date{font-family:var(--mono);font-size:.8rem;opacity:.9}
+.pv-intro{margin-top:16px}
+.pv h2{margin:30px 0 10px;font-size:1.3rem;font-weight:900;line-height:1.2}
+.pv h3{margin:0;font-size:1.06rem;font-weight:800;line-height:1.25;color:var(--fg)}
+.pv main>h3{margin:18px 0 6px}
+.pv main p{margin:0 0 10px;color:var(--fg-2)}
+.pv main ul{margin:0 0 10px;padding-left:1.25em;color:var(--fg-2)}
+.pv main li{margin:6px 0}
+.pv main li::marker{color:var(--muted)}
+.pv main b{color:var(--fg)}
+.pv main a{color:var(--link);font-weight:700;text-underline-offset:2px}
+.pv-host{font-family:var(--mono);font-size:.88em;overflow-wrap:anywhere}
+.pv-short{margin-top:18px;padding:14px 16px 4px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--accent)}
+.pv-short h2{margin:0 0 6px}
+.pv-item{margin:12px 0;padding:14px 16px 4px;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow)}
+.pv main .pv-when{margin:3px 0 8px;font-size:.74rem;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:var(--link)}
+.pv-foot{display:grid;gap:10px;margin-top:30px}
+.pv-foot .primary{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="pv">
+<header class="pv-top">
+  <a class="pv-home" href="./">
+    <svg class="shield" viewBox="0 0 58 62" aria-hidden="true"><path d="M4 4 Q29 0 54 4 Q58 36 29 60 Q0 36 4 4Z" fill="#fff"/><path d="M7 7 Q29 3.5 51 7 L51.6 17 H6.4Z" fill="#c8202f"/><path d="M6.4 19 H51.6 Q52 38 29 56 Q6 38 6.4 19Z" fill="#1f4aa8"/><text x="29" y="14.6" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="800" font-size="7" fill="#fff">INTERSTATE</text><text x="29" y="47" text-anchor="middle" font-family="Overpass,Arial,sans-serif" font-weight="900" font-size="27" fill="#fff">5</text></svg>
+    <span><b>I-5 Buddy</b><small>Back to the app</small></span>
+  </a>
+</header>
+
+<main>
+  <div class="pv-sign">
+    <h1>Privacy</h1>
+    <p>What leaves your phone, what stays on it, and your choices.</p>
+    <p class="pv-date">Effective November 14, 2026 · Version 2026-11-14.1</p>
+  </div>
+
+  <div class="pv-intro">
+    <p>I-5 Buddy is made by Dominares. Dominares Tools is run by Joseph Linares, a sole proprietor based in San Diego, California. "We" on this page means Dominares (Dominares Tools). For questions or requests, write to <a href="mailto:support@dominares.org">support@dominares.org</a>.</p>
+    <p>This notice covers the I-5 Buddy app at i5.dominares.org, and copies of it still running from its old address, sugplu.github.io/i5-buddy. The dominares.org website has its <a href="https://dominares.org/privacy" target="_blank" rel="noopener">own privacy policy</a>.</p>
+  </div>
+
+  <section class="pv-short" aria-labelledby="short">
+    <h2 id="short">The short version</h2>
+    <ul>
+      <li>No account and no sign-in.</li>
+      <li>No ads, no analytics or tracking scripts, and no cookies: I-5 Buddy sets none.</li>
+      <li>We never sell your information or share it for advertising.</li>
+      <li>Your exact GPS position stays on your phone: I-5 Buddy never saves it and never sends it anywhere.</li>
+      <li>Some features tell other services roughly where you are: Live road info, the 3D map and online narration voices. They ask about the part of I-5 around you or ahead of you. Live road info is off until you turn it on. The app uses an online voice only if you pick one, or if your browser has no other.</li>
+      <li>Your trips, stamps and settings are saved only on your phone. We can't see them.</li>
+      <li>If you send feedback, we get your message, your email, your name if you give one, the app version and your browser type. We use them only to read your message and reply.</li>
+    </ul>
+  </section>
+
+  <h2 id="leaves">What leaves your phone, and why</h2>
+  <p>Here is everything I-5 Buddy sends, feature by feature. Most of it happens only after you turn something on or tap something.</p>
+
+  <section class="pv-item" aria-labelledby="f-open">
+    <h3 id="f-open">Opening the app</h3>
+    <p class="pv-when">Every time</p>
+    <p>Your browser loads the app, its road data and the landmark photos from i5.dominares.org. That address runs on Cloudflare, which gets the files from GitHub Pages (GitHub, Inc.), where the app is published. Like any website, Cloudflare sees standard web request data: your IP address, your browser and device type, your language and which file was asked for. GitHub only gets Cloudflare's request for each file, not your IP address, browser or language. Our server stores no log of visits (that log is switched off), and Cloudflare's dashboard shows us traffic totals.</p>
+    <p>The old address works differently. Links to sugplu.github.io/i5-buddy reach GitHub Pages directly, and the page then sends you on to i5.dominares.org. Home Screen apps added from sugplu.github.io keep loading from GitHub Pages, so GitHub sees those requests directly. They show a note asking you to open I-5 Buddy at i5.dominares.org and add it to your Home Screen again.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-feedback">
+    <h3 id="f-feedback">Send feedback</h3>
+    <p class="pv-when">Only when you tap Send</p>
+    <p>Settings &gt; About &gt; Send feedback sends us:</p>
+    <ul>
+      <li>your name, if you give one</li>
+      <li>your email address, so we can reply</li>
+      <li>your message</li>
+      <li>the app version, like 2.5.1</li>
+    </ul>
+    <p>Your browser also sends its user agent: a line of text naming your browser, its version and your device's system. We store the first 200 characters of it with your message, along with the time your message arrived. The app adds nothing else: no location, trips or settings.</p>
+    <p>Your message is stored in a Cloudflare database run for Dominares, and we read it in our Dominares console. We use what you send only to read your message and reply to you.</p>
+    <p>Your IP address is not stored. To stop spam, we take at most 5 messages an hour from one internet address. To count them, we keep a scrambled code made from your IP address and a random value that changes every day (a salted hash). We keep it with the time your message arrived. Someone with access to the database could work an IP address back out of that code, so we treat it as personal information. Each code and each day's random value is kept at least two days, and is deleted when we next accept a message after that. If nobody writes for a while, they stay until someone does. Cloudflare's automatic database history can still bring them back for up to 30 days after they're deleted.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-live">
+    <h3 id="f-live">Live road info</h3>
+    <p class="pv-when">Only after you turn it on</p>
+    <p>It starts off. You can switch it on from the card on the Drive tab or in Settings &gt; Live road info, and switch it off there any time. While it's on and the app is open and online:</p>
+    <ul>
+      <li><b>Traffic.</b> Every 2 minutes the app asks i5.dominares.org for the list of crashes and closures on all of I-5 in California. Our server gets that list from the California Highway Patrol and Caltrans. The request carries no location: everyone gets the same list, and your phone picks out what's ahead of you. Our server keeps nothing about who asked.</li>
+      <li><b>Weather.</b> Your phone asks the National Weather Service (<span class="pv-host">api.weather.gov</span>) for forecasts and alerts at points on I-5 about 10 to 120 miles ahead of you.</li>
+      <li><b>Chain controls and freeway signs.</b> Your phone loads them from Caltrans (<span class="pv-host">cwwp2.dot.ca.gov</span>) for the Caltrans districts ahead of you.</li>
+      <li><b>Cameras.</b> The Drive tab loads pictures from the 3 nearest Caltrans cameras ahead, and from any camera you open, about once a minute while they're on screen.</li>
+    </ul>
+    <p>The weather points are counted from the nearest 5-mile mark on I-5, not from your exact spot. So weather.gov can tell only roughly where you are (within a few miles) and which way you're going. The app checks about every 5 miles or 10 minutes. The cameras you load show Caltrans roughly where you are too. As with any web request, these services also get your IP address and can tell the request came from I-5 Buddy. When you reopen the app, it uses the last spot it saved, even with GPS off.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-map">
+    <h3 id="f-map">Maps</h3>
+    <p class="pv-when">The 3D map: only after you tap 3D</p>
+    <p>The regular map is drawn on your phone from the app's own data, so it loads no map pictures. A camera picture loads from Caltrans only when you tap a camera on it.</p>
+    <p>The 3D map loads only after you tap 3D on the Map tab. Your phone then loads map pictures from OpenFreeMap (<span class="pv-host">tiles.openfreemap.org</span>) and hill shapes from Amazon Web Services (<span class="pv-host">s3.amazonaws.com</span>). As with any web request, they get your IP address and can tell the request came from I-5 Buddy. The pictures cover the area on screen, which starts at your spot on I-5 and follows you. So these services can see roughly where you are. It stops when you tap 3D again or leave the Map tab.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-voice">
+    <h3 id="f-voice">Voice commands</h3>
+    <p class="pv-when">Only after you tap a microphone button</p>
+    <p>Voice commands start when you tap the microphone at the top, or Answer by voice in trivia. I-5 Buddy then uses your browser's own speech recognition to turn what you say into text. To do that, your browser may send the sound to its maker's speech service: Google for Chrome, Apple (Siri and Dictation) for Safari, Microsoft for Edge. On iPhone and iPad, every browser uses Apple's. Their privacy policies apply. I-5 Buddy gets back only the words, uses them on your phone to pick a command or an answer, and never saves or sends them. The microphone is on only while the listening panel is open, for 20 seconds at most, and it stops when you switch away from the app.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-speak">
+    <h3 id="f-speak">Spoken narration</h3>
+    <p class="pv-when">Whenever the app talks</p>
+    <p>I-5 Buddy speaks with a voice your browser provides. On iPhone, the voices run on the phone itself. On Android, it depends on your phone's speech engine. On a computer, some voices are online: Chrome's voices named "Google …" and Edge's named "… Online (Natural)". With one of those, your browser sends the words to Google or Microsoft. The words can say where you are, like "near mile 309, heading north". I-5 Buddy starts with a voice that runs on your device. It uses an online voice only if you pick one, or if your browser has no other. Settings &gt; Narration &gt; Voice marks those voices (online).</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-share">
+    <h3 id="f-share">Sharing</h3>
+    <p class="pv-when">Only when you tap Share</p>
+    <p>Share, Copy, Text message and Email hand the text to your phone's share sheet, messages or email app, or clipboard. I-5 Buddy sends nothing itself. A shared link holds the app's address, or one landmark's (i5.dominares.org/#place=…), never your location. The trip picture in Passport is drawn on your phone and goes only where you send it. It shows your trip's date, miles, regions and destination, your stamp and badge counts, and your ride and its nickname. A strip of I-5 on it marks where the trip started and ended, or where you are now if the trip is still going. The all-time picture marks every mile of I-5 you've driven.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-links">
+    <h3 id="f-links">Links to other sites</h3>
+    <p class="pv-when">Only when you tap one</p>
+    <p>Links such as weather.gov forecasts, Caltrans QuickMap, Apple Maps, Wikipedia, Wikimedia Commons and dominares.org open those sites. They see your visit like any other, and can tell you came from I-5 Buddy. A weather.gov link includes the point ahead that its forecast or alert is for, and an Apple Maps link includes the landmark's location.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-nel">
+    <h3 id="f-nel">Error reports in Chrome and Edge</h3>
+    <p class="pv-when">Only when something fails</p>
+    <p>Cloudflare asks Chrome, Edge and other browsers built on Chrome to report requests to i5.dominares.org that fail. A request fails, for example, when the connection drops or the server answers with an error. Such a report goes from your browser to Cloudflare. It holds the address that failed, the page it came from, the kind of error and its code, timings, your IP address and your browser type. Successful visits are not reported.</p>
+  </section>
+
+  <h2 id="stays">What stays on your phone</h2>
+  <p>I-5 Buddy saves these in your browser's storage for i5.dominares.org, or for sugplu.github.io in a copy added from the old address. They are kept on your phone, not on our server, and we can't see them:</p>
+  <ul>
+    <li>Your settings: voice, speed, theme, narration choices, and Live road info on or off.</li>
+    <li>Your last spot on I-5 (the mile and direction, not GPS coordinates), so the app can pick up where you left off.</li>
+    <li>Your passport: a stamp with the time you first passed each landmark, your badges, and which miles of I-5 you've driven.</li>
+    <li>Your last 30 trips: when, where on I-5 each started and ended, miles, top speed and destination.</li>
+    <li>Your destination, your ride (vehicle, color, badge and nickname) and your game scores.</li>
+    <li>The last live road info it got, including points on the road ahead of you from the past week.</li>
+    <li>For feedback: an unsent draft, and after you send, your name and email to fill in the form next time.</li>
+    <li>Offline copies of the app and of the photos you've viewed or saved.</li>
+  </ul>
+  <p>Your raw GPS readings and what you say to the microphone are never saved. They're gone when you close the app. Your phone or browser works out the GPS position with its own location service. That service may contact its maker, such as Apple or Google, under its own policy. I-5 Buddy never sends your GPS position anywhere.</p>
+  <h3>Clearing it</h3>
+  <ul>
+    <li>Settings &gt; Reset &gt; Clear passport deletes your stamps, trips and badges.</li>
+    <li>To erase everything, clear the website data for i5.dominares.org in your browser's settings. If you used the old address, clear sugplu.github.io too. If you added I-5 Buddy to your Home Screen, remove it there too.</li>
+  </ul>
+
+  <h2 id="sharing">Who we share information with</h2>
+  <ul>
+    <li>We don't sell or rent your information, and we don't share it for advertising.</li>
+    <li>Our service providers are Cloudflare (our server, the feedback database and the error reports) and GitHub. GitHub Pages stores the app's files and serves the old sugplu.github.io address. They handle the requests described above.</li>
+    <li>Mail you send to <a href="mailto:support@dominares.org">support@dominares.org</a> passes through Cloudflare Email Routing to the mailbox where we read it. Our email provider keeps those emails and our replies, including replies to your feedback.</li>
+    <li>The National Weather Service, Caltrans, OpenFreeMap, Amazon Web Services and your browser's speech services (Google, Apple or Microsoft) get requests straight from your phone when you use those features. Their own privacy policies apply.</li>
+    <li>We may disclose information if the law requires it, for example to answer a valid court order.</li>
+  </ul>
+
+  <h2 id="choices">How long we keep it, and your choices</h2>
+  <ul>
+    <li><b>Feedback messages</b> stay until we delete them. Nothing deletes them automatically. After we delete one, Cloudflare's automatic database history can still restore it for up to 30 days.</li>
+    <li><b>Spam-check codes</b> and the daily random values are kept at least two days, and deleted when we next accept a message after that (see Send feedback). The database history can restore them for up to 30 days after that.</li>
+    <li><b>On your phone,</b> everything stays until you clear it, the app trims it (30 trips, a week of weather lookups), or your browser clears it.</li>
+    <li><b>Other services</b> keep what they receive under their own policies.</li>
+  </ul>
+  <p>To see, correct or delete a message you sent, email <a href="mailto:support@dominares.org">support@dominares.org</a> from the address you used. If you write from a different address, tell us which one you used. We'll email that address to check it's you before we share or delete anything. We'll tell you what we have and delete it if you ask, and we answer within 45 days. We don't edit stored messages, so to correct one, we delete it and you can send a new one.</p>
+
+  <h2 id="dnt">Do Not Track</h2>
+  <p>I-5 Buddy doesn't track you across websites. So it works the same whether or not your browser sends a Do Not Track or Global Privacy Control signal. It has no ads, analytics or tracking code, and we don't let any other company add any. The services listed above get your IP address when your phone contacts them, and they keep it under their own policies. We can't control whether they link it to your visits to other sites that use them.</p>
+
+  <h2 id="children">Children</h2>
+  <p>I-5 Buddy is not meant for children under 13 to use on their own, and we don't knowingly collect personal information from children under 13. If you think a child under 13 has sent us a feedback message, email <a href="mailto:support@dominares.org">support@dominares.org</a> and we'll delete it.</p>
+
+  <h2 id="california">California, and changes to this notice</h2>
+  <p>California's online privacy law asks apps like this one to post a notice like this. If we change this notice, we'll post the new one on this page with a new version and effective date.</p>
+  <p>Questions? Write to <a href="mailto:support@dominares.org">support@dominares.org</a>.</p>
+</main>
+
+<footer class="pv-foot">
+  <a class="primary" href="./">Back to I-5 Buddy</a>
+  <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
+</footer>
+</div>
+</body>
+</html>

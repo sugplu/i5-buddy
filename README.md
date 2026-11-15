@@ -5,7 +5,10 @@ Oregon line. It follows you by GPS and speaks up before each landmark ("In about
 "Tell me more" story for each one, the landscape as it changes, the season's crops, and live road info.
 
 Live at **https://i5.dominares.org/** (made by Dominares). The Cloudflare Worker `i5-buddy` serves that address from this repo's GitHub Pages build, so a release is still just a push; the old https://sugplu.github.io/i5-buddy/ address forwards there. Worker source: `/Volumes/sugsair/dominares/i5-buddy-worker/`. It's a phone web app (PWA): open the link, add it to the home screen,
-and it works offline after that. No account, no tracking; everything stays on the phone.
+and it works offline after that. No account, no ads, no analytics or tracking scripts, no cookies. Trips, stamps and
+settings stay on the phone. What does leave it (the ordinary requests to load the app, opt-in live road info, the 3D map's
+map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
+[`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
 ## What it does
 
@@ -60,6 +63,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | Path | What it is |
 | --- | --- |
 | `index.html`, `app.css`, `js/`, `css/` | The app. Plain HTML/CSS/ES modules, no build step, no dependencies. |
+| `privacy.html` | The privacy notice (a standalone page on `app.css`, cached with the app shell), linked from Settings > About, the feedback form, the welcome card and the last line of Drive. When a change makes the app send or store something new, update it with a new effective date and version. |
 | `data/i5.js` | Generated data (route, places, zones, trivia, exits, services, cameras, elevation, map outline). Don't edit; run the build. |
 | `content/v2/*.json` | Researched and fact-checked content, one file per stretch of road (+ `*-gaps.json`). Edit these. |
 | `content/v2/logs/` | Fact-check change logs. |

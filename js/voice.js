@@ -28,9 +28,15 @@ function rankVoice(v) {
   if (/^en[-_]US/i.test(v.lang)) return 2;
   return 3;
 }
+/** An online voice: the browser sends the words to its maker's speech service (on a computer, Chrome's "Google …"
+    voices and Edge's "… Online (Natural)" ones). The words can say where you are ("near mile 309, heading north"). */
+const isOnline = v => !!v && v.localService === false;
 function loadVoices() {
   if (!synth) return;
-  voices = synth.getVoices().filter(v => /^en/i.test(v.lang)).sort((a, b) => rankVoice(a) - rankVoice(b) || a.name.localeCompare(b.name));
+  // The device's own voices first: with no voice picked in Settings, pickVoice() takes voices[0], so narration stays on
+  // the device unless the person picks an online voice or the browser has no other (privacy.html says so).
+  voices = synth.getVoices().filter(v => /^en/i.test(v.lang))
+    .sort((a, b) => isOnline(a) - isOnline(b) || rankVoice(a) - rankVoice(b) || a.name.localeCompare(b.name));
   bus.emit("voices", voices);
 }
 if (synth) { loadVoices(); synth.addEventListener?.("voiceschanged", loadVoices); }
@@ -148,7 +154,8 @@ async function pump() {
 
 export const voice = {
   available: !!synth,
-  list: () => voices,
+  list: () => voices,          // English voices, the device's own before online ones
+  online: isOnline,            // online(v): true when the browser sends this voice's words to its maker
   /**
    * Queue text. opts: {id, prio (0 low .. 3 urgent), now (interrupt and go first), chime (true|"alert"|"success"|false),
    * check (fn -> still relevant? checked right before speaking), onstart, onend}. Resolves true if it was spoken.

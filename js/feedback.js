@@ -1,7 +1,8 @@
 // I-5 Buddy feedback (module). Owns #feedbackRow (Settings > About: a "Send feedback" button) and #feedbackSheet.
 //
 //   The form    Name (optional), Email (required), Message (required, up to 2000 characters, with a counter) and a hidden
-//               "website" field that people never see or fill (a honeypot for bots). Plain words on top: what we do with it.
+//               "website" field that people never see or fill (a honeypot for bots). Plain words on top: what we do with it,
+//               and beside "We use your email only to reply to you." a Privacy link to the notice (privacy.html, new tab).
 //   Sending     Only on Send: POST /api/feedback {name, email, message, version, website} (i5.dominares.org, or the same
 //               address from anywhere else; CORS is open). 10-second patience; the sheet says "Sending", then thanks, or
 //               shows the server's own words and keeps the text. Offline: Send is off and says why.
@@ -9,7 +10,8 @@
 //               is sent. All through api.store (this phone only).
 // The app version comes from the service worker's VERSION line (read from sw.js, normally from its cache), else a constant.
 
-const FALLBACK_VERSION = "2.5.0";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+const FALLBACK_VERSION = "2.5.1";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+const PRIVACY_URL = "privacy.html"; // the privacy notice, beside index.html (cached with the app shell)
 const MAX_NAME = 80, MAX_EMAIL = 120, MAX_MSG = 2000;
 const SEND_TIMEOUT = 15e3;
 const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -39,7 +41,7 @@ function feedbackUrl() {
   return host === "i5.dominares.org" ? "/api/feedback" : "https://i5.dominares.org/api/feedback";
 }
 
-/** The version in sw.js: `const VERSION = "i5b-v2.5.0"` -> "2.5.0". One quiet read, normally from the worker's cache. */
+/** The version in sw.js: `const VERSION = "i5b-v2.5.1"` -> "2.5.1". One quiet read, normally from the worker's cache. */
 async function readVersion() {
   if (versionAsked) return;
   versionAsked = true;
@@ -136,7 +138,12 @@ function openSheet(from) {
   email.value = str(draft.email) || str(who.email);
   const eh = el("p", "fb-hint", "We use your email only to reply to you.");
   eh.id = "fbEmailHint";
-  e.wrap.append(e.l, email, eh, e.err);
+  // the whole notice, beside the promise: a new tab, so the form (and a drive in progress) stay as they are
+  const pv = el("a", "fb-privacy", "Privacy");
+  pv.href = PRIVACY_URL; pv.target = "_blank"; pv.rel = "noopener";
+  const ehRow = el("div", "fb-hint-row");
+  ehRow.append(eh, pv);
+  e.wrap.append(e.l, email, ehRow, e.err);
 
   const m = field("fbMsg", "Message");
   const msg = el("textarea"); msg.id = "fbMsg"; msg.name = "message"; msg.required = true; msg.rows = 6; msg.maxLength = MAX_MSG;
@@ -158,7 +165,7 @@ function openSheet(from) {
   status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const send = el("button", "primary fb-send", "Send");
   send.type = "submit";
-  f.append(n.wrap, e.wrap, m.wrap, hp, status, send, el("p", "fine fb-ver", `Your message includes the app version, so we know what you're using.`));
+  f.append(n.wrap, e.wrap, m.wrap, hp, status, send, el("p", "fine fb-ver", `Your message includes the app version and your browser type, so we know what you're using.`));
   sh.append(f);
 
   form = { f, name, email, msg, site, count, status, send, errs: { name: n.err, email: e.err, message: m.err }, state: "idle" };
@@ -286,4 +293,4 @@ export function init(a) {
   } catch (e) { warn(e); }
 }
 
-export const _test = { validate, payload, feedbackUrl, MAX_MSG };
+export const _test = { validate, payload, feedbackUrl, MAX_MSG, PRIVACY_URL };

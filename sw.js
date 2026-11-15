@@ -2,9 +2,9 @@
 // Photos are cached as you view them (or all at once from Settings > Save photos for offline).
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v2.5.0"; // 2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map (2.4.1: the link preview and install screenshots are not cached)
+const VERSION = "i5b-v2.5.1"; // 2.5.1: the privacy notice (privacy.html), linked from Settings > About, the feedback form and Drive; narration starts on a voice on the device; weather.gov points count from a 5-mile mark (2.5.0: live traffic, Road ahead chart, feedback, share links, rides (avatars), 3D map)
 const SHELL = [
-  "./", "index.html", "app.css", "manifest.webmanifest", "data/i5.js",
+  "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js",
   "js/live.js", "js/map.js", "js/play.js", "js/trip.js", "js/listen.js",
   "js/roadahead.js", "js/feedback.js", "js/share.js", "js/ride.js", "js/map3d.js",

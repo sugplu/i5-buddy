@@ -8,9 +8,10 @@
   Drives js/feedback.js inside the real app. Results: bottom bar + console "[test-feedback] ...".
   ?s=      all (default) | view (leaves the sheet open for a screenshot; ?view=form|filled|error|done|offline)
   ?theme=  dark | light       ?w= ?h=  iframe size (default 390 x 844)
-  Checks: the Settings row, the form (labels, email type, counter, honeypot), validation, the request (URL, method, exact
-  payload, version from sw.js), sending / thanks / server error / rate limit / network error / timeout states, remembered
-  name and email, the unsent draft, offline, and that nothing is sent until Send (fetch is mocked).
+  Checks: the Settings row, the form (labels, email type, counter, honeypot, the Privacy link beside the email promise),
+  validation, the request (URL, method, exact payload, version from sw.js), sending / thanks / server error / rate limit /
+  network error / timeout states, remembered name and email, the unsent draft, offline, that nothing is sent until Send
+  (fetch is mocked), and the privacy notice itself (privacy.html: in the shell cache, theme, phone widths, sections).
   The app loads as srcdoc with service-worker registration stubbed (see test-live.html).
 -->
 <style>
@@ -104,6 +105,15 @@ const SCENARIOS = {
     const sheetText = txt(S());
     log("sheet", sheetText);
     check("plain words at the top and under the email", /Tell us what you think\. We read every message\./.test(sheetText) && /We use your email only to reply to you\./.test(sheetText));
+    // beside that promise, the privacy notice: a real link (keyboard and screen readers), not read out as part of the email's hint
+    const pv = field("a.fb-privacy"), pr = pv ? pv.getBoundingClientRect() : { width: 0, height: 0, top: 0 }, eb = field("#fbEmail").getBoundingClientRect();
+    check("beside the email promise, a Privacy link to privacy.html in a new tab, outside the email's description",
+      pv && txt(pv) === "Privacy" && pv.getAttribute("href") === "privacy.html" && pv.target === "_blank" && /\bnoopener\b/.test(pv.rel) && pv.tabIndex === 0
+        && !!pv.parentElement.querySelector("#fbEmailHint") && !field("#fbEmailHint").contains(pv) && field("#fbEmail").getAttribute("aria-describedby") === "fbEmailHint fbEmailErr",
+      pv ? pv.outerHTML : "no link");
+    check("the Privacy link is a 44 px target that does not cover the email box", pr.height >= 43.5 && pr.width >= 43.5 && pr.top >= eb.bottom - 0.5,
+      `${Math.round(pr.width)}x${Math.round(pr.height)}, top ${Math.round(pr.top)}, email box bottom ${Math.round(eb.bottom)}`);
+    check("the fine print says the app version and the browser type go with the message", /includes the app version and your browser type/.test(sheetText));
     check("Name is optional", /Name \(optional\)/.test(txt(field("label[for=fbName]"))) && !field("#fbName").required && field("#fbName").maxLength === 80);
     check("Email is required and type=email", field("#fbEmail").type === "email" && field("#fbEmail").required && field("#fbEmail").maxLength === 120 && field("#fbEmail").autocomplete === "email");
     check("Message is required, up to 2000 characters, with a counter", field("#fbMsg").required && field("#fbMsg").maxLength === 2000 && txt(field("#fbCount")) === "0 / 2,000", txt(field("#fbCount")));
@@ -265,6 +275,34 @@ const SCENARIOS = {
     await wait(500);
     check("success while the reopened form holds something new: that text stays, Send works, and it is saved as the draft", field("#fbMsg").value === "Something new I started after reopening." && !field(".fb-send").disabled && !!S().querySelector("form") && draftNow() && draftNow().message === "Something new I started after reopening.", `${field("#fbMsg") && field("#fbMsg").value} | ${JSON.stringify(draftNow())}`);
     net.delay = 250;
+    // --- the privacy notice the link opens: cached for offline, in the app's saved theme, phone-width safe, every part there
+    const sw = await (await fetch("../sw.js", { cache: "no-store" })).text();
+    check("privacy.html is cached with the app shell (sw.js SHELL), so it opens offline", /const SHELL = \[[^\]]*"privacy\.html"/.test(sw));
+    const pf = document.createElement("iframe");
+    pf.title = "Privacy notice under test";
+    pf.style.cssText = "display:block;width:320px;height:700px;border:0";
+    document.body.append(pf);
+    pf.src = "../privacy.html";
+    await until(() => pf.contentDocument && pf.contentDocument.readyState === "complete" && pf.contentDocument.querySelector("footer"), 10000);
+    await wait(200);
+    const pd = pf.contentDocument, pde = pd.documentElement, ptxt = txt(pd.body);
+    for (const w of [320, 375, 430, 900]) {
+      pf.style.width = w + "px";
+      await wait(120);
+      check(`privacy.html at ${w} px: no sideways scroll`, pde.scrollWidth <= pde.clientWidth, `${pde.scrollWidth} vs ${pde.clientWidth}`);
+    }
+    const heads = [...pd.querySelectorAll("main h2")].map(h => txt(h));
+    const NEED = ["The short version", "What leaves your phone, and why", "What stays on your phone", "Who we share information with",
+      "How long we keep it, and your choices", "Do Not Track", "Children", "California, and changes to this notice"];
+    check("privacy.html: its title, effective date and version, who runs I-5 Buddy and the contact address",
+      pd.title === "Privacy · I-5 Buddy" && /Effective November 14, 2026 · Version 2026-11-14\.1/.test(ptxt) && /Made by Dominares/.test(ptxt)
+        && /Dominares Tools is run by Joseph Linares, a sole proprietor based in San Diego, California/.test(ptxt) && !!pd.querySelector('a[href="mailto:support@dominares.org"]'), pd.title);
+    check("privacy.html: every section, in order", JSON.stringify(heads) === JSON.stringify(NEED), heads.join(" | "));
+    check("privacy.html: in the theme saved in the app's settings", pde.dataset.theme === THEME, pde.dataset.theme);
+    check("privacy.html: links back to the app", pd.querySelectorAll('a[href="./"]').length >= 1);
+    check("privacy.html: no script files or outside scripts, no em dashes, no exclamation marks, no other product or prices",
+      [...pd.scripts].every(s => !s.src) && !/[—!]/.test(ptxt) && !/\bLina\b|\$\s?\d/.test(ptxt), (ptxt.match(/[—!]|\bLina\b|\$\s?\d/g) || []).join(" "));
+    pf.remove();
   },
   async view({ win, doc, api }) {
     const v = Q.get("view") || "form";

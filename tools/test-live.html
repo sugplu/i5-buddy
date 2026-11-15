@@ -79,7 +79,9 @@ function fakeSpeech() {
   var q = [], cur = null, timer = 0;
   var synth = {
     speaking: false, paused: false, pending: false,
-    getVoices: function () { return [{ name: "Test Voice", lang: "en-US", voiceURI: "test-voice", default: true, localService: true }]; },
+    // an online voice too (it would rank first by name): voice.js must still start on the device's own voice
+    getVoices: function () { return [{ name: "Google US English", lang: "en-US", voiceURI: "test-online", default: false, localService: false },
+      { name: "Test Voice", lang: "en-US", voiceURI: "test-voice", default: true, localService: true }]; },
     addEventListener: function () {}, removeEventListener: function () {},
     speak: function (u) { q.push(u); synth.pending = true; go(); },
     cancel: function () {
@@ -448,6 +450,9 @@ const SCENARIOS = {
     check("footer says updated", /Live road info\s*Updated just now(Refresh)?$/.test(txt($(doc, ".lv-foot"))), txt($(doc, ".lv-foot")));
     check("footer dot green (all current)", !$(doc, ".lv-foot").classList.contains("part") && !$(doc, ".lv-foot").classList.contains("bad"));
     check("only districts near: D2", st.cc.join() === "02" && st.cms.join() === "02", JSON.stringify([st.cc, st.cms]));
+    const wxq = net.calls.map(c => c.url).filter(u => /api\.weather\.gov\/(points\/|alerts\/active\?point=)/.test(u));
+    check("weather.gov points carry 2 decimals at most", wxq.length >= 3 && wxq.every(u => !/\d\.\d{3}/.test(u.split(/points\/|point=/)[1])),
+      wxq.map(u => u.split(/points\/|point=/)[1]).join(" "));
     const wt = api.live.weatherText();
     log("weatherText:", wt);
     check("weatherText speaks both points", /^Weather ahead\. Near \w+.*in about \d+ miles.*Near/.test(wt));
@@ -589,8 +594,8 @@ const SCENARIOS = {
     const labels = [...doc.querySelectorAll(".lv-cam small")].map(txt);
     check("cameras right up to the line", labels.length === want.length && labels.length >= 2, `${labels.length} shown; in the data ahead: ${want.map(c => c.m.toFixed(1)).join(", ")}`);
     check("each camera names its source from the data", labels.every((t, i) => want[i] && t.endsWith("· " + want[i].by)), labels.join(" | "));
-    // forecast points 25 and 90 mi ahead stop at the end of the road (one point when both are past it)
-    const exp = [25, 90].map(a => Math.min(D.MAX_M, m0 + a)).filter((t, i, a) => a.findIndex(x => Math.abs(x - t) < 12) === i);
+    // forecast points 25 and 90 mi ahead (of the nearest 5-mile mark) stop at the end of the road (one point when both are past it)
+    const exp = [25, 90].map(a => Math.min(D.MAX_M, Math.round(m0 / 5) * 5 + a)).filter((t, i, a) => a.findIndex(x => Math.abs(x - t) < 12) === i);
     check(`weather ahead: ${exp.length} point${exp.length === 1 ? "" : "s"}, the first at the end of the road or before`, doc.querySelectorAll(".lv-wxpt").length === exp.length, txt($(doc, ".lv-wx")));
     const d0 = `In about ${Math.round(exp[0] - m0)} mi`, st0 = D.stateAt(exp[0]).id;
     check(`first forecast: ${d0}, near a town in ${st0}`, txt($(doc, ".lv-wx-d")) === d0 && new RegExp(`^Near [A-Z][a-z]+.*, ${st0}$`).test(txt($(doc, ".lv-wx-city"))), `${txt($(doc, ".lv-wx-d"))} / ${txt($(doc, ".lv-wx-city"))}`);
@@ -1243,6 +1248,14 @@ const SCENARIOS = {
     check("agencies come from the road data", ags[0] === "Caltrans" && ags.length === new Set(["Caltrans", ...api.data.CAMS.map(c => c.by)]).size && (api.data.CAMS.some(c => c.by === "WSDOT") || !ags.includes("WSDOT")), JSON.stringify(ags));
     check("andList", T.andList(["A"]) === "A" && T.andList(["A", "B"]) === "A and B" && T.andList(["A", "B", "C"]) === "A, B and C" && T.andList([]) === "");
     check("targets southbound", JSON.stringify(T.targets(700, "S", [25, 90], 12)) === "[675,610]");
+    // weather.gov never gets a fixed distance ahead of the exact spot: the points start from the nearest 5-mile mark
+    check("targets count from the nearest 5-mile mark", JSON.stringify(T.targets(402.4, "N", [10, 50, 120], 5)) === "[410,450,520]"
+      && JSON.stringify(T.targets(402.6, "N", [10, 50, 120], 5)) === "[415,455,525]" && JSON.stringify(T.targets(492, "S", [25, 90], 12)) === "[465,400]",
+      JSON.stringify([T.targets(402.4, "N", [10, 50, 120], 5), T.targets(402.6, "N", [10, 50, 120], 5), T.targets(492, "S", [25, 90], 12)]));
+    // narration starts on a voice on the device (the fake synthesizer also lists an online "Google US English")
+    const vl = api.voice.list();
+    check("voices: the device's own first, the online one after it and marked online", vl.map(v => v.voiceURI).join() === "test-voice,test-online"
+      && !api.voice.online(vl[0]) && api.voice.online(vl[1]), vl.map(v => `${v.name} ${v.localService}`).join(", "));
     check("districts near 700 N (150 mi): D2", T.districtsNear(700, "N", 150).join() === "02");
     check("districts near 492 S (150 mi)", T.districtsNear(492, "S", 150).join() === "06,10,03", T.districtsNear(492, "S", 150).join());
     check("feed url", T.ctUrl("07", "cc") === "https://cwwp2.dot.ca.gov/data/d7/cc/ccStatusD07.json" && T.ctUrl("11", "cms") === "https://cwwp2.dot.ca.gov/data/d11/cms/cmsStatusD11.json");

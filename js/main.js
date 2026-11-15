@@ -361,9 +361,15 @@ function renderNext() {
       const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
     }
     card.append(stats);
-    const by = el("a", "byline", "I-5 Buddy is made by Dominares · i5.dominares.org");
+    // the byline, and beside it a link that says Privacy on the first screen (privacy.html in a new tab, as in About);
+    // short enough that both stay on one line on a 360 px phone
+    const by = el("a", "byline", "Made by Dominares · i5.dominares.org");
     by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener";
-    card.append(by);
+    const pv = el("a", "byline", "Privacy");
+    pv.href = "privacy.html"; pv.target = "_blank"; pv.rel = "noopener";
+    const dot = el("span", null, "·"); dot.setAttribute("aria-hidden", "true");
+    const row = el("div", "byline-row"); row.append(by, dot, pv);
+    card.append(row);
     updateInstall();
     return;
   }
@@ -629,7 +635,8 @@ function syncSettingsUI() {
   sel.innerHTML = "";
   const vs = voice.list();
   if (!vs.length) { const o = el("option", null, "Default voice"); o.value = ""; sel.append(o); }
-  for (const v of vs) { const o = el("option", null, `${v.name} (${v.lang})`); o.value = v.voiceURI; sel.append(o); }
+  // an online voice says so: its words go to Google or Microsoft (privacy.html, Spoken narration)
+  for (const v of vs) { const o = el("option", null, `${v.name} (${v.lang})${voice.online(v) ? " (online)" : ""}`); o.value = v.voiceURI; sel.append(o); }
   sel.value = settings.voice || (vs[0]?.voiceURI ?? "");
   $("rate").value = settings.rate; $("rateOut").textContent = (+settings.rate).toFixed(2).replace(/0$/, "") + "×";
   $("lead").value = settings.lead; $("leadOut").textContent = settings.lead + " mi";

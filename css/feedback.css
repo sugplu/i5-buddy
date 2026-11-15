@@ -15,6 +15,10 @@
 .fb-field input::placeholder,.fb-field textarea::placeholder{color:var(--muted)}
 .fb-field input[aria-invalid="true"],.fb-field textarea[aria-invalid="true"]{border-color:var(--danger)}
 .fb-hint,.fb-count{margin:0;color:var(--muted);font-size:.8rem;line-height:1.35}
+/* the email promise with the Privacy link beside it (privacy.html): a whole 44 px target whose extra height sits in the
+   6 px gaps around the row, so it covers neither the email box above nor an error below */
+.fb-hint-row{display:flex;flex-wrap:wrap;align-items:center;column-gap:10px;min-width:0}
+.fb-privacy{display:inline-flex;align-items:center;min-height:44px;min-width:44px;margin:-6px 0;color:var(--link);font-size:.85rem;font-weight:800;text-underline-offset:2px}
 .fb-count{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
 /* --danger text on --surface is 4.13:1 at night, under AA's 4.5:1 for small text: the words are --fg (14.6:1) and a danger bar marks them,
    as .fb-status[data-kind=error] does below */

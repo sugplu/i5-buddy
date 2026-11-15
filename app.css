@@ -248,6 +248,15 @@ body.glance .big-btn{min-height:96px;font-size:1.15rem}
 :root[data-theme="light"]{--dom:#007A4D;--dom-mark:#00B070}
 .byline{font-size:.75rem;color:var(--dom);text-decoration:none;letter-spacing:.02em}
 .byline:hover{text-decoration:underline}
+/* the welcome card's last row: the byline, then Privacy (privacy.html), each link 44 px tall; the negative margins
+   keep the row about as tall as the byline alone was */
+.byline-row{display:flex;flex-wrap:wrap;align-items:center;column-gap:6px;margin:-10px 0 -14px;font-size:.75rem;color:var(--dom)}
+.byline-row a{display:inline-flex;align-items:center;min-height:44px}
+/* Drive's last line: Privacy under the safety line, a 44 px target (the notice's link on every visit, not only the first) */
+.safety-pv{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px;color:var(--link);font-weight:800;text-underline-offset:2px}
+/* About: the privacy notice (privacy.html, in a new tab), a whole-row link like the Send feedback button above it */
+.privacy-row{gap:6px}
+.privacy-open{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
 /* About: Made by Dominares, and under it the family's other product, each one link of at least 44 px */
 .family{display:grid;gap:8px;margin:6px 0 10px}
 .made-by{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#000;color:#fff;text-decoration:none}

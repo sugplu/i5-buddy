@@ -99,6 +99,13 @@ async function run() {
     const want = `${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`;
     ok(h.endsWith(want), `welcome card: "${h}"`);
     ok(txt("statusText") === `${ENDS.S.short} to ${ENDS.N.short}`, `header: "${txt("statusText")}"`);
+    // a link that says Privacy on the first screen: beside the welcome card's byline, and under Drive's safety line
+    // (which returning visitors see too), each privacy.html in a new tab and 44 px tall
+    const wp = doc.querySelector("#nextCard .byline-row a[href='privacy.html']"), sp = doc.querySelector("#view-drive .safety a[href='privacy.html']");
+    const tall = a => (a ? Math.round(a.getBoundingClientRect().height) : 0);
+    ok([wp, sp].every(a => a && a.textContent === "Privacy" && a.target === "_blank" && /\bnoopener\b/.test(a.rel) && tall(a) >= 44)
+      && wp.previousElementSibling?.previousElementSibling?.getAttribute("href") === "https://dominares.org/",
+      `Privacy on the first screen: after the welcome byline ${tall(wp)} px, under the safety line ${tall(sp)} px`);
   }
 
   // 0b. Installing. Chrome and Edge send an install offer: Install app then shows in the welcome card, right under the
@@ -190,12 +197,16 @@ async function run() {
   //     (Made by Dominares, and Lina, which opens in a new tab) are whole tap targets of 44 px or more, on screen.
   {
     const frame = document.getElementById("f"), list = api.voice.list;
-    api.voice.list = () => [{ name: "Grandma (English (United Kingdom))", lang: "en-GB", voiceURI: "test:grandma" }];
+    api.voice.list = () => [{ name: "Grandma (English (United Kingdom))", lang: "en-GB", voiceURI: "test:grandma" },
+      { name: "Google UK English Female", lang: "en-GB", voiceURI: "test:online", localService: false }];
     frame.style.width = "360px"; frame.style.height = "780px"; await sleep(300);
     doc.getElementById("openSettings").click(); await sleep(300);
     const sheet = doc.getElementById("settings");
     ok(sheet.scrollWidth <= sheet.clientWidth,
       `360 px Settings, voice "${doc.getElementById("voice").selectedOptions[0]?.text}": no sideways scroll (${sheet.scrollWidth} px wide in ${sheet.clientWidth} px)`);
+    // an online voice (its words go to Google or Microsoft) says so in the list; the device's own voices don't
+    const vo = [...doc.getElementById("voice").options].map(o => o.text);
+    ok(vo.join(" | ") === "Grandma (English (United Kingdom)) (en-GB) | Google UK English Female (en-GB) (online)", `Settings > Narration > Voice: ${vo.join(" | ")}`);
     const lina = sheet.querySelector(".also-from"), made = sheet.querySelector(".made-by"), none = { height: 0, right: Infinity };
     ok(lina?.tagName === "A" && lina.getAttribute("href") === "https://linasystems.org/" && lina.target === "_blank" && /\bnoopener\b/.test(lina.rel)
       && lina.textContent === "Also from Dominares: Lina, the AI front desk for businesses",
@@ -203,6 +214,11 @@ async function run() {
     const lb = lina ? lina.getBoundingClientRect() : none, mb = made ? made.getBoundingClientRect() : none;
     ok(lb.height >= 44 && mb.height >= 44 && lb.right <= sheet.clientWidth && mb.right <= sheet.clientWidth,
       `About links on screen and 44 px or taller: Made by Dominares ${Math.round(mb.height)} px, Lina ${Math.round(lb.height)} px (right edges ${Math.round(mb.right)} and ${Math.round(lb.right)} of ${sheet.clientWidth})`);
+    // the privacy notice: its own row right after Share I-5 Buddy (feedback, share, privacy), a whole link of 44 px or more
+    const pv = sheet.querySelector("#privacyRow a"), pb = pv ? pv.getBoundingClientRect() : none;
+    ok(pv && pv.textContent === "Privacy" && pv.getAttribute("href") === "privacy.html" && pv.target === "_blank" && /\bnoopener\b/.test(pv.rel)
+      && doc.getElementById("shareRow").nextElementSibling === doc.getElementById("privacyRow") && pb.height >= 44 && pb.right <= sheet.clientWidth,
+      `About: "${pv?.textContent}" links to ${pv?.getAttribute("href")} in a new tab, after Share I-5 Buddy, ${Math.round(pb.height)} px tall (right edge ${Math.round(pb.right)} of ${sheet.clientWidth})`);
     doc.getElementById("closeSettings").click();
     api.voice.list = list;
     frame.style.width = ""; frame.style.height = ""; await sleep(200);
