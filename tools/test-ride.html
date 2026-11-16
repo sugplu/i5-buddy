@@ -17,7 +17,7 @@
              the mode becomes gps or demo, or Start GPS or Demo drive is tapped, and it only shows with tracking off or by hand and
              once there is a position (not on the welcome card)
     moving   no invitation while the car is moving or GPS is on, even stopped; by hand and still it shows, only once
-    glance   (run with &w=375&h=780: a 360 px page) every landscape zone's name fits on the sign, in normal and glance mode
+    glance   (a 360 px content viewport, independent of scrollbar settings) every landscape zone's name fits on the sign, in normal and glance mode
     motion   moving / idle / sleepy states on the slot and the "ride:state" event; reduced-motion rules exist in the CSS
     passport the passport header shows the ride and its nickname, and the share card gets the ride picture
   Results go to the console as "[test-ride] PASS/FAIL ..." and end with "ALL PASS (n)" or "FAILED n".
@@ -375,13 +375,16 @@ async function sceneInviteGoes(api, R, doc) {
 }
 
 /* ---------- glance mode at 360 px: nothing on the sign runs past the board, for every landscape zone ----------
-   Run it with w=375: the iframe's 15 px scrollbar leaves the page 360 px wide, as on a small phone. */
+   Overlay scrollbars use no layout width; classic scrollbars do. Size the actual content viewport explicitly. */
 async function sceneGlance(api, R, w, doc) {
   api.store.set("rideInvited", true);
   api.ui.go("drive");
   const board = doc.getElementById("signBoard"), slot = doc.getElementById("rideSlot"), de = doc.documentElement;
   const glanceBtn = doc.getElementById("glanceBtn");
   const zones = api.data.ZONES;
+  const frame = w.frameElement;
+  frame.style.width = (frame.getBoundingClientRect().width + 360 - de.clientWidth) + "px";
+  await sleep(25); // let the app's resize handlers settle before sweeping the zone names
   check("the page is 360 px wide, as a small phone", Math.abs(de.clientWidth - 360) <= 1, String(de.clientWidth));
   check("there are many landscape zones to sweep", zones.length >= 60, String(zones.length));
   const sweep = async () => {
