@@ -178,7 +178,7 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .whats-new h2{margin:0;font-size:1.25rem;line-height:1.2;font-weight:900;text-wrap:balance}
 .whats-new p{margin:0;color:var(--fg-2);line-height:1.4}
 .whats-new .acts{display:flex;gap:8px;flex-wrap:wrap}
-.whats-new .acts button{flex:1 1 140px;min-height:48px;padding:10px 14px}
+.whats-new .acts button{flex:1 1 140px;min-height:48px;padding:10px}
 .store-update{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-top:10px;padding:8px 12px;border-radius:12px;background:var(--surface);border-left:4px solid var(--accent);font-size:.9rem;font-weight:700}
 .store-update span{flex:1 1 100%}
 .store-update a,.store-update .link{min-height:44px;display:inline-flex;align-items:center;color:var(--link)}

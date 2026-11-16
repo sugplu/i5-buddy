@@ -40,6 +40,13 @@ map pictures, the browser's own speech services, and feedback you choose to send
   It rides on the Drive sign (bouncing while you drive, dozing when parked), as your marker on the map, and on the
   passport and its share card. Settings > Display > Your ride, or tap it on the sign.
 - **Passport**: a stamp for every landmark you pass, regions, badges, trip log, a shareable trip card.
+- **The California missions** (2.6.0): all 21 missions in a mission passport at the top of the Passport tab (a stamp
+  when GPS gets within 300 m, or "I visited"), a "You are at Mission X" card on Drive anywhere in California (also far
+  from I-5), the nearest missions with Directions (Apple Maps on Apple devices, else Google Maps), a page for each
+  mission, and Kid mode facts. The missions a few miles off I-5 are turn-offs: announced at their exit ("At exit 54,
+  Highway 76 heads about 5 miles east to Mission San Luis Rey."), shown as "Detour: 5 mi east at exit 54A", and stamped
+  only when you get there (or tap "I went there"). People who used the app before see a one-time "New in I-5 Buddy"
+  card; the iPhone app also checks the App Store once a day and says when an update is ready.
 - **Play**: road bingo tuned to the region, trivia about the road, I-spy scores.
 - **Voice commands** (where the browser supports it): "what's on my left", "tell me more", "next gas", "how far to Redding".
 
@@ -72,6 +79,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `data/i5.js` | Generated data (route, places, zones, trivia, exits, services, cameras, elevation, map outline). Don't edit; run the build. |
 | `content/v2/*.json` | Researched and fact-checked content, one file per stretch of road (+ `*-gaps.json`). Edit these. |
 | `content/v2/logs/` | Fact-check change logs. |
+| `content/missions.json`, `content/v2/ca-missions.json` | The 21 missions (data key `MISSIONS`) and the I-5 turn-offs to the ones near I-5 (places with `detour` and `mission`). `tools/build.py` copies both in from the content agent's folder (`I5_MISSIONS_SRC`, default `/Volumes/sugsair/dominares/road-buddies/i5-missions`) when they exist there. |
 | `img/` | Landmark photos (Wikimedia Commons, free licenses; credits in `tools/images.json` and on each photo). |
 | `tools/` | Data pipeline and tests (below). |
 | `vendor/maplibre/` | MapLibre GL JS 5.24.0 (BSD-3-Clause; `maplibre-gl.js`, `.css`, `LICENSE.txt`, `VERSION`), loaded only when the 3D map is opened and never cached with the app shell. To update: download the `maplibre-gl-<version>.tgz` from the npm registry and copy those three files from `dist/` (and the license), then update `VERSION`. |
@@ -119,11 +127,16 @@ state's end: Oregon adds 797, Washington adds 1105.) A place's side of the road 
 ```sh
 python3 tools/run_tests.py                 # every test page in headless Chrome (serves the repo itself)
 python3 tools/run_tests.py --only geometry # one of them
+python3 tools/run_tests.py -j 4            # four pages at a time
+# Silent: Chrome runs muted with no audio output, every test page sets window.__BUDDY_SILENT__ and loads the app with
+# ?silent=1 (js/voice.js then uses a fake speech engine that records what would be said), and run_tests.py refuses to
+# run a page without that hook. After a run: pmset -g assertions | grep -A2 BuiltInSpeakerDevice lists no Chrome.
 # or serve the folder and open a page (or headless Chrome --dump-dom):
 #   /tools/test.html   geometry: GPS -> corridor mile at California exits; places past the ends are off the road (ALL PASS)
 #   /tools/e2e.html    fake GPS drives: narration timing, sides, off-route, glitches, the halfway point,
 #                      the end of the road at the Oregon line and at the Mexico border, demo, modules (ALL PASS)
 #   /tools/test-{live,map,play,trip,listen,ride}.html   per-module pages (test-map also covers the ride marker and the 3D fallback)
+#   /tools/test-missions.html   the missions module on synthetic data (passport, visit, nearest, kid, sheet, layout)
 #   /tools/test-getapp.html?s=app|get|site   "Get the iPhone app" by browser, i5.dominares.org/get, store tags, sw.js offline pages
 ```
 

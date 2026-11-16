@@ -35,6 +35,7 @@ js/roadahead.js       MODULE: "Road ahead" chart: elevation profile, grades, pas
 js/feedback.js        MODULE: "Send feedback" sheet (name, email, message) to /api/feedback
 js/share.js           MODULE: share the app, invite a friend, share one place (deep link #place=<id>)
 js/ride.js            MODULE: "Pick your ride": cute recolorable vehicles that ride along on the sign, map and passport
+js/missions.js        MODULE: the 21 California missions: mission passport, visit card, nearest missions, mission pages
 js/map3d.js           3D terrain map (MapLibre in vendor/maplibre/, loaded only when the user opens 3D from map.js)
 vendor/maplibre/      MapLibre GL JS (js, css, license, VERSION); fetched on demand by map3d.js, not in sw.js SHELL
 sw.js                 offline cache: SHELL (the app's files) and PAGES (support.html, get/); offline, a page opens as itself,
@@ -87,11 +88,15 @@ the Mexico border at San Ysidro to the Oregon line, 797 miles. The data says so 
 | `ELEV` | feet at each whole corridor mile (index = mile) |
 | `OUTLINE` | `[{st, pts: [[lat, lon], ...]}]` simplified state rings: the covered states plus their neighbours, for context (now CA with OR, NV, AZ) |
 | `ROUTE` | `[[m, lat, lon], ...]` simplified corridor line |
+| `MISSIONS` | the 21 California missions in founding order `[{n, id, name, name_es, lat, lon, founded, founder, people, status, site, hours, wiki, text, more, visit, src, src2}]` (from `content/missions.json`; empty in data built before 2.6.0) |
 | `CATS`, `CAT_ICON`, `REGIONS` | labels, emoji, passport regions `{id, name, st, from, to}` (only the covered states' regions: the six California ones sd, la, ws, dc, sv, sh) |
 
 Helpers in data.js: `stateAt(m)`, `localMile(m)`, `regionAt(m)`, `zoneAt(m)`, `seasonOf(date)`, `aheadOf`, `sideWord`,
 `elevAt(m)`, `summitAhead(m, dir)`, `nearestExit(m)`, `servicesAhead(m, dir, kind, n, max)`, `restAhead`, `camsAhead(m, dir, n, max)`,
-`exitName(st, ref)`, `fmtMiles(d)`, `fmtDuration(hours)`, `placeById(id)`.
+`exitName(st, ref)`, `fmtMiles(d)`, `fmtDuration(hours)`, `placeById(id)`, `detourOf(p)`, `detourShort(p)`, `detourSentence(p)`.
+
+A place may also carry `detour: {exit, road, dir, miles}` and `mission: n` (2.6.0, from `content/v2/ca-missions.json`; a
+turn-off already in a stretch file keeps its place and only gains the two fields; see build-report.txt).
 
 geo.js: `locate(lat, lon, hintM) -> {m, dist, bearing}` (`m: null` when no road is anywhere near; past an end of the
 road `m` is that end and `dist` grows), `coordAt(m) -> [lat, lon]`, `bearingAt(m)`, `dirFromHeading`, `miles(...)`,
@@ -145,10 +150,13 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | event | payload | when |
 | --- | --- | --- |
 | `pos` | `{m, prevM, dir, speed, offRoute, jumped}` | every position update (GPS fix, demo tick, manual move). `jumped` = teleport, not driving. |
+| `fix` | `{lat, lon, accuracy, m, dist, offRoute, fuzzy?}` | main.js: every GPS reading, on I-5 or off it (`offRoute` = this fix is far from I-5; `fuzzy` = over 1500 m, not used for the position) |
+| `mission:near` | `{place, n, dist, offRoute}` | main.js: a GPS fix within 2 miles of a mission (`place` = the `data.MISSIONS` entry, `dist` in miles) |
+| `mission:stamp`, `mission:unstamp`, `mission:visit` | `{place, n, how?}` | missions.js: a mission stamp (`how` "gps" or "self"), a tap stamp taken back, arriving within 300 m |
 | `mode` | `"off" or "gps" or "demo" or "manual"` | tracking mode changes |
 | `trip:end` | `{}` | user ended a trip |
 | `place:announce` | `{place, d}` | narrator queued a landmark announcement |
-| `place:stamp` | `{place}` | a passport stamp was collected (drove past) |
+| `place:stamp` | `{place, how?}` | a passport stamp was collected (drove past; a turn-off: `how` "gps" within half a mile, or "self" for "I went there") |
 | `place:look` | `{place}` | user asked "what's on my left/right" |
 | `zone` | `{zone}` | entered a new landscape zone |
 | `state:enter` | `{st}` | crossed a state line while driving (never while the data covers one state) |
@@ -175,6 +183,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | roadahead.js | `#roadAhead` (Drive, under the look buttons) |
 | feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
 | share.js | `#shareBtn` (header button; css hides it below 380 px wide, where it wrapped the title), `#shareRow` (Settings > About, right after `#feedbackRow`: a "Share I-5 Buddy" button at every width), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
+| missions.js | `#missionCard` (Drive, under the next-landmark card), `#missionsPassport` (top of `#view-passport`; trip.js draws the rest under it and never removes it), `#missionSheet`, a "Mission page" button on a mission place's sheet (via `place:sheet`) |
 | ride.js | `#rideSlot` (on the Drive sign, beside the mile), `#rideInvite` (under the sign: the one-time "Pick your ride?"), `#rideRow` (Settings > Display), `#rideSheet` |
 
 ### Traffic, Road ahead, feedback and share (2.5.0)
@@ -273,6 +282,38 @@ https://apps.apple.com/us/app/i-5-buddy/id6834991531 (id 6834991531). The websit
   2.3.10). Mark any other website-only part of a page the app carries the same way.
 - **Not yet:** `.well-known/assetlinks.json` (comes with the Android app and Google's signing key).
 - Tests: `tools/test-getapp.html` (`?s=app`, `?s=get`, `?s=site`).
+
+### Missions, turn-offs and the update notice (2.6.0)
+
+**Turn-offs (detours).** A place with `detour` is a few miles off I-5 (the missions near I-5). tools/build.py puts it at its
+exit's mile and never visible from the road. The narrator announces it at the exit: "In about 2 miles, at exit 54, Highway 76
+heads about 5 miles east to Mission San Luis Rey." (`data.detourSentence`), never "on your left/right" (`sideWord` is empty
+for it, so "What's on my left" skips it too). Drive's next card, Up next, Ahead and the place sheet show
+`data.detourShort`: "Detour: 5 mi east at exit 54A". Driving past the exit does not stamp it: `narrator.stampNear` stamps
+it when a GPS fix comes within half a mile (on I-5 or off it), and its sheet has "I went there" (`narrator.stampSelf`).
+
+**Off I-5 near a mission.** main.js sends `fix` for every GPS reading and `mission:near` within 2 miles of a mission. While
+off I-5 near one (`S.nearMission`), the pill says GPS and the status line "Near Mission X" instead of "Not on I-5 right now";
+narration stays paused as usual (only the missions module's welcome speaks).
+
+**js/missions.js** (adapted from the Buddy engine's module; test page `tools/test-missions.html`). Reads `data.MISSIONS`
+and links each mission to its I-5 turn-off place (`mission: n`). Passport at the top of the Passport tab (21 stamps in
+founding order; GPS within 300 m with accuracy under 400 m, or "I visited" in the mission page, drawn dashed; store keys
+`missionStamps`, `missionWelcome`). The Drive card: "You are at Mission X" (live GPS within 300 m, anywhere in California;
+one spoken welcome per visit, only with narration on, `mission:<n>:visit`, not again at the same mission for 4 hours),
+"Mission X is 1.4 miles away" while driving within 2 miles, else the nearest two missions when one is within 40 miles.
+Directions: maps.apple.com on Apple devices and in the iPhone app, else Google Maps. A mission's "I visited" also stamps its
+I-5 place, and "I went there" on the place stamps the mission. `api.missions` = `{nearest, list, stamps, progress, open,
+visited, fact, directions, state, check}`.
+
+**Update notice.** (a) The new-version bar (`#updateBar`, website only: the service worker) reads "A new version of I-5 Buddy
+is ready. Reload to get it." (b) `store.RETURNING` is true when any `i5b:` key was saved before this launch; main.js then
+shows `#whatsNew` once ("New in I-5 Buddy: the 21 California missions", See the missions / Got it, stored as `whatsNew` =
+`"2.6.0-missions"`). A first visit stores it at once, so new users never see it. The iPhone app keeps localStorage through an
+App Store update, so it shows there too. (c) In the iPhone app only, `native.storeUpdate()` asks
+`https://itunes.apple.com/lookup?id=6834991531` at most once a day (`storeCheck`; CapacitorHttp when present, else fetch;
+10 s; quiet on failure) and, when that version is newer than sw.js's `VERSION`, main.js shows `#storeUpdate` ("An update is
+ready in the App Store." with a link to the App Store page and Not now, `storeLater`). privacy.html describes it (2026-11-16.1).
 
 ### Rules for module code
 
