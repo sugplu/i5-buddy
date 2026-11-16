@@ -13,6 +13,16 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
+## 2.6.2 mission corrections
+
+The mission histories and visitor information include the 2026-11-16 fact-check corrections. The build now uses the
+reviewed mission narration when merging a turn-off into an existing landmark, and places it at the turn-off exit.
+Existing landmark IDs stay stable for saved stamps, photos and share links. The road still has 377 landmarks,
+21 missions, 68 zones and 101 trivia questions.
+
+Run `python3 tools/test_mission_build.py` for the build regression checks (no network, browser or audio needed),
+`python3 tools/lint_content.py` for content lint, and `python3 tools/run_tests.py` for the silent browser suite.
+
 ## What it does
 
 - **Drive**: highway-sign display (direction, exit-mile, speed, elevation, miles to Oregon or to Mexico), the next

@@ -328,7 +328,8 @@ def main():
         places.append(q)
 
     # ca-missions.json places that are already in a stretch file (same name nearby, or within a mile): the stretch
-    # file's place stays as it is and only gains "detour" and "mission"
+    # file's place keeps its id (saved stamps/photos use it), but the reviewed turn-off supplies its narration
+    # and exit position. Keeping the old narration here silently discarded the mission fact-check corrections.
     ours = [p for p in places if p["_file"] == "ca-missions.json"]
     rest = [p for p in places if p["_file"] != "ca-missions.json"]
     for p in ours:
@@ -340,7 +341,7 @@ def main():
                 hit = k
                 break
         if hit:
-            for key in ("detour", "mission"):
+            for key in ("text", "more", "src", "src2", "wiki", "ex", "m", "side", "vis", "off", "lat", "lon", "detour", "mission"):
                 if key in p:
                     hit[key] = p[key]
             places.remove(p)
