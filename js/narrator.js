@@ -2,8 +2,9 @@
 import { S, settings, bus, saveStamps } from "./store.js";
 import {
   PLACES, CATS, MAX_M, STATES, ENDS, SCOPE, zoneAt, seasonOf, stateAt, sideWord, aheadOf, summitAhead, elevAt, regionAt,
-  servicesAhead, restAhead, exitName, fmtDuration, localMile, placeById,
+  servicesAhead, restAhead, exitName, fmtDuration, localMile, placeById, detourSentence,
 } from "./data.js";
+import { miles } from "./geo.js";
 import { voice } from "./voice.js";
 
 const heard = new Set();      // place ids announced this trip
@@ -40,6 +41,12 @@ export function whereWords(p, dir = S.dir) {
 }
 
 export function announceText(p, d, dir = S.dir) {
+  const turn = detourSentence(p);
+  if (turn) {
+    // a turn-off (a mission a few miles off I-5): said at its exit, never "on your left/right"
+    const s = d < 0.4 ? `${turn} ${p.text}` : `In about ${d < 1.5 ? "a mile" : `${Math.round(d)} miles`}, ${turn[0].toLowerCase()}${turn.slice(1)} ${p.text}`;
+    return settings.kid && p.spot && p.vis ? `${s} I spy challenge: ${p.spot}` : s;
+  }
   const where = whereWords(p, dir);
   let lead;
   if (d < 0.4) lead = where ? `Right now, ${where}` : "Right about here";
@@ -58,12 +65,37 @@ function stampBetween(prev, m) {
   for (const p of PLACES) {
     if (p.m < lo) continue;
     if (p.m > hi) break;
+    if (p.detour) continue;   // a turn-off counts only when you go there (stampNear) or say so (stampSelf)
     if (!S.stamps[p.id]) { S.stamps[p.id] = Date.now(); fresh.push(p); }
   }
   if (fresh.length) {
     saveStamps();
     for (const p of fresh) bus.emit("place:stamp", { place: p });
   }
+}
+
+const DETOUR_STAMP_MI = 0.5;   // a turn-off place is stamped when GPS comes this close to it
+/** Every GPS fix (main.js, on I-5 or off it): stamp the turn-off places (missions off I-5) you have reached. */
+export function stampNear(lat, lon, accuracy) {
+  if (!isFinite(lat) || !isFinite(lon) || (accuracy && accuracy > 800)) return [];
+  const fresh = [];
+  for (const p of PLACES) {
+    if (!p.detour || p.lat == null || S.stamps[p.id]) continue;
+    if (miles(lat, lon, p.lat, p.lon) <= DETOUR_STAMP_MI) { S.stamps[p.id] = Date.now(); fresh.push(p); }
+  }
+  if (fresh.length) {
+    saveStamps();
+    for (const p of fresh) bus.emit("place:stamp", { place: p, how: "gps" });
+  }
+  return fresh;
+}
+/** "I went there" on a turn-off place's sheet. */
+export function stampSelf(p) {
+  if (!p || S.stamps[p.id]) return false;
+  S.stamps[p.id] = Date.now();
+  saveStamps();
+  bus.emit("place:stamp", { place: p, how: "self" });
+  return true;
 }
 
 function zoneLine(z) {
@@ -216,4 +248,4 @@ export function nextOne() {
 }
 
 export function markHeard(id) { heard.add(id); }
-export const narrator = { upcoming, announceText, whereWords, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, placeById, CATS, STATES };
+export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, placeById, CATS, STATES };

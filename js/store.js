@@ -14,6 +14,15 @@ export const store = {
   del(key) { try { localStorage.removeItem(PREFIX + key); } catch {} },
 };
 
+/** Did this phone use the app before this launch (any saved setting, stamp, trip...)? Read once, when this file first
+    runs, before anything is saved. main.js shows "New in I-5 Buddy" only to these returning users. */
+export const RETURNING = (() => {
+  try {
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(PREFIX)) return true; }
+  } catch { /* storage blocked */ }
+  return false;
+})();
+
 const handlers = new Map();
 export const bus = {
   on(evt, fn) { if (!handlers.has(evt)) handlers.set(evt, new Set()); handlers.get(evt).add(fn); return () => bus.off(evt, fn); },
@@ -56,6 +65,7 @@ export const S = {
   heading: null,               // degrees from GPS, if any
   lat: null, lon: null,        // last GPS fix
   offRoute: false,
+  nearMission: null,           // off I-5 within 2 miles of a mission: {place, dist} (main.js), else null
   accuracy: null,              // GPS accuracy in meters
   stamps: store.get("stamps", {}), // place id -> first time collected (ms)
   dest: store.get("dest", null),   // {name, m} or null

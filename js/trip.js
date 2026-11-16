@@ -936,15 +936,17 @@ function renderPassport() {
   if (!view) return;
   ppDirty = false;
   const a = document.activeElement;
-  const focusKey = a && view.contains(a) && a.dataset ? a.dataset.k : null;
+  const focusKey = a && view.contains(a) && !(a.closest && a.closest("#missionsPassport")) && a.dataset ? a.dataset.k : null;
   const root = el("div", "pp");
   for (const part of [ppCover, ppRegions, ppBadges, ppStamps, ppTrips]) {
     try { const n = part(); if (n) root.append(n); } catch (e) { warn("passport " + part.name, e); }
   }
-  view.textContent = "";
+  // the top of the view (#missionsPassport) belongs to js/missions.js: keep it, draw the rest under it
+  const keep = $id("missionsPassport");
+  for (const n of [...view.childNodes]) if (n !== keep) n.remove();
   view.append(root);
   if (focusKey) {
-    const f = [...view.querySelectorAll("[data-k]")].find(x => x.dataset.k === focusKey);
+    const f = [...root.querySelectorAll("[data-k]")].find(x => x.dataset.k === focusKey);
     if (f) f.focus({ preventScroll: true });
   }
 }

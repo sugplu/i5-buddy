@@ -66,7 +66,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <div class="pv-sign">
     <h1>Privacy</h1>
     <p>What leaves your phone, what stays on it, and your choices.</p>
-    <p class="pv-date">Effective November 15, 2026 · Version 2026-11-15.1</p>
+    <p class="pv-date">Effective November 16, 2026 · Version 2026-11-16.1</p>
   </div>
 
   <div class="pv-intro">
@@ -155,7 +155,13 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <section class="pv-item" aria-labelledby="f-links">
     <h3 id="f-links">Links to other sites</h3>
     <p class="pv-when">Only when you tap one</p>
-    <p>Links such as weather.gov forecasts, Caltrans QuickMap, Apple Maps, Wikipedia, Wikimedia Commons, the App Store and dominares.org open those sites. On an iPhone or iPad, i5.dominares.org/get opens the App Store by itself. Those sites see your visit like any other, and can tell you came from I-5 Buddy. A weather.gov link includes the point ahead that its forecast or alert is for, and an Apple Maps link includes the landmark's location.</p>
+    <p>Links such as weather.gov forecasts, Caltrans QuickMap, Apple Maps, Google Maps, the missions' own websites, Wikipedia, Wikimedia Commons, the App Store and dominares.org open those sites. On an iPhone or iPad, i5.dominares.org/get opens the App Store by itself. Those sites see your visit like any other, and can tell you came from I-5 Buddy. A weather.gov link includes the point ahead that its forecast or alert is for, and an Apple Maps link includes the landmark's location. A mission's Directions link opens Apple Maps on an iPhone, iPad or Mac and Google Maps elsewhere, with the mission's location as the destination. Your maps app then works out the way from where you are, under its own policy.</p>
+  </section>
+
+  <section class="pv-item" aria-labelledby="f-update">
+    <h3 id="f-update">Checking for updates in the iPhone app</h3>
+    <p class="pv-when">In the iPhone app only, at most once a day</p>
+    <p>The iPhone app asks Apple's public App Store lookup (<span class="pv-host">itunes.apple.com</span>) which version of I-5 Buddy is in the App Store, so it can tell you when an update is ready. The request asks only about the app's own App Store listing. It sends nothing about you: no location, no trips, no stamps and no settings. As with any web request, Apple sees your IP address and that the request came from the app. The answer is not sent anywhere else. In a browser, I-5 Buddy never makes this request: the website updates itself.</p>
   </section>
 
   <section class="pv-item" aria-labelledby="f-nel">
@@ -170,6 +176,8 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <li>Your settings: voice, speed, theme, narration choices, and Live road info on or off.</li>
     <li>Your last spot on I-5 (the mile and direction, not GPS coordinates), so the app can pick up where you left off.</li>
     <li>Your passport: a stamp with the time you first passed each landmark, your badges, and which miles of I-5 you've driven.</li>
+    <li>Your mission passport: for each of the 21 California missions you've stamped, the time and whether your phone was there or you marked it visited yourself (no GPS coordinates), and when the app last welcomed you at one.</li>
+    <li>Whether you've seen the "New in I-5 Buddy" card, and in the iPhone app when it last checked the App Store and the version it found.</li>
     <li>Your last 30 trips: when, where on I-5 each started and ended, miles, top speed and destination.</li>
     <li>Your destination, your ride (vehicle, color, badge and nickname) and your game scores.</li>
     <li>The last live road info it got, including points on the road ahead of you from the past week.</li>
@@ -189,7 +197,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <li>We don't sell or rent your information, and we don't share it for advertising.</li>
     <li>Our service providers are Cloudflare (our server, the feedback database and the error reports) and GitHub. GitHub Pages stores the app's files and serves the old sugplu.github.io address. They handle the requests described above. Cloudflare runs our server and the feedback database for us under its data processing terms: it may use that information only to provide its service to us, and it must protect it at least as well as this notice describes.</li>
     <li>Mail you send to <a href="mailto:support@dominares.org">support@dominares.org</a> passes through Cloudflare Email Routing to the mailbox where we read it. Our email provider keeps those emails and our replies, including replies to your feedback.</li>
-    <li>The National Weather Service, Caltrans, OpenFreeMap, Amazon Web Services and your browser's speech services (Google, Apple or Microsoft) get requests straight from your phone when you use those features. In Safari on an iPhone or iPad, Apple's App Store also gets Safari's request for its banner for the iPhone app. Their own privacy policies apply.</li>
+    <li>The National Weather Service, Caltrans, OpenFreeMap, Amazon Web Services and your browser's speech services (Google, Apple or Microsoft) get requests straight from your phone when you use those features. In Safari on an iPhone or iPad, Apple's App Store also gets Safari's request for its banner for the iPhone app, and the iPhone app asks Apple's App Store lookup for the app's current version once a day at most. Their own privacy policies apply.</li>
     <li>We may disclose information if the law requires it, for example to answer a valid court order.</li>
   </ul>
 

@@ -20,6 +20,10 @@ export const DISTRICTS = D.districts;  // Caltrans districts [{d, from, to}]
 export const ELEV = D.elev;            // feet at each whole corridor mile
 export const OUTLINE = D.outline;      // [{st, pts: [[lat, lon], ...]}]
 export const ROUTE = D.route;          // [[m, lat, lon], ...]
+/** The 21 California missions in founding order: [{n, id, name, name_es, lat, lon, founded, founder, people, status,
+    site, hours, wiki, text, more, visit, src, src2}] (empty with data built before 2.6.0). Places on I-5 that lead to
+    one carry `mission: n`. */
+export const MISSIONS = Array.isArray(D.missions) ? D.missions : [];
 
 export const CATS = { farm: "Orchards & farms", hist: "History", nature: "Land & water", town: "Towns", stop: "Good stops", odd: "Oddities" };
 export const CAT_ICON = { farm: "🌱", hist: "🏛", nature: "⛰", town: "🏘", stop: "☕", odd: "✨" };
@@ -72,7 +76,7 @@ export function aheadOf(m, dir, x) { return dir === "N" ? x - m : m - x; }
 
 /** "left" | "right" | "" for a place, given the direction of travel. side: 1 = right when northbound. */
 export function sideWord(p, dir) {
-  if (!p || !p.side) return "";
+  if (!p || !p.side || p.detour) return "";  // a turn-off (detour) is reached by its exit, never "on your left"
   return (dir === "N") === (p.side === 1) ? "right" : "left";
 }
 export function elevAt(m) {
@@ -148,4 +152,32 @@ export function fmtDuration(hours) {
   if (!isFinite(hours) || hours <= 0) return "";
   const h = Math.floor(hours), min = Math.round((hours - h) * 60);
   return h ? `${h} h ${String(min).padStart(2, "0")} min` : `${min} min`;
+}
+
+const DIR_WORD = { n: "north", s: "south", e: "east", w: "west", ne: "northeast", nw: "northwest", se: "southeast", sw: "southwest" };
+/** A turn-off place's way there: {exit, road, dir ("east"), miles} or null. (Built from the place's `detour`.) */
+export function detourOf(p) {
+  const d = p && p.detour;
+  if (!d || typeof d !== "object" || !d.exit) return null;
+  const w = String(d.dir || "").trim().toLowerCase();
+  const miles = typeof d.miles === "number" && isFinite(d.miles) ? d.miles : null;
+  return { exit: String(d.exit), road: String(d.road || "").trim(), dir: DIR_WORD[w] || (/^(north|south|east|west)/.test(w) ? w : ""), miles };
+}
+const detourMi = mi => (mi < 10 ? Math.round(mi * 10) / 10 : Math.round(mi));
+/** "Detour: 4 mi east at exit 54" (Up next, Ahead, the next card and the place sheet). "" for a place on the road. */
+export function detourShort(p) {
+  const d = detourOf(p);
+  if (!d) return "";
+  const far = d.miles != null && d.miles >= 0.1 ? `${detourMi(d.miles)} mi${d.dir ? " " + d.dir : ""}` : d.dir;
+  return `Detour: ${far ? far + " " : ""}at exit ${d.exit}`;
+}
+/** "At exit 54, Highway 76 heads about 4 miles east to Mission San Luis Rey." */
+export function detourSentence(p) {
+  const d = detourOf(p);
+  if (!d) return "";
+  const v = d.miles != null && d.miles >= 0.1 ? detourMi(d.miles) : null;
+  const far = v != null ? `about ${v} ${v === 1 ? "mile" : "miles"}${d.dir ? " " + d.dir : ""}` : d.dir;
+  return d.road
+    ? `At exit ${d.exit}, ${d.road} heads ${far ? far + " " : ""}to ${p.name}.`
+    : `Take exit ${d.exit} for ${p.name}${far ? `, ${far}` : ""}.`;
 }

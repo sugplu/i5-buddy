@@ -1,14 +1,14 @@
 // I-5 Buddy: boot, GPS/demo/manual position, Drive and Ahead screens, settings, offline.
-import { S, settings, saveSettings, bus, store, saveStamps } from "./store.js";
+import { S, settings, saveSettings, bus, store, saveStamps, RETURNING } from "./store.js";
 import * as data from "./data.js";
 import * as geo from "./geo.js";
 import { voice } from "./voice.js";
-import { narrator, upcoming, announceText, tellMore, hear, look, resetTrip, markHeard } from "./narrator.js";
+import { narrator, upcoming, announceText, tellMore, hear, look, resetTrip, markHeard, stampNear, stampSelf } from "./narrator.js";
 import * as native from "./native.js";
 
 const {
   PLACES, CATS, MAX_M, STATES, DESTS, ENDS, SCOPE, zoneAt, stateAt, localMile, regionAt, sideWord, aheadOf, elevAt,
-  servicesAhead, restAhead, exitName, fmtMiles, fmtDuration, placeById,
+  servicesAhead, restAhead, exitName, fmtMiles, fmtDuration, placeById, detourShort, MISSIONS,
 } = data;
 // A mile saved by a version that covered more road (Oregon, Washington) is past the end now: forget it.
 if (S.m != null && !(S.m >= 0 && S.m <= MAX_M + 1)) { S.m = null; store.del("m"); }
@@ -151,11 +151,22 @@ function startGps() {
 }
 function onFix(pos) {
   const c = pos.coords;
-  if (c.accuracy && c.accuracy > 1500) return; // too fuzzy to place you on the road
+  if (c.accuracy && c.accuracy > 1500) { // too fuzzy to place you on the road
+    bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy, m: null, dist: null, offRoute: !!S.offRoute, fuzzy: true });
+    return;
+  }
   S.lat = c.latitude; S.lon = c.longitude; S.accuracy = c.accuracy;
   const hit = geo.locate(c.latitude, c.longitude, S.m);
   // Far from I-5: don't move the marker. Two far fixes in a row = off route (one could be a GPS glitch).
   const far = hit.m == null || hit.dist > Math.max(1.2, (c.accuracy || 0) / 1609 * 1.5);
+  // A turn-off place (a mission a few miles off I-5) is stamped when GPS really gets there, on I-5 or off it.
+  stampNear(c.latitude, c.longitude, c.accuracy);
+  // Every fix goes to the modules, also off I-5 (js/missions.js: the visit card at a mission far from the road).
+  const mis = nearMission(c.latitude, c.longitude);
+  const wasNear = S.nearMission;
+  S.nearMission = mis;
+  bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy ?? null, m: hit.m, dist: hit.dist, offRoute: far });
+  if (mis) bus.emit("mission:near", { place: mis.place, n: mis.place.n, dist: mis.dist, offRoute: far });
   if (far) {
     offCount++;
     lastFix = null; anchorM = null; dirVotes = [];
@@ -167,7 +178,7 @@ function onFix(pos) {
         endSaid = offEnd;
         voice.say(`That's ${offEnd.long}, the end of the road for I-5 Buddy. Thanks for riding along.`, { id: "end-of-road", prio: 2, chime: "success" });
       }
-    }
+    } else if (S.offRoute && (mis || wasNear)) { if (mis) offEnd = null; queueRender(); } // "Near Mission ..." follows you
     return;
   }
   drove = true; offEnd = null;
@@ -220,6 +231,18 @@ function startDemo() {
   }, 500);
 }
 
+/* A mission within 2 miles of a GPS fix ({place: the data.MISSIONS entry, dist in miles}, nearest first), else null.
+   Off I-5 near a mission the status line says "Near Mission ..." instead of "Not on I-5 right now". */
+function nearMission(lat, lon) {
+  let best = null;
+  for (const x of MISSIONS) {
+    if (!x || typeof x.lat !== "number" || typeof x.lon !== "number") continue;
+    const d = geo.miles(lat, lon, x.lat, x.lon);
+    if (d <= 2 && (!best || d < best.dist)) best = { place: x, dist: Math.round(d * 100) / 100 };
+  }
+  return best;
+}
+
 function greet(extra = "") {
   voice.say(`Hi, I'm your I-5 buddy. I'll tell you about what's coming up as we drive. ${extra}`, { now: true, id: "greet", prio: 3 });
 }
@@ -230,7 +253,7 @@ function stopAll(silent = false) {
   watchId = null; demoTimer = null; dirVotes = []; anchorM = null; lastFix = null; offCount = 0;
   // A new session starts on the road until two far fixes say otherwise (otherwise a trip that ended off the road
   // would keep "off route" and never notice going off again).
-  drove = false; offEnd = null; S.offRoute = false;
+  drove = false; offEnd = null; S.offRoute = false; S.nearMission = null;
   if (!silent) {
     if (S.mode !== "off") bus.emit("trip:end", {});
     voice.stop();
@@ -273,7 +296,8 @@ function render() {
   $("speed").textContent = S.speed != null && S.mode !== "manual" && S.mode !== "off" ? Math.round(S.speed) : "--";
 
   if (S.mode === "gps") {
-    if (S.offRoute) {
+    if (S.offRoute && S.nearMission) { setPill("gps", "GPS"); $("statusText").textContent = `Near ${S.nearMission.place.name}`; }
+    else if (S.offRoute) {
       const end = atEnd();
       setPill("off-route", end ? "THE END" : "OFF I-5");
       $("statusText").textContent = end ? `Past ${end.long}. Narration paused.` : "Not on I-5 right now. Narration paused.";
@@ -402,7 +426,7 @@ function renderNext() {
     const ph = photo(p, "hero"); if (ph) card.append(ph);
     const body = el("div", "next-body");
     const meta = el("div", "meta");
-    meta.append(el("span", null, CATS[p.cat]), el("span", null, exitName(p.st, p.ex)));
+    meta.append(el("span", null, CATS[p.cat]), el("span", null, detourShort(p) || exitName(p.st, p.ex)));
     const count = el("div", "count");
     count.append(el("span", "n"), el("small", "unit", "mi"), el("small", "eta"), el("span", "side"));
     const acts = el("div", "acts");
@@ -449,6 +473,8 @@ function renderUpNext() {
     const b = el("span", "nm", p.name);
     const sw = sideWord(p, S.dir);
     li.append(b, el("span", "sd", sw === "left" ? "◀" : sw === "right" ? "▶" : ""));
+    const det = detourShort(p);
+    if (det) { li.classList.add("detour"); li.append(el("small", "det", det)); }
     li.tabIndex = 0;
     li.onclick = () => placeSheet(p);
     li.onkeydown = e => { if (e.key === "Enter") placeSheet(p); };
@@ -501,7 +527,8 @@ function placeSheet(p) {
   const ph = photo(p, "full"); if (ph) sh.append(ph);
   const sw = S.m != null ? sideWord(p, S.dir) : "";
   const d = S.m != null ? aheadOf(S.m, S.dir, p.m) : null;
-  sh.append(el("div", "meta", [CATS[p.cat], exitName(p.st, p.ex), sw && `on the ${sw}`, d != null && (d >= 0 ? `${fmtMiles(d)} mi ahead` : `${fmtMiles(-d)} mi behind`), S.stamps[p.id] && "stamped ✓"].filter(Boolean).join(" · ")));
+  const det = detourShort(p);
+  sh.append(el("div", "meta", [CATS[p.cat], det || exitName(p.st, p.ex), sw && `on the ${sw}`, d != null && (d >= 0 ? `${fmtMiles(d)} mi ahead` : `${fmtMiles(-d)} mi behind`), S.stamps[p.id] && "stamped ✓"].filter(Boolean).join(" · ")));
   sh.append(el("p", "lead", p.text));
   if (p.more) sh.append(el("p", null, p.more));
   if (p.spot) sh.append(el("p", "spot", "I spy: " + p.spot));
@@ -509,6 +536,16 @@ function placeSheet(p) {
   const h1 = el("button", "primary", "Hear it"); h1.onclick = () => { voice.unlock(); hear(p); };
   acts.append(h1);
   if (p.more) { const h2 = el("button", "secondary", "Tell me more"); h2.onclick = () => { voice.unlock(); tellMore(p); }; acts.append(h2); }
+  // A turn-off place is stamped only when GPS gets within about half a mile of it, or with this button.
+  if (det) {
+    const went = el("button", "secondary went", S.stamps[p.id] ? "You went there ✓" : "I went there");
+    went.type = "button"; went.disabled = !!S.stamps[p.id];
+    went.onclick = () => {
+      if (stampSelf(p)) toast(`${p.name} is in your passport.`);
+      went.textContent = "You went there ✓"; went.disabled = true;
+    };
+    acts.append(went);
+  }
   sh.append(acts);
   bus.emit("place:sheet", { place: p, sheet: sh, acts }); // modules may add buttons to `acts` (share.js adds Share)
   const src = el("p", "fine");
@@ -561,7 +598,7 @@ function renderAhead() {
     const dd = el("div", "d", d < 0.3 ? "now" : Math.round(d)); if (d >= 0.3) dd.append(el("small", null, "mi"));
     const body = el("div", "body");
     const sw = sideWord(p, S.dir);
-    body.append(el("div", "m", [CATS[p.cat], exitName(p.st, p.ex), sw && (sw === "left" ? "◀ left" : "right ▶")].filter(Boolean).join(" · ")),
+    body.append(el("div", "m", [CATS[p.cat], detourShort(p) || exitName(p.st, p.ex), sw && (sw === "left" ? "◀ left" : "right ▶")].filter(Boolean).join(" · ")),
       el("b", null, p.name), el("p", null, p.text));
     const row = el("div", "rowacts");
     const hb = el("button", "link", "Hear it"); hb.onclick = e => { e.stopPropagation(); voice.unlock(); hear(p); };
@@ -823,6 +860,53 @@ if (native.NATIVE) { // the iPhone app carries every file, photos included
   $("offlineText").textContent = `Everything is on this phone, photos included. Live road info${native.VOICE ? ", voice commands" : ""} and the 3D map need a connection.`;
 }
 
+/* ---------- what's new in 2.6.0: once, for people who used the app before (also in the iPhone app after its update) ---------- */
+const NEW_ID = "2.6.0-missions";
+function whatsNew() {
+  const box = $("whatsNew");
+  if (!box) return;
+  const seen = store.get("whatsNew", null);
+  if (!RETURNING) { if (seen !== NEW_ID) store.set("whatsNew", NEW_ID); box.hidden = true; return; } // a first visit: never
+  if (seen === NEW_ID || !MISSIONS.length) { box.hidden = true; return; }
+  const done = () => { store.set("whatsNew", NEW_ID); box.hidden = true; box.textContent = ""; };
+  const card = el("article", "whats-new");
+  card.setAttribute("aria-labelledby", "wnTitle");
+  const h = el("h2", null, `New in I-5 Buddy: the ${MISSIONS.length} California missions`);
+  h.id = "wnTitle";
+  const near = PLACES.filter(p => p.mission).length;
+  const p = el("p", null, `A mission passport with all ${MISSIONS.length}, and a card that welcomes you when you get to one.` +
+    (near ? " When a mission is a short drive off I-5, I'll tell you at the exit." : ""));
+  const acts = el("div", "acts");
+  const see = el("button", "primary", "See the missions"); see.type = "button";
+  see.onclick = () => {
+    done();
+    go("passport");
+    const t = document.querySelector("#missionsPassport h2");
+    if (t) { t.tabIndex = -1; t.focus({ preventScroll: true }); }
+  };
+  const ok = el("button", "secondary", "Got it"); ok.type = "button";
+  ok.onclick = () => { done(); ($("nextCard").querySelector("h2") || $("startGps")).focus?.({ preventScroll: true }); };
+  acts.append(see, ok);
+  card.append(el("div", "meta", "WHAT'S NEW"), h, p, acts);
+  box.textContent = ""; box.append(card); box.hidden = false;
+}
+whatsNew();
+
+/* ---------- the iPhone app: is a newer version in the App Store? (at most once a day; nothing about the person is sent) ---------- */
+if (native.NATIVE) {
+  native.storeUpdate().then(u => {
+    const row = $("storeUpdate");
+    if (!u || !row) return;
+    row.textContent = "";
+    const a = el("a", null, "Open the App Store");
+    a.href = u.url; a.target = "_blank"; a.rel = "noopener";
+    const later = el("button", "link", "Not now"); later.type = "button";
+    later.onclick = () => { native.storeUpdateLater(u.version); row.hidden = true; };
+    row.append(el("span", null, "An update is ready in the App Store."), a, later);
+    row.hidden = false;
+  }).catch(() => {});
+}
+
 /* ---------- service worker ---------- */
 // Not in the iPhone app: it ships every file and updates through the App Store (and WKWebView has no service worker here).
 if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NATIVE) {
@@ -851,7 +935,7 @@ window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools
 
 applyTheme();
 render();
-for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride"]) {
+for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions"]) {
   import(`./${name}.js`).then(mod => {
     try { mod.init(api); } catch (e) { console.error(`[${name}] init failed`, e); }
   }).catch(e => console.warn(`[${name}] not loaded`, e?.message || e));

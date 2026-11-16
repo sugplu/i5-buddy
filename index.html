@@ -46,6 +46,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <link rel="stylesheet" href="css/feedback.css">
 <link rel="stylesheet" href="css/share.css">
 <link rel="stylesheet" href="css/ride.css">
+<link rel="stylesheet" href="css/missions.css">
 </head>
 <body>
 <div class="app">
@@ -88,6 +89,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   </div>
   <div id="rideInvite"></div>
 
+  <div class="store-update" id="storeUpdate" hidden></div>
   <div id="destStrip"></div>
   <div id="liveAlerts"></div>
 
@@ -99,6 +101,8 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   </div>
 
   <article class="next" id="nextCard"></article>
+  <div id="whatsNew" hidden></div>
+  <div id="missionCard" hidden></div>
   <div id="spotCard"></div>
 
   <div class="look">
@@ -152,7 +156,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <section class="view" id="view-map" data-view="map" hidden></section>
 
 <!-- PASSPORT -->
-<section class="view" id="view-passport" data-view="passport" hidden></section>
+<section class="view" id="view-passport" data-view="passport" hidden><div id="missionsPassport"></div></section>
 
 <!-- PLAY -->
 <section class="view" id="view-play" data-view="play" hidden></section>
@@ -244,10 +248,11 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <aside class="sheet" id="feedbackSheet" hidden aria-label="Send feedback" role="dialog" aria-modal="true"></aside>
 <aside class="sheet" id="shareSheet" hidden aria-label="Share" role="dialog" aria-modal="true"></aside>
 <aside class="sheet" id="rideSheet" hidden aria-label="Pick your ride" role="dialog" aria-modal="true"></aside>
+<aside class="sheet" id="missionSheet" hidden aria-label="Mission" role="dialog" aria-modal="true"></aside>
 
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>
-<div class="update" id="updateBar" hidden>A new version is ready. <button class="link" id="updateBtn">Reload</button></div>
+<div class="update" id="updateBar" hidden><span>A new version of I-5 Buddy is ready. Reload to get it.</span> <button class="link" id="updateBtn">Reload</button></div>
 </div>
 
 

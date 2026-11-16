@@ -22,7 +22,11 @@
 //   statusBar(theme)      status bar text that stays readable on the page: "light" theme -> dark text, else light text
 //   locationOffText(err)  what to say when location is off for the app (the browser wording talks about site settings)
 //   micOffText(code)      the same for the microphone and speech recognition (listen.js)
-// Nothing here sends anything anywhere.
+//   storeUpdate()         the iPhone app only, at most once a day: asks Apple's public App Store lookup
+//                         (itunes.apple.com/lookup?id=6834991531) for the app's current version, 10 s timeout, quiet on
+//                         failure. Resolves {version, url} when the App Store has a newer version than this app (and the
+//                         person has not tapped Not now for that version), else null. storeUpdateLater(v): Not now.
+// Nothing here sends anything about the person: the App Store lookup asks only for the app's own public listing.
 
 const cap = typeof window !== "undefined" ? window.Capacitor : undefined;
 export const NATIVE = !!(cap && typeof cap.isNativePlatform === "function" && cap.isNativePlatform());
@@ -435,3 +439,61 @@ export function statusBar(theme) {
   barStyle = style;
   call(B, "setStyle", { style }).catch(() => { barStyle = ""; });
 }
+
+/* ---------- a newer version in the App Store? ---------- */
+const STORE_ID = "6834991531";
+const STORE_URL = "https://apps.apple.com/us/app/i-5-buddy/id" + STORE_ID;
+const LOOKUP = "https://itunes.apple.com/lookup?id=" + STORE_ID;
+const DAY = 24 * 3600e3;
+const ls = {
+  get(k) { try { return JSON.parse(localStorage.getItem("i5b:" + k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem("i5b:" + k, JSON.stringify(v)); } catch {} },
+};
+/** "2.10.1" > "2.9" (missing parts count as 0). */
+export function newer(a, b) {
+  const pa = String(a || "").split(".").map(n => parseInt(n, 10) || 0), pb = String(b || "").split(".").map(n => parseInt(n, 10) || 0);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) > (pb[i] || 0);
+  return false;
+}
+/** This app's own version: sw.js's VERSION line (the iPhone app's MARKETING_VERSION is kept equal to it). */
+async function ownVersion() {
+  try {
+    const r = await fetch("sw.js", { cache: "no-store" });
+    const m = r.ok && /VERSION\s*=\s*"i5b-v([\w.-]{1,30})"/.exec(await r.text());
+    if (m) return m[1];
+  } catch {}
+  return "2.6.0";
+}
+/** The App Store's version of the app, or null. Native HTTP when the shell has it (no CORS), else fetch. 10 s, quiet. */
+async function lookup() {
+  const http = plugin("CapacitorHttp");
+  const parse = d => {
+    try { const j = typeof d === "string" ? JSON.parse(d) : d; const v = j && j.results && j.results[0] && j.results[0].version; return typeof v === "string" && /^\d+(\.\d+){0,3}$/.test(v) ? v : null; } catch { return null; }
+  };
+  const timeout = new Promise(res => setTimeout(() => res(null), 10000));
+  const ask = (async () => {
+    if (http && typeof http.get === "function") {
+      try { const r = await http.get({ url: LOOKUP, connectTimeout: 10000, readTimeout: 10000 }); if (r && r.status === 200) return parse(r.data); } catch {}
+    }
+    const ac = typeof AbortController === "function" ? new AbortController() : null;
+    const t = setTimeout(() => ac && ac.abort(), 10000);
+    try { const r = await fetch(LOOKUP, { cache: "no-store", credentials: "omit", signal: ac ? ac.signal : undefined }); return r.ok ? parse(await r.json()) : null; }
+    catch { return null; } finally { clearTimeout(t); }
+  })();
+  return Promise.race([ask, timeout]);
+}
+export async function storeUpdate(force = false) {
+  if (!NATIVE) return null;
+  try {
+    const mine = await ownVersion();
+    let c = ls.get("storeCheck");
+    if (force || !c || typeof c.t !== "number" || Date.now() - c.t > DAY || c.t > Date.now()) {
+      const v = await lookup();
+      c = { t: Date.now(), v: v || (c && c.v) || null };
+      ls.set("storeCheck", c);
+    }
+    if (!c.v || !newer(c.v, mine) || ls.get("storeLater") === c.v) return null;
+    return { version: c.v, url: STORE_URL };
+  } catch { return null; }
+}
+export function storeUpdateLater(v) { ls.set("storeLater", v); }

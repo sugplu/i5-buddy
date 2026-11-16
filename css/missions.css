@@ -1,0 +1,133 @@
+/* Missions module: the visit card on Drive (#missionCard), the mission passport (#missionsPassport) and the mission
+   page (#missionSheet). Only app.css tokens; night = :root, day = [data-theme="light"]. The mission colour is
+   --hist (adobe and roof tile; a --mission token would override it). */
+#missionCard,#missionsPassport,.ms-sheet{--ms:var(--mission,var(--hist))}
+#missionCard{display:grid;gap:10px;min-width:0}
+#missionCard button,#missionsPassport button,.ms-sheet button{touch-action:manipulation}
+.ms-slot{display:grid;gap:10px;min-width:0}
+.ms-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.ms-ic{width:20px;height:20px;flex:none}
+.ms-ic-s{width:14px;height:14px}
+
+/* ---------- buttons and links ---------- */
+.ms-acts{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.ms-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;min-width:44px;padding:10px 14px;border-radius:10px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-weight:800;font-size:.95rem;line-height:1.15;text-decoration:none;text-align:center}
+.ms-btn.main{background:var(--ms);border-color:transparent;color:var(--on-cat,var(--bg))}
+.ms-btn:active{transform:scale(.97)}
+.ms-btn[aria-pressed="true"]{border-color:var(--ms);color:var(--ms)}
+.ms-name{background:none;border:0;padding:6px 0;margin:-6px 0;min-height:44px;color:var(--fg);font:inherit;font-weight:900;font-size:1.02rem;line-height:1.2;text-align:left;
+  text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px;overflow-wrap:anywhere}
+.ms-name:active{color:var(--ms)}
+
+/* ---------- the card ---------- */
+.ms-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--ms);padding:14px 16px 16px;display:grid;gap:10px;min-width:0;
+  animation:ms-in .35s ease-out both}
+@keyframes ms-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ms-k{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:.74rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:var(--ms);min-width:0}
+.ms-bell{width:18px;height:18px}
+.ms-k-x{color:var(--muted)}
+.ms-k-x::before{content:"\2022";margin-right:8px;color:var(--muted)}
+.ms-k-r{margin-left:auto;color:var(--muted)}
+.ms-chip{margin-left:auto;display:inline-flex;align-items:center;gap:4px;padding:3px 8px 2px;border-radius:99px;font-size:.66rem;letter-spacing:.1em;border:1.5px solid var(--ms);color:var(--ms)}
+.ms-chip.gps{background:var(--ms);color:var(--on-cat,var(--bg))}
+.ms-chip.self{border-style:dashed}
+.ms-card h2{margin:0;font-size:1.4rem;line-height:1.15;font-weight:900;text-wrap:balance;overflow-wrap:anywhere}
+.ms-es{margin:-4px 0 0;color:var(--muted);font-style:italic;font-size:.92rem}
+.ms-card p{margin:0;color:var(--fg-2)}
+.ms-card .ms-lede{color:var(--fg);font-weight:700}
+.ms-turn{margin:0;color:var(--fg-2);font-size:.92rem}
+.ms-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 14px;margin:0;font-size:.92rem;align-items:baseline}
+.ms-facts dt{color:var(--muted);font-weight:800;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase}
+.ms-facts dd{margin:0;color:var(--fg);font-weight:600;overflow-wrap:anywhere}
+.ms-next{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:10px}
+.ms-next-k{font-size:.68rem;letter-spacing:.12em;font-weight:800;text-transform:uppercase;color:var(--muted)!important}
+.ms-next-row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.ms-next-tt{display:grid;min-width:0;gap:2px}
+.ms-meta{color:var(--muted);font-size:.84rem;font-weight:600}
+.ms-kid{display:grid;gap:8px;justify-items:start}
+.ms-factbtn{border-color:var(--ms)}
+.ms-fact{margin:0;padding:10px 12px;border-radius:12px;background:var(--surface-2);border-left:4px solid var(--ms);color:var(--fg)!important;font-weight:700;width:100%}
+
+/* nearest missions */
+.ms-rows{list-style:none;margin:0;padding:0;display:grid}
+.ms-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.ms-row:last-child{border-bottom:0;padding-bottom:0}
+.ms-row-tt{display:grid;gap:2px;min-width:0}
+.ms-num{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:1.05rem;
+  border:2px dashed var(--line);color:var(--muted)}
+.ms-row.got .ms-num{border:3px double var(--ms);color:var(--ms)}
+.ms-row.self .ms-num{border:2px dashed var(--ms)}
+
+/* in glance mode (driving) Drive keeps only what matters: the nearby card and the short version of the visit card */
+body.glance #missionCard:has(.ms-list){display:none}
+body.glance #missionCard .ms-visit,body.glance #missionCard .ms-facts,body.glance #missionCard .ms-next,body.glance #missionCard .ms-kid,body.glance #missionCard .ms-es{display:none}
+
+/* ---------- the passport ---------- */
+#missionsPassport{min-width:0}
+.ms-pp{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--ms);padding:14px 14px 16px;display:grid;gap:12px;min-width:0}
+.ms-pp-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.ms-pp-tt{display:grid;gap:2px;min-width:0}
+.ms-pp-title{margin:0;font-size:1.3rem;font-weight:900;line-height:1.15}
+.ms-pp-sub{margin:0;color:var(--muted);font-size:.84rem}
+.ms-pp-count{margin:0;flex:none;color:var(--muted);font-weight:800;font-size:.9rem;white-space:nowrap}
+.ms-pp-count b{font-family:var(--mono);font-size:1.7rem;color:var(--ms);font-weight:700}
+.ms-bar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.ms-bar i{display:block;height:100%;border-radius:4px;background:var(--ms);transition:width .4s ease}
+.ms-stamps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:14px 6px}
+.ms-stamps>li{display:flex;justify-content:center;min-width:0}
+.ms-stamp{width:100%;max-width:120px;display:grid;justify-items:center;align-content:start;gap:6px;padding:4px 2px;background:none;border:0;color:var(--fg);min-height:44px;border-radius:12px}
+.ms-ring{position:relative;width:82px;height:82px;border-radius:50%;display:grid;align-content:center;justify-items:center;gap:2px;line-height:1;
+  border:2px dashed var(--line);color:var(--muted);transform:rotate(var(--rot,0deg));transition:transform .2s ease}
+.ms-ring small{font-size:.54rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.ms-ring b{font-family:var(--mono);font-size:1.65rem;font-weight:700;letter-spacing:-.02em}
+.ms-ring .ms-yr{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em}
+.ms-nm{font-size:.76rem;font-weight:700;line-height:1.2;text-align:center;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:100%}
+.ms-when{font-size:.6rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--ms);min-height:.75rem}
+/* a GPS stamp: solid double ring, inked */
+.ms-stamp.gps .ms-ring{border:4px double var(--ms);color:var(--ms)}
+.ms-stamp.gps .ms-ring::after{content:"";position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--ms);opacity:.55}
+@supports (color:color-mix(in srgb,red 50%,blue)){
+  .ms-stamp.gps .ms-ring{background:color-mix(in srgb,var(--ms) 13%,transparent)}
+}
+/* a visit you marked yourself: a dashed ring in the mission colour, not inked */
+.ms-stamp.self .ms-ring{border:2.5px dashed var(--ms);color:var(--ms)}
+.ms-stamp.got .ms-nm{color:var(--fg);font-weight:800}
+.ms-stamp.self .ms-when{color:var(--muted)}
+.ms-stamp:active .ms-ring{transform:rotate(var(--rot,0deg)) scale(.95)}
+.ms-stamp.fresh.gps .ms-ring,.ms-stamp.fresh.self .ms-ring{animation:ms-thump .6s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes ms-thump{0%{transform:rotate(var(--rot,0deg)) scale(1.35);opacity:0}60%{opacity:1}100%{transform:rotate(var(--rot,0deg)) scale(1)}}
+.ms-legend{margin:0;color:var(--muted);font-size:.82rem}
+.ms-share{display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--surface-2);border-radius:12px;padding:8px 8px 8px 12px}
+.ms-share p{margin:0;font-weight:700;font-size:.9rem;min-width:0}
+
+/* ---------- the mission page ---------- */
+.ms-sheet .sheet-head b{overflow-wrap:anywhere}
+.ms-sheet .ms-k{margin-top:-4px}
+.ms-sheet .ms-es{margin:-8px 0 0}
+.ms-where{margin:-6px 0 0;color:var(--muted);font-weight:700;font-size:.88rem}
+.ms-lead{margin:0;font-size:1.05rem;color:var(--fg)}
+.ms-sec{display:grid;gap:4px}
+.ms-sec .sub{margin:0}
+.ms-sec p{margin:0;color:var(--fg-2)}
+.ms-hint{color:var(--muted);font-size:.82rem;margin:0}
+.ms-visited-row{display:flex;align-items:center;gap:6px 12px;flex-wrap:wrap}
+.ms-gpsnote{margin:0;display:flex;align-items:center;gap:8px;font-weight:800;color:var(--ms)}
+
+@media (max-width:400px){
+  .ms-btn{padding:10px 11px;font-size:.9rem;gap:6px}
+  /* the nearest list: Directions as its icon (the link keeps its full name), so mission names keep the room */
+  .ms-row .ms-btn-t{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .ms-row .ms-btn{width:48px;padding:10px 0}
+  .ms-row .ms-ic{width:22px;height:22px}
+  .ms-card{padding:12px 14px 14px}
+  .ms-card h2{font-size:1.25rem}
+  .ms-stamps{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+  .ms-ring{width:76px;height:76px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ms-card,.ms-stamp.fresh .ms-ring{animation:none!important}
+  .ms-ring,.ms-bar i{transition:none}
+  .ms-btn:active,.ms-stamp:active .ms-ring{transform:rotate(var(--rot,0deg))}
+  .ms-btn:active{transform:none}
+}
