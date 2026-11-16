@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "org.dominares.i5buddy",
+      "sha256_cert_fingerprints": [
+        "BE:EB:26:31:48:75:03:C7:A1:D7:A3:1F:53:26:B6:EA:69:B9:AF:BA:A6:D8:2C:B6:82:13:B0:BE:05:CD:7E:D5",
+        "72:53:49:1C:49:74:B8:63:E9:93:A2:25:AF:2F:60:C9:4A:9D:0B:6F:E7:3A:BE:A9:35:A3:A9:B4:81:BB:52:4B"
+      ]
+    }
+  }
+]

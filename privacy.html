@@ -66,12 +66,12 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <div class="pv-sign">
     <h1>Privacy</h1>
     <p>What leaves your phone, what stays on it, and your choices.</p>
-    <p class="pv-date">Effective November 16, 2026 · Version 2026-11-16.1</p>
+    <p class="pv-date">Effective November 16, 2026 · Version 2026-11-16.2</p>
   </div>
 
   <div class="pv-intro">
     <p>I-5 Buddy is made by Dominares. Dominares Tools is run by Joseph Linares, a sole proprietor based in San Diego, California. "We" on this page means Dominares (Dominares Tools). For questions or requests, write to <a href="mailto:support@dominares.org">support@dominares.org</a>.</p>
-    <p>This notice covers the I-5 Buddy app at i5.dominares.org, the I-5 Buddy iPhone app, and copies of it still running from its old address, sugplu.github.io/i5-buddy. The dominares.org website has its <a href="https://dominares.org/privacy" target="_blank" rel="noopener">own privacy policy</a>.</p>
+    <p>This notice covers the I-5 Buddy app at i5.dominares.org, the I-5 Buddy iPhone app, <span data-web-only>the I-5 Buddy Android app from Google Play, </span>and copies of it still running from its old address, sugplu.github.io/i5-buddy. The dominares.org website has its <a href="https://dominares.org/privacy" target="_blank" rel="noopener">own privacy policy</a>.</p>
   </div>
 
   <section class="pv-short" aria-labelledby="short">
@@ -99,6 +99,15 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <p>The iPhone app has these files built in, so opening it loads nothing from i5.dominares.org or GitHub. Its other features work as described below.</p>
   </section>
 
+  <section class="pv-item" aria-labelledby="f-android" data-web-only>
+    <h3 id="f-android">In the Android app</h3>
+    <p class="pv-when">If you installed I-5 Buddy from Google Play</p>
+    <p>The Android app is this same web app. It opens i5.dominares.org in your phone's browser, usually Chrome, without the address bar. So it loads, saves and sends what this notice describes for the website, and nothing else. The app adds no analytics, ads, account or notifications of its own.</p>
+    <p><b>Location.</b> Your browser asks whether i5.dominares.org may use your location, and Android may ask whether the browser itself may use location. You can change your answer later in the browser's settings (in Chrome: Settings, Site settings, Location). The app uses location only while it's open, never in the background. Android's location service works out your position; on most phones that service is part of Google Play services, which may contact Google under Google's own policy. Your browser hands the position to the page on your phone, and I-5 Buddy never sends it anywhere.</p>
+    <p><b>What it saves.</b> Your settings, passport and trips are kept in your browser's storage for i5.dominares.org, the same place the website uses in that browser. So uninstalling the app may not erase them. To erase them, long-press the I-5 Buddy icon and tap Site Settings, or delete the site data for i5.dominares.org in your browser's settings (in Chrome: Settings, Site settings, All sites).</p>
+    <p><b>Google Play.</b> Google delivers the app and its updates under Google's own privacy policy. Google Play shows us statistics, such as how many people installed the app, and crash reports from phones whose owners share usage and diagnostics with Google, without names. If you rate or review the app, Google shows your review publicly under your Google Account name. If you join our test before the app is public, we see the email address you join with, and we use it only to run the test.</p>
+  </section>
+
   <section class="pv-item" aria-labelledby="f-feedback">
     <h3 id="f-feedback">Send feedback</h3>
     <p class="pv-when">Only when you tap Send</p>
@@ -124,7 +133,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
       <li><b>Chain controls and freeway signs.</b> Your phone loads them from Caltrans (<span class="pv-host">cwwp2.dot.ca.gov</span>) for the Caltrans districts ahead of you.</li>
       <li><b>Cameras.</b> The Drive tab loads pictures from the 3 nearest Caltrans cameras ahead, and from any camera you open, about once a minute while they're on screen.</li>
     </ul>
-    <p>The weather points are counted from the nearest 5-mile mark on I-5, not from your exact spot. So weather.gov can tell only roughly where you are (within a few miles) and which way you're going. The app checks about every 5 miles or 10 minutes. The cameras you load show Caltrans roughly where you are too. As with any web request, these services also get your IP address and can tell the request came from I-5 Buddy. When you reopen the app, it uses the last spot it saved, even with GPS off.</p>
+    <p>The weather points are counted from the nearest 5-mile mark on I-5, not from your exact spot. So weather.gov can tell only roughly where you are (within a few miles) and which way you're going. The app checks about every 5 miles or 10 minutes. The cameras you load show Caltrans which stretch of I-5 you're on, often to within a mile. As with any web request, these services also get your IP address and can tell the request came from I-5 Buddy. When you reopen the app, it uses the last spot it saved, even with GPS off.</p>
   </section>
 
   <section class="pv-item" aria-labelledby="f-map">
@@ -171,7 +180,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   </section>
 
   <h2 id="stays">What stays on your phone</h2>
-  <p>I-5 Buddy saves these in your browser's storage for i5.dominares.org, or for sugplu.github.io in a copy added from the old address. The iPhone app keeps the same things inside the app on your iPhone. They are kept on your phone, not on our server, and we can't see them:</p>
+  <p>I-5 Buddy saves these in your browser's storage for i5.dominares.org, or for sugplu.github.io in a copy added from the old address. The iPhone app keeps the same things inside the app on your iPhone.<span data-web-only> The Android app keeps them in your browser's storage for i5.dominares.org, like the website.</span> They are kept on your phone, not on our server, and we can't see them:</p>
   <ul>
     <li>Your settings: voice, speed, theme, narration choices, and Live road info on or off.</li>
     <li>Your last spot on I-5 (the mile and direction, not GPS coordinates), so the app can pick up where you left off.</li>
@@ -190,6 +199,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <li>Settings &gt; Reset &gt; Clear passport deletes your stamps, trips and badges.</li>
     <li>To erase everything, clear the website data for i5.dominares.org in your browser's settings. If you used the old address, clear sugplu.github.io too. If you added I-5 Buddy to your Home Screen, remove it there too.</li>
     <li>In the iPhone app, deleting the app erases everything it saved.</li>
+    <li data-web-only>In the Android app, delete the site data for i5.dominares.org in your browser's settings (in Chrome: Settings, Site settings, All sites). Uninstalling the app may not erase it.</li>
   </ul>
 
   <h2 id="sharing">Who we share information with</h2>

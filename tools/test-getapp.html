@@ -356,14 +356,21 @@ const SCENARIOS = {
     check("support.html: Get the app, with Apple's badge linked to the App Store page", !!h && txt(h) === "Get the app" && !!sa && sa.getAttribute("src") === "icons/app-store-badge.svg" && sa.alt === "Download on the App Store");
     const wo = h && h.closest("[data-web-only]");
     check("support.html: Get the app is for the website only (data-web-only: the iPhone app's copy of the page leaves it out)", !!wo && wo.contains(sa) && /Google Play/.test(wo.textContent)
-      && ![...sup.querySelectorAll("main a[href^='https://apps.apple.com/']")].some(a => !wo.contains(a)) && !/Google Play|Android/.test([...sup.querySelector("main").children].filter(c => c !== wo).map(txt).join(" ")));
+      && ![...sup.querySelectorAll("main a[href^='https://apps.apple.com/']")].some(a => !wo.contains(a)) && !/Google Play|Android/.test([...sup.querySelector("main").children].filter(c => c !== wo && !c.hasAttribute("data-web-only")).map(txt).join(" ")));
     check("support.html: Android is coming to Google Play, use it in Chrome today", /coming to Google Play/.test(s) && /use it today in Chrome/.test(s) && /Install app/.test(s), s.trim());
     check("support.html: Apple's trademark line in the footer", /App Store is a service mark of Apple Inc\./.test(txt(sup.querySelector("footer"))));
     // the badge is Apple's file as it came from Apple's marketing tools (2026-11-15), byte for byte
     const buf = await (await fetch("../icons/app-store-badge.svg", { cache: "no-store" })).arrayBuffer();
     const hex = [...new Uint8Array(await crypto.subtle.digest("SHA-256", buf))].map(b => b.toString(16).padStart(2, "0")).join("");
     check("icons/app-store-badge.svg is Apple's badge, unmodified", hex === "a26fc5b38380272c92e9019a2eb8b45542a66814b3e2b203772db8904b9fb99f", hex);
-    check("no .well-known/assetlinks.json in this release", !(await get("../.well-known/assetlinks.json")).ok);
+    // Digital Asset Links (2.6.1): the Android app from Google Play opens without Chrome's address bar only if this file
+    // names its package and the certificate that signed it: Google Play's app-signing key, or our upload key for test installs
+    const alr = await get("../.well-known/assetlinks.json"), al = (() => { try { return alr.ok ? JSON.parse(alr.text) : null; } catch { return null; } })(), alt = al?.[0]?.target;
+    check(".well-known/assetlinks.json: org.dominares.i5buddy with Google Play's app-signing key and the upload key",
+      !!alt && al.length === 1 && alt.namespace === "android_app" && alt.package_name === "org.dominares.i5buddy"
+        && JSON.stringify(al[0].relation) === '["delegate_permission/common.handle_all_urls"]'
+        && JSON.stringify(alt.sha256_cert_fingerprints) === JSON.stringify(["BE:EB:26:31:48:75:03:C7:A1:D7:A3:1F:53:26:B6:EA:69:B9:AF:BA:A6:D8:2C:B6:82:13:B0:BE:05:CD:7E:D5",
+          "72:53:49:1C:49:74:B8:63:E9:93:A2:25:AF:2F:60:C9:4A:9D:0B:6F:E7:3A:BE:A9:35:A3:A9:B4:81:BB:52:4B"]), JSON.stringify(al).slice(0, 160));
 
     // ---- sw.js against a fake cache and network ----
     const swSrc = (await get("../sw.js")).text;
