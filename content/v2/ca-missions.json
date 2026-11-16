@@ -1,0 +1,115 @@
+{
+ "segment": "ca-missions",
+ "meta": {
+  "placeholder": true
+ },
+ "places": [
+  {
+   "state": "CA",
+   "exit": "20",
+   "lat": 32.78478,
+   "lon": -117.10622,
+   "name": "Mission San Diego de Alcalá",
+   "cat": "hist",
+   "visible": false,
+   "text": "First of the 21 Alta California missions, founded July 16, 1769; known as the Mother of the Missions.",
+   "more": "In November 1775 Kumeyaay fighters burned the mission; Father Luis Jayme was killed and is called California's first Christian martyr. He is buried by the altar. Today's church is the fifth on the site: a 1931 rebuild that replicates the church dedicated November 12, 1813.",
+   "src": "https://www.missionsandiego.org",
+   "src2": "https://en.wikipedia.org/wiki/Mission_San_Diego_de_Alcal%C3%A1",
+   "wiki": "Mission_San_Diego_de_Alcal%C3%A1",
+   "detour": {
+    "exit": "20",
+    "road": "I-8",
+    "dir": "east",
+    "miles": 8
+   },
+   "mission": 1
+  },
+  {
+   "state": "CA",
+   "exit": "135C",
+   "lat": 34.09673,
+   "lon": -118.10687,
+   "name": "Mission San Gabriel",
+   "cat": "hist",
+   "visible": false,
+   "text": "Church completed 1805, designed by Father Antonio Cruzado with capped buttresses and tall narrow windows unlike any other mission; CMF ties the style to the cathedral of Córdoba.",
+   "more": "The December 8, 1812 earthquake toppled the original bell tower; the six-bell campanario replaced it. An arson fire on July 11, 2020 destroyed the church roof. The campus reopened July 1, 2023 with a new museum exhibit naming 7,054 Native people baptized 1771 to 1848.",
+   "src": "https://www.sangabrielmissionchurch.org (sangabrielmission.org redirects here)",
+   "src2": "https://en.wikipedia.org/wiki/Mission_San_Gabriel_Arc%C3%A1ngel",
+   "wiki": "Mission_San_Gabriel_Arc%C3%A1ngel",
+   "detour": {
+    "exit": "135C",
+    "road": "I-10",
+    "dir": "east",
+    "miles": 8
+   },
+   "mission": 4
+  },
+  {
+   "state": "CA",
+   "exit": "82",
+   "lat": 33.50271,
+   "lon": -117.66234,
+   "name": "Mission San Juan Capistrano",
+   "cat": "hist",
+   "visible": false,
+   "text": "The Serra Chapel (1782) is regarded as the oldest building in California still in use and the last standing church where Serra is known to have said Mass.",
+   "more": "The Great Stone Church, begun 1797 and finished 1806, collapsed in the December 8, 1812 earthquake during Mass on the feast of the Immaculate Conception; about 40 worshipers died (Wikipedia adds two boys ringing the bells). The return of the swallows is celebrated each year on St. Joseph's Day, March 19.",
+   "src": "https://www.missionsjc.com",
+   "src2": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
+   "wiki": "Mission_San_Juan_Capistrano_(California)",
+   "detour": {
+    "exit": "82",
+    "road": "Ortega Highway",
+    "dir": "east",
+    "miles": 0.6
+   },
+   "mission": 7
+  },
+  {
+   "state": "CA",
+   "exit": "157",
+   "lat": 34.27312,
+   "lon": -118.46167,
+   "name": "Mission San Fernando",
+   "cat": "hist",
+   "visible": false,
+   "text": "The church was destroyed by the 1971 San Fernando earthquake and rebuilt by 1974.",
+   "more": "The convento, finished in 1822 after twelve years of work, has a 19-arch colonnade. Bob Hope (2003) and Dolores Hope (2011) are buried in the Bob Hope Memorial Gardens.",
+   "src": "None verified (Archdiocese venue page: https://lacatholics.org/venue/mission-san-fernando-rey-de-espana/)",
+   "src2": "https://en.wikipedia.org/wiki/Mission_San_Fernando_Rey_de_Espa%C3%B1a",
+   "wiki": "Mission_San_Fernando_Rey_de_Espa%C3%B1a",
+   "detour": {
+    "exit": "157",
+    "road": "San Fernando Mission Boulevard",
+    "dir": "east",
+    "miles": 1.5
+   },
+   "mission": 17
+  },
+  {
+   "state": "CA",
+   "exit": "54A",
+   "lat": 33.23243,
+   "lon": -117.31942,
+   "name": "Mission San Luis Rey",
+   "cat": "hist",
+   "visible": false,
+   "text": "Called the King of the Missions for its size; the mission calls itself the largest of California's missions, with 2,869 people in 1825 (CMF).",
+   "more": "The 1815 church is the only surviving mission church built in a cross shape, with a wooden dome and cupola. California's first pepper tree, from Peru, was planted here in 1830.",
+   "src": "https://sanluisrey.org",
+   "src2": "https://en.wikipedia.org/wiki/Mission_San_Luis_Rey_de_Francia",
+   "wiki": "Mission_San_Luis_Rey_de_Francia",
+   "detour": {
+    "exit": "54A",
+    "road": "Highway 76",
+    "dir": "east",
+    "miles": 5
+   },
+   "mission": 18
+  }
+ ],
+ "zones": [],
+ "trivia": []
+}

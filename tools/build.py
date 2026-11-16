@@ -7,6 +7,10 @@ Inputs
   tools/images.json          photo credits per place id (python3 tools/images.py), optional
   content/v2/*.json          researched places, zones, trivia (one file per stretch + *-gaps.json)
                              falls back to content/seg-*.json (California v1) when v2 is empty
+                             ca-missions.json: the I-5 turn-offs to the California missions near I-5 (places with
+                             "detour": {exit, road, dir, miles} and "mission": n), shipped like the other stretches
+  content/missions.json      the 21 California missions (data key MISSIONS). Both mission files are copied in from
+                             MISSIONS_SRC (the content agent's folder) when they exist there
 Output
   data/i5.js                 window.I5DATA = {...}
   tools/build-report.txt     warnings worth a human look
@@ -45,6 +49,79 @@ DEST_LIST = [  # (label, state, exit ref) used for "Where are you headed?"
 ]
 
 warn = []
+
+# The content agent writes the mission files here; build.py copies them into content/ when they exist (env I5_MISSIONS_SRC).
+MISSIONS_SRC = os.environ.get("I5_MISSIONS_SRC", "/Volumes/sugsair/dominares/road-buddies/i5-missions")
+MISSION_KEYS = ("n", "id", "name", "name_es", "lat", "lon", "founded", "founder", "people", "status", "site", "hours",
+                "wiki", "text", "more", "visit", "src", "src2")
+
+
+def copy_missions():
+    """Bring in the content agent's mission files (missions.json -> content/, ca-missions.json -> content/v2/)."""
+    import shutil
+    for name, dest in (("missions.json", os.path.join(ROOT, "content", "missions.json")),
+                       ("ca-missions.json", os.path.join(ROOT, "content", "v2", "ca-missions.json"))):
+        src = os.path.join(MISSIONS_SRC, name)
+        try:
+            if os.path.isfile(src):
+                json.load(open(src))  # only a file that parses
+                if not os.path.exists(dest) or open(src, "rb").read() != open(dest, "rb").read():
+                    shutil.copyfile(src, dest)
+                    print(f"copied {name} from {MISSIONS_SRC}", file=sys.stderr)
+        except (OSError, ValueError) as e:
+            warn.append(f"could not copy {src}: {e}")
+
+
+def load_missions():
+    """content/missions.json -> [{n, id, name, ...}] in founding order (n), each checked; [] when there is none."""
+    f = os.path.join(ROOT, "content", "missions.json")
+    if not os.path.exists(f):
+        return []
+    try:
+        d = json.load(open(f))
+    except ValueError as e:
+        warn.append(f"BAD JSON missions.json: {e}")
+        return []
+    if isinstance(d, dict) and (d.get("meta") or {}).get("placeholder"):
+        warn.append("missions.json is a placeholder (built from research/missions.json); swap in the content agent's file")
+    rows = d.get("missions", []) if isinstance(d, dict) else d
+    out, seen = [], set()
+    for m in rows if isinstance(rows, list) else []:
+        try:
+            n = int(m.get("n"))
+            lat, lon = float(m.get("lat")), float(m.get("lon"))
+        except (TypeError, ValueError, AttributeError):
+            warn.append(f"mission without n or coordinates left out: {m}")
+            continue
+        name = str(m.get("name") or "").strip()
+        if not name or n in seen or not (32 < lat < 42.1 and -124.5 < lon < -114):
+            warn.append(f"mission {n} left out (no name, repeated, or outside California)")
+            continue
+        seen.add(n)
+        q = {k: m[k] for k in MISSION_KEYS if m.get(k) not in (None, "", [])}
+        q.update({"n": n, "name": name, "lat": round(lat, 5), "lon": round(lon, 5)})
+        q["id"] = str(m.get("id") or slug(name))
+        out.append(q)
+    return sorted(out, key=lambda q: q["n"])
+
+
+def detour_of(p):
+    """A place's "detour" {exit, road, dir, miles}, cleaned; None when it has none or it is unusable."""
+    d = p.get("detour")
+    if not isinstance(d, dict):
+        return None
+    try:
+        miles = round(float(d.get("miles")), 1)
+    except (TypeError, ValueError):
+        miles = None
+    q = {"exit": str(d.get("exit") or p.get("exit") or "").strip(), "road": str(d.get("road") or "").strip(),
+         "dir": str(d.get("dir") or "").strip().lower()}
+    if miles is not None and miles >= 0:
+        q["miles"] = miles
+    if not q["exit"]:
+        warn.append(f"detour without an exit ({p.get('name')}): left as a plain place")
+        return None
+    return {k: v for k, v in q.items() if v not in ("", None)}
 
 
 def write_safely(path, text):
@@ -192,6 +269,8 @@ def main():
     if os.path.exists(ip):
         images = json.load(open(ip))
 
+    copy_missions()
+    missions = load_missions()
     raw, zones_raw, trivia_raw, v2 = load_content()
     places = []
     for p in raw:
@@ -217,10 +296,13 @@ def main():
                     if m_exit is not None and abs(pr["val"] - m_exit) > 6:
                         warn.append(f"exit mismatch ({p.get('name')}, {p['_file']}): exit {st} {p.get('exit')} = mile {m_exit:.0f}, coords say {pr['val']:.0f}")
                     m = pr["val"]
+        det = detour_of(p)
+        if det and m_exit is not None:
+            m = m_exit  # a turn-off: announced at its exit, wherever the place itself is
         if m is None:
             warn.append(f"no position ({p.get('name')}, {p['_file']})")
             continue
-        vis = bool(p.get("visible"))
+        vis = bool(p.get("visible")) and not det
         if vis and dist is not None and dist > 12 and cat != "nature":
             vis = False
         text = (p.get("text") or "").strip()
@@ -238,7 +320,33 @@ def main():
                 q[k_out] = p[k_in]
         if isinstance(lat, (int, float)):
             q["lat"], q["lon"] = round(lat, 5), round(lon, 5)
+        if det:
+            q["detour"] = det
+        if isinstance(p.get("mission"), int) and not isinstance(p.get("mission"), bool):
+            q["mission"] = p["mission"]
+        q["_file"] = p["_file"]
         places.append(q)
+
+    # ca-missions.json places that are already in a stretch file (same name nearby, or within a mile): the stretch
+    # file's place stays as it is and only gains "detour" and "mission"
+    ours = [p for p in places if p["_file"] == "ca-missions.json"]
+    rest = [p for p in places if p["_file"] != "ca-missions.json"]
+    for p in ours:
+        hit = None
+        for k in rest:
+            a, b = slug(k["name"]), slug(p["name"])
+            close = "lat" in k and "lat" in p and math.hypot((k["lat"] - p["lat"]) * 69, (k["lon"] - p["lon"]) * 57) < 1
+            if (abs(k["m"] - p["m"]) <= 6 and (a == b or difflib.SequenceMatcher(None, a, b).ratio() > 0.86)) or close:
+                hit = k
+                break
+        if hit:
+            for key in ("detour", "mission"):
+                if key in p:
+                    hit[key] = p[key]
+            places.remove(p)
+            warn.append(f"mission turn-off merged into the existing place '{hit['name']}' ({hit['_file']})")
+    for p in places:
+        p.pop("_file", None)
 
     # de-duplicate: same slug, or near-identical names within 2 miles
     places.sort(key=lambda p: (p["m"], -len(p.get("more", ""))))
@@ -314,6 +422,12 @@ def main():
             continue
         trivia.append({"m": round(m, 1), "q": t["q"], "choices": t["choices"], "answer": t["answer"], "why": t.get("why", ""), "src": t.get("src")})
 
+    nums = {q["n"] for q in missions}
+    for p in places:
+        if "mission" in p and p["mission"] not in nums:
+            warn.append(f"place '{p['name']}' names mission {p['mission']}, which is not in missions.json")
+            del p["mission"]
+
     dests = []
     for label, st, ref in DEST_LIST:
         if st not in off:
@@ -342,6 +456,7 @@ def main():
         "districts": X["districts"],
         "elev": elev, "passes": [p for p in X.get("passes", []) if in_road(p.get("m"))],
         "outline": [o for o in (X.get("outline") or []) if o.get("st") in keep_outline],
+        "missions": missions,
     }
     os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
     js = json.dumps(out, ensure_ascii=False, separators=(",", ":"))

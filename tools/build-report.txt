@@ -1,1 +1,4 @@
-
+missions.json is a placeholder (built from research/missions.json); swap in the content agent's file
+mission turn-off merged into the existing place 'Mission San Juan Capistrano' (ca2.json)
+mission turn-off merged into the existing place 'Mission San Fernando' (ca3.json)
+mission turn-off merged into the existing place 'Mission San Luis Rey' (ca1.json)
