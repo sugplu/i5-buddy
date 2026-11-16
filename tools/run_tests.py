@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 """Run every automated test page in headless Chrome and print a pass/fail table.
 
-Serves the repo root itself on a free port (see serve()). To use a server that is already running instead:
+Serves the repo root itself on a free port chosen at start (see serve()), so several runs can go at once.
+  --root FOLDER   serve and test another folder (a built site); its tools/ files, or this repo's when it has none
+To use a server that is already running instead:
   --base http://127.0.0.1:8765/tools/   (python3 -m http.server 8765 --bind 127.0.0.1, from the repo root)
-Run:  python3 tools/run_tests.py [--quick] [--only NAME] [-j 4] [--base URL]
+Run:  python3 tools/run_tests.py [--quick] [--only NAME] [-j 4] [--root FOLDER] [--base URL]
+
+Silent: Chrome runs with --headless=new --mute-audio --disable-audio-output, every test page sets
+window.__BUDDY_SILENT__ and loads the app with ?silent=1, and js/voice.js then uses a fake speech engine and a silent
+chime. The run refuses to start when js/voice.js or a test page lacks that hook (see silent_guard()). After a first run,
+check: pmset -g assertions | grep -A2 BuiltInSpeakerDevice (no Chrome or test PID may be listed).
 
 A test passes when its page title, or a console line, says ALL PASS / PASS and nothing says FAIL.
 Scenario lists come from the headers of each tools/test-*.html page.
@@ -11,7 +18,8 @@ Scenario lists come from the headers of each tools/test-*.html page.
 import concurrent.futures as cf, functools, http.server, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, time
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = REPO  # the folder served and tested; --root changes it
 BASE = None  # set in main()
 
 
@@ -37,6 +45,15 @@ def serve():
         def log_message(self, *args):
             pass
 
+        def translate_path(self, path):
+            # --root: a folder without its own test pages or fixtures uses this repo's tools/ files
+            p = super().translate_path(path)
+            if ROOT != REPO and not os.path.exists(p):
+                rel = os.path.relpath(p, ROOT)
+                if rel == "tools" or rel.startswith("tools" + os.sep):
+                    return os.path.join(REPO, rel)
+            return p
+
     srv = Server(("127.0.0.1", 0), functools.partial(Quiet, directory=ROOT))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return f"http://127.0.0.1:{srv.server_address[1]}/tools/"
@@ -60,6 +77,7 @@ SUITE = [
     ("map stamps", "test-map.html?scene=stamps", 30000, "900,960", False),
     ("map light", "test-map.html?scene=whole&theme=light", 30000, "900,960", False),
     ("share", "test-share.html", 40000, "500,900", True),
+    ("missions", "test-missions.html", 60000, "500,900", True),
     # "Get the iPhone app" (welcome card, About) by browser and inside the iPhone app; get/index.html; tags and sw.js
     ("get app", "test-getapp.html?s=app", 150000, "500,900", True),
     ("get page", "test-getapp.html?s=get", 60000, "500,900", True),
@@ -95,6 +113,27 @@ SUITE = [
     ("live south", "test-live.html?s=south", 60000, "900,960", False),
 ]
 
+def silent_guard(tests):
+    """The app must never be heard while tests run: js/voice.js has the silent hook and every page sets the flag."""
+    def find(rel):
+        for base in (ROOT, REPO):
+            p = os.path.join(base, rel)
+            if os.path.exists(p):
+                return p
+        return None
+    bad = []
+    voice = find(os.path.join("js", "voice.js"))
+    if not voice or "__BUDDY_SILENT__" not in open(voice, encoding="utf-8").read():
+        bad.append("js/voice.js has no silent hook")
+    for page in sorted({t[1].split("?")[0] for t in tests}):
+        p = find(os.path.join("tools", page))
+        if p and "__BUDDY_SILENT__" not in open(p, encoding="utf-8").read():
+            bad.append(f"tools/{page} does not set window.__BUDDY_SILENT__")
+    if bad:
+        print("not silent, not running:\n  " + "\n  ".join(bad), file=sys.stderr)
+        sys.exit(2)
+
+
 FAIL_RE = re.compile(r"\b(FAILED|FAIL)\b")
 PASS_RE = re.compile(r"\bALL PASS\b|\bPASS\b")
 
@@ -102,7 +141,8 @@ PASS_RE = re.compile(r"\bALL PASS\b|\bPASS\b")
 def run(test):
     name, page, budget, size, _ = test
     prof = tempfile.mkdtemp(prefix="i5test-")
-    cmd = [CHROME, "--headless=new", "--disable-gpu", f"--user-data-dir={prof}", "--enable-logging=stderr", "--v=0",
+    cmd = [CHROME, "--headless=new", "--mute-audio", "--disable-audio-output", "--disable-gpu", f"--user-data-dir={prof}",
+           "--enable-logging=stderr", "--v=0",
            "--autoplay-policy=no-user-gesture-required", f"--window-size={size}", f"--virtual-time-budget={budget}",
            # Hermetic: every outside host fails at once. Camera <img>s point at real Caltrans servers, and headless
            # Chrome's virtual clock stops while a download is pending, so a slow connection used to time tests out.
@@ -136,12 +176,17 @@ def run(test):
 
 
 def main():
-    global BASE
+    global BASE, ROOT
     quick = "--quick" in sys.argv
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
     jobs = int(sys.argv[sys.argv.index("-j") + 1]) if "-j" in sys.argv else 4
-    BASE = sys.argv[sys.argv.index("--base") + 1] if "--base" in sys.argv else serve()
+    if "--root" in sys.argv:
+        ROOT = os.path.abspath(sys.argv[sys.argv.index("--root") + 1])
+        if not os.path.isfile(os.path.join(ROOT, "index.html")):
+            sys.exit(f"--root {ROOT}: no index.html there")
     tests = [t for t in SUITE if (not quick or t[4]) and (not only or only in t[0])]
+    silent_guard(tests)
+    BASE = sys.argv[sys.argv.index("--base") + 1] if "--base" in sys.argv else serve()
     results = {}
     with cf.ThreadPoolExecutor(jobs) as ex:
         for t, (name, verdict, detail, secs) in zip(tests, ex.map(run, tests)):

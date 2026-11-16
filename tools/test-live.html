@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>I-5 Buddy live module test</title>
 <!--
@@ -1469,7 +1470,7 @@ async function attempt() {
     main.js reloads on controllerchange). Same code, same origin, same localStorage. ?sw=1 loads index.html as is. */
 let appHtml = null;
 async function loadApp(first) {
-  if (REAL) { if (first) f.src = "../index.html"; else f.contentWindow.location.reload(); return; }
+  if (REAL) { if (first) f.src = "../index.html?silent=1"; else f.contentWindow.location.reload(); return; }
   if (!appHtml) {
     const html = await (await fetch("../index.html", { cache: "no-store" })).text();
     const stub = `<base href="${new URL("../", location.href).href}"><script>try{Object.defineProperty(navigator.serviceWorker,"register",` +

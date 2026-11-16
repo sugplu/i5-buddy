@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>I-5 Buddy: listen tests</title>
 <!--
@@ -409,7 +410,7 @@ class FakeSR {
 const frame = document.getElementById("app");
 const nextTask = () => new Promise(r => { const c = new MessageChannel(); c.port1.onmessage = () => r(); c.port2.postMessage(0); });
 async function loadApp() {
-  frame.src = "../index.html";
+  frame.src = "../index.html?silent=1";
   for (let i = 0; i < 500000; i++) {
     let w = null;
     try { w = frame.contentWindow; if (!/\/index\.html$/.test(w.location.pathname)) w = null; } catch { w = null; }
@@ -437,7 +438,7 @@ async function appReady() {
     }
     // headless sometimes stalls a load under virtual time; one fresh try
     console.log("LISTEN TEST note: app load stalled, reloading");
-    try { frame.contentWindow.location.reload(); } catch { frame.src = "../index.html?retry=" + attempt; }
+    try { frame.contentWindow.location.reload(); } catch { frame.src = "../index.html?silent=1&retry=" + attempt; }
   }
   throw new Error("the app never exposed api.listen");
 }

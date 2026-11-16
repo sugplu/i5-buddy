@@ -1,7 +1,8 @@
 <!doctype html><meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
 <!-- Three phone-sized views for eyeballing the UI: welcome, map with stamps, demo drive. -->
 <style>body{margin:0;display:flex;gap:8px;background:#444}iframe{width:390px;height:844px;border:0;background:#000}</style>
-<iframe id="a" src="../index.html"></iframe><iframe id="b" src="../index.html"></iframe><iframe id="c" src="../index.html"></iframe>
+<iframe id="a" src="../index.html?silent=1"></iframe><iframe id="b" src="../index.html?silent=1"></iframe><iframe id="c" src="../index.html?silent=1"></iframe>
 <script>
 const W=f=>document.getElementById(f).contentWindow, Dc=f=>document.getElementById(f).contentDocument;
 onload=()=>{

@@ -7,9 +7,87 @@
 // - hold(true) pauses everything (used while the microphone listens); nothing is lost, the current item is
 //   re-queued and replays after hold(false).
 // - stop() is the user's "be quiet": it clears everything, including a chime that is still ringing.
+// - Silent tests: with ?silent=1 in the address, or window.top.__BUDDY_SILENT__ set by the test page around the app,
+//   nothing is ever heard (see silentSynth below). Without the flag nothing here changes.
 import { settings, bus } from "./store.js";
 
-const synth = window.speechSynthesis || null;
+const SILENT = (() => {
+  try { if (/[?&]silent=1(&|$)/.test(location.search)) return true; } catch {}
+  try { if (window.top.__BUDDY_SILENT__ === true) return true; } catch {}
+  return false;
+})();
+const synth = SILENT ? silentSynth(window.speechSynthesis || null) : window.speechSynthesis || null;
+
+/** The speech engine for silent tests. It records what would have been spoken in window.__BUDDY_SPOKEN__ (and in the
+    top window's, when reachable) and plays each utterance for about 15 ms a word (at most 1.5 s): start, then end, with
+    speaking, pending and paused like the real engine, so the queue below runs as usual. A test page that brings its own
+    fake engine (its own object, or the browser's with speak() swapped) keeps it: that one is silent already, and the
+    page checks what it was given. This engine is also what window.speechSynthesis returns from now on, so a page that
+    swaps that object's insides after the app has started (test-play.html, test-listen.html) swaps this one's. */
+function silentSynth(real) {
+  try {
+    const SS = window.SpeechSynthesis;
+    if (real && (typeof SS !== "function" || !(real instanceof SS) || real.speak !== SS.prototype.speak)) return real;
+  } catch {}
+  if (typeof window.SpeechSynthesisUtterance !== "function") window.SpeechSynthesisUtterance = function (t) { this.text = String(t == null ? "" : t); };
+  let q = [], cur = null, timer = 0, paused = false, left = 0, since = 0;
+  const later = fn => setTimeout(fn, 0);
+  const fire = (u, type, error) => {
+    const h = u && u["on" + type];
+    if (typeof h !== "function") return;
+    try { h.call(u, { type, utterance: u, error, charIndex: 0, elapsedTime: 0, name: "" }); }
+    catch (e) { try { window.reportError(e); } catch {} }
+  };
+  const record = text => {
+    text = String(text == null ? "" : text);
+    if (!text.trim()) return;
+    const wins = [window];
+    try { if (window.top !== window) wins.push(window.top); } catch {}
+    for (const w of wins) { try { (w.__BUDDY_SPOKEN__ = w.__BUDDY_SPOKEN__ || []).push(text); } catch {} }
+  };
+  const play = u => {
+    since = performance.now();
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (cur !== u) return; cur = null; fire(u, "end"); next(); }, left);
+  };
+  const next = () => {
+    if (cur || paused || !q.length) return;
+    const u = cur = q.shift();
+    left = Math.min(1500, 15 * Math.max(1, String(u.text == null ? "" : u.text).trim().split(/\s+/).length));
+    since = performance.now();
+    fire(u, "start");
+    if (cur === u && !paused) play(u);
+  };
+  const engine = {
+    get speaking() { return !!cur; },
+    get pending() { return q.length > 0; },
+    get paused() { return paused; },
+    speak(u) { if (!u) return; record(u.text); q.push(u); later(next); },
+    cancel() {
+      const c = cur, waiting = q;
+      q = []; cur = null; clearTimeout(timer);
+      if (c) later(() => fire(c, "error", "interrupted"));
+      for (const u of waiting) later(() => fire(u, "error", "canceled"));
+    },
+    pause() {
+      if (paused) return;
+      paused = true;
+      const c = cur;
+      if (c) { clearTimeout(timer); left = Math.max(0, left - (performance.now() - since)); later(() => fire(c, "pause")); }
+    },
+    resume() {
+      if (!paused) return;
+      paused = false;
+      const c = cur;
+      if (c) { play(c); later(() => fire(c, "resume")); } else later(next);
+    },
+    getVoices() { try { return real ? real.getVoices() : []; } catch { return []; } },
+    addEventListener(...a) { try { real && real.addEventListener(...a); } catch {} },
+    removeEventListener(...a) { try { real && real.removeEventListener(...a); } catch {} },
+  };
+  try { Object.defineProperty(window, "speechSynthesis", { configurable: true, get: () => engine }); } catch {}
+  return engine;
+}
 let voices = [];
 let queue = [];        // [{text, id, prio, front, check, chime, onstart, onend, resolve, seq}]
 let current = null;
@@ -59,6 +137,7 @@ function chunks(text) {
 }
 
 function audio() {
+  if (SILENT) return null;
   if (!ctx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
@@ -70,9 +149,10 @@ function audio() {
 
 /** Soft bell tones, like a tour-bus PA. kind: "soft" | "alert" | "success". Resolves when it has rung. */
 function chime(kind = "soft") {
+  const notes = kind === "alert" ? [880, 660, 880] : kind === "success" ? [523.25, 659.25, 783.99] : [659.25, 880];
+  if (SILENT) return new Promise(r => setTimeout(r, 160 * notes.length + 260)); // rings just as long, without a sound
   const ac = audio();
   if (!ac) return Promise.resolve();
-  const notes = kind === "alert" ? [880, 660, 880] : kind === "success" ? [523.25, 659.25, 783.99] : [659.25, 880];
   const t0 = ac.currentTime + 0.02;
   notes.forEach((f, i) => {
     const o = ac.createOscillator(), g = ac.createGain();
