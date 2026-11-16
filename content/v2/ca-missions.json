@@ -1,25 +1,24 @@
 {
  "segment": "ca-missions",
- "meta": {
-  "placeholder": true
- },
  "places": [
   {
    "state": "CA",
-   "exit": "20",
+   "exit": 20,
    "lat": 32.78478,
    "lon": -117.10622,
    "name": "Mission San Diego de Alcalá",
    "cat": "hist",
    "visible": false,
-   "text": "First of the 21 Alta California missions, founded July 16, 1769; known as the Mother of the Missions.",
-   "more": "In November 1775 Kumeyaay fighters burned the mission; Father Luis Jayme was killed and is called California's first Christian martyr. He is buried by the altar. Today's church is the fifth on the site: a 1931 rebuild that replicates the church dedicated November 12, 1813.",
-   "src": "https://www.missionsandiego.org",
-   "src2": "https://en.wikipedia.org/wiki/Mission_San_Diego_de_Alcal%C3%A1",
-   "wiki": "Mission_San_Diego_de_Alcal%C3%A1",
+   "text": "Exit 20 is Interstate 8 east, the way to Mission San Diego de Alcalá, about eight miles inland. Founded in 1769, it was the first of California's 21 missions and is still a working parish. This valley is Kumeyaay homeland, and in 1775 people from several Kumeyaay villages burned the mission.",
+   "more": "From the exit, follow Interstate 8 east to the Mission Gorge Road exit, then Twain Avenue. The mission began on a hill near the harbor and moved here in 1774. Father Luis Jayme was killed in the 1775 revolt, and he is buried by the altar. Native accounts say violence by soldiers helped set off the revolt, and at least 13 Kumeyaay people were jailed or killed afterward. The church you see today is a 1931 rebuild of the church dedicated in 1813. Twelve federally recognized Kumeyaay bands live in the United States today. The mission's own website has a page on the Kumeyaay.",
+   "spot": null,
+   "months": null,
+   "wiki": "Mission San Diego de Alcalá",
+   "src": "https://www.missionsandiego.org/visit",
+   "src2": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/",
    "detour": {
-    "exit": "20",
-    "road": "I-8",
+    "exit": 20,
+    "road": "Interstate 8",
     "dir": "east",
     "miles": 8
    },
@@ -27,20 +26,22 @@
   },
   {
    "state": "CA",
-   "exit": "135C",
+   "exit": 135,
    "lat": 34.09673,
    "lon": -118.10687,
    "name": "Mission San Gabriel",
    "cat": "hist",
    "visible": false,
-   "text": "Church completed 1805, designed by Father Antonio Cruzado with capped buttresses and tall narrow windows unlike any other mission; CMF ties the style to the cathedral of Córdoba.",
-   "more": "The December 8, 1812 earthquake toppled the original bell tower; the six-bell campanario replaced it. An arson fire on July 11, 2020 destroyed the church roof. The campus reopened July 1, 2023 with a new museum exhibit naming 7,054 Native people baptized 1771 to 1848.",
-   "src": "https://www.sangabrielmissionchurch.org (sangabrielmission.org redirects here)",
-   "src2": "https://en.wikipedia.org/wiki/Mission_San_Gabriel_Arc%C3%A1ngel",
-   "wiki": "Mission_San_Gabriel_Arc%C3%A1ngel",
+   "text": "Exit 135 is the ramp to Interstate 10 east, the way to Mission San Gabriel, about eight miles away in the city of San Gabriel. Founded in 1771, it stands in Tongva homeland, and nearly 6,000 Native people are buried on its grounds. In 1785 a medicine woman named Toypurina helped organize a revolt against the mission.",
+   "more": "From the exit, take Interstate 10 east to New Avenue, then north to Mission Drive. Toypurina's revolt began after the governor banned baptized Tongva people from holding their dances. It failed, and she was baptized under pressure and sent to a mission far to the north. Her descendants are enrolled in the Kizh Nation today. The mission museum names 7,054 Native people baptized here from 1771 to 1848. A fire destroyed the church roof in 2020, and the grounds reopened in 2023 with an exhibit on Native history. Traffic on this stretch can be heavy, so allow extra time.",
+   "spot": null,
+   "months": null,
+   "wiki": "Mission San Gabriel Arcángel",
+   "src": "https://californiamissionsfoundation.org/mission-san-gabriel/",
+   "src2": "https://en.wikipedia.org/wiki/Toypurina",
    "detour": {
-    "exit": "135C",
-    "road": "I-10",
+    "exit": 135,
+    "road": "Interstate 10",
     "dir": "east",
     "miles": 8
    },
@@ -48,68 +49,145 @@
   },
   {
    "state": "CA",
-   "exit": "82",
+   "exit": 82,
    "lat": 33.50271,
    "lon": -117.66234,
    "name": "Mission San Juan Capistrano",
    "cat": "hist",
    "visible": false,
-   "text": "The Serra Chapel (1782) is regarded as the oldest building in California still in use and the last standing church where Serra is known to have said Mass.",
-   "more": "The Great Stone Church, begun 1797 and finished 1806, collapsed in the December 8, 1812 earthquake during Mass on the feast of the Immaculate Conception; about 40 worshipers died (Wikipedia adds two boys ringing the bells). The return of the swallows is celebrated each year on St. Joseph's Day, March 19.",
-   "src": "https://www.missionsjc.com",
+   "text": "Exit 82 is Ortega Highway, and Mission San Juan Capistrano is less than a mile west of it. Founded in 1776, it is famous for its swallows and for the ruins of the Great Stone Church, which fell in an earthquake in 1812. It stands on Acjachemen homeland.",
+   "more": "From the exit, drive west on Ortega Highway to Camino Capistrano. The Acjachemen lived in villages along these creeks, and about 4,600 Native people were baptized at the mission between 1776 and 1847. The Great Stone Church needed the labor of the whole Native community. It collapsed on December 8, 1812, during Mass, and about 40 people died. The Serra Chapel from 1782 is regarded as the oldest building in California still in use. Acjachemen families still live in this region and keep their language and traditions alive.",
+   "spot": null,
+   "months": null,
+   "wiki": "Mission San Juan Capistrano (California)",
+   "src": "https://www.missionsjc.com/hours-and-admission/",
    "src2": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
-   "wiki": "Mission_San_Juan_Capistrano_(California)",
    "detour": {
-    "exit": "82",
+    "exit": 82,
     "road": "Ortega Highway",
-    "dir": "east",
-    "miles": 0.6
+    "dir": "west",
+    "miles": 0.7
    },
    "mission": 7
   },
   {
    "state": "CA",
-   "exit": "157",
+   "exit": 157,
    "lat": 34.27312,
    "lon": -118.46167,
    "name": "Mission San Fernando",
    "cat": "hist",
    "visible": false,
-   "text": "The church was destroyed by the 1971 San Fernando earthquake and rebuilt by 1974.",
-   "more": "The convento, finished in 1822 after twelve years of work, has a 19-arch colonnade. Bob Hope (2003) and Dolores Hope (2011) are buried in the Bob Hope Memorial Gardens.",
-   "src": "None verified (Archdiocese venue page: https://lacatholics.org/venue/mission-san-fernando-rey-de-espana/)",
+   "text": "Exit 157 is San Fernando Mission Boulevard, and Mission San Fernando is about a mile west of it. Founded in 1797, the mission gave its name to the San Fernando Valley. The people who lived and worked here included Tataviam, Tongva and Chumash families.",
+   "more": "From the exit, drive west on San Fernando Mission Boulevard. The mission was built on a farming settlement called Achooykomenga. In the first decade of the 1800s the records show 1,468 baptisms and 797 deaths. The long convento, finished in 1822, is original. It was a guesthouse for travelers on El Camino Real. The church was destroyed by the 1971 earthquake and rebuilt by 1974. The Fernandeño Tataviam Band of Mission Indians, descended from people gathered at this mission, is working toward federal recognition.",
+   "spot": null,
+   "months": null,
+   "wiki": "Mission San Fernando Rey de España",
+   "src": "https://californiamissionsfoundation.org/mission-san-fernando-rey/",
    "src2": "https://en.wikipedia.org/wiki/Mission_San_Fernando_Rey_de_Espa%C3%B1a",
-   "wiki": "Mission_San_Fernando_Rey_de_Espa%C3%B1a",
    "detour": {
-    "exit": "157",
+    "exit": 157,
     "road": "San Fernando Mission Boulevard",
-    "dir": "east",
-    "miles": 1.5
+    "dir": "west",
+    "miles": 1.1
    },
    "mission": 17
   },
   {
    "state": "CA",
-   "exit": "54A",
+   "exit": 54,
    "lat": 33.23243,
    "lon": -117.31942,
    "name": "Mission San Luis Rey",
    "cat": "hist",
    "visible": false,
-   "text": "Called the King of the Missions for its size; the mission calls itself the largest of California's missions, with 2,869 people in 1825 (CMF).",
-   "more": "The 1815 church is the only surviving mission church built in a cross shape, with a wooden dome and cupola. California's first pepper tree, from Peru, was planted here in 1830.",
-   "src": "https://sanluisrey.org",
-   "src2": "https://en.wikipedia.org/wiki/Mission_San_Luis_Rey_de_Francia",
-   "wiki": "Mission_San_Luis_Rey_de_Francia",
+   "text": "Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four and a half miles inland. Founded in 1798, it grew to be the largest of California's missions and is nicknamed the King of the Missions. It lies in the homeland of the Payómkawichum, the people the Spanish named Luiseño.",
+   "more": "From the exit, follow Highway 76 east to Rancho del Oro Drive. Exit 53, Mission Avenue, also leads there, with more stoplights. Pablo Tac was born at the mission around 1822. A priest took him to Rome as a boy, and he wrote down the Luiseño language and the story of his people. He wrote that in his home village of Quechla a sickness killed 2,000 of 5,000 people. The church from 1815 is the only surviving mission church built in the shape of a cross. Six federally recognized Luiseño tribes have reservations in Southern California today.",
+   "spot": null,
+   "months": null,
+   "wiki": "Mission San Luis Rey de Francia",
+   "src": "https://sanluisrey.org/plan-your-trip/",
+   "src2": "https://en.wikipedia.org/wiki/Pablo_Tac",
    "detour": {
-    "exit": "54A",
+    "exit": 54,
     "road": "Highway 76",
     "dir": "east",
-    "miles": 5
+    "miles": 4.5
    },
    "mission": 18
   }
  ],
  "zones": [],
- "trivia": []
+ "trivia": [
+  {
+   "state": "CA",
+   "exit": 20,
+   "q": "Which mission was the first one founded in Alta California, in 1769?",
+   "choices": [
+    "Mission San Diego de Alcalá",
+    "Mission San Gabriel",
+    "Carmel Mission",
+    "Mission Santa Barbara"
+   ],
+   "answer": 0,
+   "why": "Mission San Diego de Alcalá was founded on July 16, 1769. It began on a hill by the harbor and moved to its present site in 1774.",
+   "src": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/"
+  },
+  {
+   "state": "CA",
+   "exit": 135,
+   "q": "Toypurina, a Tongva medicine woman, helped organize what at Mission San Gabriel in 1785?",
+   "choices": [
+    "A revolt against the mission",
+    "The first school in Los Angeles",
+    "A trade fair with other missions",
+    "The planting of the first vineyard"
+   ],
+   "answer": 0,
+   "why": "Toypurina helped organize the 1785 revolt after baptized Tongva people were banned from holding their dances. It failed, and she was sent to a distant mission.",
+   "src": "https://en.wikipedia.org/wiki/Toypurina"
+  },
+  {
+   "state": "CA",
+   "exit": 82,
+   "q": "What brought down the Great Stone Church at Mission San Juan Capistrano in 1812?",
+   "choices": [
+    "A fire",
+    "An earthquake during Mass",
+    "A flood",
+    "A revolt"
+   ],
+   "answer": 1,
+   "why": "An earthquake on December 8, 1812 collapsed the church during Mass, and about 40 people died. Its ruins still stand.",
+   "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)"
+  },
+  {
+   "state": "CA",
+   "exit": 157,
+   "q": "What destroyed the church at Mission San Fernando in 1971?",
+   "choices": [
+    "A wildfire",
+    "A flood",
+    "An earthquake",
+    "A mudslide"
+   ],
+   "answer": 2,
+   "why": "The 1971 San Fernando earthquake destroyed the church. It was rebuilt by 1974, while the long convento from 1822 survived.",
+   "src": "https://californiamissionsfoundation.org/mission-san-fernando-rey/"
+  },
+  {
+   "state": "CA",
+   "exit": 54,
+   "q": "Pablo Tac, born at Mission San Luis Rey, created the first written form of which language?",
+   "choices": [
+    "Luiseño",
+    "Spanish",
+    "Chumash",
+    "Latin"
+   ],
+   "answer": 0,
+   "why": "Pablo Tac was Luiseño. He studied in Rome and made a way to write the Luiseño language. His work was the only primary source in Luiseño written by a Luiseño until the twentieth century.",
+   "src": "https://en.wikipedia.org/wiki/Pablo_Tac"
+  }
+ ]
 }
