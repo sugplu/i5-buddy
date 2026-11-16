@@ -290,7 +290,8 @@ exit's mile and never visible from the road. The narrator announces it at the ex
 heads about 5 miles east to Mission San Luis Rey." (`data.detourSentence`), never "on your left/right" (`sideWord` is empty
 for it, so "What's on my left" skips it too). Drive's next card, Up next, Ahead and the place sheet show
 `data.detourShort`: "Detour: 5 mi east at exit 54A". Driving past the exit does not stamp it: `narrator.stampNear` stamps
-it when a GPS fix comes within half a mile (on I-5 or off it), and its sheet has "I went there" (`narrator.stampSelf`).
+it when a GPS fix comes within half a mile (on I-5 or off it), and its sheet has "I went there" (`narrator.stampSelf`). A region badge
+(trip.js) asks only for the landmarks on I-5: a region is complete without its turn-offs.
 
 **Off I-5 near a mission.** main.js sends `fix` for every GPS reading and `mission:near` within 2 miles of a mission. While
 off I-5 near one (`S.nearMission`), the pill says GPS and the status line "Near Mission X" instead of "Not on I-5 right now";

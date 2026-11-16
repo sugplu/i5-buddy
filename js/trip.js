@@ -262,7 +262,7 @@ function buildDefs() {
   const appSkip = A && A.native && A.native.NATIVE ? ["long-haul", "night-owl"] : [];
   list.push(...road.filter(d => !appSkip.includes(d.id)));
   for (const r of REGIONS) {
-    const n = (regionPlaces.get(r.id) || []).length;
+    const n = regionRoad(r.id).length;
     if (!n) continue; // no landmarks there yet: nothing to complete
     list.push({ id: "region-" + r.id, group: "region", icon: REGION_ICON[r.id] || "📍", st: r.st, name: r.name,
       hint: `Collect all ${n} stamps here`, prog: () => ({ v: regionGot(r.id), max: n }) });
@@ -273,7 +273,10 @@ function buildDefs() {
   for (const d of list) DEF.set(d.id, d);
 }
 const pct = x => { const p = clamp(x, 0, 1) * 100; return (p > 0 && p < 1 ? p.toFixed(1) : Math.round(p)) + "%"; };
-const regionGot = id => { const s = stamps(); return (regionPlaces.get(id) || []).filter(p => s[p.id]).length; };
+// A region badge asks for the landmarks you pass on I-5. Turn-offs (p.detour: the missions a few miles off) still stamp
+// the passport when you go there, but a region is complete without them.
+const regionRoad = id => (regionPlaces.get(id) || []).filter(p => !p.detour);
+const regionGot = id => { const s = stamps(); return regionRoad(id).filter(p => s[p.id]).length; };
 function bestTrip() { return Math.max(num(stats && stats.best), cur && cur.mode === "gps" ? cur.miles : 0); }
 const earnedCount = () => DEFS.filter(d => badges[d.id]).length;
 
@@ -338,7 +341,7 @@ function toast(text, ms) { try { ui && ui.toast && ui.toast(text, ms); } catch {
 function checkCollect(mode) {
   const n = stampCount(), ids = [];
   for (const k of COLLECT) if (n >= k) ids.push(k === 1 ? "first" : "stamps-" + k);
-  for (const r of REGIONS) { const list = regionPlaces.get(r.id) || []; if (list.length && regionGot(r.id) === list.length) ids.push("region-" + r.id); }
+  for (const r of REGIONS) { const list = regionRoad(r.id); if (list.length && regionGot(r.id) === list.length) ids.push("region-" + r.id); }
   unlock(ids, mode);
 }
 function checkTrivia(mode) { if (triviaRight() >= 10) unlock(["trivia-whiz"], mode); }
