@@ -309,7 +309,7 @@ visited, fact, directions, state, check}`.
 
 **Update notice.** (a) The new-version bar (`#updateBar`, website only: the service worker) reads "A new version of I-5 Buddy
 is ready. Reload to get it." (b) `store.RETURNING` is true when any `i5b:` key was saved before this launch; main.js then
-shows `#whatsNew` once ("New in I-5 Buddy: the 21 California missions", See the missions / Got it, stored as `whatsNew` =
+shows `#whatsNew` once, above the next card so it is on the first screen ("New in I-5 Buddy: the 21 California missions", See the missions / Got it, stored as `whatsNew` =
 `"2.6.0-missions"`). A first visit stores it at once, so new users never see it. The iPhone app keeps localStorage through an
 App Store update, so it shows there too. (c) In the iPhone app only, `native.storeUpdate()` asks
 `https://itunes.apple.com/lookup?id=6834991531` at most once a day (`storeCheck`; CapacitorHttp when present, else fetch;

@@ -510,7 +510,15 @@ async function run() {
     ok(bts.join() === "See the missions,Got it", `its buttons: ${bts.join(", ")}`);
     ok(!/—/.test(r.box ? r.box.textContent : "") && !/!/.test(r.box ? r.box.textContent : ""), "no em dashes or exclamation marks");
     const wnRect = r.box.getBoundingClientRect(), nc = r.w3.document.getElementById("nextCard").getBoundingClientRect();
-    ok(wnRect.top >= nc.bottom - 1, "it sits under the next-landmark card");
+    ok(wnRect.bottom <= nc.top + 1 && wnRect.top < 844 && wnRect.top > 0, `it sits above the next-landmark card, on the first screen (top ${Math.round(wnRect.top)})`);
+    {
+      const a3 = r.w3.I5BUDDY.api; a3.voice.say = () => Promise.resolve(false);
+      a3.startDemo(); await sleep(50);
+      const below = r.box.getBoundingClientRect().top >= r.w3.document.getElementById("nextCard").getBoundingClientRect().bottom - 1;
+      a3.voice.stop = () => {}; a3.stopAll(false); await sleep(50);
+      const back = r.box.getBoundingClientRect().bottom <= r.w3.document.getElementById("nextCard").getBoundingClientRect().top + 1;
+      ok(below && back && !r.box.hidden, `on the move it steps under the next card, and back on top when stopped (${below}, ${back})`);
+    }
     r.box.querySelectorAll("button")[0].click(); await sleep(200);
     ok(!r.w3.document.getElementById("view-passport").hidden && !!r.w3.document.querySelector("#missionsPassport .ms-pp") && r.box.hidden, "See the missions opens the mission passport");
     ok(localStorage.getItem("i5b:whatsNew") === '"2.6.0-missions"', "and it is stored as seen");

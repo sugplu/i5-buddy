@@ -889,7 +889,17 @@ function whatsNew() {
   acts.append(see, ok);
   card.append(el("div", "meta", "WHAT'S NEW"), h, p, acts);
   box.textContent = ""; box.append(card); box.hidden = false;
+  place(S.mode);
 }
+// Parked, it sits above the next card so it is on the first screen; on the move (GPS or demo) it steps below the
+// next card and the mission card, so the landmark coming up stays where the driver expects it.
+function place(mode) {
+  const box = $("whatsNew"), next = $("nextCard"), after = $("missionCard") || next;
+  if (!box || !next || box.hidden) return;
+  if (mode !== "gps" && mode !== "demo") { if (box.nextElementSibling !== next) next.before(box); }
+  else if (after.nextElementSibling !== box) after.after(box);
+}
+bus.on("mode", place);
 whatsNew();
 
 /* ---------- the iPhone app: is a newer version in the App Store? (at most once a day; nothing about the person is sent) ---------- */
