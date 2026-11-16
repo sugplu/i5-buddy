@@ -279,9 +279,10 @@ async function run() {
     ok(sided.length > 0 && sided.every(r => r.sd === (r.p.side === 1 ? "◀" : "▶")), `up-next arrows flip southbound (${sided.map(r => r.sd + " " + r.p.name).join(", ")})`);
   }
 
-  // 3. off route (San Francisco) pauses narration; this is not the end of the road
+  // 3. off route (Yosemite Valley; San Francisco is within 2 miles of Mission Dolores, where 2.6.0 says "Near Mission
+  //    San Francisco de Asis" instead) pauses narration; this is not the end of the road
   said.length = 0;
-  for (let i = 0; i < 4; i++) { G.fix(37.7749, -122.4194, { speed: 20 }); await sleep(5); }
+  for (let i = 0; i < 4; i++) { G.fix(37.7456, -119.5936, { speed: 20 }); await sleep(5); }
   await sleep(400);
   ok(api.S.offRoute, "off route detected far from I-5");
   ok(!said.some(s => s.id && api.data.placeById(s.id)), "no landmark narration while off route");
@@ -416,6 +417,115 @@ async function run() {
     ok(!!w2 && !!w2.__testOffer && btn2 && !btn2.hidden,
       `an install offer sent before main.js ran: Install app shows in Settings (${!w2 ? "the copy did not start" : btn2 && !btn2.hidden ? "shown" : "hidden"})`);
     f2.remove();
+  }
+
+  // 14. a turn-off (detour) place: a mission a few miles off I-5 is announced at its exit, never "on your left/right",
+  //     shown as "Detour: ...", and stamped only when GPS gets there (2.6.0)
+  const det = api.data.PLACES.filter(p => p.detour && p.mission && p.lat != null).sort((a, b) => (b.off || 0) - (a.off || 0))[0];
+  ok(!!det && api.data.MISSIONS.length >= 1, `the data has missions (${api.data.MISSIONS.length}) and a turn-off place (${det && det.name})`);
+  if (det) {
+    api.stopAll(false);
+    api.settings.narr = true; api.settings.chat = "normal";
+    api.startGps();
+    said.length = 0; announced.length = 0;
+    const from = Math.max(1, det.m - 9);
+    await drive(win, api, G, from, det.m - 3);
+    await sleep(300);
+    const shown = [...doc.querySelectorAll("#upNextList li.detour .det, #nextCard .meta span")].map(e => e.textContent);
+    ok(shown.includes(api.data.detourShort(det)), `on screen as "${api.data.detourShort(det)}" (${shown.filter(t => /Detour/.test(t)).join(" | ") || "not shown"})`);
+    ok(/^Detour: (\d+(\.\d)? mi \w+ )?at exit \w+$/.test(api.data.detourShort(det)), `detour words: ${api.data.detourShort(det)}`);
+    await drive(win, api, G, det.m - 3, det.m + 2);
+    const line = said.find(s => s.id === det.id);
+    ok(!!line && line.text.includes(`xit ${det.detour.exit}, `) && line.text.includes(` to ${det.name}.`), `announced as a turn-off at its exit: "${line && line.text.slice(0, 110)}"`);
+    ok(!!line && !/on your (left|right)|off to your|to your (left|right)/.test(line.text), "never on your left or right");
+    ok(api.data.sideWord(det, "N") === "" && api.data.sideWord(det, "S") === "", "sideWord is empty for a turn-off");
+    const away = api.geo.miles(...api.geo.coordAt(det.m), det.lat, det.lon);
+    if (away > 0.6) ok(!api.S.stamps[det.id], `driving past its exit does not stamp it (it is ${away.toFixed(1)} mi off I-5)`);
+    // off I-5 to the mission: every fix still goes out ("fix"), "Near Mission ..." instead of "Not on I-5", the visit card,
+    // the mission's GPS stamp, the place's stamp within half a mile, and one welcome (narration on)
+    const mis = api.data.MISSIONS.find(m => m.n === det.mission);
+    const fixes = [], nears = [];
+    const offF = api.bus.on("fix", e => fixes.push(e)), offN = api.bus.on("mission:near", e => nears.push(e));
+    said.length = 0;
+    for (const k of [3, 2, 1.2, 0.5]) { G.fix(mis.lat + k / 69, mis.lon, { speed: 25 / 2.23694, t: tick(60) }); await sleep(5); }
+    for (let i = 0; i < 3; i++) { G.fix(mis.lat + 0.0004, mis.lon, { speed: 0, t: tick(30) }); await sleep(5); }
+    await sleep(400);
+    ok(api.S.offRoute, `at ${mis.name}: off I-5 (${api.geo.locate(mis.lat, mis.lon).dist.toFixed(1)} mi from the road)`);
+    ok(fixes.length === 7 && fixes.every(f => typeof f.lat === "number" && "accuracy" in f && "offRoute" in f), `"fix" for every GPS reading off I-5 (${fixes.length} of 7)`);
+    ok(nears.length >= 3 && nears.every(e => e.place && e.place.n === mis.n && e.dist <= 2), `"mission:near" within 2 miles (${nears.length})`);
+    ok(txt("statusText") === `Near ${mis.name}` && txt("statusPill") === "GPS", `status near a mission: ${txt("statusPill")} · ${txt("statusText")}`);
+    ok(!!api.missions && api.missions.state().kind === "at" && api.missions.state().n === mis.n, `the visit card: ${api.missions && JSON.stringify(api.missions.state()).slice(0, 80)}`);
+    ok(/^You are at /.test(doc.querySelector("#missionCard h2")?.textContent || ""), `card: ${doc.querySelector("#missionCard h2")?.textContent}`);
+    ok((api.missions.stamps()[mis.n] || {}).how === "gps", "the mission passport stamp, by GPS");
+    if (api.geo.miles(det.lat, det.lon, mis.lat, mis.lon) < 0.45) ok(!!api.S.stamps[det.id], "and the I-5 place's passport stamp (GPS within half a mile)");
+    const w = said.filter(s => s.id === `mission:${mis.n}:visit`);
+    ok(w.length === 1, `one spoken welcome (${w.map(s => s.text).join(" | ") || "none"})`);
+    ok(!said.some(s => s.id && api.data.placeById(s.id)), "no landmark narration off I-5");
+    // a mission far from I-5 works the same (anywhere in California)
+    const far = api.data.MISSIONS.filter(m => api.geo.locate(m.lat, m.lon).dist > 20)[0];
+    if (far) {
+      for (let i = 0; i < 3; i++) { G.fix(far.lat, far.lon + 0.0003, { speed: 0, t: tick(3600) }); await sleep(5); }
+      await sleep(300);
+      ok(api.missions.state().kind === "at" && api.missions.state().n === far.n && txt("statusText") === `Near ${far.name}`, `far from I-5 at ${far.name}: ${JSON.stringify(api.missions.state()).slice(0, 60)} · ${txt("statusText")}`);
+    }
+    // away from every mission: the usual off-route line again
+    for (let i = 0; i < 2; i++) { G.fix(36.2, -119.9, { speed: 20, t: tick(1800) }); await sleep(5); }
+    await sleep(300);
+    ok(txt("statusText") === "Not on I-5 right now. Narration paused.", `away from the missions: ${txt("statusText")}`);
+    offF(); offN();
+    // "I went there" on the place sheet
+    api.stopAll(false);
+    delete api.S.stamps[det.id];
+    api.ui.placeSheet(det); await sleep(50);
+    const went = [...doc.querySelectorAll("#moreSheet button")].find(b => b.textContent === "I went there");
+    ok(!!went && /Detour: /.test(doc.querySelector("#moreSheet .meta").textContent), `place sheet: Detour line and I went there (${doc.querySelector("#moreSheet .meta").textContent})`);
+    if (went) { went.click(); await sleep(20); ok(!!api.S.stamps[det.id] && went.disabled, "I went there stamps it"); }
+    api.ui.closeSheet();
+  }
+
+  // 15. "New in I-5 Buddy" (2.6.0): once for people who used the app before, never for a first visit
+  {
+    const keep = {};
+    for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith("i5b:")) keep[k] = localStorage.getItem(k); }
+    const clear = () => { for (const k of Object.keys(localStorage)) if (k.startsWith("i5b:")) localStorage.removeItem(k); };
+    const boot = async () => {
+      const f3 = document.createElement("iframe");
+      f3.style.cssText = "position:absolute;left:-10000px;top:0;width:390px;height:844px";
+      f3.src = "../index.html?silent=1&wn=" + Math.random();
+      document.body.append(f3);
+      let w3 = null;
+      for (let i = 0; i < 100 && !w3; i++) { await sleep(100); if (f3.contentWindow?.I5BUDDY) w3 = f3.contentWindow; }
+      await sleep(400);
+      return { f3, w3, box: w3 && w3.document.getElementById("whatsNew") };
+    };
+    clear();
+    let r = await boot();
+    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"2.6.0-missions"', `a first visit: no card, and it is remembered as seen (${r.box && r.box.hidden})`);
+    r.f3.remove();
+    clear(); localStorage.setItem("i5b:stamps", JSON.stringify({ "x": 1 }));
+    r = await boot();
+    const h = r.box && r.box.querySelector("h2");
+    ok(r.box && !r.box.hidden && h && h.textContent === `New in I-5 Buddy: the ${api.data.MISSIONS.length} California missions`, `a returning user sees it: ${h && h.textContent}`);
+    const bts = r.box ? [...r.box.querySelectorAll("button")].map(b => b.textContent) : [];
+    ok(bts.join() === "See the missions,Got it", `its buttons: ${bts.join(", ")}`);
+    ok(!/—/.test(r.box ? r.box.textContent : "") && !/!/.test(r.box ? r.box.textContent : ""), "no em dashes or exclamation marks");
+    const wnRect = r.box.getBoundingClientRect(), nc = r.w3.document.getElementById("nextCard").getBoundingClientRect();
+    ok(wnRect.top >= nc.bottom - 1, "it sits under the next-landmark card");
+    r.box.querySelectorAll("button")[0].click(); await sleep(200);
+    ok(!r.w3.document.getElementById("view-passport").hidden && !!r.w3.document.querySelector("#missionsPassport .ms-pp") && r.box.hidden, "See the missions opens the mission passport");
+    ok(localStorage.getItem("i5b:whatsNew") === '"2.6.0-missions"', "and it is stored as seen");
+    r.f3.remove();
+    r = await boot();
+    ok(r.box && r.box.hidden, "after that it never shows again");
+    r.f3.remove();
+    localStorage.removeItem("i5b:whatsNew");
+    r = await boot();
+    if (r.box && !r.box.hidden) { [...r.box.querySelectorAll("button")].find(b => b.textContent === "Got it").click(); await sleep(50); }
+    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"2.6.0-missions"', "Got it hides it and stores it");
+    r.f3.remove();
+    clear();
+    for (const [k, v] of Object.entries(keep)) localStorage.setItem(k, v);
+    ok(doc.getElementById("updateBar").textContent.trim().startsWith("A new version of I-5 Buddy is ready. Reload to get it."), `the new-version prompt: ${doc.getElementById("updateBar").textContent.trim()}`);
   }
 
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +

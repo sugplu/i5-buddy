@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Missions module test</title>
+<!--
+  Tests js/missions.js (I-5 Buddy 2.6.0) on its own, with a synthetic road and three fake missions defined in this page
+  (data.MISSIONS, and I-5 places with "mission": n and a "detour" for their turn-offs; it does not need the real data or
+  the core's containers: it makes #missionCard, #missionsPassport and #missionSheet itself)
+  and a fake api whose voice only records what would be said. Nothing here can make a sound: the page sets
+  window.__BUDDY_SILENT__ first, never loads js/voice.js, and stubs speechSynthesis and AudioContext.
+  Each scene runs in a fresh iframe (a fresh copy of the module, a phone-width viewport, its own theme).
+  Results: bottom bar + console "[test-missions] ...".
+  ?s=       all (default: every scene, the layout one at 360 px in both themes) | passport | visit | nearest | kid |
+            sheet | layout | shot (leaves one state up for a screenshot: &show=at|near|list|kid|passport|sheet)
+  ?theme=   dark | light (single scenes and shot)      ?w=  iframe width for a single scene or shot (default 390)
+  Checks:
+  passport  21-slot board logic on 3 missions: founding order (not road order), number, name and year on each stamp,
+            "0 of 3" progress and progressbar; a GPS stamp within 300 m (stored with t, "gps" and the place id, the
+            mission:stamp event, drawn inked and rotated); "I visited" in the sheet (stored as "self", drawn dashed, not
+            inked), taking it back, focus back on the stamp when the sheet closes; the share line through Web Share and
+            through api.share.shareText; GPS confirming a tap stamp; passport:reset clears it all.
+  visit     "You are at Mission X" within 300 m: welcome text, visit text, facts, hours and site links, the next
+            nearest mission with distance, compass word and Directions; one welcome per visit (mission:<n>:visit,
+            prio 1, said once, not after walking 450 m off and back, not after a reload); narration off says nothing;
+            the nearby card while driving (distance, turnoff, no speech); the core's mission:near for a mission with
+            no coordinates; off the road shows the nearest list.
+  nearest   api.missions.nearest(lat, lon, n) order and miles; the list card when parked (two rows, distance and
+            compass, Directions to maps.apple.com on Apple devices and google.com/maps elsewhere); hidden while driving
+            on the road away from missions; shown off the road; hidden with no position.
+  kid       Kid mode's Mission fact button: on and off with settings.kid, speaks one short fact (mission:<n>:fact) after
+            voice.unlock(), shows the same words, a new fact on each tap, works with narration off, in the sheet too;
+            Hear it.
+  sheet     the mission page: photo (api.ui.photo), facts, visit text, turnoff, I visited, Directions, Official site,
+            Hours, Close; the Mission page button on main.js's place sheet (place:sheet); the module adds
+            css/missions.css when the page has no link to it.
+  layout    at 360 px, dark and light: no horizontal scroll in the card, passport and sheet, every button and link at
+            least 44 px, theme colours from app.css tokens, a prefers-reduced-motion rule, no em dashes and no
+            exclamation marks in what the module shows or says.
+-->
+<script>
+  // Silent first: this page never loads js/voice.js, and nothing it runs may reach the speakers.
+  window.__BUDDY_SILENT__ = true;
+  try { if (window.speechSynthesis) { window.speechSynthesis.speak = function () {}; } } catch (e) {}
+  try { window.AudioContext = undefined; window.webkitAudioContext = undefined; } catch (e) {}
+</script>
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="../css/missions.css" id="msCss">
+<style>
+  html.outer,html.outer body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  html.outer .app{display:none}
+  #frames{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start;padding:0 0 34px}
+  #frames iframe{border:0;background:#000;display:block}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace;z-index:99}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+  html.inner #bar,html.inner #frames{display:none}
+  html.inner body{margin:0}
+  html.inner .app{margin:0;max-width:none}
+</style>
+</head>
+<body>
+<div id="frames"></div>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search);
+const FRAME = Q.get("frame");
+const THEME = Q.get("theme") || "dark";
+const SHOW = Q.get("show") || "at";
+const log = (...a) => console.log("[test-missions] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" "));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* =====================================================================================================
+   OUTER: run each scene in a fresh iframe and collect the results
+   ===================================================================================================== */
+if (!FRAME) {
+  document.documentElement.classList.add("outer");
+  const SCEN = Q.get("s") || "all", W = +(Q.get("w") || 390);
+  const jobs = SCEN === "all"
+    ? [["passport", 390, "dark"], ["visit", 390, "dark"], ["nearest", 390, "dark"], ["kid", 390, "dark"], ["sheet", 390, "dark"],
+      ["layout", 360, "dark"], ["layout", 360, "light"]]
+    : [[SCEN, SCEN === "layout" && !Q.get("w") ? 360 : W, THEME]];
+  const all = [];
+  const frames = document.getElementById("frames");
+  for (const [scene, w, theme] of jobs) {
+    const f = document.createElement("iframe");
+    f.title = `missions ${scene}`;
+    f.style.width = w + "px";
+    f.style.height = (scene === "shot" ? +(Q.get("h") || 1400) : 900) + "px";
+    const got = new Promise(res => {
+      const on = e => { if (e.source === f.contentWindow && e.data && e.data.type === "missions-done") { removeEventListener("message", on); res(e.data); } };
+      addEventListener("message", on);
+      setTimeout(() => { removeEventListener("message", on); res({ checks: [[`${scene} finished in time`, false, "no result"]] }); }, 30000);
+    });
+    f.src = `test-missions.html?frame=${scene}&theme=${theme}&show=${encodeURIComponent(SHOW)}`;
+    frames.append(f);
+    const r = await got;
+    for (const [name, ok, extra] of r.checks) all.push([`${scene}${scene === "layout" ? " " + theme : ""}: ${name}`, ok, extra]);
+    if (SCEN === "all") f.remove();
+  }
+  const bad = all.filter(c => !c[1]);
+  const bar = document.getElementById("bar");
+  bar.className = bad.length ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${all.length - bad.length}/${all.length} pass${bad.length ? " · FAIL: " + bad.map(c => c[0]).join(", ") : ""}`;
+  for (const c of bad) log(`FAIL ${c[0]}${c[2] ? " · " + c[2] : ""}`);
+  log(bad.length ? `RESULT FAILED ${bad.length} of ${all.length}` : `RESULT ALL PASS (${all.length})`);
+  document.title = bad.length ? `Missions test FAILED ${bad.length}` : `Missions test ALL PASS (${all.length})`;
+} else {
+  document.documentElement.classList.add("inner");
+  document.documentElement.dataset.theme = THEME;
+  runFrame().catch(e => {
+    console.error("[test-missions] scene crashed", e && e.message ? e.message : e);
+    parent.postMessage({ type: "missions-done", checks: [[`${FRAME} ran without throwing`, false, String(e && e.stack || e).slice(0, 300)]] }, "*");
+  });
+}
+
+/* =====================================================================================================
+   INNER: one scene
+   ===================================================================================================== */
+async function runFrame() {
+  const checks = [];
+  const check = (name, ok, extra = "") => { checks.push([name, !!ok, extra]); log(`${ok ? "PASS" : "FAIL"} ${FRAME}: ${name}${extra ? " · " + extra : ""}`); };
+  const errors = [];
+  const origErr = console.error.bind(console);
+  console.error = (...a) => { if (String(a[0] || "").startsWith("[missions]")) errors.push(a.map(String).join(" ")); origErr(...a); };
+
+  /* ---------- the synthetic road and its three missions ---------- */
+  const LAT0 = 33.9, LON0 = -118.0, MI_PER_DEG = 69.05;
+  const roadLat = m => LAT0 + m / MI_PER_DEG;
+  const hav = (lat1, lon1, lat2, lon2) => {
+    const r = Math.PI / 180;
+    const a = Math.sin((lat2 - lat1) * r / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin((lon2 - lon1) * r / 2) ** 2;
+    return 2 * 6371008.8 * Math.asin(Math.min(1, Math.sqrt(a))) / 1609.344;
+  };
+  const north = (lat, meters) => lat + meters / 111320;
+  const IMG = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="#9fc4de"/><rect y="200" width="400" height="100" fill="#c9a27a"/><path d="M70 230V130l50-36 50 36v100Z" fill="#f4ead8"/><path d="M170 230V150h170v80Z" fill="#efe2c8"/><path d="M60 136l60-46 60 46" fill="none" stroke="#a5532a" stroke-width="10"/><rect x="108" y="120" width="24" height="30" fill="#7a4a24"/></svg>');
+  const MISSIONS = [
+    { n: 1, id: "msn-prueba", name: "Mission San Prueba", name_es: "Misión San Prueba de los Ensayos", lat: 34.0014, lon: -117.99, founded: "1771-09-08",
+      founder: "Junípero Serra", people: "Tongva", status: "Active parish church", site: "https://example.org/prueba", hours: "https://example.org/prueba/hours",
+      text: "The first test mission, with a bell wall facing the road.",
+      visit: "Walk through the garden to the old church. Mass is still said here, so keep your voice low inside." },
+    { n: 2, id: "msn-ejemplo", name: "Mission Santa Ejemplo", name_es: "Misión Santa Ejemplo", lat: 33.9724, lon: -118.0255, founded: 1772,
+      founder: "Junípero Serra", people: "Chumash", status: "Museum and parish", site: "https://example.org/ejemplo", hours: "Daily 9 to 5",
+      text: "A test mission on a quiet hill, rebuilt twice after earthquakes.",
+      visit: "Start in the museum by the gate, then walk the long arcade to the garden." },
+    { n: 3, id: "msn-falso", name: "Mission San Falso", name_es: "Misión San Falso", lat: 34.3058, lon: -118.15, founded: 1790,
+      founder: "Fermín Lasuén", people: "Salinan", status: "State historic park",
+      text: "The far test mission, out in the oak hills.", visit: "The park has a short loop trail past the old water system." },
+  ];
+  const MS = n => MISSIONS.find(m => m.n === n);
+  // the I-5 places: one plain landmark, and the turn-offs to the missions (as tools/build.py makes them)
+  const PLACES = [
+    { id: "x-road-sign", m: 2, st: "CA", ex: "2", name: "A big road sign", cat: "odd", side: 1, vis: true, text: "Not a mission at all.", lat: roadLat(2), lon: LON0 + 0.004 },
+    { id: "ca5-mission-santa-ejemplo", m: 5, st: "CA", ex: "5", name: "Mission Santa Ejemplo", cat: "hist", side: -1, vis: false, off: 1.5, lat: 33.9724, lon: -118.0255,
+      text: "A test mission on a quiet hill.", detour: { exit: "5", road: "Ejemplo Avenue", dir: "west", miles: 1.5 }, mission: 2 },
+    { id: "ca7-mission-san-prueba", m: 7, st: "CA", ex: "7", name: "Mission San Prueba", cat: "hist", side: 1, vis: false, off: 0.6, lat: 34.0014, lon: -117.99,
+      img: { f: IMG, w: 400, h: 300, by: "Test picture", lic: "CC0", url: "https://example.org/photo" },
+      text: "The first test mission.", detour: { exit: "7", road: "Prueba Road", dir: "east", miles: 0.6 }, mission: 1 },
+    { id: "ca28-mission-san-falso", m: 28, st: "CA", ex: "28", name: "Mission San Falso", cat: "hist", side: -1, vis: false, off: 9.2, lat: 34.3058, lon: -118.15,
+      text: "The far test mission.", detour: { exit: "28", road: "Highway 99", dir: "west", miles: 9.2 }, mission: 3 },
+  ];
+  const ROAD = n => PLACES.find(p => p.mission === n);
+  // data.js's turn-off helpers, as the app has them (js/data.js detourOf, detourSentence)
+  const DIRW = { n: "north", s: "south", e: "east", w: "west" };
+  const detourOf = p => {
+    const d = p && p.detour;
+    if (!d || !d.exit) return null;
+    const w = String(d.dir || "").toLowerCase();
+    return { exit: String(d.exit), road: String(d.road || ""), dir: DIRW[w] || w, miles: typeof d.miles === "number" ? d.miles : null };
+  };
+  const detourSentence = p => {
+    const d = detourOf(p);
+    if (!d) return "";
+    const v = d.miles != null ? (d.miles < 10 ? Math.round(d.miles * 10) / 10 : Math.round(d.miles)) : null;
+    const far = v != null ? `about ${v} ${v === 1 ? "mile" : "miles"}${d.dir ? " " + d.dir : ""}` : d.dir;
+    return d.road ? `At exit ${d.exit}, ${d.road} heads ${far ? far + " " : ""}to ${p.name}.` : `Take exit ${d.exit} for ${p.name}${far ? `, ${far}` : ""}.`;
+  };
+  const at = (n, meters = 100) => { const p = MS(n); return [north(p.lat, meters), p.lon]; };
+
+  /* ---------- the page and a fake api ---------- */
+  function scaffold() {
+    document.getElementById("app")?.remove();
+    const app = document.createElement("div");
+    app.className = "app"; app.id = "app";
+    app.innerHTML = `
+      <main id="main">
+        <section class="view" id="view-drive" data-view="drive">
+          <article class="next" id="nextCard" style="--c:var(--hist)"><div class="next-body"><div class="meta"><span>Next landmark</span></div><h2>A test landmark</h2><p>The next-landmark card sits here.</p></div></article>
+          <div id="missionCard"></div>
+        </section>
+        <section class="view" id="view-passport" data-view="passport" hidden>
+          <div id="missionsPassport"></div>
+          <p class="hint">The rest of the passport (trip.js) goes here.</p>
+        </section>
+      </main>
+      <div class="sheet-back" id="sheetBack" hidden></div>
+      <aside class="sheet" id="missionSheet" hidden role="dialog" aria-modal="true" aria-label="Mission"></aside>
+      <div class="toast" id="toast" hidden></div>`;
+    document.body.prepend(app);
+    return app;
+  }
+  function makeApi(mem = new Map()) {
+    const handlers = new Map(), emitted = [], said = [], toasts = [];
+    const bus = {
+      on(e, fn) { if (!handlers.has(e)) handlers.set(e, new Set()); handlers.get(e).add(fn); return () => handlers.get(e).delete(fn); },
+      off(e, fn) { handlers.get(e)?.delete(fn); },
+      emit(e, d) { emitted.push([e, d]); for (const fn of [...(handlers.get(e) || [])]) { try { fn(d); } catch (err) { console.error("[bus]", err); } } },
+    };
+    const store = {
+      get(k, f) { return mem.has(k) ? JSON.parse(mem.get(k)) : f; },
+      set(k, v) { mem.set(k, JSON.stringify(v)); },
+      del(k) { mem.delete(k); },
+    };
+    const voice = {
+      available: true, unlocks: 0,
+      say(text, o = {}) { said.push({ text, ...o }); return Promise.resolve(true); },
+      unlock() { voice.unlocks++; }, chime() { return Promise.resolve(); }, stop() {}, hold() {},
+      isSpeaking: () => false, currentId: () => null, queued: () => [], isHeld: () => false,
+    };
+    const S = { mode: "off", m: null, dir: "N", speed: null, heading: null, lat: null, lon: null, offRoute: false, accuracy: null, stamps: {}, dest: null };
+    const settings = { narr: true, zoneNarr: true, kid: false, chime: true, theme: THEME, cats: new Set(["hist"]) };
+    let openEl = null;
+    const ui = {
+      $: id => document.getElementById(id),
+      toast(t) { toasts.push(t); const e = document.getElementById("toast"); if (e) { e.textContent = t; e.hidden = false; } },
+      openSheet(sh) { ui.closeSheet(); sh.hidden = false; document.getElementById("sheetBack").hidden = false; openEl = sh; const f = sh.querySelector("button, select, input, a"); if (f) f.focus({ preventScroll: true }); },
+      closeSheet() { if (openEl) openEl.hidden = true; document.getElementById("sheetBack").hidden = true; openEl = null; },
+      photo(p, size = "hero") {
+        if (!p.img) return null;
+        const fig = document.createElement("figure"); fig.className = "photo " + size;
+        const img = document.createElement("img"); img.src = p.img.f; img.alt = p.name; img.width = p.img.w; img.height = p.img.h;
+        fig.append(img); return fig;
+      },
+      go() {}, placeSheet() {}, queueRender() {},
+    };
+    const data = {
+      PLACES, MISSIONS, detourOf, detourSentence,
+      CATS: { hist: "History", odd: "Oddities" }, CAT_ICON: { hist: "🏛", odd: "✨" },
+      aheadOf: (m, dir, x) => (dir === "N" ? x - m : m - x),
+      sideWord: (p, dir) => (!p.side ? "" : (p.side === 1) === (dir === "N") ? "right" : "left"),
+      placeById: id => PLACES.find(p => p.id === id),
+    };
+    const geo = { coordAt: m => [roadLat(m), LON0], miles: hav };
+    const selfStamps = [];
+    const narrator = { stampSelf(p) { if (S.stamps[p.id]) return false; S.stamps[p.id] = Date.now(); selfStamps.push(p.id); bus.emit("place:stamp", { place: p, how: "self" }); return true; } };
+    return { S, settings, saveSettings() { bus.emit("settings", settings); }, bus, store, voice, narrator, data, geo, ui, emitted, said, toasts, mem, selfStamps };
+  }
+  let instance = 0;
+  async function boot(mem) {
+    const app = scaffold();
+    const api = makeApi(mem);
+    const mod = await import(`../js/missions.js?i=${FRAME}-${++instance}`);
+    mod.init(api);
+    await wait(30);
+    return { api, app, mod };
+  }
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+  const gps = (api, [lat, lon], extra = {}) => {
+    const first = api.S.mode !== "gps";
+    Object.assign(api.S, { mode: "gps", lat, lon, accuracy: 15, speed: 0, offRoute: true }, extra);
+    if (first) api.bus.emit("mode", "gps");
+    api.missions.check();
+  };
+  const stampEl = n => $(`#missionsPassport [data-k="ms:${n}"]`);
+  const kind = api => api.missions.state().kind;
+  const big = el => { const r = el.getBoundingClientRect(); return r.height >= 43.5 && r.width >= 43.5; };
+
+  const SCENES = {
+    /* ---------------------------------------------------------------------------------- passport */
+    async passport() {
+      const { api } = await boot();
+      $("#view-passport").hidden = false;
+      api.bus.emit("tab", "passport");
+      await wait(20);
+      const ks = $$("#missionsPassport .ms-stamp").map(b => b.dataset.k);
+      check("three stamps in founding order, not road order", JSON.stringify(ks) === '["ms:1","ms:2","ms:3"]', JSON.stringify(ks));
+      check("api.missions.list() is in founding order", api.missions.list().map(p => p.id).join() === "msn-prueba,msn-ejemplo,msn-falso");
+      const names = $$("#missionsPassport .ms-nm").map(txt), years = $$("#missionsPassport .ms-yr").map(txt), nums = $$("#missionsPassport .ms-ring b").map(txt);
+      check("each stamp has its number, name and founding year", names.join("|") === "San Prueba|Santa Ejemplo|San Falso" && years.join() === "1771,1772,1790" && nums.join() === "1,2,3", `${names} ${years} ${nums}`);
+      check("progress says 0 of 3", txt($(".ms-pp-count")) === "0 of 3", txt($(".ms-pp-count")));
+      const bar = $(".ms-bar");
+      check("progressbar 0 of 3", bar.getAttribute("role") === "progressbar" && bar.getAttribute("aria-valuenow") === "0" && bar.getAttribute("aria-valuemax") === "3");
+      check("nothing stamped yet", !$("#missionsPassport .ms-stamp.got") && /I visited/.test(txt($(".ms-legend"))) && !$(".ms-share"), txt($(".ms-legend")));
+      check("a stamp reads well to a screen reader", stampEl(1).getAttribute("aria-label") === "1. Mission San Prueba, founded 1771. Not visited yet.", stampEl(1).getAttribute("aria-label"));
+
+      // GPS: within 300 m of mission 2
+      gps(api, at(2, 100), { accuracy: 25 });
+      const s2 = api.missions.stamps()["2"];
+      check("GPS within 300 m stamps it, stored with time and gps", s2 && s2.how === "gps" && Date.now() - s2.t < 10000 && s2.id === "msn-ejemplo", JSON.stringify(s2));
+      check("the stamp is saved through api.store", /"2":\{"t":\d+,"how":"gps","id":"msn-ejemplo"\}/.test(api.mem.get("missionStamps") || ""), api.mem.get("missionStamps"));
+      check("mission:stamp event with how gps", api.emitted.some(([e, d]) => e === "mission:stamp" && d.n === 2 && d.how === "gps" && d.place.id === "msn-ejemplo"));
+      check("progress says 1 of 3", txt($(".ms-pp-count")) === "1 of 3" && $(".ms-bar").getAttribute("aria-valuenow") === "1");
+      const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      check("the GPS stamp is inked with the date", stampEl(2).classList.contains("gps") && stampEl(2).classList.contains("got") && txt(stampEl(2).querySelector(".ms-when")) === today && /Stamped by GPS on /.test(stampEl(2).getAttribute("aria-label")), stampEl(2).className + " " + txt(stampEl(2).querySelector(".ms-when")));
+      check("a fuzzy fix (900 m accuracy) does not stamp", (() => { gps(api, at(1, 50), { accuracy: 900 }); return !api.missions.stamps()["1"]; })());
+      Object.assign(api.S, { mode: "off", lat: null, lon: null }); api.bus.emit("mode", "off");
+
+      // I visited, from the mission page
+      stampEl(3).focus();
+      stampEl(3).click();
+      await wait(20);
+      const sheet = $("#missionSheet");
+      check("tapping a stamp opens the mission page", !sheet.hidden && txt($("#msSheetTitle")) === "Mission San Falso");
+      let vb = $("#missionSheet .ms-visited");
+      check("it offers I visited", vb && txt(vb) === "I visited" && vb.getAttribute("aria-pressed") === "false");
+      vb.click();
+      await wait(20);
+      const s3 = api.missions.stamps()["3"];
+      vb = $("#missionSheet .ms-visited");
+      check("I visited stores a self stamp", s3 && s3.how === "self" && s3.t > 0, JSON.stringify(s3));
+      check("and stamps its I-5 turn-off place too (narrator.stampSelf)", api.selfStamps.includes("ca28-mission-san-falso"), api.selfStamps.join());
+      check("the button now says Visited (pressed) and keeps focus", vb && txt(vb) === "Visited" && vb.getAttribute("aria-pressed") === "true" && document.activeElement === vb);
+      check("progress says 2 of 3, and a toast says so", txt($(".ms-pp-count")) === "2 of 3" && /2 of 3/.test(api.toasts.at(-1) || ""), api.toasts.at(-1));
+      const ringG = stampEl(2).querySelector(".ms-ring"), ringS = stampEl(3).querySelector(".ms-ring");
+      const cg = getComputedStyle(ringG), cs = getComputedStyle(ringS);
+      check("a self stamp is drawn differently: dashed and not inked", stampEl(3).classList.contains("self") && cs.borderTopStyle === "dashed" && cg.borderTopStyle === "double" && cs.backgroundColor !== cg.backgroundColor && /Stamped by GPS|You marked it visited/.test(stampEl(3).getAttribute("aria-label")), `${cg.borderTopStyle}/${cs.borderTopStyle} ${cg.backgroundColor}/${cs.backgroundColor}`);
+      check("its label says you marked it", /You marked it visited on /.test(stampEl(3).getAttribute("aria-label")) && txt(stampEl(3).querySelector(".ms-when")) === "Visited");
+      vb.click();
+      await wait(20);
+      check("tapping Visited again takes the stamp back", !api.missions.stamps()["3"] && txt($(".ms-pp-count")) === "1 of 3" && api.emitted.some(([e, d]) => e === "mission:unstamp" && d.n === 3));
+      $("#missionSheet .ms-visited").click();
+      await wait(20);
+      $("#missionSheet .sheet-head .link").click();
+      await wait(30);
+      check("Close hides the page and focus goes back to the stamp", sheet.hidden && document.activeElement && document.activeElement.dataset.k === "ms:3", document.activeElement && document.activeElement.outerHTML.slice(0, 80));
+
+      // share
+      const line = txt($(".ms-share p"));
+      check("the share line says 2 of 3", line === "I've visited 2 of the 3 California missions.", line);
+      const calls = [];
+      Object.defineProperty(navigator, "share", { configurable: true, writable: true, value: async d => { calls.push(d); } });
+      $(".ms-share button").click();
+      await wait(30);
+      check("Share uses Web Share with the passport line and the app's address", calls.length === 1 && calls[0].url === "https://i5.dominares.org/get" && /2 of the 3 California missions\. My passport is in I-5 Buddy\./.test(calls[0].text), JSON.stringify(calls[0]));
+      const viaApi = [];
+      api.share = { shareText: async d => { viaApi.push(d); return "shared"; } };
+      $(".ms-share button").click();
+      await wait(30);
+      check("with api.share.shareText it goes through that instead", viaApi.length === 1 && calls.length === 1 && /2 of the 3/.test(viaApi[0].text));
+      check("share button is 44 px", big($(".ms-share button")));
+
+      // GPS confirms a tap stamp
+      gps(api, at(3, -80));
+      check("GPS at a mission you marked yourself makes it a GPS stamp", api.missions.stamps()["3"].how === "gps" && stampEl(3).classList.contains("gps") && api.emitted.some(([e, d]) => e === "mission:stamp" && d.n === 3 && d.how === "gps"));
+
+      // "I went there" on an I-5 turn-off place (main.js -> place:stamp how "self") stamps its mission
+      delete api.S.stamps["ca7-mission-san-prueba"];
+      api.bus.emit("place:stamp", { place: ROAD(1), how: "self" });
+      check("I went there on the I-5 place stamps the mission (self)", !!api.missions.stamps()["1"] && api.missions.stamps()["1"].how === "self");
+      api.bus.emit("place:stamp", { place: PLACES[0], how: "self" });
+      api.bus.emit("place:stamp", { place: ROAD(2), how: "gps" });
+      check("other places, and GPS place stamps, leave the missions alone", Object.keys(api.missions.stamps()).sort().join() === "1,2,3" && api.missions.stamps()["2"].how === "gps");
+      api.bus.emit("passport:reset", {});
+      await wait(10);
+      check("passport:reset clears every mission stamp", Object.keys(api.missions.stamps()).length === 0 && !api.mem.has("missionStamps") && txt($(".ms-pp-count")) === "0 of 3" && !$("#missionsPassport .ms-stamp.got"));
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- visit */
+    async visit() {
+      const mem = new Map();
+      let { api } = await boot(mem);
+      gps(api, at(1, 120));
+      await wait(200);
+      const st = api.missions.state();
+      check("within 300 m the card says You are at Mission San Prueba", st.kind === "at" && st.n === 1 && txt($("#missionCard h2")) === "You are at Mission San Prueba", JSON.stringify(st));
+      check("the card is shown", !$("#missionCard").hidden && $("#missionCard .ms-card.ms-at"));
+      check("Spanish name", txt($("#missionCard .ms-es")) === "Misión San Prueba de los Ensayos");
+      check("welcome line on screen", txt($("#missionCard .ms-lede")) === "Welcome. The first of the 3 missions, founded in 1771. Your passport has a new stamp.", txt($("#missionCard .ms-lede")));
+      check("visit text", txt($("#missionCard .ms-visit")) === MS(1).visit);
+      const facts = Object.fromEntries($$("#missionCard .ms-facts dt").map(dt => [txt(dt), txt(dt.nextElementSibling)]));
+      check("key facts: founded, founder, people, status", facts.Founded === "September 8, 1771" && facts["Founded by"] === "Junípero Serra" && facts["Native people"] === "Tongva" && facts.Today === "Active parish church", JSON.stringify(facts));
+      const hours = $('#missionCard a[data-k="hours:1"]'), site = $('#missionCard a[data-k="site:1"]');
+      check("hours and official site links open in a new tab", hours && hours.href === "https://example.org/prueba/hours" && hours.target === "_blank" && /noopener/.test(hours.rel) && site && site.href === "https://example.org/prueba");
+      const nextName = txt($("#missionCard .ms-next .ms-name")), nextMeta = txt($("#missionCard .ms-next .ms-meta"));
+      const d12 = hav(MS(1).lat, MS(1).lon, MS(2).lat, MS(2).lon);
+      check("next nearest mission with distance and compass", nextName === "Mission Santa Ejemplo" && nextMeta === `${(Math.round(d12 * 10) / 10)} mi southwest`, `${nextName} · ${nextMeta}`);
+      const nd = $("#missionCard .ms-next a.ms-btn");
+      check("and Directions to it", nd && /daddr=33\.9724,-118\.0255$|destination=33\.9724,-118\.0255$/.test(nd.href), nd && nd.href);
+      const w = api.said.filter(s => s.id === "mission:1:visit");
+      check("says a short welcome once (mission:1:visit, prio 1)", w.length === 1 && w[0].prio === 1 && w[0].text === "Welcome to Mission San Prueba, the first of the 3 missions, founded in 1771. Your passport has a new stamp." && typeof w[0].check === "function" && w[0].check() === true, JSON.stringify(w.map(s => s.text)));
+      check("the status line tells screen readers", /You are at Mission San Prueba/.test(txt($("#missionCard .ms-sr"))));
+      check("mission:visit event", api.emitted.some(([e, d]) => e === "mission:visit" && d.n === 1));
+      api.missions.check(); api.missions.check();
+      gps(api, at(1, 450));
+      check("walking 450 m around the grounds is the same visit", kind(api) === "at" && api.said.filter(s => s.id === "mission:1:visit").length === 1);
+      gps(api, at(1, 2000));
+      check("2 km away the visit is over (parked: the nearest list)", kind(api) === "list" && !api.missions.state().visit);
+      gps(api, at(1, 60));
+      check("back again: the card, but no second welcome", kind(api) === "at" && api.said.filter(s => s.id === "mission:1:visit").length === 1);
+      check("and no second new-stamp line", !/new stamp/.test(txt($("#missionCard .ms-lede"))), txt($("#missionCard .ms-lede")));
+
+      // a reload in the middle of the visit: still quiet
+      Object.assign(api.S, { mode: "off" }); api.bus.emit("mode", "off");
+      ({ api } = await boot(mem));
+      gps(api, at(1, 80));
+      check("after a reload: stamps kept, no second welcome", kind(api) === "at" && api.missions.stamps()["1"].how === "gps" && !api.said.some(s => s.id === "mission:1:visit"));
+
+      // narration off
+      api.settings.narr = false; api.bus.emit("settings", api.settings);
+      gps(api, at(2, 90));
+      check("narration off: the card and the stamp, but nothing said", kind(api) === "at" && api.missions.state().n === 2 && api.missions.stamps()["2"].how === "gps" && !api.said.some(s => s.id === "mission:2:visit"));
+      const f2 = Object.fromEntries($$("#missionCard .ms-facts dt").map(dt => [txt(dt), txt(dt.nextElementSibling)]));
+      check("hours given as text show in the facts", f2.Hours === "Daily 9 to 5", JSON.stringify(f2));
+      api.settings.narr = true; api.bus.emit("settings", api.settings);
+
+      // driving by: the nearby card from the road position (demo)
+      const before = api.said.length;
+      Object.assign(api.S, { mode: "demo", m: 5, speed: 65, offRoute: false, dir: "N" });
+      api.bus.emit("mode", "demo");
+      api.bus.emit("pos", { m: 5, dir: "N", speed: 65, offRoute: false, jumped: true });
+      const near = api.missions.state();
+      const exp = Math.round(hav(roadLat(5), LON0, 33.9724, -118.0255) * 10) / 10;
+      check("driving within 2 miles: Mission Santa Ejemplo is 1.5 miles away", near.kind === "near" && near.n === 2 && txt($("#missionCard h2")) === `Mission Santa Ejemplo is ${exp} miles away`, txt($("#missionCard h2")));
+      check("with its turn-off at the exit, never left or right", txt($("#missionCard .ms-turn")) === "At exit 5, Ejemplo Avenue heads about 1.5 miles west to Mission Santa Ejemplo.", txt($("#missionCard .ms-turn")));
+      check("Directions is the main button", $("#missionCard a.ms-btn.main") && /Directions/.test(txt($("#missionCard a.ms-btn.main"))));
+      check("a demo drive never says You are at, never stamps", api.missions.stamps()["3"] === undefined && !api.said.slice(before).length);
+      Object.assign(api.S, { m: 6.2 }); api.bus.emit("pos", { m: 6.2, dir: "N", speed: 65 });
+      check("the distance follows the car", /^Mission (Santa Ejemplo|San Prueba) is [\d.]+ miles? away$/.test(txt($("#missionCard h2"))), txt($("#missionCard h2")));
+      Object.assign(api.S, { m: 18 }); api.bus.emit("pos", { m: 18, dir: "N", speed: 65 });
+      check("more than 2 miles from every mission while driving: no card", kind(api) === "none" && $("#missionCard").hidden);
+
+      // the core's mission:near for a mission without coordinates
+      const p3 = api.missions.list()[2], keep = [p3.lat, p3.lon];   // the module's own copy: main.js sends the data.MISSIONS entry
+      delete p3.lat; delete p3.lon;
+      api.bus.emit("mission:near", { place: MS(3), n: 3, dist: 1.1, offRoute: false });
+      check("mission:near (a data.MISSIONS entry) works for a mission the module cannot place", kind(api) === "near" && api.missions.state().n === 3 && txt($("#missionCard h2")) === "Mission San Falso is 1.1 miles away", txt($("#missionCard h2")));
+      [p3.lat, p3.lon] = keep;
+
+      // off the road while driving: the nearest list
+      Object.assign(api.S, { mode: "gps", lat: 34.1, lon: -118.08, accuracy: 20, speed: 40, offRoute: true });
+      api.bus.emit("mode", "gps"); api.missions.check();
+      check("off the road: the nearest missions", kind(api) === "list" && $$("#missionCard .ms-row").length === 2);
+      check("nothing said for nearby or lists", api.said.length === before);
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- nearest */
+    async nearest() {
+      const { api } = await boot();
+      const P0 = [34.03, -118.0];
+      const want = MISSIONS.map(p => ({ id: p.id, mi: hav(P0[0], P0[1], p.lat, p.lon) })).sort((a, b) => a.mi - b.mi);
+      const got = api.missions.nearest(P0[0], P0[1], 2);
+      check("nearest(lat, lon, 2): the two nearest, nearest first", got.length === 2 && got.map(r => r.place.id).join() === want.slice(0, 2).map(r => r.id).join(), JSON.stringify(got.map(r => [r.place.id, r.miles.toFixed(2)])));
+      check("with straight-line miles", got.every((r, i) => Math.abs(r.miles - want[i].mi) < 0.01));
+      check("n larger than the list gives them all; default is 2; junk gives none", api.missions.nearest(P0[0], P0[1], 9).length === 3 && api.missions.nearest(P0[0], P0[1]).length === 2 && api.missions.nearest("x", null, 2).length === 0);
+
+      Object.assign(api.S, { mode: "off", m: 9 });
+      api.missions.check();
+      const rows = $$("#missionCard .ms-row");
+      check("parked: the card lists the nearest two missions", kind(api) === "list" && rows.length === 2 && !$("#missionCard").hidden && txt($("#msCardTitle")) === "Nearest missions", `${kind(api)} ${rows.length}`);
+      const from = [roadLat(9), LON0];
+      const order = MISSIONS.map(p => ({ p, mi: hav(from[0], from[1], p.lat, p.lon) })).sort((a, b) => a.mi - b.mi);
+      check("rows nearest first with distance and compass", txt(rows[0].querySelector(".ms-name")) === order[0].p.name && new RegExp(`^${(Math.round(order[0].mi * 10) / 10)} mi (south|southeast|southwest)`).test(txt(rows[0].querySelector(".ms-meta"))), txt(rows[0]));
+      check("rows say founded and stamped state", / · founded 1771/.test(txt(rows[0].querySelector(".ms-meta"))));
+      check("progress in the card", /0 of 3 stamped/.test(txt($("#missionCard .ms-k"))));
+      const UA0 = navigator.userAgent;
+      Object.defineProperty(navigator, "userAgent", { configurable: true, get: () => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15" });
+      api.bus.emit("settings", api.settings);
+      const a = $$("#missionCard .ms-row a.ms-btn")[0];
+      check("Directions on an Apple device: maps.apple.com/?daddr=lat,lon", a && a.href === "https://maps.apple.com/?daddr=34.0014,-117.99" && a.target === "_blank" && /Apple Maps/.test(a.getAttribute("aria-label")), a && a.href);
+      Object.defineProperty(navigator, "userAgent", { configurable: true, get: () => "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36" });
+      api.bus.emit("settings", api.settings);
+      const g = $$("#missionCard .ms-row a.ms-btn")[0];
+      check("elsewhere: google.com/maps/dir/?api=1&destination=lat,lon", g && g.href === "https://www.google.com/maps/dir/?api=1&destination=34.0014,-117.99" && /Google Maps/.test(g.getAttribute("aria-label")), g && g.href);
+      check("api.missions.directions(n) follows the device too", api.missions.directions(2) === "https://www.google.com/maps/dir/?api=1&destination=33.9724,-118.0255");
+      Object.defineProperty(navigator, "userAgent", { configurable: true, get: () => "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1" });
+      check("on an iPhone: Apple Maps", api.missions.directions(2) === "https://maps.apple.com/?daddr=33.9724,-118.0255");
+      Object.defineProperty(navigator, "userAgent", { configurable: true, get: () => UA0 });
+      check("rows are 44 px tap targets", $$("#missionCard button, #missionCard a").every(big), $$("#missionCard button, #missionCard a").filter(e => !big(e)).map(e => e.outerHTML.slice(0, 50)).join());
+
+      // driving on the road, far from the missions: nothing
+      Object.assign(api.S, { mode: "gps", lat: roadLat(20), lon: LON0, accuracy: 10, speed: 60, offRoute: false, m: 20 });
+      api.bus.emit("mode", "gps"); api.missions.check();
+      check("driving on the road away from missions: no card", kind(api) === "none" && $("#missionCard").hidden);
+      Object.assign(api.S, { offRoute: true, speed: 40 }); api.missions.check();
+      check("off the road: the list again", kind(api) === "list" && !$("#missionCard").hidden);
+      Object.assign(api.S, { speed: 0, offRoute: false }); api.missions.check();
+      check("stopped on the road (GPS, 0 mph): the list", kind(api) === "list");
+      Object.assign(api.S, { mode: "off", lat: null, lon: null, m: null }); api.bus.emit("mode", "off");
+      check("no position at all: no card", kind(api) === "none" && $("#missionCard").hidden);
+      Object.assign(api.S, { mode: "gps", lat: at(1, 30)[0], lon: at(1, 30)[1], speed: 1 }); api.bus.emit("mode", "gps"); api.missions.check();
+      check("at a mission the visit card wins over the list", kind(api) === "at");
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- kid */
+    async kid() {
+      const { api } = await boot();
+      Object.assign(api.S, { mode: "off", m: 7 });
+      api.missions.check();
+      check("Kid mode off: no Mission fact button", kind(api) === "list" && !$("#missionCard .ms-factbtn"));
+      api.settings.kid = true; api.bus.emit("settings", api.settings);
+      const b = $("#missionCard .ms-factbtn");
+      check("Kid mode on: a Mission fact button for the nearest mission", b && txt(b) === "Mission fact" && b.getAttribute("aria-label") === "Mission fact about Mission San Prueba" && big(b));
+      const u0 = api.voice.unlocks;
+      b.click();
+      await wait(20);
+      const s1 = api.said.at(-1), shown1 = txt($("#missionCard .ms-fact"));
+      check("a tap reads one short fact (mission:1:fact) right away", s1 && s1.id === "mission:1:fact" && s1.now === true && s1.text.length < 140, JSON.stringify(s1));
+      check("after voice.unlock()", api.voice.unlocks === u0 + 1);
+      check("the same words are on screen", shown1 === s1.text && !$("#missionCard .ms-fact").hidden, shown1);
+      $("#missionCard .ms-factbtn").click();
+      await wait(20);
+      check("the next tap, another fact", api.said.at(-1).text !== s1.text && txt($("#missionCard .ms-fact")) === api.said.at(-1).text, api.said.at(-1).text);
+      const seen = new Set();
+      for (let i = 0; i < 6; i++) { $("#missionCard .ms-factbtn").click(); seen.add(api.said.at(-1).text); }
+      const all = [...seen];
+      check("facts come from the data", all.some(t => /founded in 1771\. That was \d+ years ago\./.test(t)) && all.some(t => t === "The Tongva people lived on this land long before the mission was built.") && all.some(t => t === "Junípero Serra founded this mission."), all.join(" | "));
+      check("no exclamation marks or em dashes in the facts", all.every(t => !/[!—]/.test(t)));
+      api.settings.narr = false; api.bus.emit("settings", api.settings);
+      const n0 = api.said.length;
+      $("#missionCard .ms-factbtn").click();
+      check("narration off still answers a tap", api.said.length === n0 + 1);
+      api.missions.open(2);
+      await wait(20);
+      const sb = $("#missionSheet .ms-factbtn");
+      check("the mission page has the fact button too", !!sb && sb.getAttribute("aria-label") === "Mission fact about Mission Santa Ejemplo");
+      sb.click();
+      check("and reads that mission's fact", api.said.at(-1).id === "mission:2:fact" && txt($("#missionSheet .ms-fact")) === api.said.at(-1).text);
+      const u1 = api.voice.unlocks;
+      $('#missionSheet [data-k="hear:2"]').click();
+      check("Hear it reads the visit text (mission:2:hear) after unlock", api.said.at(-1).id === "mission:2:hear" && api.said.at(-1).text.includes(MS(2).visit) && api.voice.unlocks === u1 + 1);
+      api.ui.closeSheet();
+      api.settings.kid = false; api.bus.emit("settings", api.settings);
+      check("Kid mode off again: the button goes away", !$("#missionCard .ms-factbtn"));
+      check("api.missions.fact(n) returns the words it said", (() => { const t = api.missions.fact(3); return t && api.said.at(-1).text === t && api.said.at(-1).id === "mission:3:fact"; })());
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- sheet */
+    async sheet() {
+      document.getElementById("msCss").remove();   // the module adds its own stylesheet when the page has none
+      const { api } = await boot();
+      const links = $$('link[rel="stylesheet"]').filter(l => /css\/missions\.css$/.test(l.href));
+      check("without a link to css/missions.css the module adds it", links.length === 1 && links[0].href === new URL("../css/missions.css", location.href).href, links.map(l => l.href).join());
+      await new Promise(r => { if (links[0].sheet) r(); else { links[0].onload = r; setTimeout(r, 1500); } });
+      check("api.missions.open(1) opens the page", api.missions.open(1) === true && !$("#missionSheet").hidden);
+      await wait(30);
+      const sh = $("#missionSheet");
+      check("it is a labelled dialog", sh.getAttribute("role") === "dialog" && sh.getAttribute("aria-labelledby") === "msSheetTitle" && txt($("#msSheetTitle")) === "Mission San Prueba" && sh.classList.contains("ms-sheet"));
+      check("focus moves into it", sh.contains(document.activeElement));
+      const img = sh.querySelector("figure.photo img");
+      check("the photo comes from api.ui.photo", img && img.src.startsWith("data:image/svg+xml"));
+      check("kicker: number and founding year", /Mission 1 of 3/.test(txt(sh.querySelector(".ms-k"))) && /Founded 1771/.test(txt(sh.querySelector(".ms-k"))), txt(sh.querySelector(".ms-k")));
+      check("the story and the visit text", txt(sh.querySelector(".ms-lead")) === MS(1).text && txt(sh.querySelector(".ms-sec p")) === MS(1).visit);
+      check("the facts", sh.querySelectorAll(".ms-facts dt").length === 4);
+      check("the turn-off", txt(sh.querySelector(".ms-turn")) === "At exit 7, Prueba Road heads about 0.6 miles east to Mission San Prueba.", txt(sh.querySelector(".ms-turn")));
+      const dir = sh.querySelector('a[data-k="dir:1"]'), site = sh.querySelector('a[data-k="site:1"]'), hrs = sh.querySelector('a[data-k="hours:1"]');
+      check("Directions, Official site and Hours", dir && /daddr=34\.0014,-117\.99|destination=34\.0014,-117\.99/.test(dir.href) && site && site.href === "https://example.org/prueba" && hrs && hrs.href === "https://example.org/prueba/hours");
+      check("I visited is the main button", sh.querySelector(".ms-visited.main") && txt(sh.querySelector(".ms-visited")) === "I visited");
+      check("every button and link is 44 px", [...sh.querySelectorAll("button, a.ms-btn")].every(big), [...sh.querySelectorAll("button, a.ms-btn")].filter(e => !big(e)).map(e => txt(e)).join());
+      Object.assign(api.S, { mode: "off", m: 20 }); api.missions.check();
+      api.missions.open(2);
+      await wait(20);
+      check("from the road it says how far the mission is", /^\d+(\.\d)? mi (north|south|east|west|northeast|northwest|southeast|southwest) of your spot on the road$/.test(txt(sh.querySelector(".ms-where"))), txt(sh.querySelector(".ms-where")));
+      check("hours as text get a check-before-you-go line", /Check the mission's own site before you go/.test(txt(sh)));
+      check("a turn-off behind you: no distance", txt(sh.querySelector(".ms-turn")) === "At exit 5, Ejemplo Avenue heads about 1.5 miles west to Mission Santa Ejemplo.", txt(sh.querySelector(".ms-turn")));
+      Object.assign(api.S, { dir: "S" }); api.missions.open(2); await wait(20);
+      check("ahead of you: how far to the exit, still no left or right", txt(sh.querySelector(".ms-turn")) === "At exit 5, Ejemplo Avenue heads about 1.5 miles west to Mission Santa Ejemplo. The exit is 15 miles ahead.", txt(sh.querySelector(".ms-turn")));
+      check("Share shares its I-5 place (its #place= link works)", (() => { let got = null; api.share = { sharePlace: p => { got = p; } }; api.missions.open(2); const b = sh.querySelector('[data-k="share:2"]'); if (b) b.click(); delete api.share; return !!got && got.id === "ca5-mission-santa-ejemplo"; })());
+      Object.assign(api.S, { dir: "N" });
+      $("#missionSheet .sheet-head .link").click();
+      check("Close", sh.hidden && $("#sheetBack").hidden);
+      // main.js's place sheet gets a Mission page button
+      const acts = document.createElement("div");
+      api.bus.emit("place:sheet", { place: ROAD(3), sheet: document.createElement("aside"), acts });
+      const pb = acts.querySelector("button");
+      check("main.js place sheet: a Mission page button", pb && txt(pb) === "Mission page");
+      pb.click();
+      await wait(20);
+      check("which opens the mission page", !sh.hidden && txt($("#msSheetTitle")) === "Mission San Falso");
+      const acts2 = document.createElement("div");
+      api.bus.emit("place:sheet", { place: PLACES[0], sheet: document.createElement("aside"), acts: acts2 });
+      check("not for other places", !acts2.children.length);
+      api.ui.closeSheet();
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- layout */
+    async layout() {
+      const { api, app } = await boot();
+      check("the frame is phone width", innerWidth <= 361, String(innerWidth));
+      api.settings.kid = true;
+      gps(api, at(1, 40));
+      await wait(400);
+      const cardEl = $("#missionCard .ms-card");
+      const noScroll = el => el.scrollWidth <= el.clientWidth + 1;
+      check("visit card: no horizontal scroll", noScroll(document.documentElement) && noScroll(cardEl) && cardEl.getBoundingClientRect().right <= innerWidth + 0.5, `${document.documentElement.scrollWidth} ${cardEl.scrollWidth}/${cardEl.clientWidth}`);
+      const small = $$("#missionCard button, #missionCard a").filter(e => !big(e));
+      check("visit card: every button and link at least 44 px", !small.length, small.map(e => `${txt(e)} ${Math.round(e.getBoundingClientRect().width)}x${Math.round(e.getBoundingClientRect().height)}`).join(", "));
+      const cs = getComputedStyle(cardEl);
+      const T = THEME === "light" ? { surface: "rgb(255, 255, 255)", hist: "rgb(181, 87, 26)" } : { surface: "rgb(26, 32, 29)", hist: "rgb(236, 145, 80)" };
+      check("theme: surface and the mission colour (--hist) from app.css", cs.backgroundColor === T.surface && cs.borderTopColor === T.hist, `${cs.backgroundColor} ${cs.borderTopColor}`);
+      const k = getComputedStyle($("#missionCard .ms-k"));
+      check("kicker in the mission colour", k.color === T.hist, k.color);
+      // passport
+      $("#view-passport").hidden = false;
+      api.bus.emit("tab", "passport");
+      await wait(50);
+      const pp = $("#missionsPassport .ms-pp");
+      check("passport: no horizontal scroll", noScroll(document.documentElement) && noScroll(pp), `${pp.scrollWidth}/${pp.clientWidth}`);
+      check("passport: stamps are 44 px", $$("#missionsPassport button").every(big));
+      // sheet
+      api.missions.open(1);
+      await wait(50);
+      const sh = $("#missionSheet");
+      check("sheet: no horizontal scroll", noScroll(sh), `${sh.scrollWidth}/${sh.clientWidth}`);
+      check("sheet: every button and link at least 44 px", [...sh.querySelectorAll("button, a.ms-btn")].every(big));
+      // text style
+      const said = api.said.map(s => s.text).join(" ");
+      const shown = txt(app);
+      check("no em dashes in anything shown or said", !/—/.test(shown + said));
+      check("no exclamation marks in anything shown or said", !/!/.test(shown + said), (shown + said).match(/.{30}!.{0,10}/g)?.join(" | "));
+      let reduced = false;
+      for (const s of document.styleSheets) {
+        if (!/missions\.css/.test(s.href || "")) continue;
+        try { for (const r of s.cssRules) if (r.media && /prefers-reduced-motion/.test(r.media.mediaText) && /animation[^;]*none/.test(r.cssText)) reduced = true; } catch {}
+      }
+      check("prefers-reduced-motion turns the motion off", reduced);
+      // the all-stamped celebration is the one place an exclamation mark belongs
+      api.missions.visited(2); api.missions.visited(3);
+      check("all stamped: one celebration toast", /^All 3 missions are in your passport\. What a journey!$/.test(api.toasts.at(-1) || ""), api.toasts.at(-1));
+      check("no errors from the module", !errors.length, errors.join(" | ").slice(0, 200));
+      return checks;
+    },
+
+    /* ---------------------------------------------------------------------------------- shot */
+    async shot() {
+      const { api } = await boot();
+      $("#nextCard").hidden = SHOW === "passport";
+      if (SHOW === "kid") api.settings.kid = true;
+      if (SHOW === "at" || SHOW === "kid") {
+        api.missions.visited(3);
+        gps(api, at(1, 60));
+        if (SHOW === "kid") { await wait(30); $("#missionCard .ms-factbtn").click(); }
+      } else if (SHOW === "near") {
+        Object.assign(api.S, { mode: "demo", m: 5.3, speed: 65, dir: "N" }); api.bus.emit("mode", "demo"); api.missions.check();
+      } else if (SHOW === "list") {
+        api.missions.visited(2);
+        Object.assign(api.S, { mode: "off", m: 9 }); api.missions.check();
+      } else if (SHOW === "passport") {
+        gps(api, at(2, 40)); api.missions.visited(3);
+        Object.assign(api.S, { mode: "off" }); api.bus.emit("mode", "off");
+        $("#view-drive").hidden = true; $("#view-passport").hidden = false; api.bus.emit("tab", "passport");
+      } else if (SHOW === "sheet") {
+        api.missions.visited(1);
+        Object.assign(api.S, { mode: "off", m: 20 }); api.missions.check();
+        api.missions.open(1);
+      }
+      await wait(700);
+      check(`shot ${SHOW} ready`, true);
+      return checks;
+    },
+  };
+  const scene = SCENES[FRAME];
+  if (!scene) { check(`known scene ${FRAME}`, false); parent.postMessage({ type: "missions-done", checks }, "*"); return; }
+  await scene();
+  parent.postMessage({ type: "missions-done", checks }, "*");
+}
+</script>
+</body>
+</html>
