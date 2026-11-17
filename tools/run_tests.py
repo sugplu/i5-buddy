@@ -62,6 +62,10 @@ def serve():
 # (name, page+query, virtual time budget ms, window size, quick?)
 SUITE = [
     ("geometry", "test.html", 15000, "500,800", True),
+    # the natural voice (3.0): speech units, clip names, the clip player with fake clips (nothing fetched or heard)
+    ("voice", "test-voice.html", 60000, "900,960", True),
+    # (test-voice.html?real=1 decodes the real clips: it needs real time, not this runner's virtual time, so it runs with
+    #  python3 tools/voice/collect.py --page "tools/test-voice.html?real=1" --out /tmp/voice-real.json)
     ("e2e drive", "e2e.html", 120000, "900,960", True),
     ("trip auto", "test-trip.html?s=auto", 120000, "1100,960", True),
     ("listen selftest", "test-listen.html?state=selftest", 250000, "1100,960", True),

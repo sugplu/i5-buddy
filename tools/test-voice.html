@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy: voice tests</title>
+<!--
+  The natural voice (3.0): speechUnits and unitKey, and the clip player in js/voice.js driven through
+  window.__BUDDY_CLIPTEST__, a fake clip list, fake clips and a fake decoder, so nothing is fetched, decoded or heard.
+  The clip player reports what it would have played to __BUDDY_CLIPTEST__.played; the device voice is the app's silent
+  engine (it records into window.__BUDDY_SPOKEN__). Prints PASS/FAIL rows and ALL PASS in the title.
+-->
+<style>
+  body{margin:0;padding:15px;background:#1d2220;color:#e6ebe7;font:13px/1.45 -apple-system,system-ui,sans-serif}
+  #app{width:390px;height:700px;border:0;float:right}
+  table{border-collapse:collapse}td{padding:2px 8px;border-bottom:1px solid #313b36;vertical-align:top}
+  .pass{color:#5cc46f}.fail{color:#ff6b5e}
+</style>
+</head>
+<body>
+<h1 id="sum">Running…</h1>
+<iframe id="app" title="I-5 Buddy"></iframe>
+<table id="t"></table>
+<script type="module">
+const rows = [];
+const row = (ok, name, detail = "") => {
+  rows.push(ok);
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td class="${ok ? "pass" : "fail"}">${ok ? "PASS" : "FAIL"}</td><td>${name}</td><td><code></code></td>`;
+  tr.querySelector("code").textContent = typeof detail === "string" ? detail : JSON.stringify(detail);
+  document.getElementById("t").append(tr);
+  console.log(`VOICE TEST ${ok ? "PASS" : "FAIL"}: ${name} ${typeof detail === "string" ? detail : JSON.stringify(detail)}`);
+};
+const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// The splitter and the names, from the app's own module (a copy in this window; pure functions).
+const V = await import("../js/voice.js");
+const SPLIT = [
+  ["Hello there.", ["Hello there."]],
+  ["In about 2 miles, on your right: Kettleman City. It was named for Dave Kettleman.", ["In about 2 miles, on your right:", "Kettleman City.", "It was named for Dave Kettleman."]],
+  ["Mt. Shasta rises 14,179 feet. The U.S. Forest Service runs it.", ["Mt. Shasta rises 14,179 feet.", "The U.S. Forest Service runs it."]],
+  ["J. B. Lankershim farmed here. B.F. Sisk Dam holds the water!", ["J. B. Lankershim farmed here.", "B.F. Sisk Dam holds the water!"]],
+  ["Is that a cow? Yes it is.", ["Is that a cow?", "Yes it is."]],
+  ['It measured 1.5 miles across, and "it was huge." Then it fell.', ['It measured 1.5 miles across, and "it was huge."', "Then it fell."]],
+  ["Time: 10:30 a.m. sharp. Then lunch.", ["Time:", "10:30 a.m. sharp.", "Then lunch."]],
+  ["  spaced   out.  ", ["spaced out."]],
+  ["", []],
+];
+for (const [t, want] of SPLIT) { const got = V.speechUnits(t); row(eq(got, want), "speechUnits " + JSON.stringify(t).slice(0, 60), got); }
+row(V.unitKey("Hello there.") === "18affd941f45cb" && V.unitKey("  Hello   there. ") === "18affd941f45cb", "unitKey is stable and ignores spacing", V.unitKey("Hello there."));
+
+// The fake clip list: every unit below has a clip except the one in MISSING; story units are long (20 s each).
+const A = "In about 2 miles, on your right: Kettleman City. Kettleman City is a truck stop town.";
+const B = "This sentence has a clip. This one does not.";
+const C = { text: "In half a mile, turn right onto I-5.", units: ["In half a mile,", "turn right", "onto", "I-5."] };
+const D = "Story one is long. Story two is long. Story three is long.";
+const E = "Fetching this clip breaks.";
+const MISSING = "This one does not.";
+const units = new Set([...V.speechUnits(A), ...V.speechUnits(B), ...C.units, ...V.speechUnits(D), ...V.speechUnits(E), "Rerouting.", "This is how I'll sound on the road."]);
+units.delete(MISSING);
+const keyOf = new Map([...units].map(u => [V.unitKey(u), u]));
+const played = [];
+// ?real=1: the REAL clip list and clips (voice/heart/), fetched and decoded by the browser and joined into one recording,
+// which is then not played (the clip test reports it instead). Checks that the recordings exist for real app lines.
+if (new URLSearchParams(location.search).get("real") === "1") {
+  window.__BUDDY_CLIPTEST__ = { played(info) { played.push(info); } };
+  const fr = document.getElementById("app");
+  fr.src = "../index.html?silent=1";
+  const api = await (async () => { for (let i = 0; i < 300; i++) { await sleep(100); const a = fr.contentWindow?.I5BUDDY?.api; if (a && a.voice && a.narrator) return a; } return null; })();
+  for (let i = 0; i < 100 && api && !api.voice.natural(); i++) await sleep(100);
+  row(!!api && api.voice.natural(), "the real clip list loads", api ? api.voice.offline.info() : null);
+  const P = api.data.PLACES;
+  const picks = [P[10], P[150], P[300], P.find(p => p.detour)].filter(Boolean);
+  for (const p of picks) {
+    played.length = 0;
+    const text = api.narrator.announceText(p, 2, "N");
+    const t0 = performance.now();
+    const ok = await api.voice.say(text, { id: "real:" + p.id });
+    const words = text.split(/\s+/).length;
+    const sec = played[0]?.seconds || 0;
+    // natural speech runs about 2 to 3.5 words a second
+    row(ok && played.length === 1 && sec > words / 4 && sec < words / 1.5, `real clips: ${p.name}`, `${words} words, ${sec.toFixed(1)} s of speech, ready in ${Math.round(performance.now() - t0)} ms`);
+  }
+  played.length = 0;
+  const story = P.find(p => p.more && p.more.length > 900);
+  const ok = await api.voice.say(`Here's a story while we drive, about ${story.name}. ${story.more}`, { id: "story" });
+  row(ok && played.length === 1 && played[0].seconds > 40, `real clips: a long story (${story.name})`, `${(played[0]?.seconds || 0).toFixed(1)} s`);
+  finish();
+  // tools/voice/collect.py --page "tools/test-voice.html?real=1" saves this (real time: the decoder runs on its own thread)
+  try { await fetch("/__units", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ title: document.title, rows: [...document.querySelectorAll("#t tr")].map(tr => tr.innerText.replace(/\s+/g, " ").trim()) }) }); } catch {}
+  await new Promise(() => {});   // stop here; the fake-clip tests below are the default run
+}
+// Fake clips: each "clip" is a few bytes; a story clip is 200 bytes, which the fake decoder turns into 20 s of audio
+// (other clips: 1 s). The clip of E can't be fetched (it throws, like a network error).
+window.__BUDDY_CLIPTEST__ = {
+  manifest: { v: 1, voice: "heart", n: keyOf.size, bytes: 123456, keys: [...keyOf.keys()].join("") },
+  fetch(k) { const u = keyOf.get(k); if (u === E) throw new Error("network"); return new ArrayBuffer(/^Story/.test(u) ? 200 : 8); },
+  decode(ab) { return { sampleRate: 24000, getChannelData: () => new Float32Array(ab.byteLength === 200 ? 24000 * 20 : 24000) }; },
+  played(info) { played.push(info); },
+};
+
+const fr = document.getElementById("app");
+fr.src = "../index.html?silent=1";
+const api = await (async () => { for (let i = 0; i < 300; i++) { await sleep(100); const a = fr.contentWindow?.I5BUDDY?.api; if (a && a.voice) return a; } return null; })();
+if (!api) { row(false, "the app started"); finish(); }
+const voice = api.voice;
+await sleep(300);
+
+row(voice.list()[0]?.natural === true && voice.list()[0].voiceURI === "buddy:heart", "Settings lists I-5 Buddy's natural voice first", voice.list().slice(0, 2).map(v => v.voiceURI));
+row(voice.natural() === true, "the natural voice is on by default once its clip list is loaded");
+
+// 1. every unit has a clip -> the recording plays, once, with the whole text
+played.length = 0;
+let ok = await voice.say(A, { id: "a" });
+// three 1 s clips, a breath after the colon (0.16 s), a full stop's pause (0.28 s) and a little silence at both ends
+row(ok === true && played.length === 1 && played[0].text === A && Math.abs(played[0].seconds - 3.54) < 0.01, "a line whose units all have clips plays as one recording, with natural pauses", played);
+
+// 2. one unit missing -> the device voice reads it
+played.length = 0;
+const before = (window.__BUDDY_SPOKEN__ || []).length;
+ok = await voice.say(B, { id: "b" });
+row(ok === true && played.length === 0 && (window.__BUDDY_SPOKEN__ || []).slice(before).includes(B), "a line with a missing clip goes to the device voice", { played, spoken: (window.__BUDDY_SPOKEN__ || []).slice(before) });
+
+// 3. units passed by the caller (navigation)
+played.length = 0;
+ok = await voice.say(C.text, { id: "c", units: C.units, prio: 3 });
+row(ok === true && played.length === 1 && eq(played[0].units, C.units), "a sentence built from fixed units plays their clips", played);
+
+// 4. a device voice picked in Settings -> no clips
+const s0 = api.settings.voice;
+api.settings.voice = "some-device-voice";
+played.length = 0;
+ok = await voice.say(A, { id: "a2" });
+row(ok === true && played.length === 0 && voice.natural() === false, "with a device voice picked, the device voice reads everything", played);
+api.settings.voice = s0;
+
+// 5. a clip that can't be fetched -> the device voice reads the line (no hang)
+played.length = 0;
+const t5 = performance.now();
+ok = await voice.say(E, { id: "e" });
+row(ok === true && played.length === 0 && performance.now() - t5 < 3000, "a clip that fails to load falls back to the device voice quickly", Math.round(performance.now() - t5) + " ms");
+
+// 6. "now" interrupts a long recording; the interrupted one resolves false, the urgent one plays
+played.length = 0;
+const pD = voice.say(D, { id: "d", prio: 1 });
+await sleep(400);
+row(voice.isSpeaking() && voice.currentId() === "d", "the long recording is playing", voice.currentId());
+const pR = voice.say("Rerouting.", { id: "r", prio: 3, now: true });
+const [rD, rR] = await Promise.all([pD, pR]);
+row(rD === false && rR === true && played.map(p => p.id).join(",") === "d,r", "now:true cuts the long recording and plays right away", played.map(p => p.id));
+
+// 7. hold() (the microphone) pauses a recording; it plays again from the start after hold(false)
+played.length = 0;
+const pH = voice.say(D, { id: "h", prio: 1 });
+await sleep(300);
+voice.hold(true);
+await sleep(300);
+const heldOk = !voice.isSpeaking() && voice.isHeld();
+voice.hold(false);
+const rH = await pH;
+row(heldOk && rH === true && played.filter(p => p.id === "h").length === 2, "hold() pauses and the recording replays after", { heldOk, rH, played: played.map(p => p.id) });
+
+// 8. stop() ends everything
+played.length = 0;
+const p8 = voice.say(D, { id: "s" });
+await sleep(300);
+voice.stop();
+row((await p8) === false && !voice.isSpeaking(), "stop() ends the recording");
+
+// 9. repeat() plays the last line again with its units
+played.length = 0;
+await voice.say(C.text, { id: "c2", units: C.units, prio: 3 });
+played.length = 0;
+voice.repeat();
+await sleep(1500);
+row(played.length === 1 && eq(played[0].units, C.units), "repeat() replays the last line with its units", played);
+
+// 10. offline info
+const info = voice.offline.info();
+row(info.ready === true && info.clips === keyOf.size && info.mb === 0, "offline info reads the clip list", info);
+
+finish();
+function finish() {
+  const bad = rows.filter(x => !x).length;
+  document.getElementById("sum").textContent = bad ? `${bad} FAIL of ${rows.length}` : `ALL PASS (${rows.length})`;
+  document.title = bad ? `FAIL ${bad} of ${rows.length}` : `ALL PASS ${rows.length}`;
+  console.log(`VOICE TEST ${bad ? "FAIL" : "ALL PASS"} ${rows.length}`);
+}
+</script>
+</body>
+</html>

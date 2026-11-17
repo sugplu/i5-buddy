@@ -1,0 +1,91 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>I-5 Buddy: voice units</title>
+<!-- Lists every unit the natural voice needs: it runs the app silently and asks the app's own functions for every line it
+     can say (landmarks at every distance and side, zones, missions, games, navigation, fixed lines), cuts them with
+     voice.speechUnits and names them with voice.unitKey. tools/voice/collect.py serves this page and saves the POST. -->
+<script>window.__BUDDY_SILENT__ = true;</script>
+<iframe id="app" src="../../index.html?silent=1" style="width:390px;height:844px;border:0"></iframe>
+<pre id="log"></pre>
+<script type="module">
+const log = t => { document.getElementById("log").textContent += t + "\n"; console.log("[units] " + t); };
+const fr = document.getElementById("app");
+const wait = (test, ms) => new Promise(res => { const t0 = Date.now(); const iv = setInterval(() => { let v = null; try { v = test(); } catch {} if (v || Date.now() - t0 > ms) { clearInterval(iv); res(v); } }, 100); });
+
+const api = await wait(() => fr.contentWindow.I5BUDDY && fr.contentWindow.I5BUDDY.api && fr.contentWindow.I5BUDDY.api.narrator && fr.contentWindow.I5BUDDY.api, 30000);
+if (!api) { log("FAIL: the app never started"); throw new Error("no api"); }
+await wait(() => api.missions, 8000);
+await wait(() => api.play, 4000);
+await wait(() => api.nav, 4000);
+const D = api.data, N = api.narrator, V = api.voice;
+
+const texts = new Map();   // text -> source
+const direct = new Map();  // unit -> source (fixed phrases a caller passes as units)
+const add = (t, src) => { if (typeof t === "string" && t.trim() && !texts.has(t)) texts.set(t, src); };
+const unit = (u, src) => { if (typeof u === "string" && u.trim() && !direct.has(u)) direct.set(u, src); };
+
+// Landmarks: every distance and side the narrator can use, with and without Kid mode's I spy line.
+const kid0 = api.settings.kid;
+const DIST = [0, 1]; for (let n = 2; n <= 25; n++) DIST.push(n);
+for (const kid of [false, true]) {
+  api.settings.kid = kid;
+  for (const p of D.PLACES) for (const dir of ["N", "S"]) for (const d of DIST) add(N.announceText(p, d, dir), "place");
+}
+api.settings.kid = kid0;
+for (const p of D.PLACES) {
+  add(`${p.name}. ${p.text}`, "place");
+  add(p.more ? `${p.name}. ${p.more}` : `That's everything I have on ${p.name}. ${p.text}`, "more");
+  if (p.more) add(`Here's a story while we drive, about ${p.name}. ${p.more}`, "story");
+}
+// "What's on my left/right" (narrator.look)
+for (const side of ["left", "right"]) {
+  unit(`Just behind us on your ${side}:`, "look"); unit(`Right there on your ${side}:`, "look");
+  for (let n = 1; n <= 8; n++) unit(`About ${n} mile${n > 1 ? "s" : ""} up on your ${side}:`, "look");
+  add(`Nothing I know about on your ${side} for the next few miles.`, "look");
+}
+// Landscape zones (narrator zoneLine and look's zone answer)
+for (const z of D.ZONES) {
+  add(`Now passing: ${z.label}. ${z.text}`, "zone");
+  for (const s of Object.values(z.seasons || {})) add(s, "zone");
+  for (const side of ["left", "right"]) add(`On your ${side} right now: ${z.label}. ${z.text}`, "zone");
+}
+// Fixed lines in the core
+add("Welcome to California.", "core");
+add(`You just crossed the halfway point of I-5${D.SCOPE.length === 1 ? " in " + D.STATES[0].name : ""}, about ${Math.round(D.MAX_M / 2)} miles from both ${D.ENDS.S.short} and ${D.ENDS.N.short}.`, "core");
+for (const e of ["S", "N"]) add(`That's ${D.ENDS[e].long}, the end of the road for I-5 Buddy. Thanks for riding along.`, "core");
+add("Hi, I'm your I-5 buddy. I'll tell you about what's coming up as we drive. This is a demo drive. I'll pretend we're driving so you can hear how it works.", "core");
+add("This is how I'll sound on the road.", "core");
+for (const d of D.DESTS) add(`We made it to ${d.name}.`, "trip");
+// Modules that list their own lines
+const lists = [["missions", () => api.missions?.phrases?.()], ["play", () => api.play?.phrases?.()], ["nav", () => api.nav?.phraseBank?.()]];
+for (const [name, get] of lists) {
+  let got = [];
+  try { got = get() || []; } catch (e) { log(`${name}.phrases failed: ${e.message}`); }
+  for (const t of got) { add(t, name); if (name === "nav") unit(t, name); }
+  log(`${name}: ${got.length} lines`);
+}
+// Plain string literals passed to say(...) anywhere in the app's code
+for (const f of ["main", "narrator", "trip", "live", "play", "missions", "listen", "ride", "share", "roadahead", "map", "map3d", "nav", "feedback"]) {
+  let src = "";
+  try { const r = await fetch(`../../js/${f}.js`); if (r.ok) src = await r.text(); } catch {}
+  const re = /\bsay\(\s*(["'`])((?:\\.|(?!\1)[^\\])*)\1/g;
+  let m, n = 0;
+  while ((m = re.exec(src))) {
+    const s = m[2];
+    if (m[1] === "`" && s.includes("${")) continue;
+    add(s.replace(/\\(["'`\\])/g, "$1").replace(/\\n/g, " "), "literal:" + f); n++;
+  }
+}
+
+// Cut, name, check for name clashes
+const out = new Map(), clash = [];
+const put = (u, src) => { u = u.replace(/\s+/g, " ").trim(); if (!u) return; const k = V.unitKey(u); const had = out.get(k); if (had && had.t !== u) clash.push([had.t, u]); else if (!had) out.set(k, { t: u, src }); };
+for (const [t, src] of texts) for (const u of V.speechUnits(t)) put(u, src);
+for (const [u, src] of direct) put(u, src);
+let chars = 0; for (const v of out.values()) chars += v.t.length;
+log(`texts ${texts.size}, units ${out.size}, characters ${chars}, clashes ${clash.length}`);
+const body = JSON.stringify({ when: new Date().toISOString(), clashes: clash, units: [...out].map(([k, v]) => [k, v.t, v.src]) });
+const r = await fetch("/__units", { method: "POST", headers: { "content-type": "application/json" }, body });
+log(r.ok ? "SAVED" : "POST failed " + r.status);
+document.title = r.ok ? "ALL PASS" : "FAIL";
+</script>

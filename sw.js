@@ -20,6 +20,10 @@ const SHELL = [
 // every file in SHELL, and it has no get/ page.
 const PAGES = ["support.html", "get/"];
 const PHOTOS = "i5b-photos";
+// The natural voice (3.0): voice/<id>/<k[:2]>/<k>.m4a clips never change (a clip's name is its text's hash), so they are
+// served from this cache first and kept across releases; voice/<id>/index.json (the clip list) is network first.
+// Nothing here is saved at install: clips are saved as they are first played, or all at once from Settings > Offline.
+const VOICE = "i5b-voice-heart";
 // The app's own address, where an offline visit gets the app shell: "/" (or "/i5-buddy/" at the old github.io address).
 const HOME = new URL("./", location).pathname;
 
@@ -33,7 +37,7 @@ self.addEventListener("install", e => {
 });
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== PHOTOS).map(k => caches.delete(k))))
+    .then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== PHOTOS && k !== VOICE).map(k => caches.delete(k))))
     .then(() => self.clients.claim()));
 });
 self.addEventListener("message", e => { if (e.data === "skipWaiting") self.skipWaiting(); });
@@ -50,6 +54,20 @@ self.addEventListener("fetch", e => {
       const hit = await c.match(req, { ignoreSearch: true });
       if (hit) return hit;
       try { const r = await fetch(req); if (r.ok) c.put(req, r.clone()); return r; } catch { return new Response("", { status: 504 }); }
+    }));
+    return;
+  }
+  if (url.pathname.includes("/voice/")) {
+    e.respondWith(caches.open(VOICE).then(async c => {
+      if (url.pathname.endsWith(".m4a")) {
+        // a clip: cache first, then network (and remember it)
+        const hit = await c.match(req, { ignoreSearch: true });
+        if (hit) return hit;
+        try { const r = await fetch(req); if (r.ok) c.put(req, r.clone()); return r; } catch { return new Response("", { status: 504 }); }
+      }
+      // the clip list: network first, the saved copy offline
+      try { const r = await fetch(req); if (r.ok) c.put(req, r.clone()); return r; }
+      catch { return (await c.match(req, { ignoreSearch: true })) || new Response("", { status: 504 }); }
     }));
     return;
   }

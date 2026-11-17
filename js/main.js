@@ -683,7 +683,7 @@ function syncSettingsUI() {
   const vs = voice.list();
   if (!vs.length) { const o = el("option", null, "Default voice"); o.value = ""; sel.append(o); }
   // an online voice says so: its words go to Google or Microsoft (privacy.html, Spoken narration)
-  for (const v of vs) { const o = el("option", null, `${v.name} (${v.lang})${voice.online(v) ? " (online)" : ""}`); o.value = v.voiceURI; sel.append(o); }
+  for (const v of vs) { const o = el("option", null, v.natural ? "I-5 Buddy (natural voice)" : `${v.name} (${v.lang})${voice.online(v) ? " (online)" : ""}`); o.value = v.voiceURI; sel.append(o); }
   sel.value = settings.voice || (vs[0]?.voiceURI ?? "");
   $("rate").value = settings.rate; $("rateOut").textContent = (+settings.rate).toFixed(2).replace(/0$/, "") + "×";
   $("lead").value = settings.lead; $("leadOut").textContent = settings.lead + " mi";
@@ -855,9 +855,36 @@ $("savePhotos").onclick = async () => {
   }
   btn.disabled = false;
 };
-if (native.NATIVE) { // the iPhone app carries every file, photos included
+/* ---------- 3.0: everyone moves to the natural voice once (Settings > Voice still lists the device's voices) ---------- */
+if (!store.get("voice3", false)) {
+  if (settings.voice && !String(settings.voice).startsWith("buddy:")) { settings.voice = ""; saveSettings(); }
+  store.set("voice3", true);
+}
+
+/* ---------- the natural voice for offline (the website; the iPhone app carries every clip) ---------- */
+function updateSaveVoice() {
+  const b = $("saveVoice");
+  if (!b || native.NATIVE) return;
+  const info = voice.offline ? voice.offline.info() : { ready: false };
+  b.hidden = !info.ready || !voice.natural() || !("caches" in window);
+  if (!info.saving) b.textContent = info.mb ? `Save the voice for offline (${info.mb} MB)` : "Save the voice for offline";
+}
+bus.on("voices", updateSaveVoice);
+bus.on("settings", updateSaveVoice);
+$("saveVoice").onclick = async () => {
+  const b = $("saveVoice");
+  b.disabled = true;
+  const r = await voice.offline.save((done, total) => { $("offlineText").textContent = `Saving the voice… ${done} of ${total} clips`; });
+  $("offlineText").textContent = r.none ? "This browser can't save the voice for offline use."
+    : r.failed ? `Saved ${r.ok} of ${r.ok + r.failed} voice clips. Try again with a better connection for the rest.`
+    : "The voice is saved. Narration sounds the same in dead zones.";
+  b.disabled = false;
+};
+updateSaveVoice();
+if (native.NATIVE) { // the iPhone app carries every file, photos and the voice included
   $("savePhotos").hidden = true;
-  $("offlineText").textContent = `Everything is on this phone, photos included. Live road info${native.VOICE ? ", voice commands" : ""} and the 3D map need a connection.`;
+  $("saveVoice").hidden = true;
+  $("offlineText").textContent = `Everything is on this phone, photos and the voice included. Live road info${native.VOICE ? ", voice commands" : ""}, routes and the 3D map need a connection.`;
 }
 
 /* ---------- what's new in 2.6.0: once, for people who used the app before (also in the iPhone app after its update) ---------- */

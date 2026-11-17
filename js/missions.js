@@ -412,6 +412,20 @@ function tellFact(x) {
   userSay(F[i], `mission:${x.n}:fact`);
   return F[i];
 }
+/** The welcome (with and without the stamp line), the facts and the "Hear it" text of every mission, worded exactly as
+    the code above says them. */
+function phraseList() {
+  const out = [];
+  for (const x of MISSIONS) {
+    const rk = rankWords(x), yr = yearOf(M(x).founded);
+    const about = [rk, yr ? `founded in ${yr}` : ""].filter(Boolean).join(", ");
+    for (const tail of ["", " Your passport has a new stamp."]) out.push(`Welcome to ${nameOf(x)}${about ? `, ${about}` : ""}.${tail}`);
+    for (const f of facts(x)) out.push(f);
+    const text = [str(x.p.visit) || str(x.p.text)].filter(Boolean).join(" ");
+    if (text) out.push(`${nameOf(x)}. ${text}`);
+  }
+  return out;
+}
 function hear(x) {
   unlock();
   const p = x.p;
@@ -911,5 +925,7 @@ export function init(a) {
     state: () => ({ kind: card.kind, n: card.n, visit: visit ? { ...visit } : null }),
     /** Look at the position now (tests; the module also looks on every pos, fix, mission:near and every 4 s on GPS). */
     check: () => safe(evaluate, "check")(),
+    /** Every sentence this module can say: tools/voice/ records the natural voice's clips from this list. */
+    phrases: () => safe(phraseList, "phrases")() || [],
   };
 }
