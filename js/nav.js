@@ -86,18 +86,34 @@ const SENT = {
   reroute: "Rerouting.", ready: "Route ready.",
   offline: "No connection. Keep going, and I'll reroute when the signal is back.", ended: "Navigation ended.",
 };
-/** The units of one maneuver prompt. `dist`: a DIST key or null (the final prompt); `then`: the next maneuver step to add, or null. */
-export function promptUnits(step, dist, then) {
+/** {n: "45", letter: "B"} from a provider exit like "45B" (letter null for "278"); null otherwise. */
+function exitParts(exit) {
+  const m = /^\s*(\d{1,3})\s*([A-Ha-h])?(?![A-Za-z0-9])/.exec(String(exit == null ? "" : exit));
+  if (!m) return null;
+  const n = +m[1];
+  return n >= 1 && n <= 999 ? { n: String(n), letter: m[2] ? m[2].toUpperCase() : null } : null;
+}
+/** The units of one maneuver prompt, the way a GPS says it. `dist`: a DIST key or null (the final prompt); `then`: the next
+    maneuver step to add, or null; `prev`: the step before (a "keep" on the highway you are already on gets no "onto").
+      "In 2 miles, take exit 309 onto Highway 41."   "Take exit 45 B."   "In 1 mile, keep left."   "Turn right onto I-5." */
+export function promptUnits(step, dist, then, prev) {
   const man = maneuverPhrase(step);
   if (!man) return null;
-  const hwy = highwayUnit(step.ref);
-  const ex = /^exit/.test(step.type) ? exitUnits(step.exit) : null;
+  const stay = !!step.stay || (!!prev && !!prev.ref && prev.ref === step.ref && /^keep/.test(step.type));
+  const hwy = stay ? null : highwayUnit(step.ref);
+  const ex = /^exit/.test(step.type) ? exitParts(step.exit) : null;
   const units = [];
   if (dist) units.push(DIST[dist]);
-  const first = dist ? man : cap(man);
-  units.push(hwy ? first : first + ".");           // a period unless "onto" follows
-  if (hwy) units.push("onto", hwy);
-  if (ex) units.push(...ex);
+  if (ex) {
+    units.push(dist ? "take exit" : "Take exit");
+    const tail = ex.letter ? [ex.n, ex.letter] : [ex.n];
+    if (hwy) units.push(...tail, "onto", hwy);
+    else { tail[tail.length - 1] += "."; units.push(...tail); }
+  } else {
+    const first = dist ? man : cap(man);
+    units.push(hwy ? first : first + ".");           // a period unless "onto" follows
+    if (hwy) units.push("onto", hwy);
+  }
   const thenMan = then ? maneuverPhrase(then) : null;
   if (thenMan) units.push("Then", thenMan + ".");
   return units;
@@ -107,12 +123,12 @@ export function phraseBank() {
   const set = new Set();
   Object.values(DIST).forEach(d => set.add(d));
   for (const m of MAN_ALL) { set.add(m); set.add(m + "."); set.add(cap(m)); set.add(cap(m) + "."); }
-  set.add("onto"); set.add("Take exit"); set.add("Then");
+  set.add("onto"); set.add("Take exit"); set.add("take exit"); set.add("Then");
   for (const n of HWY_I) set.add(`I-${n}.`);
   for (const n of HWY_US) set.add(`U.S. ${n}.`);
   for (let n = 1; n <= HWY_CA_MAX; n++) set.add(`Highway ${n}.`);
   for (let n = 1; n <= 999; n++) { set.add(String(n)); set.add(n + "."); }
-  for (const c of "ABCDEFGH") set.add(c + ".");
+  for (const c of "ABCDEFGH") { set.add(c + "."); set.add(c); }
   const sentences = Object.values(SENT);
   sentences.forEach(s => set.add(s));
   const units = [...set];
@@ -237,7 +253,7 @@ export function buildRoute(raw, miles) {
       type, text: str(s.text, 200), street: str(s.street, 80) || null, ref: str(s.ref, 30) || null, exit: s.exit != null && s.exit !== "" ? str(String(s.exit), 12) || null : null,
       toward: str(s.toward, 100) || null, roundabout_exit: num(Number(s.roundabout_exit)) && s.roundabout_exit != null ? Math.round(Number(s.roundabout_exit)) : null,
       speed_limit_mph: num(Number(s.speed_limit_mph)) && s.speed_limit_mph != null && Number(s.speed_limit_mph) > 0 ? Math.round(Number(s.speed_limit_mph)) : null,
-      side: s.side === "left" || s.side === "right" ? s.side : null, i0, i1,
+      side: s.side === "left" || s.side === "right" ? s.side : null, stay: s.stay === true, i0, i1,
       distance_mi: num(Number(s.distance_mi)) && s.distance_mi != null ? Number(s.distance_mi) : null,
       duration_s: num(Number(s.duration_s)) && s.duration_s != null ? Number(s.duration_s) : null,
     });
@@ -695,7 +711,7 @@ function runPrompts(t) {
   N.said.add(sid(g));
   const nxt = steps[n + 1];
   const then = g.stage === "final" && speakable(nxt) && nxt.start - step.start <= 0.2 ? nxt : null;
-  let text, units = promptUnits(step, g.key, then);
+  let text, units = promptUnits(step, g.key, then, steps[n - 1]);
   if (!units) return;
   text = units.join(" ");
   if (settings.navStreets && step.text) {                        // the phone's own voice says the provider's words, street names and all

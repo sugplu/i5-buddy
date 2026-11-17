@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8"><title>I-5 Buddy: live route check</title>
+<!-- Manual check against the LIVE /api/geo endpoints (needs the network; not in the suite, which blocks outside hosts).
+     Silent. Run: python3 tools/voice/collect.py --page "tools/shot-nav-live.html" --out /tmp/x.json
+     ?from=lat,lon&to=lat,lon&name=... -->
+<script>window.__BUDDY_SILENT__ = true;</script>
+<style>html,body{margin:0;background:#000}iframe{border:0;width:390px;height:844px;display:block}</style>
+<iframe id="app" src="../index.html?silent=1"></iframe>
+<script type="module">
+const q = new URLSearchParams(location.search), sleep = ms => new Promise(r => setTimeout(r, ms));
+const [fla, flo] = (q.get("from") || "34.1808,-118.3090").split(",").map(Number);
+const [tla, tlo] = (q.get("to") || "35.986162,-119.959258").split(",").map(Number);
+const rows = [], fr = document.getElementById("app");
+let api = null; for (let i = 0; i < 300 && !(api && api.nav); i++) { await sleep(100); api = fr.contentWindow?.I5BUDDY?.api; }
+const W = fr.contentWindow, nav = api.nav;
+api.store.set("nav:consent", "yes");
+W.__I5_FAKE_GEO__ = { watchPosition() { return 1; }, clearWatch() {}, getCurrentPosition(ok) { ok({ coords: { latitude: fla, longitude: flo, accuracy: 10 } }); } };
+api.S.lat = fla; api.S.lon = flo;
+const t0 = Date.now();
+const res = await nav.preview({ name: q.get("name") || "In-N-Out Burger", lat: tla, lon: tlo, kind: "poi" });
+const r = nav.route();
+rows.push(`route: ${r ? `${r.distance_mi.toFixed(1)} mi, ${Math.round(r.duration_s / 60)} min, ${r.steps.length} steps, ${r.geometry.length} points, limits ${r.limits ? r.limits.length : 0}, ${Date.now() - t0} ms` : "NONE " + JSON.stringify(res)}`);
+if (r) {
+  for (const s of r.steps) rows.push(`  step ${s.type} ref=${s.ref || ""} exit=${s.exit || ""} | ${s.text}`);
+  const stats = await (async () => { try { return nav.start({ gps: false }); } catch (e) { return String(e); } })();
+  nav.simulate({ mph: 65, sync: true, until: 1e9 });
+  await sleep(200);
+  for (const x of nav._test.log()) if (x.units) rows.push(`  SAY [${x.id}] ${x.text}   units=${JSON.stringify(x.units)}`);
+  rows.push(`state after the drive: ${nav.state()}`);
+}
+document.title = r ? "ALL PASS" : "FAIL";
+await fetch("/__units", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ title: document.title, rows }) });
+</script>
