@@ -167,7 +167,9 @@ const SCENARIOS = {
     check("with no position yet the pill sits under the welcome card (Start GPS and Install app stay above the tab bar)", $(doc, "#navSearch").previousElementSibling === $(doc, "#nextCard"));
     // --- local results, with a position so "ahead" shows
     api.setMode("demo"); api.setPosition(100, { dir: "N", speed: 60, jumped: true });
-    check("once there is a position it moves up under the sign, near the top of Drive", $(doc, "#navSearch").previousElementSibling === $(doc, "#signBoard"));
+    // under the sign; only the one-time "Pick your ride?" invitation (ride.js) may sit between them
+    { const prev = $(doc, "#navSearch").previousElementSibling;
+      check("once there is a position it moves up under the sign, near the top of Drive", prev === $(doc, "#signBoard") || (prev && prev.id === "rideInvite" && prev.previousElementSibling === $(doc, "#signBoard"))); }
     const names = (q, kind) => nav.search(q).filter(r => !kind || r.kind === kind);
     const sac = names("sacramento", "city")[0];
     check("local search finds a city on I-5", !!sac && sac.name === "Sacramento" && Math.abs(sac.m - 519) < 1 && /ahead/.test(sac.sub) && Math.abs(sac.lat - 38.6) < 1, JSON.stringify(sac));

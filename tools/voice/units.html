@@ -61,6 +61,8 @@ const lists = [["missions", () => api.missions?.phrases?.()], ["play", () => api
 for (const [name, get] of lists) {
   let got = [];
   try { got = get() || []; } catch (e) { log(`${name}.phrases failed: ${e.message}`); }
+  // nav.phraseBank() answers {units, sentences, count}; the others answer an array of sentences
+  if (got && !Array.isArray(got)) got = [...(Array.isArray(got.units) ? got.units : []), ...(Array.isArray(got.sentences) ? got.sentences : [])];
   for (const t of got) { add(t, name); if (name === "nav") unit(t, name); }
   log(`${name}: ${got.length} lines`);
 }

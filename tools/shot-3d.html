@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>I-5 Buddy: 3D screenshots</title>
+<!-- Manual screenshots of the 3D map with real tiles (needs the network and WebGL; not in the test suite, which blocks
+     outside hosts). Silent: the app runs with ?silent=1.
+       chrome --headless=new --use-angle=swiftshader --enable-unsafe-swiftshader --mute-audio --disable-audio-output
+              --window-size=500,900 --virtual-time-budget=45000 --screenshot=x.png "http://127.0.0.1:PORT/tools/shot-3d.html?scene=card"
+     ?scene=overview|card|chase|tour|night  &m=<corridor mile>  &dir=N|S  &theme=light -->
+<script>window.__BUDDY_SILENT__ = true;</script>
+<style>html,body{margin:0;background:#000}iframe{border:0;width:390px;height:844px;display:block}</style>
+<iframe id="app" src="../index.html?silent=1"></iframe>
+<script type="module">
+const q = new URLSearchParams(location.search), scene = q.get("scene") || "overview";
+const fr = document.getElementById("app");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let api = null;
+for (let i = 0; i < 300 && !api; i++) { await sleep(100); api = fr.contentWindow?.I5BUDDY?.api; }
+const doc = fr.contentDocument;
+if (q.get("theme") === "light") { api.settings.theme = "light"; api.saveSettings(); doc.documentElement.dataset.theme = "light"; }
+for (const b of doc.querySelectorAll(".welcome button, #welcome button")) { if (/later|close|not now/i.test(b.textContent)) b.click(); }
+api.setPosition(+(q.get("m") || 205), { dir: q.get("dir") || "N", speed: 0, jumped: true });
+api.ui.go("map");
+await sleep(1200);
+doc.querySelector(".mp-3dbtn").click();
+for (let i = 0; i < 300 && !doc.querySelector(".mp3d .maplibregl-canvas"); i++) await sleep(100);
+await sleep(6000);
+const click = sel => { const b = [...doc.querySelectorAll(".mp3d-btn")].find(x => x.classList.contains(sel)); if (b) b.click(); return !!b; };
+if (scene === "card") {
+  await sleep(1500);
+  const pin = doc.querySelector(".mp3d-ph");
+  if (pin) pin.click(); else console.log("SHOT no photo pin");
+  await sleep(4000);
+} else if (scene === "chase") {
+  click("chase");
+  await sleep(5000);
+} else if (scene === "tour") {
+  click("tour");
+  await sleep(7000);
+}
+{ const W = fr.contentWindow, vw = doc.documentElement.clientWidth, over = [];
+  for (const e of doc.querySelectorAll("body *")) { const r = e.getBoundingClientRect(); if (r.width && r.right > vw + 1 && !e.closest("svg")) over.push(`${e.tagName}.${String(e.className).split(" ")[0]} r=${Math.round(r.right)}`); }
+  const scrolled = []; for (const e of [doc.documentElement, doc.body, ...doc.querySelectorAll("body *")]) if (e.scrollLeft) scrolled.push(`${e.tagName}.${String(e.className).split(" ")[0]} ${e.scrollLeft}`);
+  console.log(`SHOT wide: scrollX ${W.scrollX}, scrollWidth ${doc.documentElement.scrollWidth}, scrolled: ${scrolled.slice(0, 5).join(" | ")}; over: ${over.slice(0, 6).join(" | ")}`); }
+console.log("SHOT ready " + scene + " pins=" + doc.querySelectorAll(".mp3d-ph").length + " bells=" + doc.querySelectorAll(".mp3d-bell").length + " card=" + !!doc.querySelector(".mp3d-card"));
+document.title = "READY";
+</script>

@@ -29,3 +29,57 @@
 .pad-ring{fill:none;stroke:var(--accent);stroke-width:2.5}
 .pad-arrow{fill:var(--accent);stroke:var(--accent-fg);stroke-width:1.4;stroke-linejoin:round}
 .mp3d-dot{display:block;width:18px;height:18px;margin:0 auto;border-radius:50%;background:var(--accent);border:3px solid var(--sign-fg);box-shadow:var(--shadow)}
+
+/* ---------- 3.0: more to do in 3D ---------- */
+/* the controls: one row that scrolls sideways on a narrow phone */
+.mp3d-ui{right:10px;max-width:none;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 2px 6px;margin:0 -2px}
+.mp3d-ui::-webkit-scrollbar{display:none}
+.mp3d-ui.carded{display:none}
+.mp3d-btn.tour{background:var(--hist);color:var(--accent-fg);border-color:transparent}
+.mp3d-btn.chase[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:transparent}
+
+/* the compass (MapLibre's), big enough to tap, readable at night */
+.mp3d .maplibregl-ctrl-top-left{top:6px;left:6px}
+.mp3d .maplibregl-ctrl-group{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:99px;overflow:hidden}
+.mp3d .maplibregl-ctrl-group button{width:44px;height:44px}
+:root:not([data-theme="light"]) .mp3d .maplibregl-ctrl-icon{filter:invert(.92)}
+
+/* photo pins: the landmarks near the middle of the view */
+.mp3d-ph{position:relative;display:block;width:50px;height:50px;padding:0;margin:0;border-radius:50%;border:3px solid var(--town);background:var(--surface);
+  box-shadow:var(--shadow);cursor:pointer;touch-action:manipulation;overflow:visible}
+.mp3d-ph img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;pointer-events:none}
+.mp3d-ph::after{content:"";position:absolute;left:50%;bottom:-9px;width:0;height:0;margin-left:-6px;border:6px solid transparent;border-top:7px solid;border-top-color:inherit;border-bottom:0}
+.mp3d-ph-i{display:grid;place-items:center;width:100%;height:100%;font-size:1.35rem;line-height:1}
+.mp3d-ph.cat-farm{border-color:var(--farm)}.mp3d-ph.cat-hist{border-color:var(--hist)}.mp3d-ph.cat-nature{border-color:var(--nature)}
+.mp3d-ph.cat-town{border-color:var(--town)}.mp3d-ph.cat-stop{border-color:var(--stop)}.mp3d-ph.cat-odd{border-color:var(--odd)}
+.mp3d-ph:focus-visible,.mp3d-bell:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* mission bells (gold once stamped), only when you are close enough */
+.mp3d-bell{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:2px solid var(--hist);background:var(--surface);color:var(--hist);
+  box-shadow:var(--shadow);cursor:pointer;touch-action:manipulation}
+.mp3d-bell svg{width:24px;height:24px}
+.mp3d-bell.got{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.mp3d:not(.mp3d-near) .mp3d-bell{display:none}
+
+/* the landmark card */
+.mp3d-card{position:absolute;left:10px;right:10px;bottom:30px;z-index:3;max-height:62%;overflow:auto;overscroll-behavior:contain;padding:12px 12px 10px;
+  background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.mp3d-card-top{display:flex;align-items:flex-start;gap:12px}
+.mp3d-card-img{width:72px;height:72px;flex:none;border-radius:calc(var(--radius) * .7);object-fit:cover;background:var(--surface-2)}
+.mp3d-card-head{flex:1;min-width:0}
+.mp3d-card-head h3{margin:2px 0 3px;font-family:var(--display);font-size:1.12rem;line-height:1.2}
+.mp3d-card-meta{margin:0;color:var(--fg-2);font-size:.82rem;font-weight:700}
+.mp3d-card-x{flex:none;width:44px;height:44px;margin:-6px -6px 0 0;border:0;border-radius:50%;background:transparent;color:var(--fg-2);font-size:1.7rem;line-height:1;cursor:pointer}
+.mp3d-card-text{margin:10px 0 4px;font-size:.95rem;line-height:1.45}
+.mp3d-card-credit{margin:0 0 6px;color:var(--muted);font-size:.68rem}
+.mp3d-card-step{margin:4px 0 0;color:var(--fg-2);font-size:.78rem;font-weight:800;letter-spacing:.02em}
+.mp3d-card-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.mp3d-cbtn{min-height:44px;padding:0 15px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font-weight:800;font-size:.9rem;
+  cursor:pointer;touch-action:manipulation}
+.mp3d-cbtn.hear,.mp3d-cbtn.pause{background:var(--accent);color:var(--accent-fg);border-color:transparent}
+.mp3d-cbtn.go{background:var(--link);color:var(--bg);border-color:transparent}
+.mp3d-cbtn:active{transform:translateY(1px)}
+@media (prefers-reduced-motion: reduce){.mp3d-btn:active,.mp3d-cbtn:active{transform:none}}
+.mp3d-card-arrow{flex:none;width:40px;height:44px;margin-top:-6px;border:0;border-radius:12px;background:var(--surface-2);color:var(--fg);font-size:1.6rem;line-height:1;font-weight:800;cursor:pointer}
+.mp3d-card-arrow+.mp3d-card-arrow{margin-left:-6px}
+@media (max-width:370px){.mp3d-card-img{width:56px;height:56px}.mp3d-card-top{gap:9px}}

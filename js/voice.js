@@ -189,13 +189,17 @@ function loadManifest() {
   return manifestP;
 }
 const naturalPicked = () => !settings.voice || settings.voice === NATURAL_URI;
-function clipUrl(k) { return new URL(k.slice(0, 2) + "/" + k + ".m4a", VBASE).href; }
+// The iPhone app carries the clips for everything except the long stories ("Tell me more"); those come from the website
+// the first time and are kept by the web view's cache, so they still play when the app's own copy is missing.
+const VREMOTE = (() => { try { return location.protocol === "capacitor:" ? new URL("https://i5.dominares.org/voice/" + VOICE_ID + "/") : null; } catch { return null; } })();
+function clipUrl(k, base = VBASE) { return new URL(k.slice(0, 2) + "/" + k + ".m4a", base).href; }
 function fetchClip(k) {
   let p = raw.get(k);
   if (p) { raw.delete(k); raw.set(k, p); return p; }
   const test = CLIPTEST();
+  const get = base => fetchT(clipUrl(k, base), 15000).then(r => { if (!r.ok) throw new Error("clip " + r.status); return r.arrayBuffer(); });
   p = test && test.fetch ? new Promise(res => res(test.fetch(k)))
-    : new Promise(res => res(fetchT(clipUrl(k), 15000))).then(r => { if (!r.ok) throw new Error("clip " + r.status); return r.arrayBuffer(); });
+    : new Promise(res => res(get(VBASE))).catch(e => { if (VREMOTE) return get(VREMOTE); throw e; });
   p.catch(() => raw.delete(k));
   raw.set(k, p);
   while (raw.size > RAW_MAX) raw.delete(raw.keys().next().value);

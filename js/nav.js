@@ -884,8 +884,12 @@ function placePill() {
   const box = $id("navSearch"), sign = $id("signBoard"), card = $id("nextCard");
   if (!box || !sign || !card) return;
   const welcome = S.m == null;
+  // with a position: under the sign, after the one-time "Pick your ride?" invitation (ride.js keeps that right under the sign)
+  const invite = $id("rideInvite");
+  const anchor = invite && invite.parentNode === sign.parentNode ? invite : sign;
+  if (invite && invite.parentNode === sign.parentNode && invite.previousElementSibling !== sign) sign.after(invite);
   if (welcome) { if (box.previousElementSibling !== card) card.after(box); }
-  else if (box.previousElementSibling !== sign) sign.after(box);
+  else if (box.previousElementSibling !== anchor) anchor.after(box);
 }
 function renderSearchPill() {
   const box = $id("navSearch");

@@ -56,6 +56,10 @@ def year_words(m):
 
 def spoken(t):
     s = t
+    # a lone number is an exit number in a navigation prompt ("Take exit", "278", "B."): "two seventy-eight"
+    m = re.fullmatch(r"(\d{1,3})(\.?)", s.strip())
+    if m:
+        return route_words(m.group(1)) + m.group(2)
     s = re.sub(r"\bWorld War II\b", "World War Two", s)
     s = re.sub(r"\bWorld War I\b", "World War One", s)
     s = re.sub(r"\b([A-Z]{1,3})&([A-Z]{1,3})\b", r"\1 and \2", s)          # PG&E, A&W
