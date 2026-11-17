@@ -69,6 +69,11 @@ SUITE = [
     ("play speech", "test-play.html?s=speech", 120000, "900,960", False),
     # cluster drives 734 -> 746.2 in 0.05-mile steps, 500 ms each: about 125 s of page time before it reports
     ("play cluster", "test-play.html?s=cluster", 180000, "900,960", False),
+    # the Play tab's picker and the games in js/games/ (silent: speech is recorded, never made)
+    ("games check", "test-games.html?s=check", 300000, "900,960", True),
+    ("games layout dark", "test-games.html?s=layout&width=360", 120000, "900,960", True),
+    ("games layout light", "test-games.html?s=layout&width=360&theme=light", 120000, "900,960", True),
+    ("games layout wide", "test-games.html?s=layout&width=600", 120000, "900,960", False),
     ("map whole", "test-map.html?scene=whole", 30000, "900,960", True),
     ("map zoom", "test-map.html?scene=zoom", 30000, "900,960", False),
     ("map place", "test-map.html?scene=place", 30000, "900,960", True),

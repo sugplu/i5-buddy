@@ -1396,7 +1396,7 @@ function renderGame() { renderScreen(); }
 /* ---------- loading the games that live in js/games/ ---------- */
 function makeCtx(def, body) {
   return {
-    api, def, pane: body,
+    api, def, pane: body, safe,
     h, add, svg, icon, logo, shuffle, num, pick, clamp, reduced, countUp, firstSentence, shortName, fmtDate, thousands, sameish, colorStyle,
     LINES: WORDS, WYR, wyrSpeech, alphaSpeech, ALPHA_TIPS,
     S, settings, D, store, save, party,
@@ -1438,7 +1438,7 @@ function openMod(id) {
 
 /** A new trip begins (the person ended one, or tapped Start a fresh trip): Plate Hunt's "this trip" starts from now. */
 function newTrip() {
-  save("playTripAt", Date.now());
+  save("playTripAt", Date.now() + 1);   // +1: a plate found in this very millisecond belongs to the trip that just ended
   for (const m of Object.values(mods)) { try { m && m.ctrl && m.ctrl.tripChanged && m.ctrl.tripChanged(); } catch (e) { console.error("[play] tripChanged", e); } }
 }
 
