@@ -421,7 +421,7 @@ button.pl-sq:active{transform:scale(.95)}
 .pl-hcard.hidden{border-top-color:var(--st-wa)}
 .pl-hcard.hidden.right{border-top-color:var(--ok);box-shadow:0 0 0 2px var(--ok),var(--shadow)}
 .pl-hcard.hidden.wrong{border-top-color:var(--danger);box-shadow:0 0 0 2px var(--danger),var(--shadow)}
-.pl-hcard .photo.hero{aspect-ratio:16/7;max-height:128px;border-radius:0}
+.pl-hcard .photo.hero{width:100%;aspect-ratio:16/7;max-height:128px;border-radius:0}
 .pl-hc-body{display:grid;gap:2px;padding:10px 14px 12px}
 .pl-hc-k{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--link)}
 .pl-hc-name{font-size:1.2rem;font-weight:900;line-height:1.2;text-wrap:balance}
@@ -445,7 +445,7 @@ button.pl-sq:active{transform:scale(.95)}
 /* ---------- Where Is This? ---------- */
 .pl-w-photo{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:var(--surface-2)}
 .pl-w-photo.entering{animation:pl-slide .4s ease both}
-.pl-w-photo .photo.full{aspect-ratio:4/3;max-height:300px;border-radius:0}
+.pl-w-photo .photo.full{width:100%;aspect-ratio:4/3;max-height:300px;border-radius:0}
 .pl-w-q:focus{outline:none}
 .pl-w-hint{margin:0;padding:10px 12px;border-radius:10px;background:var(--surface-2);border:1px dashed var(--line);font-weight:700;flex:1 1 200px}
 .pl-w-hint:focus{outline:none}
