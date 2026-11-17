@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Games tests</title>
+<!--
+  Tests for the Play tab's picker and the games in js/games/ (Plate Hunt, Higher or Lower, Where Is This, Would You Rather,
+  Scavenger Hunt, Alphabet Game, Cow Count, Car Party, speed trivia, the passengers note, api.play.phrases()).
+  The app runs in an iframe with ?silent=1; nothing is ever heard: speech is recorded by wrapping api.voice.say.
+  URL params:
+    s      check (default)   logic and flows for everything, then ALL PASS
+           layout            every screen at the given width in the given theme: no horizontal overflow, touch targets
+           shot              leave one screen up for a screenshot (game=<name>)
+    theme  dark (default) | light
+    width  iframe width in px (default 430; 360 for layout; 390 for shot)
+    game   for s=shot: home, party, trivia, speed, plates, plates-list, higher, higher-reveal, where, where-reveal, wyr,
+           wyr-split, hunt, alpha, cows, passenger
+  Results go to the console as "GAMESTEST ..." lines.
+-->
+<style>
+  html,body{margin:0;background:#2a2a2a;color:#ddd;font:12px/1.4 ui-monospace,Menlo,monospace}
+  iframe{display:block;border:0;background:#000}
+  #log{white-space:pre-wrap;padding:8px;margin:0}
+  body.shot #log{display:none}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy"></iframe>
+<pre id="log"></pre>
+<script src="../data/i5.js"></script>
+<script>
+const P = new URLSearchParams(location.search);
+const SCEN = P.get("s") || "check";
+const THEME = P.get("theme") === "light" ? "light" : "dark";
+const WIDTH = +P.get("width") || (SCEN === "shot" ? 390 : SCEN === "layout" ? 360 : 430);
+const HEIGHT = +P.get("height") || (SCEN === "shot" ? 844 : 932);
+if (SCEN === "shot") document.body.classList.add("shot");
+const logEl = document.getElementById("log");
+function log(...a) { const s = a.join(" "); logEl.textContent += s + "\n"; console.log("GAMESTEST " + s); }
+const f = document.getElementById("f");
+f.style.width = WIDTH + "px"; f.style.height = HEIGHT + "px";
+
+function seed() {
+  try { localStorage.clear(); } catch (e) {}
+  localStorage.setItem("i5b:settings", JSON.stringify({ theme: THEME, kid: false, narr: true, chime: true }));
+}
+seed();
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let loads = 0, navId = 0;
+function hookServiceWorker() {
+  let n = 0;
+  const tick = () => {
+    try {
+      const w = f.contentWindow;
+      if (w && /index\.html/.test(w.location.href) && !w.__i5test) { w.__i5test = true; if (w.navigator.serviceWorker) w.navigator.serviceWorker.register = () => new Promise(() => {}); return; }
+    } catch (e) {}
+    if (n++ < 5000) setTimeout(tick, 1);
+  };
+  tick();
+}
+f.addEventListener("load", () => {
+  loads++;
+  try {
+    const w = f.contentWindow;
+    w.addEventListener("error", e => log("ERROR (window)", e.message, e.filename + ":" + e.lineno));
+    w.addEventListener("unhandledrejection", e => log("ERROR (promise)", String(e.reason && (e.reason.stack || e.reason))));
+  } catch (e) {}
+});
+function navigate(reseed) {
+  const id = ++navId;
+  const go = () => { if (id !== navId) return; if (reseed) seed(); hookServiceWorker(); f.src = "../index.html?silent=1&nav=" + id; };
+  if (!reseed) return go();
+  const onBlank = () => { f.removeEventListener("load", onBlank); setTimeout(go, 50); };
+  f.addEventListener("load", onBlank);
+  f.src = "about:blank";
+}
+async function ready() {
+  let tries = 0, since = performance.now(), seen = 0;
+  for (let i = 0; i < 1600; i++) {
+    const w = f.contentWindow;
+    let cur = false;
+    try { cur = new URLSearchParams(w.location.search).get("nav") === String(navId); } catch (e) {}
+    if (cur && loads && w.I5BUDDY && w.I5BUDDY.api && w.I5BUDDY.api.play && w.I5BUDDY.api.play.phrases) { await sleep(60); return w.I5BUDDY.api; }
+    if (loads > seen) { seen = loads; since = performance.now(); }
+    if (cur && w.document.readyState === "complete" && !(w.I5BUDDY && w.I5BUDDY.api && w.I5BUDDY.api.play) && performance.now() - since > 2500 && tries < 3) { tries++; since = Infinity; log("note: the app did not boot; loading it again"); navigate(true); }
+    await sleep(25);
+  }
+  throw new Error("app or play module did not load");
+}
+
+let W, D, api, spoken = [], allSpoken = [];
+const $ = s => [...D.querySelectorAll(s)].find(e => !e.hidden && !e.closest("[hidden]")) || D.querySelector(s);   // the first one on screen
+const $$ = s => [...D.querySelectorAll(s)];
+const visible = el => !!el && !el.hidden && !el.closest("[hidden]");
+async function open(id) { api.ui.go("play"); const r = await api.play.open(id); await sleep(30); return r; }
+const click = sel => { const b = typeof sel === "string" ? $(sel) : sel; if (!b) throw new Error("no element " + sel); b.click(); return b; };
+const ctrl = id => api.play.game(id);
+const typeIn = (el, v) => { el.value = v; el.dispatchEvent(new W.Event("input", { bubbles: true })); };
+function wrapVoice() {
+  const real = api.voice.say.bind(api.voice);
+  api.voice.say = (text, opts) => { spoken.push(String(text)); if (opts && /^play:/.test(opts.id || "")) allSpoken.push(String(text)); return real(text, opts); };   // allSpoken: only what the games said (their ids start with play:)
+}
+const tooNew = s => { for (const ch of s) { const c = ch.codePointAt(0); if ((c >= 0x1FA70 && c <= 0x1FAFF) || (c >= 0x1F7E0 && c <= 0x1F7EB) || c === 0x1F6FB || (c >= 0x1F9A2 && c <= 0x1F9AF) || (c >= 0x1F9C1 && c <= 0x1F9CF) || (c >= 0x1F9F0 && c <= 0x1F9FF) || (c >= 0x1F94D && c <= 0x1F94F) || (c >= 0x1F96C && c <= 0x1F970) || (c >= 0x1F973 && c <= 0x1F97F) || (c >= 0x1F998 && c <= 0x1F9A1)) return true; } return false; };
+
+/* ---------- touch targets and overflow: every control on the Play tab that is on screen ---------- */
+const TARGET_OK = ".pl-tile, figcaption a, .pl-sr, .pl-win, a";   // the tile map is the one dense grid (see the report); credit links are links
+function smallTargets() {
+  const bad = [];
+  for (const b of $$("#view-play button, #view-play input, #view-play summary")) {
+    if (!visible(b) || b.disabled || b.matches(TARGET_OK)) continue;
+    const r = b.getBoundingClientRect();
+    if (r.width === 0 || r.height === 0) continue;
+    if (r.height < 43.5 || r.width < 43.5) bad.push(`${b.className || b.tagName}${b.dataset.g ? "[" + b.dataset.g + "]" : ""} ${Math.round(r.width)}x${Math.round(r.height)} "${(b.textContent || b.getAttribute("aria-label") || "").trim().slice(0, 18)}"`);
+  }
+  return bad;
+}
+function overflow() {
+  const o = D.documentElement.scrollWidth - D.documentElement.clientWidth;
+  const vw = D.documentElement.clientWidth, out = [];
+  for (const e of $$("#view-play *")) {
+    if (!visible(e) || e.closest(".pl-confetti") || e.matches(".pl-sr")) continue;
+    const r = e.getBoundingClientRect();
+    if (r.width && (r.right > vw + 1 || r.left < -1)) out.push(`${e.className || e.tagName} ${Math.round(r.left)}..${Math.round(r.right)}`);
+  }
+  return o > 0 || out.length ? `overflow ${o}px at ${W.innerWidth}: ${out.slice(0, 3).join(" | ")}` : "";
+}
+
+/* ---------- logic checks ---------- */
+async function check() {
+  let pass = 0, fail = 0;
+  const ok = (cond, name, extra = "") => { cond ? pass++ : fail++; log(cond ? "PASS" : "FAIL", name, extra); };
+  const section = async (name, fn) => { try { await fn(); } catch (e) { fail++; log("FAIL", name, "threw", e && (e.stack || e.message || e)); } };
+  const store = k => { try { return JSON.parse(W.localStorage.getItem("i5b:" + k)); } catch (e) { return null; } };
+  const PL = api.data.PLACES;
+  const party = () => api.play.party();
+
+  await section("picker", async () => {
+    api.ui.go("play");
+    await sleep(40);
+    const cards = $$("#pl-home .pl-gcard");
+    const ids = cards.map(c => c.dataset.g);
+    ok(ids.length === 10 && new Set(ids).size === 10, "the picker shows 10 game cards", ids.join(","));
+    ok(["bingo", "trivia", "spy", "plates", "higher", "where", "wyr", "hunt", "alpha", "cows"].every(i => ids.includes(i)), "all the games are there");
+    ok(visible($("#pl-home")) && !visible($("#pl-bingo")) && api.play.screen() === "home", "Play opens on the picker");
+    ok(cards.every(c => c.getBoundingClientRect().height >= 100 && c.querySelector(".pl-gcard-ic") && c.querySelector("b") && c.querySelector("small")), "each card has an icon, a name and a line, and is big");
+    ok(!$(".pl-gcard.last"), "no 'last played' card before any game was opened");
+    ok(!!$(".pl-partybar"), "the Car Party bar is on the picker");
+    const emoji = cards.map(c => c.querySelector(".pl-gcard-ic").textContent).concat([$(".pl-partybar-ic").textContent]);
+    ok(!emoji.some(tooNew), "card emoji are Unicode 9 or older", emoji.filter(tooNew).join(" "));
+    click('#pl-home [data-g="bingo"]');
+    await sleep(30);
+    ok(api.play.screen() === "bingo" && visible($("#pl-bingo")) && !visible($("#pl-home")), "tapping a card opens the game");
+    ok(store("playGame") === "bingo", "the last game is saved", String(store("playGame")));
+    ok(!!$("#pl-bingo .pl-grid button[data-i]"), "road bingo still draws its card");
+    $("#pl-bingo .pl-grid button[data-i]").click();
+    ok(store("bingo").on.filter(Boolean).length === 2, "bingo still saves its marks");
+    click("#pl-bingo .pl-back");
+    await sleep(30);
+    ok(api.play.screen() === "home" && !!$('.pl-gcard.last[data-g="bingo"]'), "back returns to the picker with Bingo marked as last played");
+    ok(/Last played/.test($('.pl-gcard.last[data-g="bingo"]').getAttribute("aria-label")), "a screen reader hears 'last played'");
+    ok(await api.play.open("chess") === false, "an unknown game is refused");
+    click('#pl-home [data-g="trivia"]');
+    ok(!!$("#pl-trivia .pl-opt") && store("playGame") === "trivia", "trivia opens from the picker");
+    click("#pl-trivia .pl-back");
+    click('#pl-home [data-g="spy"]');
+    ok(!!$("#pl-spy .pl-quick"), "I spy opens from the picker");
+    ok(api.play.games().length === 10, "api.play.games() lists the games");
+    await api.play.open("home");
+  });
+
+  await section("passengers note", async () => {
+    await open("home");
+    const note = $(".pl-pass");
+    ok(!!note && !visible(note), "no passengers note while parked");
+    api.S.mode = "manual"; api.S.speed = 70; api.bus.emit("pos", { m: 300, dir: "N", speed: 70 });
+    ok(!visible(note), "no note in manual mode, even with a speed");
+    api.S.mode = "gps"; api.S.speed = 65; api.bus.emit("pos", { m: 300, dir: "N", speed: 65 });
+    ok(visible(note) && /For passengers/.test(note.textContent), "the note shows in GPS mode over 10 mph", note.textContent);
+    ok(!$("#pl-home .pl-gcard").disabled && getComputedStyle(note).position !== "fixed" && !/!/.test(note.textContent), "calm: play is not blocked, the note is in the flow, no exclamation mark");
+    api.S.speed = 6; api.bus.emit("pos", { m: 300, dir: "N", speed: 6 });
+    ok(!visible(note), "the note goes away under 10 mph");
+    api.S.mode = "demo"; api.S.speed = 60; api.bus.emit("pos", { m: 301, dir: "N", speed: 60 });
+    ok(visible(note), "and shows in a demo drive");
+    api.S.mode = "off"; api.S.speed = null; api.bus.emit("mode", "off");
+    ok(!visible(note), "and goes when tracking stops");
+  });
+
+  await section("car party", async () => {
+    await open("party");
+    const P = party();
+    ok(api.play.screen() === "party" && !!$(".pl-party"), "Car Party opens from the API");
+    ok(!P.active(), "off at first");
+    click('.pl-party [data-k="start"]');
+    ok(P.active() && P.players().length === 2, "Start makes 2 players", JSON.stringify(P.state()));
+    click('.pl-party [data-k="plus"]'); click('.pl-party [data-k="plus"]');
+    ok(P.players().length === 4, "the stepper adds players");
+    for (let i = 0; i < 5; i++) { const b = $('.pl-party [data-k="plus"]'); if (!b.disabled) b.click(); }
+    ok(P.players().length === 6 && $('.pl-party [data-k="plus"]').disabled, "6 is the most");
+    for (let i = 0; i < 6; i++) { const b = $('.pl-party [data-k="minus"]'); if (!b.disabled) b.click(); }
+    ok(P.players().length === 2 && $('.pl-party [data-k="minus"]').disabled, "2 is the fewest");
+    click('.pl-party [data-k="plus"]');
+    typeIn($('.pl-party [data-k="name0"]'), "Maya");
+    ok(P.players()[0].n === "Maya", "names can be typed");
+    const c0 = P.players()[0].c;
+    click('.pl-party [data-k="color0"]');
+    ok(P.players()[0].c !== c0 && new Set(P.players().map(p => p.c)).size === 3, "tapping a color gives the next free one");
+    ok(store("party").players[0].n === "Maya" && store("party").on === true, "the party is saved");
+    P.award(2, 0); P.award(1, 1);
+    ok(P.standings()[0].n === "Maya" && P.leaders().length === 1, "scores add up", JSON.stringify(P.standings().map(p => p.n + p.s)));
+    ok(P.current().i === 0, "turn starts with the first player");
+    P.advance(); ok(P.current().i === 1, "and passes on");
+    click('.pl-party [data-k="reset"]');
+    ok(!$(".pl-party .pl-confirm").hidden, "reset asks first");
+    click('.pl-party [data-k="keep"]');
+    ok(P.players()[0].s === 2, "keeping leaves the scores");
+    click('.pl-party [data-k="reset"]'); click('.pl-party [data-k="reset-yes"]');
+    ok(P.players().every(p => p.s === 0), "reset clears them");
+    ok(smallTargets().length === 0, "party setup: touch targets", smallTargets().join(" | "));
+    await open("home");
+    ok($$(".pl-partybar .pl-pchip").length === 3, "the picker shows the players' chips", String($$(".pl-partybar .pl-pchip").length));
+    P.stop();
+  });
+
+  await section("speed trivia", async () => {
+    await open("trivia");
+    click('#pl-trivia [data-tm="speed"]');
+    await sleep(200);
+    ok(visible($("#pl-trivia .pl-speed")) && !visible($("#pl-trivia .pl-q")), "the speed round replaces the question box");
+    ok(!!$('.pl-speed [data-k="start"]'), "it starts with a Start button");
+    const classicBefore = JSON.stringify(store("trivia"));
+    click('.pl-speed [data-k="start"]');
+    await sleep(60);
+    ok(!!$(".pl-sp-clock") && $$(".pl-speed .pl-opt").length === 4, "a question, 4 answers and a clock");
+    ok(/Question 1 of 10/.test($(".pl-sp-q").textContent), "Question 1 of 10", $(".pl-sp-q").textContent);
+    const pool = api.data.TRIVIA, texts = [];
+    let rightN = 0;
+    for (let i = 0; i < 10; i++) {
+      const q = pool.find(t => t.q === $(".pl-speed .pl-qt").textContent);
+      texts.push(q && q.q);
+      if (i === 4) {   // run the clock out on one question
+        await sleep(15600);
+        ok(/Time is up/.test($(".pl-speed").textContent) && $$(".pl-speed .pl-opt.right").length === 1 && $$(".pl-speed .pl-opt:disabled").length === 4, "time runs out: the answer shows, nothing more to tap");
+        await sleep(1900);
+        continue;
+      }
+      const wrong = i % 3 === 0, idx = wrong ? (q.answer + 1) % 4 : q.answer;
+      if (!wrong) rightN++;
+      $$(".pl-speed .pl-opt")[idx].click();
+      if (i === 0) ok(!!$(".pl-speed .pl-opt.right") && !!$(".pl-speed .pl-opt.wrong"), "an answer marks the right choice and a wrong pick");
+      await sleep(wrong ? 1950 : 1250);
+    }
+    ok(texts.every(t => !!t) && new Set(texts).size === 10, "10 different questions from the trivia pool");
+    await sleep(100);
+    ok(!!$(".pl-sp-big") && new RegExp(`^${rightN} of 10$`).test($(".pl-sp-big").textContent), `a score at the end that matches the right answers (${rightN})`, $(".pl-speed").textContent.slice(0, 80));
+    ok(store("triviaSpeed").best === rightN && store("triviaSpeed").rounds === 1, "speed best and rounds are saved", JSON.stringify(store("triviaSpeed")));
+    ok(JSON.stringify(store("trivia")) === classicBefore, "the classic trivia score is untouched");
+    ok(smallTargets().length === 0, "speed trivia: touch targets", smallTargets().join(" | "));
+    click('.pl-speed [data-k="again"]');
+    await sleep(40);
+    ok(/Question 1 of 10/.test($(".pl-sp-q").textContent), "Play again starts a new round");
+    click('#pl-trivia [data-tm="classic"]');
+    await sleep(40);
+    ok(visible($("#pl-trivia .pl-q")) && !visible($("#pl-trivia .pl-speed")), "Classic brings the question box back");
+  });
+
+  await section("plate hunt", async () => {
+    await open("plates");
+    const tiles = () => $$(".pl-tile");
+    ok(!!ctrl("plates") && tiles().length === 51, "a tile map with 51 states and D.C.", String(tiles().length));
+    const sq = {};
+    for (const t of tiles()) sq[t.dataset.c] = t.getBoundingClientRect();
+    ok(new Set(tiles().map(t => Math.round(t.getBoundingClientRect().width))).size === 1 && Math.abs(sq.CA.width - sq.CA.height) < 1, "the tiles are equal squares");
+    ok(sq.WA.top < sq.CA.top && sq.CA.top < sq.AZ.top && sq.CA.left < sq.NV.left && sq.NV.left < sq.WY.left, "laid out like the well-known tile map (west left, north up)");
+    ok($(".pl-pl-n").textContent === "0 of 51", "0 of 51 to start", $(".pl-pl-n").textContent);
+    click('.pl-tile[data-c="CA"]');
+    ok($('.pl-tile[data-c="CA"]').getAttribute("aria-pressed") === "true" && /found/.test($('.pl-tile[data-c="CA"]').getAttribute("aria-label")), "tapping a state marks it found, with a label");
+    ok($(".pl-pl-n").textContent === "1 of 51", "progress counts it");
+    const pl = store("plates");
+    ok(Array.isArray(pl.found.CA) && typeof pl.found.CA[0] === "number" && /Found \S+/.test($(".pl-pl-read").textContent), "the date is saved and shown", $(".pl-pl-read").textContent);
+    click('.pl-tile[data-c="CA"]');
+    ok(store("plates").found.CA === undefined && $(".pl-pl-n").textContent === "0 of 51", "tapping again takes it off");
+    click('.pl-pl-read [data-k="undo"]');
+    ok(Array.isArray(store("plates").found.CA), "Undo puts it back");
+    click('.pl-tile[data-c="CA"]');
+    spoken.length = 0;
+    click('.pl-tile[data-c="HI"]');
+    ok(visible($(".pl-rare")) && /Hawaii/.test($(".pl-rare").textContent), "Hawaii is a rare find", $(".pl-rare").textContent);
+    await sleep(60);
+    ok(spoken.includes("Hawaii. That is a rare find."), "and says so (narration on)", spoken.join("|"));
+    click('.pl-tile[data-c="AK"]');
+    ok(/Alaska/.test($(".pl-rare").textContent), "Alaska too");
+    click('.pl-tile[data-c="NV"]');
+    ok(!visible($(".pl-rare")) && $('.pl-tile[data-c="HI"]').classList.contains("rare"), "an ordinary state clears the callout; rare tiles are marked");
+    $(".pl-bonus").open = true;
+    click('.pl-chip2[data-c="CAN-BC"]'); click('.pl-chip2[data-c="MX-JAL"]');
+    ok(/2 of 45/.test($(".pl-bonus-n").textContent) && $(".pl-pl-n").textContent === "3 of 51", "bonus plates count apart from the 51", $(".pl-bonus-n").textContent);
+    ok($$(".pl-chips")[0].children.length === 13 && $$(".pl-chips")[1].children.length === 32, "Canada has 13, Mexico 32");
+    click('[data-view="list"]');
+    ok(visible($(".pl-listview")) && !visible($(".pl-mapview")) && $$(".pl-lrow").length === 96, "the list view has every plate", String($$(".pl-lrow").length));
+    const search = $(".pl-search");
+    typeIn(search, "ore");
+    ok($$(".pl-lrow").some(r => /Oregon/.test(r.textContent)) && $$(".pl-lrow").length < 12, "search narrows it", String($$(".pl-lrow").length));
+    typeIn(search, "zzz");
+    ok($$(".pl-lrow").length === 0 && /No plate matches/.test($(".pl-plist").textContent), "no match says so");
+    typeIn(search, "");
+    click('.pl-lrow[data-c="OR"]');
+    ok(store("plates").found.OR && $('.pl-lrow[data-c="OR"]').getAttribute("aria-pressed") === "true", "a list row marks a plate too");
+    click('[data-f="found"]');
+    ok($$(".pl-lrow").length === 6 && $$(".pl-lrow").every(r => r.getAttribute("aria-pressed") === "true"), "the Found filter lists only what is found", String($$(".pl-lrow").length));
+    click('[data-f="all"]');
+    click('[data-scope="trip"]');
+    ok($(".pl-pl-n").textContent === "4 of 51", "'this trip' counts what was found since the trip began", $(".pl-pl-n").textContent);
+    api.bus.emit("trip:end", {});
+    await sleep(20);
+    ok($(".pl-pl-n").textContent === "0 of 51" && store("plates").found.OR.length === 1, "a trip ending starts 'this trip' from zero and keeps all time");
+    click('[data-scope="all"]');
+    ok($(".pl-pl-n").textContent === "4 of 51", "all time still has them", $(".pl-pl-n").textContent);
+    click('[data-view="grid"]');
+    click('.pl-pl-foot [data-k="reset"]');
+    ok(!$("#pl-plates .pl-confirm").hidden, "reset asks first");
+    click('#pl-plates .pl-confirm [data-k="keep"]');
+    ok(Object.keys(store("plates").found).length > 0, "keeping leaves the plates");
+    click('.pl-pl-foot [data-k="reset"]'); click('#pl-plates [data-k="reset-yes"]');
+    ok(Object.keys(store("plates").found).length === 0 && $(".pl-pl-n").textContent === "0 of 51", "reset clears everything");
+    ok(smallTargets().length === 0, "plate hunt: touch targets (map tiles aside)", smallTargets().join(" | "));
+    for (const t of tiles()) t.click();
+    await sleep(40);
+    ok($(".pl-pl-n").textContent === "51 of 51" && !!$(".pl-win") && /ALL 51/.test($(".pl-win-t").textContent), "all 51 earns a celebration", $(".pl-win-t") && $(".pl-win-t").textContent);
+    $(".pl-win") && $(".pl-win").click();
+    typeIn(search, "");
+  });
+
+  await section("higher or lower", async () => {
+    await open("higher");
+    const C = ctrl("higher");
+    let s = C.state();
+    ok(!!C && s.phase === "ask" && s.cats.length === 4, "all four kinds of question are available", s.cats.join(","));
+    const placeBy = id => PL.find(p => p.id === id), DS = api.data.DESTS, MS = api.data.MISSIONS;
+    const wrongNumber = st => {   // every number must come from the app's data
+      for (const it of [st.known, st.hidden]) {
+        if (it.cat === "elev") { const p = placeBy(it.id); if (!p || api.data.elevAt(p.m) !== it.v) return `elev ${it.id}`; }
+        else if (it.cat === "north") { const p = placeBy(it.id); if (!p || Math.round(p.m) !== it.v) return `north ${it.id}`; }
+        else if (it.cat === "dist") { const [a, b] = it.pair.map(n => DS.find(d => d.name === n)); if (!a || !b || Math.round(Math.abs(b.m - a.m)) !== it.v) return `dist ${it.id}`; }
+        else { const mi = MS.find(x => x.name === it.name); if (!mi || parseInt(mi.founded, 10) !== it.v) return `mission ${it.id}`; }
+      }
+      return "";
+    };
+    const seenCats = new Set();
+    let bad = "", tie = false;
+    for (let i = 0; i < 60; i++) {
+      s = C.state();
+      seenCats.add(s.cat);
+      bad = bad || wrongNumber(s);
+      if (s.known.v === s.hidden.v) tie = true;
+      click(`.pl-hbtn.${s.correct}`);
+      if (i < 2) await sleep(800);
+      click('.pl-fb [data-k="next"]');
+    }
+    ok(bad === "", "every number is in the app's data (elevation, mile, distance between cities, mission year)", bad);
+    ok(seenCats.size === 4 && !tie, "Mix uses all four kinds and never a tie", [...seenCats].join(","));
+    s = C.state();
+    ok(s.streak === 60 && s.best >= 60, "60 right in a row: the streak counts", `${s.streak}/${s.best}`);
+    ok(store("higher").best >= 60 && store("higher").bests.mix >= 60, "best streak is saved");
+    C.setMode("elev"); await sleep(30);
+    s = C.state();
+    ok(s.cat === "elev" && s.mode === "elev" && s.streak === 0, "picking Elevation restarts with elevation questions");
+    click(`.pl-hbtn.${s.correct}`);
+    await sleep(900);
+    const shown = $(".pl-hcard.hidden .pl-hc-num").textContent;
+    ok(shown === Math.round(C.state().hidden.v).toLocaleString("en-US"), "the number counts up to the exact value", shown);
+    ok(/higher|lower/.test($(".pl-ans").textContent) && /feet/.test($(".pl-ans").textContent), "the answer is a full sentence", $(".pl-ans").textContent);
+    ok(!$(".pl-hcard .photo") || $$(".pl-hcard .photo").every(p => /^Photo: /.test(p.querySelector("figcaption a").textContent)), "a card with a photo shows its credit");
+    click('.pl-fb [data-k="next"]');
+    s = C.state();
+    click(`.pl-hbtn.${s.correct === "up" ? "down" : "up"}`);
+    ok(C.state().phase === "over" && !!$(".pl-fb.no"), "a wrong answer ends the game");
+    ok(/Your streak ended at 1/.test($(".pl-fb").textContent) && /Play again/.test($('.pl-fb [data-k="next"]').textContent), "and says where the streak ended");
+    ok(store("higher").bests.elev === 1 && store("higher").best >= 60, "per-mode best kept, overall best kept");
+    click('.pl-fb [data-k="next"]');
+    ok(C.state().streak === 0 && C.state().phase === "ask", "Play again starts a fresh streak");
+    for (const m of ["north", "dist", "mission"]) { C.setMode(m); await sleep(20); ok(C.state().cat === m, `${m} mode asks only ${m} questions`); }
+    const P = party();
+    P.setPlayers(3); P.start(3); P.resetScores(); P.setTurn(0);
+    await open("higher"); C.setMode("north"); await sleep(20);
+    ok(!!$("#pl-higher .pl-pstrip .pl-pchip") && /turn/.test($("#pl-higher .pl-turn").textContent), "with a Car Party the strip and 'whose turn' show", $("#pl-higher .pl-turn").textContent);
+    s = C.state();
+    const first = P.current().i;
+    click(`.pl-hbtn.${s.correct}`);
+    ok(P.players()[first].s === 1, "a right answer scores for the player on turn");
+    click('.pl-fb [data-k="next"]');
+    ok(P.current().i === (first + 1) % 3, "Next passes the turn");
+    s = C.state();
+    click(`.pl-hbtn.${s.correct === "up" ? "down" : "up"}`);
+    ok(P.players().reduce((a, p) => a + p.s, 0) === 1 && C.state().phase === "reveal", "a wrong answer scores nothing and the game goes on");
+    ok(smallTargets().length === 0, "higher or lower: touch targets", smallTargets().join(" | "));
+    P.stop();
+  });
+
+  await section("where is this", async () => {
+    await open("where");
+    const C = ctrl("where");
+    ok(!!C && C.state().phase === "ready", "a Start button first");
+    click('#pl-where [data-k="start"]');
+    await sleep(40);
+    let s = C.state();
+    ok(s.phase === "ask" && s.n === 10, "a round has 10 photos", String(s.n));
+    const withImg = PL.filter(p => p.img && p.img.f);
+    ok(s.all.every(q => withImg.some(p => p.id === q.id)), "every question is a place that has a photo");
+    ok(s.all.every(q => q.names.length === 4 && new Set(q.names).size === 4), "each has 4 different names");
+    const regionOf = id => api.data.regionAt(PL.find(p => p.id === id).m).id;
+    let same = 0, total = 0;
+    for (const q of s.all) for (const n of q.names) {
+      if (n === q.names[q.answer]) continue;
+      total++;
+      if (withImg.some(p => p.name.split(",")[0].trim() === n && regionOf(p.id) === regionOf(q.id))) same++;
+    }
+    ok(same / total >= 0.85, "look-alike answers come from the same stretch of road", `${same}/${total}`);
+    const fig = $("#pl-where .photo");
+    ok(!!fig && /img\/.+\.jpg/.test(fig.querySelector("img").getAttribute("src")), "the photo is the app's own picture");
+    ok(/^Photo: /.test(fig.querySelector("figcaption a").textContent) && visible(fig.querySelector("figcaption")), "the credit stays visible", fig.querySelector("figcaption").textContent);
+    const q0 = s.q;
+    ok(!fig.querySelector("img").alt.includes(q0.name) && !$(".pl-w-q").textContent.includes(q0.name), "neither the alt text nor the question gives the answer away", fig.querySelector("img").alt);
+    spoken.length = 0;
+    click(`#pl-where .pl-opt[data-i="${(q0.answer + 1) % 4}"]`);
+    ok(!!$(".pl-fb.no") && $$(".pl-opt.right").length === 1 && $$(".pl-opt.wrong").length === 1, "a wrong pick shows the right one");
+    ok($("#pl-where .pl-why").textContent.length > 20, "the place's first sentence shows", $("#pl-where .pl-why").textContent.slice(0, 50));
+    await sleep(60);
+    ok(spoken.includes("Not quite."), "narration on: a short reaction is spoken", spoken.join("|"));
+    ok(fig.querySelector("img").alt.includes(q0.name), "after the answer the alt text names the place", fig.querySelector("img").alt);
+    click('#pl-where [data-k="more"]');
+    await sleep(40);
+    ok(!$("#moreSheet").hidden && $("#moreSheet").textContent.includes(PL.find(p => p.id === q0.id).name), "'Tell me more' opens the place sheet");
+    api.ui.closeSheet();
+    spoken.length = 0;
+    click('#pl-where [data-k="hear"]');
+    await sleep(40);
+    ok(spoken.length === 1 && spoken[0].length > 20 && PL.find(p => p.id === q0.id).text.startsWith(spoken[0].slice(0, 20)), "'Hear it' reads the first sentence", spoken[0]);
+    click('#pl-where [data-k="next"]');
+    for (let i = 1; i < 10; i++) {
+      const q = C.state().q;
+      if (i === 3) { click('#pl-where [data-k="hint"]'); ok(/Hint: look in/.test($(".pl-w-hint").textContent), "a hint names the stretch of road", $(".pl-w-hint").textContent); }
+      click(`#pl-where .pl-opt[data-i="${q.answer}"]`);
+      click('#pl-where [data-k="next"]');
+    }
+    s = C.state();
+    ok(s.phase === "done" && s.score === 9, "9 of 10 with one wrong", `${s.phase} ${s.score}`);
+    ok(/9 of 10/.test($(".pl-sp-big").textContent) && !!$(".pl-win"), "a score screen and a celebration for 9");
+    $(".pl-win") && $(".pl-win").click();
+    ok(store("where").best === 9 && store("where").rounds === 1 && $$(".pl-w-dots li").length === 10, "best score is saved and a dot shows for every photo", JSON.stringify(store("where")));
+    click('#pl-where [data-k="again"]');
+    await sleep(40);
+    ok(C.state().phase === "ask" && C.state().score === 0, "Play again deals a new round");
+    const P = party(); P.setPlayers(2); P.start(2); P.resetScores(); P.setTurn(0);
+    await open("home"); await open("where");
+    C.start(); await sleep(30);
+    ok(/turn/.test($("#pl-where .pl-turn").textContent) && !!$("#pl-where .pl-pstrip"), "with a Car Party the turn shows");
+    const who = P.current().i;
+    click(`#pl-where .pl-opt[data-i="${C.state().q.answer}"]`);
+    ok(P.players()[who].s === 1, "a right answer scores for the player on turn");
+    click('#pl-where [data-k="next"]');
+    ok(P.current().i !== who, "and the turn passes");
+    ok(smallTargets().length === 0, "where is this: touch targets", smallTargets().join(" | "));
+    P.stop();
+  });
+
+  await section("would you rather", async () => {
+    const W_ = await import("../js/games/lines.js");
+    const lines = W_.WYR;
+    ok(lines.length >= 80, "about 80 prompts", String(lines.length));
+    ok(new Set(lines.map(p => p.join("|"))).size === lines.length, "no repeats");
+    ok(lines.every(p => p.length === 2 && p.every(t => t.length > 8 && t.length < 90 && !/[!—–]/.test(t) && !/\s{2}/.test(t))), "no exclamation marks, no dashes, sensible length");
+    await open("wyr");
+    const C = ctrl("wyr");
+    ok(!!C && $$(".pl-wyr-opt").length === 2, "two options");
+    const idx0 = C.state().idx;
+    click('.pl-wyr-opt[data-s="a"]'); click('.pl-wyr-opt[data-s="a"]'); click('.pl-wyr-opt[data-s="b"]');
+    ok(C.state().votes.length === 3 && !$(".pl-split"), "everyone taps a vote; the split waits");
+    click('[data-k="undo"]');
+    ok(C.state().votes.length === 2, "the last vote can be taken back");
+    click('.pl-wyr-opt[data-s="b"]');
+    click('[data-k="show"]');
+    ok(C.state().shown && !!$(".pl-split") && /A wins, 2 to 1/.test($(".pl-split-s").textContent), "the split shows who won", $(".pl-split-s") && $(".pl-split-s").textContent);
+    ok($$(".pl-split-n b").map(b => b.textContent).join() === "2,1" && $$(".pl-split-n small").map(b => b.textContent).join() === "67%,33%", "with the numbers and percentages");
+    ok($$(".pl-wyr-opt").every(b => b.disabled), "voting stops after the split");
+    const before = store("wyr").n;
+    click('.pl-next');
+    ok(C.state().idx !== idx0 && C.state().pos === 1 && store("wyr").n === before, "Next moves to a new prompt", String(store("wyr").n));
+    ok(store("wyr").n === 1 && store("wyr").deck.length === lines.length, "answered count and deck are saved");
+    spoken.length = 0;
+    click('[data-k="read"]');
+    const p = lines[C.state().idx];
+    await sleep(40);
+    ok(spoken.length === 1 && spoken[0] === `Would you rather ${p[0]}, or ${p[1]}?`, "'Read it out loud' reads the prompt", spoken[0]);
+    click('[data-mode="say"]');
+    ok(!$("button.pl-wyr-opt") && !!$(".pl-next") && store("wyr").mode === "say", "'Say it out loud' mode: no vote buttons, just the prompt");
+    click('.pl-next');
+    ok(store("wyr").n === 2, "Next counts the prompt");
+    click('[data-mode="tap"]');
+    // a Car Party: names on the votes, a point for picking with the crowd
+    const P = party(); P.setPlayers(3); P.start(3); P.resetScores(); P.setTurn(0);
+    await open("home"); await open("wyr");
+    C.show(); await sleep(20);
+    ok(/pick one/.test($("#pl-wyr .pl-turn").textContent), "with a Car Party it is each player's turn", $("#pl-wyr .pl-turn").textContent);
+    click('.pl-wyr-opt[data-s="a"]'); click('.pl-wyr-opt[data-s="a"]');
+    ok(!C.state().shown, "the split waits for everyone");
+    click('.pl-wyr-opt[data-s="b"]');
+    ok(C.state().shown && P.players().map(x => x.s).join() === "1,1,0", "after the last vote it shows; the players with the crowd score", P.players().map(x => x.s).join());
+    ok($$(".pl-split-who .pl-pchip").length === 3, "names are on the split");
+    click('.pl-next');
+    ok(P.current().i === 1, "the next prompt starts with the next player", String(P.current().i));
+    ok(smallTargets().length === 0, "would you rather: touch targets", smallTargets().join(" | "));
+    P.stop();
+  });
+
+  await section("scavenger hunt", async () => {
+    const hunt = await import("../js/games/hunt.js");
+    await open("hunt");
+    const C = ctrl("hunt");
+    const REG = api.data.REGIONS;
+    ok(!!C && REG.length === 6, "six stretches of road");
+    ok(!hunt.ITEMS.some(it => /turbine/i.test(it[2])), "no wind turbines (the app's data has none)");
+    ok(C.eligible("ws").includes("windmill") && !C.eligible("sh").includes("windmill") && !C.eligible("sd").includes("windmill"), "the Pea Soup Andersen's windmill is only offered where the data has it");
+    ok(C.eligible("sh").includes("shasta") && !C.eligible("sd").includes("shasta"), "Mount Shasta only in the north");
+    ok(C.eligible("sv").includes("almond-sv") && C.eligible("ws").includes("almond"), "almond trees in the valley");
+    for (const r of REG) {
+      C.select(r.id);
+      const st = C.state();
+      ok(st.total >= 12 && st.total <= 15, `${r.id}: a list of 12 to 15`, String(st.total));
+      const rows = $$(".pl-hitem");
+      ok(rows.length === st.total, `${r.id}: a row for every item`, `${rows.length}/${st.total}`);
+      const regional = st.ids.filter(id => !hunt.ITEMS.find(it => it[0] === id)[3].includes("*"));
+      ok(regional.every(id => C.eligible(r.id).includes(id)) && regional.length >= 8 && st.total - regional.length >= 3, `${r.id}: regional items are backed by the data, plus a few for anywhere`, `${regional.length} regional`);
+    }
+    // finish a list
+    C.select("sv");
+    let st = C.state();
+    for (const id of st.ids.slice(0, -1)) click(`.pl-hitem[data-id="${id}"]`);
+    ok(!$(".pl-win") && $(".pl-pl-n").textContent === `${st.total - 1} of ${st.total}`, "progress counts the checks", $(".pl-pl-n").textContent);
+    ok($(`.pl-hitem[data-id="${st.ids[0]}"]`).getAttribute("aria-pressed") === "true", "checked items say so (aria-pressed)");
+    spoken.length = 0;
+    click(`.pl-hitem[data-id="${st.ids[st.ids.length - 1]}"]`);
+    await sleep(900);
+    ok(!!$(".pl-win") && /ALL FOUND/.test($(".pl-win-t").textContent), "completing the list celebrates", $(".pl-win-t") && $(".pl-win-t").textContent);
+    ok(!!store("hunt").stamps.sv && C.state().stamps.sv > 0, "and earns a stamp in the store", JSON.stringify(store("hunt").stamps));
+    ok(spoken.includes("You found everything on the list. Stamp earned."), "and says so (narration on)", spoken.join("|"));
+    $(".pl-win") && $(".pl-win").click();
+    ok($$(".pl-stamp.on").length === 1, "the stamp book shows it");
+    const old = C.state().ids.join();
+    click('[data-k="new"]');
+    ok(!$("#pl-hunt .pl-confirm").hidden, "a new list asks first when some are checked");
+    click('#pl-hunt [data-k="keep"]');
+    ok(C.state().ids.join() === old, "keeping leaves the list");
+    click('[data-k="new"]'); click('[data-k="new-yes"]');
+    ok(C.state().done.length === 0 && C.state().stamps.sv > 0, "a new list is dealt and the stamp stays", C.state().ids.join() === old ? "same list" : "new list");
+    // a new list per stretch of road: driving into another one offers it
+    C.select("sd");
+    api.setPosition(740, { dir: "N", jumped: true });
+    C.show(); await sleep(20);
+    ok(!!$("#pl-hunt .pl-banner") && /Shasta/.test($("#pl-hunt .pl-banner").textContent), "driving into another stretch offers its list", $("#pl-hunt .pl-banner") && $("#pl-hunt .pl-banner").textContent);
+    click('#pl-hunt [data-k="switch"]');
+    ok(C.state().region === "sh" && C.state().ids.length > 0, "switching shows that stretch's own list");
+    ok(smallTargets().length === 0, "scavenger hunt: touch targets", smallTargets().join(" | "));
+    api.S.m = null;
+  });
+
+  await section("alphabet game", async () => {
+    await open("alpha");
+    const C = ctrl("alpha");
+    ok(!!C && C.state().phase === "ready", "a start screen");
+    click('#pl-alpha [data-k="start"]');
+    await sleep(30);
+    ok(C.state().phase === "play" && C.state().letter === "A" && $(".pl-al-sign b").textContent === "A", "starts at A with a big letter");
+    ok(parseFloat(getComputedStyle($(".pl-al-sign b")).fontSize) >= 100, "the letter is big");
+    await sleep(2300);
+    ok(C.state().elapsed >= 2000 && /^0:0[2-3]$/.test($(".pl-al-time").textContent), "the timer runs", $(".pl-al-time").textContent);
+    click('[data-k="pause"]');
+    const t1 = C.state().elapsed;
+    await sleep(1500);
+    ok(!C.state().running && C.state().elapsed - t1 < 50 && $('[data-k="found"]').disabled, "pause stops the clock");
+    click('[data-k="pause"]');
+    const letters = [];
+    for (let i = 0; i < 25; i++) {
+      const l = C.state().letter; letters.push(l);
+      if ("QXZ".includes(l)) ok(!!$(".pl-al-tip") && (l !== "X" || /Exit/.test($(".pl-al-tip").textContent)), `a tip for ${l}`, $(".pl-al-tip") && $(".pl-al-tip").textContent);
+      if (i === 5) {   // leave mid-game and come back: the game waits
+        await open("home"); await sleep(1200);
+        const e = C.state().elapsed;
+        await open("alpha"); await sleep(40);
+        ok(C.state().letter === l && C.state().phase === "play" && Math.abs(C.state().elapsed - e) < 400, "leaving the game stops the clock and it picks up where it was", `${C.state().elapsed - e}ms`);
+      }
+      click('[data-k="found"]');
+    }
+    ok(letters.join("") === "ABCDEFGHIJKLMNOPQRSTUVWXY", "letters come in order");
+    ok(C.state().letter === "Z" && $(".pl-al-strip li.ok").parentElement.children.length === 26, "Z is last, with all 26 letters shown");
+    ok(store("alpha").cur && store("alpha").cur.found.length === 25, "a game in progress is saved");
+    click('[data-k="found"]');
+    await sleep(40);
+    ok(C.state().phase === "done" && !!$(".pl-win") && /A TO Z/.test($(".pl-win-t").textContent), "Z finishes with a celebration", $(".pl-win-t") && $(".pl-win-t").textContent);
+    ok(store("alpha").best > 0 && store("alpha").games === 1 && !store("alpha").cur, "best time is saved", JSON.stringify(store("alpha")).slice(0, 80));
+    $(".pl-win") && $(".pl-win").click();
+    // two teams
+    click('[data-k="again"]');
+    click('[data-mode="teams"]');
+    typeIn($("#pl-alpha .pl-al-name input"), "Left");
+    click('#pl-alpha [data-k="start"]');
+    ok(C.state().mode === "teams" && C.state().turn === 0 && /Left/.test($("#pl-alpha .pl-turn").textContent), "teams take turns", $("#pl-alpha .pl-turn").textContent);
+    click('[data-k="found"]'); click('[data-k="found"]'); click('[data-k="pass"]'); click('[data-k="found"]');
+    ok(C.state().scores.join() === "1,2" && C.state().letter === "D" && C.state().turn === 0, "a find scores for the team on turn; a pass hands the same letter over", `${C.state().scores} ${C.state().letter} ${C.state().turn}`);
+    click('[data-k="quit"]');
+    ok(C.state().phase === "ready" && !C.state().hasCur, "ending the game goes back to the start");
+    ok(smallTargets().length === 0, "alphabet game: touch targets", smallTargets().join(" | "));
+  });
+
+  await section("cow count", async () => {
+    await open("cows");
+    const C = ctrl("cows");
+    ok(!!C && $$(".pl-cow-col").length === 2, "two sides");
+    click('[data-k="cow-l"]'); click('[data-k="cow-l"]'); click('[data-k="cow-l"]'); click('[data-k="cow-r"]'); click('[data-k="cow-r"]');
+    ok(C.state().l === 3 && C.state().r === 2 && $$(".pl-cow-n").map(n => n.textContent).join() === "3,2", "each side counts its own cows");
+    click('[data-k="grave-l"]');
+    ok(C.state().l === 0 && C.state().r === 2, "a cemetery on the left sends only the left count to zero");
+    ok(C.state().best === 3 && store("cows").l === 0 && store("cows").r === 2 && store("cows").best === 3, "the most cows on a side is kept, and the counts are saved");
+    click('[data-k="undo"]');
+    ok(C.state().l === 3, "Undo brings the count back");
+    ok(/Left side leads by 1/.test($(".pl-cow-lead").textContent), "who leads", $(".pl-cow-lead").textContent);
+    click('[data-k="new"]');
+    ok(!$("#pl-cows .pl-confirm").hidden, "a new count asks first");
+    click('#pl-cows [data-k="new-yes"]');
+    ok(C.state().l === 0 && C.state().r === 0 && C.state().games === 1, "and starts over");
+    ok(parseFloat(getComputedStyle($('[data-k="cow-l"]')).minHeight) >= 88 && smallTargets().length === 0, "cow count: big buttons, touch targets", smallTargets().join(" | "));
+  });
+
+  await section("voice rules and phrases", async () => {
+    const ph = api.play.phrases();
+    ok(Array.isArray(ph) && ph.length > 300 && new Set(ph).size === ph.length && ph.every(t => typeof t === "string" && t.trim() === t), "phrases() lists every fixed sentence once", String(ph.length));
+    const set = new Set(ph);
+    const WY = (await import("../js/games/lines.js")).WYR;
+    ok(WY.every(p => set.has(`Would you rather ${p[0]}, or ${p[1]}?`)), "all the Would You Rather prompts are in it");
+    ok([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].every(l => set.has(`Find a word that starts with ${l}.`)), "all 26 alphabet lines are in it");
+    ok(set.has("That's right.") && set.has("Not quite.") && set.has("Hawaii. That is a rare find.") && set.has("You found everything on the list. Stamp earned."), "and the fixed reactions");
+    const FS = PL.filter(p => p.img && p.text).map(p => p.text.split(/(?<=[a-z0-9)"][.?])\s/)[0]);
+    ok(FS.filter(t => t.length > 20 && set.has(t)).length > PL.filter(p => p.img).length * 0.9, "the first sentence of each photographed landmark is in it");
+    const groups = api.play.phraseGroups();
+    ok(Object.keys(groups).length >= 8, "grouped by game", Object.keys(groups).join(","));
+    const stray = [...new Set(allSpoken)].filter(t => !set.has(t));
+    ok(allSpoken.length > 5 && stray.length === 0, `every line the games spoke in these tests is in phrases() (${new Set(allSpoken).size} different)`, stray.slice(0, 3).join(" | "));
+    // never chatter while navigating; narration off; but taps still speak
+    spoken.length = 0;
+    api.nav = { state: () => "navigating" };
+    await open("plates");
+    click('.pl-tile[data-c="HI"]'); click('.pl-tile[data-c="HI"]');
+    await sleep(60);
+    ok(spoken.length === 0, "navigating: no reaction is spoken on its own", spoken.join("|"));
+    await open("wyr");
+    click('[data-k="read"]');
+    await sleep(40);
+    ok(spoken.length === 1, "navigating: a speaker button the person taps still speaks", spoken.join("|"));
+    delete api.nav;
+    api.settings.narr = false;
+    spoken.length = 0;
+    await open("plates");
+    click('.pl-tile[data-c="AK"]'); click('.pl-tile[data-c="AK"]');
+    await sleep(60);
+    ok(spoken.length === 0, "narration off: nothing is spoken on its own", spoken.join("|"));
+    api.settings.narr = true;
+    // errors in a game never reach the app
+    ok(!$("#view-play").hidden && api.play.screen() === "plates", "the Play view is still fine");
+  });
+
+  log(fail ? "FAILED" : "ALL PASS", `(${pass}${fail ? ", " + fail + " failed" : ""})`);
+}
+
+/* ---------- layout: every screen, no overflow ---------- */
+async function layout() {
+  let pass = 0, fail = 0;
+  const ok = (c, n, x = "") => { c ? pass++ : fail++; log(c ? "PASS" : "FAIL", n, x); };
+  const screens = [["home"], ["party"], ["bingo"], ["trivia"], ["spy"], ["plates"], ["plates", "list"], ["higher"], ["where"], ["where", "play"], ["wyr"], ["hunt"], ["alpha"], ["alpha", "play"], ["cows"]];
+  api.play.party().start(3);
+  for (const [id, step] of screens) {
+    await open(id);
+    try {
+      if (id === "where" && step) { click('#pl-where [data-k="start"]'); await sleep(40); }
+      if (id === "alpha" && step) { click('#pl-alpha [data-k="start"]'); await sleep(30); }
+      if (id === "plates" && step) { click('[data-view="list"]'); await sleep(20); }
+    } catch (e) { log("note", id, e.message); }
+    await sleep(60);
+    const tag = `${id}${step ? " " + step : ""} ${WIDTH}px ${THEME}`;
+    const o = overflow(), t = smallTargets();
+    ok(!o, `${tag}: no horizontal overflow`, o);
+    ok(!t.length, `${tag}: touch targets 44 px or more`, t.slice(0, 3).join(" | "));
+  }
+  // the answered / revealed states are the tallest and widest
+  await open("higher"); { const C = ctrl("higher"); click(`.pl-hbtn.${C.state().correct}`); await sleep(900); const o = overflow(); ok(!o, `higher answered ${WIDTH}px ${THEME}: no overflow`, o); }
+  await open("where"); { if (ctrl("where").state().phase !== "ask") { click('#pl-where [data-k="start"]'); await sleep(30); } click('#pl-where .pl-opt[data-i="0"]'); await sleep(60); const o = overflow(); ok(!o, `where answered ${WIDTH}px ${THEME}: no overflow`, o); }
+  await open("wyr"); { click('.pl-wyr-opt[data-s="a"]'); click('.pl-wyr-opt[data-s="b"]'); click('.pl-wyr-opt[data-s="b"]'); if ($('[data-k="show"]')) click('[data-k="show"]'); await sleep(900); const o = overflow(); ok(!o, `wyr split ${WIDTH}px ${THEME}: no overflow`, o); }
+  await open("trivia"); { click('#pl-trivia [data-tm="speed"]'); await sleep(200); click('.pl-speed [data-k="start"]'); await sleep(60); const o = overflow(); ok(!o, `speed trivia ${WIDTH}px ${THEME}: no overflow`, o); }
+  const th = D.documentElement.dataset.theme;
+  ok(th === THEME, `theme is ${THEME}`, th);
+  log(fail ? "FAILED" : "ALL PASS", `(${pass}${fail ? ", " + fail + " failed" : ""})`);
+}
+
+/* ---------- one screen for a screenshot ---------- */
+async function shot() {
+  const g = P.get("game") || "home";
+  const party = api.play.party();
+  if (["home", "party", "higher", "higher-reveal", "where", "where-reveal", "wyr", "wyr-split"].includes(g)) {
+    party.setPlayers(3); party.start(3);
+    await open("party");
+    ["Maya", "Leo", "Sam"].forEach((n, i) => typeIn($(`.pl-party [data-k="name${i}"]`), n));
+    party.award(3, 0); party.award(2, 1); party.award(1, 2); party.setTurn(1);
+  }
+  api.S.m = 300; api.S.dir = "N";
+  if (g === "home") { await open("bingo"); click("#pl-bingo .pl-back"); }
+  else if (g === "party") { await open("party"); }
+  else if (g === "passenger") { api.S.mode = "gps"; api.S.speed = 66; api.bus.emit("pos", { m: 300, dir: "N", speed: 66 }); await open("home"); }
+  else if (g === "speed") { await open("trivia"); click('#pl-trivia [data-tm="speed"]'); await sleep(200); click('.pl-speed [data-k="start"]'); await sleep(2000); }
+  else if (g === "plates" || g === "plates-list") {
+    await open("plates");
+    for (const c of ["CA", "OR", "WA", "NV", "AZ", "TX", "NY", "FL", "CO", "UT", "ID", "MT", "IL", "HI"]) click(`.pl-tile[data-c="${c}"]`);
+    if (g === "plates-list") { click('[data-view="list"]'); }
+    await sleep(700);
+  }
+  else if (g === "higher" || g === "higher-reveal") { await open("higher"); if (g === "higher-reveal") { const C = ctrl("higher"); click(`.pl-hbtn.${C.state().correct}`); await sleep(1000); } }
+  else if (g === "where" || g === "where-reveal") { await open("where"); click('#pl-where [data-k="start"]'); await sleep(200); if (g === "where-reveal") { click(`#pl-where .pl-opt[data-i="${ctrl("where").state().q.answer}"]`); await sleep(100); } }
+  else if (g === "wyr" || g === "wyr-split") { await open("wyr"); if (g === "wyr-split") { for (const s of ["a", "b", "a"]) click(`.pl-wyr-opt[data-s="${s}"]`); await sleep(1000); } }
+  else if (g === "hunt") { await open("hunt"); const C = ctrl("hunt"); for (const id of C.state().ids.slice(0, 6)) click(`.pl-hitem[data-id="${id}"]`); await sleep(500); }
+  else if (g === "alpha") { await open("alpha"); click('#pl-alpha [data-k="start"]'); for (let i = 0; i < 16; i++) click('[data-k="found"]'); await sleep(500); }
+  else if (g === "cows") { await open("cows"); for (const k of ["l", "l", "l", "r", "r", "l"]) click(`[data-k="cow-${k}"]`); click('[data-k="grave-r"]'); await sleep(300); }
+  else { await open(g); }
+  await sleep(300);
+  log("DONE", g, THEME, WIDTH);
+}
+
+(async function main() {
+  navigate();
+  try {
+    api = await ready();
+    W = f.contentWindow; D = W.document;
+    wrapVoice();
+    D.documentElement.dataset.theme = THEME;
+    api.settings.theme = THEME;
+    if (SCEN === "layout") await layout();
+    else if (SCEN === "shot") await shot();
+    else await check();
+  } catch (e) { log("FAIL", "ERROR", String(e && (e.message || e)).replace(/\s+/g, " "), String(e && e.stack || "").split("\n").slice(1, 3).join(" ").replace(/\s+/g, " ")); log("FAILED"); }
+})();
+</script>
+</body>
+</html>

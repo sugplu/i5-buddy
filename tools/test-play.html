@@ -226,7 +226,7 @@ let W, D, api;
 const $ = sel => D.querySelector(sel);
 const $$ = sel => [...D.querySelectorAll(sel)];
 function theme(t) { api.settings.theme = t; D.documentElement.dataset.theme = t; }
-function game(id) { api.ui.go("play"); const b = $(`.pl-seg [data-g="${id}"]`); b && b.click(); }
+function game(id) { api.ui.go("play"); api.play.open(id); }   // the picker (2.7.0) replaced the segmented control: open the game the way a card does
 function sq(i) { const b = $(`#pl-bingo .pl-grid button[data-i="${i}"]`); if (!b) throw new Error("no square " + i); b.click(); }
 function currentQ() { const t = $(".pl-qt") && $(".pl-qt").textContent; return api.data.TRIVIA.find(q => q.q === t); }
 function fakeSpot(m, spot, id) {
