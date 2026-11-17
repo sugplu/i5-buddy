@@ -165,7 +165,8 @@ function onFix(pos) {
   const mis = nearMission(c.latitude, c.longitude);
   const wasNear = S.nearMission;
   S.nearMission = mis;
-  bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy ?? null, m: hit.m, dist: hit.dist, offRoute: far });
+  bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy ?? null, m: hit.m, dist: hit.dist, offRoute: far,
+    speed: c.speed != null && c.speed >= 0 ? c.speed * 2.23694 : null, heading: c.heading != null && !isNaN(c.heading) ? c.heading : null, t: pos.timestamp }); // speed (mph) and heading (deg) are for js/nav.js
   if (mis) bus.emit("mission:near", { place: mis.place, n: mis.place.n, dist: mis.dist, offRoute: far });
   if (far) {
     offCount++;
@@ -306,6 +307,9 @@ function render() {
   } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = "Demo drive · " + (has ? regionAt(S.m).name : ""); }
   else if (S.mode === "manual") { setPill("manual", "MANUAL"); $("statusText").textContent = "Milepost set by hand"; }
   else { setPill("off", "OFF"); $("statusText").textContent = has ? "Paused · " + regionAt(S.m).name : `${ENDS.S.short} to ${ENDS.N.short}`; }
+  // js/nav.js: while it guides, the status line says where to and the next turn (also off I-5, where narration is paused)
+  const navLine = S.mode !== "off" && api.nav && api.nav.statusText ? api.nav.statusText() : "";
+  if (navLine) { setPill("gps", "NAV"); $("statusText").textContent = navLine; }
 
   $("toggleNarr").setAttribute("aria-pressed", settings.narr);
   $("toggleNarr").textContent = settings.narr ? "Narration on" : "Narration off";
@@ -945,7 +949,7 @@ window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools
 
 applyTheme();
 render();
-for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions"]) {
+for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions", "nav"]) {
   import(`./${name}.js`).then(mod => {
     try { mod.init(api); } catch (e) { console.error(`[${name}] init failed`, e); }
   }).catch(e => console.warn(`[${name}] not loaded`, e?.message || e));

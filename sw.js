@@ -7,9 +7,9 @@ const SHELL = [
   "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js", "js/native.js",
   "js/live.js", "js/map.js", "js/play.js", "js/trip.js", "js/listen.js",
-  "js/roadahead.js", "js/feedback.js", "js/share.js", "js/ride.js", "js/map3d.js", "js/missions.js",
+  "js/roadahead.js", "js/feedback.js", "js/share.js", "js/ride.js", "js/map3d.js", "js/missions.js", "js/nav.js",
   "css/live.css", "css/map.css", "css/play.css", "css/trip.css", "css/listen.css",
-  "css/roadahead.css", "css/feedback.css", "css/share.css", "css/ride.css", "css/map3d.css", "css/missions.css",
+  "css/roadahead.css", "css/feedback.css", "css/share.css", "css/ride.css", "css/map3d.css", "css/missions.css", "css/nav.css",
   "fonts/overpass.woff2", "fonts/overpass-mono.woff2",
   "icons/icon.svg", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "icons/app-store-badge.svg",
   // Not cached: icons/og-1200x630.png (the link preview, read only by other sites) and icons/screenshot-*.jpg (read only

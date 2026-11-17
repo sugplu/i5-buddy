@@ -76,6 +76,9 @@ SUITE = [
     ("map gesture", "test-map.html?scene=gesture", 30000, "900,960", False),
     ("map stamps", "test-map.html?scene=stamps", 30000, "900,960", False),
     ("map light", "test-map.html?scene=whole&theme=light", 30000, "900,960", False),
+    ("nav search", "test-nav.html?s=search", 90000, "500,900", True),
+    ("nav route", "test-nav.html?s=route", 90000, "500,900", True),
+    ("nav drive", "test-nav.html?s=drive", 200000, "500,900", True),
     ("share", "test-share.html", 40000, "500,900", True),
     ("missions", "test-missions.html", 60000, "500,900", True),
     # "Get the iPhone app" (welcome card, About) by browser and inside the iPhone app; get/index.html; tags and sw.js
