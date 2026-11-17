@@ -168,11 +168,15 @@ function onFix(pos) {
   bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy ?? null, m: hit.m, dist: hit.dist, offRoute: far,
     speed: c.speed != null && c.speed >= 0 ? c.speed * 2.23694 : null, heading: c.heading != null && !isNaN(c.heading) ? c.heading : null, t: pos.timestamp }); // speed (mph) and heading (deg) are for js/nav.js
   if (mis) bus.emit("mission:near", { place: mis.place, n: mis.place.n, dist: mis.dist, offRoute: far });
+  S.offDist = far && hit.m != null && isFinite(hit.dist) ? hit.dist : null;   // miles from I-5 while off it (status line, Where to?)
   if (far) {
     offCount++;
     lastFix = null; anchorM = null; dirVotes = [];
     if (offCount >= 2 && !S.offRoute) {
-      setPosition(S.m ?? hit.m ?? 0, { offRoute: true, jumped: true });
+      // Off I-5 after driving on it this session: keep the last mile on the road (a detour, a gas stop). Off I-5 since
+      // the app opened: the saved spot is from an earlier trip (2026-11-17: someone on I-15 near Lake Elsinore was told
+      // she was at the Grapevine, where she had left I-5 the day before), so use the closest point on I-5 instead.
+      setPosition(drove ? (S.m ?? hit.m ?? 0) : (hit.m ?? S.m ?? 0), { offRoute: true, jumped: true });
       offEnd = pastEnd();
       // Say goodbye once, and only after driving there (not when GPS starts up already past the end).
       if (offEnd && drove && endSaid !== offEnd && settings.narr) {
@@ -301,7 +305,8 @@ function render() {
     else if (S.offRoute) {
       const end = atEnd();
       setPill("off-route", end ? "THE END" : "OFF I-5");
-      $("statusText").textContent = end ? `Past ${end.long}. Narration paused.` : "Not on I-5 right now. Narration paused.";
+      $("statusText").textContent = end ? `Past ${end.long}. Narration paused.`
+        : S.offDist != null && S.offDist >= 2 ? `Not on I-5 right now, about ${Math.round(S.offDist)} miles from it. Narration paused.` : "Not on I-5 right now. Narration paused.";
     }
     else if (has) { setPill("gps", "GPS"); $("statusText").textContent = regionAt(S.m).name; }
   } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = "Demo drive · " + (has ? regionAt(S.m).name : ""); }

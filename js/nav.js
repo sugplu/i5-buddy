@@ -407,6 +407,12 @@ const dirNow = () => (S && S.dir === "S" ? "S" : "N");
 /** Signed miles ahead of the car on I-5 (positive = ahead), or null without a position. */
 function aheadMi(m) { return S && S.m != null && num(m) ? data.aheadOf(S.m, dirNow(), m) : null; }
 function aheadWords(m) {
+  // Off I-5, or with GPS off, the car's mile is not where you are (it can be a spot saved on an earlier trip): say how
+  // far the place is from where the phone is, or nothing.
+  if (S && (S.offRoute || S.mode === "off")) {
+    const c = coordOfM(m);
+    return S.lat != null && S.lon != null && c && S.mode !== "off" ? `${fmtMi(geo.miles(S.lat, S.lon, c[0], c[1]))} away` : "";
+  }
   const d = aheadMi(m);
   if (d == null) return "";
   if (Math.abs(d) < 0.3) return "right here";

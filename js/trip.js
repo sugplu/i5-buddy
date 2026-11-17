@@ -874,7 +874,22 @@ function fillDestSheet() {
   box.textContent = "";
   const list = DESTS.slice().sort((a, b) => a.m - b.m);
   if (!list.length) { box.append(el("p", "trip-empty", "No destinations in this version of the road data.")); return; }
-  const here = posM();
+  // Where are you? On I-5: your mile. Off I-5 with GPS on: the closest point on I-5 to where you really are (never "You're
+  // here", which once told someone on I-15 near Lake Elsinore she was at the Grapevine). GPS off: only your last spot.
+  let here = posM(), off = null;
+  if (S.mode === "gps" && S.offRoute && S.lat != null && S.lon != null && A.geo && typeof A.geo.locate === "function") {
+    const h = A.geo.locate(S.lat, S.lon);
+    if (h && h.m != null && isFinite(h.dist)) { here = onRoad(h.m) ? h.m : null; off = { dist: h.dist }; } else here = null;
+  }
+  const hereWord = off ? "Closest point on I-5" : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? "You're here" : "Your last spot";
+  const lede = destSheet.querySelector(".trip-lede");
+  if (lede) {
+    const near = off && here != null ? DESTS.slice().sort((a, b) => Math.abs(a.m - here) - Math.abs(b.m - here))[0] : null;
+    lede.textContent = off
+      ? `You're not on I-5 right now${off.dist >= 2 ? `, about ${fmtInt(off.dist)} miles from it` : ""}. Miles here count along I-5 from the closest point${near ? `, near ${near.name}` : ""}.`
+      : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? "Pick a stop. I'll count down the miles, the time and the landmarks on the way."
+      : "Pick a stop. Miles count from your last spot on I-5; start GPS to count from where you are.";
+  }
   const mph = typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
   const curKey = destKey(validDest(S.dest));
   const hereSt = here == null ? null : stateOf(here).id;
@@ -890,7 +905,7 @@ function fillDestSheet() {
     let placed = here == null || g.s.id !== hereSt;
     const marker = () => {
       const li = el("li", "trip-here");
-      li.append(el("i"), dotted("span", null, ["You're here", mileWords(here)]));
+      li.append(el("i"), dotted("span", null, [hereWord, mileWords(here)]));
       return li;
     };
     for (const d of g.items) {
@@ -904,7 +919,7 @@ function fillDestSheet() {
       const nm = el("span", "nm", d.name);
       const meta = el("span", "meta");
       if (dist == null) meta.append(el("small", null, mileWords(d.m)));
-      else if (dist <= 1) meta.append(el("b", null, "You're here"));
+      else if (dist <= 1) meta.append(el("b", null, hereWord));
       else {
         meta.append(el("b", null, `${fmtInt(dist)} mi`), dotted("small", null, [d.m > here ? "north" : "south", dur(dist / mph)]));
       }

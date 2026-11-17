@@ -287,7 +287,7 @@ async function run() {
   ok(api.S.offRoute, "off route detected far from I-5");
   ok(!said.some(s => s.id && api.data.placeById(s.id)), "no landmark narration while off route");
   ok(txt("statusPill") === "OFF I-5", `status pill shows OFF I-5 (${txt("statusPill")})`);
-  ok(txt("statusText") === "Not on I-5 right now. Narration paused.", `status line: ${txt("statusText")}`);
+  ok(/^Not on I-5 right now(, about \d+ miles from it)?\. Narration paused\.$/.test(txt("statusText")), `status line: ${txt("statusText")}`);
   ok(!said.some(s => s.id === "end-of-road"), "no goodbye in the middle of the road");
 
   // 4. back on route in the Central Valley, southbound with no heading and no speed field (direction from movement),
@@ -471,7 +471,7 @@ async function run() {
     // away from every mission: the usual off-route line again
     for (let i = 0; i < 2; i++) { G.fix(36.2, -119.9, { speed: 20, t: tick(1800) }); await sleep(5); }
     await sleep(300);
-    ok(txt("statusText") === "Not on I-5 right now. Narration paused.", `away from the missions: ${txt("statusText")}`);
+    ok(/^Not on I-5 right now(, about \d+ miles from it)?\. Narration paused\.$/.test(txt("statusText")), `away from the missions: ${txt("statusText")}`);
     offF(); offN();
     // "I went there" on the place sheet
     api.stopAll(false);
@@ -536,6 +536,31 @@ async function run() {
     clear();
     for (const [k, v] of Object.entries(keep)) localStorage.setItem(k, v);
     ok(doc.getElementById("updateBar").textContent.trim().startsWith("A new version of I-5 Buddy is ready. Reload to get it."), `the new-version prompt: ${doc.getElementById("updateBar").textContent.trim()}`);
+  }
+
+  // 16. Off I-5 since the app opened (2026-11-17, a real report): the app's saved spot was the Grapevine from the day
+  //     before, the driver was on I-15 near Lake Elsinore, and "Where to?" said "Grapevine: You're here". Now the
+  //     closest point on I-5 is used, the status line says how far I-5 is, and nothing off I-5 says "You're here".
+  {
+    api.stopAll(false); await sleep(50);
+    api.setPosition(205, { dir: "N", speed: 0, jumped: true });       // the spot saved at the Grapevine yesterday
+    api.startGps(); await sleep(20);
+    const [elLat, elLon] = [33.6681, -117.3273];                      // I-15 at Lake Elsinore
+    const hit = api.geo.locate(elLat, elLon);
+    G.fix(elLat, elLon, { speed: 29, heading: 330, t: tick(1) }); await sleep(10);
+    G.fix(elLat + 0.002, elLon - 0.001, { speed: 29, heading: 330, t: tick(1) }); await sleep(400);
+    ok(api.S.offRoute === true, "on I-15, far from I-5: off route");
+    ok(hit.m != null && Math.abs(api.S.m - hit.m) < 1 && Math.abs(api.S.m - 205) > 50, `the old Grapevine spot is dropped for the closest point on I-5 (mile ${api.S.m && api.S.m.toFixed(1)}, closest ${hit.m && hit.m.toFixed(1)})`);
+    const st = doc.getElementById("statusText").textContent;
+    ok(/Not on I-5 right now, about \d+ miles from it/.test(st), `the status line says how far I-5 is: ${st}`);
+    api.trip.openDest(); await sleep(80);
+    const sheet = doc.getElementById("tripDestSheet"), txt = sheet ? sheet.innerText : "";
+    ok(!!sheet && !/You're here/.test(txt), "Where to? never says You're here off I-5");
+    ok(/You're not on I-5 right now, about \d+ miles from it/.test(txt) && /Closest point on I-5/.test(txt), `it says where you are instead: ${(sheet && sheet.querySelector(".trip-lede") || {}).textContent}`);
+    const g = [...sheet.querySelectorAll(".trip-dopt")].find(b => /Grapevine/.test(b.textContent));
+    ok(!g || !/You're here|Closest/.test(g.textContent), `the Grapevine is not marked as your spot: ${g && g.innerText.replace(/\s+/g, " ")}`);
+    try { doc.querySelector("#tripDestSheet .sheet-close, #tripDestSheet [data-close]")?.click(); } catch {}
+    api.stopAll(false); await sleep(30);
   }
 
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +
