@@ -1238,7 +1238,11 @@ function buildView() {
   V.spd = el("div", "nav-speed"); V.spdN = el("b", null, "0"); V.spd.append(V.spdN, el("small", null, "mph"));
   V.lim = el("div", "nav-limit"); V.lim.hidden = true; V.limN = el("b");
   V.lim.append(el("small", null, "SPEED"), el("small", null, "LIMIT"), V.limN);
-  gauges.append(V.lim, V.spd);
+  // HUD: the next turn, huge and mirrored, for a phone lying flat under the windshield at night; a tap anywhere ends it
+  V.btnHud = el("button", "nav-hud-btn", "HUD"); V.btnHud.type = "button";
+  V.btnHud.setAttribute("aria-label", "Heads-up display: show the next turn mirrored, to read in the windshield");
+  V.btnHud.onclick = () => setHud(true);
+  gauges.append(V.lim, V.spd, V.btnHud);
   V.recenter = el("button", "nav-recenter", "Recenter"); V.recenter.type = "button"; V.recenter.hidden = true;
   V.recenter.onclick = () => recenter();
   const bottom = V.bottom = el("section", "nav-bottom"); bottom.setAttribute("aria-label", "Trip");
@@ -1259,10 +1263,19 @@ function buildView() {
   // arrival
   V.arrived = el("section", "nav-arrived"); V.arrived.setAttribute("aria-label", "Arrived");
   root.append(stage, ph, bn, gauges, V.recenter, card, V.stepsEl, bottom, V.arrived);
-  root.addEventListener("keydown", e => { if (e.key === "Escape" && V.stepsOpen) toggleSteps(false); });
+  root.addEventListener("keydown", e => { if (e.key === "Escape" && V.stepsOpen) toggleSteps(false); if (e.key === "Escape" && V.hud) setHud(false); });
+  // in HUD mode the first tap anywhere only ends it (nothing under the finger is pressed)
+  root.addEventListener("click", e => { if (V.hud && !(e.target && e.target.closest && e.target.closest(".nav-hud-btn"))) { e.preventDefault(); e.stopPropagation(); setHud(false); } }, true);
+}
+function setHud(on) {
+  V.hud = !!on && V.mode === "guide";
+  if (!V.root) return;
+  V.root.classList.toggle("nav-hud", V.hud);
+  if (V.hud) toastMsg("HUD on: lay the phone flat under the windshield. Tap anywhere to go back.");
 }
 function setMode(mode) {
   const was = V.mode;
+  if (mode !== "guide" && V.hud) { V.hud = false; V.root && V.root.classList.remove("nav-hud"); }
   V.root.dataset.mode = mode;
   V.mode = mode;
   if (was !== mode && V.map) { try { requestAnimationFrame(() => { try { V.map && V.map.resize(); } catch {} }); } catch {} }
@@ -1910,4 +1923,6 @@ export function init(api) {
       promptUnits, maneuverPhrase, highwayUnit, exitUnits, localSearch, snapToRoute, stepText, iconSvg,
     },
   };
+  // modules that drew before nav loaded (trip.js's Where to?) redraw now
+  try { emit("nav:ready", {}); } catch {}
 }

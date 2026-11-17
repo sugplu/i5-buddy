@@ -351,7 +351,9 @@ async function auto() {
   const ok = (c, m) => { if (!c) fails++; log(`${c ? "PASS" : "FAIL"} ${m}`, !c); };
   const said = [];
   api.voice.say = (text, o = {}) => { said.push({ text, id: o.id }); return Promise.resolve(true); };
-  const strip = () => doc.getElementById("destStrip").innerText.replace(/\s+/g, " ");   // what is visible
+  // what is visible; with nav.js (3.0) an empty strip hands "Where to?" to the search pill, so read that too
+  const strip = () => { const t = doc.getElementById("destStrip").innerText.replace(/\s+/g, " "); const pill = doc.getElementById("navSearch");
+    return t.trim() || !pill ? t : pill.innerText.replace(/\s+/g, " "); };
   const badges = () => api.trip.badges();
   const emitted = [];
   api.bus.on("badge", b => emitted.push(b.id));

@@ -8,7 +8,7 @@
 <!--
   Drives js/nav.js (the "normal GPS") inside the real app. Results: bottom bar + console "[test-nav] ...".
   ?s=      search | route | drive (each has its own page load) | view (leaves one screen up for a screenshot)
-  ?v=      view: search | gate | preview | steps | guide | guide2 | arrived | error      ?theme= dark | light      ?w= ?h= iframe size (default 390 x 844)
+  ?v=      view: search | gate | preview | steps | guide | guide2 | hud | arrived | error      ?theme= dark | light      ?w= ?h= iframe size (default 390 x 844)
   search:  local results (a city, a landmark, a brand, an exit, a mission), the one-time notice before the first online search,
            Not now = local only, the debounce (3 letters, 350 ms), the abort of the old request on a new keystroke, offline,
            category chips, recents, Home and Work.
@@ -606,9 +606,10 @@ const SCENARIOS = {
       await nav.preview(dest);
       if (v === "error") { /* shown by the mock below */ }
       if (v === "steps") { $$(doc, ".nav-pv-acts button")[1].click(); }
-      if (v === "guide" || v === "guide2" || v === "arrived") {
+      if (v === "guide" || v === "guide2" || v === "arrived" || v === "hud") {
         nav.start({ gps: false });
-        nav.simulate({ mph: 65, sync: true, until: v === "guide" ? 0.4 : v === "guide2" ? 4.9 : 1e9 });
+        nav.simulate({ mph: 65, sync: true, until: v === "guide" || v === "hud" ? 0.4 : v === "guide2" ? 4.9 : 1e9 });
+        if (v === "hud") { await wait(300); const hb = $(doc, ".nav-hud-btn"); if (hb) hb.click(); }
       }
       await wait(1500);
     }

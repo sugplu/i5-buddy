@@ -1,0 +1,17 @@
+<!doctype html><meta charset="utf-8"><title>I-5 Buddy: app screenshots</title>
+<!-- Manual screenshots: ?tab=drive|ahead|map|passport|play &m=<mile> &demo=1 &theme=light. Silent (?silent=1). -->
+<script>window.__BUDDY_SILENT__ = true;</script>
+<style>html,body{margin:0;background:#000}iframe{border:0;width:390px;height:844px;display:block}</style>
+<iframe id="app" src="../index.html?silent=1"></iframe>
+<script type="module">
+const q = new URLSearchParams(location.search), fr = document.getElementById("app"), sleep = ms => new Promise(r => setTimeout(r, ms));
+let api = null; for (let i = 0; i < 300 && !api; i++) { await sleep(100); api = fr.contentWindow?.I5BUDDY?.api; }
+const doc = fr.contentDocument;
+if (q.get("theme") === "light") { api.settings.theme = "light"; api.saveSettings(); doc.documentElement.dataset.theme = "light"; }
+if (q.get("demo")) { api.startDemo(); await sleep(800); }
+if (q.get("m")) api.setPosition(+q.get("m"), { dir: q.get("dir") || "N", speed: q.get("demo") ? 62 : 0, jumped: true });
+await sleep(600);
+api.ui.go(q.get("tab") || "drive");
+await sleep(2500);
+document.title = "READY";
+</script>

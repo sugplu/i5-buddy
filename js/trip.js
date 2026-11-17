@@ -652,6 +652,11 @@ function renderStrip() {
   if (!box) return;
   syncDest();
   const state = stripState(), dest = validDest(S.dest);
+  // With Where to? directions (nav.js, 3.0) the Drive screen has one way to pick a destination: its search pill. This strip
+  // then shows only the countdown to an I-5 destination (and its arrival), never a second "Where to?" button.
+  const navOn = !!(A && A.nav && typeof A.nav.openSearch === "function");
+  box.hidden = state === "none" && navOn;
+  if (box.hidden) { stripKey = "nav"; box.textContent = ""; return; }
   const key = state + "|" + destKey(dest);
   if (key !== stripKey || !box.firstChild) {
     stripKey = key;
@@ -1810,6 +1815,7 @@ export function init(api) {
   on("mode", onMode);
   on("pos", onPos);
   on("trip:end", () => endTrip());
+  on("nav:ready", () => renderStrip());
   on("place:stamp", onStamp);
   on("passport:reset", onReset);
   on("badge", () => markPassport());
