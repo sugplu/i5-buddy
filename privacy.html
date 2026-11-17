@@ -66,7 +66,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <div class="pv-sign">
     <h1>Privacy</h1>
     <p>What leaves your phone, what stays on it, and your choices.</p>
-    <p class="pv-date">Effective November 16, 2026 · Version 2026-11-16.2</p>
+    <p class="pv-date">Effective November 17, 2026 · Version 2026-11-17.1</p>
   </div>
 
   <div class="pv-intro">
@@ -80,8 +80,8 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
       <li>No account and no sign-in.</li>
       <li>No ads, no analytics or tracking scripts, and no cookies: I-5 Buddy sets none.</li>
       <li>We never sell your information or share it for advertising.</li>
-      <li>Your exact GPS position stays on your phone: I-5 Buddy never saves it and never sends it anywhere.</li>
-      <li>Some features tell other services roughly where you are: Live road info, the 3D map and online narration voices. They ask about the part of I-5 around you or ahead of you. Live road info is off until you turn it on. The app uses an online voice only if you pick one, or if your browser has no other.</li>
+      <li>Your exact GPS position stays on your phone, with one exception: when you ask for directions, your position goes to our server as the route's starting point (see Directions). I-5 Buddy never saves it on a server.</li>
+      <li>Some features tell other services roughly where you are: Live road info, Directions, the 3D map, the narration voice's recordings and online narration voices. They ask about the part of I-5 around you or ahead of you, or the places you search for. Live road info is off until you turn it on, and Directions sends nothing until you search for a place and say it may.</li>
       <li>Your trips, stamps and settings are saved only on your phone. We can't see them.</li>
       <li>If you send feedback, we get your message, your email, your name if you give one, the app version and your browser type. We use them only to read your message and reply.</li>
     </ul>
@@ -136,10 +136,24 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <p>The weather points are counted from the nearest 5-mile mark on I-5, not from your exact spot. So weather.gov can tell only roughly where you are (within a few miles) and which way you're going. The app checks about every 5 miles or 10 minutes. The cameras you load show Caltrans which stretch of I-5 you're on, often to within a mile. As with any web request, these services also get your IP address and can tell the request came from I-5 Buddy. When you reopen the app, it uses the last spot it saved, even with GPS off.</p>
   </section>
 
+  <section class="pv-item" aria-labelledby="f-nav">
+    <h3 id="f-nav">Directions (Where to?)</h3>
+    <p class="pv-when">Only when you search for a place or ask for a route, after you say it may</p>
+    <p>The app first looks through its own places on I-5 (cities, landmarks, missions, rest areas, exits and the stops at them), on your phone. The first time you search, it tells you what it sends and asks first. If you say Not now, it keeps to its own places and sends nothing; the countdown to an I-5 city still works.</p>
+    <p>When you say it may, the app sends these to our server at i5.dominares.org (Cloudflare):</p>
+    <ul>
+      <li><b>Searching:</b> the words you type, and your position rounded to about 100 meters, so the closest places come first.</li>
+      <li><b>A route:</b> your position as the starting point, and the destination's position. While you drive a route, the app follows it on your phone; it asks for a new route only when you leave the planned one.</li>
+    </ul>
+    <p>Our server asks Geoapify, our map data provider (its data comes from OpenStreetMap), for the places or the route, and sends the answer back. Geoapify gets the request from our server, not from your phone, so it doesn't see your IP address. Our server keeps no log of searches or routes. To answer the same question faster, Cloudflare keeps a copy of each answer at the edge, labeled with the question: search answers for up to a day, for an area of about 5 kilometers, and routes for up to 10 minutes. Those copies hold no IP address and nothing that says who asked.</p>
+    <p>Your recent destinations, and the places you save as Home and Work, are kept only on your phone.</p>
+  </section>
+
   <section class="pv-item" aria-labelledby="f-map">
     <h3 id="f-map">Maps</h3>
     <p class="pv-when">The 3D map: only after you tap 3D</p>
     <p>The regular map is drawn on your phone from the app's own data, so it loads no map pictures. A camera picture loads from Caltrans only when you tap a camera on it.</p>
+    <p>While you look at a route or drive one, Directions shows a map from OpenFreeMap the same way.</p>
     <p>The 3D map loads only after you tap 3D on the Map tab. Your phone then loads map pictures from OpenFreeMap (<span class="pv-host">tiles.openfreemap.org</span>) and hill shapes from Amazon Web Services (<span class="pv-host">s3.amazonaws.com</span>). As with any web request, they get your IP address and can tell the request came from I-5 Buddy. The pictures cover the area on screen, which starts at your spot on I-5 and follows you. So these services can see roughly where you are. It stops when you tap 3D again or leave the Map tab.</p>
   </section>
 
@@ -152,7 +166,8 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <section class="pv-item" aria-labelledby="f-speak">
     <h3 id="f-speak">Spoken narration</h3>
     <p class="pv-when">Whenever the app talks</p>
-    <p>I-5 Buddy speaks with a voice your browser provides. On iPhone, the voices run on the phone itself. On Android, it depends on your phone's speech engine. On a computer, some voices are online: Chrome's voices named "Google …" and Edge's named "… Online (Natural)". With one of those, your browser sends the words to Google or Microsoft. The words can say where you are, like "near mile 309, heading north". I-5 Buddy starts with a voice that runs on your device. It uses an online voice only if you pick one, or if your browser has no other. Settings &gt; Narration &gt; Voice marks those voices (online).</p>
+    <p>I-5 Buddy talks in its own natural voice. We recorded every line ahead of time on our own computer, with an open-source voice model, so nothing you do is sent anywhere to make the voice. The app plays those recordings. The website downloads each recording from i5.dominares.org as it's needed (or all at once from Settings &gt; Offline) and keeps it. The iPhone app has the recordings built in, except the long stories from Tell me more, which it downloads from i5.dominares.org the first time. The recordings your phone asks for show which landmark or story is playing, so Cloudflare could tell roughly where you are on I-5. Our server keeps no log of them.</p>
+    <p>When a recording is missing and can't be downloaded, or when you pick another voice in Settings &gt; Narration &gt; Voice, I-5 Buddy speaks with a voice your browser provides. On iPhone, the voices run on the phone itself. On Android, it depends on your phone's speech engine. On a computer, some voices are online: Chrome's voices named "Google …" and Edge's named "… Online (Natural)". With one of those, your browser sends the words to Google or Microsoft. The words can say where you are, like "near mile 309, heading north". Without the natural voice, I-5 Buddy uses a voice that runs on your device. It uses an online voice only if you pick one, or if your browser has no other. Settings &gt; Narration &gt; Voice marks those voices (online).</p>
   </section>
 
   <section class="pv-item" aria-labelledby="f-share">
@@ -188,12 +203,13 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <li>Your mission passport: for each of the 21 California missions you've stamped, the time and whether your phone was there or you marked it visited yourself (no GPS coordinates), and when the app last welcomed you at one.</li>
     <li>Whether you've seen the "New in I-5 Buddy" card, and in the iPhone app when it last checked the App Store and the version it found.</li>
     <li>Your last 30 trips: when, where on I-5 each started and ended, miles, top speed and destination.</li>
-    <li>Your destination, your ride (vehicle, color, badge and nickname) and your game scores.</li>
+    <li>Your destination, your recent destinations and your Home and Work places, and your navigation choices.</li>
+    <li>Your ride (vehicle, color, badge and nickname), your game scores, your license plate finds and the names you give players in Car Party.</li>
     <li>The last live road info it got, including points on the road ahead of you from the past week.</li>
     <li>For feedback: an unsent draft, and after you send, your name and email to fill in the form next time.</li>
-    <li>Offline copies of the app and of the photos you've viewed or saved.</li>
+    <li>Offline copies of the app, of the photos you've viewed or saved, and of the voice's recordings.</li>
   </ul>
-  <p>Your raw GPS readings and what you say to the microphone are never saved. They're gone when you close the app. Your phone or browser works out the GPS position with its own location service. That service may contact its maker, such as Apple or Google, under its own policy. I-5 Buddy never sends your GPS position anywhere.</p>
+  <p>Your raw GPS readings and what you say to the microphone are never saved. They're gone when you close the app. Your phone or browser works out the GPS position with its own location service. That service may contact its maker, such as Apple or Google, under its own policy. I-5 Buddy sends your position only as described under Directions.</p>
   <h3>Clearing it</h3>
   <ul>
     <li>Settings &gt; Reset &gt; Clear passport deletes your stamps, trips and badges.</li>
@@ -205,7 +221,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <h2 id="sharing">Who we share information with</h2>
   <ul>
     <li>We don't sell or rent your information, and we don't share it for advertising.</li>
-    <li>Our service providers are Cloudflare (our server, the feedback database and the error reports) and GitHub. GitHub Pages stores the app's files and serves the old sugplu.github.io address. They handle the requests described above. Cloudflare runs our server and the feedback database for us under its data processing terms: it may use that information only to provide its service to us, and it must protect it at least as well as this notice describes.</li>
+    <li>Our service providers are Cloudflare (our server, the feedback database and the error reports), Geoapify (place search and routes, asked by our server) and GitHub. GitHub Pages stores the app's files and serves the old sugplu.github.io address. They handle the requests described above. Cloudflare runs our server and the feedback database for us under its data processing terms: it may use that information only to provide its service to us, and it must protect it at least as well as this notice describes.</li>
     <li>Mail you send to <a href="mailto:support@dominares.org">support@dominares.org</a> passes through Cloudflare Email Routing to the mailbox where we read it. Our email provider keeps those emails and our replies, including replies to your feedback.</li>
     <li>The National Weather Service, Caltrans, OpenFreeMap, Amazon Web Services and your browser's speech services (Google, Apple or Microsoft) get requests straight from your phone when you use those features. In Safari on an iPhone or iPad, Apple's App Store also gets Safari's request for its banner for the iPhone app, and the iPhone app asks Apple's App Store lookup for the app's current version once a day at most. Their own privacy policies apply.</li>
     <li>We may disclose information if the law requires it, for example to answer a valid court order.</li>

@@ -289,3 +289,4 @@ body.glance .big-btn{min-height:96px;font-size:1.15rem}
 .also-from b{color:var(--dom);font-weight:800}
 .moved{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:#000;color:#fff;border:1px solid #00B070;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.35}
 .moved a{color:#2FD394;font-weight:700}
+.whats-new .wn-list{margin:0;padding-left:1.1em;display:grid;gap:5px;color:var(--fg-2);line-height:1.4}

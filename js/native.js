@@ -462,7 +462,7 @@ async function ownVersion() {
     const m = r.ok && /VERSION\s*=\s*"i5b-v([\w.-]{1,30})"/.exec(await r.text());
     if (m) return m[1];
   } catch {}
-  return "2.6.2";
+  return "3.0.0";
 }
 /** The App Store's version of the app, or null. Native HTTP when the shell has it (no CORS), else fetch. 10 s, quiet. */
 async function lookup() {
