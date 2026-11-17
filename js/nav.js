@@ -258,7 +258,16 @@ export function buildRoute(raw, miles) {
   return {
     id: "r" + (++routeSeq), geometry, cum, total, distance_mi, duration_s, k: total > 0 ? distance_mi / total : 1, steps,
     stepT: useStepT ? stepT : null, stepTotal: useStepT ? stepT.total : null, attribution: str(raw.attribution, 200) || "© OpenStreetMap contributors · Geoapify",
+    // speed limits along the line (the server's [geometry index, mph] where it changes), as miles along the route
+    limits: Array.isArray(raw.limits) ? raw.limits.filter(x => Array.isArray(x) && num(Number(x[0])) && num(Number(x[1])) && Number(x[1]) > 0)
+      .map(x => ({ at: cum[idx(x[0])], mph: Math.round(Number(x[1])) })).sort((a, b) => a.at - b.at) : null,
   };
+}
+/** The speed limit where you are: from the route's own list when it has one (it changes mid-step), else the step's. */
+function limitAt(r, along, step) {
+  const L = r && r.limits;
+  if (L && L.length) { let v = null; for (const x of L) { if (x.at <= along + 0.01) v = x.mph; else break; } if (v != null) return v; }
+  return step ? step.speed_limit_mph : null;
 }
 /** Index of the segment [i, i+1] holding `along` miles (binary search over cum). */
 function segAt(route, along) {
@@ -616,7 +625,7 @@ function guideInfo() {
   const after = steps[nextI + 1];
   if (show !== steps[0] && after && after.type !== "arrive" && after.start - steps[nextI].start <= 0.3) then = after;
   const left = Math.max(0, (r.total - N.along) * r.k), sec = secondsLeft(r, N.along, Math.min(cur, last));
-  return { cur, next: steps[nextI], show, distTo, then, left, sec, arriveAt: now() + sec * 1000, limit: steps[Math.min(cur, last)].speed_limit_mph, mph: N.mph, freeway: !!steps[Math.min(cur, last)].ref };
+  return { cur, next: steps[nextI], show, distTo, then, left, sec, arriveAt: now() + sec * 1000, limit: limitAt(r, N.along, steps[Math.min(cur, last)]), mph: N.mph, freeway: !!steps[Math.min(cur, last)].ref };
 }
 
 function statusText() {
