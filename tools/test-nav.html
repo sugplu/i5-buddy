@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy navigation module test</title>
+<!--
+  Drives js/nav.js (the "normal GPS") inside the real app. Results: bottom bar + console "[test-nav] ...".
+  ?s=      search | route | drive (each has its own page load) | view (leaves one screen up for a screenshot)
+  ?v=      view: search | gate | preview | steps | guide | guide2 | arrived | error      ?theme= dark | light      ?w= ?h= iframe size (default 390 x 844)
+  search:  local results (a city, a landmark, a brand, an exit, a mission), the one-time notice before the first online search,
+           Not now = local only, the debounce (3 letters, 350 ms), the abort of the old request on a new keystroke, offline,
+           category chips, recents, Home and Work.
+  route:   the preview with MapLibre blocked (the SVG sketch and the steps list), the summary (time, miles, arrival clock,
+           "Mostly on I-5"), service errors, the notice before the first route request, Start turns GPS on.
+  drive:   a simulated drive along a hand-made route (streets, an on-ramp, real I-5 coordinates, an exit, an arrival): the prompt
+           sequence and their units, no duplicates, 8 s apart, the phrase bank, mute and the settings, the status line, the slim
+           banner, one reroute, offline, one arrival, End, landmark narration while on I-5.
+  The app loads as srcdoc with the service worker stubbed (see test-share.html). The place search and route service are a mock.
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:390px;height:844px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search), SCEN = Q.get("s") || "search", THEME = Q.get("theme") || "dark";
+const f = document.getElementById("f");
+f.style.width = (+(Q.get("w") || 390)) + "px";
+f.style.height = (+(Q.get("h") || 844)) + "px";
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 6000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) throw new Error("timed out waiting: " + fn.toString().slice(0, 120)); await wait(step); }
+}
+const checks = [];
+function log(...a) { console.log("[test-nav] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); }
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + extra : ""}`); }
+function finish() {
+  const bad = checks.filter(c => !c[1]).length, bar = document.getElementById("bar");
+  bar.className = bad ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${THEME} · ${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  log(bad ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+const $ = (doc, sel) => doc.querySelector(sel);
+const $$ = (doc, sel) => [...doc.querySelectorAll(sel)];
+const sizeOK = b => { const r = b.getBoundingClientRect(); return r.width >= 43.5 && r.height >= 43.5; };
+
+async function boot({ narr = false } = {}) {
+  localStorage.clear();
+  localStorage.setItem("i5b:settings", JSON.stringify({ live: false, theme: THEME, narr }));
+  const html = await (await fetch("../index.html", { cache: "no-store" })).text();
+  const stub = `<base href="${new URL("../", location.href).href}"><script>try{Object.defineProperty(navigator.serviceWorker,"register",{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}<\/script>`;
+  f.srcdoc = html.replace(/<head>/i, "<head>" + stub);
+  await until(() => f.contentDocument && f.contentDocument.readyState === "complete" && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api.nav, 20000);
+  await wait(200);
+  const win = f.contentWindow, doc = f.contentDocument, api = win.I5BUDDY.api;
+  api.settings.theme = THEME; doc.documentElement.dataset.theme = THEME;
+  return { win, doc, api };
+}
+
+/* ---------- the mock route service ---------- */
+const D2R = Math.PI / 180;
+const off = ([lat, lon], east, north) => [lat + north / 69.0, lon + east / (69.17 * Math.cos(lat * D2R))];
+function seg(a, b, step = 0.02) {
+  const L = Math.hypot((b[1] - a[1]) * 69.17 * Math.cos(a[0] * D2R), (b[0] - a[0]) * 69.0), n = Math.max(1, Math.ceil(L / step)), out = [];
+  for (let i = 1; i <= n; i++) out.push([a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n]);
+  return out;
+}
+/** A hand-made route in the Burbank area: three streets, an on-ramp onto I-5 (its real coordinates for six miles), exit 155,
+    two more streets, arrival on the right. Returns {raw, pts, idx}. */
+function makeRoute(api) {
+  const at = m => api.geo.coordAt(m);
+  const E = at(147.6), D = off(E, -0.45, -0.08), C = off(D, -0.5, 0), B = off(C, 0, 0.12), A = off(B, -0.35, 0);
+  const geom = [A], idx = { A: 0 };
+  const go = (name, pts) => { geom.push(...pts); idx[name] = geom.length - 1; };
+  go("B", seg(A, B)); go("C", seg(B, C)); go("D", seg(C, D)); go("E", seg(D, E));
+  const fw = []; for (let m = 147.65; m <= 154.0001; m += 0.05) fw.push(at(m));
+  go("X", fw);
+  const X = geom[idx.X], Y = off(X, 0.3, 0.22), Z = off(Y, 0, 0.14), W = off(Z, 0.3, 0);
+  go("Y", seg(X, Y)); go("Z", seg(Y, Z)); go("W", seg(Z, W));
+  const st = (type, from, to, o = {}) => ({ type, i0: idx[from], i1: idx[to], text: "", street: null, ref: null, exit: null, toward: null, roundabout_exit: null, speed_limit_mph: 35, ...o });
+  const steps = [
+    st("depart", "A", "B", { text: "Head east on Main Street", street: "Main Street" }),
+    st("turn-right", "B", "C", { text: "Turn right onto Oak Street", street: "Oak Street" }),
+    st("turn-left", "C", "D", { text: "Turn left onto Olive Avenue", street: "Olive Avenue" }),
+    st("merge", "D", "X", { text: "Merge onto I-5 North", street: "I-5 North", ref: "I-5", speed_limit_mph: 65 }),
+    st("exit-right", "X", "Y", { text: "Take exit 155 toward Sunland Boulevard", exit: "155", toward: "Sunland Boulevard", speed_limit_mph: 45 }),
+    st("turn-left", "Y", "Z", { text: "Turn left onto Sunland Boulevard", street: "Sunland Boulevard" }),
+    st("turn-right", "Z", "W", { text: "Turn right onto Hollywood Way", street: "Hollywood Way" }),
+    { type: "arrive", i0: idx.W, i1: idx.W, text: "Arrive at your destination", side: "right", street: null, ref: null, exit: null, toward: null, roundabout_exit: null, speed_limit_mph: null },
+  ];
+  let total = 0;
+  for (const s of steps) {
+    const a = geom[s.i0], b = geom[s.i1];
+    let d = 0; for (let i = s.i0; i < s.i1; i++) d += api.geo.miles(geom[i][0], geom[i][1], geom[i + 1][0], geom[i + 1][1]);
+    s.distance_mi = Math.round(d * 100) / 100; s.duration_s = Math.round(d / (s.speed_limit_mph || 35) * 3600); total += d; void a; void b;
+  }
+  const dur = steps.reduce((x, s) => x + s.duration_s, 0);
+  return { raw: { distance_mi: Math.round(total * 10) / 10, duration_s: dur, geometry: geom, steps, attribution: "© OpenStreetMap contributors · Geoapify" }, pts: { A, B, C, D, E, X, Y, Z, W }, idx };
+}
+/** The mock provider: search answers after 60 ms (and honours abort); route returns the hand-made route, or a short one from `from` to `to`. */
+function mockProvider(api, over = {}) {
+  const calls = { search: [], route: [] }, made = makeRoute(api);
+  const p = {
+    calls, made,
+    search(q, pos, signal) {
+      const c = { q, pos, signal, aborted: false }; calls.search.push(c);
+      signal.addEventListener("abort", () => { c.aborted = true; });
+      return new Promise((res, rej) => {
+        const t = setTimeout(() => res({ results: [
+          { id: "g1", name: "Costco Burbank", address: "1051 W Burbank Blvd, Burbank, CA 91506", lat: 34.1855, lon: -118.3295, kind: "poi", cat: "commercial.supermarket" },
+          { id: "g2", name: "Costco Wholesale", address: "2121 N Victory Pl, Burbank, CA 91504", lat: 34.2012, lon: -118.3511, kind: "poi", cat: "commercial.supermarket" },
+          { id: "g3", name: "Costco Gasoline", address: "1051 W Burbank Blvd, Burbank, CA", lat: 34.1858, lon: -118.3301, kind: "poi", cat: "service.fuel" },
+        ], attribution: "© OpenStreetMap contributors · Geoapify" }), 60);
+        signal.addEventListener("abort", () => { clearTimeout(t); const e = new Error("aborted"); e.aborted = true; rej(e); });
+      });
+    },
+    route(from, to, heading, signal) {
+      calls.route.push({ from, to, heading, signal });
+      if (over.route) return over.route(from, to, heading, signal, calls.route.length);
+      if (calls.route.length === 1 || over.always) return Promise.resolve(JSON.parse(JSON.stringify(made.raw)));
+      // a reroute: from here to the same destination, two streets
+      const a = [from.lat, from.lon], b = [to.lat, to.lon], g = [a, ...seg(a, b, 0.03)];
+      return Promise.resolve({ distance_mi: 0.5, duration_s: 90, geometry: g, steps: [
+        { type: "depart", i0: 0, i1: g.length - 1, text: "Head toward your destination", speed_limit_mph: 25 },
+        { type: "arrive", i0: g.length - 1, i1: g.length - 1, side: null } ] });
+    },
+  };
+  return p;
+}
+const NEARBY = { lat: 34.19, lon: -118.33 };
+function setConsent(api, v) { api.store.set("nav:consent", v); }
+function fakeGeo(win, here) {
+  win.__I5_FAKE_GEO__ = { watchPosition() { return 1; }, clearWatch() {}, getCurrentPosition(ok) { ok({ coords: { latitude: here.lat, longitude: here.lon, accuracy: 10 } }); } };
+  win.__calls = [];
+}
+/** Watch what nav hands to the speech queue (the real one still runs, silently). */
+function spy(api) {
+  const calls = [], real = api.voice.say.bind(api.voice);
+  api.voice.say = (text, opts = {}) => { calls.push({ text, ...opts, units: opts.units ? opts.units.slice() : undefined }); return real(text, opts); };
+  return calls;
+}
+const navCalls = calls => calls.filter(c => /^nav:/.test(c.id || ""));
+const eventsOf = (api, names) => { const seen = {}; for (const n of names) { seen[n] = []; api.bus.on(n, d => seen[n].push(d)); } return seen; };
+
+/* ================================================================ scenarios ================================================================ */
+const SCENARIOS = {
+  /* ------------------------------------------------ search ------------------------------------------------ */
+  async search({ win, doc, api }) {
+    const nav = api.nav;
+    check("api.nav exists with the whole interface", ["state", "dest", "route", "search", "preview", "start", "end", "setProvider", "phraseBank", "simulate", "stopSimulate", "statusText"].every(k => typeof nav[k] === "function"), Object.keys(nav).join(","));
+    check("idle at the start", nav.state() === "idle" && nav.dest() === null && nav.route() === null && nav.statusText() === "");
+    // --- the pill
+    const pill = $(doc, "#navSearch .nav-pill");
+    check("a Where to? pill sits on the Drive screen", !!pill && /Where to\?/.test(txt(pill)) && !$(doc, "#view-drive").hidden && $(doc, "#navSearch").closest("#view-drive") != null, txt(pill));
+    check("the pill is a real button of at least 44 px", pill && pill.tagName === "BUTTON" && sizeOK(pill));
+    check("the trip countdown strip is still there", !!$(doc, "#destStrip"));
+    check("with no position yet the pill sits under the welcome card (Start GPS and Install app stay above the tab bar)", $(doc, "#navSearch").previousElementSibling === $(doc, "#nextCard"));
+    // --- local results, with a position so "ahead" shows
+    api.setMode("demo"); api.setPosition(100, { dir: "N", speed: 60, jumped: true });
+    check("once there is a position it moves up under the sign, near the top of Drive", $(doc, "#navSearch").previousElementSibling === $(doc, "#signBoard"));
+    const names = (q, kind) => nav.search(q).filter(r => !kind || r.kind === kind);
+    const sac = names("sacramento", "city")[0];
+    check("local search finds a city on I-5", !!sac && sac.name === "Sacramento" && Math.abs(sac.m - 519) < 1 && /ahead/.test(sac.sub) && Math.abs(sac.lat - 38.6) < 1, JSON.stringify(sac));
+    check("it ranks an exact city first", nav.search("burbank")[0].name === "Burbank" && nav.search("burb")[0].kind === "city");
+    const lmk = api.data.PLACES.find(p => p.lat != null && /^[A-Za-z' ]{8,}$/.test(p.name)), noLat = api.data.PLACES.find(p => p.lat == null);
+    const land = nav.search(lmk.name).find(r => r.kind === "place" && r.id === "place:" + lmk.id), land2 = nav.search(noLat.name).find(r => r.kind === "place" && r.id === "place:" + noLat.id);
+    check("local search finds a landmark (its own coordinates, or the road's where it has none)", !!land && Math.abs(land.lat - lmk.lat) < 1e-9 && !!land2 && Number.isFinite(land2.lat) && Number.isFinite(land2.lon) && land2.m === noLat.m, `${lmk.name} / ${noLat.name}`);
+    const kett = nav.search("kettleman").find(r => r.kind === "city");
+    check("and a city on I-5 by a partial name", !!kett && /Kettleman/.test(kett.name) && Number.isFinite(kett.lat), JSON.stringify(kett));
+    const mis = names("san luis rey", "mission")[0];
+    check("local search finds a mission with its own coordinates", !!mis && /San Luis Rey/.test(mis.name) && Math.abs(mis.lat - 33.2) < 0.2, JSON.stringify(mis));
+    const inn = names("in-n-out", "brand");
+    check("local search finds a service brand at the next exits", inn.length >= 2 && inn.every(r => /In-N-Out/.test(r.name) && /Exit/.test(r.sub)) && /mi ahead/.test(inn[0].sub), inn.map(r => r.name + " | " + r.sub).join(" ; "));
+    check("brand matching ignores punctuation (in n out)", names("in n out", "brand").length >= 2);
+    const ex = nav.search("exit 278");
+    check("local search matches an exit number", ex[0] && ex[0].kind === "exit" && /Exit 278/.test(ex[0].name) && ex[0].m != null && Math.abs(ex[0].m - 278) < 1, JSON.stringify(ex[0]));
+    check("a bare number of 2 or 3 digits matches an exit too", nav.search("278").some(r => r.kind === "exit"));
+    check("nothing matches nonsense", nav.search("zzqxj").length === 0);
+    // --- the sheet
+    pill.click();
+    await wait(150);
+    const sheet = $(doc, "#navSheet"), input = $(doc, "#navQ");
+    check("tapping the pill opens a full-screen search sheet", !sheet.hidden && nav.state() === "searching" && sheet.getBoundingClientRect().width >= 389 && sheet.getBoundingClientRect().height >= 843);
+    check("the input is a search field with the search key, focused, with a label", input.type === "search" && input.getAttribute("enterkeyhint") === "search" && doc.activeElement === input && !!$(doc, 'label[for="navQ"]'));
+    check("the tab bar is out of the way", win.getComputedStyle($(doc, ".tabs")).display === "none");
+    check("category chips: Gas, EV charging, Food, Coffee, Rest areas, Hotels", $$(doc, ".nav-chip").map(txt).join("|") === "⛽Gas|⚡EV charging|🍴Food|☕Coffee|🚻Rest areas|🛏️Hotels" && $$(doc, ".nav-chip").every(sizeOK));
+    check("with no recents it offers Home and Work and a hint", /Set Home/.test(txt($(doc, ".nav-favs"))) && /Set Work/.test(txt($(doc, ".nav-favs"))) && /In-N-Out/.test(txt($(doc, ".nav-sh-body"))));
+    // --- local results appear at once, before any online search
+    const mock = mockProvider(api); nav.setProvider(mock);
+    const spoken = spy(api); void spoken;
+    const type = async v => { input.value = v; input.dispatchEvent(new win.Event("input", { bubbles: true })); await wait(10); };
+    await type("burbank");
+    check("local results show at once, with no online request yet", $$(doc, ".nav-row").some(b => /Burbank/.test(txt(b)) && /On I-5/.test(txt(b))) && mock.calls.search.length === 0);
+    check("rows are 44 px or more", $$(doc, ".nav-row").every(b => b.getBoundingClientRect().height >= 43.5) && $$(doc, ".nav-star").every(sizeOK));
+    // --- the one-time notice: before the first online search
+    check("no consent yet", nav.consent() === null);
+    await wait(420);
+    const gate = $(doc, "#navConsent");
+    check("the one-time notice shows before the first online search, word for word", !gate.hidden && txt(gate).includes("To search places and plan routes, I-5 Buddy sends what you type and your current location to Dominares' server, which asks our map data provider (Geoapify, built on OpenStreetMap). Neither keeps them."), txt(gate).slice(0, 160));
+    check("it offers Continue and Not now (44 px)", $$(doc, "#navConsent button").map(txt).join("|") === "Continue|Not now" && $$(doc, "#navConsent button").every(sizeOK));
+    check("the online search is blocked until Continue", mock.calls.search.length === 0);
+    $$(doc, "#navConsent button").find(b => /Not now/.test(txt(b))).click();
+    await wait(150);
+    check("Not now: the notice goes away, nothing was sent, local results stay", gate.hidden && mock.calls.search.length === 0 && nav.consent() === "no" && $$(doc, ".nav-row").some(b => /Burbank/.test(txt(b))));
+    check("and it says online search is off, with a way to turn it on", /Online search is off/.test(txt($(doc, ".nav-sh-body"))) && /Turn on online search/.test(txt($(doc, ".nav-sh-body"))));
+    await type("burbank airport");
+    await wait(450);
+    check("no nagging: typing more shows no notice and sends nothing", gate.hidden && mock.calls.search.length === 0);
+    $$(doc, ".nav-sh-body .link").find(b => /Turn on/.test(txt(b))).click();
+    await wait(100);
+    check("Turn on online search asks again", !gate.hidden);
+    $$(doc, "#navConsent button").find(b => /Continue/.test(txt(b))).click();
+    await until(() => mock.calls.search.length >= 1, 3000);
+    check("Continue is stored", nav.consent() === "yes" && api.store.get("nav:consent") === "yes");
+    check("the search asks for what was typed, near the car", mock.calls.search.length === 1 && mock.calls.search[0].q === "burbank airport" && mock.calls.search[0].pos && Math.abs(mock.calls.search[0].pos.lat - api.geo.coordAt(100)[0]) < 0.01, JSON.stringify(mock.calls.search[0] && mock.calls.search[0].pos));
+    await type("costco");
+    await wait(520);
+    const rows = $$(doc, ".nav-row").map(txt);
+    check("online results are labeled and listed under the local ones, with their address", /Online results/.test(txt($(doc, ".nav-sh-body"))) && rows.some(r => /Costco Burbank/.test(r) && /1051 W Burbank/.test(r)) && rows.length >= 3, rows.join(" || "));
+    check("the attribution line shows", /© OpenStreetMap contributors · Geoapify/.test(txt($(doc, ".nav-fine"))));
+    // --- debounce, minimum length, abort on a new keystroke
+    const n0 = mock.calls.search.length;
+    await type("co"); await wait(500);
+    check("two letters never search online", mock.calls.search.length === n0);
+    await type("cost"); await wait(100);
+    check("a request waits 350 ms after the last key", mock.calls.search.length === n0);
+    await wait(300);
+    check("then it goes out once", mock.calls.search.length === n0 + 1 && mock.calls.search[n0].q === "cost");
+    await type("costc");
+    await wait(380);
+    const mid = mock.calls.search[mock.calls.search.length - 1];
+    await type("costco ");
+    check("a new keystroke aborts the request for the old words", mid.q === "costc" && mid.aborted === true, `${mid.q} aborted=${mid.aborted}`);
+    await wait(500);
+    // --- a result: route preview starts, recents remember it
+    const quiet = $$(doc, ".nav-row").find(b => /Costco Burbank/.test(txt(b)));
+    const star = quiet.parentElement.querySelector(".nav-star");
+    star.click(); await wait(50);
+    const saveBtns = $$(doc, ".nav-save button").map(txt);
+    check("the star offers Set as Home and Set as Work", saveBtns.join("|") === "Set as Home|Set as Work", saveBtns.join("|"));
+    $$(doc, ".nav-save button").find(b => /Home/.test(txt(b))).click(); await wait(50);
+    check("Home is saved on this phone", nav.favorites().home && nav.favorites().home.name === "Costco Burbank" && api.store.get("nav:fav").home.lat === 34.1855);
+    // --- offline
+    const onLine = Object.getOwnPropertyDescriptor(win.Navigator.prototype, "onLine");
+    Object.defineProperty(win.navigator, "onLine", { configurable: true, get: () => false });
+    const n1 = mock.calls.search.length;
+    await type("sunland"); await wait(450);
+    check("offline: local results only, with a one-line note, nothing sent", mock.calls.search.length === n1 && /offline/i.test(txt($(doc, ".nav-sh-body"))));
+    delete win.navigator.onLine; void onLine;
+    // --- category chips: local stops ahead + an online search of the word
+    $$(doc, ".nav-chip")[0].click();
+    await wait(450);
+    const gas = $$(doc, ".nav-row").map(txt);
+    check("the Gas chip lists the next exits with gas, then asks online for gas stations", gas.some(r => /Gas · Exit/.test(r) && /ahead/.test(r)) && mock.calls.search[mock.calls.search.length - 1].q === "gas station" && $$(doc, ".nav-chip")[0].getAttribute("aria-pressed") === "true", gas.slice(0, 3).join(" || "));
+    $$(doc, ".nav-chip")[4].click(); await wait(100);
+    check("the Rest areas chip lists rest areas ahead", $$(doc, ".nav-row").some(b => /Rest area/.test(txt(b))) && $$(doc, ".nav-chip")[0].getAttribute("aria-pressed") === "false");
+    // --- choosing one: recents and the route preview
+    nav.setProvider(mockProvider(api));
+    await type("costco");
+    await wait(520);
+    $$(doc, ".nav-row").find(b => /Costco Wholesale/.test(txt(b))).click();
+    await until(() => nav.state() === "previewing", 3000);
+    check("choosing a result closes the sheet and previews the route", $(doc, "#navSheet").hidden && !$(doc, "#navView").hidden && nav.dest().name === "Costco Wholesale");
+    check("it is remembered in Recent", nav.recents()[0].name === "Costco Wholesale" && nav.recents().length === 1);
+    nav.end();
+    await wait(100);
+    check("closing the preview returns to the app", $(doc, "#navView").hidden && nav.state() === "idle");
+    // --- the sheet again: recents, Home as a one-tap shortcut
+    $(doc, "#navSearch .nav-pill").click(); await wait(100);
+    check("reopened: Home is a button with its name, and Recent lists the last destination", /Home/.test(txt($(doc, ".nav-favs"))) && /Costco Burbank/.test(txt($(doc, ".nav-favs"))) && /Recent/.test(txt($(doc, ".nav-sh-body"))) && /Costco Wholesale/.test(txt($(doc, ".nav-sh-body"))));
+    // recents hold at most 8
+    for (let i = 0; i < 12; i++) api.store.set("nav:recent", [{ name: "x" + i, lat: 34 + i / 100, lon: -118, kind: "place" }, ...(api.store.get("nav:recent", []))].slice(0, 12));
+    check("the recent list shows the last 8 only", nav.recents().length === 8);
+    nav.end(); $(doc, ".nav-sh-head .nav-iconbtn").click(); await wait(50);
+    check("the back button closes the sheet", $(doc, "#navSheet").hidden && nav.state() === "idle");
+    const css = (await (await fetch("../css/nav.css")).text()).replace(/\/\*[\s\S]*?\*\//g, "");
+    check("the stylesheet uses tokens only (no hex or rgb colors)", !/#[0-9a-fA-F]{3,8}\b|rgba?\(/.test(css), (css.match(/#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g) || []).join(" "));
+    const de = doc.documentElement;
+    check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+  },
+
+  /* ------------------------------------------------ route ------------------------------------------------ */
+  async route({ win, doc, api }) {
+    const nav = api.nav, T = new Date(2026, 10, 16, 14, 0).getTime();
+    nav._test.setClock(() => T);
+    api.S.lat = NEARBY.lat; api.S.lon = NEARBY.lon;
+    const mock = mockProvider(api); nav.setProvider(mock);
+    const ev = eventsOf(api, ["nav:route", "nav:start", "nav:end"]);
+    const dest = { name: "Hollywood Way Diner", address: "300 N Hollywood Way, Burbank, CA", lat: mock.made.pts.W[0], lon: mock.made.pts.W[1], kind: "poi" };
+    // --- the notice comes before the first route request
+    const pending = nav.preview(dest);
+    await wait(150);
+    const gate = $(doc, "#navConsent");
+    check("a route request asks first: the notice shows, no request has gone out", !gate.hidden && mock.calls.route.length === 0 && nav.state() === "previewing", String(mock.calls.route.length));
+    $$(doc, "#navConsent button").find(b => /Not now/.test(txt(b))).click();
+    check("Not now: no route, the app is back, nothing was sent", (await pending) === null && mock.calls.route.length === 0 && nav.state() === "idle" && $(doc, "#navView").hidden);
+    const city = nav.search("kettleman")[0];
+    nav.preview(city); await wait(150);
+    $$(doc, "#navConsent button").find(b => /Not now/.test(txt(b))).click(); await wait(100);
+    check("Not now on a place on I-5 still sets the I-5 countdown", api.S.dest && /Kettleman/.test(api.S.dest.name), JSON.stringify(api.S.dest));
+    api.trip && api.trip.clearDest();
+    setConsent(api, "yes");
+    // --- the preview, with MapLibre blocked (no tiles: the sketch and the list)
+    const route = await nav.preview(dest);
+    check("preview resolves a route and shows the preview", !!route && nav.state() === "previewing" && !$(doc, "#navView").hidden && $(doc, "#navView").dataset.mode === "preview", $(doc, "#navView").dataset.mode);
+    check("the request carries from, to and a heading when known", mock.calls.route.length === 1 && Math.abs(mock.calls.route[0].from.lat - NEARBY.lat) < 1e-6 && Math.abs(mock.calls.route[0].to.lat - dest.lat) < 1e-6);
+    check("nav:route was emitted", ev["nav:route"].length === 1 && ev["nav:route"][0].route === route);
+    check("the route model has cumulative miles and steps with starts", route.total > 8 && route.steps.length === 8 && route.steps[3].start > route.steps[2].start && Math.abs(route.steps[7].start - route.total) < 1e-9);
+    const body = txt($(doc, ".nav-pv-body"));
+    const mins = Math.round(route.duration_s / 60);
+    check("summary: travel time, distance and the arrival clock", new RegExp(`${mins} min`).test(body) && new RegExp(`${route.distance_mi.toFixed(1)} mi`).test(body) && body.includes("Arrive " + new Date(T + route.duration_s * 1000).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })), body);
+    check("summary: Mostly on I-5 (N mi), from snapping the route to the I-5 line", /^.*Mostly on I-5 \((6|7) mi\)/.test(body), body);
+    check("the title shows the destination and its address", /Hollywood Way Diner/.test(txt($(doc, ".nav-pv-who"))) && /300 N Hollywood Way/.test(txt($(doc, ".nav-pv-who"))));
+    check("Start, Steps and Close are real buttons of 44 px or more", $$(doc, ".nav-pv-acts button").map(txt).join("|") === "Start|Steps|Close" && $$(doc, ".nav-pv-acts button").every(sizeOK) && sizeOK($(doc, ".nav-pv-x")));
+    check("the attribution line is visible", /© OpenStreetMap contributors · OpenFreeMap · Routes: Geoapify/.test(txt($(doc, ".nav-attrib"))) && $(doc, ".nav-attrib").getBoundingClientRect().height > 0);
+    await until(() => $(doc, "#navView").dataset.map === "failed" || $(doc, "#navView").dataset.map === "ready", 20000);
+    const mapState = $(doc, "#navView").dataset.map;
+    check("with MapLibre unavailable (the tests block every outside host) the preview falls back to a sketch, never a blank screen", mapState === "failed" && !$(doc, ".nav-sketch").hidden && !!$(doc, ".nav-sketch svg .sk-ahead") && /isn't available/.test(txt($(doc, ".nav-maptext"))), mapState);
+    const sk = $(doc, ".nav-sketch svg"), skb = sk.getBoundingClientRect();
+    check("the sketch has the route, the start and the destination and fills the map area", !!$(doc, ".sk-start") && !!$(doc, ".sk-dest") && skb.width > 300 && skb.height > 200, `${Math.round(skb.width)}x${Math.round(skb.height)}`);
+    const pd = $(doc, ".sk-ahead").getAttribute("d");
+    check("the sketch path has many points", (pd.match(/L/g) || []).length > 30);
+    // --- steps
+    $$(doc, ".nav-pv-acts button").find(b => /Steps/.test(txt(b))).click(); await wait(80);
+    const stepRows = $$(doc, ".nav-step");
+    check("Steps lists every maneuver with an icon, words and a distance", !$(doc, ".nav-steps").hidden && stepRows.length === 8 && stepRows.every(r => r.querySelector("svg")) && /Take exit 155 toward Sunland Boulevard/.test(txt(stepRows[4])) && /mi|ft/.test(txt(stepRows[3])) && /Merge onto I-5 North/.test(txt(stepRows[3])) && /Arrive/.test(txt(stepRows[7])), stepRows.map(txt).join(" | "));
+    check("each icon is its own drawing (turn, merge, exit, arrive differ)", new Set(stepRows.map(r => r.querySelector("svg").innerHTML)).size >= 6);
+    $(doc, ".nav-steps .nav-iconbtn").click(); await wait(50);
+    check("the list closes again", $(doc, ".nav-steps").hidden);
+    // --- the icon set: one SVG per type, left mirrors right
+    const types = ["depart", "straight", "turn-left", "turn-right", "slight-left", "slight-right", "sharp-left", "sharp-right", "uturn", "keep-left", "keep-right", "exit-left", "exit-right", "merge", "roundabout", "arrive"];
+    const icons = types.map(t => nav._test.iconSvg(t));
+    check("every step type has an icon", icons.every(s => /^<svg /.test(s) && /<path|<circle/.test(s)) && new Set(icons).size >= 14);
+    // --- a service error shows the server's own words and a Try again
+    nav.end(); await wait(50);
+    nav.setProvider(mockProvider(api, { route: () => Promise.reject(Object.assign(new Error("x"), { http: 404, words: "No route found between those places." })) }));
+    const r2 = await nav.preview(dest);
+    check("a service error shows its words and Try again, never a blank screen", r2 === null && $(doc, "#navView").dataset.mode === "error" && /No route found between those places\./.test(txt($(doc, ".nav-pv-body"))) && /Try again/.test(txt($(doc, ".nav-pv-body"))) && $(doc, ".nav-pv-acts .nav-start").disabled);
+    const m3 = mockProvider(api); nav.setProvider(m3);
+    $$(doc, ".nav-pv-body button").find(b => /Try again/.test(txt(b))).click();
+    await until(() => nav.state() === "previewing" && nav.route(), 4000);
+    check("Try again asks again and shows the route", m3.calls.route.length === 1 && $(doc, "#navView").dataset.mode === "preview");
+    nav.end(); await wait(50);
+    nav.setProvider(mockProvider(api, { route: () => Promise.reject(Object.assign(new TypeError("Failed to fetch"), { offline: true })) }));
+    await nav.preview(dest);
+    check("a network failure says so plainly", /couldn't reach the route service/i.test(txt($(doc, ".nav-pv-body"))));
+    nav.end(); await wait(50);
+    nav.setProvider(mockProvider(api, { route: () => Promise.resolve({ error: "no" }) }));
+    await nav.preview(dest);
+    check("an answer that is not a route is an error too", nav.route() === null && $(doc, "#navView").dataset.mode === "error");
+    nav.end(); await wait(50);
+    // --- without a position: it asks the browser for one, else says what it needs
+    api.S.lat = null; api.S.lon = null; api.S.m = null;
+    const m4 = mockProvider(api); nav.setProvider(m4);
+    await nav.preview(dest);
+    check("with no position and no location it says what it needs", nav.route() === null && /need your location/.test(txt($(doc, ".nav-pv-body"))) && m4.calls.route.length === 0);
+    fakeGeo(win, NEARBY);
+    $$(doc, ".nav-pv-body button").find(b => /Try again/.test(txt(b))).click();
+    await until(() => nav.route(), 4000);
+    check("with the browser's location it plans from there", Math.abs(m4.calls.route[0].from.lat - NEARBY.lat) < 1e-6 && nav.state() === "previewing");
+    // --- Start: GPS comes on, guidance opens, the tab bar stays out of the way
+    check("GPS is off before Start", api.S.mode === "off");
+    $$(doc, ".nav-pv-acts button").find(b => /Start/.test(txt(b))).click();
+    await wait(200);
+    check("Start turns GPS on through Start GPS and opens guidance", api.S.mode === "gps" && nav.state() === "navigating" && $(doc, "#navView").dataset.mode === "guide" && ev["nav:start"].length === 1);
+    check("guidance: the banner shows the first thing to do, with an arrow", /Head east on Main Street/.test(txt($(doc, ".nav-banner"))) && !!$(doc, ".nav-bn-ic svg"));
+    check("the bottom bar has arrival time, time left, miles left, End, mute, overview", $$(doc, ".nav-stat small").map(txt).join("|") === "arrive|left|to go" && $$(doc, ".nav-bottom-acts button").length === 5 && $$(doc, ".nav-bottom-acts button").every(sizeOK));
+    nav.end(); await wait(100);
+    check("End goes back to the app: view gone, tab bar back, state idle", $(doc, "#navView").hidden && nav.state() === "idle" && win.getComputedStyle($(doc, ".tabs")).display !== "none" && ev["nav:end"].length >= 1 && !doc.body.classList.contains("nav-open"));
+    api.stopAll(true);
+    const de = doc.documentElement;
+    check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+  },
+
+  /* ------------------------------------------------ drive ------------------------------------------------ */
+  async drive({ win, doc, api }) {
+    const nav = api.nav, T0 = new Date(2026, 10, 16, 14, 0).getTime();
+    nav._test.setClock(() => T0);
+    setConsent(api, "yes");
+    api.S.lat = NEARBY.lat; api.S.lon = NEARBY.lon;
+    fakeGeo(win, NEARBY);
+    const said = spy(api);
+    const ev = eventsOf(api, ["nav:route", "nav:start", "nav:step", "nav:reroute", "nav:arrive", "nav:end", "place:announce"]);
+    const mock = mockProvider(api); nav.setProvider(mock);
+    const dest = { name: "Hollywood Way Diner", address: "300 N Hollywood Way, Burbank, CA", lat: mock.made.pts.W[0], lon: mock.made.pts.W[1], kind: "poi", m: 151 };
+    const route = await nav.preview(dest);
+    check("route ready", !!route && nav.state() === "previewing");
+    // --- grammar, pure
+    const T = nav._test;
+    const step = (type, o = {}) => ({ type, ref: null, exit: null, roundabout_exit: null, ...o });
+    const J = u => u.join(" ");
+    check("grammar: a turn with a distance", J(T.promptUnits(step("turn-right"), "500ft")) === "In 500 feet, turn right." && T.promptUnits(step("turn-right"), "500ft").length === 2);
+    check("grammar: the final prompt starts with a capital", J(T.promptUnits(step("turn-left"), null)) === "Turn left.");
+    check("grammar: onto a highway", J(T.promptUnits(step("merge", { ref: "I-405" }), "1mi")) === "In 1 mile, merge onto I-405." && T.promptUnits(step("merge", { ref: "I-405" }), "1mi").join("|") === "In 1 mile,|merge|onto|I-405.");
+    check("grammar: highway names", T.highwayUnit("US-101") === "U.S. 101." && T.highwayUnit("CA-99") === "Highway 99." && T.highwayUnit("I-5") === "I-5." && T.highwayUnit("CA 14") === "Highway 14." && T.highwayUnit("I-999") === null && T.highwayUnit("Main Street") === null);
+    check("grammar: an exit with a letter is separate units", T.promptUnits(step("exit-right", { exit: "45B" }), "half").join("|") === "In half a mile,|take the exit on the right.|Take exit|45|B." && T.promptUnits(step("exit-left", { exit: "278" }), null).join("|") === "Take the exit on the left.|Take exit|278.");
+    check("grammar: roundabout exits 1st to 6th, nothing for others", T.maneuverPhrase(step("roundabout", { roundabout_exit: 2 })) === "at the roundabout, take the 2nd exit" && T.maneuverPhrase(step("roundabout", { roundabout_exit: 6 })) === "at the roundabout, take the 6th exit" && T.maneuverPhrase(step("roundabout", { roundabout_exit: 7 })) === null && T.maneuverPhrase(step("roundabout")) === null);
+    check("grammar: then turn left", T.promptUnits(step("turn-right"), null, step("turn-left")).join("|") === "Turn right.|Then|turn left.");
+    check("grammar: every step type has at most one fixed phrase and none is empty", ["turn-left", "turn-right", "slight-left", "slight-right", "sharp-left", "sharp-right", "uturn", "keep-left", "keep-right", "exit-left", "exit-right", "merge", "straight"].every(t => !!T.maneuverPhrase(step(t))));
+    const bank = nav.phraseBank();
+    check("the phrase bank lists every unit and sentence (and no duplicates)", bank.units.length === bank.count && new Set(bank.units).size === bank.units.length && bank.count > 1500 && ["In 2 miles,", "In 1 mile,", "In half a mile,", "In a quarter mile,", "In 1,000 feet,", "In 500 feet,", "turn right", "turn left", "turn slightly right", "make a sharp left", "make a U-turn", "keep left", "keep right", "take the exit on the right", "take the exit on the left", "merge", "continue straight", "at the roundabout, take the 2nd exit", "onto", "I-405.", "U.S. 101.", "Highway 99.", "Take exit", "278.", "278", "B.", "Then", "You have arrived.", "Your destination is on the right.", "Your destination is on the left.", "Rerouting.", "Route ready.", "No connection. Keep going, and I'll reroute when the signal is back.", "Navigation ended."].every(u => bank.units.includes(u)), String(bank.count));
+    check("and the sentences are the fixed lines", bank.sentences.length === 7 && bank.sentences.every(s => bank.units.includes(s)));
+    // --- start (GPS comes on), then drive the hand-made route in simulation, 65 mph on the freeway
+    nav.start();
+    await wait(100);
+    check("Start: GPS on, state navigating, nav:start once", nav.state() === "navigating" && api.S.mode === "gps" && ev["nav:start"].length === 1);
+    check("the pill on Drive now says Navigating", /Navigating/.test(txt($(doc, "#navSearch .nav-pill"))) && /Hollywood Way Diner/.test(txt($(doc, "#navSearch .nav-pill"))));
+    check("an I-5 destination also sets the Drive countdown (trip.js)", api.S.dest && api.S.dest.name === "Hollywood Way Diner" && api.S.dest.m === 151, JSON.stringify(api.S.dest));
+    const r0 = nav.simulate({ mph: 65, sync: true, until: 0.3 });
+    check("a simulated drive emits synthetic fixes into the engine", r0.fixes >= 10 && nav.guide().stepIdx === 0 && nav.guide().along > 0.25);
+    await wait(300);
+    const status = nav.statusText();
+    check("the status hook says the destination and the next maneuver", /Turn right onto Oak Street in/.test(status) && /to Hollywood Way Diner/.test(status), status);
+    check("and the app's own status line shows it, with a NAV pill", /Oak Street/.test(txt($(doc, "#statusText"))) && txt($(doc, "#statusPill")) === "NAV", txt($(doc, "#statusText")));
+    check("the banner shows distance, instruction, the arrow and, since the next turn is under 0.3 mi later, a Then line", /Turn right onto Oak Street/.test(txt($(doc, ".nav-bn-text"))) && /\d/.test(txt($(doc, ".nav-bn-dist"))) && !!$(doc, ".nav-bn-ic svg") && !$(doc, ".nav-bn-then").hidden && /^Then turn left onto Olive Avenue$/.test(txt($(doc, ".nav-bn-then"))), txt($(doc, ".nav-banner")));
+    check("the speed shows, and a speed limit sign when the step has one", $(doc, ".nav-speed b").textContent !== "--" && !$(doc, ".nav-limit").hidden && $(doc, ".nav-limit b").textContent === "35");
+    // minimize: the slim banner, the normal app
+    $(doc, ".nav-bottom-acts button[aria-label^='Back to the app']").click(); await wait(100);
+    const slim = $(doc, "#navBanner");
+    check("Back to the app keeps guiding in a slim top banner", $(doc, "#navView").hidden && !slim.hidden && /Oak Street/.test(txt(slim)) && /\d/.test(txt(slim)) && nav.state() === "navigating" && win.getComputedStyle($(doc, ".tabs")).display !== "none" && slim.querySelector("button") && sizeOK(slim.querySelector("button")), txt(slim));
+    nav.simulate({ mph: 65, sync: true, until: 0.7 });
+    await wait(50);
+    check("the slim banner follows the drive", /Merge onto I-5 North/.test(txt(slim)), txt(slim));
+    slim.querySelector("button").click(); await wait(100);
+    check("tapping it brings the full view back", !$(doc, "#navView").hidden && $(doc, "#navView").dataset.mode === "guide" && slim.hidden);
+    // mute, alerts only
+    // --- the whole drive
+    const mark = said.length;
+    const out = nav.simulate({ mph: 65, sync: true, until: route.total - 0.12 });
+    check("the drive runs to the last street", out.fixes > 300, JSON.stringify(out));
+    await wait(100);
+    const logAll = T.log();
+    const prompts = logAll.filter(x => /^nav:r\d+:\d+:/.test(x.id));
+    const ids = prompts.map(x => x.id);
+    log("prompts", prompts.map(p => `${p.id.split(":").slice(2).join(":")} ${p.units ? p.units.join("|") : p.text}`));
+    check("every prompt has a stable id nav:<route>:<step>:<stage>, said once (no duplicates)", prompts.length >= 8 && new Set(ids).size === ids.length && prompts.every(p => /^nav:r\d+:[1-7]:(far|mid|final)$/.test(p.id)), ids.join(" "));
+    const by = s => prompts.filter(p => p.id.split(":")[2] === String(s)).map(p => p.id.split(":")[3]);
+    check("streets: one advance prompt then the final (turn 1)", by(1).join() === "mid,final", by(1).join());
+    check("freeway exit: 2 miles, 1 mile, then the final", by(4).join() === "far,mid,final", by(4).join());
+    const pu = (s, st) => (prompts.find(p => p.id.endsWith(`:${s}:${st}`)) || {}).units;
+    check("the units: 1,000 feet before the first turn, and the final adds then turn left", J(pu(1, "mid") || []) === "In 1,000 feet, turn right." && J(pu(1, "final") || []) === "Turn right. Then turn left.", J(pu(1, "mid") || []) + " / " + J(pu(1, "final") || []));
+    check("the merge names the highway as its own unit", J(pu(3, "mid") || []) === "In 1,000 feet, merge onto I-5." && (pu(3, "mid") || []).join("|") === "In 1,000 feet,|merge|onto|I-5.", (pu(3, "mid") || []).join("|"));
+    check("the exit: 2 miles, then 1 mile, then the final, with the exit number", J(pu(4, "far") || []) === "In 2 miles, take the exit on the right. Take exit 155." && J(pu(4, "mid") || []) === "In 1 mile, take the exit on the right. Take exit 155." && J(pu(4, "final") || []) === "Take the exit on the right. Take exit 155.", J(pu(4, "far") || []));
+    check("no street name or place name is ever spoken", prompts.every(p => !/Oak|Olive|Main|Sunland|Hollywood|toward/i.test(p.text)));
+    check("each prompt's units joined with spaces are exactly its words", prompts.every(p => p.units && p.units.join(" ") === p.text));
+    const inBank = new Set(bank.units);
+    const passed = new Set(); for (const p of logAll) for (const u of p.units || []) passed.add(u);
+    check("phraseBank() covers every unit actually passed during the drive", [...passed].every(u => inBank.has(u)) && passed.size >= 12, [...passed].filter(u => !inBank.has(u)).join("|") || String(passed.size));
+    const finals = prompts.filter(p => p.kind === "final"), advs = prompts.filter(p => p.kind === "adv");
+    check("the final prompts interrupt (now) at priority 3; the early ones queue at priority 3", finals.length >= 6 && finals.every(p => p.now === true) && advs.every(p => p.now === false));
+    const calls = navCalls(said).filter(c => /^nav:r\d+:\d+:/.test(c.id));
+    check("what voice.say really received: prio 3, an id, a check, and the units array", calls.length === prompts.length && calls.every(c => c.prio === 3 && typeof c.check === "function" && Array.isArray(c.units) && c.units.join(" ") === c.text) && calls.filter(c => c.now).length === finals.length);
+    const gaps = prompts.map(p => p.t).map((t, i, a) => (i ? t - a[i - 1] : 99999));
+    check("never two prompts within 8 s", gaps.every(g => g >= 8000), gaps.join(","));
+    check("a prompt comes before its maneuver, in order", (() => { let last = 0; for (const id of ids) { const k = +id.split(":")[2]; if (k < last) return false; last = k; } return true; })(), ids.join(" "));
+    check("nav:step fired as the car entered each step", ev["nav:step"].length >= 5 && ev["nav:step"].map(e => e.index).every((v, i, a) => !i || v > a[i - 1]) && ev["nav:step"][ev["nav:step"].length - 1].step && true, ev["nav:step"].map(e => e.index).join());
+    check("landmark narration is still the narrator's: none of its lines are nav prompts, and I-5 Buddy keeps its own queue", said.filter(c => !/^nav:/.test(c.id || "")).every(c => (c.prio ?? 1) <= 3));
+    // --- arrival, once
+    const arrivedBefore = ev["nav:arrive"].length;
+    check("not arrived yet at 0.12 mi out", arrivedBefore === 0 && nav.state() === "navigating");
+    nav.simulate({ mph: 65, sync: true, until: 1e9 });
+    await wait(300);
+    check("arrival fires once, with the destination", ev["nav:arrive"].length === 1 && ev["nav:arrive"][0].dest.name === "Hollywood Way Diner" && nav.state() === "arrived");
+    const arr = T.log().filter(x => /:arrive$/.test(x.id));
+    check("the arrival lines: You have arrived. and the side", arr.length === 1 && arr[0].units.join("|") === "You have arrived.|Your destination is on the right." && arr[0].now === true);
+    check("the arrival card shows the destination and Done", $(doc, "#navView").dataset.mode === "arrived" && /You have arrived/.test(txt($(doc, ".nav-arrived"))) && /Hollywood Way Diner/.test(txt($(doc, ".nav-arrived"))) && /on the right/.test(txt($(doc, ".nav-arrived"))) && /Done/.test(txt($(doc, ".nav-arrived"))));
+    for (let i = 0; i < 6; i++) T.fix({ lat: dest.lat, lon: dest.lon, accuracy: 6, speed: 0, heading: 90, t: T0 + 999999 + i * 1000 });
+    check("more fixes at the door do not fire it again", ev["nav:arrive"].length === 1 && T.log().filter(x => /:arrive$/.test(x.id)).length === 1);
+    check("the status line says arrived", /Arrived at Hollywood Way Diner/.test(nav.statusText()));
+    $(doc, ".nav-arrived .primary").click(); await wait(150);
+    check("Done (End) returns to the normal app", nav.state() === "idle" && $(doc, "#navView").hidden && $(doc, "#navBanner").hidden && win.getComputedStyle($(doc, ".tabs")).display !== "none" && ev["nav:end"].length === 1 && nav.route() === null && nav.dest() === null && nav.statusText() === "");
+    check("the countdown nav set is gone again", !api.S.dest);
+    check("and the pill is Where to? again", /Where to\?/.test(txt($(doc, "#navSearch .nav-pill"))));
+    check("ending after arrival says nothing more", T.log().filter(x => x.text === "Navigation ended.").length === 0);
+    api.stopAll(true); await wait(50);
+
+    // --- a second drive: mute, alerts only, street names, from a demo start
+    const mock2 = mockProvider(api); nav.setProvider(mock2);
+    await nav.preview(dest);
+    api.S.mode = "off";
+    api.settings.navVoice = "alerts"; api.saveSettings();
+    nav.start({ gps: false });
+    nav.simulate({ mph: 65, sync: true, until: 5 });
+    const al = T.log().filter(x => /^nav:r\d+:\d+:/.test(x.id));
+    const alSpoken = al.filter(x => x.spoken);
+    check("in Alerts only mode just the final prompts speak (the early ones are not said)", alSpoken.length > 0 && alSpoken.every(x => x.kind === "final") && al.some(x => x.kind === "adv" && !x.spoken), `${alSpoken.length} of ${al.length}`);
+    api.settings.navVoice = "off"; api.saveSettings();
+    nav.simulate({ mph: 65, sync: true, until: 8 });
+    check("in Off mode nothing speaks", T.log().filter(x => x.spoken && x.t > al[al.length - 1].t).length === 0);
+    api.settings.navVoice = "full"; api.saveSettings();
+    nav.setMuted(true);
+    check("mute silences nav prompts only, and is remembered", nav.muted() && api.store.get("nav:mute") === true);
+    nav.end(); await wait(50);
+    check("a drive that started from a demo ends with it (mode off again)", api.S.mode === "off", api.S.mode);
+    api.stopAll(true);
+    nav.setMuted(false);
+    // street names
+    api.settings.navStreets = true; api.saveSettings();
+    nav.setProvider(mockProvider(api)); await nav.preview(dest);
+    check("the settings sheet has the voice setting and the street names toggle", !!$(doc, "#navSettings") && $$(doc, "#navSettings [data-nav-voice]").map(txt).join("|") === "Full|Alerts only|Off" && /Say street names \(uses the phone's voice\)/.test(txt($(doc, "#navSettings"))));
+    nav.start({ gps: false });
+    nav.simulate({ mph: 65, sync: true, until: 0.6 });
+    const st = T.log().filter(x => /^nav:r\d+:\d+:/.test(x.id));
+    check("with street names on, the provider's words are spoken and no units are passed", st.length >= 1 && /Oak Street|Olive Avenue/.test(st[0].text) && st.every(x => x.units === null) && navCalls(said).filter(c => /^nav:r\d+:\d+:/.test(c.id)).slice(-st.length).every(c => c.units === undefined), st.map(x => x.text).join(" | "));
+    api.settings.navStreets = false; api.saveSettings();
+    nav.end(); await wait(50); api.stopAll(true);
+
+    // --- off route: exactly one reroute, a clock that respects the 10 s rule, then offline
+    const mock3 = mockProvider(api); nav.setProvider(mock3);
+    await nav.preview(dest);
+    nav.start({ gps: false });
+    const geom = nav.route().geometry;
+    let clock = T0;
+    nav._test.setClock(() => clock);
+    const fix = (lat, lon, o = {}) => { clock += o.dt ?? 1000; const hit = api.geo.locate(lat, lon); T.fix({ lat, lon, accuracy: 8, m: hit.m, dist: hit.dist, offRoute: hit.dist > 1.2, speed: o.mph ?? 30, heading: o.hd ?? 90, t: clock }); };
+    for (let i = 0; i < 12; i++) fix(geom[i * 3][0], geom[i * 3][1]);
+    check("on the route there is no reroute", mock3.calls.route.length === 1 && ev["nav:reroute"].length === 0 && T.N.offCount === 0);
+    const base = geom[40], far = [base[0] + 0.0032, base[1]];       // about 350 m north of the road
+    fix(far[0], far[1]); fix(far[0] + 0.0002, far[1]);
+    check("two fixes off the route do nothing yet", mock3.calls.route.length === 1);
+    fix(far[0] + 0.0004, far[1]);
+    await wait(80);
+    check("three in a row while moving: Rerouting. and exactly one new route request, from here, with the heading", mock3.calls.route.length === 2 && ev["nav:reroute"].length === 1 && mock3.calls.route[1].heading != null && Math.abs(mock3.calls.route[1].from.lat - (far[0] + 0.0004)) < 1e-6, String(mock3.calls.route.length));
+    check("it said Rerouting. once, as an alert", T.log().filter(x => /^nav:reroute:/.test(x.id)).length === 1 && T.log().find(x => /^nav:reroute:/.test(x.id)).text === "Rerouting." && T.log().find(x => /^nav:reroute:/.test(x.id)).now === true);
+    const newRoute = nav.route();
+    check("the new route replaced the old one and nav:route fired for it", newRoute.id !== route.id && ev["nav:route"].length >= 2 && Math.abs(newRoute.geometry[0][0] - (far[0] + 0.0004)) < 1e-6);
+    for (let i = 0; i < 4; i++) fix(far[0] + 0.0004, far[1] + 0.0003 * i);
+    await wait(30);
+    check("fixes near the new route cause no more requests", mock3.calls.route.length === 2, String(mock3.calls.route.length));
+    // off again inside 10 s: the rate limit holds; after 10 s it goes
+    const hereLat = newRoute.geometry[newRoute.geometry.length - 1][0], hereLon = newRoute.geometry[newRoute.geometry.length - 1][1];
+    clock += 1; for (let i = 0; i < 3; i++) fix(hereLat + 0.01, hereLon + 0.01 + i * 1e-4, { dt: 1000 });
+    await wait(30);
+    check("at most one reroute per 10 s", mock3.calls.route.length === 2, String(mock3.calls.route.length));
+    clock += 11000;
+    for (let i = 0; i < 3; i++) fix(hereLat + 0.01, hereLon + 0.012 + i * 1e-4, { dt: 1000 });
+    await wait(60);
+    check("after 10 s it asks again", mock3.calls.route.length === 3, String(mock3.calls.route.length));
+    // offline: the no-connection line once, retried when the signal is back
+    Object.defineProperty(win.navigator, "onLine", { configurable: true, get: () => false });
+    clock += 11000;
+    const nb = mock3.calls.route.length;
+    for (let i = 0; i < 6; i++) fix(hereLat + 0.02, hereLon + 0.02 + i * 1e-4, { dt: 1000 });
+    await wait(30);
+    const offl = T.log().filter(x => x.text === "No connection. Keep going, and I'll reroute when the signal is back.");
+    check("offline: the no-connection line is said once and no request goes out", offl.length === 1 && mock3.calls.route.length === nb, `${offl.length} ${mock3.calls.route.length - nb}`);
+    delete win.navigator.onLine;
+    win.dispatchEvent(new win.Event("online"));
+    await wait(60);
+    check("when the signal is back it asks again", mock3.calls.route.length === nb + 1);
+    nav.end(); await wait(50);
+    nav._test.setClock(() => T0);
+    check("ending a drive says Navigation ended. (an alert)", T.log().filter(x => x.text === "Navigation ended.").length === 1 && T.log().find(x => x.text === "Navigation ended.").now === true);
+    api.stopAll(true);
+
+    // --- a drive from no GPS at all: the demo mode comes on and goes off with the drive; landmark narration plays on I-5
+    api.settings.narr = true; api.saveSettings();
+    const mock4 = mockProvider(api); nav.setProvider(mock4);
+    await nav.preview(dest);
+    check("before: tracking off", api.S.mode === "off");
+    nav.start({ gps: false });
+    const before = said.length;
+    nav.simulate({ mph: 65, sync: true, until: 6 });
+    await wait(150);
+    check("a simulated drive turns demo mode on (and the pill says NAV)", api.S.mode === "demo");
+    const lm = said.slice(before).filter(c => !/^nav:/.test(c.id || "") && (c.prio === 1));
+    check("on I-5 the landmark narration keeps going (priority 1) while nav guides", ev["place:announce"].length >= 1 && lm.length >= 1, `${ev["place:announce"].length} announced, ${lm.length} said`);
+    check("and nav prompts outrank it (priority 3, interrupting)", navCalls(said.slice(before)).every(c => c.prio === 3));
+    nav.stopSimulate();
+    check("stopSimulate ends the demo it started", api.S.mode === "off" && nav.state() === "navigating");
+    nav.end(); await wait(50);
+    check("End: the normal app, everything cleared", $(doc, "#navView").hidden && nav.state() === "idle" && !T.N.sim);
+    const de = doc.documentElement;
+    check("no horizontal page scroll", de.scrollWidth <= de.clientWidth, `${de.scrollWidth} vs ${de.clientWidth}`);
+  },
+
+  /* ------------------------------------------------ view (screens for a screenshot) ------------------------------------------------ */
+  async view({ win, doc, api }) {
+    const nav = api.nav, v = Q.get("v") || "preview";
+    nav._test.setClock(() => new Date(2026, 10, 16, 14, 0).getTime());
+    setConsent(api, v === "gate" ? null : "yes");
+    api.S.lat = NEARBY.lat; api.S.lon = NEARBY.lon;
+    fakeGeo(win, NEARBY);
+    api.setMode("gps"); api.setPosition(150, { dir: "N", speed: 0, jumped: true });
+    const mock = mockProvider(api); nav.setProvider(mock);
+    const dest = { name: "Hollywood Way Diner", address: "300 N Hollywood Way, Burbank, CA", lat: mock.made.pts.W[0], lon: mock.made.pts.W[1], kind: "poi", m: 151 };
+    if (v === "search" || v === "gate") {
+      api.store.set("nav:recent", [{ name: "Costco Burbank", address: "1051 W Burbank Blvd, Burbank", lat: 34.18, lon: -118.33, kind: "poi" }, { name: "Sacramento", address: "On I-5", lat: 38.58, lon: -121.5, kind: "city", m: 519 }]);
+      api.store.set("nav:fav", { home: { name: "Home: 12 Oak St", address: "Burbank", lat: 34.2, lon: -118.3, kind: "address" }, work: null });
+      nav.openSearch(v === "gate" ? "costco" : "");
+      if (v === "gate") await wait(450);
+      await wait(200);
+    } else {
+      await nav.preview(dest);
+      if (v === "error") { /* shown by the mock below */ }
+      if (v === "steps") { $$(doc, ".nav-pv-acts button")[1].click(); }
+      if (v === "guide" || v === "guide2" || v === "arrived") {
+        nav.start({ gps: false });
+        nav.simulate({ mph: 65, sync: true, until: v === "guide" ? 0.4 : v === "guide2" ? 4.9 : 1e9 });
+      }
+      await wait(1500);
+    }
+    { const nv = $(doc, "#navView"); log("view", v, "map=" + (nv && nv.dataset.map), "mode=" + (nv && nv.dataset.mode), "canvas=" + !!(nv && nv.querySelector("canvas")), "sketchHidden=" + !!(nv && nv.querySelector(".nav-sketch") && nv.querySelector(".nav-sketch").hidden)); }
+    { const m = api.nav._test.V.map; if (m) { for (let i = 0; i < 40; i++) { try { m.triggerRepaint(); await fetch("../manifest.webmanifest?w=" + i, { cache: "no-store" }); } catch {} }
+        log("map", { styleLoaded: m.isStyleLoaded(), layers: (m.getStyle().layers || []).filter(l => /^nav-/.test(l.id)).map(l => l.id), center: m.getCenter(), zoom: m.getZoom(), pitch: m.getPitch(), src: !!m.getSource("nav-route"), grad: JSON.stringify(m.getPaintProperty("nav-route-line", "line-gradient")) }); } }
+    check("view ready: " + v, true);
+  },
+};
+
+(async () => {
+  try {
+    const ctx = await boot({ narr: SCEN === "drive" ? false : false });
+    await SCENARIOS[SCEN](ctx);
+  } catch (e) {
+    check("test ran", false, String((e && e.stack) || e).replace(/\n\s*/g, " | "));
+  }
+  finish();
+})();
+</script>
+</body>
+</html>

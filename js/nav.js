@@ -814,6 +814,7 @@ function start(o = {}) {
   N.startedAt = now(); N.startAlong = 0; N.follow = true; N.overview = false;
   applyTripDest();
   emit("nav:start", { route: N.route, dest: N.dest });
+  renderSearchPill();
   sayNav(SENT.ready, [SENT.ready], { id: `nav:${N.route.id}:ready`, kind: "alert" });
   openGuide();
   queueRender();
@@ -878,9 +879,18 @@ const SVG_STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2
 const SVG_MORE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.9" fill="currentColor"/><circle cx="12" cy="12" r="1.9" fill="currentColor"/><circle cx="19" cy="12" r="1.9" fill="currentColor"/></svg>';
 
 /* ---------- the pill on Drive ---------- */
+/** Under the sign once there is a position. Before that (the welcome card), under the card, so Start GPS and Install app / Get the iPhone app stay above the tab bar on a short phone screen. */
+function placePill() {
+  const box = $id("navSearch"), sign = $id("signBoard"), card = $id("nextCard");
+  if (!box || !sign || !card) return;
+  const welcome = S.m == null;
+  if (welcome) { if (box.previousElementSibling !== card) card.after(box); }
+  else if (box.previousElementSibling !== sign) sign.after(box);
+}
 function renderSearchPill() {
   const box = $id("navSearch");
   if (!box) return;
+  placePill();
   const key = N.state + ":" + (N.dest ? N.dest.name : "");
   if (box.dataset.key === key && box.firstChild) return;
   box.dataset.key = key; box.textContent = "";
@@ -1184,7 +1194,7 @@ function buildView() {
   if (V.built) return;
   V.built = true;
   const root = V.root = slot("navView", "nav-view", "div");
-  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Navigation");
+  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Navigation"); root.tabIndex = -1;
   root.textContent = "";
   const stage = el("div", "nav-stage");
   V.mapEl = el("div", "nav-map");
@@ -1289,7 +1299,7 @@ function openGuide() {
   V.bottom.hidden = false;
   if (wasHidden) { N.follow = true; N.overview = false; syncTools(); }
   guideUpdate(true);
-  try { V.btnEnd.focus({ preventScroll: true }); } catch {}
+  try { V.root.focus({ preventScroll: true }); } catch {}
 }
 function showArrived() {
   openView("arrived");
@@ -1410,6 +1420,7 @@ function guideUpdate(force) {
   if (!g || N.state !== "navigating") { renderSlim(); return; }
   renderSlim();
   if (!viewShown() || V.mode !== "guide") return;
+  try { V.root.style.setProperty("--nav-bottom", V.bottom.offsetHeight + "px"); V.root.style.setProperty("--nav-top", V.banner.offsetHeight + "px"); } catch {}
   const text = stepText(g.show, N.dest && N.dest.name);
   V.bnDist.textContent = fmtDist(g.distTo);
   if (V.lastShow !== text) { V.lastShow = text; V.bnText.textContent = text; }
@@ -1662,14 +1673,14 @@ function drawSketch() {
     // heading-up: the car at the bottom, the next stretch of the route going up the screen
     const p = carPoint(), g = guideInfo(), th = p.bearing * Math.PI / 180, sn = Math.sin(th), cs = Math.cos(th);
     const kx = 69.17 * Math.cos(p.lat * Math.PI / 180), ky = 69.0;
-    const win = clamp(0.4 + ((N.mph ?? 0) / 60) * 1.4, 0.4, 1.8), scale = 250 / win;
-    const out = a => [150 + ((a[1] - p.lon) * kx * cs - (a[0] - p.lat) * ky * sn) * scale, 310 - ((a[1] - p.lon) * kx * sn + (a[0] - p.lat) * ky * cs) * scale];
+    const win = clamp(0.2 + ((N.mph ?? 0) / 60) * 0.9, 0.2, 1.2), scale = 230 / win;
+    const out = a => [150 + ((a[1] - p.lon) * kx * cs - (a[0] - p.lat) * ky * sn) * scale, 290 - ((a[1] - p.lon) * kx * sn + (a[0] - p.lat) * ky * cs) * scale];
     const i0 = segAt(r, Math.max(0, N.along - 0.15)), i1 = Math.min(r.geometry.length - 1, segAt(r, Math.min(r.total, N.along + win * 1.4)) + 1);
     const here = [], ahead = [];
     for (let i = i0; i <= i1; i++) (r.cum[i] < N.along ? here : ahead).push(out(r.geometry[i]));
-    const behind = here.concat([[150, 310]]), front = [[150, 310]].concat(ahead);
+    const behind = here.concat([[150, 290]]), front = [[150, 290]].concat(ahead);
     const key = g.show.type;
-    box.innerHTML = `<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A sketch of the road ahead"><path class="sk-behind" d="${polyline(behind)}"/><path class="sk-ahead" d="${polyline(front)}"/><path class="sk-car" d="M150 292 163 322 150 315 137 322Z" data-t="${key}"/></svg>`;
+    box.innerHTML = `<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A sketch of the road ahead"><path class="sk-behind" d="${polyline(behind)}"/><path class="sk-ahead" d="${polyline(front)}"/><path class="sk-car" d="M150 272 163 302 150 295 137 302Z" data-t="${key}"/></svg>`;
     return;
   }
   // the whole route, north up
@@ -1739,7 +1750,7 @@ async function preview(dest) {
     N.i5 = { mi: on, share: route.total > 0 ? on / route.total : 0 };
     emit("nav:route", { route });
     renderPreview();
-    try { V.btnStart.focus({ preventScroll: true }); } catch {}
+    try { V.root.focus({ preventScroll: true }); } catch {}
     return route;
   } catch (e) {
     if (my !== N.token || (e && e.aborted)) return null;
@@ -1779,16 +1790,24 @@ function simStep() {
 function simulate(o = {}) {
   if (N.state === "previewing" && N.route) start({ gps: false });
   if (N.state !== "navigating" || !N.route) return false;
-  stopSimulate();
-  const sim = N.sim = { t: clockFn(), along: N.snap ? N.along : 0, mph: clamp(Number(o.mph) || 55, 5, 95), x: Math.max(0.1, Number(o.x) || 1), tick: 1000, timer: 0, count: 0, placed: false, farN: 0, mode: A.S.mode, setMode: false };
-  if (A.S.mode === "off") { try { A.setMode("demo"); sim.setMode = true; } catch (e) { warn(e); } }
-  N.lastFix = null; N.snap = null; N.mph = null; N.lastPromptT = -1e9;
+  let sim = N.sim;
+  if (sim) {                                           // already driving: carry on (new speed, new target), same clock
+    if (o.mph) sim.mph = clamp(Number(o.mph) || sim.mph, 5, 95);
+    if (o.x) sim.x = Math.max(0.1, Number(o.x) || sim.x);
+    if (!o.sync && !sim.timer) sim.timer = setInterval(simStep, Math.max(4, 1000 / sim.x));
+  } else sim = N.sim = { t: clockFn(), along: N.snap ? N.along : 0, mph: clamp(Number(o.mph) || 55, 5, 95), x: Math.max(0.1, Number(o.x) || 1), tick: 1000, timer: 0, count: 0, placed: false, farN: 0, mode: A.S.mode, setMode: false };
+  if (!sim.started) {
+    sim.started = true;
+    if (A.S.mode === "off") { try { A.setMode("demo"); sim.setMode = true; } catch (e) { warn(e); } }
+    N.lastFix = null; N.snap = null; N.mph = null; N.lastPromptT = -1e9;
+  }
   if (o.sync) {
     let guard = 0;
-    while (N.sim === sim && N.state === "navigating" && guard++ < 60000) simStep();
-    return { fixes: sim.count };
+    const until = num(Number(o.until)) && o.until != null ? Number(o.until) : Infinity;   // stop at this many miles along the route (tests, screenshots)
+    while (N.sim === sim && N.state === "navigating" && sim.along < until && guard++ < 60000) simStep();
+    return { fixes: sim.count, along: sim.along };
   }
-  sim.timer = setInterval(simStep, Math.max(4, 1000 / sim.x));
+  if (!sim.timer) sim.timer = setInterval(simStep, Math.max(4, 1000 / sim.x));
   return true;
 }
 function stopSimulate() {
@@ -1844,6 +1863,7 @@ export function init(api) {
   } catch (e) { console.error("[nav] setup failed", e); return; }
   const on = (evt, fn) => { try { bus.on(evt, (...a) => { try { fn(...a); } catch (e) { warn(evt, e); } }); } catch (e) { warn("bus " + evt, e); } };
   on("fix", onFix);
+  on("pos", placePill);
   on("settings", syncSettings);
   on("mode", () => { if (N.state === "navigating") queueRender(); });
   on("trip:end", () => { /* ending the trip (GPS) does not end navigation; the person taps End */ });
