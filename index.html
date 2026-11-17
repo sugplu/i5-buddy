@@ -47,6 +47,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <link rel="stylesheet" href="css/share.css">
 <link rel="stylesheet" href="css/ride.css">
 <link rel="stylesheet" href="css/missions.css">
+<link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
 <div class="app">
@@ -63,6 +64,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.4-2.5.1-1-.1-1 2.1-1.6-2-3.4-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3h-4l-.4 2.6c-.6.3-1.2.6-1.7 1l-2.5-1-2 3.4L6.5 11l-.1 1 .1 1-2.1 1.6 2 3.4 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.4-2.2-1.6Z" fill="currentColor"/></svg>
   </button>
 </header>
+<div id="navBanner" hidden></div>
 
 <main id="main">
 <!-- DRIVE -->
@@ -87,6 +89,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     </div>
     <div class="ribbon" id="ribbon" aria-hidden="true"></div>
   </div>
+  <div id="navSearch"></div>
   <div id="rideInvite"></div>
 
   <div class="store-update" id="storeUpdate" hidden></div>
@@ -251,6 +254,10 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <aside class="sheet" id="shareSheet" hidden aria-label="Share" role="dialog" aria-modal="true"></aside>
 <aside class="sheet" id="rideSheet" hidden aria-label="Pick your ride" role="dialog" aria-modal="true"></aside>
 <aside class="sheet" id="missionSheet" hidden aria-label="Mission" role="dialog" aria-modal="true"></aside>
+
+<aside class="nav-sheet" id="navSheet" hidden aria-label="Where to?" role="dialog" aria-modal="true"></aside>
+<div class="nav-view" id="navView" hidden role="dialog" aria-modal="true" aria-label="Navigation"></div>
+<div class="nav-consent" id="navConsent" hidden></div>
 
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>
