@@ -1,67 +1,20 @@
-// I-5 Buddy play module: road bingo, trivia and I spy.
+// I-5 Buddy play module: the Play tab. A picker of game cards, then road bingo, trivia (classic and a speed round), I spy,
+// and the games in js/games/: Plate Hunt, Higher or Lower, Where Is This?, Would You Rather, Scavenger Hunt, the Alphabet
+// Game, Cow Count, and the Car Party scoreboard they share. Each of those loads when it is first opened (and is cached
+// for offline play with the rest of the app).
 // Owns #view-play (the whole Play tab) and #spotCard (the I spy cards on Drive, under the next-landmark card).
 // Works offline, with no position (S.m === null), with no trivia or I spy data, and without other modules.
 // Store keys: "bingo" (the current card), "trivia" ({right, asked, best}), "spy" ({points, found, missed}),
-// "playGame" (last game picked on the Play tab).
+// "playGame" (last game picked on the Play tab), "playTripAt" (when this trip began, ms), "party" (Car Party),
+// "triviaSpeed", "plates", "higher", "where", "wyr", "hunt", "alpha", "cows" (see each game's file).
+
+import { h, add, svg, safe, shuffle, num, icon, ICON, countUp, reduced, firstSentence, shortName, fmtDate, thousands, sameish, colorStyle, pick, clamp } from "./games/kit.js";
+import { createParty } from "./games/party.js";
+import { LINES as WORDS, WYR, wyrSpeech, alphaSpeech, ALPHA_TIPS } from "./games/lines.js";
 
 let api = null;
 
-/* ---------- small, safe helpers ---------- */
-function safe(fn, label) {
-  return (...args) => {
-    try { return fn(...args); } catch (e) { console.error(`[play] ${label || "error"}`, e); }
-  };
-}
-/** h("div", {class: "x", onclick: fn, "aria-label": "y"}, child, "text", [more]) */
-function h(tag, attrs, ...kids) {
-  const e = document.createElement(tag);
-  if (attrs) {
-    for (const [k, v] of Object.entries(attrs)) {
-      if (v == null || v === false) continue;
-      if (k === "class") e.className = v;
-      else if (k === "text") e.textContent = v;
-      else if (k.startsWith("on") && typeof v === "function") e.addEventListener(k.slice(2), v);
-      else e.setAttribute(k, v === true ? "" : String(v));
-    }
-  }
-  add(e, kids);
-  return e;
-}
-function add(parent, kids) {
-  for (const k of kids) {
-    if (k == null || k === false) continue;
-    if (Array.isArray(k)) add(parent, k);
-    else parent.append(k instanceof Node ? k : document.createTextNode(String(k)));
-  }
-  return parent;
-}
-const SVGNS = "http://www.w3.org/2000/svg";
-function svg(viewBox, inner, cls) {
-  const s = document.createElementNS(SVGNS, "svg");
-  s.setAttribute("viewBox", viewBox);
-  s.setAttribute("aria-hidden", "true");
-  s.setAttribute("focusable", "false");
-  if (cls) s.setAttribute("class", cls);
-  s.innerHTML = inner;
-  return s;
-}
 const logo = cls => h("img", { class: cls, src: "icons/icon.svg", alt: "", draggable: "false" });
-const ICON = {
-  eye: '<path d="M12 5C6.5 5 2.6 9.2 1.3 12c1.3 2.8 5.2 7 10.7 7s9.4-4.2 10.7-7C21.4 9.2 17.5 5 12 5Zm0 11.5a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Zm0-2.3a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" fill="currentColor"/>',
-  speaker: '<path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4ZM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6Z" fill="currentColor"/>',
-  mic: '<path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z" fill="currentColor"/>',
-  check: '<path d="M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6 11-11-1.4-1.4-9.6 9.6Z" fill="currentColor"/>',
-  cross: '<path d="M18.3 7.1 16.9 5.7 12 10.6 7.1 5.7 5.7 7.1l4.9 4.9-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9 4.9-4.9Z" fill="currentColor"/>',
-  shuffle: '<path d="M17 3l4 4-4 4V8h-2.6l-3 3.6-1.3-1.6L13.5 6H17V3Zm0 10 4 4-4 4v-3h-3.5l-8-9.6H3V6h3.4l8 9.6H17V13ZM3 16h2.5l2.6-3.1 1.3 1.6L6.4 18H3v-2Z" fill="currentColor"/>',
-  next: '<path d="M8.6 5.4 10 4l8 8-8 8-1.4-1.4 6.6-6.6-6.6-6.6Z" fill="currentColor"/>',
-};
-const icon = (name, cls) => svg("0 0 24 24", ICON[name] || "", cls || "pl-ic");
-
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-  return a;
-}
-const num = (v, d = 0) => (typeof v === "number" && isFinite(v) ? v : d);
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
 /* ---------- thin wrappers around the core (each one tolerates a missing piece) ---------- */
@@ -753,8 +706,13 @@ function buildTrivia(pane) {
     const b = e.target.closest("button[data-i]");
     if (b && !b.disabled) answerTrivia(+b.dataset.i);
   }, "trivia tap"));
-  pane.append(stats, box);
-  T = { pane, stats, box };
+  // Classic (one question at a time, no clock) or the speed round (10 questions on a clock, js/games/speed.js)
+  const modes = h("div", { class: "seg wide pl-tmodes", role: "group", "aria-label": "Trivia mode" },
+    h("button", { type: "button", "data-tm": "classic", "aria-pressed": "true", onclick: safe(() => setTriviaMode("classic"), "classic") }, "Classic"),
+    h("button", { type: "button", "data-tm": "speed", "aria-pressed": "false", onclick: safe(() => setTriviaMode("speed"), "speed") }, "Speed round"));
+  const speedHost = h("div", { class: "pl-speed", hidden: true });
+  pane.append(modes, stats, box, speedHost);
+  T = { pane, stats, box, modes, speedHost, mode: "classic", speedCtrl: null, speedLoading: false };
 }
 
 function renderTriviaStats() {
@@ -773,7 +731,7 @@ function renderTrivia(justAnswered = false) {
   const box = T.box;
   box.textContent = "";
   if (!cur) pickQuestion();
-  T.stats.hidden = !cur && !tscore.asked;
+  T.stats.hidden = T.mode === "speed" || (!cur && !tscore.asked);
   if (!cur) {
     box.classList.add("pl-empty");
     box.append(h("p", { class: "pl-qt" }, "No trivia questions yet."),
@@ -846,6 +804,7 @@ function renderTrivia(justAnswered = false) {
 function askTrivia() {
   try { api?.ui?.go?.("play"); } catch (e) { console.error("[play] go", e); }
   setGame("trivia");
+  if (T && T.mode === "speed") setTriviaMode("classic");   // a spoken "ask me trivia" means the one-question kind
   freshen();   // a question picked miles ago, or before GPS, gives way to the closest one
   if (!cur || cur.picked != null) pickQuestion();
   renderTrivia();
@@ -1179,33 +1138,199 @@ function renderSpy() {
   SP.list.append(ul);
 }
 
-/* ---------- the Play view ---------- */
-const GAMES = [["bingo", "Road bingo"], ["trivia", "Trivia"], ["spy", "I spy"]];
+/* ---------- speech for the new games ----------
+   A line the person asked for (a speaker button) goes through gameSay and always plays. A reaction or a celebration that
+   nobody asked for goes through autoSay: only with narration on, and never while the car is navigating (api.nav). */
+const navigating = () => { try { return api?.nav?.state?.() === "navigating"; } catch { return false; } };
+const autoOk = () => !!settings().narr && canSpeak() && !navigating();
+function autoSay(text, id, extra) { return autoOk() ? gameSay(text, id, extra) : Promise.resolve(false); }
+
+/* ---------- a celebration for the new games (the bingo sign and confetti, with their own words) ---------- */
+function confettiEl(n = 44) {
+  const conf = h("div", { class: "pl-confetti", "aria-hidden": "true" });
+  const colors = ["accent", "farm", "hist", "nature", "stop", "odd", "ok", "st-wa"];
+  for (let i = 0; i < n; i++) {
+    const r = () => Math.random();
+    conf.append(h("i", { style: `--x:${(r() * 100).toFixed(1)}%;--dx:${((r() - 0.5) * 40).toFixed(1)}vw;--d:${(r() * 0.6).toFixed(2)}s;` +
+      `--t:${(1.7 + r() * 1.3).toFixed(2)}s;--r:${Math.round(r() * 900 - 450)}deg;--c:var(--${colors[i % colors.length]});--w:${6 + Math.round(r() * 6)}px` }));
+  }
+  return conf;
+}
+/** o: {top: small line above, title: big words, sub: one line under, ms, speak: [text, id]}. Real celebrations only. */
+function cheer(o = {}) {
+  closeWin();
+  const host = document.getElementById("view-play");
+  if (!host) return null;
+  const title = String(o.title || "");
+  const size = title.length <= 7 ? "" : title.length <= 10 ? " full" : " small";
+  winEl = h("div", { class: "pl-win" + size, role: "alert", onclick: closeWin },
+    confettiEl(o.pieces || 44),
+    h("div", { class: "pl-win-sign" },
+      h("div", { class: "pl-win-top" }, logo("pl-win-logo"), h("span", null, o.top || "I-5 BUDDY")),
+      h("b", { class: "pl-win-t" }, title),
+      o.sub ? h("span", { class: "pl-win-s" }, o.sub) : null));
+  host.append(winEl);
+  winTimer = setTimeout(closeWin, o.ms || 3200);
+  unlock();
+  chime("success");
+  buzz([40, 50, 120]);
+  if (o.speak) { const t0 = Date.now(); setTimeout(safe(() => autoSay(o.speak[0], o.speak[1], { check: () => Date.now() - t0 < 5000 }), "cheer say"), 600); }
+  return winEl;
+}
+
+/** A place photo with its credit, built like the app's own (main.js photo()). The alt text is the caller's: a quiz must not
+    name the place before the answer. A photo that will not load calls o.onError (default: it goes away). */
+function gamePhoto(p, o = {}) {
+  if (!p || !p.img || !p.img.f) return null;
+  const size = o.size || "full";
+  const fig = h("figure", { class: "photo " + size });
+  const img = h("img", { src: p.img.f, alt: o.alt != null ? o.alt : (p.img.alt || p.name || ""), decoding: "async" });
+  if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
+  img.addEventListener("error", () => { if (o.onError) o.onError(); else fig.remove(); });
+  fig.append(img);
+  if (size !== "thumb") {
+    fig.append(h("figcaption", null, h("a", { href: p.img.url || "https://commons.wikimedia.org", target: "_blank", rel: "noopener" },
+      `Photo: ${p.img.by || "Wikimedia Commons"}${p.img.lic ? " · " + p.img.lic : ""}`)));
+  }
+  return fig;
+}
+
+/* ---------- every sentence the games can say (for the natural recorded voice) ---------- */
+const PLACE_IMG = () => (Array.isArray(D().PLACES) ? D().PLACES : []).filter(p => p && p.img && p.img.f && typeof p.text === "string" && p.text.trim());
+function phraseGroups() {
+  const g = {};
+  const put = (k, t) => { const s = String(t == null ? "" : t).replace(/\s+/g, " ").trim(); if (s) (g[k] = g[k] || new Set()).add(s); };
+  put("bingo", "Bingo!"); put("bingo", "Full card!");
+  put("trivia", "I don't have any trivia questions yet.");
+  for (const t of allQs()) {
+    put("trivia", questionSpeech(t));
+    put("trivia", `${verdict(true, t)} ${t.why || ""}`);
+    put("trivia", `${verdict(false, t)} ${t.why || ""}`);
+  }
+  for (const pool of Object.values(POOLS)) for (const sq of pool) put("spy", `I spy with my little eye: ${parseSquare(sq).t.replace(/­/g, "").toLowerCase()}.`);
+  put("plates", WORDS.plates.all); for (const t of Object.values(WORDS.plates.rare)) put("plates", t);
+  put("higher", WORDS.hol.right); put("higher", WORDS.hol.wrong); put("higher", WORDS.hol.best);
+  put("where", WORDS.where.good); put("where", WORDS.where.miss); put("where", WORDS.where.round);
+  for (const p of PLACE_IMG()) put("where", firstSentence(p.text));
+  for (const p of WYR) put("wyr", wyrSpeech(p));
+  put("hunt", WORDS.hunt.done);
+  for (const l of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") put("alpha", alphaSpeech(l));
+  for (const t of Object.values(ALPHA_TIPS)) put("alpha", t);
+  put("alpha", WORDS.alpha.done);
+  return Object.fromEntries(Object.entries(g).map(([k, v]) => [k, [...v]]));
+}
+/** Every fixed sentence the games can speak, once each. */
+function phrases() {
+  return [...new Set(Object.values(phraseGroups()).flat())];
+}
+
+/* ---------- the Play view: a picker of game cards, then the game ---------- */
+const GAME_DEFS = [
+  { id: "bingo", name: "Road bingo", line: "Five in a row wins", emoji: "\u{1F3AF}", color: "--accent", core: true },
+  { id: "trivia", name: "Trivia", line: "Questions about the road, or race the clock", emoji: "\u{1F914}", color: "--shield", core: true },
+  { id: "spy", name: "I spy", line: "Spot things as you pass them", emoji: "\u{1F440}", color: "--odd", core: true },
+  { id: "plates", name: "Plate Hunt", line: "Find a plate from every state", emoji: "\u{1F5FA}️", color: "--nature", file: "plates" },
+  { id: "higher", name: "Higher or Lower", line: "Guess the number, keep the streak", emoji: "\u{1F4C8}", color: "--ok", file: "higher" },
+  { id: "where", name: "Where Is This?", line: "Name the place from its photo", emoji: "\u{1F4F8}", color: "--hist", file: "where" },
+  { id: "wyr", name: "Would You Rather", line: "Road trip questions, no wrong answers", emoji: "\u{1F937}", color: "--stop", file: "wyr" },
+  { id: "hunt", name: "Scavenger Hunt", line: "Spot what this stretch of road has", emoji: "\u{1F50D}", color: "--farm", file: "hunt" },
+  { id: "alpha", name: "Alphabet Game", line: "Find signs from A to Z", emoji: "\u{1F524}", color: "--danger", file: "alpha" },
+  { id: "cows", name: "Cow Count", line: "Each side of the car counts cows", emoji: "\u{1F404}", color: "--town", file: "cows" },
+];
+const defOf = id => GAME_DEFS.find(g => g.id === id) || null;
 let V = null;
-let game = "bingo";
+let game = "bingo";          // the last game opened (saved as "playGame")
+let screen = "home";         // what the Play tab shows now: "home" (the picker), "party", or a game id
 let lastTab = null;
+let party = null;            // the Car Party scoreboard (js/games/party.js)
+const mods = {};             // game id -> {state, promise, ctrl}
 const viewVisible = () => { const v = document.getElementById("view-play"); return !!v && !v.hidden; };
+
+/** One line on a game card from what the person saved before (read straight from the store: the game's code may not be loaded). */
+function statusOf(id) {
+  try {
+    const o = key => { const v = store(key, null); return v && typeof v === "object" ? v : {}; };
+    if (id === "bingo") return card ? `${marked()} of 24 marked` : "";
+    if (id === "trivia") return tscore.asked ? `${tscore.right} right` : "";
+    if (id === "spy") return spy.points ? `${spy.points} ${spy.points === 1 ? "point" : "points"}` : "";
+    if (id === "plates") { const f = o("plates").found || {}; const n = Object.keys(f).filter(k => /^[A-Z]{2}$/.test(k) && Array.isArray(f[k]) && f[k].length).length; return n ? `${Math.min(n, 51)} of 51 found` : ""; }
+    if (id === "higher") { const b = num(o("higher").best); return b ? `Best streak ${b}` : ""; }
+    if (id === "where") { const b = num(o("where").best); return b ? `Best ${b} of 10` : ""; }
+    if (id === "wyr") { const n = num(o("wyr").n); return n ? `${n} answered` : ""; }
+    if (id === "hunt") { const n = Object.keys(o("hunt").stamps || {}).length; return n ? `${n} ${n === 1 ? "stamp" : "stamps"}` : ""; }
+    if (id === "alpha") { const b = num(o("alpha").best); return b ? `Best ${Math.floor(b / 60)}:${String(Math.round(b % 60)).padStart(2, "0")}` : ""; }
+    if (id === "cows") { const b = num(o("cows").best); return b ? `Best count ${b}` : ""; }
+  } catch { /* no status */ }
+  return "";
+}
+
+function renderHome() {
+  if (!V) return;
+  const home = V.home;
+  const last = defOf(store("playGame", null));
+  const had = home.contains(document.activeElement) ? document.activeElement.getAttribute("data-g") || document.activeElement.getAttribute("data-k") : null;
+  home.textContent = "";
+  // the Car Party bar: scores while a party is on, an invitation while not
+  const on = !!party && party.active();
+  const bar = h("div", { class: "pl-partybar" + (on ? " on" : "") },
+    h("span", { class: "pl-partybar-ic", "aria-hidden": "true" }, "\u{1F389}"),
+    h("div", { class: "pl-partybar-tx" },
+      h("b", null, "Car Party"),
+      on ? party.strip() : h("small", null, "Keep score for 2 to 6 players. The games share it.")),
+    h("button", { class: "secondary pl-partybar-go", type: "button", "data-k": "party", onclick: safe(() => showScreen("party"), "party") }, on ? "Scores" : "Set up"));
+  const grid = h("div", { class: "pl-gridpick", role: "group", "aria-label": "Choose a game" });
+  GAME_DEFS.forEach((d, i) => {
+    const st = statusOf(d.id);
+    const isLast = !!last && last.id === d.id;
+    grid.append(h("button", { class: "pl-gcard" + (isLast ? " last" : ""), type: "button", "data-g": d.id, style: `--c:var(${d.color});--i:${i}`,
+      "aria-label": `${d.name}. ${d.line}.${st ? " " + st + "." : ""}${isLast ? " Last played." : ""}`,
+      onclick: safe(() => setGame(d.id), "pick " + d.id) },
+      isLast ? h("span", { class: "pl-gcard-last", "aria-hidden": "true" }, "Last played") : null,
+      h("span", { class: "pl-gcard-ic", "aria-hidden": "true" }, d.emoji),
+      h("span", { class: "pl-gcard-t", "aria-hidden": "true" }, h("b", null, d.name), h("small", null, d.line)),
+      st ? h("span", { class: "pl-gcard-s", "aria-hidden": "true" }, st) : null));
+  });
+  home.append(bar, grid);
+  if (had) { const b = home.querySelector(`[data-g="${had}"],[data-k="${had}"]`); b && b.focus({ preventScroll: true }); }
+}
+
+/** The bar at the top of a game: the way back to the picker, and the game's name. */
+function paneBar(d) {
+  return h("div", { class: "pl-bar", style: d.color ? `--c:var(${d.color})` : "" },
+    h("button", { class: "pl-back", type: "button", "data-k": "back", "aria-label": "Back to all games", onclick: safe(() => showScreen("home"), "back") }, icon("back"), h("span", null, "All games")),
+    h("b", { class: "pl-bar-t" }, d.emoji ? h("span", { class: "pl-bar-e", "aria-hidden": "true" }, d.emoji) : null, d.name));
+}
+
+function renderPassenger() {
+  if (!V || !V.pass) return;
+  V.pass.hidden = !((S().mode === "gps" || S().mode === "demo") && num(S().speed) > 10);
+}
 
 function buildView() {
   const view = document.getElementById("view-play");
   if (!view) return;
   view.textContent = "";
   view.classList.add("pl-view");
-  const seg = h("div", { class: "seg wide pl-seg", role: "group", "aria-label": "Choose a game" });
-  const panes = {};
-  for (const [id, label] of GAMES) {
-    seg.append(h("button", { type: "button", "data-g": id, "aria-pressed": "false", "aria-controls": "pl-" + id, onclick: safe(() => setGame(id), "game") }, label));
-    panes[id] = h("section", { class: "pl-pane", id: "pl-" + id, "aria-label": label, hidden: true });
+  const panes = {}, bodies = {};
+  for (const d of GAME_DEFS) {
+    panes[d.id] = h("section", { class: "pl-pane", id: "pl-" + d.id, "aria-label": d.name, hidden: true, style: `--c:var(${d.color})` }, paneBar(d));
+    if (!d.core) { bodies[d.id] = h("div", { class: "pl-gbody" }); panes[d.id].append(bodies[d.id]); }
   }
+  const partyPane = h("section", { class: "pl-pane", id: "pl-party", "aria-label": "Car Party", hidden: true },
+    paneBar({ name: "Car Party", emoji: "\u{1F389}", color: "--accent" }));
+  const home = h("div", { class: "pl-home", id: "pl-home" });
   sr.view = h("p", { class: "pl-sr", role: "status" });
-  view.append(h("div", { class: "pl-head" }, h("h2", { class: "view-title" }, "Play"), h("p", { class: "pl-lede" }, "Games for everyone but the driver.")),
-    seg, panes.bingo, panes.trivia, panes.spy, sr.view);
-  V = { view, seg, panes };
+  const pass = h("p", { class: "pl-pass", role: "note", hidden: true }, icon("info"), h("span", null, "For passengers. The driver keeps eyes on the road."));
+  view.append(h("div", { class: "pl-head" }, h("h2", { class: "view-title" }, "Play"), h("p", { class: "pl-lede" }, "Games for everyone but the driver."), pass),
+    home, ...GAME_DEFS.map(d => panes[d.id]), partyPane, sr.view);
+  V = { view, home, panes, bodies, partyPane, pass };
   buildBingo(panes.bingo);
   buildTrivia(panes.trivia);
   buildSpy(panes.spy);
-  const g = store("playGame", "bingo");
-  setGame(GAMES.some(x => x[0] === g) ? g : "bingo", true);
+  const g = store("playGame", null);
+  game = defOf(g) ? g : "bingo";
+  showScreen("home", { quiet: true });
+  renderPassenger();
 }
 /** #spotCard on Drive: a status line for screen readers and a box for the cards (hidden while there are none). */
 function buildSpotHost() {
@@ -1218,20 +1343,136 @@ function buildSpotHost() {
   spotWrap = h("div", { class: "pl-spots", hidden: true });
   box.append(sr.drive, spotWrap);
 }
-function setGame(id, quiet = false) {
-  if (!V || !GAMES.some(x => x[0] === id)) return;
-  const switching = game !== id;
-  game = id;
-  for (const b of V.seg.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.g === id));
+
+/** Show the picker ("home"), the Car Party setup ("party") or one game. */
+function showScreen(id, opts = {}) {
+  if (!V) return;
+  if (id !== "home" && id !== "party" && !defOf(id)) id = "home";
+  if (screen !== id) {
+    try { mods[screen]?.ctrl?.hide?.(); } catch (e) { console.error("[play] hide", e); }
+    if (screen === "trivia" && T && T.mode === "speed") { try { T.speedCtrl?.hide?.(); } catch { /* not loaded */ } }
+  }
+  screen = id;
+  V.home.hidden = id !== "home";
+  V.partyPane.hidden = id !== "party";
   for (const [k, p] of Object.entries(V.panes)) p.hidden = k !== id;
-  if (!quiet) save("playGame", id);
-  if (id === "trivia" && switching && !quiet) freshen();
-  renderGame();
+  if (defOf(id)) { game = id; if (!opts.quiet) save("playGame", id); }
+  renderScreen();
+  if (!opts.quiet && viewVisible()) {
+    // a new screen: its heading in view, focus on the way back (a keyboard user lands where the action is)
+    try { window.scrollTo(0, 0); } catch { /* no scrolling */ }
+    const back = (id === "home" ? null : (id === "party" ? V.partyPane : V.panes[id])?.querySelector(".pl-back"));
+    if (back) back.focus({ preventScroll: true });
+    else if (id === "home") { const b = V.home.querySelector(`[data-g="${game}"]`); b && b.focus({ preventScroll: true }); }
+  }
 }
-function renderGame() {
-  if (game === "trivia") renderTrivia();
-  else if (game === "spy") renderSpy();
-  else renderBingo();
+function setGame(id, quiet = false) {
+  if (!defOf(id)) return;
+  const switching = screen !== id;
+  if (id === "trivia" && switching && !quiet) freshen();
+  showScreen(id, { quiet });
+}
+function renderScreen() {
+  if (!V) return;
+  if (screen === "home") return renderHome();
+  if (screen === "party") {
+    V.partyPane.querySelector(".pl-party")?.dispose?.();
+    V.partyPane.querySelector(".pl-party")?.remove();
+    if (party) V.partyPane.append(party.panel());
+    return;
+  }
+  const d = defOf(screen);
+  if (!d) return;
+  if (d.core) {
+    if (screen === "trivia") { renderTrivia(); if (T && T.mode === "speed") T.speedCtrl?.show?.(); }
+    else if (screen === "spy") renderSpy();
+    else renderBingo();
+    return;
+  }
+  openMod(screen);
+}
+function renderGame() { renderScreen(); }
+
+/* ---------- loading the games that live in js/games/ ---------- */
+function makeCtx(def, body) {
+  return {
+    api, def, pane: body,
+    h, add, svg, icon, logo, shuffle, num, pick, clamp, reduced, countUp, firstSentence, shortName, fmtDate, thousands, sameish, colorStyle,
+    LINES: WORDS, WYR, wyrSpeech, alphaSpeech, ALPHA_TIPS,
+    S, settings, D, store, save, party,
+    say: gameSay, autoSay, autoOk, canSpeak, navigating, chime, buzz, toast, unlock, announce, openPlace, placeById, mileLabel, regionName,
+    hasPos, driving, roadEnd, cheer, closeWin, gamePhoto, voiceBusy,
+    shown: () => screen === def.id && viewVisible() && !document.hidden,
+    tripAt: () => num(store("playTripAt", 0)),
+    newTrip,
+    trivia: { questions: allQs, choiceText, LETTERS, backToClassic: () => setTriviaMode("classic") },
+  };
+}
+function openMod(id) {
+  const d = defOf(id), body = V && V.bodies[id];
+  if (!d || !body || !d.file) return Promise.resolve(false);
+  let m = mods[id];
+  if (m && m.state === "ready") { try { m.ctrl.show?.(); } catch (e) { console.error(`[play] ${id} show`, e); } return m.promise; }
+  if (m && m.state === "loading") return m.promise;
+  m = mods[id] = { state: "loading", ctrl: null, promise: null };
+  body.textContent = "";
+  body.append(h("p", { class: "pl-loading", role: "status" }, "Getting the game ready…"));
+  m.promise = import(`./games/${d.file}.js`).then(mod => {
+    body.textContent = "";
+    m.ctrl = mod.create(makeCtx(d, body)) || {};
+    m.state = "ready";
+    m.promise = Promise.resolve(true);
+    if (screen === id) m.ctrl.show?.();
+    return true;
+  }).catch(e => {
+    console.error(`[play] ${id} did not load`, e);
+    mods[id] = null;
+    body.textContent = "";
+    body.append(h("div", { class: "pl-failed", role: "status" },
+      h("p", null, "This game could not load. It needs to download once. Try again when you have a connection."),
+      h("button", { class: "primary", type: "button", onclick: safe(() => openMod(id), "retry") }, "Try again")));
+    return false;
+  });
+  return m.promise;
+}
+
+/** A new trip begins (the person ended one, or tapped Start a fresh trip): Plate Hunt's "this trip" starts from now. */
+function newTrip() {
+  save("playTripAt", Date.now());
+  for (const m of Object.values(mods)) { try { m && m.ctrl && m.ctrl.tripChanged && m.ctrl.tripChanged(); } catch (e) { console.error("[play] tripChanged", e); } }
+}
+
+/* ---------- speed trivia: 10 questions on a clock, the same pool (js/games/speed.js) ---------- */
+function setTriviaMode(mode) {
+  if (!T) return;
+  mode = mode === "speed" ? "speed" : "classic";
+  T.mode = mode;
+  for (const b of T.modes.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.tm === mode));
+  T.stats.hidden = mode === "speed" || (!cur && !tscore.asked);
+  T.box.hidden = mode === "speed";
+  T.speedHost.hidden = mode !== "speed";
+  if (mode === "speed") {
+    if (T.speedCtrl) { T.speedCtrl.show?.(); return; }
+    if (T.speedLoading) return;
+    T.speedLoading = true;
+    T.speedHost.textContent = "";
+    T.speedHost.append(h("p", { class: "pl-loading", role: "status" }, "Getting the speed round ready…"));
+    import("./games/speed.js").then(mod => {
+      T.speedHost.textContent = "";
+      T.speedCtrl = mod.create(makeCtx({ id: "trivia", name: "Speed trivia" }, T.speedHost)) || {};
+      T.speedLoading = false;
+      if (T.mode === "speed") T.speedCtrl.show?.();
+    }).catch(e => {
+      console.error("[play] speed trivia did not load", e);
+      T.speedLoading = false;
+      T.speedHost.textContent = "";
+      T.speedHost.append(h("div", { class: "pl-failed", role: "status" }, h("p", null, "The speed round could not load. Try again when you have a connection."),
+        h("button", { class: "primary", type: "button", onclick: safe(() => setTriviaMode("speed"), "retry speed") }, "Try again")));
+    });
+  } else {
+    try { T.speedCtrl?.hide?.(); } catch { /* not loaded */ }
+    renderTrivia();
+  }
 }
 
 /* ---------- init ---------- */
@@ -1243,6 +1484,9 @@ export function init(a) {
   if (!card) { try { card = dealCard(); } catch { card = null; } }
   safe(loadScore, "load trivia")();
   safe(loadSpy, "load spy")();
+  if (!num(store("playTripAt", 0))) save("playTripAt", Date.now());
+  party = null;
+  try { party = createParty({ store, save }); } catch (e) { console.error("[play] party", e); }
   safe(buildView, "build view")();
   safe(buildSpotHost, "spot host")();
   safe(renderSpots, "render spots")();
@@ -1254,24 +1498,27 @@ export function init(a) {
   const on = (evt, fn) => { try { api.bus?.on?.(evt, safe(fn, evt)); } catch (e) { console.error("[play] bus", e); } };
   on("tab", t => {
     const opened = t === "play" && lastTab !== "play";
+    const left = lastTab === "play" && t !== "play";
     lastTab = t;
+    if (left) { try { mods[screen]?.ctrl?.hide?.(); T?.speedCtrl?.hide?.(); } catch (e) { console.error("[play] hide", e); } }
     if (t !== "play") { closeWin(); return; }
     if (opened && game === "trivia") freshen();
-    renderGame();
+    renderPassenger();
+    if (opened) renderScreen(); else if (screen !== "home") { /* already showing */ } else renderHome();
   });
-  on("pos", e => { onSpotPos(e); if (game === "bingo" && viewVisible()) renderBanner(); });
+  on("pos", e => { onSpotPos(e); if (game === "bingo" && viewVisible()) renderBanner(); renderPassenger(); });
   on("place:announce", onAnnounce);
   on("speaking", onSpeaking);
   on("settings", () => {
     if (!settings().kid) clearSpots();
-    if (game === "spy" && viewVisible()) renderSpy();
+    if (screen === "spy" && viewVisible()) renderSpy();
   });
-  on("mode", m => { if (m === "off") endTrip(); });
-  on("trip:end", endTrip);
+  on("mode", m => { if (m === "off") endTrip(); renderPassenger(); });
+  on("trip:end", () => { endTrip(); newTrip(); });
   document.addEventListener("keydown", safe(e => {
     if (e.key === "Escape" && winEl) return closeWin();
     // A-D or 1-4 answers the trivia question on screen (keyboards and car remotes)
-    if (e.ctrlKey || e.metaKey || e.altKey || game !== "trivia" || !viewVisible() || !cur || cur.picked != null) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || screen !== "trivia" || (T && T.mode !== "classic") || !viewVisible() || !cur || cur.picked != null) return;
     if (e.target && e.target.closest && e.target.closest("input, select, textarea, [contenteditable], .sheet")) return;
     const k = e.key.toLowerCase();
     const i = "abcdef".indexOf(k) >= 0 ? "abcdef".indexOf(k) : "123456".indexOf(k);
@@ -1282,7 +1529,7 @@ export function init(a) {
     askTrivia: safe(askTrivia, "askTrivia"),
     readTrivia: safe(() => {
       // a question nobody can see right now may be stale; the one on screen is the one they mean
-      if ((!viewVisible() || game !== "trivia") && freshen()) renderTrivia();
+      if ((!viewVisible() || screen !== "trivia") && freshen()) renderTrivia();
       if (!cur) { pickQuestion(); renderTrivia(); }
       readQuestion();
     }, "readTrivia"),
@@ -1290,8 +1537,25 @@ export function init(a) {
     answerTrivia: safe(i => answerTrivia(Number.isInteger(i) ? i : cur ? parseAnswer(i, cur.t.choices) ?? -1 : -1, "voice") === true, "answerTrivia"),
     nextTrivia: safe(nextTrivia, "nextTrivia"),
     newBingoCard: safe(newCard, "newBingoCard"),
-    open: safe(id => { api.ui?.go?.("play"); setGame(id || game); }, "open"),
+    // id: a game ("bingo", "trivia", "spy", "plates", "higher", "where", "wyr", "hunt", "alpha", "cows"), "party" for the
+    // scoreboard, or nothing for the picker. Returns a promise that settles when a game that loads on demand is on screen.
+    open: safe(id => {
+      api.ui?.go?.("play");
+      if (!id || id === "home") { showScreen("home"); return Promise.resolve(true); }
+      if (id === "party") { showScreen("party"); return Promise.resolve(true); }
+      if (!defOf(id)) return Promise.resolve(false);
+      setGame(id);
+      return (mods[id] && mods[id].promise) || Promise.resolve(true);
+    }, "open"),
     score: () => ({ trivia: { ...tscore, streak }, spy: { points: spy.points, found: spy.found.filter(placeById).length },
       bingo: card ? { marked: marked(), lines: fullLines().length, full: !!card.full } : null }),
+    // every fixed sentence the games can say, once each (the owner's recorded voice pre-renders exactly these)
+    phrases: safe(phrases, "phrases"),
+    phraseGroups: safe(phraseGroups, "phraseGroups"),
+    // the Car Party scoreboard (see js/games/party.js) and the games' controllers, once opened (tests and other modules)
+    party: () => party,
+    games: () => GAME_DEFS.map(d => ({ id: d.id, name: d.name, line: d.line })),
+    game: id => (mods[id] && mods[id].ctrl) || null,
+    screen: () => screen,
   };
 }

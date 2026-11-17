@@ -7,6 +7,8 @@ const SHELL = [
   "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js", "js/native.js",
   "js/live.js", "js/map.js", "js/play.js", "js/trip.js", "js/listen.js",
+  "js/games/kit.js", "js/games/lines.js", "js/games/party.js", "js/games/speed.js", "js/games/plates.js", "js/games/higher.js",
+  "js/games/where.js", "js/games/wyr.js", "js/games/hunt.js", "js/games/alpha.js", "js/games/cows.js",
   "js/roadahead.js", "js/feedback.js", "js/share.js", "js/ride.js", "js/map3d.js", "js/missions.js",
   "css/live.css", "css/map.css", "css/play.css", "css/trip.css", "css/listen.css",
   "css/roadahead.css", "css/feedback.css", "css/share.css", "css/ride.css", "css/map3d.css", "css/missions.css",
