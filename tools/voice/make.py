@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Record the natural voice's clips: every unit in tools/voice/units.json (made by collect.py) that has no clip yet.
 
-Runs on the Pro with the local voice model (Kokoro-82M, Apache-2.0, open weights; ~/Dominares/tts, see setup.sh there):
-    ~/Dominares/tts/.venv/bin/python tools/voice/make.py [--jobs 4] [--only N] [--force]
+Two engines (Joseph picked the voice by ear, 2026-11-17: Aura-2 "asteria"):
+  --engine aura    (default) Deepgram Aura-2 on Dominares' Cloudflare Workers AI, through the local sampler
+                   (scratchpad tts-sampler: `npx wrangler@4.160.0 dev --port 8790`, an AI binding, never deployed).
+                   About $0.03 per 1,000 characters, once; the clips are then ours to play for free.
+  --engine kokoro  the open local model (Kokoro-82M, Apache-2.0; ~/Dominares/tts, see setup.sh there), voice af_heart.
+Runs on the Pro:
+    ~/Dominares/tts/.venv/bin/python tools/voice/make.py [--engine aura] [--jobs 6] [--only N] [--force]
 Writes voice/<id>/<k[:2]>/<k>.m4a (AAC, 24 kHz mono) and voice/<id>/index.json:
     {"v": 1, "voice": "heart", "n": <clips>, "bytes": <total>, "keys": "<14 hex digits per clip, back to back>"}
 The display text is what the app shows and the clip's name; spoken() rewrites it only for the ear (freeway numbers,
@@ -12,7 +17,8 @@ import argparse, json, multiprocessing as mp, os, re, subprocess, sys, tempfile,
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TTS = os.path.expanduser("~/Dominares/tts")
-VOICE_ID, KOKORO_VOICE, SPEED = "heart", "af_heart", 1.0
+VOICE_ID, KOKORO_VOICE, SPEED = "asteria", "af_heart", 1.0
+AURA_URL, AURA_SPEAKER = "http://127.0.0.1:8790/", "asteria"
 
 # Names an English voice says wrong, spelled the way Californians say them (whole words, case-sensitive).
 SAY = {
@@ -111,6 +117,59 @@ def _level(a):
     return a
 
 
+def _trim(a, sr):
+    """Cut silence at both ends, keeping 40 ms (Kokoro trims itself; Aura leaves a little)."""
+    import numpy as np
+    nz = np.where(np.abs(a) > 0.008)[0]
+    if not len(nz):
+        return a
+    pad = int(sr * 0.04)
+    return a[max(0, nz[0] - pad): min(len(a), nz[-1] + pad)]
+
+
+def _aura(text):
+    """One unit from Aura-2 through the local sampler: WAV bytes in, (samples, rate) out. Retries busy answers."""
+    import io, time as _t, urllib.parse, urllib.request
+    import soundfile as sf
+    url = AURA_URL + "?" + urllib.parse.urlencode({"t": text, "s": AURA_SPEAKER, "enc": "linear16"})
+    err = None
+    for wait in (0, 2, 5, 12, 30):
+        if wait:
+            _t.sleep(wait)
+        try:
+            with urllib.request.urlopen(url, timeout=90) as r:
+                data = r.read()
+            if data[:4] != b"RIFF":
+                raise RuntimeError("not audio: " + data[:120].decode("utf-8", "replace"))
+            a, sr = sf.read(io.BytesIO(data), dtype="float32")
+            return a, sr
+        except Exception as e:  # noqa: BLE001 - retried, then reported
+            err = e
+    raise err
+
+
+def _make_aura(job):
+    key, text, out = job
+    import soundfile as sf
+    try:
+        audio, sr = _aura(spoken(text))
+        audio = _level(_trim(audio, sr))
+        os.makedirs(os.path.dirname(out), exist_ok=True)
+        fd, wav = tempfile.mkstemp(suffix=".wav")
+        os.close(fd)
+        try:
+            sf.write(wav, audio, sr, subtype="PCM_16")
+            tmp = out + ".part.m4a"
+            subprocess.run(["afconvert", "-f", "m4af", "-d", "aac", "-b", "40000", "-c", "1", wav, tmp], check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            os.replace(tmp, out)
+        finally:
+            os.unlink(wav)
+        return key, len(audio) / sr, None
+    except Exception as e:  # noqa: BLE001 - report and go on
+        return key, 0, f"{type(e).__name__}: {e}"
+
+
 def _make(job):
     key, text, out = job
     import soundfile as sf
@@ -144,7 +203,7 @@ def write_index(vdir):
                 keys.append(f[:14])
                 total += os.path.getsize(os.path.join(d, f))
     keys.sort()
-    idx = {"v": 1, "voice": VOICE_ID, "model": "Kokoro-82M v1.0 (af_heart)", "n": len(keys), "bytes": total, "keys": "".join(keys)}
+    idx = {"v": 1, "voice": VOICE_ID, "model": "Deepgram Aura-2 (asteria), Cloudflare Workers AI", "n": len(keys), "bytes": total, "keys": "".join(keys)}
     with open(os.path.join(vdir, "index.json"), "w") as f:
         json.dump(idx, f, separators=(",", ":"))
     # stream.txt: the clips used only by the long stories (Tell me more, story time). The iPhone app leaves them out of
@@ -162,7 +221,8 @@ def write_index(vdir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--jobs", type=int, default=6)
+    ap.add_argument("--engine", choices=["aura", "kokoro"], default="aura")
     ap.add_argument("--only", type=int, default=0, help="record at most N clips (a trial)")
     ap.add_argument("--force", action="store_true", help="record again even when the clip exists")
     ap.add_argument("--show", help="print the spoken form of this text and stop")
@@ -182,7 +242,18 @@ def main():
         jobs = jobs[: a.only]
     print(f"{len(data['units'])} units, {len(jobs)} to record with {a.jobs} workers", flush=True)
     t0, secs, fails, done = time.time(), 0.0, [], 0
-    if jobs:
+    if jobs and a.engine == "aura":
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(a.jobs) as pool:
+            for key, dur, err in pool.map(_make_aura, jobs):
+                done += 1
+                secs += dur
+                if err:
+                    fails.append((key, err))
+                if done % 200 == 0 or done == len(jobs):
+                    el = time.time() - t0
+                    print(f"  {done}/{len(jobs)} clips, {secs / 60:.0f} min of speech in {el / 60:.1f} min, {len(fails)} failed", flush=True)
+    elif jobs:
         with mp.get_context("spawn").Pool(a.jobs, initializer=_init) as pool:
             for key, dur, err in pool.imap_unordered(_make, jobs, chunksize=4):
                 done += 1

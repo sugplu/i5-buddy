@@ -25,7 +25,7 @@ const PHOTOS = "i5b-photos";
 // The natural voice (3.0): voice/<id>/<k[:2]>/<k>.m4a clips never change (a clip's name is its text's hash), so they are
 // served from this cache first and kept across releases; voice/<id>/index.json (the clip list) is network first.
 // Nothing here is saved at install: clips are saved as they are first played, or all at once from Settings > Offline.
-const VOICE = "i5b-voice-heart";
+const VOICE = "i5b-voice-asteria";
 // The app's own address, where an offline visit gets the app shell: "/" (or "/i5-buddy/" at the old github.io address).
 const HOME = new URL("./", location).pathname;
 

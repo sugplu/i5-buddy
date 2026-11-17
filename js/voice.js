@@ -11,8 +11,8 @@
 // - Silent tests: with ?silent=1 in the address, or window.top.__BUDDY_SILENT__ set by the test page around the app,
 //   nothing is ever heard (see silentSynth below). Without the flag nothing here changes.
 //
-// The natural voice (3.0): every sentence the app can say was recorded ahead of time with an open voice model on our
-// own Mac (tools/voice/, "Heart", Kokoro-82M). speechUnits(text) cuts a line into units (sentences, and the lead
+// The natural voice (3.0): every sentence the app can say was recorded ahead of time (tools/voice/; voice "Asteria",
+// Deepgram Aura-2 on Dominares' Cloudflare account, picked by ear by Joseph on 2026-11-17). speechUnits(text) cuts a line into units (sentences, and the lead
 // before a colon, "In about 2 miles, on your right:"); unitKey(unit) names the clip; voice/<id>/index.json lists every
 // clip there is. When the natural voice is on and EVERY unit of an item has a clip, the clips are decoded, joined with
 // short pauses into one recording and played on one <audio> element (so the speed setting keeps the pitch, and an
@@ -149,7 +149,7 @@ export function unitKey(unit) { return cyrb53(norm(unit)).toString(16).padStart(
 
 /* ---------- the natural voice ---------- */
 
-const VOICE_ID = "heart";
+const VOICE_ID = "asteria";
 const VOICE_CACHE = "i5b-voice-" + VOICE_ID;   // sw.js keeps this cache across versions
 export const NATURAL_URI = "buddy:" + VOICE_ID;
 const NATURAL = { name: "I-5 Buddy voice", voiceURI: NATURAL_URI, lang: "en-US", localService: true, default: true, natural: true };

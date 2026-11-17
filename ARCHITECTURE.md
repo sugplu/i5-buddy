@@ -28,7 +28,7 @@ js/data.js            road data + helpers (corridor miles, sides, services, cams
 js/geo.js             GPS -> corridor mile, bearings, sun altitude
 js/voice.js           speech queue + chime; the natural voice: speechUnits/unitKey, clips from voice/<id>/, joined and played
                       on one <audio>, the device voice as the fallback; voice.offline saves every clip (Settings > Offline)
-voice/heart/          the natural voice's clips (made by tools/voice/: units.html + collect.py list them, make.py records them)
+voice/asteria/        the natural voice's clips (made by tools/voice/: units.html + collect.py list them, make.py records them)
 js/narrator.js        decides what to say and when; user-facing "ask" actions
 js/main.js            boot, GPS/demo/manual, Drive + Ahead screens, settings, offline, Install app, module loading
 js/live.js            MODULE: traffic (CHP + Caltrans closures), weather, alerts, chain controls, freeway message signs, live cameras

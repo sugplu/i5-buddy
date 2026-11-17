@@ -62,7 +62,7 @@ const units = new Set([...V.speechUnits(A), ...V.speechUnits(B), ...C.units, ...
 units.delete(MISSING);
 const keyOf = new Map([...units].map(u => [V.unitKey(u), u]));
 const played = [];
-// ?real=1: the REAL clip list and clips (voice/heart/), fetched and decoded by the browser and joined into one recording,
+// ?real=1: the REAL clip list and clips (voice/asteria/), fetched and decoded by the browser and joined into one recording,
 // which is then not played (the clip test reports it instead). Checks that the recordings exist for real app lines.
 if (new URLSearchParams(location.search).get("real") === "1") {
   window.__BUDDY_CLIPTEST__ = { played(info) { played.push(info); } };
@@ -95,7 +95,7 @@ if (new URLSearchParams(location.search).get("real") === "1") {
 // Fake clips: each "clip" is a few bytes; a story clip is 200 bytes, which the fake decoder turns into 20 s of audio
 // (other clips: 1 s). The clip of E can't be fetched (it throws, like a network error).
 window.__BUDDY_CLIPTEST__ = {
-  manifest: { v: 1, voice: "heart", n: keyOf.size, bytes: 123456, keys: [...keyOf.keys()].join("") },
+  manifest: { v: 1, voice: "asteria", n: keyOf.size, bytes: 123456, keys: [...keyOf.keys()].join("") },
   fetch(k) { const u = keyOf.get(k); if (u === E) throw new Error("network"); return new ArrayBuffer(/^Story/.test(u) ? 200 : 8); },
   decode(ab) { return { sampleRate: 24000, getChannelData: () => new Float32Array(ab.byteLength === 200 ? 24000 * 20 : 24000) }; },
   played(info) { played.push(info); },
@@ -108,7 +108,7 @@ if (!api) { row(false, "the app started"); finish(); }
 const voice = api.voice;
 await sleep(300);
 
-row(voice.list()[0]?.natural === true && voice.list()[0].voiceURI === "buddy:heart", "Settings lists I-5 Buddy's natural voice first", voice.list().slice(0, 2).map(v => v.voiceURI));
+row(voice.list()[0]?.natural === true && voice.list()[0].voiceURI === "buddy:asteria", "Settings lists I-5 Buddy's natural voice first", voice.list().slice(0, 2).map(v => v.voiceURI));
 row(voice.natural() === true, "the natural voice is on by default once its clip list is loaded");
 
 // 1. every unit has a clip -> the recording plays, once, with the whole text
