@@ -81,12 +81,13 @@ for (const f of ["main", "narrator", "trip", "live", "play", "missions", "listen
 
 // Cut, name, check for name clashes
 const out = new Map(), clash = [];
-const put = (u, src) => { u = u.replace(/\s+/g, " ").trim(); if (!u) return; const k = V.unitKey(u); const had = out.get(k); if (had && had.t !== u) clash.push([had.t, u]); else if (!had) out.set(k, { t: u, src }); };
+// every source a unit comes from: a unit used only by long stories ("more", "story") can stream in the iPhone app
+const put = (u, src) => { u = u.replace(/\s+/g, " ").trim(); if (!u) return; const k = V.unitKey(u); const had = out.get(k); if (had && had.t !== u) clash.push([had.t, u]); else if (!had) out.set(k, { t: u, src: new Set([src.split(":")[0]]) }); else had.src.add(src.split(":")[0]); };
 for (const [t, src] of texts) for (const u of V.speechUnits(t)) put(u, src);
 for (const [u, src] of direct) put(u, src);
 let chars = 0; for (const v of out.values()) chars += v.t.length;
 log(`texts ${texts.size}, units ${out.size}, characters ${chars}, clashes ${clash.length}`);
-const body = JSON.stringify({ when: new Date().toISOString(), clashes: clash, units: [...out].map(([k, v]) => [k, v.t, v.src]) });
+const body = JSON.stringify({ when: new Date().toISOString(), clashes: clash, units: [...out].map(([k, v]) => [k, v.t, [...v.src].join(",")]) });
 const r = await fetch("/__units", { method: "POST", headers: { "content-type": "application/json" }, body });
 log(r.ok ? "SAVED" : "POST failed " + r.status);
 document.title = r.ok ? "ALL PASS" : "FAIL";

@@ -147,6 +147,16 @@ def write_index(vdir):
     idx = {"v": 1, "voice": VOICE_ID, "model": "Kokoro-82M v1.0 (af_heart)", "n": len(keys), "bytes": total, "keys": "".join(keys)}
     with open(os.path.join(vdir, "index.json"), "w") as f:
         json.dump(idx, f, separators=(",", ":"))
+    # stream.txt: the clips used only by the long stories (Tell me more, story time). The iPhone app leaves them out of
+    # its bundle (i5-buddy-ios sync-web.sh) and downloads them from i5.dominares.org the first time (js/voice.js).
+    try:
+        units = json.load(open(os.path.join(REPO, "tools", "voice", "units.json"), encoding="utf-8"))["units"]
+        have = set(keys)
+        stream = sorted(k for k, t, src, *_ in units if k in have and set(str(src).split(",")) <= {"more", "story"})
+        with open(os.path.join(vdir, "stream.txt"), "w") as f:
+            f.write("\n".join(stream) + "\n")
+    except (OSError, ValueError, KeyError):
+        pass
     return len(keys), total
 
 

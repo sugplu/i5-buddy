@@ -13,6 +13,24 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
+## 3.0: a real voice, directions, a 3D tour and more games
+
+- **Natural voice.** Every line the app can say (8,241 units: landmarks at every distance and side, stories, zones,
+  missions, games, navigation's phrase bank) was recorded once with an open voice model on our own Mac (Kokoro-82M,
+  voice "Heart", Apache-2.0) into `voice/heart/<k[:2]>/<k>.m4a` (AAC, 24 kHz mono, ~217 MB; `index.json` lists them).
+  `js/voice.js` cuts each line into units (`speechUnits`), names them (`unitKey`, cyrb53) and plays the joined clips;
+  anything without clips is read by the device voice as before. Re-record after any text change:
+  `python3 tools/voice/collect.py` (lists every unit with the app's own functions, silently in headless Chrome), then
+  `~/Dominares/tts/.venv/bin/python tools/voice/make.py` on the Pro (records only the missing clips, ~10x real time).
+  `voice/heart/stream.txt` lists the clips only the long stories use: the iPhone app leaves them out and downloads them.
+- **Where to? (js/nav.js).** Place search (the app's own places first, then `/api/geo/search` on the Worker, Geoapify),
+  route preview, turn-by-turn guidance with a fixed phrase grammar in the natural voice, rerouting, arrival. One-time
+  notice before anything is sent (privacy.html, Directions). Tests: `tools/test-nav.html` (search, route, drive).
+- **3D map (js/map3d.js).** Photo pins, a landmark card, a narrated Landmark tour, orbit, chase camera, Mountains,
+  the real sun, mission bells, live traffic pins, a compass. Manual screenshots with real tiles: `tools/shot-3d.html`.
+- **Games (js/play.js, js/games/).** Plate Hunt, Higher or Lower, Where Is This?, Would You Rather, Scavenger Hunt,
+  Alphabet, Cow Count, Car Party scoreboard and speed trivia, besides bingo, trivia and I spy. Tests: `tools/test-games.html`.
+
 ## 2.6.2 mission corrections
 
 The mission histories and visitor information include the 2026-11-16 fact-check corrections. The build now uses the
