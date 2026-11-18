@@ -910,11 +910,16 @@ const SVG_STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.5 2
 const SVG_MORE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.9" fill="currentColor"/><circle cx="12" cy="12" r="1.9" fill="currentColor"/><circle cx="19" cy="12" r="1.9" fill="currentColor"/></svg>';
 
 /* ---------- the pill on Drive ---------- */
-/** Under the sign once there is a position. Before that (the welcome card), under the card, so Start GPS and Install app / Get the iPhone app stay above the tab bar on a short phone screen. */
+/** Before there is a position (the welcome card): under the card, so Start GPS and Install app / Get the iPhone app stay
+    above the tab bar on a short phone screen. While a drive or a demo runs (3.0.2): first in the row with Narration and
+    End trip, one row of actions under the sign. With a position but nothing running: under the sign. */
 function placePill() {
-  const box = $id("navSearch"), sign = $id("signBoard"), card = $id("nextCard");
+  const box = $id("navSearch"), sign = $id("signBoard"), card = $id("nextCard"), run = $id("runControls");
   if (!box || !sign || !card) return;
   const welcome = S.m == null;
+  const running = !welcome && !!run && !!S.mode && S.mode !== "off";
+  if (run) run.classList.toggle("with-nav", running);
+  if (running) { if (run.firstElementChild !== box) run.prepend(box); return; }
   // with a position: under the sign, after the one-time "Pick your ride?" invitation (ride.js keeps that right under the sign)
   const invite = $id("rideInvite");
   const anchor = invite && invite.parentNode === sign.parentNode ? invite : sign;
@@ -1913,7 +1918,7 @@ export function init(api) {
   on("fix", onFix);
   on("pos", placePill);
   on("settings", syncSettings);
-  on("mode", () => { if (N.state === "navigating") queueRender(); });
+  on("mode", () => { placePill(); if (N.state === "navigating") queueRender(); });
   on("trip:end", () => { /* ending the trip (GPS) does not end navigation; the person taps End */ });
   try {
     window.addEventListener("online", () => {

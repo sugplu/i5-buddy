@@ -69,8 +69,10 @@ const SCENARIOS = {
     const rd = () => api.roadahead;
     const tile = n => txt(R().querySelectorAll(".ra-stat")[n]);
     const pos = (m, dir = "N") => api.setPosition(m, { dir, speed: 63, jumped: true });
-    // --- before a trip: the whole road
-    check("Road ahead is shown on the Drive tab before a trip", !R().hidden && R().firstChild);
+    // --- before a trip: the whole road (3.0.2: the chart lives on the Ahead tab)
+    check("the chart is on the Ahead tab, not on Drive", !!R().closest("#view-ahead") && !R().closest("#view-drive"));
+    api.ui.go("ahead"); await wait(60);
+    check("Road ahead is shown on the Ahead tab before a trip", !R().hidden && R().firstChild);
     check("before a trip: the whole road, with no toggle", st().pre === true && /The whole road/.test(txt(R().querySelector(".ra-title"))) && R().querySelector(".ra-seg").hidden);
     check("the big climbs are named", st().flags.length >= 2 && st().flags.some(f => /Tejon/.test(f.name || "")) && st().flags.every(f => f.ft > 1500), JSON.stringify(st().flags));
     check("the ends come from the data", txt(R().querySelector(".ra-axis")).includes(ENDS.S.short) && txt(R().querySelector(".ra-axis")).includes(ENDS.N.short), txt(R().querySelector(".ra-axis")));
@@ -324,12 +326,12 @@ const SCENARIOS = {
     await wait(60);
     check("without api.live it still draws (no chips)", !R().querySelector(".ra-wx") && !R().hidden);
     api.live = live;
-    check("tab switch back to Drive redraws if the position moved meanwhile", (() => { api.ui.go("map"); pos(260, "N"); const before = st().renders; api.ui.go("drive"); return st().renders > before || st().m0 === 260; })());
+    check("tab switch back to Ahead redraws if the position moved meanwhile", (() => { api.ui.go("map"); pos(260, "N"); const before = st().renders; api.ui.go("ahead"); return st().renders > before || st().m0 === 260; })());
   },
   async view({ win, doc, api }) {
     const v = Q.get("view") || "north";
     const pos = (m, dir = "N") => api.setPosition(m, { dir, speed: 63, jumped: true });
-    api.ui.go("drive");
+    api.ui.go("ahead");
     if (v !== "pre") pos(+(Q.get("m") || (v === "south" ? 238 : 188)), Q.get("dir") || (v === "south" ? "S" : "N"));
     if (v === "trip") { api.S.dest = { name: "Redding", m: 677 }; pos(120, "N"); api.roadahead.setMode("trip"); }
     if (v === "wx" || v === "selected") {

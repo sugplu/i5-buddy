@@ -10,7 +10,7 @@
 //               is sent. All through api.store (this phone only).
 // The app version comes from the service worker's VERSION line (read from sw.js, normally from its cache), else a constant.
 
-const FALLBACK_VERSION = "3.0.1";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+const FALLBACK_VERSION = "3.0.2";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
 const PRIVACY_URL = "privacy.html"; // the privacy notice, beside index.html (cached with the app shell)
 const MAX_NAME = 80, MAX_EMAIL = 120, MAX_MSG = 2000;
 const SEND_TIMEOUT = 15e3;

@@ -92,7 +92,7 @@ Run `python3 tools/test_mission_build.py` for the build regression checks (no ne
 - **Live road info** (opt-in): crashes, closures and hazards ahead from the California Highway Patrol and Caltrans lane
   closures (one spoken heads-up for a crash or closure when it is about 10 miles away), National Weather Service
   forecasts and warnings ahead, Caltrans chain controls and the messages on freeway signs ahead, live Caltrans cameras.
-- **Road ahead**: a glanceable chart on the Drive tab of the hills in front of you (next 50 miles, or all the way to your
+- **Road ahead**: a glanceable chart on the Ahead tab (Drive until 3.0.2) of the hills in front of you (next 50 miles, or all the way to your
   destination; the whole road before a trip): steepness colors, grade %, the highest point, forecast and traffic markers,
   and big numbers for the climb, the top and the steepest grade.
 - **Share and feedback**: a share button in the top bar (the phone's share sheet, or copy the link / invite a friend by
@@ -104,7 +104,7 @@ Run `python3 tools/test_mission_build.py` for the build regression checks (no ne
   camera along the next 30 miles. It loads map pictures from OpenFreeMap and AWS terrain tiles only while it is open,
   and falls back to the regular map when there is no connection or no 3D graphics.
 - **Your ride**: pick one of eight hand-drawn vehicles (compact car, camper van, pickup, convertible, motorhome,
-  motorcycle, EV hatchback, family bus) in eight colours, with a driver badge (an emoji or two letters) and a nickname.
+  SUV (the motorcycle until 3.0.2), EV hatchback, family bus) in eight colours, with a driver badge (an emoji or two letters) and a nickname.
   It rides on the Drive sign (bouncing while you drive, dozing when parked), as your marker on the map, and on the
   passport and its share card. Settings > Display > Your ride, or tap it on the sign.
 - **Passport**: a stamp for every landmark you pass, regions, badges, trip log, a shareable trip card.

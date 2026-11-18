@@ -167,9 +167,16 @@ const SCENARIOS = {
     check("with no position yet the pill sits under the welcome card (Start GPS and Install app stay above the tab bar)", $(doc, "#navSearch").previousElementSibling === $(doc, "#nextCard"));
     // --- local results, with a position so "ahead" shows
     api.setMode("demo"); api.setPosition(100, { dir: "N", speed: 60, jumped: true });
-    // under the sign; only the one-time "Pick your ride?" invitation (ride.js) may sit between them
-    { const prev = $(doc, "#navSearch").previousElementSibling;
-      check("once there is a position it moves up under the sign, near the top of Drive", prev === $(doc, "#signBoard") || (prev && prev.id === "rideInvite" && prev.previousElementSibling === $(doc, "#signBoard"))); }
+    // 3.0.2: while a drive or demo runs, the pill is the first of one row of actions (Where to? / Narration / End), above the card
+    { const run = $(doc, "#runControls"), box = $(doc, "#navSearch");
+      check("while a demo runs the pill sits first in the row with Narration and End, above the card", box.parentNode === run && run.firstElementChild === box && run.classList.contains("with-nav") && !run.hidden
+        && run.getBoundingClientRect().top < $(doc, "#nextCard").getBoundingClientRect().top && Math.abs(box.getBoundingClientRect().top - $(doc, "#toggleNarr").getBoundingClientRect().top) < 2);
+      api.setMode("off");
+      const prev = box.previousElementSibling;
+      // under the sign; only the one-time "Pick your ride?" invitation (ride.js) may sit between them
+      check("with a position and nothing running it sits under the sign, near the top of Drive", box.parentNode === $(doc, "#view-drive") && !run.classList.contains("with-nav")
+        && (prev === $(doc, "#signBoard") || (prev && prev.id === "rideInvite" && prev.previousElementSibling === $(doc, "#signBoard"))));
+      api.setMode("demo"); }
     const names = (q, kind) => nav.search(q).filter(r => !kind || r.kind === kind);
     const sac = names("sacramento", "city")[0];
     check("local search finds a city on I-5", !!sac && sac.name === "Sacramento" && Math.abs(sac.m - 519) < 1 && /ahead/.test(sac.sub) && Math.abs(sac.lat - 38.6) < 1, JSON.stringify(sac));

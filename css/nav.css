@@ -15,6 +15,7 @@ body.nav-open .tabs{display:none}
 .nav-pill-tx{display:grid;min-width:0;line-height:1.2}
 .nav-pill-tx b{font-size:1.1rem;font-weight:900}
 .nav-pill-tx small{color:var(--muted);font-size:.8rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-pill:not(.live){border-color:transparent} /* 3.0.2: a soft shadow instead of a border */
 .nav-pill.live{border-color:var(--accent)}
 .nav-pill.live .nav-pill-ic{background:var(--sign);color:var(--sign-fg)}
 body.glance .nav-pill small{display:none}

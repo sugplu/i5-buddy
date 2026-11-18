@@ -1,4 +1,4 @@
-// I-5 Buddy "Road ahead" (module). Owns #roadAhead on the Drive tab: an elevation profile of the road in front of you with
+// I-5 Buddy "Road ahead" (module). Owns #roadAhead on the Ahead tab (Drive until 3.0.2): an elevation profile of the road in front of you with
 // the hills tinted by steepness, the highest point, the steepest climb and descent (grade %), forecast points and traffic.
 //
 //   The chart   data.ELEV (feet at every whole corridor mile), read in your direction of travel: the next 50 miles, or
@@ -25,6 +25,9 @@ const TICK = 30e3;                    // look again for old traffic this often
 let api = null, S = null, settings = null, bus = null, store = null, data = {}, ui = {};
 let root = null, head = null, body = null, group = null, btnNear = null, btnTrip = null;
 let mode = "near";                    // "near" (next 50 miles) | "trip" (to the destination or the end of the road)
+// The tab the chart lives on (3.0.2: moved from Drive to Ahead). It draws only while that tab shows and catches up when
+// it opens.
+const HOME = "ahead";
 let lastM = null, lastDir = null, lastSig = "", tab = "drive", dirty = true;
 let traffic = [];                     // from the "traffic" bus event: corridor incidents with m
 let sel = null;                       // the tapped marker: "tr:<first id>" | "wx:<m>"
@@ -597,17 +600,17 @@ function signature() {
 
 /* ---------- events ---------- */
 function onPos() {
-  if (tab !== "drive") { dirty = true; return; }
+  if (tab !== HOME) { dirty = true; return; }
   if (S.m == null) { if (lastM !== null || dirty) render(); return; }
   if (lastM == null || S.dir !== lastDir || Math.abs(S.m - lastM) >= MOVE_MI) render();
   else if (dirty || signature() !== lastSig) render();
 }
 function onTab(name) {
   tab = String(name || "");
-  if (tab === "drive") { if (dirty || signature() !== lastSig || (S.m != null && (lastM == null || Math.abs(S.m - lastM) >= MOVE_MI))) render(); }
+  if (tab === HOME) { if (dirty || signature() !== lastSig || (S.m != null && (lastM == null || Math.abs(S.m - lastM) >= MOVE_MI))) render(); }
 }
 function refreshIfChanged() {
-  if (tab !== "drive") { dirty = true; return; }
+  if (tab !== HOME) { dirty = true; return; }
   if (signature() !== lastSig || dirty) render();
 }
 function setMode(m) {
@@ -658,12 +661,12 @@ export function init(a) {
     // the chart's width (but not iOS Safari's toolbar collapsing mid-scroll, which fires resize too: that would rebuild the chart
     // under a finger), and the pills' own font (Overpass Mono, font-display swap) may arrive after the first drawing.
     let rz = 0;
-    const redraw = () => { try { if (tab === "drive") render(true); else dirty = true; } catch (e) { warn(e); } };
+    const redraw = () => { try { if (tab === HOME) render(true); else dirty = true; } catch (e) { warn(e); } };
     window.addEventListener("resize", () => {
       clearTimeout(rz);
       rz = setTimeout(() => {
         try {
-          const c = tab === "drive" && root.querySelector(".ra-chart");
+          const c = tab === HOME && root.querySelector(".ra-chart");
           if (c && Math.abs(Math.round(c.getBoundingClientRect().width) - chartPx) < 1) return;
           redraw();
         } catch (e) { warn(e); }

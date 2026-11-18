@@ -187,7 +187,7 @@ A module may attach its own public API to `api` (for example `api.live = {weathe
 | play.js | `#view-play` (whole view), `#spotCard` (Drive, under the next-landmark card) |
 | trip.js | `#view-passport` (whole view), `#destStrip` (Drive, under the sign), may append rows to `#settingsExtra` |
 | listen.js | `#micBtn` (header button, hidden until supported); may append an overlay element to `document.body` |
-| roadahead.js | `#roadAhead` (Drive, under the look buttons) |
+| roadahead.js | `#roadAhead` (Ahead, at the top; on Drive until 3.0.2) |
 | feedback.js | `#feedbackRow` (Settings > About), `#feedbackSheet` |
 | share.js | `#shareBtn` (header button; css hides it below 380 px wide, where it wrapped the title), `#shareRow` (Settings > About, right after `#feedbackRow`: a "Share I-5 Buddy" button at every width), `#shareSheet`, buttons it appends to a place sheet's `acts` (via `place:sheet`) |
 | missions.js | `#missionCard` (Drive, under the next-landmark card), `#missionsPassport` (top of `#view-passport`; trip.js draws the rest under it and never removes it), `#missionSheet`, a "Mission page" button on a mission place's sheet (via `place:sheet`) |
@@ -346,7 +346,7 @@ ready in the App Store." with a link to the App Store page and Not now, `storeLa
 
 ## Rides (js/ride.js)
 
-Eight original vehicles drawn in SVG (compact car, camper van, pickup truck, convertible, motorhome, motorcycle, EV hatchback,
+Eight original vehicles drawn in SVG (compact car, camper van, pickup truck, convertible, motorhome, SUV (the motorcycle until 3.0.2; a saved "moto" ride maps to "suv"), EV hatchback,
 family bus), each in eight paint colours, with an optional driver badge (one emoji or up to two letters, drawn as the driver's
 face) and a nickname (up to 20 characters). The saved ride lives in `api.store` under `ride` as `{kind, color, badge, name}`
 (`kind` and `color` are ids from `api.ride.list()`; anything invalid falls back to the defaults, so a bad value can never

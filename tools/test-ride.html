@@ -120,6 +120,8 @@ async function run(f) {
 async function sceneArt(api, R, doc) {
   const L = R.list();
   check("eight vehicles", L.kinds.length === 8, L.kinds.map(k => k.id).join(","));
+  { const was = R.get(); R.set({ kind: "moto" }); const k = R.get().kind; R.set(was);
+    check("a ride saved as a motorcycle (before 3.0.2) comes back as the SUV", k === "suv" && L.kinds.some(x => x.id === "suv") && !L.kinds.some(x => x.id === "moto"), k); }
   check("six to eight colours", L.colors.length >= 6 && L.colors.length <= 8, String(L.colors.length));
   const parser = new DOMParser();
   let bad = 0, total = 0, fillBad = 0;

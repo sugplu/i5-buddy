@@ -122,8 +122,6 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     <button class="big-btn" id="lookRight">What's on my right?<span class="arrow" aria-hidden="true">▶</span></button>
   </div>
 
-  <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden></section>
-
   <div class="demo-bar" id="demoBar" hidden>
     <span>Demo speed</span>
     <div class="seg" role="group" aria-label="Demo speed">
@@ -132,14 +130,14 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
     <button class="link" id="demoFlip">Turn around</button>
   </div>
 
+  <!-- 3.0.2 (design pass B): Drive keeps only what matters now. The hills chart and the next gas/food/lodging moved to the
+       Ahead tab, and Up next stays hidden here (the Ahead list has the same places with their stories); it is still built,
+       for the detour notes and the tests that read it. "See what's ahead" opens that tab. -->
+  <button type="button" class="ahead-link" id="aheadLink" hidden>Hills, gas &amp; food and what's next: <b>see Ahead</b> <span aria-hidden="true">›</span></button>
+
   <section class="upnext" id="upNext" hidden>
     <h3 class="sub">Up next</h3>
     <ol id="upNextList"></ol>
-  </section>
-
-  <section class="svc" id="svcRow" hidden>
-    <h3 class="sub">On the road ahead</h3>
-    <div class="svc-grid" id="svcGrid"></div>
   </section>
 
   <div id="liveBlock"></div>
@@ -149,6 +147,12 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 
 <!-- AHEAD -->
 <section class="view" id="view-ahead" data-view="ahead" hidden>
+  <!-- 3.0.2: the hills chart (roadahead.js) and the next stops, moved here from Drive; then the list with its own title -->
+  <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden></section>
+  <section class="svc" id="svcRow" hidden>
+    <h3 class="sub">Next stops</h3>
+    <div class="svc-grid" id="svcGrid"></div>
+  </section>
   <div class="view-head">
     <h2 class="view-title" id="aheadTitle">Coming up</h2>
     <div class="seg" role="group" aria-label="Show">

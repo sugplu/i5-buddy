@@ -486,7 +486,7 @@ function render() {
     }
     else if (has) { setPill("gps", "GPS"); $("statusText").textContent = regionAt(S.m).name; }
     if (S.gpsStale && !S.offRoute) { setPill("wait", "GPS?"); $("statusText").textContent = "Waiting for a GPS signal…"; }
-  } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = "Demo drive · " + (has ? regionAt(S.m).name : ""); }
+  } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = has ? regionAt(S.m).name : "Demo drive"; } // the DEMO pill says it (3.0.2)
   else if (S.mode === "manual") { setPill("manual", "MANUAL"); $("statusText").textContent = "Milepost set by hand"; }
   else { setPill("off", "OFF"); $("statusText").textContent = has ? "Paused · " + regionAt(S.m).name : `${ENDS.S.short} to ${ENDS.N.short}`; }
   // js/nav.js: while it guides, the status line says where to and the next turn (also off I-5, where narration is paused)
@@ -497,6 +497,10 @@ function render() {
   $("toggleNarr").setAttribute("aria-label", "Narration"); // one name; aria-pressed carries on and off
   $("toggleNarr").textContent = settings.narr ? "Narration on" : "Narration off";
   renderRibbon(); renderNext(); renderUpNext(); renderServices();
+  // 3.0.2: with no position yet, "What's on my left/right?" has nothing to answer, so Drive leaves it out; the link to
+  // the Ahead tab (hills, gas and food, what's next) shows once there is a road ahead to show
+  document.querySelector("#view-drive .look").hidden = S.m == null;
+  $("aheadLink").hidden = S.m == null;
   if (tab === "ahead") renderAhead();
 }
 
@@ -595,11 +599,7 @@ function renderNext() {
     const inst = el("div", "welcome-install"); inst.hidden = true;
     card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()), h2, inst,
       el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. ${native.NATIVE ? "Tap Start GPS before you pull out" : "Tap Start GPS on the road"}, or take a demo drive from the couch.`));
-    const stats = el("div", "welcome-stats");
-    for (const [n, l] of [[PLACES.length, "landmarks"], [data.CAMS.length, "live cameras"], [data.SERVICES.length, "exits with services"]]) {
-      const s = el("div"); s.append(el("b", null, n.toLocaleString()), el("span", null, l)); stats.append(s);
-    }
-    card.append(stats);
+    // (3.0.2: the three number boxes under the text are gone; the line above already says how many landmarks)
     // the byline, and beside it a link that says Privacy on the first screen (privacy.html in a new tab, as in About);
     // short enough that both stay on one line on a 360 px phone
     // in the iPhone app the byline is plain words: dominares.org sells developer tools, nothing to do with the app
@@ -793,6 +793,7 @@ function renderAhead() {
   const ol = $("aheadList");
   const m = S.m ?? (S.dir === "N" ? 0 : MAX_M);
   $("chips").hidden = aheadMode !== "places";
+  $("view-ahead").dataset.mode = aheadMode; // the Next stops boxes hide while the list itself is Gas & food (css)
   if (aheadMode === "stops") return renderStops(ol, m);
   $("aheadTitle").textContent = S.m == null ? "Every stop, south to north" : `Coming up ${S.dir === "N" ? "northbound" : "southbound"}`;
   const items = upcoming(m, S.m == null ? "N" : S.dir, listCats);
@@ -887,6 +888,7 @@ setGlance(store.get("glance", false));
 $("startGps").onclick = startGps;
 $("startDemo").onclick = startDemo;
 $("stopTrip").onclick = () => stopAll(false);
+$("aheadLink").onclick = () => go("ahead");
 $("toggleNarr").onclick = () => { settings.narr = !settings.narr; saveSettings(); if (!settings.narr) voice.stop(); queueRender(); };
 $("lookLeft").onclick = () => { voice.unlock(); look("left"); };
 $("lookRight").onclick = () => { voice.unlock(); look("right"); };
@@ -947,7 +949,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.1";
+export const APP_VERSION = "3.0.2";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");

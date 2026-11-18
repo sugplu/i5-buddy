@@ -361,12 +361,20 @@ function rankVoice(v) {
 /** An online voice: the browser sends the words to its maker's speech service (on a computer, Chrome's "Google …"
     voices and Edge's "… Online (Natural)" ones). The words can say where you are ("near mile 309, heading north"). */
 const isOnline = v => !!v && !v.natural && v.localService === false;
+/** Joke and robot voices that phones and Macs list next to the real ones (Apple's Albert, Bad News, Bahh, Zarvox and
+    the like, its old MacinTalk voices, and the Eloquence set: Eddy, Flo, Grandma...). Picked by mistake they made
+    I-5 Buddy sound "freaky" (Joseph, 2026-11-18), so Settings and narration leave them out (3.0.2). */
+const NOVELTY = /^(albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|deranged|hysterical|princess|pipe organ|fred|junior|kathy|ralph|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)\b/i;
+const isNovelty = v => NOVELTY.test(String(v.name || "").trim()) || /eloquence/i.test(String(v.voiceURI || ""));
+/** How many device voices Settings offers (the best ones by rankVoice); a long list of near-identical voices was a wall. */
+const MAX_VOICES = 8;
 function loadVoices() {
   if (!synth) return;
   // The device's own voices first: with the natural voice off and no voice picked, pickVoice() takes the first one, so
   // narration stays on the device unless the person picks an online voice or the browser has no other (privacy.html).
-  voices = synth.getVoices().filter(v => /^en/i.test(v.lang))
-    .sort((a, b) => isOnline(a) - isOnline(b) || rankVoice(a) - rankVoice(b) || a.name.localeCompare(b.name));
+  voices = synth.getVoices().filter(v => /^en/i.test(v.lang) && !isNovelty(v))
+    .sort((a, b) => isOnline(a) - isOnline(b) || rankVoice(a) - rankVoice(b) || a.name.localeCompare(b.name))
+    .slice(0, MAX_VOICES);
   bus.emit("voices", voices);
 }
 if (synth) { loadVoices(); synth.addEventListener?.("voiceschanged", loadVoices); }

@@ -319,6 +319,43 @@ body.captioned .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
 .help-open,.rate-open{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
 /* the end-of-the-road card keeps the same padding as the others */
 .next.end-of-road .next-body{padding-top:14px}
+/* ---------- 3.0.2 design pass (Joseph, 2026-11-18: "less congested, more organized, more user friendly and attractive";
+   he picked "B · Focused"): calmer surfaces with soft shadows instead of borders, one big Start GPS with Demo drive as a
+   link, no barcode of landmark ticks on the sign, one row of actions while driving (Where to? / Narration / End), and
+   Drive shows only what matters now (the hills chart and the next stops moved to Ahead; index.html). ---------- */
+:root{--radius:18px}
+:root[data-theme="light"]{--bg:#f4f3ef;--surface-2:#f1f0eb;--line:#e4e2dc;--shadow:0 1px 2px rgba(16,24,20,.05),0 12px 28px -14px rgba(16,24,20,.24)}
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.sign-board{border-radius:22px;padding:16px 18px 10px}
+.ribbon .tick{display:none}
+.ribbon .tick.got{display:block}
+#startControls{grid-template-columns:1fr;gap:2px}
+#startGps{min-height:58px;font-size:1.15rem;border-radius:16px;box-shadow:0 8px 18px -8px rgba(200,140,0,.7)}
+#startDemo{background:none;border:0;box-shadow:none;min-height:44px;color:var(--link);padding:4px 16px;justify-self:center}
+.secondary{border-color:transparent;background:var(--surface);box-shadow:var(--shadow)}
+.big-btn{border:0;box-shadow:var(--shadow);min-height:60px}
+.next.welcome{border-top:0;padding:20px 20px 16px}
+.next.welcome h2{font-size:1.6rem}
+.upnext ol,.svc-item{border:0;box-shadow:var(--shadow)}
+.svc-item{border-radius:16px}
+.tabs{border-top-color:transparent;box-shadow:0 -1px 0 var(--line)}
+.caption{background:rgba(17,22,18,.94);color:#fff;border:1px solid rgba(255,255,255,.1);border-radius:18px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.caption .icon-btn{color:#fff}
+/* one row while a drive or demo runs: Where to? (nav.js puts it here), Narration, End */
+#runControls.with-nav{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.8fr);gap:8px}
+#runControls.with-nav>#navSearch{display:grid;min-width:0}
+#runControls.with-nav .nav-pill{min-height:52px;height:100%;padding:6px 10px 6px 6px;gap:8px;min-width:0}
+#runControls.with-nav .nav-pill small{display:none}
+#runControls.with-nav .nav-pill-ic{width:36px;height:36px}
+#runControls.with-nav .nav-pill-tx b{font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#runControls.with-nav .secondary{min-height:52px;padding:8px 6px;font-size:.92rem;line-height:1.15}
+@media (max-width:379px){#runControls.with-nav .nav-pill-ic{display:none}#runControls.with-nav .nav-pill{padding-left:12px}}
+/* Drive's last line: the way to the Ahead tab. Up next stays built but hidden (the Ahead list has the same places). */
+.ahead-link{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 6px;min-height:48px;background:none;border:0;color:var(--muted);font-size:.92rem;font-weight:600;text-align:center}
+.ahead-link b{color:var(--link);font-weight:800}
+#view-drive #upNext{display:none!important}
+#view-ahead[data-mode="stops"] #svcRow{display:none}
+
 /* a phone held sideways in a dash mount: the sign on the left stays put, everything else scrolls on the right */
 @media (orientation:landscape) and (max-height:540px) and (min-width:560px){
   .app{max-width:none}

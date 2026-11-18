@@ -30,10 +30,14 @@ export const KINDS = [
   { id: "pickup", name: "Pickup truck" },
   { id: "convertible", name: "Convertible" },
   { id: "rv", name: "Motorhome" },
-  { id: "moto", name: "Motorcycle" },
+  { id: "suv", name: "SUV" },
   { id: "ev", name: "EV hatchback" },
   { id: "bus", name: "Family bus" },
 ];
+// 3.0.2 (Joseph: the rides other than the default looked "freaky"): the motorcycle and its rider became an SUV, the
+// convertible's driver sits in the car, the motorhome's driver fits its window, every headlight is the same round eye.
+// A ride saved as a motorcycle rides on as an SUV.
+const KIND_ALIAS = { moto: "suv" };
 const DEFAULT = { kind: "compact", color: "sunny", badge: "", name: "" };
 const EMOJI_CHOICES = ["😎", "🌴", "⭐", "🐶", "🎸", "☀️", "🚀", "❤️"];
 const MOVING_MPH = 3;             // at or above this speed the ride is "moving"
@@ -70,7 +74,7 @@ export function cleanName(v) {
 export function cleanRide(r) {
   r = r && typeof r === "object" ? r : {};
   return {
-    kind: KINDS.some(k => k.id === r.kind) ? r.kind : DEFAULT.kind,
+    kind: KINDS.some(k => k.id === r.kind) ? r.kind : KINDS.some(k => k.id === KIND_ALIAS[r.kind]) ? KIND_ALIAS[r.kind] : DEFAULT.kind,
     color: COLORS.some(c => c.id === r.color) ? r.color : DEFAULT.color,
     badge: cleanBadge(r.badge),
     name: cleanName(r.name),
@@ -139,7 +143,7 @@ const ART = {
   pickup: c => `
     ${arch(28, 13.4, 56)}${arch(88, 13.4, 56)}
     <rect x="17" y="27" width="18" height="12" rx="2.5" fill="${c.L}" ${SWS}/><path d="M26 27V39M17 33H35" stroke="${OUT}" stroke-width="1.4" opacity=".5"/>
-    <circle cx="43" cy="33.5" r="5.5" fill="${c.D}" ${SWS}/>
+    <rect x="38" y="30" width="13" height="9" rx="2.5" fill="#ffffff" ${SWS}/><path d="M38 33.5H51" stroke="${OUT}" stroke-width="1.4" opacity=".5"/>
     <path d="M56 58V30Q57 22 66 22H80Q86 22 90 28L94 36L106 37Q112 38 112 44V58Q112 61 108 61H56Z" fill="${c.B}" ${SW}/>
     ${glass("M62 26.5Q63 25.5 66 25.5H79Q83 25.5 86 30L88 36H62Z")}
     ${driver({ x: 72, y: 31.5, r: 5.2 }, c)}
@@ -150,10 +154,10 @@ const ART = {
 
   convertible: c => `
     ${arch(28)}${arch(90)}
-    <path d="M20 40Q19 30 28 30H40Q47 30 47 40Z" fill="${c.D}" ${SW}/>
-    <path d="M51 41Q51 33 59 33Q67 33 67 41Z" fill="${c.L}" ${SWS}/>
-    ${driver({ x: 59, y: 26.5, r: 7.3 }, c)}
-    <path d="M70 40L78 26.5H82.5L77.5 40Z" fill="${GLASS}" ${SWS}/>
+    <path d="M24 41Q24 34 31 34H40Q45 34 45 41Z" fill="${c.D}" ${SWS}/>
+    <path d="M50 42V30Q50 27 53 27H55Q58 27 58 30V42Z" fill="${c.D}" ${SWS}/>
+    ${driver({ x: 64, y: 33, r: 6.3 }, c)}
+    <path d="M73 41L80 29H84L79.5 41Z" fill="${GLASS}" ${SWS}/>
     <path d="M8 58V47Q8 41 15 40L52 39H64Q78 39 90 43L106 45Q112 47 112 53V58Q112 61 108 61H12Q8 61 8 58Z" fill="${c.B}" ${SW}/>
     <path d="M12 50Q60 47 108 51" fill="none" stroke="${c.L}" stroke-width="3.2" stroke-linecap="round"/>
     <path d="M62 44V54" stroke="${OUT}" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
@@ -166,28 +170,22 @@ const ART = {
     <path d="M7.5 46H110.5V52H7.5Z" fill="${c.L}"/>
     <rect x="13" y="22" width="18" height="14" rx="4" fill="${GLASS}" ${SWS}/><rect x="35" y="22" width="18" height="14" rx="4" fill="${GLASS}" ${SWS}/>
     <rect x="58" y="22" width="14" height="30" rx="3.5" fill="${c.D}" ${SWS}/><rect x="61" y="25" width="8" height="9" rx="2.5" fill="${GLASS}" ${SWS}/>
-    <path d="M95 31H103Q108 32 109 38V44H95Z" fill="${GLASS}" ${SWS}/>
-    ${driver({ x: 102.5, y: 38.2, r: 5.4 }, c)}
+    <path d="M91 30H102Q109 31 110 38V44H91Z" fill="${GLASS}" ${SWS}/>
+    ${driver({ x: 99, y: 37.2, r: 5.2 }, c)}
     <path d="M80 18V42" stroke="${OUT}" stroke-width="1.6" opacity=".4"/>
     ${wheel(28, 57, 10)}${wheel(90, 57, 10)}${tail(5, 38, 4.5, 8)}${eye(105.6, 53, 4.4, c)}${smile("M98 58.6Q102 61 108 58.5")}`,
 
-  moto: c => `
-    <path d="M52 55L28 58" stroke="${METAL}" stroke-width="5" stroke-linecap="round"/><path d="M52 55L28 58" stroke="${OUT}" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
-    ${wheel(26, 55, 11)}${wheel(94, 55, 11)}
-    <path d="M26 55L48 42M94 55L84 31M48 42L66 52L90 49" fill="none" stroke="${OUT}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M47 43L66 52" stroke="${c.D}" stroke-width="2" stroke-linecap="round"/>
-    <rect x="51" y="44" width="21" height="13" rx="4" fill="${METAL}" ${SWS}/>
-    <path d="M30 38Q40 34 52 36.5L52 41H28Z" fill="${c.D}" ${SW}/>
-    <path d="M50 35Q62 28 77 33L73 44H50Z" fill="${c.B}" ${SW}/>
-    <path d="M54 37Q62 33 72 36" fill="none" stroke="${c.L}" stroke-width="2.6" stroke-linecap="round"/>
-    <path d="M86 29Q83 21 89.5 19.5L91.5 22Q89 26 91.5 30Z" fill="${GLASS}" ${SWS}/>
-    <path d="M50 37L61 26.5L84 30.5" fill="none" stroke="${OUT}" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M50 37L61 26.5L84 30.5" fill="none" stroke="${c.L}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M52 38L58 46L55.5 53" fill="none" stroke="${OUT}" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M52 38L58 46L55.5 53" fill="none" stroke="${c.D}" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-    ${driver({ x: 64, y: 17.5, r: 7.6 }, c)}
-    <path d="M82 28.5H89L92 30" fill="none" stroke="${OUT}" stroke-width="3" stroke-linecap="round"/>
-    ${eye(89.5, 38, 4.8, c)}${tail(11, 33, 5, 6)}`,
+  suv: c => `
+    ${arch(30, 13)}${arch(89, 13)}
+    <path d="M22 17V13.5M70 17V13.5" stroke="${OUT}" stroke-width="2.4" stroke-linecap="round"/><path d="M18 13.5H74" stroke="${OUT}" stroke-width="2.6" stroke-linecap="round"/>
+    <rect x="30" y="7" width="30" height="7" rx="3" fill="${c.L}" ${SWS}/>
+    <path d="M8 58V28Q8 18 18 18H78Q84 18 88 24L96 36L105 37.5Q112 39 112 46V58Q112 61 108 61H12Q8 61 8 58Z" fill="${c.B}" ${SW}/>
+    <rect x="15" y="23" width="20" height="13" rx="4" fill="${GLASS}" ${SWS}/><rect x="39" y="23" width="20" height="13" rx="4" fill="${GLASS}" ${SWS}/>
+    ${glass("M63 23H78Q82 23 85 27L91 36H63Z")}
+    ${driver({ x: 72.5, y: 30.2, r: 5.5 }, c)}
+    <path d="M61 21V55M65 43h4" stroke="${OUT}" stroke-width="1.6" stroke-linecap="round" opacity=".45"/>
+    <path d="M10 47Q60 43.5 110 47.5" fill="none" stroke="${c.L}" stroke-width="3.2" stroke-linecap="round"/>
+    ${wheel(30, 57, 10)}${wheel(89, 57, 10)}${tail(7, 40, 4.5, 8)}${eye(104.5, 45.5, 5, c)}${smile("M98 56Q104 60 109.5 55")}`,
 
   ev: c => `
     ${arch(30)}${arch(88)}
@@ -198,8 +196,7 @@ const ART = {
     <path d="M12 46Q60 42 108 47" fill="none" stroke="${c.L}" stroke-width="3.2" stroke-linecap="round"/>
     <circle cx="58" cy="50" r="6.6" fill="#fff" ${SWS}/><path d="M59.5 44.4L54.6 51.2H58L56.6 56.2L62 49H58.4Z" fill="#f5c332" stroke="${OUT}" stroke-width="1.1" stroke-linejoin="round"/>
     ${wheel(30)}${wheel(88)}${tail(7, 44, 4.5, 8)}
-    <path d="M98 44Q106 41.5 111 46.5Q105 49.5 98 47Z" fill="${LAMP}" ${SWS}/><circle cx="106" cy="45.7" r="1.7" fill="${OUT}"/>
-    <path class="ride-lid" opacity="0" d="M97 44.4Q106 40 111.6 46.6L98 46.6Z" fill="${c.D}" ${SWS}/>
+    ${eye(104, 46.5, 5.1, c)}
     ${smile("M99 56.5Q105 60 110 55.5")}`,
 
   bus: c => `
