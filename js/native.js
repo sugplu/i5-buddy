@@ -91,6 +91,25 @@ export function init(h = {}) {
   document.addEventListener("click", onLinkClick, true);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && docEl && !docEl.hidden) { e.stopPropagation(); closeDoc(); } }, true);
   adaptAbout();
+  // Universal Links (3.0.1): an i5.dominares.org link that opened the app (a shared place, /get) comes from the native
+  // side, once at start (pendingLink) and as "link" events after
+  const N = plugin("I5Native");
+  if (N) {
+    try { N.addListener("link", e => openLink(e && e.url)); } catch {}
+    call(N, "pendingLink").then(r => { if (r && r.url) openLink(r.url); }).catch(() => {});
+  }
+}
+/** A link to i5.dominares.org that opened the app: a shared place (#place=<id>) opens its sheet; anything else (the app,
+    /get) just shows the app. */
+export function openLink(url) {
+  let u;
+  try { u = new URL(String(url || "")); } catch { return false; }
+  if (u.hostname !== "i5.dominares.org") return false;
+  if (/^#place=/.test(u.hash)) {
+    try { location.hash = u.hash; } catch {}  // share.js opens it on hashchange
+    return true;
+  }
+  return true;
 }
 
 /** About in the app: "Made by Dominares" as plain words, without the links to dominares.org (a store for developer
@@ -440,11 +459,11 @@ export async function requestReview() {
   try { await call(R, "requestReview"); return true; } catch { return false; }
 }
 /** While I-5 Buddy talks, other audio (music, a podcast) is turned down, as Apple Maps does, and back up after
-    (the app's AudioDuck plugin; a no-op in a browser and in builds without it). */
+    (the app's own I5Native plugin, ios/App/App/I5Native.swift; a no-op in a browser and in builds without it). */
 export function duck(on) {
-  const D = plugin("AudioDuck");
+  const D = plugin("I5Native");
   if (!D) return;
-  call(D, on ? "begin" : "end").catch(() => {});
+  call(D, on ? "duckBegin" : "duckEnd").catch(() => {});
 }
 
 /* ---------- screen and status bar ---------- */

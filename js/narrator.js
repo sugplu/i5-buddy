@@ -197,6 +197,21 @@ export function tellMore(p) {
 }
 export function hear(p) { if (p) voice.say(`${p.name}. ${p.text}`, { now: true, id: "hear:" + p.id }); }
 
+/** The words for a question asked through Siri in the iPhone app (I5Native.swift): "left", "right", "where", or a
+    service ("fuel", "food", "ev", "sleep", "rest"). The same answers the buttons speak; Siri says them, so nothing is
+    queued here. */
+export function answer(kind) {
+  const said = [];
+  const real = voice.say;
+  voice.say = text => { said.push(String(text)); return Promise.resolve(true); };
+  try {
+    if (kind === "left" || kind === "right") look(kind);
+    else if (kind === "where") whereAreWe();
+    else tellServices(kind);
+  } finally { voice.say = real; }
+  return said.join(" ") || "I don't have an answer for that yet.";
+}
+
 export function look(side) {
   if (S.m == null) return voice.say("Start GPS or a demo drive first, then I can tell you what's out there.", { now: true });
   const cands = PLACES.filter(p => sideWord(p, S.dir) === side)
@@ -261,4 +276,4 @@ export function nextOne() {
 }
 
 export function markHeard(id) { heard.add(hk(id)); }
-export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, placeById, CATS, STATES };
+export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, answer, placeById, CATS, STATES };

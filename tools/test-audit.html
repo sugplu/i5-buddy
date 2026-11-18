@@ -291,6 +291,17 @@ const { MAX_M, ROUTE, PLACES } = api.data;
   ok(api.store.get("drive", null) == null, "End trip: nothing left to resume");
 }
 
+/* ---------- 14. Siri's answers (the iPhone app asks narrator.answer) and links that open the app ---------- */
+{
+  api.setPosition(204.3, { dir: "N", jumped: true });
+  said.length = 0;
+  const left = api.narrator.answer("left"), where = api.narrator.answer("where"), gas = api.narrator.answer("fuel");
+  ok(typeof left === "string" && /on your left|left/i.test(left) && !said.length, `"What's on my left": words for Siri, nothing queued (${left.slice(0, 70)})`);
+  ok(/We're on I-5 in California, near mile/.test(where), `"Where are we": ${where.slice(0, 70)}`);
+  ok(/Next gas|gas/i.test(gas), `"Next gas": ${gas.slice(0, 70)}`);
+  ok(api.native.openLink("https://i5.dominares.org/get") === true && api.native.openLink("https://evil.example/#place=x") === false, "only i5.dominares.org links are taken");
+}
+
 out.textContent = lines.join("\n") + `\n\n${fails ? "FAILED " + fails : "ALL PASS"} (${lines.length} checks)`;
 document.title = fails ? `FAILED ${fails}` : "ALL PASS";
 console.log(fails ? `[test-audit] FAILED ${fails}` : `[test-audit] ALL PASS (${lines.length})`);
