@@ -211,8 +211,14 @@ const SCENARIOS = {
       await wait(250);
       const welcome = doc.querySelector("#nextCard.welcome"), slot = welcome && welcome.querySelector(".welcome-install");
       check("the iPhone app: it really runs as the app (NATIVE, its own styles, About without outside links)", api.native.NATIVE === true && doc.documentElement.classList.contains("ios-app") && !doc.querySelector("#settings .also-from"));
+      // (3.0.1: About has one App Store link in the app, "Rate I-5 Buddy", to the app's own review page, Apple's pattern
+      // for a rating button; it is not a badge and never a download link)
+      const storeLinks = visibleStoreLinks(doc).filter(a => !/[?&]action=write-review\b/.test(a.href));
+      const rate = doc.querySelector("#rateRow a.rate-open");
       check("the iPhone app: no App Store badge in the welcome card or in About, no install row", !!welcome && (!slot || slot.hidden) && doc.getElementById("appRow").hidden
-        && !visibleStoreLinks(doc).length && !doc.querySelector("a.get-app") && doc.getElementById("installRow").hidden, `${visibleStoreLinks(doc).length} links`);
+        && !storeLinks.length && !doc.querySelector("a.get-app") && doc.getElementById("installRow").hidden, `${storeLinks.length} links`);
+      check("the iPhone app: About has Rate I-5 Buddy, opening the App Store's review page for this app", !!rate && !doc.getElementById("rateRow").hidden
+        && rate.href === "https://apps.apple.com/app/id6834991531?action=write-review", rate && rate.href);
       check("the iPhone app: the App Store banner tag is there but Safari's alone (no code reads it)", !!doc.querySelector('meta[name="apple-itunes-app"]') && !/apple-itunes-app/.test(await (await fetch("../js/main.js")).text()));
       // support.html shown inside the app (native.js openDoc; the iPhone project's smoke test opens it): its "Get the app"
       // (data-web-only) is left out: no App Store badge for the app itself, no Android or Google Play (guideline 2.3.10)
@@ -396,13 +402,14 @@ const SCENARIOS = {
       const fakeFetch = async req => {
         const u = new URL(typeof req === "string" ? req : req.url, swUrl);
         net.log.push(u.pathname + u.search);
-        if (!net.online) throw new TypeError("Failed to fetch");
-        return new Response((net.prefix || "page:") + u.pathname, { status: 200, headers: { "content-type": "text/html" } });
+        if (!net.online || (net.fail && net.fail.test(u.pathname))) throw new TypeError("Failed to fetch");
+        return new Response((net.prefix || "page:") + u.pathname, { status: net.status || 200, headers: { "content-type": "text/html" } });
       };
       function FakeRequest(u, init) { return { url: new URL(u, swUrl).href, method: "GET", mode: "cors", init }; }
       const self = { addEventListener: (t, fn) => { handlers[t] = fn; }, skipWaiting() {}, clients: { claim: async () => {} } };
       new Function("self", "caches", "fetch", "location", "Request", swSrc)(self, caches, fakeFetch, new URL(swUrl), FakeRequest);
       let p;
+      if (sw.before) sw.before(net);
       handlers.install({ waitUntil: x => { p = x; } });
       await p;
       const go = async (path, mode = "navigate") => {
@@ -436,8 +443,29 @@ const SCENARIOS = {
       const lost = await go("/get/");
       check("sw.js offline: get/ not saved: the app at its own address, not index.html at get/ (whose files would load from get/)", lost === "redirect https://i5.dominares.org/", lost);
       net.online = true; net.prefix = "net:";
-      check("sw.js online: pages come from the network (get/, support.html, the app)", await go("/get/") === "net:/get/" && await go("/support.html") === "net:/support.html" && await go("/") === "net:/");
+      // 3.0.1: saved first. On one bar of signal the installed app used to wait 25 s for the network before showing anything.
+      const asked = net.log.length;
+      check("sw.js online: saved pages open from this version's copy without asking the network (support.html, the app)", await go("/support.html") === "page:/support.html" && await go("/") === "page:/" && net.log.length === asked, `${net.log.length - asked} asked`);
+      check("sw.js online: a page that isn't saved comes from the network, and is kept", await go("/get/") === "net:/get/" && [...store.values()][0].has("https://i5.dominares.org/get/"));
+      net.status = 503;
+      check("sw.js: a server error never replaces something saved; an unsaved page goes to the app", await go("/") === "page:/" && await go("/never.html") === "redirect https://i5.dominares.org/", "");
+      net.status = 404;
+      check("sw.js: a real not-found stays one", await go("/never.html") === "status 404");
+      net.status = 0;
       check("sw.js: live APIs and other sites are left alone", await go("/api/traffic", "cors") === "(not handled)" && await go("https://apps.apple.com/us/app/i-5-buddy/id6834991531") === "(not handled)");
+    }
+    {
+      // install is all or nothing for the app's own files: one that fails keeps the old version in charge
+      sw.before = net => { net.fail = /\/data\/i5\.js$/; };
+      let failed = false;
+      try { await sw("https://i5.dominares.org/sw.js"); } catch { failed = true; }
+      sw.before = null;
+      check("sw.js install: a missing app file fails the install (the old worker and its complete copy stay)", failed);
+      sw.before = net => { net.fail = /\/get\/$/; };
+      let okInstall = true;
+      try { await sw("https://i5.dominares.org/sw.js"); } catch { okInstall = false; }
+      sw.before = null;
+      check("sw.js install: a missing extra page (get/) is skipped, the install goes on", okInstall);
     }
     {
       const { net, go } = await sw("https://sugplu.github.io/i5-buddy/sw.js");

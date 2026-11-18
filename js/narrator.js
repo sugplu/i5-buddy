@@ -7,14 +7,19 @@ import {
 import { miles } from "./geo.js";
 import { voice } from "./voice.js";
 
-const heard = new Set();      // place ids announced this trip
+// Announced places are remembered per direction (3.0.1): "id|N", "id|S". Before, a place heard northbound stayed
+// "heard" after turning around, so the whole drive back was silent unless End trip was tapped in between.
+const heard = new Set();      // place id + direction, announced this trip
 const told = new Set();       // place ids whose "more" story was told this trip
 let lastZone = null, lastState = null, lastSummit = null, halfwayDone = false;
 let lastSpokeAtM = null;      // corridor mile of the last landmark announcement (for story time)
+let lastSpokeAt = 0;          // and its time
+const hk = (id, dir = S.dir) => id + "|" + dir;
+const STORY_MI = 5, STORY_MS = 4 * 60e3; // story time after this much quiet road, or this long without a landmark
 
 export function resetTrip() {
   heard.clear(); told.clear();
-  lastZone = null; lastState = null; lastSummit = null; halfwayDone = false; lastSpokeAtM = null;
+  lastZone = null; lastState = null; lastSummit = null; halfwayDone = false; lastSpokeAtM = null; lastSpokeAt = 0;
 }
 
 /** Places the user wants to hear about, in travel order, with signed distance d (positive = ahead). */
@@ -60,6 +65,7 @@ function stillAhead(p) { return () => S.m != null && aheadOf(S.m, S.dir, p.m) > 
 
 function stampBetween(prev, m) {
   if (prev == null || m == null || Math.abs(m - prev) > 30) return;
+  if (S.mode === "demo") return; // a demo drive is pretend: no stamps or badges (3.0.1)
   const lo = Math.min(prev, m) - 0.25, hi = Math.max(prev, m) + 0.25;
   let fresh = [];
   for (const p of PLACES) {
@@ -151,24 +157,31 @@ function onPos(e) {
     bus.emit("zone", { zone: z });
   }
 
-  // landmarks within the heads-up distance (at least ~75 seconds of warning at speed)
-  const lead = Math.max(settings.lead, S.speed ? S.speed * 75 / 3600 : 0);
+  // GPS just started and the direction isn't known yet (a parked phone has no heading; the saved one is from the last
+  // trip): wait for it before announcing anything ahead, or the first places could be the ones behind the car.
+  if (S.mode === "gps" && S.dirSure === false) return;
+
+  // landmarks within the heads-up distance (at least ~75 seconds of warning at speed, but never more than 2 miles past
+  // the setting: one bad speed reading must not pull in a whole stretch of road)
+  const lead = Math.min(settings.lead + 2, Math.max(settings.lead, S.speed ? S.speed * 75 / 3600 : 0));
   for (const { p, d } of upcoming(m, dir, settings.cats, lead + 0.01)) {
-    if (heard.has(p.id)) continue;
-    heard.add(p.id);
+    if (heard.has(hk(p.id, dir))) continue;
+    heard.add(hk(p.id, dir));
     if (jumped && d < -0.1) continue;
     if (!chatty(p)) continue;
-    lastSpokeAtM = m;
+    lastSpokeAtM = m; lastSpokeAt = Date.now();
     voice.say(announceText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: stillAhead(p) });
     bus.emit("place:announce", { place: p, d });
   }
 
-  // story time on long quiet stretches ("high" chattiness only)
-  if (settings.chat === "high" && !voice.isSpeaking() && !voice.queued().length && lastSpokeAtM != null && Math.abs(m - lastSpokeAtM) > 9) {
-    const recent = PLACES.filter(p => p.more && heard.has(p.id) && !told.has(p.id)).sort((a, b) => Math.abs(a.m - m) - Math.abs(b.m - m))[0];
+  // story time on quiet stretches ("high" chattiness only): 5 quiet miles or 4 quiet minutes. (It used to wait for 9
+  // miles without a landmark, and no gap on the whole road is that long, so High never told a story.)
+  const quiet = lastSpokeAtM != null && (Math.abs(m - lastSpokeAtM) > STORY_MI || (lastSpokeAt && Date.now() - lastSpokeAt > STORY_MS));
+  if (settings.chat === "high" && !voice.isSpeaking() && !voice.queued().length && quiet) {
+    const recent = PLACES.filter(p => p.more && (heard.has(hk(p.id, "N")) || heard.has(hk(p.id, "S"))) && !told.has(p.id)).sort((a, b) => Math.abs(a.m - m) - Math.abs(b.m - m))[0];
     if (recent) {
       told.add(recent.id);
-      lastSpokeAtM = m;
+      lastSpokeAtM = m; lastSpokeAt = Date.now();
       voice.say(`Here's a story while we drive, about ${recent.name}. ${recent.more}`, { id: "story:" + recent.id, prio: 0 });
     }
   }
@@ -242,10 +255,10 @@ export function tellServices(kind = "fuel") {
 }
 
 export function nextOne() {
-  const list = upcoming().filter(x => !heard.has(x.p.id) || x.d > 0.5);
+  const list = upcoming().filter(x => !heard.has(hk(x.p.id)) || x.d > 0.5);
   const x = list.find(x => voice.currentId() !== x.p.id) || list[0];
-  if (x) { heard.add(x.p.id); voice.say(announceText(x.p, Math.max(0, x.d)), { now: true, id: x.p.id }); }
+  if (x) { heard.add(hk(x.p.id)); voice.say(announceText(x.p, Math.max(0, x.d)), { now: true, id: x.p.id }); }
 }
 
-export function markHeard(id) { heard.add(id); }
+export function markHeard(id) { heard.add(hk(id)); }
 export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, placeById, CATS, STATES };

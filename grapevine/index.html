@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Is the Grapevine open? Live I-5 Tejon Pass status · I-5 Buddy</title>
+<meta name="description" content="Is I-5 over the Grapevine open right now? Live closures, crashes, chain controls and freeway signs on I-5 from Castaic over Tejon Pass to the Grapevine, and through Mount Shasta and the Siskiyous. From the CHP and Caltrans, refreshed every 2 minutes.">
+<meta name="theme-color" content="#0b6e3f">
+<meta name="author" content="Dominares">
+<link rel="canonical" href="https://i5.dominares.org/grapevine/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="I-5 Buddy by Dominares">
+<meta property="og:url" content="https://i5.dominares.org/grapevine/">
+<meta property="og:title" content="Is the Grapevine open? Live I-5 status">
+<meta property="og:description" content="Closures, crashes, chain controls and freeway signs on I-5 over Tejon Pass, live from the CHP and Caltrans.">
+<meta property="og:image" content="https://i5.dominares.org/icons/og-1200x630.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://i5.dominares.org/icons/og-1200x630.png">
+<meta name="apple-itunes-app" content="app-id=6834991531">
+<link rel="icon" href="../icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icons/icon-180.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Is the Grapevine open? Live I-5 Tejon Pass status","url":"https://i5.dominares.org/grapevine/","description":"Live closures, crashes, chain controls and freeway signs on I-5 over the Grapevine (Tejon Pass) and through Mount Shasta and the Siskiyous, from the California Highway Patrol and Caltrans.","isPartOf":{"@type":"WebSite","name":"I-5 Buddy","url":"https://i5.dominares.org/"},"publisher":{"@type":"Organization","name":"Dominares","url":"https://dominares.org/"},"about":[{"@type":"Place","name":"Tejon Pass (the Grapevine), Interstate 5, California"},{"@type":"Place","name":"Interstate 5 through Mount Shasta and the Siskiyou Mountains, California"}]}</script>
+<style>
+:root{--bg:#101412;--card:#1a201d;--line:#313b36;--fg:#e9eee9;--muted:#9fb0a6;--accent:#f2c230;--ok:#5cc46f;--warn:#f2a33a;--bad:#ff5c52;--link:#f2c230;--sign:#0b6e3f;--radius:14px;color-scheme:dark}
+@media (prefers-color-scheme:light){:root{--bg:#eceee8;--card:#fff;--line:#d4d9d1;--fg:#16201b;--muted:#56645c;--ok:#23853a;--warn:#b56200;--bad:#c62f27;--link:#8a5a00;color-scheme:light}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:640px;margin:0 auto;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
+a{color:var(--link);font-weight:700;text-underline-offset:2px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.top img{width:34px;height:34px;border-radius:8px}
+.top a{color:var(--fg);text-decoration:none;font-weight:900}
+h1{font-size:1.9rem;line-height:1.15;margin:14px 0 6px}
+h2{font-size:1.3rem;margin:34px 0 6px}
+.lede{color:var(--muted);margin:0 0 14px}
+.status{border-radius:var(--radius);padding:18px 18px 16px;background:var(--card);border:1px solid var(--line);border-left:8px solid var(--muted)}
+.status .word{font-size:2.1rem;font-weight:900;line-height:1.1;letter-spacing:.01em}
+.status p{margin:6px 0 0}
+.status[data-s="open"]{border-left-color:var(--ok)}.status[data-s="open"] .word{color:var(--ok)}
+.status[data-s="chains"],.status[data-s="slow"]{border-left-color:var(--warn)}.status[data-s="chains"] .word,.status[data-s="slow"] .word{color:var(--warn)}
+.status[data-s="closed"]{border-left-color:var(--bad)}.status[data-s="closed"] .word{color:var(--bad)}
+.when{color:var(--muted);font-size:.85rem;margin-top:8px}
+ul.items{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+ul.items li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+ul.items b{display:block}
+ul.items small{color:var(--muted)}
+.sign{font:700 .95rem/1.35 ui-monospace,Menlo,monospace;background:#111;color:#ffb000;border-radius:8px;padding:8px 10px;margin-top:6px;text-transform:uppercase;white-space:pre-line}
+.none{color:var(--muted);margin:10px 0 0}
+.app{margin-top:34px;background:var(--sign);color:#fff;border-radius:var(--radius);padding:16px 18px}
+.app b{font-size:1.1rem}.app p{margin:6px 0 10px}.app a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:99px;background:var(--accent);color:#1b1a10;text-decoration:none}
+.fine{color:var(--muted);font-size:.82rem;margin-top:22px}
+button.again{min-height:44px;margin-top:10px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit;font-weight:800}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><img src="../icons/icon-180.png" alt="" width="34" height="34"><a href="../">I-5 Buddy</a></div>
+
+  <h1>Is the Grapevine open?</h1>
+  <p class="lede">I-5 over Tejon Pass, from Castaic to the Grapevine at the foot of the mountains, live from the California Highway Patrol and Caltrans.</p>
+  <section class="status" id="gv" data-s="loading" aria-live="polite">
+    <div class="word">Checking…</div>
+    <p class="say"></p>
+    <div class="when"></div>
+  </section>
+  <ul class="items" id="gvItems"></ul>
+
+  <h2 id="siskiyous">Mount Shasta and the Siskiyous</h2>
+  <p class="lede">I-5 from Lakehead past Dunsmuir, Mount Shasta, Weed and Yreka to the Oregon line, where chain controls are common in winter.</p>
+  <section class="status" id="sk" data-s="loading" aria-live="polite">
+    <div class="word">Checking…</div>
+    <p class="say"></p>
+    <div class="when"></div>
+  </section>
+  <ul class="items" id="skItems"></ul>
+  <button class="again" id="again" type="button">Check again</button>
+
+  <section class="app">
+    <b>Driving I-5? Take I-5 Buddy along.</b>
+    <p>A free guide that tells you about the landmarks, history and orchards you pass, and warns you about closures and chain controls ahead.</p>
+    <a href="../get">Get I-5 Buddy</a>
+  </section>
+
+  <p class="fine">This page checks every 2 minutes while it is open. Closures and crashes come from the CHP and Caltrans, chain controls and freeway signs from Caltrans. Conditions can change faster than any feed: before you go, check <a href="https://quickmap.dot.ca.gov/" target="_blank" rel="noopener">Caltrans QuickMap</a> or call Caltrans road information at <a href="tel:18004277623">1-800-427-7623</a>. I-5 Buddy is independent and not affiliated with Caltrans or the California Highway Patrol. Made by <a href="https://dominares.org/" target="_blank" rel="noopener">Dominares</a> · <a href="../privacy.html">Privacy</a></p>
+  <noscript><p>This page needs JavaScript to load the live conditions. Caltrans QuickMap: quickmap.dot.ca.gov, or call 1-800-427-7623.</p></noscript>
+</main>
+<script>
+// The two mountain stretches of I-5 that close in storms, as boxes around the road (the data is I-5 only already).
+const PASSES = {
+  gv: { name: "the Grapevine", where: "over the Grapevine", box: [34.47, 35.06, -119.02, -118.55] },
+  sk: { name: "Mount Shasta and the Siskiyous", where: "through the Siskiyous", box: [40.8, 42.01, -122.8, -122.2] },
+};
+const inBox = (lat, lon, b) => lat >= b[0] && lat <= b[1] && lon >= b[2] && lon <= b[3];
+const DIR = { N: "northbound", S: "southbound" };
+const dirWord = d => { const v = String(d || "").toLowerCase(); return v.startsWith("north") ? "northbound" : v.startsWith("south") ? "southbound" : ""; };
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const ago = t => { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? "just now" : m === 1 ? "1 minute ago" : m < 60 ? `${m} minutes ago` : `${Math.round(m / 60)} h ago`; };
+
+async function getJSON(path) {
+  const ac = new AbortController(), t = setTimeout(() => ac.abort(), 12000);
+  try { const r = await fetch(path, { signal: ac.signal, cache: "no-store" }); if (!r.ok) throw new Error(r.status); return await r.json(); }
+  finally { clearTimeout(t); }
+}
+
+/** What is going on in one pass: {s: open|chains|slow|closed|unknown, word, say, items[]} */
+function judge(p, traffic, chains) {
+  const items = [];
+  let closed = false, chainsOn = false, slow = false, advis = false;
+  if (traffic) {
+    for (const it of traffic.incidents || []) {
+      if (!inBox(+it.lat, +it.lon, p.box) || it.kind === "other") continue;
+      const full = it.kind === "closure" && /^(Freeway|Road) closed$/.test(it.title);
+      // a lane closed for roadwork (often for months) is listed, but doesn't change the answer
+      if (full) closed = true; else if (it.kind !== "lane") slow = true;
+      items.push({ rank: full ? 0 : it.kind === "closure" || it.kind === "crash" ? 2 : 3, title: it.title + (it.dir ? `, ${DIR[it.dir]}` : ""), sub: [it.detail, it.until && `until ${it.until}`, it.started && `since ${new Date(it.started).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`].filter(Boolean).join(" · ") });
+    }
+  }
+  if (chains) {
+    for (const f of Object.values(chains.cc || {})) for (const row of f.data || []) {
+      const c = row.cc, L = c && c.location;
+      if (!L || !inBox(+L.latitude, +L.longitude, p.box)) continue;
+      const lv = /^R-?\s*([123])/i.exec(c.statusData && c.statusData.status || "");
+      if (!lv) continue;
+      chainsOn = true;
+      items.push({ rank: 1, title: `Chain controls R-${lv[1]}${dirWord(L.direction) ? ", " + dirWord(L.direction) : ""}`, sub: [L.nearbyPlace || L.locationName, c.statusData.statusDescription].filter(Boolean).join(" · ") });
+    }
+    // freeway signs: one entry per message, with every place it shows
+    const signs = new Map();
+    for (const f of Object.values(chains.cms || {})) for (const row of f.data || []) {
+      const c = row.cms, L = c && c.location;
+      if (!L || !inBox(+L.latitude, +L.longitude, p.box)) continue;
+      const m = c.message || {};
+      const lines = [m.phase1, m.phase2].filter(Boolean).map(ph => Object.values(ph).filter(Boolean).join("\n")).filter(Boolean);
+      if (!lines.length) continue;
+      const text = lines.join("\n\n");
+      if (/\bCLOSED\b|CHAINS|SNOW|\bICE\b|WIND|FOG/i.test(text)) advis = true;
+      const where = String(L.locationName || L.nearbyPlace || "").replace(/^\s*\d+\s*-\s*/, "").trim();
+      const s = signs.get(text) || { text, where: [] };
+      if (where && !s.where.includes(where)) s.where.push(where);
+      signs.set(text, s);
+    }
+    for (const s of signs.values()) items.push({ rank: 4, title: s.where.length > 1 ? `Freeway signs (${s.where.length})` : "Freeway sign", sub: s.where.join(" · "), sign: s.text });
+  }
+  items.sort((a, b) => a.rank - b.rank);
+  if (!traffic && !chains) return { s: "unknown", word: "Can't check right now", say: "The live feeds didn't answer. Try again in a minute, or check Caltrans QuickMap.", items };
+  if (closed) return { s: "closed", word: "Closed", say: `I-5 is reported closed ${p.where}. Details below.`, items };
+  if (chainsOn) return { s: "chains", word: "Open, chain controls", say: "Chains or snow tires are required on part of it. Details below.", items };
+  if (slow) return { s: "slow", word: "Open, with incidents", say: `No full closure reported ${p.where}, but there are incidents. Details below.`, items };
+  if (advis) return { s: "slow", word: "Open, with advisories", say: `No closures, crashes or chain controls reported ${p.where}. The freeway signs below have advice for drivers.`, items };
+  return { s: "open", word: "Open", say: `No closures, crashes or chain controls reported ${p.where} right now.`, items };
+}
+
+function paint(id, r, t) {
+  const sec = document.getElementById(id);
+  sec.dataset.s = r.s;
+  sec.querySelector(".word").textContent = r.word;
+  sec.querySelector(".say").textContent = r.say;
+  sec.querySelector(".when").textContent = t ? `Checked ${ago(t)}.` : "";
+  const ul = document.getElementById(id + "Items");
+  ul.textContent = "";
+  for (const it of r.items) {
+    const li = el("li");
+    li.append(el("b", null, it.title));
+    if (it.sub) li.append(el("small", null, it.sub));
+    if (it.sign) li.append(el("div", "sign", it.sign));
+    ul.append(li);
+  }
+  if (id === "gv") document.title = r.s === "loading" ? document.title : `Grapevine: ${r.word} · Is the Grapevine open? · I-5 Buddy`;
+}
+
+let lastT = 0;
+async function check() {
+  const [traffic, chains] = await Promise.all([getJSON("../api/traffic").catch(() => null), getJSON("../api/chains").catch(() => null)]);
+  lastT = Date.now();
+  for (const [id, p] of Object.entries(PASSES)) paint(id, judge(p, traffic, chains), lastT);
+}
+check();
+setInterval(() => { if (!document.hidden) check(); }, 120e3);
+setInterval(() => { for (const id of Object.keys(PASSES)) { const w = document.querySelector(`#${id} .when`); if (w && lastT) w.textContent = `Checked ${ago(lastT)}.`; } }, 30e3);
+document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastT > 60e3) check(); });
+document.getElementById("again").onclick = () => check();
+</script>
+</body>
+</html>

@@ -105,7 +105,7 @@ const SCENARIOS = {
     check("the sheet opens", open());
     const sheetText = txt(S());
     log("sheet", sheetText);
-    check("plain words at the top and under the email", /Tell us what you think\. We read every message\./.test(sheetText) && /We use your email only to reply to you\./.test(sheetText));
+    check("plain words at the top and under the email", /Tell us what you think\. We read every message\./.test(sheetText) && /Only if you want a reply\. We use it for nothing else\./.test(sheetText));
     // beside that promise, the privacy notice: a real link (keyboard and screen readers), not read out as part of the email's hint
     const pv = field("a.fb-privacy"), pr = pv ? pv.getBoundingClientRect() : { width: 0, height: 0, top: 0 }, eb = field("#fbEmail").getBoundingClientRect();
     check("beside the email promise, a Privacy link to privacy.html in a new tab, outside the email's description",
@@ -116,7 +116,8 @@ const SCENARIOS = {
       `${Math.round(pr.width)}x${Math.round(pr.height)}, top ${Math.round(pr.top)}, email box bottom ${Math.round(eb.bottom)}`);
     check("the fine print says the app version and the browser type go with the message", /includes the app version and your browser type/.test(sheetText));
     check("Name is optional", /Name \(optional\)/.test(txt(field("label[for=fbName]"))) && !field("#fbName").required && field("#fbName").maxLength === 80);
-    check("Email is required and type=email", field("#fbEmail").type === "email" && field("#fbEmail").required && field("#fbEmail").maxLength === 120 && field("#fbEmail").autocomplete === "email");
+    // 3.0.1: the email is optional (only for a reply), so someone who won't give one can still tell us something
+    check("Email is optional and type=email", field("#fbEmail").type === "email" && !field("#fbEmail").required && field("#fbEmail").maxLength === 120 && field("#fbEmail").autocomplete === "email" && /optional/.test(txt(field('label[for="fbEmail"]'))));
     check("Message is required, up to 2000 characters, with a counter", field("#fbMsg").required && field("#fbMsg").maxLength === 2000 && txt(field("#fbCount")) === "0 / 2,000", txt(field("#fbCount")));
     const hp = field("input[name=website]");
     const hpr = hp.getBoundingClientRect();
@@ -125,7 +126,7 @@ const SCENARIOS = {
     // --- validation
     submit();
     await wait(100);
-    check("empty form: nothing sent, email and message explain, focus on email", net.calls.length === 0 && /add your email/.test(txt(field("#fbEmailErr"))) && /write a message/.test(txt(field("#fbMsgErr"))) && field("#fbEmail").getAttribute("aria-invalid") === "true" && doc.activeElement === field("#fbEmail"), `${txt(field("#fbEmailErr"))} | ${txt(field("#fbMsgErr"))}`);
+    check("empty form: nothing sent, only the message explains (the email is optional), focus on the message", net.calls.length === 0 && !txt(field("#fbEmailErr")) && /write a message/.test(txt(field("#fbMsgErr"))) && field("#fbEmail").getAttribute("aria-invalid") !== "true" && doc.activeElement === field("#fbMsg"), `${txt(field("#fbEmailErr"))} | ${txt(field("#fbMsgErr"))}`);
     type(win, field("#fbEmail"), "not an email");
     type(win, field("#fbMsg"), "   ");
     submit();
@@ -215,7 +216,8 @@ const SCENARIOS = {
     check("the request is JSON with exactly name, email, message, version, website", JSON.stringify(Object.keys(body)) === JSON.stringify(["name", "email", "message", "version", "website"]) && /json/i.test(JSON.stringify(c.headers)), JSON.stringify(Object.keys(body)));
     check("name is trimmed, email as typed, message in full, website empty", body.name === "Ada" && body.email === "ada@example.com" && body.message === "I love the Grapevine stories.\nMore, please." && body.website === "", JSON.stringify(body));
     const swVersion = ((await (await fetch("../sw.js")).text()).match(/VERSION\s*=\s*"i5b-v([\w.-]+)"/) || [])[1];
-    check("the version is the service worker's VERSION", swVersion && body.version === swVersion && /^\d+\.\d+\.\d+$/.test(body.version), `${body.version} vs ${swVersion}`);
+    // 3.0.1: and where it runs ("web", "pwa", "android" or "ios"), so the owner can tell the apps apart
+    check("the version is the service worker's VERSION and where it runs", swVersion && /^\d+\.\d+\.\d+ (web|pwa|android|ios)$/.test(body.version) && body.version.startsWith(swVersion + " "), `${body.version} vs ${swVersion}`);
     check("success: thanks, in plain words", /Thanks\./.test(txt(S())) && /Your message is on its way to the Dominares team\./.test(txt(S())) && !S().querySelector("form"), txt(S()).slice(0, 120));
     check("name and email are remembered, the draft is gone", (() => { const w = JSON.parse(localStorage.getItem("i5b:feedback:who") || "null"); return w && w.name === "Ada" && w.email === "ada@example.com" && localStorage.getItem("i5b:feedback:draft") == null; })());
     S().querySelector(".fb-done .primary").click();
@@ -296,7 +298,7 @@ const SCENARIOS = {
     const NEED = ["The short version", "What leaves your phone, and why", "What stays on your phone", "Who we share information with",
       "How long we keep it, and your choices", "Do Not Track", "Children", "California, and changes to this notice"];
     check("privacy.html: its title, effective date and version, who runs I-5 Buddy and the contact address",
-      pd.title === "Privacy · I-5 Buddy" && /Effective November 17, 2026 · Version 2026-11-17\.1/.test(ptxt) && /Made by Dominares/.test(ptxt)
+      pd.title === "Privacy · I-5 Buddy" && /Effective November 18, 2026 · Version 2026-11-18\.1/.test(ptxt) && /Made by Dominares/.test(ptxt)
         && /Dominares Tools is run by Joseph Linares, a sole proprietor based in San Diego, California/.test(ptxt) && !!pd.querySelector('a[href="mailto:support@dominares.org"]'), pd.title);
     check("privacy.html: every section, in order", JSON.stringify(heads) === JSON.stringify(NEED), heads.join(" | "));
     check("privacy.html: in the theme saved in the app's settings", pde.dataset.theme === THEME, pde.dataset.theme);

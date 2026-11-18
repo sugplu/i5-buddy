@@ -386,7 +386,8 @@ async function auto() {
   await nextFrame();
   ok(/Yreka/.test(strip()) && /Start GPS/.test(strip()), `strip without a position asks to start GPS [${strip()}] S.m=${api.S.m}`);
 
-  // demo trip over the Grapevine: logged and marked demo, stamps count, road badges don't
+  // demo trip over the Grapevine: logged and marked demo; a demo is pretend, so it stamps nothing and unlocks no badge
+  // (3.0.1, first-run audit: a 95 s demo used to hand out 13 stamps and the First stamp badge)
   T = new Date(2026, 10, 1, 12, 0).getTime();
   api.setMode("demo"); drive(200, 216);
   let c = api.trip.current();
@@ -394,15 +395,16 @@ async function auto() {
   endTrip();
   let trips = api.trip.trips();
   ok(trips.length === 1 && trips[0].demo === true && trips[0].mode === "demo", "demo trip saved, marked demo");
-  ok(trips[0].stamps.length > 0, `demo trip stamps recorded (${trips[0].stamps.length})`);
+  ok(trips[0].stamps.length === 0, `a demo trip records no stamps (${trips[0].stamps.length})`);
   ok(!badges().grapevine, "demo drive does not unlock Over the Grapevine");
-  ok(!!badges().first, "stamp badges can come from a demo trip");
-  ok(emitted.includes("first"), "bus 'badge' emitted on unlock");
+  ok(!badges().first, "a demo drive unlocks no stamp badge");
 
   // GPS trip over the Grapevine
   T = new Date(2026, 10, 1, 15, 0).getTime();
   gpsTrip(200, 216);
   ok(!!badges().grapevine, "GPS drive through miles 205-215 unlocks Over the Grapevine");
+  ok(!!badges().first, "stamp badges come from a GPS trip");
+  ok(emitted.includes("first"), "bus 'badge' emitted on unlock");
   ok(api.trip.coverage().miles === 16, `16 miles driven cover 16 miles of road, the same as the trip's count (${api.trip.coverage().miles})`);
   ok(api.trip.current().states.join() === "CA", "trip states visited");
   let before = api.trip.current().miles;

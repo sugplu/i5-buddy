@@ -1,0 +1,297 @@
+<!doctype html>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<title>I-5 Buddy 3.0.1: strength-audit fixes</title>
+<!--
+  The fixes from the 2026-11-15 strength audit (i5-buddy-quality/2026-11-15-strength-audit/), one section each:
+  the speech watchdog (voice.js with a speech engine that loses an "end"), made-up speeds and the look-ahead cap,
+  coarse fixes, the drive back after turning around, a parked start (direction unknown), the Tijuana border line,
+  "not on I-5 yet", Precise Location off, location refused, GPS lost (no live-looking speed), End trip at the top,
+  captions with Stop and Repeat, the demo that ends by itself and stamps nothing, Trip saved, the rating rules
+  (review.js), and resuming a drive after a restart. Silent: speech is recorded, never made.
+  Prints PASS/FAIL lines; the title says ALL PASS or FAILED n.
+-->
+<style>body{font:14px/1.4 ui-monospace,Menlo,monospace;margin:12px}iframe{width:430px;height:900px;border:1px solid #888;float:right}</style>
+<iframe id="f" src="../index.html?silent=1"></iframe>
+<pre id="out">running…</pre>
+<script type="module">
+const out = document.getElementById("out");
+const lines = [];
+let fails = 0;
+const ok = (cond, msg) => { lines.push(`${cond ? "PASS" : "FAIL"} ${msg}`); if (!cond) { fails++; console.log("FAIL " + msg); } };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let clock = Date.now();
+const tick = sec => (clock += sec * 1000);
+
+/* ---------- 1. the speech watchdog: an engine that loses the "end" of one utterance ---------- */
+{
+  const spoken = [];
+  let lost = 0;
+  const fake = {
+    speaking: false, pending: false, paused: false,
+    speak(u) {
+      spoken.push(u.text);
+      this.speaking = true;
+      if (/stuck/.test(u.text) && !lost) { lost++; return; }        // this one never ends: no "end", no "error"
+      setTimeout(() => { this.speaking = false; u.onend && u.onend({ type: "end" }); }, 20);
+    },
+    cancel() { this.speaking = false; },
+    pause() {}, resume() {}, getVoices() { return []; }, addEventListener() {}, removeEventListener() {},
+  };
+  Object.defineProperty(window, "speechSynthesis", { configurable: true, value: fake });
+  const { voice, chunkLimitMs } = await import("../js/voice.js");
+  ok(chunkLimitMs("x".repeat(120), 1) === 14000 && chunkLimitMs("x".repeat(120), 2) === 9000, `a chunk may take its length at 12 characters a second, plus 4 s (${chunkLimitMs("x".repeat(120), 1)} ms)`);
+  const a = voice.say("This line gets stuck.", { id: "a" }), b = voice.say("And this one still gets said.", { id: "b" });
+  const r = await Promise.race([Promise.all([a, b]), sleep(30000).then(() => "timeout")]);
+  ok(r !== "timeout" && spoken.includes("And this one still gets said."), `after a lost "end" the queue moves on (${JSON.stringify(spoken)})`);
+  ok(!voice.isSpeaking(), "and nothing is left on the air");
+}
+
+/* ---------- 2. the rating rules (review.js) ---------- */
+{
+  const { _test: R } = await import("../js/review.js");
+  const D = 864e5, now = Date.UTC(2026, 10, 20);
+  ok(!R.mayAsk({ native: false, version: "3.0.1", now }), "never in a browser or the Android app");
+  ok(R.mayAsk({ native: true, version: "3.0.1", now }), "the iPhone app, never asked before: yes");
+  ok(!R.mayAsk({ native: true, version: "3.0.1", lastVersion: "3.0.1", asks: [now - 200 * D], now }), "once per version");
+  ok(!R.mayAsk({ native: true, version: "3.1", lastVersion: "3.0.1", asks: [now - 90 * D], now }), "120 days between asks");
+  ok(R.mayAsk({ native: true, version: "3.1", lastVersion: "3.0.1", asks: [now - 130 * D], now }), "130 days later, a new version: yes");
+  ok(!R.mayAsk({ native: true, version: "3.2", lastVersion: "3.1", asks: [now - 300 * D, now - 150 * D], now }), "at most 2 asks in 365 days");
+  ok(!R.mayAsk({ native: true, version: "3.0.1", now, trouble: true }), "never after trouble this session");
+  ok(R.earned({ mode: "gps", miles: 25, spoken: 6 }) && !R.earned({ mode: "gps", miles: 12, spoken: 9 }) && !R.earned({ mode: "gps", miles: 40, spoken: 3 }), "a GPS trip earns it at 20+ miles and 5+ landmarks");
+  ok(R.earned({ mode: "demo", ms: 200e3, spoken: 4, firstDay: "2026-11-17", today: "2026-11-18" }) && !R.earned({ mode: "demo", ms: 200e3, spoken: 4, firstDay: "2026-11-18", today: "2026-11-18" }), "a demo earns it only on a later day than the first use");
+}
+
+/* ---------- the app ---------- */
+function fakeGeo() {
+  let cb = null, errCb = null;
+  return {
+    watchPosition(s, e) { cb = s; errCb = e; return 1; },
+    clearWatch() { cb = null; },
+    fix(lat, lon, { speed = null, heading = null, t = tick(1), accuracy = 10 } = {}) {
+      cb && cb({ coords: { latitude: lat, longitude: lon, speed, heading, accuracy }, timestamp: t });
+    },
+    deny() { errCb && errCb({ code: 1 }); },
+  };
+}
+const frame = document.getElementById("f");
+async function boot() {
+  const win = frame.contentWindow;
+  for (let i = 0; i < 100 && !(win.I5BUDDY && win.document.readyState === "complete"); i++) await sleep(100);
+  await sleep(800);
+  return win;
+}
+let win = await boot();
+let api = win.I5BUDDY.api, doc = win.document;
+const said = [], announced = [], stamped = [];
+function spy() {
+  said.length = 0; announced.length = 0; stamped.length = 0;
+  api.voice.say = (text, opts = {}) => { said.push({ text, id: opts.id, m: api.S.m, dir: api.S.dir }); return Promise.resolve(true); };
+  api.voice.unlock = () => {};
+  api.bus.on("place:announce", e => announced.push({ id: e.place.id, pm: e.place.m, at: api.S.m, dir: api.S.dir }));
+  api.bus.on("place:stamp", e => stamped.push(e.place.id));
+  api.settings.narr = true; api.settings.chat = "normal"; api.settings.zoneNarr = false; api.settings.lead = 2;
+  api.settings.cats = new Set(["farm", "hist", "nature", "town", "stop", "odd"]);
+  api.settings.live = false;
+}
+spy();
+const G = fakeGeo();
+win.__I5_FAKE_GEO__ = G;
+const txt = id => (doc.getElementById(id) || {}).textContent || "";
+const at = m => api.geo.coordAt(m);
+async function drive(from, to, { mph = 65, step = 0.25, heading = true, speed = true } = {}) {
+  const dir = to > from ? 1 : -1;
+  for (let m = from; dir > 0 ? m <= to + 1e-9 : m >= to - 1e-9; m += dir * step) {
+    const [lat, lon] = at(m), brg = api.geo.bearingAt(m);
+    G.fix(lat, lon, { speed: speed ? mph / 2.23694 : null, heading: heading ? (dir > 0 ? brg : (brg + 180) % 360) : null, t: tick(step / mph * 3600) });
+    await sleep(2);
+  }
+}
+const { MAX_M, ROUTE, PLACES } = api.data;
+
+/* ---------- 3. a fix without a speed never pulls in a stretch of road ---------- */
+{
+  api.startGps();
+  await drive(296, 300);
+  announced.length = 0;
+  const [la, lo] = at(300.2), [lb, lb2] = at(300.4);
+  G.fix(la, lo, { speed: null, heading: null, t: tick(1), accuracy: 10 });       // 0.2 mi in 1 s, no speed
+  G.fix(lb, lb2, { speed: null, heading: null, t: tick(1), accuracy: 1414 });     // an iPhone cell fix
+  await sleep(50);
+  ok(api.S.speed == null || api.S.speed <= 100, `no made-up speed (${api.S.speed})`);
+  const far = announced.filter(a => (a.dir === "N" ? a.pm - a.at : a.at - a.pm) > api.settings.lead + 2.1);
+  ok(!far.length, `nothing announced past the look-ahead cap (${far.map(a => `${a.id} ${Math.round(a.pm - a.at)} mi`).join(", ") || "none"})`);
+  // a coarse fix right at a landmark stamps nothing
+  const p = PLACES.find(x => x.m > 302 && x.m < 330 && !x.detour);
+  await drive(300.6, p.m - 0.6);
+  const before = stamped.length;
+  const [pl, po] = at(p.m + 0.3);
+  G.fix(pl, po, { speed: 30, heading: api.geo.bearingAt(p.m), t: tick(40), accuracy: 600 });
+  await sleep(20);
+  ok(stamped.length === before && !api.S.stamps[p.id], `a 600 m fix passing ${p.name} stamps nothing`);
+  api.stopAll(false);
+}
+
+/* ---------- 4. the drive back after turning around is narrated ---------- */
+{
+  api.startGps();
+  announced.length = 0;
+  await drive(500, 530);
+  const north = new Set(announced.filter(a => a.dir === "N").map(a => a.id));
+  announced.length = 0;
+  await drive(530, 500);
+  const south = new Set(announced.filter(a => a.dir === "S").map(a => a.id));
+  const both = [...north].filter(id => south.has(id));
+  ok(north.size > 2 && south.size > 2 && both.length > 1, `places heard northbound are told again southbound (${north.size} north, ${south.size} south, ${both.length} both)`);
+  api.stopAll(false);
+}
+
+/* ---------- 5. starting GPS parked: nothing announced until the direction is known ---------- */
+{
+  api.S.dir = "S"; api.store.set("dir", "S");      // yesterday's trip was southbound
+  api.startGps();
+  announced.length = 0;
+  const [la, lo] = at(400);
+  for (let i = 0; i < 5; i++) { G.fix(la + (i % 2 ? 0.00004 : -0.00004), lo, { speed: 0, heading: null, t: tick(2) }); await sleep(5); }
+  ok(api.S.dirSure === false && !announced.length, `parked at mile 400: no announcement yet (${announced.map(a => a.id).join(", ") || "none"})`);
+  await drive(400, 406);
+  ok(api.S.dir === "N" && api.S.dirSure === true, `the direction comes from driving (${api.S.dir})`);
+  const behind = announced.filter(a => a.pm < a.at - 0.6);
+  ok(announced.length > 0 && !behind.length, `then only places ahead (${announced.length} announced, ${behind.length} behind)`);
+  api.stopAll(false);
+}
+
+/* ---------- 6. the Tijuana border line: still in Mexico, nothing said ---------- */
+{
+  api.startGps();
+  announced.length = 0; said.length = 0;
+  const [lat0, lon0] = [ROUTE[0][1], ROUTE[0][2]];
+  for (let i = 0; i < 4; i++) { G.fix(lat0 - 0.0081, lon0 + 0.0003, { speed: 1, heading: 0, t: tick(60) }); await sleep(5); }
+  ok(api.S.offRoute && !announced.length && !Object.keys(api.S.stamps).some(id => (PLACES.find(p => p.id === id) || {}).m < 1), `900 m south of the port: off I-5, nothing announced or stamped (${announced.map(a => a.id).join(", ") || "none"})`);
+  api.stopAll(false);
+}
+
+/* ---------- 7. not on I-5 yet: a card that says so, and no made-up mile is saved ---------- */
+{
+  api.stopAll(false);
+  api.S.m = null; api.store.del("m"); api.ui.queueRender(); await sleep(50);
+  api.startGps();
+  for (let i = 0; i < 3; i++) { G.fix(36.7378, -119.7871, { speed: 0, t: tick(5) }); await sleep(5); }   // Fresno, ~40 mi from I-5
+  await sleep(300);
+  const card = doc.querySelector("#nextCard");
+  ok(/NOT ON I-5 YET/.test(card.textContent) && /about \d+ miles from I-5/.test(card.textContent), `the next card says so: "${card.textContent.slice(0, 90)}"`);
+  ok([...card.querySelectorAll("button")].map(b => b.textContent).join() === "Take a demo drive,Stop GPS", "with Take a demo drive and Stop GPS");
+  ok(api.store.get("m", null) == null, `the closest point is shown, not saved (${api.store.get("m", null)})`);
+  ok(/^Not on I-5 · \d+ mi away$/.test(txt("statusText")), `short status line: ${txt("statusText")}`);
+  [...card.querySelectorAll("button")].find(b => b.textContent === "Stop GPS").click();
+  await sleep(100);
+  ok(api.S.mode === "off", "Stop GPS stops");
+}
+
+/* ---------- 8. Precise Location off, location refused ---------- */
+{
+  api.startGps();
+  const [la, lo] = at(300);
+  G.fix(la, lo, { accuracy: 3200, t: tick(5) }); G.fix(la, lo, { accuracy: 3400, t: tick(5) });
+  await sleep(50);
+  ok(/Turn on Precise Location/.test(txt("driveNotice")) && !doc.getElementById("driveNotice").hidden, `two 3 km fixes: the Precise Location card (${txt("driveNotice").slice(0, 60)})`);
+  G.fix(la, lo, { accuracy: 12, t: tick(1) });
+  await sleep(20);
+  ok(!/Precise Location/.test(txt("driveNotice")), "a good fix takes it away");
+  G.deny();
+  await sleep(50);
+  ok(api.S.mode === "off" && /Location is blocked/.test(txt("driveNotice")), `refused: GPS off, and a card that stays (${txt("driveNotice").slice(0, 60)})`);
+  const demoBtn = [...doc.querySelectorAll("#driveNotice button")].find(b => b.textContent === "Take a demo drive");
+  ok(!!demoBtn, "with Take a demo drive");
+  await sleep(6000);
+  ok(/Location is blocked/.test(txt("driveNotice")), "still there 6 s later (the old toast was gone after 5)");
+  api.startGps();
+  await sleep(20);
+  ok(!/Location is blocked/.test(txt("driveNotice")), "Start GPS again takes it away");
+  api.stopAll(false);
+}
+
+/* ---------- 9. GPS lost: no live-looking speed; End trip at the top while driving ---------- */
+{
+  api.startGps();
+  await drive(250, 252);
+  await sleep(300);
+  ok(txt("speed") !== "--", `speed while fixes come (${txt("speed")}; S.speed ${api.S.speed}, stale ${api.S.gpsStale}, mode ${api.S.mode}, off ${api.S.offRoute})`);
+  const run = doc.getElementById("runControls"), next = doc.getElementById("nextCard");
+  ok(!run.hidden && run.getBoundingClientRect().top < next.getBoundingClientRect().top, "End trip and Narration sit above the next card while GPS runs");
+  ok(doc.getElementById("stopTrip").textContent === "End trip" && doc.getElementById("toggleNarr").getAttribute("aria-label") === "Narration", "End trip; Narration keeps one name");
+  await sleep(21000);
+  ok(txt("speed") === "--" && txt("statusPill") === "GPS?", `20 s without a fix: "--" mph and GPS? (${txt("speed")}, ${txt("statusPill")})`);
+  await drive(252, 252.5);
+  await sleep(300);
+  ok(txt("speed") !== "--" && txt("statusPill") === "GPS", `fixes again: back to normal (${txt("speed")}, ${txt("statusPill")})`);
+  api.stopAll(false);
+}
+
+/* ---------- 10. captions on every tab, with Stop and Repeat ---------- */
+{
+  api.ui.go("map"); await sleep(50);
+  let stopped = 0;
+  const realStop = api.voice.stop;
+  api.voice.stop = () => { stopped++; };
+  api.bus.emit("speaking", { id: "x", text: "In about 2 miles, on your right: a caption test." });
+  await sleep(20);
+  const cap = doc.getElementById("caption");
+  ok(!cap.hidden && /a caption test/.test(txt("captionText")), "what is said shows above the tab bar, on the Map tab too");
+  doc.getElementById("captionStop").click();
+  ok(stopped === 1 && cap.hidden, "Stop in the caption stops talking");
+  api.bus.emit("speaking", { id: "y", text: "Another line." }); api.bus.emit("speaking", null);
+  await sleep(3000);
+  ok(cap.hidden, "it goes away a moment after the voice ends");
+  api.voice.stop = realStop;
+  api.ui.go("drive"); await sleep(50);
+}
+
+/* ---------- 11. the demo ends by itself, stamps nothing, and says what to do ---------- */
+{
+  const stampsBefore = Object.keys(api.S.stamps).length;
+  api.startDemo();
+  ok(doc.getElementById("stopTrip").textContent === "End demo", "End demo while the demo runs");
+  const ids = PLACES.slice(100, 106).map(p => p.id);
+  for (const id of ids) { api.bus.emit("speaking", { id, text: "x" }); api.bus.emit("speaking", null); }
+  await sleep(1500);
+  ok(api.S.mode === "off", `six landmarks in, the demo ends (${api.S.mode})`);
+  ok(/That's the demo/.test(txt("driveNotice")) && [...doc.querySelectorAll("#driveNotice button")].some(b => b.textContent === "Start GPS"), "and says to tap Start GPS before pulling out");
+  ok(Object.keys(api.S.stamps).length === stampsBefore, "a demo stamps nothing");
+  api.startDemo();
+  await sleep(4 * 60e3 + 3000);
+  ok(api.S.mode === "off", "left alone, it ends after about 4 minutes");
+}
+
+/* ---------- 12. Trip saved, after End trip of a real drive ---------- */
+{
+  api.trip.setClock(() => clock); // trip.js counts miles by its clock: the fixes' own (they come 2 ms apart here)
+  api.startGps();
+  await drive(200, 216, { step: 0.5 });
+  api.stopAll(false);
+  await sleep(50);
+  ok(/Trip saved/.test(txt("driveNotice")) && /Share my trip/.test(txt("driveNotice")), `End trip: Trip saved, with Share my trip (${txt("driveNotice").slice(0, 80)})`);
+}
+
+/* ---------- 13. a drive cut off by a restart is offered back ---------- */
+{
+  api.startGps();
+  await drive(300, 301);
+  ok(api.store.get("drive", null) && Date.now() - api.store.get("drive").t < 60e3, "a drive in progress is noted");
+  frame.contentWindow.location.reload();
+  await sleep(300);
+  win = await boot(); api = win.I5BUDDY.api; doc = win.document; spy(); win.__I5_FAKE_GEO__ = G;
+  ok(api.S.mode === "off" && txt("startGps") === "Resume drive" && /Pick up where you left off/.test(txt("driveNotice")), `after the reload: Resume drive (${txt("startGps")})`);
+  said.length = 0;
+  doc.getElementById("startGps").click();
+  await sleep(50);
+  ok(api.S.mode === "gps" && txt("startGps") === "Start GPS" && !/Pick up/.test(txt("driveNotice")), "one tap and the drive goes on");
+  ok(!said.some(s => s.id === "greet"), "without the hello again");
+  api.stopAll(false);
+  ok(api.store.get("drive", null) == null, "End trip: nothing left to resume");
+}
+
+out.textContent = lines.join("\n") + `\n\n${fails ? "FAILED " + fails : "ALL PASS"} (${lines.length} checks)`;
+document.title = fails ? `FAILED ${fails}` : "ALL PASS";
+console.log(fails ? `[test-audit] FAILED ${fails}` : `[test-audit] ALL PASS (${lines.length})`);
+</script>

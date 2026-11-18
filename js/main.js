@@ -28,6 +28,43 @@ function toast(text, ms = 2600) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { t.hidden = true; }, ms);
 }
+/* ---------- notices on Drive (3.0.1): what happened and what to do, until it no longer applies ---------- */
+const notices = new Map(); // key -> {title, text, acts: [[label, fn]]}
+function showNotice(key, n) { notices.set(key, n); drawNotices(); }
+function hideNotice(key) { if (notices.delete(key)) drawNotices(); }
+function drawNotices() {
+  const box = $("driveNotice");
+  if (!box) return;
+  box.textContent = "";
+  for (const [key, n] of notices) {
+    const card = el("div", "notice notice-" + key);
+    card.setAttribute("role", "status");
+    card.append(el("b", null, n.title), el("p", null, n.text));
+    if (n.acts && n.acts.length) {
+      const row = el("div", "acts");
+      for (const [label, fn] of n.acts) { const b = el("button", "secondary", label); b.type = "button"; b.onclick = fn; row.append(b); }
+      card.append(row);
+    }
+    box.append(card);
+  }
+  box.hidden = !notices.size;
+}
+
+/* ---------- captions (3.0.1): what I-5 Buddy says, on screen on every tab, with Stop and Repeat ---------- */
+let capHide = 0;
+bus.on("speaking", s => {
+  const box = $("caption");
+  if (!box) return;
+  clearTimeout(capHide);
+  if (s && s.text) { $("captionText").textContent = s.text; box.hidden = false; document.body.classList.add("captioned"); }
+  else capHide = setTimeout(() => { box.hidden = true; document.body.classList.remove("captioned"); }, 2500);
+});
+// the iPhone app turns other audio down while I-5 Buddy talks, and back up a moment after (not between two lines)
+let duckT = 0;
+bus.on("speaking", s => { clearTimeout(duckT); if (s) native.duck(true); else duckT = setTimeout(() => { if (!voice.isSpeaking()) native.duck(false); }, 1200); });
+$("captionStop").onclick = () => { voice.stop(); clearTimeout(capHide); $("caption").hidden = true; document.body.classList.remove("captioned"); };
+$("captionRepeat").onclick = () => { voice.unlock(); voice.repeat(); };
+
 let openSheetEl = null;
 function openSheet(sheet) {
   closeSheet();
@@ -50,7 +87,9 @@ function photo(p, size = "hero") {
   if (!p.img) return null;
   const fig = el("figure", "photo " + size);
   const img = el("img");
-  img.src = p.img.f; img.alt = p.img.alt || p.name; img.loading = "lazy"; img.decoding = "async";
+  // alt="" (3.0.1): the place's name is the heading right by the photo; the Wikimedia titles used before read like file
+  // names ("Angelstadiummarch2019")
+  img.src = p.img.f; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
   if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
   img.onerror = () => fig.remove();
   fig.append(img);
@@ -87,13 +126,15 @@ function queueRender() {
 }
 
 /** Central place where every position update goes (GPS, demo, manual). */
-function setPosition(m, { speed = null, dir = null, offRoute = false, jumped = false } = {}) {
+function setPosition(m, { speed = null, dir = null, offRoute = false, jumped = false, save = true } = {}) {
   const prevM = S.m;
   if (dir) S.dir = dir;
   if (speed != null) S.speed = speed;
   S.m = Math.max(0, Math.min(MAX_M, m));
   S.offRoute = offRoute;
-  store.set("m", S.m); store.set("dir", S.dir);
+  // save: false = the closest point on I-5 to someone who hasn't been on it yet (GPS started at home): shown, not kept,
+  // so the next launch doesn't open at a made-up spot on the road
+  if (save) { store.set("m", S.m); store.set("dir", S.dir); }
   bus.emit("pos", { m: S.m, prevM, dir: S.dir, speed: S.speed, offRoute, jumped: jumped || prevM == null });
   queueRender();
 }
@@ -105,13 +146,28 @@ function setMode(mode) {
   const on = mode !== "off";
   $("startControls").hidden = on;
   $("runControls").hidden = !on;
+  $("stopTrip").textContent = mode === "demo" ? "End demo" : "End trip";
   $("demoBar").hidden = mode !== "demo";
-  if (on) requestWake(); else releaseWake();
+  // the screen stays on only while something moves: GPS or the demo (3.0.1; moving the milepost by hand used to hold it
+  // on with nothing going on)
+  if (mode === "gps" || mode === "demo") requestWake(); else releaseWake();
+  if (on) { hideNotice("denied"); hideNotice("demo-done"); hideNotice("trip-saved"); }
+  if (mode !== "gps") hideNotice("precise");
+  bus.emit("mode:after", mode);
   queueRender();
 }
 
 /* GPS */
 let watchId = null, dirVotes = [], anchorM = null, lastFix = null, offCount = 0;
+// 3.0.1, from the long-drive audit:
+const MAX_MPH = 100;          // the fastest a car is assumed to go (jump check, speeds worked out from two positions)
+const COARSE_M = 250;         // a fix less accurate than this places you, but stamps nothing and votes no direction
+const STALE_MS = 15e3;        // no usable fix for this long: the sign stops showing a live-looking speed
+const NOT_ON_I5_MS = 10 * 60e3; // GPS on and never on I-5 for this long: the screen may sleep again
+const STILL_MS = 20 * 60e3;   // stopped this long with GPS on: the screen may sleep again
+const NEW_TRIP_MS = 3 * 3600e3; // a gap this long between fixes starts the narration over
+const RESUME_MS = 45 * 60e3;  // a drive cut off by a reload (the page or web view restarted) can be resumed this long
+let lastGoodT = 0, fuzzyN = 0, gpsStartT = 0, lastAnyFixT = 0, stillSince = 0, driveSavedT = 0;
 // The two ends of the covered road (ENDS.S = Mexico; ENDS.N = the Oregon line while the data covers California only).
 // offEnd: the end we went off the road past (decided once, at the fix that took us off; the status line and the
 // next card show it). endSaid: the end we said goodbye at. drove: this GPS session has had a fix on the road.
@@ -135,30 +191,64 @@ function startGps() {
   voice.unlock();
   const G = geoSource();
   if (!G) { toast("This browser can't share your location."); return; }
+  const resuming = S.resumable;
   stopAll(true);
+  S.resumable = false;
+  hideNotice("resume");
+  $("startGps").textContent = "Start GPS";
   setMode("gps");
   setPill("wait", "GPS");
   $("statusText").textContent = "Finding you…";
-  greet();
+  // the direction is unknown until the car moves (3.0.1): the one saved is from the last trip
+  S.dirSure = false;
+  gpsStartT = lastGoodT = Date.now(); fuzzyN = 0; stillSince = 0; S.gpsStale = false; driveSavedT = 0;
+  if (!resuming) greet();
   watchId = G.watchPosition(onFix, err => {
     if (err.code === 1) {
-      toast(native.NATIVE ? native.locationOffText(err) : "Location is blocked. Allow location for this site in your browser settings.", 5000);
+      // a card that stays, with the way out (3.0.1): the toast used to vanish after 5 s and leave a dead end
       stopAll();
+      showDenied(err);
     } else {
       $("statusText").textContent = "Waiting for a GPS signal…";
     }
   }, { enableHighAccuracy: true, maximumAge: 3000, timeout: 30000 });
 }
+/** Location refused or turned off: what happened and what to do, until the person does something. */
+function showDenied(err) {
+  bus.emit("trouble", { why: "location" });
+  const acts = [];
+  if (native.NATIVE) acts.push(["Open Settings", () => native.openSettings()]);
+  acts.push(["Take a demo drive", () => { hideNotice("denied"); startDemo(); }]);
+  if (api.feedback && api.feedback.open) acts.push(["Send feedback", () => api.feedback.open()]);
+  showNotice("denied", {
+    title: native.NATIVE ? "Location is off for I-5 Buddy" : "Location is blocked",
+    text: native.NATIVE ? native.locationOffText(err) : "Allow location for this site in your browser's settings, then tap Start GPS again. Or take a demo drive to hear how it works.",
+    acts,
+  });
+}
 function onFix(pos) {
   const c = pos.coords;
   if (c.accuracy && c.accuracy > 1500) { // too fuzzy to place you on the road
     bus.emit("fix", { lat: c.latitude, lon: c.longitude, accuracy: c.accuracy, m: null, dist: null, offRoute: !!S.offRoute, fuzzy: true });
+    // Two in a row: almost always Precise Location turned off for the app (iPhone) or the site. Say so (3.0.1); before,
+    // the app waited for a GPS signal forever without a word.
+    if (++fuzzyN >= 2) showPrecise(c.accuracy);
     return;
   }
+  fuzzyN = 0; hideNotice("precise");
+  lastGoodT = Date.now();
+  if (S.gpsStale) { S.gpsStale = false; queueRender(); }
+  // a long gap (the phone sat in the car overnight with the app open): a new trip for the narration
+  if (lastAnyFixT && pos.timestamp - lastAnyFixT > NEW_TRIP_MS) { resetTrip(); S.dirSure = false; }
+  lastAnyFixT = pos.timestamp;
   S.lat = c.latitude; S.lon = c.longitude; S.accuracy = c.accuracy;
   const hit = geo.locate(c.latitude, c.longitude, S.m);
-  // Far from I-5: don't move the marker. Two far fixes in a row = off route (one could be a GPS glitch).
-  const far = hit.m == null || hit.dist > Math.max(1.2, (c.accuracy || 0) / 1609 * 1.5);
+  // Far from I-5: don't move the marker. Two far fixes in a row = off route (one could be a GPS glitch). Past either end
+  // of the road by more than about 200 m counts as off it too (3.0.1): in the border line at San Ysidro the car is
+  // still in Mexico, though within the on-road radius of the road's first point.
+  const R = data.ROUTE, LAT_200M = 0.0018;
+  const pastLine = R.length > 1 && (c.latitude < R[0][1] - LAT_200M || c.latitude > R[R.length - 1][1] + LAT_200M);
+  const far = hit.m == null || pastLine || hit.dist > Math.max(1.2, (c.accuracy || 0) / 1609 * 1.5);
   // A turn-off place (a mission a few miles off I-5) is stamped when GPS really gets there, on I-5 or off it.
   stampNear(c.latitude, c.longitude, c.accuracy);
   // Every fix goes to the modules, also off I-5 (js/missions.js: the visit card at a mission far from the road).
@@ -172,11 +262,18 @@ function onFix(pos) {
   if (far) {
     offCount++;
     lastFix = null; anchorM = null; dirVotes = [];
+    // GPS on, never on I-5 for 10 minutes, and no directions running: let the screen sleep (it can be left at home)
+    if (!drove && S.mode === "gps" && Date.now() - gpsStartT > NOT_ON_I5_MS && !(api.nav && api.nav.statusText && api.nav.statusText())) releaseWake();
     if (offCount >= 2 && !S.offRoute) {
       // Off I-5 after driving on it this session: keep the last mile on the road (a detour, a gas stop). Off I-5 since
       // the app opened: the saved spot is from an earlier trip (2026-11-17: someone on I-15 near Lake Elsinore was told
-      // she was at the Grapevine, where she had left I-5 the day before), so use the closest point on I-5 instead.
-      setPosition(drove ? (S.m ?? hit.m ?? 0) : (hit.m ?? S.m ?? 0), { offRoute: true, jumped: true });
+      // she was at the Grapevine, where she had left I-5 the day before), so use the closest point on I-5 instead,
+      // shown but not saved (3.0.1). Nowhere near I-5 (no road within about 170 miles): no spot at all, never mile 0.
+      // past an end of the road: the marker sits on that end (the border line, the Oregon line)
+      const endM = pastLine ? (c.latitude < R[0][1] ? R[0][0] : MAX_M) : null;
+      if (drove) setPosition(endM ?? S.m ?? hit.m ?? 0, { offRoute: true, jumped: true });
+      else if (hit.m != null) setPosition(hit.m, { offRoute: true, jumped: true, save: false });
+      else { S.offRoute = true; bus.emit("pos", { m: S.m, prevM: S.m, dir: S.dir, speed: S.speed, offRoute: true, jumped: true }); queueRender(); }
       offEnd = pastEnd();
       // Say goodbye once, and only after driving there (not when GPS starts up already past the end).
       if (offEnd && drove && endSaid !== offEnd && settings.narr) {
@@ -186,54 +283,116 @@ function onFix(pos) {
     } else if (S.offRoute && (mis || wasNear)) { if (mis) offEnd = null; queueRender(); } // "Near Mission ..." follows you
     return;
   }
+  if (!drove) requestWake(); // back on: the screen stays on again (it may have been let go while far from I-5)
   drove = true; offEnd = null;
   // A fix that bounces back near the line (GPS noise) must not set up a second goodbye: forget it only once we are
   // back on the road more than 3 miles from that end.
   if (endSaid && (endSaid === ENDS.N ? hit.m < MAX_M - 3 : hit.m > data.ROUTE[0][0] + 3)) endSaid = null;
   const wasOff = offCount >= 2 || S.offRoute;
   offCount = 0;
-  // speed
+  // A fix less accurate than about 250 m (a Wi-Fi or cell fix) moves the marker, but stamps nothing, votes no direction
+  // and leaves the speed alone (3.0.1).
+  const coarse = (c.accuracy || 0) > COARSE_M;
+  // speed: the phone's own, else worked out from two positions, but only over 3 s or more between two accurate fixes
+  // and never above 100 mph. (One fix without a speed, an iPhone's cell fix right after a dropout, used to turn into a
+  // made-up speed of hundreds of mph and pull up to 180 miles of landmarks into one announcement.)
   let speed = c.speed != null && c.speed >= 0 ? c.speed * 2.23694 : null;
   let dtH = null;
   if (lastFix) {
     dtH = (pos.timestamp - lastFix.t) / 3.6e6;
-    if (speed == null && dtH > 0) speed = geo.miles(lastFix.lat, lastFix.lon, c.latitude, c.longitude) / dtH;
+    if (speed == null && dtH * 3600 >= 3 && !coarse && lastFix.acc != null && lastFix.acc <= 50 && (c.accuracy ?? Infinity) <= 50) {
+      speed = Math.min(MAX_MPH, geo.miles(lastFix.lat, lastFix.lon, c.latitude, c.longitude) / dtH);
+    }
   }
-  lastFix = { t: pos.timestamp, lat: c.latitude, lon: c.longitude };
+  lastFix = { t: pos.timestamp, lat: c.latitude, lon: c.longitude, acc: c.accuracy ?? null };
   // A jump bigger than you could have driven (tunnel, long GPS gap, back from a detour) is a teleport:
-  // don't stamp or narrate everything in between.
-  const maxDrive = dtH != null && dtH > 0 ? Math.max(3, (Math.max(speed ?? 0, 85)) * dtH * 1.5 + 1) : 3;
-  const jumped = wasOff || S.m == null || Math.abs(hit.m - S.m) > maxDrive;
-  if (jumped) { anchorM = null; dirVotes = []; }
-  // direction: GPS heading first, else movement along the road
-  let dir = null;
-  if (c.heading != null && !isNaN(c.heading) && (speed ?? 0) > 6) dir = geo.dirFromHeading(c.heading, hit.m);
-  if (!dir) {
-    if (anchorM == null) anchorM = hit.m;
-    if (Math.abs(hit.m - anchorM) > 0.15) { dir = hit.m > anchorM ? "N" : "S"; anchorM = hit.m; }
+  // don't stamp or narrate everything in between. The top speed here is fixed, never a speed from the fix itself.
+  const maxDrive = dtH != null && dtH > 0 ? Math.max(3, MAX_MPH * dtH * 1.5 + 1) : 3;
+  const teleport = wasOff || S.m == null || Math.abs(hit.m - S.m) > maxDrive;
+  const jumped = teleport || coarse;
+  if (teleport) { anchorM = null; dirVotes = []; }
+  // direction: GPS heading first, else movement along the road; "sure" once a heading at speed or two movements agree
+  let dir = null, sure = false;
+  if (!coarse) {
+    if (c.heading != null && !isNaN(c.heading) && (speed ?? 0) > 6) { dir = geo.dirFromHeading(c.heading, hit.m); sure = !!dir; }
+    if (!dir) {
+      if (anchorM == null) anchorM = hit.m;
+      if (Math.abs(hit.m - anchorM) > 0.15) { dir = hit.m > anchorM ? "N" : "S"; anchorM = hit.m; }
+    }
+    if (dir) {
+      dirVotes.push(dir); if (dirVotes.length > 3) dirVotes.shift();
+      const agree = dirVotes.filter(d => d === dir).length;
+      if (agree >= 2) sure = true;
+      dir = agree >= 2 || dirVotes.length < 2 ? dir : null;
+    }
   }
-  if (dir) {
-    dirVotes.push(dir); if (dirVotes.length > 3) dirVotes.shift();
-    dir = dirVotes.filter(d => d === dir).length >= 2 || dirVotes.length < 2 ? dir : null;
-  }
-  setPosition(hit.m, { speed, dir, offRoute: false, jumped });
+  if (sure) S.dirSure = true;
+  // a long stop (traffic, a meal with the phone on the dash): after 20 minutes the screen may sleep; moving again wakes it
+  const sp = coarse ? null : speed;
+  if (sp != null && sp < 3) { if (!stillSince) stillSince = Date.now(); else if (Date.now() - stillSince > STILL_MS) releaseWake(); }
+  else if (sp != null && sp > 5) { if (stillSince && Date.now() - stillSince > STILL_MS) requestWake(); stillSince = 0; }
+  // a drive in progress survives a reload (the web view restarting, a discarded tab): see resumeOffer()
+  if (Date.now() - driveSavedT > 30e3) { driveSavedT = Date.now(); store.set("drive", { t: driveSavedT }); }
+  setPosition(hit.m, { speed: coarse ? null : speed, dir, offRoute: false, jumped });
+}
+
+/** End trip of a real drive (10+ miles, 3+ stamps): what it came to, and a quiet way to share it (3.0.1). */
+function tripSaved() {
+  try {
+    const t = api.trip && api.trip.trips && api.trip.trips()[0];
+    if (!t || t.demo || !(Date.now() - (t.end || 0) < 10e3) || !(t.miles >= 10) || !((t.stamps || []).length >= 3)) return;
+    const acts = [["Share my trip", () => api.trip.share("trip")]];
+    if (api.share && api.share.shareApp) acts.push(["Tell a friend", () => api.share.shareApp()]);
+    showNotice("trip-saved", { title: "Trip saved", text: `${Math.round(t.miles)} miles and ${t.stamps.length} landmark stamps. It's in your passport.`, acts });
+  } catch {}
+}
+/** Precise Location is off (fixes of several kilometres): what to do about it, until a good fix arrives. */
+function showPrecise(accuracy) {
+  bus.emit("trouble", { why: "precise" });
+  const km = Math.max(1, Math.round((accuracy || 0) / 1000));
+  showNotice("precise", {
+    title: "Turn on Precise Location",
+    text: native.NATIVE
+      ? `Your location is only accurate to about ${km} km, too rough to find you on I-5. In the Settings app, open I-5 Buddy (under Apps), tap Location and turn on Precise Location.`
+      : `Your location is only accurate to about ${km} km, too rough to find you on I-5. Turn on precise location for this browser in your phone's settings.`,
+    acts: native.NATIVE ? [["Open Settings", () => native.openSettings()]] : [],
+  });
 }
 
 /* Demo drive */
-let demoTimer = null, demoX = 10;
+// 3.0.1 (first-run audit): the demo ends by itself after about 4 minutes or 6 landmarks, and at the end of the road
+// (it used to turn around without a word and talk until the battery ran out); while I-5 Buddy talks, or has more to say,
+// the pretend car slows to real speed, so "in about 2 miles" is still true when it is said.
+const DEMO_MS = 4 * 60e3, DEMO_PLACES = 6;
+let demoTimer = null, demoX = 10, demoStartT = 0, demoHeard = new Set();
 function startDemo() {
   voice.unlock();
   stopAll(true);
+  S.resumable = false; hideNotice("resume"); $("startGps").textContent = "Start GPS";
   if (S.m == null || S.m < 1 || S.m > MAX_M - 1) S.m = S.dir === "N" ? 205 : Math.min(815, MAX_M - 7);
   setMode("demo");
   greet("This is a demo drive. I'll pretend we're driving so you can hear how it works.");
   let m = S.m;
-  setPosition(m, { speed: 65, jumped: true });
+  demoStartT = Date.now(); demoHeard = new Set();
+  setPosition(m, { speed: 65, jumped: true, save: false });
   demoTimer = setInterval(() => {
-    m += (S.dir === "N" ? 1 : -1) * 65 * demoX / 3600 * 0.5;
-    if (m >= MAX_M || m <= 0) { m = Math.max(0, Math.min(MAX_M, m)); S.dir = S.dir === "N" ? "S" : "N"; }
-    setPosition(m, { speed: 65 });
+    const busy = voice.isSpeaking() || voice.queued().length;
+    if (!busy && (Date.now() - demoStartT > DEMO_MS || demoHeard.size >= DEMO_PLACES)) return endDemo();
+    const f = busy ? Math.min(demoX, 1) : demoX;
+    m += (S.dir === "N" ? 1 : -1) * 65 * f / 3600 * 0.5;
+    if (m >= MAX_M || m <= 0) { m = Math.max(0, Math.min(MAX_M, m)); setPosition(m, { speed: 65, save: false }); return endDemo(); }
+    setPosition(m, { speed: 65, save: false });
   }, 500);
+}
+bus.on("speaking", s => { if (s && S.mode === "demo" && s.id && placeById(s.id)) demoHeard.add(s.id); });
+/** The demo is over: stop, and say what to do for real. */
+function endDemo() {
+  if (S.mode !== "demo") return;
+  stopAll();
+  const acts = [["Start GPS", () => { hideNotice("demo-done"); startGps(); }]];
+  if (api.share && api.share.shareApp) acts.push(["Tell a friend", () => api.share.shareApp()]);
+  showNotice("demo-done", { title: "That's the demo", text: "That's how it sounds on the road. Tap Start GPS before you pull out on I-5, and I'll do this for real.", acts });
+  bus.emit("demo:end", { ms: Date.now() - demoStartT, places: demoHeard.size });
 }
 
 /* A mission within 2 miles of a GPS fix ({place: the data.MISSIONS entry, dist in miles}, nearest first), else null.
@@ -258,21 +417,37 @@ function stopAll(silent = false) {
   watchId = null; demoTimer = null; dirVotes = []; anchorM = null; lastFix = null; offCount = 0;
   // A new session starts on the road until two far fixes say otherwise (otherwise a trip that ended off the road
   // would keep "off route" and never notice going off again).
-  drove = false; offEnd = null; S.offRoute = false; S.nearMission = null;
+  drove = false; offEnd = null; S.offRoute = false; S.nearMission = null; S.gpsStale = false; S.dirSure = undefined;
+  fuzzyN = 0; stillSince = 0;
+  hideNotice("precise");
   if (!silent) {
-    if (S.mode !== "off") bus.emit("trip:end", {});
+    const was = S.mode;
+    if (S.mode !== "off") bus.emit("trip:end", { mode: S.mode, speed: S.speed });
+    if (was === "gps") tripSaved();
     voice.stop();
     S.speed = null;
+    store.del("drive"); // ended on purpose: nothing to resume
     setMode("off");
   }
   resetTrip();
 }
 
 /* Keep the screen awake while driving */
-let wake = null;
-async function requestWake() { if (native.NATIVE && await native.keepAwake(true)) return; try { if (!wake) { wake = await navigator.wakeLock?.request("screen"); wake?.addEventListener?.("release", () => { wake = null; }); } } catch { wake = null; } }
-function releaseWake() { if (native.NATIVE) native.keepAwake(false); try { wake && wake.release(); } catch {} wake = null; }
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.mode !== "off") requestWake(); });
+let wake = null, wakeWanted = false;
+async function requestWake() { wakeWanted = true; if (native.NATIVE && await native.keepAwake(true)) return; try { if (!wake) { wake = await navigator.wakeLock?.request("screen"); wake?.addEventListener?.("release", () => { wake = null; }); } } catch { wake = null; } }
+function releaseWake() { wakeWanted = false; if (native.NATIVE) native.keepAwake(false); try { wake && wake.release(); } catch {} wake = null; }
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") { hiddenAt = Date.now(); return; }
+  if (wakeWanted && (S.mode === "gps" || S.mode === "demo")) requestWake();
+  // back after a minute or more away during a drive: say why it went quiet (it can't talk in the background)
+  if (S.mode === "gps" && hiddenAt && Date.now() - hiddenAt > 60e3) toast("I was quiet while I-5 Buddy wasn't on screen. Keep it open while you drive.", 6000);
+  hiddenAt = 0;
+});
+// GPS on, but no usable fix for 15 s: the sign stops showing a speed and an ETA that look live (3.0.1)
+setInterval(() => {
+  if (S.mode === "gps" && lastGoodT && !S.gpsStale && Date.now() - lastGoodT > STALE_MS) { S.gpsStale = true; queueRender(); if (drove) bus.emit("trouble", { why: "gps lost" }); }
+}, 5000);
 
 /* ---------- rendering: Drive ---------- */
 function setPill(s, text) { const p = $("statusPill"); p.dataset.s = s; p.textContent = text; }
@@ -298,17 +473,19 @@ function render() {
   } else {
     $("mile").textContent = "--";
   }
-  $("speed").textContent = S.speed != null && S.mode !== "manual" && S.mode !== "off" ? Math.round(S.speed) : "--";
+  $("speed").textContent = S.speed != null && S.mode !== "manual" && S.mode !== "off" && !S.gpsStale ? Math.round(S.speed) : "--";
 
   if (S.mode === "gps") {
     if (S.offRoute && S.nearMission) { setPill("gps", "GPS"); $("statusText").textContent = `Near ${S.nearMission.place.name}`; }
     else if (S.offRoute) {
       const end = atEnd();
       setPill("off-route", end ? "THE END" : "OFF I-5");
-      $("statusText").textContent = end ? `Past ${end.long}. Narration paused.`
-        : S.offDist != null && S.offDist >= 2 ? `Not on I-5 right now, about ${Math.round(S.offDist)} miles from it. Narration paused.` : "Not on I-5 right now. Narration paused.";
+      // short enough for the header on a small phone (3.0.1: the longer line was cut to "Not on I-5 ri…")
+      $("statusText").textContent = end ? `Past ${end.long}`
+        : S.offDist != null && S.offDist >= 2 ? `Not on I-5 · ${Math.round(S.offDist)} mi away` : "Not on I-5 right now";
     }
     else if (has) { setPill("gps", "GPS"); $("statusText").textContent = regionAt(S.m).name; }
+    if (S.gpsStale && !S.offRoute) { setPill("wait", "GPS?"); $("statusText").textContent = "Waiting for a GPS signal…"; }
   } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = "Demo drive · " + (has ? regionAt(S.m).name : ""); }
   else if (S.mode === "manual") { setPill("manual", "MANUAL"); $("statusText").textContent = "Milepost set by hand"; }
   else { setPill("off", "OFF"); $("statusText").textContent = has ? "Paused · " + regionAt(S.m).name : `${ENDS.S.short} to ${ENDS.N.short}`; }
@@ -317,6 +494,7 @@ function render() {
   if (navLine) { setPill("gps", "NAV"); $("statusText").textContent = navLine; }
 
   $("toggleNarr").setAttribute("aria-pressed", settings.narr);
+  $("toggleNarr").setAttribute("aria-label", "Narration"); // one name; aria-pressed carries on and off
   $("toggleNarr").textContent = settings.narr ? "Narration on" : "Narration off";
   renderRibbon(); renderNext(); renderUpNext(); renderServices();
   if (tab === "ahead") renderAhead();
@@ -383,8 +561,27 @@ function renderRibbon() {
 }
 
 let shownNext = null;
+/** GPS is on, but this session has never been on I-5 (started at home, in town): say so plainly, with the way to a demo
+    and the way out (3.0.1; before, the sign showed a made-up mile, or mile 0, and the app went quiet). */
+function notOnI5Card(card) {
+  const mi = S.offDist != null && isFinite(S.offDist) ? Math.round(S.offDist) : null;
+  const key = "noti5:" + (mi == null ? "far" : mi >= 2 ? mi : "near");
+  if (shownNext === key) return;
+  shownNext = key;
+  card.className = "next not-on-i5"; card.innerHTML = "";
+  const body = el("div", "next-body");
+  body.append(el("div", "meta", "NOT ON I-5 YET"), el("h2", null, "I'll start talking on I-5"),
+    el("p", null, `${mi == null ? "You're far from I-5 in California." : mi >= 2 ? `You're about ${mi} miles from I-5.` : "You're close to I-5."} Once you're on it, between ${ENDS.S.long} and ${ENDS.N.long}, I'll tell you about the places you pass.`));
+  const acts = el("div", "acts");
+  const demo = el("button", "secondary", "Take a demo drive"); demo.type = "button"; demo.onclick = startDemo;
+  const stop = el("button", "secondary", "Stop GPS"); stop.type = "button"; stop.onclick = () => stopAll(false);
+  acts.append(demo, stop);
+  body.append(acts);
+  card.append(body);
+}
 function renderNext() {
   const card = $("nextCard");
+  if (S.mode === "gps" && S.offRoute && !drove && !S.nearMission && !atEnd()) return notOnI5Card(card);
   if (S.m == null) {
     if (shownNext === "welcome") return;
     shownNext = "welcome";
@@ -424,8 +621,10 @@ function renderNext() {
     const e = end || (S.dir === "N" ? ENDS.N : ENDS.S);
     if (shownNext === "end:" + e.short) return;
     shownNext = "end:" + e.short;
-    card.className = "next"; card.innerHTML = "";
-    card.append(el("div", "meta", "END OF THE ROAD"), el("h2", null, `You made it to ${e.long}`), el("p", null, "That's every stop in this direction. Turn around for the other side of the story."));
+    card.className = "next end-of-road"; card.innerHTML = "";
+    const body = el("div", "next-body"); // padded like every other card (3.0.1: the text touched the card's edge)
+    body.append(el("div", "meta", "END OF THE ROAD"), el("h2", null, `You made it to ${e.long}`), el("p", null, "That's every stop in this direction. Turn around for the other side of the story."));
+    card.append(body);
     return;
   }
   const { p, d } = x;
@@ -439,7 +638,7 @@ function renderNext() {
     const count = el("div", "count");
     count.append(el("span", "n"), el("small", "unit", "mi"), el("small", "eta"), el("span", "side"));
     const acts = el("div", "acts");
-    const b1 = el("button", null, "▶ Play"); b1.onclick = () => { voice.unlock(); markHeard(p.id); voice.say(announceText(p, Math.max(0, aheadOf(S.m, S.dir, p.m))), { now: true, id: p.id, chime: true }); };
+    const b1 = el("button"); b1.innerHTML = '<span aria-hidden="true">▶</span> Play'; b1.onclick = () => { voice.unlock(); markHeard(p.id); voice.say(announceText(p, Math.max(0, aheadOf(S.m, S.dir, p.m))), { now: true, id: p.id, chime: true }); };
     const b2 = el("button", null, "Tell me more"); b2.onclick = () => { voice.unlock(); tellMore(p); };
     const b3 = el("button", "ico"); b3.setAttribute("aria-label", "Next landmark"); b3.title = "Next landmark";
     b3.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14l9-7-9-7Zm10 0h3v14h-3V5Z" fill="currentColor"/></svg>';
@@ -450,16 +649,19 @@ function renderNext() {
     acts.append(b1, b2, b3, b4);
     const h = el("h2", null, p.name);
     h.tabIndex = 0; h.onclick = () => placeSheet(p);
+    h.setAttribute("role", "button"); h.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); placeSheet(p); } };
     body.append(meta, count, h, el("p", null, p.text), acts);
     card.append(body);
   }
   card.querySelector(".n").textContent = d < 0.3 ? "NOW" : fmtMiles(d);
   card.querySelector(".unit").hidden = d < 0.3;
   const eta = card.querySelector(".eta");
-  const mins = S.speed && S.speed > 15 && S.mode !== "manual" ? d / S.speed * 60 : null;
+  const mins = S.speed && S.speed > 15 && S.mode !== "manual" && !S.gpsStale ? d / S.speed * 60 : null;
   eta.textContent = mins != null && d >= 0.3 ? (mins < 1 ? "· under a min" : `· ${Math.round(mins)} min`) : "";
   const sw = sideWord(p, S.dir);
-  card.querySelector(".side").textContent = sw ? (sw === "left" ? "◀ LEFT" : "RIGHT ▶") : "";
+  const side = card.querySelector(".side");
+  side.textContent = sw ? (sw === "left" ? "◀ LEFT" : "RIGHT ▶") : "";
+  side.setAttribute("aria-label", sw ? `on the ${sw}` : "");
 }
 bus.on("speaking", s => {
   document.body.classList.toggle("talking", !!s);
@@ -481,7 +683,9 @@ function renderUpNext() {
     li.append(el("span", "d", fmtMiles(d)));
     const b = el("span", "nm", p.name);
     const sw = sideWord(p, S.dir);
-    li.append(b, el("span", "sd", sw === "left" ? "◀" : sw === "right" ? "▶" : ""));
+    const sd = el("span", "sd", sw === "left" ? "◀" : sw === "right" ? "▶" : "");
+    if (sw) { sd.setAttribute("aria-label", `on the ${sw}`); sd.setAttribute("role", "img"); }
+    li.append(b, sd);
     const det = detourShort(p);
     if (det) { li.classList.add("detour"); li.append(el("small", "det", det)); }
     li.tabIndex = 0;
@@ -594,6 +798,10 @@ function renderAhead() {
   const items = upcoming(m, S.m == null ? "N" : S.dir, listCats);
   const key = items.length + ":" + (items[0]?.p.id || "") + ":" + aheadLimit + ":" + Math.round(m) + [...listCats].join();
   if (ol.dataset.key === key) return;
+  // the row the reader is looking at stays where it is when the list is rebuilt (3.0.1: passed rows used to vanish
+  // above it and the text jumped up a row every mile; iPhone Safari has no scroll anchoring)
+  let anchor = null;
+  if (tab === "ahead" && window.scrollY > 0) for (const li of ol.querySelectorAll("li.row[data-id]")) { const r = li.getBoundingClientRect(); if (r.bottom > 80) { anchor = { id: li.dataset.id, top: r.top }; break; } }
   ol.dataset.key = key; ol.innerHTML = "";
   if (!items.length) { ol.append(el("li", "empty", "Nothing ahead with these filters.")); $("aheadMore").hidden = true; return; }
   let lastState = null;
@@ -604,6 +812,7 @@ function renderAhead() {
       ol.append(sep);
     }
     const li = el("li", "row " + p.cat);
+    li.dataset.id = p.id;
     const dd = el("div", "d", d < 0.3 ? "now" : Math.round(d)); if (d >= 0.3) dd.append(el("small", null, "mi"));
     const body = el("div", "body");
     const sw = sideWord(p, S.dir);
@@ -621,6 +830,7 @@ function renderAhead() {
     ol.append(li);
   }
   $("aheadMore").hidden = items.length <= aheadLimit;
+  if (anchor) { const li = ol.querySelector(`li[data-id="${CSS.escape(anchor.id)}"]`); if (li) window.scrollBy(0, li.getBoundingClientRect().top - anchor.top); }
 }
 function renderStops(ol, m) {
   $("aheadTitle").textContent = "Gas, food and rest ahead";
@@ -672,6 +882,7 @@ document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click
 
 /* ---------- controls ---------- */
 $("glanceBtn").onclick = () => setGlance(!document.body.classList.contains("glance"));
+$("driveFeedback").onclick = () => { bus.emit("trouble", { why: "feedback" }); if (api.feedback && api.feedback.open) api.feedback.open(); };
 setGlance(store.get("glance", false));
 $("startGps").onclick = startGps;
 $("startDemo").onclick = startDemo;
@@ -734,6 +945,16 @@ $("resetYes").onclick = () => {
   $("resetConfirm").hidden = true; toast("Passport cleared"); ribbonBuilt = false; queueRender();
 };
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
+// Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
+// page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
+export const APP_VERSION = "3.0.1";
+$("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
+if (native.NATIVE) {
+  const a = el("a", "secondary rate-open", "Rate I-5 Buddy");
+  a.href = "https://apps.apple.com/app/id6834991531?action=write-review"; a.target = "_blank"; a.rel = "noopener";
+  $("rateRow").append(a, el("small", "hint", "A rating in the App Store helps other drivers find it."));
+  $("rateRow").hidden = false;
+}
 
 /* ---------- install, and the iPhone app ---------- */
 // Chrome and Edge offer to install the app with a beforeinstallprompt event; index.html keeps it in window.__i5Install
@@ -848,22 +1069,49 @@ $("savePhotos").onclick = async () => {
   if (!urls.length) { toast("No photos to save yet."); return; }
   if (!("caches" in window)) { toast("This browser can't save files for offline use."); return; }
   const btn = $("savePhotos"); btn.disabled = true;
-  let done = 0;
+  const r = await savePhotos(urls, (done, total) => { $("offlineText").textContent = `Saving photos… ${done} of ${total}`; });
+  // only what was really saved counts (3.0.1: it used to say "All 273 photos saved" with none saved)
+  $("offlineText").textContent = r.error ? "Couldn't save photos. Try again with a better connection."
+    : r.ok === urls.length ? `All ${urls.length} photos saved for offline use.`
+    : `Saved ${r.ok} of ${urls.length} photos. Try again with a better connection for the rest.`;
+  btn.disabled = false;
+};
+/** Save photos in the photo cache, 8 at a time, each within 15 s. Resolves {ok, failed} ({error} without a cache). */
+async function savePhotos(urls, onProgress) {
+  let done = 0, ok = 0, failed = 0;
   try {
     const cache = await caches.open("i5b-photos");
     for (let i = 0; i < urls.length; i += 8) {
       await Promise.all(urls.slice(i, i + 8).map(async u => {
-        try { if (!(await cache.match(u))) await cache.add(u); } catch {}
+        try {
+          if (await cache.match(u)) ok++;
+          else {
+            const ac = new AbortController(), t = setTimeout(() => ac.abort(), 15000);
+            try { const r = await fetch(u, { signal: ac.signal }); if (r.ok) { await cache.put(u, r); ok++; } else failed++; } finally { clearTimeout(t); }
+          }
+        } catch { failed++; }
         done++;
       }));
-      $("offlineText").textContent = `Saving photos… ${done} of ${urls.length}`;
+      try { onProgress && onProgress(done, urls.length); } catch {}
     }
-    $("offlineText").textContent = `All ${urls.length} photos saved for offline use.`;
-  } catch {
-    $("offlineText").textContent = "Couldn't save photos. Try again with a better connection.";
-  }
-  btn.disabled = false;
-};
+  } catch { return { ok, failed, error: true }; }
+  // ask the browser not to clear the offline copy, the photos and the passport when the phone runs low on space
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch {}
+  return { ok, failed };
+}
+// The installed app on Wi-Fi (Android reports the connection type): save the photos once, quietly, so a drive through
+// a dead zone has them too (3.0.1; a fresh install had no photos offline and nothing said so).
+(async () => {
+  try {
+    if (native.NATIVE || !("caches" in window) || store.get("photosAuto", false)) return;
+    if (!runningInstalled()) return;
+    const conn = navigator.connection;
+    if (!conn || conn.type !== "wifi" || conn.saveData) return;
+    const urls = [...new Set(PLACES.filter(p => p.img).map(p => p.img.f))];
+    const r = await savePhotos(urls);
+    if (!r.error && r.ok === urls.length) store.set("photosAuto", true);
+  } catch {}
+})();
 /* ---------- 3.0: everyone moves to the natural voice once (Settings > Voice still lists the device's voices) ---------- */
 if (!store.get("voice3", false)) {
   if (settings.voice && !String(settings.voice).startsWith("buddy:")) { settings.voice = ""; saveSettings(); }
@@ -956,7 +1204,10 @@ if (native.NATIVE) {
 // Not in the iPhone app: it ships every file and updates through the App Store (and WKWebView has no service worker here).
 if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NATIVE) {
   navigator.serviceWorker.register("sw.js").then(reg => {
-    const show = () => { $("updateBar").hidden = false; };
+    // while GPS runs, the bar waits: it would cover the header, and Reload stops the drive (3.0.1)
+    let pending = false;
+    const show = () => { if (S.mode === "gps") { pending = true; return; } $("updateBar").hidden = false; };
+    bus.on("mode", m => { if (m !== "gps" && pending) { pending = false; $("updateBar").hidden = false; } });
     if (reg.waiting && navigator.serviceWorker.controller) show();
     reg.addEventListener("updatefound", () => {
       const nw = reg.installing;
@@ -972,15 +1223,28 @@ if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NAT
 
 /* ---------- modules (each is optional: if one fails, the rest still work) ---------- */
 export const api = {
-  S, settings, saveSettings, bus, store, voice, narrator, data, geo, native,
+  S, settings, saveSettings, bus, store, voice, narrator, data, geo, native, APP_VERSION,
   ui: { $, el, toast, go, openSheet, closeSheet, photo, placeSheet, queueRender },
   setPosition, setMode, startDemo, startGps, stopAll,
 };
 window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools/test.html and the E2E harness
 
+/* ---------- a drive cut off by a restart (3.0.1) ---------- */
+// The page reloading (a discarded tab, iOS restarting the app's web view, Reload for an update) used to end the drive
+// silently: GPS off, nothing said, until someone tapped Start GPS. A drive that was running in the last 45 minutes is
+// offered back with one big button (a tap also lets the voice start).
+(function resumeOffer() {
+  const d = store.get("drive", null);
+  if (!d) return;
+  if (!(Date.now() - d.t < RESUME_MS) || S.m == null) { store.del("drive"); return; }
+  S.resumable = true;
+  $("startGps").textContent = "Resume drive";
+  showNotice("resume", { title: "Pick up where you left off?", text: "Your drive stopped when I-5 Buddy restarted. Tap Resume drive and I'll carry on.", acts: [] });
+})();
+
 applyTheme();
 render();
-for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions", "nav"]) {
+for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions", "nav", "review"]) {
   import(`./${name}.js`).then(mod => {
     try { mod.init(api); } catch (e) { console.error(`[${name}] init failed`, e); }
   }).catch(e => console.warn(`[${name}] not loaded`, e?.message || e));

@@ -243,7 +243,7 @@ function editCC(d, api) {
     if (SCEN === "south") continue;
     if (lat > 40.95 && lat < 41.1 && L.direction === "North") set(c, "R-1");      // Lakehead
     else if (lat >= 41.1 && lat < 41.5) set(c, "R-2");                          // Castella, Dunsmuir, Mount Shasta, Weed
-    else if (SCEN === "chains" && lat >= 41.7 && lat < 42) set(c, "R-2");       // Yreka to Hilt: 34 mi past Mount Shasta
+    else if ((SCEN === "chains" || SCEN === "chainsapi") && lat >= 41.7 && lat < 42) set(c, "R-2"); // Yreka to Hilt: 34 mi past Mount Shasta
   }
   return d;
 }
@@ -302,6 +302,22 @@ function installNet(win, api) {
       const body = await trafficFixture();
       body.updated = iso(Date.now() - T.age);
       if (T.edit) T.edit(body);
+      return R(body, 200, "application/json");
+    }
+    if (/\/api\/chains(\?|$)/.test(url) && SCEN === "chainsapi") {
+      // 3.0.1: i5.dominares.org/api/chains, every district's chain controls and signs in one answer, built from the same
+      // samples (and the same edits) the feeds below serve
+      net.chainsCalls = (net.chainsCalls || 0) + 1;
+      await delay(30, opts.signal);
+      const body = { v: 1, updated: iso(Date.now()), cc: {}, cms: {}, missing: [] };
+      for (const nn of ["11", "07", "06", "10", "03", "02"]) {
+        const s = await sample(`cc-${nn}.json`);
+        if (s.status === 200) { try { let j = json(s.buf); if (nn === "02") j = editCC(j, api); body.cc[String(+nn)] = j; } catch { body.missing.push("cc:" + +nn); } }
+      }
+      for (const nn of ["11", "12", "07", "06", "10", "03", "02"]) {
+        const s = await sample(`cms-${nn}.json`);
+        if (s.status === 200) { try { let j = json(s.buf); if (nn === "02") j = editCMS(j, net.signs); body.cms[String(+nn)] = j; } catch { body.missing.push("cms:" + +nn); } }
+      }
       return R(body, 200, "application/json");
     }
     if (!/^https:\/\/(api\.weather\.gov|cwwp2\.dot\.ca\.gov)\//.test(url)) return real(url, opts);
@@ -783,6 +799,42 @@ const SCENARIOS = {
     check("first: R 1 at Lakehead, then R 2 at Castella", cc()[0] && /^Chain controls ahead\. R 1 near Lakehead.*Then R 2 near Castella/.test(cc()[0].text), cc()[0] && cc()[0].text);
     check("second: the separate Siskiyou area at Yreka", cc()[1] && /R 2 near Yreka, in about 3\d miles/.test(cc()[1].text), cc()[1] && cc()[1].text);
     check("the strip still names each town on the way", ["Lakehead", "Castella", "Dunsmuir", "Mount Shasta", "Yreka", "Hornbrook"].every(t => towns.has(t)), [...towns].join());
+  },
+  /* 3.0.1: a full closure on the Grapevine shows from 150 miles away (other traffic from 60), as a red row first. */
+  async trafficpass(api, win, doc, net) {
+    net.traffic.edit = body => {
+      const [lat, lon] = win.I5BUDDY.coordAt(206);
+      body.incidents.push({ id: "chp:pass-test", source: "chp", kind: "closure", title: "Road closed", detail: "I-5 closed both ways at Tejon Pass for snow", lat, lon, dir: null, started: iso(Date.now() - 3600e3) });
+    };
+    api.setMode("demo");
+    api.setPosition(80, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    await until(() => !!doc.querySelector("#liveAlerts .lv-al[data-k='pass:chp:pass-test']"), 20000);
+    const row = doc.querySelector("#liveAlerts .lv-al[data-k='pass:chp:pass-test']");
+    check("126 mi before Tejon Pass: the closure is the first row", !!row && row === doc.querySelector("#liveAlerts .lv-al") && /I-5 closed at the Grapevine, 12\d mi ahead/.test(txt(row)), row && txt(row));
+    api.setPosition(80, { dir: "S", speed: 63, jumped: true });
+    await wait(400);
+    check("heading the other way: no row", !doc.querySelector("#liveAlerts .lv-al[data-k^='pass:']"));
+    api.setPosition(30, { dir: "N", speed: 63, jumped: true });
+    await wait(400);
+    check("more than 150 mi away: no row yet", !doc.querySelector("#liveAlerts .lv-al[data-k^='pass:']"));
+  },
+  /* 3.0.1: the same drive with i5.dominares.org/api/chains answering: the same announcements, and the phone asks
+     Caltrans for no chain-control or sign feed itself. */
+  async chainsapi(api, win, doc, net) {
+    const said = stubSay(api);
+    api.setMode("demo");
+    api.setPosition(700, { dir: "N", speed: 63, jumped: true });
+    await turnOn(api);
+    await settle(api);
+    const cc = () => said.filter(s => /^cc:/.test(s.id || ""));
+    for (let m = 700.25; m <= 796; m += 0.25) { api.setPosition(m, { speed: 63 }); await wait(8); }
+    log("chain announcements:", cc().map(s => s.text.replace(/ Chains are required.*$/, "")));
+    check("the chains come from i5.dominares.org/api/chains", net.chainsCalls >= 1, String(net.chainsCalls));
+    check("no Caltrans cc or cms feed fetched by the phone", !net.calls.some(c => /\/(cc|cms)\/(cc|cms)Status/.test(c.url)), net.calls.filter(c => /cwwp2/.test(c.url)).map(c => c.url).join(" "));
+    check("700 to 796 northbound: two announcements, the same as from the feeds", cc().length === 2 && /^Chain controls ahead\. R 1 near Lakehead.*Then R 2 near Castella/.test(cc()[0].text) && /R 2 near Yreka/.test(cc()[1].text), cc().map(s => s.text.slice(0, 80)).join(" | "));
+    check("the sign ahead is there too", !!api.live.snapshot().sign || net.signs.length > 0);
   },
   /* NWS gives each update a new id. The same warning is spoken once; an upgrade (a different event) is spoken. */
   async alertupd(api, win, doc, net) {

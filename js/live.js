@@ -518,7 +518,30 @@ function parseCMS(j) {
   }
   return { items };
 }
+/** i5.dominares.org/api/chains (3.0.1): every district's I-5 chain controls and freeway signs in one answer of a few KB,
+    in Caltrans' own shape. The phone used to fetch the feeds itself: up to 400 KB a refresh (about 5 MB an hour), and
+    on a weak signal in the mountains they timed out. The request carries no location. */
+function chainsUrl() {
+  let host = "";
+  try { host = location.hostname; } catch {}
+  return host === "i5.dominares.org" ? "/api/chains" : "https://i5.dominares.org/api/chains";
+}
+async function loadChainsApi(g) {
+  const j = await getJSON(chainsUrl());
+  if (g !== gen) return true;
+  if (!j || j.v !== 1 || !j.cc || typeof j.cc !== "object" || !j.cms || typeof j.cms !== "object") throw new Error("not a chains answer");
+  const t = Math.min(now(), Date.parse(j.updated) || now());
+  const key = d => String(d).padStart(2, "0"); // the app's districts are "07", "11"...
+  for (const [d, f] of Object.entries(j.cc)) if (/^\d{1,2}$/.test(d)) cc[key(d)] = { t, items: parseCC(f).items };
+  for (const [d, f] of Object.entries(j.cms)) if (/^\d{1,2}$/.test(d)) cms[key(d)] = { t, items: parseCMS(f).items };
+  src.ct.ok = now(); src.ct.err = false;
+  return true;
+}
 async function loadCaltrans(m, dir, g) {
+  if (districtsNear(m, dir, CC_RANGE).length || districtsNear(m, dir, CMS_RANGE).length) {
+    try { if (await loadChainsApi(g)) return; } catch { /* Caltrans' feeds themselves, below */ }
+    if (g !== gen) return;
+  }
   const jobs = [];
   let near = 0;
   for (const [kind, range] of [["cc", CC_RANGE], ["cms", CMS_RANGE]]) {
@@ -838,6 +861,32 @@ function trAhead(range = TR_RANGE) {
     .filter(it => it.d >= -TR_BACK && it.d <= range && (!it.dir || it.dir === S.dir)).sort((a, b) => a.d - b.d);
 }
 function trWords(d) { return d < 0.5 ? "right here" : d < 1.5 ? "1 mi ahead" : `${Math.round(d)} mi ahead`; }
+
+/* ---------- the mountain passes (3.0.1) ---------- */
+// I-5 closes over the Grapevine and through the Siskiyous in storms. A closure there shows in the strip from 150 miles
+// away (other traffic from 60), so a driver in Los Angeles or Redding sees it before reaching the mountains; its row
+// opens the live page for the pass on i5.dominares.org.
+const PASSES = [
+  { id: "grapevine", name: "the Grapevine", from: 176, to: 217, page: "https://i5.dominares.org/grapevine/" },
+  { id: "siskiyous", name: "Mount Shasta and the Siskiyous", from: 700, to: 797, page: "https://i5.dominares.org/grapevine/#siskiyous" },
+];
+const PASS_RANGE = 150;
+/** The nearest full closure at a mountain pass ahead, beyond the regular traffic range: [] or [item with d and pass]. */
+function passClosures() {
+  if (S.m == null) return [];
+  const out = [];
+  for (const it of tr.items) {
+    if (!(it.kind === "closure" && !isRamp(it))) continue;
+    const pass = PASSES.find(p => it.m >= p.from && it.m <= p.to);
+    if (!pass) continue;
+    const d = ahead(S.m, S.dir, it.m);
+    if (d > TR_RANGE && d <= PASS_RANGE && (!it.dir || it.dir === S.dir)) out.push({ ...it, d, pass });
+  }
+  return out.sort((a, b) => a.d - b.d).slice(0, 1);
+}
+function openPage(url) {
+  try { const a = document.createElement("a"); a.href = url; a.target = "_blank"; a.rel = "noopener"; document.body.append(a); a.click(); a.remove(); } catch {}
+}
 function trKindIcon(it) { return it.kind === "crash" ? "crash" : it.kind === "closure" ? "closure" : it.kind === "lane" ? "cone" : it.kind === "hazard" ? "warn" : "info"; }
 function trStripList(list) { return list.filter(it => it.kind !== "other" && !(it.kind === "closure" && isRamp(it))).slice(0, TR_STRIP); }
 function trSub(it) {
@@ -905,6 +954,9 @@ async function doTraffic() {
   try { ok = await loadTraffic(g); } catch { ok = false; }
   trBusy = false;
   if (g !== gen || !on) return;
+  // i5.dominares.org answers again after weather and Caltrans failed: the connection is back (a weak signal never fires
+  // "online"), so the backoff (up to 10 minutes) starts over and the rest is asked for now (3.0.1)
+  if (ok && fails) { fails = Math.min(fails, 1); netT = 0; safe(maybeRefresh)(); }
   safe(render)();
   if (ok) { try { bus.emit("traffic", trafficEvent()); } catch (e) { warn(e); } }
 }
@@ -1285,7 +1337,7 @@ function render(jumped = false) {
   if (asked) { asked = null; $block.replaceChildren(); }
   const groups = chainsAhead(), list = alertsVisible(), sign = nextSign();
   const tlist = trAhead();
-  renderAlerts(groups, list, tlist);
+  renderAlerts(groups, list, tlist, passClosures());
   renderBlock(sign, tlist);
   syncCamTimer();
   talk(jumped, groups, list, sign);
@@ -1357,9 +1409,11 @@ function focusableBefore(node) {
 }
 
 /* alerts strip (#liveAlerts) */
-function renderAlerts(groups, list, tlist = []) {
+function renderAlerts(groups, list, tlist = [], plist = []) {
   const rows = [];                   // order: chain controls, warnings, crashes and closures, advisories, other traffic
   const tail = [];                   // advisories and calmer traffic go after the red items
+  // a closure at a mountain pass far ahead (passClosures) leads the red rows
+  for (const it of plist) rows.push({ k: "pass:" + it.id, kind: "warn", ic: "closure", title: `I-5 closed at ${it.pass.name}, ${trWords(it.d)}`, sub: trSub(it) || "Check before you go.", open: () => openPage(it.pass.page) });
   if (groups.length) {
     // one row for chain controls: the nearest level, then any other level further on
     const g = groups[0], rest = groups.slice(1);

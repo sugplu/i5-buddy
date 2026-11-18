@@ -396,8 +396,16 @@ function audio() {
     if (!AC) return null;
     try { ctx = new AC(); } catch { return null; }
   }
+  clearTimeout(sleepT);
   if (ctx.state === "suspended") ctx.resume().catch(() => {});
   return ctx;
+}
+// The chime's audio context sleeps a few seconds after the last chime (3.0.1): a running one keeps the phone's audio
+// hardware awake all trip for nothing. audio() wakes it again (a context unlocked by a tap once can resume without one).
+let sleepT = 0;
+function sleepSoon(ms = 3000) {
+  clearTimeout(sleepT);
+  sleepT = setTimeout(() => { try { if (ctx && ctx.state === "running" && !chimeNodes.length) ctx.suspend().catch(() => {}); } catch {} }, ms);
 }
 
 /** Soft bell tones, like a tour-bus PA. kind: "soft" | "alert" | "success". Resolves when it has rung. */
@@ -418,7 +426,7 @@ function chime(kind = "soft") {
     o.start(t); o.stop(t + 1);
     const node = { o, g };
     chimeNodes.push(node);
-    o.onended = () => { chimeNodes = chimeNodes.filter(n => n !== node); };
+    o.onended = () => { chimeNodes = chimeNodes.filter(n => n !== node); if (!chimeNodes.length) sleepSoon(); };
   });
   return new Promise(r => setTimeout(r, 160 * notes.length + 260));
 }
@@ -427,25 +435,49 @@ function stopChime() {
   chimeNodes = [];
 }
 
+/** The longest a chunk may take before the watchdog moves on: about 12 characters a second at the chosen rate, plus
+    4 seconds to start. */
+export function chunkLimitMs(text, rate = 1) {
+  return Math.round((String(text || "").length / 12 / Math.max(0.5, +rate || 1) + 4) * 1000);
+}
 function speakChunks(item) {
   if (!synth) return Promise.resolve();
   return new Promise(resolve => {
     const parts = chunks(item.text);
-    let i = 0, done = false;
-    const finish = () => { if (!done) { done = true; resolve(); } };
+    let i = 0, done = false, dog = 0;
+    const finish = () => { clearTimeout(dog); if (!done) { done = true; resolve(); } };
     const next = () => {
+      clearTimeout(dog);
       if (current !== item || i >= parts.length) return finish(); // interrupted, or finished
-      const u = new SpeechSynthesisUtterance(parts[i++]);
+      const text = parts[i++];
+      const u = new SpeechSynthesisUtterance(text);
       const v = pickVoice();
       if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "en-US";
       u.rate = settings.rate || 1;
-      u.onend = next;
-      u.onerror = e => { if (e.error === "interrupted" || e.error === "canceled") finish(); else next(); };
+      let over = false;
+      const go = () => { if (over) return; over = true; clearTimeout(dog); next(); };
+      u.onend = go;
+      u.onerror = e => { if (over) return; if (e.error === "interrupted" || e.error === "canceled") { over = true; finish(); } else go(); };
+      // Watchdog (3.0.1): speech engines can lose the "end" of an utterance (a phone call, Siri, a Bluetooth change, the
+      // app going to the background, a garbage-collected utterance in Chrome). Without this the queue waited for it
+      // forever and nothing more was said for the rest of the drive. Past its time, cancel it and carry on.
+      dog = setTimeout(() => {
+        if (over || current !== item) return;
+        over = true;
+        u.onend = u.onerror = null;
+        try { synth.cancel(); } catch {}
+        setTimeout(next, 150); // a speak() right after cancel() can be dropped (Safari)
+      }, chunkLimitMs(text, u.rate));
       synth.speak(u);
     };
     next();
   });
 }
+// Back from the background, or from a call: a paused engine is resumed (iOS can leave it paused).
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible" || !synth) return;
+  try { if (synth.paused) synth.resume(); } catch {}
+});
 
 /** Take the current item off the air without resolving it. Returns it. */
 function interruptCurrent() {
@@ -627,7 +659,7 @@ export const voice = {
   unitKey,
   /** Call from a tap: iOS only allows audio that starts inside a user gesture. */
   unlock() {
-    audio();
+    if (audio()) sleepSoon(5000);
     unlockPlayer();
     if (synth && !synth.speaking && !current) { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; synth.speak(u); }
     loadManifest();

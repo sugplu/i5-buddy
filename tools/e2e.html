@@ -60,7 +60,7 @@ function checkEnd(win, api, after, end, edgeM) {
   ok(api.S.offRoute, `past ${end.long}: off route`);
   ok(Math.abs(api.S.m - edgeM) < 0.1, `the marker stays at the end of the road (${api.S.m.toFixed(2)})`);
   ok(txt("statusPill") === "THE END", `pill says THE END (${txt("statusPill")})`);
-  ok(txt("statusText") === `Past ${end.long}. Narration paused.`, `status line: ${txt("statusText")}`);
+  ok(txt("statusText") === `Past ${end.long}`, `status line: ${txt("statusText")}`);
   ok(txt("toEndText").endsWith(`0 mi to ${end.short}`), `sign: ${txt("toEndText")}`);
   const card = doc.querySelector("#nextCard h2");
   ok(card && card.textContent === `You made it to ${end.long}`, `next card: ${card && card.textContent}`);
@@ -287,7 +287,7 @@ async function run() {
   ok(api.S.offRoute, "off route detected far from I-5");
   ok(!said.some(s => s.id && api.data.placeById(s.id)), "no landmark narration while off route");
   ok(txt("statusPill") === "OFF I-5", `status pill shows OFF I-5 (${txt("statusPill")})`);
-  ok(/^Not on I-5 right now(, about \d+ miles from it)?\. Narration paused\.$/.test(txt("statusText")), `status line: ${txt("statusText")}`);
+  ok(/^Not on I-5( right now| · \d+ mi away)$/.test(txt("statusText")), `status line: ${txt("statusText")}`);
   ok(!said.some(s => s.id === "end-of-road"), "no goodbye in the middle of the road");
 
   // 4. back on route in the Central Valley, southbound with no heading and no speed field (direction from movement),
@@ -356,10 +356,11 @@ async function run() {
   await sleep(400);
   checkEnd(win, api, said.slice(n7), ENDS.N, MAX_M);
   // a fix that bounces back near the line (GPS noise) and out again does not repeat the goodbye
-  await driveOff(api, G, "N", 0.75, { fromMi: 0.75 }); await sleep(50);
+  // (3.0.1: more than about 200 m past the line always counts as past it, so the bounce lands just short of it)
+  await driveOff(api, G, "N", 0.05, { fromMi: 0.05 }); await sleep(50);
   ok(!api.S.offRoute, "a fix close to the line counts as back on the road");
   await driveOff(api, G, "N", 3, { fromMi: 2 }); await sleep(400);
-  ok(api.S.offRoute && txt("statusText") === `Past ${ENDS.N.long}. Narration paused.`, `off again after the bounce: ${txt("statusText")}`);
+  ok(api.S.offRoute && txt("statusText") === `Past ${ENDS.N.long}`, `off again after the bounce: ${txt("statusText")}`);
   ok(said.slice(n7).filter(s => s.id === "end-of-road").length === 1, "still only one goodbye");
 
   // 8. the end of the road, southbound: into Mexico at San Ysidro, the same
@@ -471,7 +472,7 @@ async function run() {
     // away from every mission: the usual off-route line again
     for (let i = 0; i < 2; i++) { G.fix(36.2, -119.9, { speed: 20, t: tick(1800) }); await sleep(5); }
     await sleep(300);
-    ok(/^Not on I-5 right now(, about \d+ miles from it)?\. Narration paused\.$/.test(txt("statusText")), `away from the missions: ${txt("statusText")}`);
+    ok(/^Not on I-5( right now| · \d+ mi away)$/.test(txt("statusText")), `away from the missions: ${txt("statusText")}`);
     offF(); offN();
     // "I went there" on the place sheet
     api.stopAll(false);
@@ -552,7 +553,7 @@ async function run() {
     ok(api.S.offRoute === true, "on I-15, far from I-5: off route");
     ok(hit.m != null && Math.abs(api.S.m - hit.m) < 1 && Math.abs(api.S.m - 205) > 50, `the old Grapevine spot is dropped for the closest point on I-5 (mile ${api.S.m && api.S.m.toFixed(1)}, closest ${hit.m && hit.m.toFixed(1)})`);
     const st = doc.getElementById("statusText").textContent;
-    ok(/Not on I-5 right now, about \d+ miles from it/.test(st), `the status line says how far I-5 is: ${st}`);
+    ok(/^Not on I-5 · \d+ mi away$/.test(st), `the status line says how far I-5 is: ${st}`);
     api.trip.openDest(); await sleep(80);
     const sheet = doc.getElementById("tripDestSheet"), txt = sheet ? sheet.innerText : "";
     ok(!!sheet && !/You're here/.test(txt), "Where to? never says You're here off I-5");

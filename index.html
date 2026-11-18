@@ -53,7 +53,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <div class="app">
 
 <header class="top">
-  <img class="logo" src="icons/icon.svg" alt="" width="34" height="34">
+  <img class="logo" src="icons/icon-180.png" alt="" width="34" height="34">
   <div class="brand"><b>I-5 Buddy</b><span id="statusText">Mexico to Oregon</span></div>
   <span class="pill" id="statusPill" data-s="off">OFF</span>
   <button class="icon-btn" id="micBtn" hidden aria-label="Talk to I-5 Buddy">
@@ -79,7 +79,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
       </button>
     </div>
     <div class="mile-row">
-      <div class="mile"><small id="mileLabel">MILE</small><output id="mile">--</output></div>
+      <div class="mile"><small id="mileLabel">MILE</small><span class="mile-n" id="mile">--</span></div>
       <span class="ride-slot" id="rideSlot" hidden></span>
       <div class="near"><small>PASSING</small><span id="nearText">Ready when you are</span></div>
     </div>
@@ -96,11 +96,19 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <div id="destStrip"></div>
   <div id="liveAlerts"></div>
 
+  <!-- What happened and what to do (location off, Precise Location off, a drive to resume, the end of a demo). -->
+  <div class="drive-notice" id="driveNotice" hidden></div>
+
   <!-- Start GPS sits above the next card so it is on the first screen of a phone, clear of the tab bar,
-       whatever the card below holds (the welcome card, or a landmark with its photo). -->
+       whatever the card below holds (the welcome card, or a landmark with its photo). While a drive or a demo runs,
+       End trip and Narration take the same place (3.0.1: they used to be two screens down). -->
   <div class="controls" id="startControls">
     <button class="primary" id="startGps">Start GPS</button>
     <button class="secondary" id="startDemo">Demo drive</button>
+  </div>
+  <div class="controls" id="runControls" hidden>
+    <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
+    <button class="secondary" id="stopTrip">End trip</button>
   </div>
 
   <!-- "New in I-5 Buddy" (once, for people who used the app before) sits above the next card, so it is on the first screen. -->
@@ -110,16 +118,12 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <div id="spotCard"></div>
 
   <div class="look">
-    <button class="big-btn" id="lookLeft"><span class="arrow">◀</span>What's on my left?</button>
-    <button class="big-btn" id="lookRight">What's on my right?<span class="arrow">▶</span></button>
+    <button class="big-btn" id="lookLeft"><span class="arrow" aria-hidden="true">◀</span>What's on my left?</button>
+    <button class="big-btn" id="lookRight">What's on my right?<span class="arrow" aria-hidden="true">▶</span></button>
   </div>
 
   <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden></section>
 
-  <div class="controls" id="runControls" hidden>
-    <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
-    <button class="secondary" id="stopTrip">End trip</button>
-  </div>
   <div class="demo-bar" id="demoBar" hidden>
     <span>Demo speed</span>
     <div class="seg" role="group" aria-label="Demo speed">
@@ -140,7 +144,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 
   <div id="liveBlock"></div>
 
-  <p class="safety">Set it up before you drive. Narration is hands-free; leave the screen to passengers.<br><a class="safety-pv" href="privacy.html" target="_blank" rel="noopener">Privacy</a></p>
+  <p class="safety">Set it up before you drive. Narration is hands-free; leave the screen to passengers. Keep I-5 Buddy open on screen while you drive: it goes quiet when you switch apps or lock the phone.<br><a class="safety-pv" href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a class="safety-pv" id="helpLink" href="support.html" target="_blank" rel="noopener">Help</a> · <button type="button" class="link safety-fb" id="driveFeedback">Send feedback</button></p>
 </section>
 
 <!-- AHEAD -->
@@ -199,6 +203,7 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <h3 class="sub">Live road info</h3>
   <label class="toggle"><input type="checkbox" id="liveOn"> Traffic, weather, chain controls, freeway signs and cameras ahead</label>
   <small class="hint">When on, the app asks the National Weather Service for forecasts and alerts at points ahead of you and loads Caltrans road data and camera images. Traffic (California Highway Patrol incidents and Caltrans lane closures) comes as one list for all of I-5 from i5.dominares.org, so that request never says where you are. Live road info sends nothing else (see Privacy, under About).</small>
+  <p class="hint pass-link">Mountain passes: <a href="https://i5.dominares.org/grapevine/" target="_blank" rel="noopener">Is the Grapevine open?</a> Live closures and chain controls over Tejon Pass and through the Siskiyous.</p>
 
   <h3 class="sub">Display</h3>
   <div class="field">Theme
@@ -235,11 +240,17 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 
   <h3 class="sub">About</h3>
   <div class="field get-app-row" id="appRow" hidden></div>
+  <p class="fine app-version" id="appVersion"></p>
+  <div class="field" id="rateRow" hidden></div>
   <div class="field" id="feedbackRow"></div>
   <div class="field" id="shareRow"></div>
   <div class="field privacy-row" id="privacyRow">
     <a class="secondary privacy-open" href="privacy.html" target="_blank" rel="noopener">Privacy</a>
     <small class="hint">What leaves your phone, and what stays on it.</small>
+  </div>
+  <div class="field help-row" id="helpRow">
+    <a class="secondary help-open" href="support.html" target="_blank" rel="noopener">Help</a>
+    <small class="hint">If you don't hear anything, how GPS works, and how to reach us.</small>
   </div>
   <div class="family">
     <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
@@ -259,6 +270,13 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <div class="nav-view" id="navView" hidden role="dialog" aria-modal="true" aria-label="Navigation"></div>
 <div class="nav-consent" id="navConsent" hidden></div>
 
+<!-- What I-5 Buddy is saying, on every tab, with Stop and Repeat (3.0.1): for passengers who can't hear it, cars with
+     the windows down, and a Stop that is always one tap away. -->
+<div class="caption" id="caption" hidden>
+  <p id="captionText"></p>
+  <button type="button" class="icon-btn" id="captionRepeat" aria-label="Say it again" title="Say it again"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z" fill="currentColor"/></svg></button>
+  <button type="button" class="icon-btn" id="captionStop" aria-label="Stop talking" title="Stop talking"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg></button>
+</div>
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>
 <div class="update" id="updateBar" hidden><span>A new version of I-5 Buddy is ready. Reload to get it.</span> <button class="link" id="updateBtn">Reload</button></div>

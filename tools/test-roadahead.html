@@ -246,7 +246,8 @@ const SCENARIOS = {
     await wait(60);
     const readTxt = txt(R().querySelector(".ra-read"));
     check("tapping a marker shows the incident's words", /Crash, 19 mi ahead\. At Grapevine Rd/.test(readTxt) && /Lane closed/.test(readTxt) && /Until 6:59am Nov 13, 2026/.test(readTxt) && R().querySelector(".ra-tr[aria-pressed=true]"), readTxt);
-    check("it is announced politely", R().querySelector(".ra-read").getAttribute("aria-live") === "polite");
+    // 3.0.1 (accessibility audit): rewritten every half mile while driving, so it is not a live region; read when visited
+    check("it is not a live region (no stream of updates for screen readers)", R().querySelector(".ra-read").getAttribute("aria-live") === "off");
     marks[0].click();
     await wait(60);
     api.bus.emit("traffic", { incidents: [], updated: new Date().toISOString(), sources: { chp: true, caltrans: true } });

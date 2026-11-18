@@ -67,6 +67,10 @@ SUITE = [
     # (test-voice.html?real=1 decodes the real clips: it needs real time, not this runner's virtual time, so it runs with
     #  python3 tools/voice/collect.py --page "tools/test-voice.html?real=1" --out /tmp/voice-real.json)
     ("e2e drive", "e2e.html", 120000, "900,960", True),
+    # 3.0.1: the strength-audit fixes (speech watchdog, made-up speeds, turning around, a parked start, the border line,
+    # not on I-5 yet, Precise Location, location refused, GPS lost, captions, the demo's end, Trip saved, rating rules,
+    # resuming after a restart); it waits out a 4-minute demo in page time
+    ("audit fixes", "test-audit.html", 420000, "900,960", True),
     ("trip auto", "test-trip.html?s=auto", 120000, "1100,960", True),
     ("listen selftest", "test-listen.html?state=selftest", 250000, "1100,960", True),
     ("play check", "test-play.html?s=check", 60000, "900,960", True),
@@ -116,6 +120,8 @@ SUITE = [
     ("live traffic old", "test-live.html?s=trafficold", 1500000, "900,960", False),
     ("live speech", "test-live.html?s=speech", 300000, "900,960", False),
     ("live chains", "test-live.html?s=chains", 120000, "900,960", False),
+    ("live chains api", "test-live.html?s=chainsapi", 120000, "900,960", False),
+    ("live traffic pass", "test-live.html?s=trafficpass", 300000, "900,960", False),
     ("live toggle", "test-live.html?s=toggle", 120000, "900,960", False),
     ("live fail", "test-live.html?s=fail", 60000, "900,960", False),
     ("live nopos", "test-live.html?s=nopos", 60000, "900,960", False),

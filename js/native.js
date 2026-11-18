@@ -253,14 +253,15 @@ export function safetyFirst(go) {
     const head = el("div", "sheet-head");
     const t = el("b", null, "Before you drive"); t.id = "nvSafetyTitle";
     head.append(t);
+    // one button that goes on to iOS's location question (3.0.1: a "Not now" before the system prompt is the kind of
+    // pre-permission screen App Review questions)
     const row = el("div", "controls");
     const yes = el("button", "primary", "Start GPS"); yes.type = "button";
-    const no = el("button", "secondary", "Not now"); no.type = "button";
-    row.append(yes, no);
+    row.append(yes);
     safeSheet.append(head, el("p", "nv-safety-line", SAFETY),
-      el("p", "hint", "I-5 Buddy speaks up before each landmark, so the driver never needs the screen. Choose your settings now, while you're parked."), row);
+      el("p", "hint", "I-5 Buddy speaks up before each landmark, so the driver never needs the screen. Choose your settings now, while you're parked."),
+      el("p", "hint", "Keep I-5 Buddy open on screen while you drive. If you switch apps or lock the phone, it goes quiet until you come back."), row);
     (document.querySelector(".app") || document.body).append(safeSheet);
-    no.addEventListener("click", () => closeSafety());
     yes.addEventListener("click", () => { markSeen(); closeSafety(); safeSheet.__go && safeSheet.__go(); });
   }
   safeSheet.__go = go;
@@ -422,6 +423,28 @@ export function micOffText(code) {
     return "Voice commands need Speech Recognition. In the Settings app, open I-5 Buddy (under Apps) and turn on Speech Recognition, and check that Dictation is on (General, Keyboard). Then close and reopen the app.";
   }
   return "To use voice commands, open the Settings app, open I-5 Buddy (under Apps) and turn on Microphone. Then close and reopen the app.";
+}
+
+/* ---------- Settings, the App Store rating prompt, music ducking (3.0.1) ---------- */
+/** Open this app's page in the iPhone's Settings app (location, Precise Location). */
+export function openSettings() {
+  if (!NATIVE) return false;
+  try { const a = document.createElement("a"); a.href = "app-settings:"; a.style.display = "none"; document.body.append(a); a.click(); a.remove(); return true; } catch { return false; }
+}
+/** Apple's own rating prompt (SKStoreReviewController / AppStore.requestReview through the InAppReview plugin). Apple
+    decides whether it shows (at most 3 times a year) and never says; resolves true when it was asked for. Only from
+    review.js, at a quiet moment after a trip; never from a button (guideline 5.6.1). */
+export async function requestReview() {
+  const R = plugin("InAppReview");
+  if (!R) return false;
+  try { await call(R, "requestReview"); return true; } catch { return false; }
+}
+/** While I-5 Buddy talks, other audio (music, a podcast) is turned down, as Apple Maps does, and back up after
+    (the app's AudioDuck plugin; a no-op in a browser and in builds without it). */
+export function duck(on) {
+  const D = plugin("AudioDuck");
+  if (!D) return;
+  call(D, on ? "begin" : "end").catch(() => {});
 }
 
 /* ---------- screen and status bar ---------- */

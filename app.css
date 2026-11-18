@@ -90,7 +90,7 @@ main{flex:1;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:m
 .ribbon .tick{position:absolute;top:10px;width:1px;height:10px;background:rgba(255,255,255,.35)}
 .ribbon .tick.got{background:var(--accent);width:2px}
 .ribbon .lbl{position:absolute;top:21px;font-size:.58rem;font-weight:800;letter-spacing:.08em;opacity:.85;transform:translateX(-50%)}
-.ribbon .you{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--accent);border:3px solid #fff;transition:left .6s linear;box-shadow:0 0 0 4px rgba(0,0,0,.15)}
+.ribbon .you{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 4px rgba(0,0,0,.15)}
 
 /* next landmark */
 .next{background:var(--surface);border-radius:var(--radius);display:grid;overflow:hidden;border-top:5px solid var(--c,var(--line));box-shadow:var(--shadow)}
@@ -290,3 +290,41 @@ body.glance .big-btn{min-height:96px;font-size:1.15rem}
 .moved{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top) + 8px);z-index:60;background:#000;color:#fff;border:1px solid #00B070;border-radius:12px;padding:12px 14px;font-size:.9rem;line-height:1.35}
 .moved a{color:#2FD394;font-weight:700}
 .whats-new .wn-list{margin:0;padding-left:1.1em;display:grid;gap:5px;color:var(--fg-2);line-height:1.4}
+
+/* ---------- 3.0.1 ---------- */
+/* notices on Drive: location off, Precise Location off, a drive to resume, the end of a demo, a trip saved */
+.drive-notice{display:grid;gap:10px;margin:10px 0}
+.notice{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow)}
+.notice b{display:block;font-size:1.02rem}
+.notice p{margin:4px 0 0;color:var(--fg);line-height:1.4}
+.notice .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.notice .acts button{flex:1 1 auto;min-height:44px}
+.notice-denied,.notice-precise{border-left-color:#d9822b}
+/* GPS on, not on I-5 yet */
+.next.not-on-i5 .acts{display:flex;flex-wrap:wrap;gap:8px}
+.next.not-on-i5 .acts button{flex:1 1 auto;min-height:44px}
+/* the status line may wrap to a second line instead of being cut ("Not on I-5 ri…") */
+.brand span#statusText{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+/* captions: what I-5 Buddy is saying, above the tab bar on every tab, with Repeat and Stop */
+.caption{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(66px + env(safe-area-inset-bottom,0px));z-index:24;width:calc(100% - 20px);max-width:580px;display:flex;align-items:center;gap:4px;background:var(--fg);color:var(--bg);border-radius:14px;padding:6px 6px 6px 14px;box-shadow:var(--shadow)}
+.caption p{flex:1;margin:0;font-weight:700;font-size:.92rem;line-height:1.3;max-height:3.9em;overflow-y:auto;overscroll-behavior:contain}
+.caption .icon-btn{color:var(--bg);flex:none;min-width:44px;min-height:44px}
+body.captioned main{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+body.captioned .toast{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (prefers-reduced-motion:no-preference){.caption{animation:capIn .18s ease-out}@keyframes capIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}}
+/* Help, Send feedback and the version in About; Rate in the iPhone app */
+.safety-fb{min-height:44px;padding:0 8px;font-weight:800;font-size:inherit;color:var(--link)}
+.app-version{margin:0 0 6px}
+.help-row,#rateRow{gap:6px}
+.help-open,.rate-open{display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none}
+/* the end-of-the-road card keeps the same padding as the others */
+.next.end-of-road .next-body{padding-top:14px}
+/* a phone held sideways in a dash mount: the sign on the left stays put, everything else scrolls on the right */
+@media (orientation:landscape) and (max-height:540px) and (min-width:560px){
+  .app{max-width:none}
+  #view-drive:not([hidden]){display:grid;grid-template-columns:minmax(0,44%) minmax(0,1fr);column-gap:14px;align-items:start}
+  #view-drive>*{grid-column:2;min-width:0}
+  #view-drive>.sign-board{grid-column:1;grid-row:1 / span 40;position:sticky;top:calc(64px + env(safe-area-inset-top,0px))}
+  #view-drive>.nv-safety-top{grid-column:1 / -1}
+  .caption{max-width:none;width:calc(100% - 40px)}
+}

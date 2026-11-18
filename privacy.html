@@ -66,7 +66,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
   <div class="pv-sign">
     <h1>Privacy</h1>
     <p>What leaves your phone, what stays on it, and your choices.</p>
-    <p class="pv-date">Effective November 17, 2026 · Version 2026-11-17.1</p>
+    <p class="pv-date">Effective November 18, 2026 · Version 2026-11-18.1</p>
   </div>
 
   <div class="pv-intro">
@@ -130,7 +130,7 @@ document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name
     <ul>
       <li><b>Traffic.</b> Every 2 minutes the app asks i5.dominares.org for the list of crashes and closures on all of I-5 in California. Our server gets that list from the California Highway Patrol and Caltrans. The request carries no location: everyone gets the same list, and your phone picks out what's ahead of you. Our server keeps nothing about who asked.</li>
       <li><b>Weather.</b> Your phone asks the National Weather Service (<span class="pv-host">api.weather.gov</span>) for forecasts and alerts at points on I-5 about 10 to 120 miles ahead of you.</li>
-      <li><b>Chain controls and freeway signs.</b> Your phone loads them from Caltrans (<span class="pv-host">cwwp2.dot.ca.gov</span>) for the Caltrans districts ahead of you.</li>
+      <li><b>Chain controls and freeway signs.</b> The app asks i5.dominares.org for one list of the chain controls and freeway signs on all of I-5 in California. Our server gets it from Caltrans. Like traffic, the request carries no location, and our server keeps nothing about who asked. If our server doesn't answer, your phone loads them from Caltrans (<span class="pv-host">cwwp2.dot.ca.gov</span>) for the Caltrans districts ahead of you.</li>
       <li><b>Cameras.</b> The Drive tab loads pictures from the 3 nearest Caltrans cameras ahead, and from any camera you open, about once a minute while they're on screen.</li>
     </ul>
     <p>The weather points are counted from the nearest 5-mile mark on I-5, not from your exact spot. So weather.gov can tell only roughly where you are (within a few miles) and which way you're going. The app checks about every 5 miles or 10 minutes. The cameras you load show Caltrans which stretch of I-5 you're on, often to within a mile. As with any web request, these services also get your IP address and can tell the request came from I-5 Buddy. When you reopen the app, it uses the last spot it saved, even with GPS off.</p>

@@ -515,7 +515,7 @@ function render(force) {
   ["Easy", "Moderate", "Steep", "Very steep"].forEach((w, i) => { const li = el("li", null, w); li.prepend(el("i", "ra-sw ra-b" + i)); leg.append(li); });
   // readout
   const read = el("p", "ra-read");
-  read.setAttribute("aria-live", "polite");
+  read.setAttribute("aria-live", "off"); // 3.0.1: rewritten every half mile while driving; a screen reader reads it when visited
   const selText = selectedText(wx, trf);
   read.textContent = selText || summaryLine(p, an);
   read.classList.toggle("sel", !!selText);

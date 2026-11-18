@@ -245,8 +245,17 @@ function start(ses, lib) {
     const camera = { center: [c[1], c[0]], padding: { top: Math.round(stage.clientHeight * (ses.chase ? 0.5 : 0.34)), bottom: 0, left: 0, right: 0 } };
     if (ses.chase) { camera.pitch = CHASE.pitch; if (jump) camera.zoom = CHASE.zoom; }
     if (jump || moving || ses.bearingDirty || ses.chase) { camera.bearing = heading(); ses.bearingDirty = false; }
-    if (jump || reduced()) map.jumpTo(camera);
-    else map.easeTo({ ...camera, duration: 900, easing: t => t });
+    if (jump || reduced()) { map.jumpTo(camera); return; }
+    // 3.0.1 (performance audit): how far this fix moves the view on screen, and how much it turns it. A stopped car's GPS
+    // jitter (a few metres) and a 65 mph fix at this zoom (about 2 px) need no 900 ms ease, which rendered about 54
+    // terrain frames a second, parked or not: nothing visible = no frame, a small move = one frame.
+    let px = Infinity, turn = 0;
+    try { const a = map.project(map.getCenter()), b = map.project({ lng: camera.center[0], lat: camera.center[1] }); px = Math.hypot(a.x - b.x, a.y - b.y); } catch {}
+    if (camera.bearing != null) turn = Math.abs(((camera.bearing - map.getBearing()) % 360 + 540) % 360 - 180);
+    if (camera.pitch != null && Math.abs(camera.pitch - map.getPitch()) >= 1) px = Infinity; // the chase camera tilting in
+    if (px < 1 && turn < 1) return;
+    if (px < 6 && turn < 4) { map.jumpTo(camera); return; }
+    map.easeTo({ ...camera, duration: 900, easing: t => t });
   };
   ses.followCamera = followCamera;
   try { ses.off.push(api.bus.on("pos", onPos)); } catch {}

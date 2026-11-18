@@ -69,7 +69,7 @@ body.glance #roadAhead{display:none!important}
 .ra-me.ride{transform:translate(-50%,-84%)}
 .ra-me .ra-ride{display:block;width:46px;height:auto}
 @media (prefers-reduced-motion:no-preference){
-  .ra-me:not(.ride) i{animation:raPing 2.4s ease-out infinite}
+  .ra-me:not(.ride) i{animation:raPing 2.4s ease-out 3} /* 3.0.1: a few pings, then still (a box-shadow animation repaints every frame) */
   @keyframes raPing{0%{box-shadow:0 0 0 2px var(--accent),0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 2px var(--accent),0 0 0 14px transparent}}
 }
 

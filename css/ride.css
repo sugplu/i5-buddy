@@ -81,3 +81,8 @@ body.glance .ride-slot{display:none}
 .ride-chip{min-height:44px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);font-size:1.35rem;line-height:1;padding:0}
 .ride-chip[aria-pressed="true"]{border-color:var(--accent);background:var(--surface)}
 .ride-done{width:100%}
+
+/* 3.0.1 (performance audit): on the Drive sign the z z float a few times, then rest, and on the map the ride bobs a few
+   times, then rests. Endless animations inside these SVGs made WebKit repaint every frame while parked or in traffic. */
+.ride-slot.ride-sleepy .ride-zz .z1,.ride-slot.ride-sleepy .ride-zz .z2{animation-iteration-count:3}
+.mp-you.ride-moving .ride-art,.mp-you.ride-moving .ride-wheel,.mp-you.ride-sleepy .ride-zz .z1,.mp-you.ride-sleepy .ride-zz .z2{animation-iteration-count:3}

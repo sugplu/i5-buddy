@@ -83,3 +83,6 @@
 .mp3d-card-arrow{flex:none;width:40px;height:44px;margin-top:-6px;border:0;border-radius:12px;background:var(--surface-2);color:var(--fg);font-size:1.6rem;line-height:1;font-weight:800;cursor:pointer}
 .mp3d-card-arrow+.mp3d-card-arrow{margin-left:-6px}
 @media (max-width:370px){.mp3d-card-img{width:56px;height:56px}.mp3d-card-top{gap:9px}}
+
+/* 3.0.1 (performance audit): the 3D ride sprite bobs a few times, then rests */
+.mp3d-sprite.ride-moving .ride-art,.mp3d-sprite.ride-moving .ride-wheel,.mp3d-sprite.ride-sleepy .ride-zz .z1,.mp3d-sprite.ride-sleepy .ride-zz .z2{animation-iteration-count:3}

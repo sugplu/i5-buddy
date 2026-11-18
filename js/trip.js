@@ -16,6 +16,8 @@
 //   tripPrefs  {sayBadges}
 
 const APP_URL = "https://i5.dominares.org/";
+// shared trip text links to /get (3.0.1): iPhone people go to the App Store, Android people to the app, others to the site
+const SHARE_URL = "https://i5.dominares.org/get";
 const KEEP = 30;               // trips kept in the log
 const RESUME_MS = 45 * 60e3;   // a trip cut off by a closed tab resumes if you start again within this long
 const STEP = 0.05;             // miles: smaller moves are GPS jitter, not driving
@@ -1388,9 +1390,9 @@ function summaryText(kind) {
   if (c.kind === "trip") {
     const what = c.demo ? "My I-5 Buddy demo drive" : "My I-5 trip";
     const route = c.title.length > 1 ? `, ${c.title[0]} ${c.title[1]}` : c.title[0] !== "Interstate 5" ? `, ${c.title[0]}` : "";
-    return `${what} on ${fmtDay(c.date, true)}: ${fmtMi(c.miles)} miles${route}. ${plural(c.stamps, "landmark stamp")}${c.newBadges ? ` and ${plural(c.newBadges, "new badge")}` : ""}.${top} ${APP_URL}`;
+    return `${what} on ${fmtDay(c.date, true)}: ${fmtMi(c.miles)} miles${route}. ${plural(c.stamps, "landmark stamp")}${c.newBadges ? ` and ${plural(c.newBadges, "new badge")}` : ""}.${top} ${SHARE_URL}`;
   }
-  return `My I-5 passport: ${fmtInt(c.miles)} miles driven, ${fmtInt(c.stamps)} of ${fmtInt(PLACES.length)} landmark stamps and ${plural(c.badges, "badge")}.${top} ${APP_URL}`;
+  return `My I-5 passport: ${fmtInt(c.miles)} miles driven, ${fmtInt(c.stamps)} of ${fmtInt(PLACES.length)} landmark stamps and ${plural(c.badges, "badge")}.${top} ${SHARE_URL}`;
 }
 
 function tokens() {

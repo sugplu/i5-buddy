@@ -10,7 +10,7 @@
 //               is sent. All through api.store (this phone only).
 // The app version comes from the service worker's VERSION line (read from sw.js, normally from its cache), else a constant.
 
-const FALLBACK_VERSION = "3.0.0";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+const FALLBACK_VERSION = "3.0.1";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
 const PRIVACY_URL = "privacy.html"; // the privacy notice, beside index.html (cached with the app shell)
 const MAX_NAME = 80, MAX_EMAIL = 120, MAX_MSG = 2000;
 const SEND_TIMEOUT = 15e3;
@@ -58,18 +58,30 @@ async function readVersion() {
 function validate({ name, email, message }) {
   const out = {};
   if (String(name || "").trim().length > MAX_NAME) out.name = `Please keep your name under ${MAX_NAME} characters.`;
+  // the email is optional (3.0.1): only for people who want a reply
   const e = String(email || "").trim();
-  if (!e) out.email = "Please add your email so we can reply.";
-  else if (e.length > MAX_EMAIL || !EMAIL_RX.test(e)) out.email = "That email doesn't look right. Check it and try again.";
+  if (e && (e.length > MAX_EMAIL || !EMAIL_RX.test(e))) out.email = "That email doesn't look right. Check it and try again.";
   const m = String(message || "").trim();
   if (!m) out.message = "Please write a message.";
   else if (m.length > MAX_MSG) out.message = `Please keep your message under ${MAX_MSG.toLocaleString("en-US")} characters.`;
   return out;
 }
+/** Where this copy runs (3.0.1), so the owner can tell the apps apart in HQ: "ios" (the iPhone app), "android" (the Google
+    Play app: Chrome opens it with an android-app:// referrer, remembered for later launches), "pwa" (installed from a
+    browser) or "web". */
+export function platform() {
+  try { if (window.Capacitor && typeof window.Capacitor.isNativePlatform === "function" && window.Capacitor.isNativePlatform()) return "ios"; } catch {}
+  try {
+    if (/^android-app:\/\//.test(document.referrer || "")) { try { localStorage.setItem("i5b:twa", "true"); } catch {} return "android"; }
+    if (localStorage.getItem("i5b:twa") === "true") return "android";
+  } catch {}
+  try { if (navigator.standalone === true || matchMedia("(display-mode: standalone)").matches) return "pwa"; } catch {}
+  return "web";
+}
 /** The JSON that goes to the server. Pure. */
-function payload({ name, email, message, website }, ver) {
+function payload({ name, email, message, website }, ver, where = "") {
   return { name: String(name || "").trim().slice(0, MAX_NAME), email: String(email || "").trim().slice(0, MAX_EMAIL), message: String(message || "").trim().slice(0, MAX_MSG),
-    version: String(ver || FALLBACK_VERSION).slice(0, 40), website: String(website || "") };
+    version: (String(ver || FALLBACK_VERSION) + (where ? " " + where : "")).slice(0, 40), website: String(website || "") };
 }
 
 /* ---------- the row in Settings ---------- */
@@ -131,12 +143,12 @@ function openSheet(from) {
   name.value = str(draft.name) || str(who.name);
   n.wrap.append(n.l, name, n.err);
 
-  const e = field("fbEmail", "Email");
-  const email = el("input"); email.id = "fbEmail"; email.name = "email"; email.type = "email"; email.required = true; email.maxLength = MAX_EMAIL;
+  const e = field("fbEmail", "Email", "(optional)");
+  const email = el("input"); email.id = "fbEmail"; email.name = "email"; email.type = "email"; email.maxLength = MAX_EMAIL;
   email.autocomplete = "email"; email.inputMode = "email"; email.setAttribute("autocapitalize", "none"); email.setAttribute("spellcheck", "false");
   email.setAttribute("aria-describedby", "fbEmailHint fbEmailErr");
   email.value = str(draft.email) || str(who.email);
-  const eh = el("p", "fb-hint", "We use your email only to reply to you.");
+  const eh = el("p", "fb-hint", "Only if you want a reply. We use it for nothing else.");
   eh.id = "fbEmailHint";
   // the whole notice, beside the promise: a new tab, so the form (and a drive in progress) stay as they are
   const pv = el("a", "fb-privacy", "Privacy");
@@ -239,7 +251,7 @@ async function submit() {
   let result;
   const ac = new AbortController(), timer = setTimeout(() => ac.abort(), SEND_TIMEOUT);
   try {
-    const r = await fetch(feedbackUrl(), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload(vals, version)), signal: ac.signal });
+    const r = await fetch(feedbackUrl(), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload(vals, version, platform())), signal: ac.signal });
     let j = null;
     try { j = await r.json(); } catch {}
     if (r.ok && j && j.ok === true) result = { ok: true };
@@ -295,4 +307,4 @@ export function init(a) {
   } catch (e) { warn(e); }
 }
 
-export const _test = { validate, payload, feedbackUrl, MAX_MSG, PRIVACY_URL };
+export const _test = { validate, payload, feedbackUrl, platform, MAX_MSG, PRIVACY_URL };

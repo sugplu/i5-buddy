@@ -13,6 +13,44 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
+## 3.0.1: the strength-audit fixes, chain controls from the Worker, the Grapevine page
+
+The fixes from the 2026-11-15 strength audit (`/Volumes/sugsair/dominares/i5-buddy-quality/2026-11-15-strength-audit/`),
+each checked by `tools/test-audit.html` (50 checks) or the module test named:
+
+- **Offline (sw.js).** The app's files come from this version's saved copy first (a weak signal no longer means a blank
+  screen for 25 s or forever); install is all or nothing for the app's own files, so a failed download keeps the old,
+  complete version; a server error never replaces a saved file; photos give up after 8 s. Save photos counts only what
+  was saved and asks the browser to keep the offline copy (`navigator.storage.persist`); the installed app on Wi-Fi
+  saves them once by itself. (`tools/test-getapp.html`, site.)
+- **Narration.** A watchdog in `js/voice.js` moves on when the speech engine loses an "end" (one lost event used to
+  silence the rest of the drive). A speed is worked out from two positions only over 3+ s between accurate fixes and
+  never above 100 mph, the look-ahead is capped at the setting plus 2 miles, and fixes worse than 250 m stamp nothing and
+  vote no direction. Places are remembered per direction, so the drive back after turning around is narrated. A parked
+  start waits for the direction before announcing anything. High chattiness tells stories after 5 quiet miles or 4
+  quiet minutes. More than about 200 m past either end of the road counts as past it (the San Ysidro border line).
+- **First run and errors.** GPS started away from I-5 shows "Not on I-5 yet" with Take a demo drive and Stop GPS, and
+  saves no made-up mile; Precise Location off and location refused get cards that stay, with Open Settings in the iPhone
+  app; no fix for 15 s shows "--" mph and GPS? instead of a live-looking sign. The demo ends by itself (about 4 minutes,
+  6 landmarks or the end of the road), drives at real speed while it talks, and stamps nothing. A drive cut off by a
+  restart (a discarded tab, iOS restarting the web view, Reload for an update) is offered back for 45 minutes with
+  Resume drive. End trip and Narration sit at the top while a drive runs; the update bar waits until GPS is off.
+- **Everywhere.** Captions of what is said, with Repeat and Stop, above the tab bar on every tab. Help (support.html),
+  Send feedback and the version in About; feedback email optional and tagged web, pwa, android or ios. After End trip of
+  a real drive: Trip saved, with Share my trip and Tell a friend. Shared trip text links to /get.
+- **Battery.** The 3D map no longer re-animates on every fix (no frame for invisible moves); the ride's animations and
+  the Road ahead ping play a few times, then rest; the ribbon dot has no transition; the chime's audio context sleeps
+  when idle; the screen stays on only in GPS and demo mode, and may sleep after 20 minutes stopped or 10 minutes far
+  from I-5.
+- **iPhone app (`js/review.js`, native.js).** Apple's own rating prompt at a quiet moment after a good trip (rules in
+  review.js; never from a button, once per version, 120 days apart, 2 a year), a Rate I-5 Buddy row in About, other audio
+  turned down while it talks (`AudioDuck`), Open Settings for location. Landscape layout for dash mounts.
+- **Chain controls and signs from `/api/chains`** (Worker): every district in one answer of a few KB instead of up to
+  400 KB per refresh from Caltrans; the feeds stay the fallback (`tools/test-live.html` chainsapi). A full closure on the
+  Grapevine or in the Siskiyous shows in the strip from 150 miles away (trafficpass).
+- **`grapevine/`**: the public page "Is the Grapevine open?" (live from `/api/traffic` and `/api/chains`), in the
+  sitemap and linked from Settings > Live road info.
+
 ## 3.0: a real voice, directions, a 3D tour and more games
 
 - **Natural voice.** Every line the app can say (8,241 units: landmarks at every distance and side, stories, zones,
