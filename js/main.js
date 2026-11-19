@@ -948,6 +948,7 @@ function syncSettingsUI() {
   $("lead").value = settings.lead; $("leadOut").textContent = settings.lead + " mi";
   document.querySelectorAll("[data-chat]").forEach(b => b.setAttribute("aria-pressed", b.dataset.chat === settings.chat));
   $("chatHint").textContent = { low: "Only things you can see and the big history.", normal: "Every landmark in the categories you pick.", high: "Everything, plus longer stories on quiet stretches." }[settings.chat];
+  $("autoStories").checked = settings.autoStories;
   $("zoneNarr").checked = settings.zoneNarr; $("chimeOn").checked = settings.chime; $("kidMode").checked = settings.kid;
   $("liveOn").checked = !!settings.live;
   document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.themeSet === settings.theme));
@@ -962,6 +963,7 @@ $("voice").onchange = e => { settings.voice = e.target.value; saveSettings(); vo
 $("rate").oninput = e => { settings.rate = +e.target.value; $("rateOut").textContent = settings.rate.toFixed(2).replace(/0$/, "") + "×"; saveSettings(); };
 $("lead").oninput = e => { settings.lead = +e.target.value; $("leadOut").textContent = settings.lead + " mi"; saveSettings(); };
 document.querySelectorAll("[data-chat]").forEach(b => b.onclick = () => { settings.chat = b.dataset.chat; saveSettings(); syncSettingsUI(); });
+$("autoStories").onchange = e => { settings.autoStories = e.target.checked; saveSettings(); };
 $("zoneNarr").onchange = e => { settings.zoneNarr = e.target.checked; saveSettings(); };
 $("chimeOn").onchange = e => { settings.chime = e.target.checked; saveSettings(); if (settings.chime) voice.chime(); };
 $("kidMode").onchange = e => { settings.kid = e.target.checked; saveSettings(); };
@@ -986,7 +988,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.4";
+export const APP_VERSION = "3.0.5";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");

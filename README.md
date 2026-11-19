@@ -81,6 +81,13 @@ Existing landmark IDs stay stable for saved stamps, photos and share links. The 
 Run `python3 tools/test_mission_build.py` for the build regression checks (no network, browser or audio needed),
 `python3 tools/lint_content.py` for content lint, and `python3 tools/run_tests.py` for the silent browser suite.
 
+## Automatic landmark stories (3.0.5)
+
+After Start GPS, each landmark introduction continues into its full story automatically. Settings > Narration >
+Play full landmark stories automatically is on by default; turn it off for short introductions. Category and
+chattiness choices still select which places are announced. Stop and Repeat remain available in captions, and
+navigation instructions or urgent road alerts interrupt a long automatic story.
+
 ## What it does
 
 - **Drive**: highway-sign display (direction, exit-mile, speed, elevation, miles to Oregon or to Mexico), the next

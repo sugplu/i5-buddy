@@ -622,6 +622,51 @@ async function run() {
     ok(api.S.cruise == null, "a new trip starts without an old cruising speed");
   }
 
+  // 19. The complete landmark story plays without tapping Tell me more; the choice is saved.
+  {
+    api.stopAll(false); await sleep(30);
+    const prior = { narr: api.settings.narr, autoStories: api.settings.autoStories, cats: api.settings.cats };
+    const real = api.voice.say, calls = [];
+    api.voice.say = (text, opts = {}) => { calls.push({ text, opts }); return Promise.resolve(true); };
+    api.settings.narr = true; api.settings.autoStories = true;
+    const p = api.data.PLACES.find(p => p.more && p.more.length > 300 && p.m > 300 && p.m < 600);
+    api.settings.cats = new Set([p.cat]);
+    api.setMode("demo");
+    api.setPosition(p.m - 1, { dir: "N", speed: 60, jumped: true });
+    let a = calls.find(c => c.opts.id === p.id);
+    ok(!!a && a.text.includes(p.more), "the full landmark story is included automatically, without Tell me more");
+    ok(a && a.text.startsWith(api.narrator.announceText(p, 1, "N")), "the story follows its distance, side and short introduction");
+    ok(a && a.opts.interruptible === true, "automatic stories give way to directions and urgent road alerts");
+    const count = calls.filter(c => c.opts.id === p.id).length;
+    api.setPosition(p.m - 0.9, { dir: "N", speed: 60 });
+    ok(calls.filter(c => c.opts.id === p.id).length === count, "GPS updates do not repeat the same landmark story");
+    api.settings.autoStories = false;
+    ok(a && !a.opts.fresh().includes(p.more), "turning autoplay off also shortens a story still waiting in the queue");
+    api.settings.autoStories = true;
+    api.settings.narr = false;
+    ok(a && a.opts.check() === false, "a queued automatic story is ineligible when narration is off");
+    api.settings.narr = true;
+    api.S.offRoute = true;
+    ok(a && a.opts.check() === false, "a queued automatic story is ineligible off I-5");
+    api.S.offRoute = false;
+    api.stopAll(false); api.setMode("demo"); calls.length = 0;
+    api.settings.autoStories = false;
+    api.setPosition(p.m - 1, { dir: "N", speed: 60, jumped: true });
+    a = calls.find(c => c.opts.id === p.id);
+    ok(a && !a.text.includes(p.more), "autoplay off keeps the short introduction");
+    doc.getElementById("openSettings").click();
+    const toggle = doc.getElementById("autoStories");
+    ok(toggle && !toggle.checked, "Settings reflects the current autoplay choice");
+    toggle.click();
+    ok(api.settings.autoStories === true && JSON.parse(win.localStorage.getItem("i5b:settings")).autoStories === true,
+      "the Settings toggle saves autoplay for the next launch");
+    doc.getElementById("closeSettings").click();
+    api.voice.say = real;
+    api.stopAll(false);
+    Object.assign(api.settings, prior); api.saveSettings();
+    await sleep(30);
+  }
+
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +
     lines.map(l => `<span class="${l.startsWith("PASS") ? "pass" : l.startsWith("FAIL") ? "fail" : "skip"}">${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("\n");
   document.title = fails ? `FAILED ${fails}` : "ALL PASS";
