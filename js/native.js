@@ -370,6 +370,16 @@ export function fromNativeFix(f) {
     speed: speed != null && speed >= 0 ? speed : null, heading: course != null && course >= 0 ? course : null } };
 }
 let bgHandle = null, bgOn = false;
+/** The Drive screen's safety line says the app goes quiet with the screen locked; a build that keeps talking says so. */
+export function lockedScreenWording() {
+  if (!backgroundDrive()) return false;
+  const s = document.querySelector("#view-drive .safety");
+  const t = s && s.firstChild;
+  if (!t || t.nodeType !== 3) return false;
+  t.textContent = t.textContent.replace("Keep I-5 Buddy open on screen while you drive: it goes quiet when you switch apps or lock the phone.",
+    "It keeps talking with the screen locked while GPS runs (the blue location pill shows it). Tap End trip when you get there.");
+  return true;
+}
 function bgStart(onFix) {
   const D = BG();
   if (!D || bgOn) return;
@@ -394,6 +404,13 @@ export function playInBackground(keys, text, voiceId = "asteria") {
   const D = BG();
   if (!D || typeof D.playClips !== "function") return Promise.resolve(false);
   return call(D, "playClips", { keys: keys || [], text: text || "", voice: voiceId }).then(r => !!(r && r.spoken), () => false);
+}
+/** The Lock Screen card (a Live Activity) during a drive: {next, distance, side, mile, dir}, or null to take it away. */
+export function liveCard(state) {
+  const D = BG();
+  if (!D || typeof D.liveUpdate !== "function") return;
+  if (state) call(D, "liveUpdate", state).catch(() => {});
+  else call(D, "liveEnd").catch(() => {});
 }
 export function stopBackgroundSpeech() { const D = BG(); if (D && typeof D.stopClips === "function") call(D, "stopClips").catch(() => {}); }
 

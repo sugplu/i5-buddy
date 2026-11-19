@@ -298,7 +298,7 @@ const SCENARIOS = {
     const NEED = ["The short version", "What leaves your phone, and why", "What stays on your phone", "Who we share information with",
       "How long we keep it, and your choices", "Do Not Track", "Children", "California, and changes to this notice"];
     check("privacy.html: its title, effective date and version, who runs I-5 Buddy and the contact address",
-      pd.title === "Privacy · I-5 Buddy" && /Effective November 18, 2026 · Version 2026-11-18\.1/.test(ptxt) && /Made by Dominares/.test(ptxt)
+      pd.title === "Privacy · I-5 Buddy" && /Effective November 19, 2026 · Version 2026-11-19\.1/.test(ptxt) && /Made by Dominares/.test(ptxt)
         && /Dominares Tools is run by Joseph Linares, a sole proprietor based in San Diego, California/.test(ptxt) && !!pd.querySelector('a[href="mailto:support@dominares.org"]'), pd.title);
     check("privacy.html: every section, in order", JSON.stringify(heads) === JSON.stringify(NEED), heads.join(" | "));
     check("privacy.html: in the theme saved in the app's settings", pde.dataset.theme === THEME, pde.dataset.theme);
