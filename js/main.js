@@ -213,13 +213,32 @@ function startGps() {
   S.dirSure = false;
   gpsStartT = lastGoodT = Date.now(); fuzzyN = 0; stillSince = 0; S.gpsStale = false; driveSavedT = 0;
   if (!resuming) greet();
-  watchId = G.watchPosition(onFix, err => {
-    if (err.code === 1) {
+  gpsGotFix = false; deniedSince = 0;
+  watchGps();
+}
+// 3.0.6 (a real report, "looks stuck"): in the middle of a drive iOS can report "location denied" for a moment (the app
+// coming back from the background, location services restarting). That used to END the drive: GPS off, "Paused", until
+// someone tapped Start GPS at 70 mph. Now only a refusal before the first fix ends it; mid-drive the drive stays on,
+// the sign says it is waiting, and GPS is asked again every few seconds (the way out shows after 2 minutes of refusals).
+let gpsGotFix = false, deniedSince = 0, rewatchTimer = 0;
+function watchGps() {
+  const G = geoSource();
+  if (!G || S.mode !== "gps") return;
+  if (watchId != null) { try { G.clearWatch(watchId); } catch {} }
+  clearTimeout(rewatchTimer);
+  watchId = G.watchPosition(pos => { gpsGotFix = true; deniedSince = 0; hideNotice("denied"); onFix(pos); }, err => {
+    if (err.code === 1 && !gpsGotFix) {
       // a card that stays, with the way out (3.0.1): the toast used to vanish after 5 s and leave a dead end
       stopAll();
       showDenied(err);
-    } else {
-      $("statusText").textContent = "Waiting for a GPS signal…";
+      return;
+    }
+    $("statusText").textContent = "Waiting for a GPS signal…";
+    if (err.code === 1) {
+      if (!deniedSince) deniedSince = Date.now();
+      else if (Date.now() - deniedSince > 120e3) showDenied(err);
+      S.gpsStale = true; queueRender();
+      rewatchTimer = setTimeout(watchGps, 5000);
     }
   }, { enableHighAccuracy: true, maximumAge: 3000, timeout: 30000 });
 }
@@ -988,7 +1007,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.5";
+export const APP_VERSION = "3.0.6";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");
@@ -1281,7 +1300,19 @@ window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools
   S.resumable = true;
   $("startGps").textContent = "Resume drive";
   showNotice("resume", { title: "Pick up where you left off?", text: "Your drive stopped when I-5 Buddy restarted. Tap Resume drive and I'll carry on.", acts: [] });
+  autoResume();
 })();
+// 3.0.6: when location is already allowed, GPS picks the drive back up by itself after a restart instead of sitting at
+// "Paused" (a real report). A web page still needs one tap before it may talk: the first tap anywhere gives it.
+async function autoResume() {
+  await new Promise(r => setTimeout(r, 1500)); // after the modules (trip, nav, live) are listening
+  let ok = !!native.NATIVE;
+  try { if (!ok && navigator.permissions) ok = (await navigator.permissions.query({ name: "geolocation" })).state === "granted"; } catch {}
+  if (!ok || !S.resumable || S.mode !== "off") return;
+  startGps();
+  toast("Back on GPS. Tap anywhere so I can talk again.", 6000);
+  document.addEventListener("pointerdown", () => voice.unlock(), { once: true, capture: true });
+}
 
 applyTheme();
 render();

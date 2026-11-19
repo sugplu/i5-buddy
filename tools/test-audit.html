@@ -198,6 +198,13 @@ const { MAX_M, ROUTE, PLACES } = api.data;
   G.fix(la, lo, { accuracy: 12, t: tick(1) });
   await sleep(20);
   ok(!/Precise Location/.test(txt("driveNotice")), "a good fix takes it away");
+  // 3.0.6 (a real "looks stuck" report): a refusal in the middle of a drive no longer ends it
+  G.deny();
+  await sleep(50);
+  ok(api.S.mode === "gps" && !/Location is blocked/.test(txt("driveNotice")), `mid-drive refusal: GPS stays on (${api.S.mode})`);
+  api.stopAll(false);
+  api.startGps();
+  await sleep(20);
   G.deny();
   await sleep(50);
   ok(api.S.mode === "off" && /Location is blocked/.test(txt("driveNotice")), `refused: GPS off, and a card that stays (${txt("driveNotice").slice(0, 60)})`);
