@@ -166,12 +166,15 @@ const STALE_MS = 15e3;        // no usable fix for this long: the sign stops sho
 const NOT_ON_I5_MS = 10 * 60e3; // GPS on and never on I-5 for this long: the screen may sleep again
 const STILL_MS = 20 * 60e3;   // stopped this long with GPS on: the screen may sleep again
 const NEW_TRIP_MS = 3 * 3600e3; // a gap this long between fixes starts the narration over
+// Off I-5 this long after the last fix on it, the drive is over: a gas stop or a meal keeps the last mile on the road;
+// a day somewhere else does not (3.0.2, a real report: the card said "3.2 mi, Wheeler Ridge" all day, off I-5).
+const DETOUR_MS = 45 * 60e3;
 const RESUME_MS = 45 * 60e3;  // a drive cut off by a reload (the page or web view restarted) can be resumed this long
 let lastGoodT = 0, fuzzyN = 0, gpsStartT = 0, lastAnyFixT = 0, stillSince = 0, driveSavedT = 0;
 // The two ends of the covered road (ENDS.S = Mexico; ENDS.N = the Oregon line while the data covers California only).
 // offEnd: the end we went off the road past (decided once, at the fix that took us off; the status line and the
 // next card show it). endSaid: the end we said goodbye at. drove: this GPS session has had a fix on the road.
-let offEnd = null, endSaid = null, drove = false;
+let offEnd = null, endSaid = null, drove = false, lastOnRouteFixT = 0;
 /** Off the road past either end of the covered stretch (into Oregon, or into Mexico)? Returns ENDS.N, ENDS.S or null.
  *  Both ends are state or national borders that run east-west where I-5 crosses them, so "past" = beyond the latitude
  *  of the road's last point, with the last mile we had on the road within 3 miles of that end. */
@@ -239,7 +242,7 @@ function onFix(pos) {
   lastGoodT = Date.now();
   if (S.gpsStale) { S.gpsStale = false; queueRender(); }
   // a long gap (the phone sat in the car overnight with the app open): a new trip for the narration
-  if (lastAnyFixT && pos.timestamp - lastAnyFixT > NEW_TRIP_MS) { resetTrip(); S.dirSure = false; }
+  if (lastAnyFixT && pos.timestamp - lastAnyFixT > NEW_TRIP_MS) { resetTrip(); S.dirSure = false; drove = false; }
   lastAnyFixT = pos.timestamp;
   S.lat = c.latitude; S.lon = c.longitude; S.accuracy = c.accuracy;
   const hit = geo.locate(c.latitude, c.longitude, S.m);
@@ -261,6 +264,8 @@ function onFix(pos) {
   S.offDist = far && hit.m != null && isFinite(hit.dist) ? hit.dist : null;   // miles from I-5 while off it (status line, Where to?)
   if (far) {
     offCount++;
+    // the drive on I-5 is over after DETOUR_MS off it: from here on it is "not on I-5", with the closest point
+    if (drove && pos.timestamp - lastOnRouteFixT > DETOUR_MS) drove = false;
     lastFix = null; anchorM = null; dirVotes = [];
     // GPS on, never on I-5 for 10 minutes, and no directions running: let the screen sleep (it can be left at home)
     if (!drove && S.mode === "gps" && Date.now() - gpsStartT > NOT_ON_I5_MS && !(api.nav && api.nav.statusText && api.nav.statusText())) releaseWake();
@@ -280,11 +285,16 @@ function onFix(pos) {
         endSaid = offEnd;
         voice.say(`That's ${offEnd.long}, the end of the road for I-5 Buddy. Thanks for riding along.`, { id: "end-of-road", prio: 2, chime: "success" });
       }
+    } else if (S.offRoute && !drove && !pastLine && hit.m != null && (S.m == null || Math.abs(hit.m - S.m) > 1)) {
+      // off I-5 and not on a detour: the closest point follows you (it was set once and then stood still)
+      setPosition(hit.m, { offRoute: true, jumped: true, save: false });
+      if (mis) offEnd = null;
     } else if (S.offRoute && (mis || wasNear)) { if (mis) offEnd = null; queueRender(); } // "Near Mission ..." follows you
+    else if (S.offRoute) queueRender();
     return;
   }
   if (!drove) requestWake(); // back on: the screen stays on again (it may have been let go while far from I-5)
-  drove = true; offEnd = null;
+  drove = true; offEnd = null; lastOnRouteFixT = pos.timestamp;
   // A fix that bounces back near the line (GPS noise) must not set up a second goodbye: forget it only once we are
   // back on the road more than 3 miles from that end.
   if (endSaid && (endSaid === ENDS.N ? hit.m < MAX_M - 3 : hit.m > data.ROUTE[0][0] + 3)) endSaid = null;
@@ -583,9 +593,28 @@ function notOnI5Card(card) {
   body.append(acts);
   card.append(body);
 }
+/** Off I-5 on a short detour (a gas stop, a meal): narration waits at the mile where you left the road. */
+function offI5Card(card) {
+  const left = S.m != null ? Math.round(S.m) : null;
+  const key = "offi5:" + left;
+  if (shownNext === key) return;
+  shownNext = key;
+  card.className = "next not-on-i5"; card.innerHTML = "";
+  const body = el("div", "next-body");
+  const where = left != null ? `You left I-5 near ${regionAt(S.m).name}, around mile ${left}.` : "You left I-5.";
+  body.append(el("div", "meta", "OFF I-5 FOR NOW"), el("h2", null, "Paused until you're back on I-5"),
+    el("p", null, `${where} When you're back on it, I'll pick up where we left off.`));
+  const acts = el("div", "acts");
+  const stop = el("button", "secondary", "End trip"); stop.type = "button"; stop.onclick = () => stopAll(false);
+  acts.append(stop);
+  body.append(acts);
+  card.append(body);
+}
 function renderNext() {
   const card = $("nextCard");
-  if (S.mode === "gps" && S.offRoute && !drove && !S.nearMission && !atEnd()) return notOnI5Card(card);
+  // Off I-5 with GPS on, the card never counts down to a landmark from the last spot on the road (3.0.2): on a short
+  // detour it says it is paused there; otherwise it is the Not on I-5 card with the closest point.
+  if (S.mode === "gps" && S.offRoute && !S.nearMission && !atEnd()) return drove ? offI5Card(card) : notOnI5Card(card);
   if (S.m == null) {
     if (shownNext === "welcome") return;
     shownNext = "welcome";
@@ -949,7 +978,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.2";
+export const APP_VERSION = "3.0.3";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");

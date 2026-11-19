@@ -564,6 +564,40 @@ async function run() {
     api.stopAll(false); await sleep(30);
   }
 
+  // 17. Off I-5 after driving on it (2026-11-18, a real report): the Drive card kept counting down "3.2 mi, Wheeler
+  //     Ridge" from the last spot on I-5, all evening and the next day, with the OFF I-5 pill on. Now a short stop shows
+  //     "Off I-5 for now" (paused at the mile where you left), and after 45 minutes off I-5, or a night's gap, the Not on
+  //     I-5 card with the closest point, which follows you. No landmark countdown while off I-5.
+  {
+    api.stopAll(false); await sleep(50);
+    const pts = api.data.ROUTE.filter(r => r[0] > 214.5 && r[0] < 219);
+    api.startGps(); await sleep(20);
+    for (const r of pts.slice(0, 3)) { G.fix(r[1], r[2], { speed: 60, heading: 330, t: tick(20) }); await sleep(10); }
+    await sleep(200);
+    ok(!api.S.offRoute && api.S.m > 214 && api.S.m < 217, `driving on I-5 near Wheeler Ridge (mile ${api.S.m && api.S.m.toFixed(1)})`);
+    const card = () => doc.getElementById("nextCard");
+    const counting = () => /\d\s*mi\b/.test(card().querySelector(".count")?.textContent || "");
+    const [bkLat, bkLon] = [35.3733, -119.0187];                       // downtown Bakersfield, about 20 miles off I-5
+    G.fix(bkLat, bkLon, { speed: 0, t: tick(600) }); await sleep(10);
+    G.fix(bkLat + 0.001, bkLon, { speed: 0, t: tick(30) }); await sleep(300);
+    ok(api.S.offRoute === true, "a stop in Bakersfield, 10 minutes later: off I-5");
+    ok(/OFF I-5 FOR NOW/.test(card().textContent) && !counting(), `a short stop: the card says paused, no countdown (${card().innerText.replace(/\s+/g, " ").slice(0, 120)})`);
+    ok(api.S.m > 214 && api.S.m < 217, `and the last mile on I-5 is kept for the drive back (mile ${api.S.m.toFixed(1)})`);
+    G.fix(bkLat, bkLon + 0.001, { speed: 0, t: tick(50 * 60) }); await sleep(300);
+    ok(/NOT ON I-5 YET/.test(card().textContent) && !counting(), `50 minutes off I-5: the Not on I-5 card, no countdown (${card().innerText.replace(/\s+/g, " ").slice(0, 120)})`);
+    const near = api.geo.locate(bkLat, bkLon).m;
+    ok(near != null && Math.abs(api.S.m - near) < 1.5, `the spot is the closest point on I-5 now (mile ${api.S.m.toFixed(1)}, closest ${near && near.toFixed(1)})`);
+    // the next day, still off I-5 (the app left open overnight): the same, never "3.2 mi, Wheeler Ridge"
+    G.fix(bkLat + 0.002, bkLon, { speed: 0, t: tick(14 * 3600) }); await sleep(10);
+    G.fix(bkLat + 0.002, bkLon + 0.001, { speed: 0, t: tick(30) }); await sleep(300);
+    ok(/NOT ON I-5 YET/.test(card().textContent) && !counting(), "the next day: still the Not on I-5 card");
+    // and back on I-5: the countdown comes back
+    for (const r of pts.slice(-3)) { G.fix(r[1], r[2], { speed: 60, heading: 330, t: tick(20) }); await sleep(10); }
+    await sleep(300);
+    ok(!api.S.offRoute && !/NOT ON I-5|OFF I-5/.test(card().textContent), `back on I-5: the landmark card again (${card().innerText.replace(/\s+/g, " ").slice(0, 80)})`);
+    api.stopAll(false); await sleep(30);
+  }
+
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +
     lines.map(l => `<span class="${l.startsWith("PASS") ? "pass" : l.startsWith("FAIL") ? "fail" : "skip"}">${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("\n");
   document.title = fails ? `FAILED ${fails}` : "ALL PASS";
