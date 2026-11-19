@@ -733,7 +733,7 @@ function updateGo(box, dest) {
   const ahead = S.dir === "S" ? m - dest.m : dest.m - m;
   const settled = S.mode === "demo" || (cur && cur.miles > 0.3);
   const behind = driving && settled && ahead < -1;
-  const mph = typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
+  const mph = typeof S.cruise === "number" && S.cruise > 25 ? S.cruise : typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
   n.textContent = d < 0.95 ? "0" : fmtMi(d);
   if (d <= 1) {
     eta.textContent = `You're at ${dest.name}`;
@@ -892,7 +892,7 @@ function fillDestSheet() {
       : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? "Pick a stop. I'll count down the miles, the time and the landmarks on the way."
       : "Pick a stop. Miles count from your last spot on I-5; start GPS to count from where you are.";
   }
-  const mph = typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
+  const mph = typeof S.cruise === "number" && S.cruise > 25 ? S.cruise : typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
   const curKey = destKey(validDest(S.dest));
   const hereSt = here == null ? null : stateOf(here).id;
   const groups = STATES.map(s => ({ s, items: list.filter(d => stateOf(d.m).id === s.id) })).filter(g => g.items.length);

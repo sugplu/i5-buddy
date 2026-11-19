@@ -126,10 +126,17 @@ function queueRender() {
 }
 
 /** Central place where every position update goes (GPS, demo, manual). */
+// The cruising speed for arrival times (3.0.4): an average of the last couple of minutes of driving over 20 mph, so a
+// slow patch or one fast fix doesn't swing "about 3 h 13 min" by half an hour. S.speed stays the speed right now.
+let cruiseN = 0;
 function setPosition(m, { speed = null, dir = null, offRoute = false, jumped = false, save = true } = {}) {
   const prevM = S.m;
   if (dir) S.dir = dir;
   if (speed != null) S.speed = speed;
+  if (speed != null && !jumped && !offRoute && speed > 20 && speed <= MAX_MPH) {
+    cruiseN++;
+    S.cruise = S.cruise == null ? speed : S.cruise + (speed - S.cruise) * Math.max(1 / 120, 1 / cruiseN);
+  }
   S.m = Math.max(0, Math.min(MAX_M, m));
   S.offRoute = offRoute;
   // save: false = the closest point on I-5 to someone who hasn't been on it yet (GPS started at home): shown, not kept,
@@ -428,6 +435,7 @@ function stopAll(silent = false) {
   // A new session starts on the road until two far fixes say otherwise (otherwise a trip that ended off the road
   // would keep "off route" and never notice going off again).
   drove = false; offEnd = null; S.offRoute = false; S.nearMission = null; S.gpsStale = false; S.dirSure = undefined;
+  S.cruise = null; cruiseN = 0;
   fuzzyN = 0; stillSince = 0;
   hideNotice("precise");
   if (!silent) {
@@ -978,7 +986,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.3";
+export const APP_VERSION = "3.0.4";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");

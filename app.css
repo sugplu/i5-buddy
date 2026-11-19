@@ -355,6 +355,22 @@ main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px
 .ahead-link b{color:var(--link);font-weight:800}
 #view-drive #upNext{display:none!important}
 #view-ahead[data-mode="stops"] #svcRow{display:none}
+/* motion (3.0.4, "feels premium"): a tab fades up into place, sheets rise from the bottom, the dim behind them fades,
+   and buttons give a little under a finger. Nothing moves with Reduce Motion on (the rule above turns it all off). */
+@media (prefers-reduced-motion:no-preference){
+  .view:not([hidden]){animation:viewIn .22s cubic-bezier(.2,.8,.3,1)}
+  .sheet:not([hidden]){animation:sheetUp .26s cubic-bezier(.2,.8,.3,1)}
+  .sheet-back:not([hidden]){animation:fadeIn .2s ease-out}
+  .next{animation:cardIn .25s ease-out}
+  .primary,.secondary,.big-btn,.nav-pill,.svc-item{transition:transform .12s ease,box-shadow .2s ease,background-color .15s ease}
+  .primary:active,.secondary:active,.big-btn:active,.nav-pill:active,.svc-item:active{transform:scale(.97)}
+  .tabs button svg{transition:transform .18s ease}
+  .tabs button[aria-current="page"] svg{transform:translateY(-1px) scale(1.08)}
+}
+@keyframes viewIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes sheetUp{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes cardIn{from{opacity:.4}to{opacity:1}}
 
 /* a phone held sideways in a dash mount: the sign on the left stays put, everything else scrolls on the right */
 @media (orientation:landscape) and (max-height:540px) and (min-width:560px){

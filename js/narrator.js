@@ -11,6 +11,8 @@ import { voice } from "./voice.js";
 // "heard" after turning around, so the whole drive back was silent unless End trip was tapped in between.
 const heard = new Set();      // place id + direction, announced this trip
 const told = new Set();       // place ids whose "more" story was told this trip
+const toldZones = new Set();  // landscape zones described this trip, per direction (3.0.4: GPS wobbling on a zone
+                              // line used to describe the same stretch again each time it crossed back)
 let lastZone = null, lastState = null, lastSummit = null, halfwayDone = false;
 let lastSpokeAtM = null;      // corridor mile of the last landmark announcement (for story time)
 let lastSpokeAt = 0;          // and its time
@@ -18,7 +20,7 @@ const hk = (id, dir = S.dir) => id + "|" + dir;
 const STORY_MI = 5, STORY_MS = 4 * 60e3; // story time after this much quiet road, or this long without a landmark
 
 export function resetTrip() {
-  heard.clear(); told.clear();
+  heard.clear(); told.clear(); toldZones.clear();
   lastZone = null; lastState = null; lastSummit = null; halfwayDone = false; lastSpokeAtM = null; lastSpokeAt = 0;
 }
 
@@ -153,7 +155,11 @@ function onPos(e) {
   if (z && z !== lastZone) {
     const first = lastZone === null;
     lastZone = z;
-    if (settings.zoneNarr && !first && !jumped) voice.say(zoneLine(z), { id: "zone:" + z.from, prio: 0, check: () => zoneAt(S.m) === z });
+    const zk = z.from + "|" + dir;
+    if (settings.zoneNarr && !first && !jumped && !toldZones.has(zk)) {
+      toldZones.add(zk);
+      voice.say(zoneLine(z), { id: "zone:" + z.from, prio: 0, check: () => zoneAt(S.m) === z });
+    }
     bus.emit("zone", { zone: z });
   }
 
@@ -170,7 +176,8 @@ function onPos(e) {
     if (jumped && d < -0.1) continue;
     if (!chatty(p)) continue;
     lastSpokeAtM = m; lastSpokeAt = Date.now();
-    voice.say(announceText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: stillAhead(p) });
+    voice.say(announceText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: stillAhead(p),
+      fresh: () => (S.m != null && S.dir === dir ? announceText(p, Math.max(0, aheadOf(S.m, dir, p.m)), dir) : null) });
     bus.emit("place:announce", { place: p, d });
   }
 
@@ -245,7 +252,7 @@ export function howFar(dest = S.dest) {
   const Name = name[0].toUpperCase() + name.slice(1);
   if (S.m == null) return voice.say(`${Name} is at mile ${Math.round(dest.m)} of I-5. Start GPS and I'll count down.`, { now: true });
   const d = Math.abs(dest.m - S.m);
-  const mph = S.speed && S.speed > 25 ? S.speed : 62;
+  const mph = S.cruise && S.cruise > 25 ? S.cruise : S.speed && S.speed > 25 ? S.speed : 62;
   const n = upcoming(S.m, dest.m >= S.m ? "N" : "S", settings.cats, d).length;
   voice.say(d < 1 ? `We're there. This is ${name}.` : `${Name} is about ${Math.round(d)} miles away. That's around ${fmtDuration(d / mph)}, with ${n} landmarks to go.`, { now: true, id: "howfar" });
 }

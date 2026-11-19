@@ -117,6 +117,13 @@ let ok = await voice.say(A, { id: "a" });
 // three 1 s clips, a breath after the colon (0.16 s), a full stop's pause (0.28 s) and a little silence at both ends
 row(ok === true && played.length === 1 && played[0].text === A && Math.abs(played[0].seconds - 3.54) < 0.01, "a line whose units all have clips plays as one recording, with natural pauses", played);
 
+// 1b. fresh (3.0.4): the words are worked out again right before speaking (a heads-up that waited in line says the
+//     distance as it is then); the caption and the recording get the new words
+played.length = 0;
+let capt = null; const offCap = api.bus.on ? (api.bus.on("speaking", e => { if (e && e.id === "fr") capt = e.text; }), null) : null;
+ok = await voice.say(B, { id: "fr", fresh: () => A });
+row(ok === true && played.length === 1 && played[0].text === A && capt === A, "fresh: the line is rebuilt just before it is spoken", { played, capt });
+
 // 2. one unit missing -> the device voice reads it
 played.length = 0;
 const before = (window.__BUDDY_SPOKEN__ || []).length;

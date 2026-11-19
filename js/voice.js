@@ -505,6 +505,9 @@ async function pump() {
   queue.sort((a, b) => (b.front ? 1 : 0) - (a.front ? 1 : 0) || b.prio - a.prio || a.seq - b.seq);
   const item = queue.shift();
   if (item.check && !item.check()) { item.resolve(false); return pump(); }
+  // fresh (3.0.4): the words worked out again right before speaking, so a heads-up that waited behind a long story
+  // says "in about a mile" instead of the "2 miles" it was queued with
+  if (item.fresh) { try { const t = item.fresh(); if (t && t !== item.text) { item.text = t; item.units = undefined; } } catch {} }
   current = item;
   last = item;
   bus.emit("speaking", { id: item.id, text: item.text });
@@ -604,7 +607,7 @@ export const voice = {
     if ((!synth && !manifest) || !text) return Promise.resolve(false);
     if (!manifest) loadManifest();
     return new Promise(resolve => {
-      const item = { text, units: opts.units, id: opts.id, prio: opts.prio ?? 1, front: !!opts.now, check: opts.check, chime: opts.chime ?? false,
+      const item = { text, units: opts.units, id: opts.id, prio: opts.prio ?? 1, front: !!opts.now, check: opts.check, fresh: opts.fresh, chime: opts.chime ?? false,
         onstart: opts.onstart, onend: opts.onend, resolve, seq: seq++ };
       if (opts.now && held) {
         // while held (microphone open) nothing is dropped: the reply just goes to the front
