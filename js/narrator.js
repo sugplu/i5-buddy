@@ -63,6 +63,13 @@ export function announceText(p, d, dir = S.dir) {
   return s;
 }
 
+// Full stories reuse the recorded landmark sentences. The setting is read again when a queued announcement
+// starts, so turning autoplay off also shortens introductions still waiting to play.
+function landmarkText(p, d, dir) {
+  const intro = announceText(p, d, dir);
+  return settings.autoStories && p.more ? `${intro} ${p.more}` : intro;
+}
+
 function stillAhead(p) { return () => S.m != null && aheadOf(S.m, S.dir, p.m) > -0.6; }
 
 function stampBetween(prev, m) {
@@ -176,15 +183,17 @@ function onPos(e) {
     if (jumped && d < -0.1) continue;
     if (!chatty(p)) continue;
     lastSpokeAtM = m; lastSpokeAt = Date.now();
-    voice.say(announceText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: stillAhead(p),
-      fresh: () => (S.m != null && S.dir === dir ? announceText(p, Math.max(0, aheadOf(S.m, dir, p.m)), dir) : null) });
+    voice.say(landmarkText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: () => settings.narr && S.mode !== "off" && !S.offRoute && S.dir === dir && stillAhead(p)(),
+      interruptible: true, // turns and urgent road information take priority over a long landmark story
+      onstart: () => { if (settings.autoStories && p.more) told.add(p.id); },
+      fresh: () => (S.m != null && S.dir === dir ? landmarkText(p, Math.max(0, aheadOf(S.m, dir, p.m)), dir) : null) });
     bus.emit("place:announce", { place: p, d });
   }
 
   // story time on quiet stretches ("high" chattiness only): 5 quiet miles or 4 quiet minutes. (It used to wait for 9
   // miles without a landmark, and no gap on the whole road is that long, so High never told a story.)
   const quiet = lastSpokeAtM != null && (Math.abs(m - lastSpokeAtM) > STORY_MI || (lastSpokeAt && Date.now() - lastSpokeAt > STORY_MS));
-  if (settings.chat === "high" && !voice.isSpeaking() && !voice.queued().length && quiet) {
+  if (settings.autoStories && settings.chat === "high" && !voice.isSpeaking() && !voice.queued().length && quiet) {
     const recent = PLACES.filter(p => p.more && (heard.has(hk(p.id, "N")) || heard.has(hk(p.id, "S"))) && !told.has(p.id)).sort((a, b) => Math.abs(a.m - m) - Math.abs(b.m - m))[0];
     if (recent) {
       told.add(recent.id);

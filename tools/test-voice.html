@@ -158,6 +158,17 @@ const pR = voice.say("Rerouting.", { id: "r", prio: 3, now: true });
 const [rD, rR] = await Promise.all([pD, pR]);
 row(rD === false && rR === true && played.map(p => p.id).join(",") === "d,r", "now:true cuts the long recording and plays right away", played.map(p => p.id));
 
+// 6b. A road alert (2) or navigation instruction (3) interrupts an autoplay story without needing now:true.
+for (const prio of [2, 3]) {
+  played.length = 0;
+  const story = voice.say(D, { id: "autostory", prio: 1, interruptible: true });
+  await sleep(400);
+  const alert = voice.say(C.text, { id: "priority", prio, units: C.units });
+  const [storyDone, alertDone] = await Promise.all([story, alert]);
+  row(storyDone === false && alertDone === true && played.map(p => p.id).join(",") === "autostory,priority",
+    `priority ${prio} interrupts a long automatic landmark story`, played.map(p => p.id));
+}
+
 // 7. hold() (the microphone) pauses a recording; it plays again from the start after hold(false)
 played.length = 0;
 const pH = voice.say(D, { id: "h", prio: 1 });

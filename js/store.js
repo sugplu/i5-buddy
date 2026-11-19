@@ -37,6 +37,7 @@ export const bus = {
 const ALL_CATS = ["farm", "hist", "nature", "town", "stop", "odd"];
 const defaults = {
   narr: true,            // speak landmarks
+  autoStories: true,     // read the full landmark story after its introduction
   zoneNarr: true,        // describe the landscape as it changes
   chat: "normal",        // "low" (big things only) | "normal" | "high" (everything, plus deep dives on long empty stretches)
   lead: 2,               // minimum heads-up distance in miles

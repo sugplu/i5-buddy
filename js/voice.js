@@ -627,7 +627,7 @@ export const voice = {
     if (!manifest) loadManifest();
     return new Promise(resolve => {
       const item = { text, units: opts.units, id: opts.id, prio: opts.prio ?? 1, front: !!opts.now, check: opts.check, fresh: opts.fresh, chime: opts.chime ?? false,
-        onstart: opts.onstart, onend: opts.onend, resolve, seq: seq++ };
+        onstart: opts.onstart, onend: opts.onend, interruptible: !!opts.interruptible, resolve, seq: seq++ };
       if (opts.now && held) {
         // while held (microphone open) nothing is dropped: the reply just goes to the front
         for (const q of queue) q.front = false;
@@ -646,6 +646,12 @@ export const voice = {
         }
       } else if (opts.id && (queue.some(q => q.id === opts.id) || current?.id === opts.id)) {
         return resolve(false); // already queued or speaking
+      }
+      // Autoplay can make a landmark several minutes long. A navigation instruction or road alert must
+      // be heard immediately; drop that story rather than speaking a stale turn after it finishes.
+      if (!held && current?.interruptible && item.prio >= 2 && item.prio > current.prio) {
+        const c = interruptCurrent();
+        if (c) { try { c.onend && c.onend(); } catch {} c.resolve(false); }
       }
       queue.push(item);
       warm(item);
