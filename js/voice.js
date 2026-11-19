@@ -154,6 +154,9 @@ const VOICE_CACHE = "i5b-voice-" + VOICE_ID;   // sw.js keeps this cache across 
 export const NATURAL_URI = "buddy:" + VOICE_ID;
 const NATURAL = { name: "I-5 Buddy voice", voiceURI: NATURAL_URI, lang: "en-US", localService: true, default: true, natural: true };
 let VBASE = null;
+// 3.1: who speaks while the page is hidden (the iPhone app with the screen locked): native.js's playInBackground,
+// handed in by main.js (voice.setBackground). null in a browser, where nothing can talk in the background.
+let bgSpeak = null, bgHush = null;
 try { VBASE = new URL("../voice/" + VOICE_ID + "/", import.meta.url); } catch {}
 const CLIPTEST = () => { try { return window.top.__BUDDY_CLIPTEST__ || null; } catch { return null; } };
 let manifest = null, manifestP = null, manifestTried = 0;
@@ -492,6 +495,7 @@ function interruptCurrent() {
   const c = current;
   if (!c) return null;
   current = null;
+  if (c.bg && bgHush) { try { bgHush(); } catch {} }   // the phone was speaking it (screen off): stop it there too
   clearInterval(keepAlive);
   stopChime();
   if (playing && playing.item === c) playing.stop();
@@ -513,6 +517,19 @@ async function pump() {
   bus.emit("speaking", { id: item.id, text: item.text });
   try { item.onstart && item.onstart(); } catch {}
   const plan = clipPlan(item);
+  if (bgSpeak && document.visibilityState === "hidden") {
+    // the screen is off: the phone plays the clips itself (no chime: it would need the web view's audio too)
+    let ok = false;
+    item.bg = true;
+    try { ok = await bgSpeak(plan ? plan.keys : null, item.text); } catch { ok = false; }
+    if (current !== item) return;
+    current = null;
+    try { item.onend && item.onend(); } catch {}
+    item.resolve(ok);
+    bus.emit("speaking", null);
+    setTimeout(pump, 250);
+    return;
+  }
   const rec = plan ? render(plan) : null;   // decoding runs while the chime rings
   if (item.chime && settings.chime) {
     await chime(item.chime === true ? "soft" : item.chime);
@@ -592,6 +609,8 @@ const offline = {
 };
 
 export const voice = {
+  /** 3.1: fn(keys, text) -> Promise<boolean> that speaks while the page is hidden (the iPhone app, screen locked). */
+  setBackground(fn, hush) { bgSpeak = typeof fn === "function" ? fn : null; bgHush = typeof hush === "function" ? hush : null; },
   get available() { return !!synth || !!manifest; },
   /** English voices: I-5 Buddy's own voice first, then the device's own, then online ones. */
   list: () => (VBASE && !(SILENT && !CLIPTEST()) ? [NATURAL, ...voices] : voices),
