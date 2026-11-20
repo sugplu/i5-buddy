@@ -119,6 +119,8 @@ SUITE = [
     ("map fake routeonly", "test-map.html?scene=fake&variant=routeonly", 30000, "900,960", False),
     # 2026-11-20 road tests: what Claude found reading four simulated drives, each reproduced; bugs still in the app print KNOWN BUG
     ("road findings", "test-roadfindings.html", 90000, "900,960", True),
+    # 2026-11-20 code review (claude-power/runs/review-code-i5-command-2026-11-20.md): one check per fix (I01-I17)
+    ("review fixes", "test-review.html", 180000, "900,960", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
     ("live traffic", "test-live.html?s=traffic", 800000, "900,960", False),
