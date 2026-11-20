@@ -1,0 +1,30 @@
+{
+ "title": "Sacramento on I-5: Exits, Landmarks and Stops",
+ "meta": "Sacramento sits at exit 518 on I-5, with downtown exits 519A and 519B, Tower Bridge, the zoo exit and mapped gas, food and lodging along the way.",
+ "intro": "Sacramento, California's capital since 1854, sits at exit 518 on I-5, where the freeway runs between downtown and the river, past Old Sacramento and the Tower Bridge. This page lists the nearby exits, landmarks and the gas, EV, food and lodging stops mapped at each one, as listed in the data and not live.",
+ "faq": [
+  {
+   "q": "What exit is Sacramento on I-5?",
+   "a": "The Sacramento landmark is at exit 518, where I-5 meets US 50 and I 80 East. Downtown exits follow at 519A (Q Street) and 519B (J Street)."
+  },
+  {
+   "q": "Which I-5 exit is closest to downtown Sacramento?",
+   "a": "Exit 519B, J Street, is the downtown exit. The data lists 57 food places and 20 lodging places mapped there, plus ChargePoint and Tesla Supercharger listings."
+  },
+  {
+   "q": "Where is the Tower Bridge on I-5?",
+   "a": "The gold towers of the Tower Bridge are just west of the freeway near exit 519, on the left going north. It is a lift bridge over the Sacramento River, dedicated in 1935."
+  },
+  {
+   "q": "Which exit goes to the Sacramento Zoo?",
+   "a": "Exit 516, Sutterville Road, leads to William Land Park and the Sacramento Zoo, a few blocks east of the freeway. The zoo side is on the right going north."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:4",
+   "text": "open in both directions",
+   "reason": "The packet only says the rest area serves both directions. It makes no claim about whether it is open."
+  }
+ ]
+}

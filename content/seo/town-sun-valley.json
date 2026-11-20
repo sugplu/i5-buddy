@@ -1,0 +1,30 @@
+{
+ "title": "Sun Valley on I-5: Exits, Gas, Food and Lodging",
+ "meta": "Sun Valley sits at exit 150 on I-5. See nearby exits, mapped gas, food and lodging, and the story behind the town's thorny name.",
+ "intro": "Sun Valley is at exit 150 on I-5, on the flat east end of the San Fernando Valley below the Verdugo Mountains. Long before it had its current name, this was Wixánga, a Fernandeño Tongva village whose name means something like place of the thorns. I-5 Buddy lists the exits, gas, food and lodging around town, as mapped in OpenStreetMap rather than live.",
+ "faq": [
+  {
+   "q": "What exit is Sun Valley on I-5?",
+   "a": "Sun Valley is at exit 150, Sunland Boulevard, about mile 150.6 counting up from the Mexico border. Nearby exits include 149 (Hollywood Way), 150A (Glenoaks Boulevard), 150B (Sunland Boulevard) and 151 (Penrose Street)."
+  },
+  {
+   "q": "Where can I eat near Sun Valley on I-5?",
+   "a": "Exit 150 has seven food places mapped, including Ay Papa Que Rico, Chiguacle, Domino's, Jack in the Box and McDonald's. Exit 149 lists seven too, among them Dog Haus and Hill Street Cafe, and exit 153 lists five, including Panda Express and KFC."
+  },
+  {
+   "q": "Is there a hotel near Sun Valley on I-5?",
+   "a": "Lodging is mapped at several exits nearby: exit 153 lists five places, including Pink Motel and Lyfe Inn, and exit 152 lists four, including Redwood Lodge Motel. Exit 149 has Hampton Inn & Suites and exit 150A has Willow Tree Inn & Suites."
+  },
+  {
+   "q": "Where is the nearest rest area to Sun Valley on I-5?",
+   "a": "Going north, the Tejon Pass Rest Area at mile 206.1 is 55.5 miles from here. Going south, the Aliso Creek Rest Area at mile 59.4 is 91.2 miles away. Both serve traffic in both directions."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:1",
+   "text": "at exit 149, where two Shell stations are mapped",
+   "reason": "The packet lists 2 gas stations at exit 149 and Shell as the only brand. It does not say both stations are Shell."
+  }
+ ]
+}

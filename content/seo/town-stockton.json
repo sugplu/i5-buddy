@@ -1,0 +1,28 @@
+{
+ "title": "Stockton on I-5: Exits 469-476, Gas, Food & Lodging",
+ "meta": "Stockton on I-5 runs from exit 469 to 476. See the listed gas, food, EV charging and lodging at each exit, plus Tuleburg history and the Port of Stockton.",
+ "intro": "I-5 runs through Stockton past the deepwater port and its channel to San Francisco Bay, and crosses the Calaveras River. The Stockton exits run from 469 to 476, with gas, food, EV charging and lodging listed at several of them. Charles Weber laid out a town here in 1849 and called it Tuleburg before renaming it for Commodore Robert Stockton.",
+ "faq": [
+  {
+   "q": "What exit is downtown Stockton on I-5?",
+   "a": "Exit 472 is CA 4 East, Fresno Avenue and Navy Drive, signed for Downtown Stockton. It is the exit the data uses for Stockton itself."
+  },
+  {
+   "q": "Where can I get gas in Stockton on I-5?",
+   "a": "Gas is listed at exits 469, 470, 471, 473, 474B and 476. Exit 471 (CA 4 West, Charter Way) has the most, with 7 gas stations mapped, including Chevron, Valero, Arco, Phillips 66 and Shell. This comes from OpenStreetMap as mapped, not live."
+  },
+  {
+   "q": "Is there EV charging in Stockton on I-5?",
+   "a": "The data lists a Tesla Supercharger at exit 476 (March Lane) and an EVCS charger at exit 472 (Fresno Avenue, Navy Drive). These are as mapped in OpenStreetMap, not live."
+  },
+  {
+   "q": "Where are the hotels and motels in Stockton on I-5?",
+   "a": "Lodging is listed at exits 470, 471, 472, 473 and 476. Exit 476 (March Lane) has the most, with 7 places mapped, including Courtyard, Extended Stay America and Hilton, while exit 471 has 4, including Days Inn Stockton and Motel 6."
+  },
+  {
+   "q": "What is the Port of Stockton on I-5?",
+   "a": "At exit 473 the docks just west of the freeway, on the left going north, belong to the Port of Stockton. It is a seaport more than 70 nautical miles from the ocean."
+  }
+ ],
+ "flags": []
+}

@@ -1,0 +1,34 @@
+{
+ "title": "Oceanside on I-5: Exits, Pier and Stops | I-5 Buddy",
+ "meta": "Oceanside sits at exit 54 on I-5 in California. See nearby exits 52 to 54C, the 1,942-foot pier, and mapped gas, EV, food and lodging.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Oceanside on I-5?",
+   "a": "Oceanside and its pier are at exit 54. Nearby exits run from exit 52 (Oceanside Boulevard) and exit 53 (Mission Avenue) through exits 54A, 54B and 54C."
+  },
+  {
+   "q": "How long is the Oceanside Pier?",
+   "a": "The wooden pier is 1,942 feet long, the second-longest wooden pier on the West Coast. The first pier went up in 1888, the year the city incorporated, and storms have wrecked it again and again."
+  },
+  {
+   "q": "What exit do I take for Mission San Luis Rey from I-5?",
+   "a": "Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four and a half miles inland. It is on the right going north."
+  },
+  {
+   "q": "Where can I find gas and EV charging in Oceanside?",
+   "a": "Gas is mapped at exits 52, 53 and 54C, and EV charging is mapped at exits 52, 53, 54A and 54C. These come from OpenStreetMap as listed, not live, so they may not show what is open or available now."
+  },
+  {
+   "q": "Where is the next rest area north of Oceanside on I-5?",
+   "a": "The Aliso Creek Rest Area is at mile 59.4, about 5.4 miles north of here, and it serves both directions."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "with gas, EV charging, food and lodging mapped at each",
+   "reason": "The packet shows no gas at exits 54A and 54B and no EV charging at exit 54B, so not every exit has all four services."
+  }
+ ]
+}

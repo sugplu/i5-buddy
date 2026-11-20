@@ -5,3 +5,4 @@ tools/live/*.json
 tools/geo/states.geojson
 .scratch/
 tools/qa-tmp/
+__pycache__/

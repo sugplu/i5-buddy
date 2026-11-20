@@ -1,0 +1,24 @@
+{
+ "title": "Taft, CA on I-5: Exit 244 and Highway 119",
+ "meta": "Taft is reached from I-5 at exit 244 via Highway 119. Gas is mapped at the exit, plus the Moron name story and nearby rest areas.",
+ "intro": "Highway 119 leaves I-5 at exit 244 and leads to Taft, an oil town at the valley's southwest edge. I-5 Buddy tells the story of how Taft was once called Moron, along with what's mapped around the exit, including gas and the nearest rest areas.",
+ "faq": [
+  {
+   "q": "What exit is Taft on I-5?",
+   "a": "Taft is reached from exit 244, CA 119 (Taft Highway). Exit 246, CA 43, also lists Taft and Maricopa as destinations."
+  },
+  {
+   "q": "Why was Taft once called Moron?",
+   "a": "Locals asked the railroad to name its station Moro, but the railroad worried it would be confused with Morro Bay and named it Moron instead, back when the word did not yet mean anything unkind. The town's oil museum tells the story."
+  },
+  {
+   "q": "Is there gas near Taft on I-5?",
+   "a": "The data lists 5 gas stations at exit 244, with brands mapped as Mobil and others. This comes from OpenStreetMap as mapped, not live, so it does not show whether any are open."
+  },
+  {
+   "q": "Where is the nearest rest area to Taft on I-5?",
+   "a": "Going north, Buttonwillow Rest Area is at mile 259.2, 15.2 miles from here, serving both directions. Going south, Tejon Pass Rest Area is at mile 206.1, 37.9 miles away, also serving both directions."
+  }
+ ],
+ "flags": []
+}

@@ -1,0 +1,30 @@
+{
+ "title": "Banta on I-5: Exit 457, Kasson Road, California",
+ "meta": "Banta sits at exit 457 on I-5 in California, west of the freeway, a settlement from the 1840s that was a stagecoach stop before Altamont Pass.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Banta on I-5?",
+   "a": "Banta is at exit 457, Kasson Road. The settlement itself is west of the freeway."
+  },
+  {
+   "q": "What is the history of Banta, California?",
+   "a": "Banta dates to the 1840s. In stagecoach days it was the last stop before Altamont Pass on the road between Stockton and the Bay Area."
+  },
+  {
+   "q": "Where is the nearest rest area to Banta on I-5?",
+   "a": "South of Banta, Westley Rest Area is at mile 444.9, about 12.5 miles from here, and serves both directions. North of town, Elkhorn Rest Area is at mile 529.3, about 71.9 miles away; the data does not state its direction."
+  },
+  {
+   "q": "What is the next town north and south of Banta on I-5?",
+   "a": "Going north, the next town is Tracy. Going south, the next town is Vernalis."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "not affiliated with Caltrans or the CHP",
+   "reason": "The packet does not mention any affiliation or non-affiliation with Caltrans or the CHP."
+  }
+ ]
+}

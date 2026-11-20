@@ -1,0 +1,43 @@
+{
+ "title": "EV Charging on I-5 in California: Mapped Exits",
+ "meta": null,
+ "intro": null,
+ "faq": [],
+ "flags": [
+  {
+   "field": "faq:3",
+   "text": "Gas, food and lodging are also listed there as mapped.",
+   "reason": "The packet lists gas and food at exit 101A but no lodging."
+  },
+  {
+   "field": "meta",
+   "text": "158 I-5 exits in California have a mapped EV charger.",
+   "reason": "I could not check this count against a primary source. It comes from I-5 Buddy's own OpenStreetMap snapshot, and OSM data changes constantly."
+  },
+  {
+   "field": "intro",
+   "text": "I-5 Buddy's data maps an EV charger at 158 of the 329 exits that have any service listed along I-5 in California.",
+   "reason": "I could not confirm the 158 and 329 counts. They depend on an OSM snapshot that goes out of date as mappers add or remove chargers and services."
+  },
+  {
+   "field": "faq:0",
+   "text": "The data maps an EV charger at 158 I-5 exits. That is out of 329 exits that have any service listed at all.",
+   "reason": "I could not confirm these counts. They are time-sensitive and tied to a specific OSM snapshot."
+  },
+  {
+   "field": "faq:1",
+   "text": "Names in the data include Tesla Supercharger, Electrify America, ChargePoint, EVgo, IONNA, Rivian Adventure Network, bp pulse and Blink, among others.",
+   "reason": "I could not confirm that these networks are still mapped along I-5. Network lists change as chargers are built, rebranded or removed."
+  },
+  {
+   "field": "faq:2",
+   "text": "The longest is 34 miles, between the CA 198 exit at Lemoore and Hanford (exit 334) and the Panoche Road exit (exit 368). Next is 31 miles between the CA 46 exit at Lost Hills (exit 278) and the CA 41 exit at Kettleman City (exit 309).",
+   "reason": "These gap distances depend on which chargers are mapped today. New chargers in the Kettleman City, Lost Hills or Panoche areas would change them, and I could not confirm them against a current source."
+  },
+  {
+   "field": "faq:3",
+   "text": "Yes, exit 101A at Tustin Ranch Road lists EV charger, Tesla and Tesla Supercharger entries.",
+   "reason": "I could not confirm that these charger listings still exist at this exit. They depend on current OSM data."
+  }
+ ]
+}

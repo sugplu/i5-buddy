@@ -1,0 +1,34 @@
+{
+ "title": "Weed, CA on I-5: Exits 745-748, Gas, Food, Lodging",
+ "meta": "Weed sits at exit 747 on I-5. See the nearby exits, mapped gas, EV charging, food and lodging, plus Mount Eddy and the town's windy lumber history.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Weed on I-5?",
+   "a": "Weed is at exit 747, which also serves US 97 toward Klamath Falls and South Weed Boulevard. Exit 745 is South Weed and exit 748 is North Weed Boulevard."
+  },
+  {
+   "q": "Where is gas near Weed on I-5?",
+   "a": "Gas is mapped at two exits: six stations at exit 745 (brands listed include Pilot, CFN, Chevron and Valero) and two at exit 748 (Patriot and Valero). This comes from OpenStreetMap as mapped, not live, so check before you count on it."
+  },
+  {
+   "q": "Is there EV charging near Weed on I-5?",
+   "a": "EV charging is mapped at exit 745 (ChargePoint, EVgo and Tesla Supercharger) and at exit 748 (Electric Era and Tesla Supercharger). These are listed networks from the map data, not live availability."
+  },
+  {
+   "q": "Where can I eat or find a motel in Weed?",
+   "a": "Exit 745 has eight mapped food places, including McDonald's, Starbucks and Dos Amigos, and three lodging places such as Comfort Inn. Exit 748 has six food places, including Pizza Factory and Lily's Thai Cafe, and two motels, Hi-Lo Motel & RV Park and Motel 6."
+  },
+  {
+   "q": "Where is the next rest area north of Weed on I-5?",
+   "a": "Weed Airport Rest Area is at mile 753.1, about 5.7 miles from town, and the data lists it for both directions."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "and it is not affiliated with Caltrans or the CHP",
+   "reason": "The packet does not mention affiliation with Caltrans or the CHP."
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "title": "Lost Hills on I-5: Exit 278, Gas, Food and Rest Areas",
+ "meta": "Lost Hills sits at exit 278 on I-5 in California, with gas, EV charging, food and lodging listed at the exit, plus the nearest rest areas north and south.",
+ "intro": "Lost Hills is a town of about 2,400 people a couple of miles west of I-5, named for the low Lost Hills range beside it. Take exit 278 (CA 46) for the town and for the gas, EV, food and lodging mapped at the exit. I-5 Buddy talks you through it on the drive.",
+ "faq": [
+  {
+   "q": "What exit is Lost Hills on I-5?",
+   "a": "Lost Hills is at exit 278, the CA 46 exit, which is also signed for Paso Robles and Wasco. The town itself is a couple of miles west of the freeway."
+  },
+  {
+   "q": "Is there gas and food at the Lost Hills exit?",
+   "a": "Yes, in the mapped data: exit 278 lists 14 gas stations (brands include 76, Arco, Chevron and Love's) and 11 food places such as Arby's, Carl's Jr., Dairy Queen and Jack in the Box. This comes from OpenStreetMap, not live, so check what is open when you arrive."
+  },
+  {
+   "q": "Can I charge an EV or find a hotel at Lost Hills on I-5?",
+   "a": "Exit 278 has EV charging listed from Electrify America and Tesla, and two lodging places mapped, Days Inn and Motel 6. These are as mapped, not live."
+  },
+  {
+   "q": "Where is the nearest rest area to Lost Hills on I-5?",
+   "a": "Going south, Buttonwillow Rest Area is at mile 259.2, about 20 miles from Lost Hills, and serves both directions. Going north, Coalinga-Avenal Rest Area is at mile 320.2, about 41 miles away, also both directions."
+  },
+  {
+   "q": "What is there to see near Lost Hills on I-5?",
+   "a": "Oil pumps dot the low Lost Hills west of the freeway, the aqueduct runs past town, and Kern National Wildlife Refuge lies on the flats to the east. Blackwells Corner, west on Highway 46 near exit 278, is named for George Blackwell, who started a rest stop there in 1921."
+  }
+ ],
+ "flags": []
+}

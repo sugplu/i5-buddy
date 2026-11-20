@@ -1,0 +1,30 @@
+{
+ "title": "Encinitas on I-5: Exits, Gas, Food and Lodging",
+ "meta": "Encinitas sits at exit 41 on I-5, Spanish for little oaks. See nearby exits and the gas, EV, food and lodging mapped around them.",
+ "intro": "Encinitas is at exit 41 on Interstate 5, and the name is Spanish for little oaks. In 1769 the Portolá expedition met people from the Kumeyaay village of Jeyal near San Elijo Lagoon and named this valley Los Encinos, for its oak forest. I-5 Buddy talks you through this stretch of coast, where lagoons alternate with the beach towns of Del Mar, Solana Beach and Encinitas.",
+ "faq": [
+  {
+   "q": "What exit is Encinitas on I-5?",
+   "a": "Encinitas is at exit 41, which splits into 41A for Santa Fe Drive and 41B for CR-S9 and Encinitas Boulevard. Leucadia Boulevard at exit 43 is also nearby."
+  },
+  {
+   "q": "Is there EV charging near Encinitas on I-5?",
+   "a": "As mapped, exit 41B lists EVCS and eVgo chargers, and exit 40 (Birmingham Drive) lists a Tesla Supercharger. Exit 45 lists a Volta charger. Check the network for what is actually available."
+  },
+  {
+   "q": "Where are hotels near Encinitas on I-5?",
+   "a": "Exit 41B lists Days Inn and The Encinitan Hotel & Suites, and exit 43 lists Econo Lodge and Quality Inn Encinitas Near Legoland. Exit 45 has six mapped lodging places, including Best Western and Hilton Hotels & Resorts."
+  },
+  {
+   "q": "Is there a rest area near Encinitas on I-5?",
+   "a": "The nearest listed rest area north of town is Aliso Creek Rest Area at mile 59.4, about 18.4 miles from here, serving both directions. The data lists none to the south of Encinitas."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:1",
+   "text": "two Shell stations at exit 41A",
+   "reason": "The packet lists 2 gas stations at 41A and Shell as the only named brand. It does not say both stations are Shell."
+  }
+ ]
+}

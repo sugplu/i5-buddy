@@ -1,0 +1,30 @@
+{
+ "title": "McCloud on I-5: Exit 736, Highway 89 East",
+ "meta": "McCloud, a lumber company town on Mount Shasta's southern slope, is reached from I-5 exit 736 by Highway 89 east. See nearby exits and listed lodging.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is McCloud on I-5?",
+   "a": "McCloud is at exit 736, where Highway 89 heads east to town. Exit numbers count up from the Mexico border."
+  },
+  {
+   "q": "Which I-5 exits are near McCloud?",
+   "a": "Exit 734 is Mott Road, exit 736 is McCloud, and exit 737 is I 5 Business for Mount Shasta."
+  },
+  {
+   "q": "Where can I find lodging near McCloud on I-5?",
+   "a": "At exit 737 (I 5 Business; Mount Shasta), the map lists three lodging places, including Finlandia Motel, Mount Shasta Resort and Swiss Holiday Lodge. This comes from OpenStreetMap as mapped, not live, so check availability yourself."
+  },
+  {
+   "q": "Where is the nearest rest area to McCloud on I-5?",
+   "a": "Going north, Weed Airport Rest Area is at mile 753.1, 17.1 miles from McCloud, and it serves both directions. Going south, Lakehead Rest Area is at mile 704.7, 31.3 miles away."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "and it is not affiliated with Caltrans or the CHP",
+   "reason": "The packet does not mention Caltrans, the CHP, or any affiliation status."
+  }
+ ]
+}

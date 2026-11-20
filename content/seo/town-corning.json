@@ -1,0 +1,30 @@
+{
+ "title": "Corning on I-5: Exit 631, Gas, Food & Lodging",
+ "meta": "Corning sits at exit 631 on I-5 in California. See nearby exits, listed gas, food, EV charging and lodging, and the closest rest areas.",
+ "intro": "Corning is the olive town on Interstate 5, reached at exit 631 (Corning Road). The railroad reached it in 1882, and growing and preparing table olives is its biggest local industry. I-5 Buddy lists the gas, food, EV charging and lodging mapped at the three exits around town, plus the nearest rest areas.",
+ "faq": [
+  {
+   "q": "Where can I get gas and food in Corning off I-5?",
+   "a": "In the mapped data, exit 631 lists 5 gas stations, including 7-Eleven, 76, Chevron, Shell and Valero, and 9 food places such as Burger King and Dutch Bros. Coffee. Exit 630 lists 6 gas stations and 7 food places, including Arby's, Denny's and McDonald's. This comes from OpenStreetMap as mapped, not live."
+  },
+  {
+   "q": "Is there EV charging near Corning on I-5?",
+   "a": "The map lists a Tesla Supercharger at exit 631 and a bp pulse charger at exit 630. These are as mapped, not live, so check the network for current availability."
+  },
+  {
+   "q": "Where can I stay overnight in Corning off I-5?",
+   "a": "Exit 631 lists 5 lodging places, including Best Western Plus Corning Inn, 7 Inn and American Inn. Exit 630 lists 2, including Econo Lodge and Holiday Inn Express & Suites, and exit 628 lists The Inn at Rolling Hills. These are mapped listings, not live."
+  },
+  {
+   "q": "Where is the nearest rest area to Corning on I-5?",
+   "a": "The Lt. John C. Helmick Rest Area is about 1.3 miles north, at mile 632.2, serving both directions. South of town, Willows Rest Area is about 23.2 miles away, also both directions."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:0",
+   "text": "Exits 630 (South Avenue) and 633 (Finnell Avenue) are the other nearby ones that serve the area.",
+   "reason": "The packet also lists exit 628 (Liberal Avenue, Road 99 W) as nearby, so presenting only 630 and 633 as the other nearby exits misstates the packet."
+  }
+ ]
+}

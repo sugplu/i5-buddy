@@ -1,0 +1,34 @@
+{
+ "title": "Lodi on I-5: Exit 485, Highway 12 and Services",
+ "meta": "Lodi sits east of I-5 at exit 485 (CA 12). See listed gas, EV charging, food and lodging at nearby exits, plus rest areas and landmarks.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Lodi on I-5?",
+   "a": "Lodi is at exit 485, signed CA 12; Lodi, Fairfield. Highway 12 leads east from there to the town."
+  },
+  {
+   "q": "Is there gas at the Lodi exit on I-5?",
+   "a": "The data lists 8 gas stations at exit 485, including 76, Arco, Flying J and Love's. This comes from OpenStreetMap as mapped, not live, so it does not show what is open today."
+  },
+  {
+   "q": "Where can I charge an EV near Lodi on I-5?",
+   "a": "EV charging is mapped at exit 485 (ChargePoint and EVgo) and at exit 481, Eight Mile Road (ChargePoint and Electrify America). This is listed data only, with no live availability."
+  },
+  {
+   "q": "Are there hotels or food at the Lodi exit?",
+   "a": "Exit 485 lists 8 food places, such as Carl's Jr., Denny's and Jack in the Box, and 2 lodging places, Best Western and Microtel Inn & Suites. Exit 481 lists 21 food places, including Starbucks and Chipotle. All of it is as mapped, not live."
+  },
+  {
+   "q": "Where is the nearest rest area to Lodi on I-5?",
+   "a": "Going by the data, Westley Rest Area is at mile 444.9, 40.1 miles south of Lodi and open to both directions. Elkhorn Rest Area is at mile 529.3, 44.3 miles to the north."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "it is not affiliated with Caltrans or the CHP",
+   "reason": "The packet does not mention any affiliation or non-affiliation with Caltrans or the CHP."
+  }
+ ]
+}

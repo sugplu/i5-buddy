@@ -1,0 +1,35 @@
+{
+ "title": "Mendota on I-5: Exit 349, Cantaloupe Town",
+ "meta": "Mendota sits off I-5 at exit 349 via Highway 33 and Derrick Avenue. See nearby landmarks, farm country, and the closest rest areas in both directions.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Mendota on I-5?",
+   "a": "Mendota is at exit 349, signed CA 33 North; Derrick Avenue; Mendota. Highway 33 leads from the exit to the town."
+  },
+  {
+   "q": "What is there to see near Mendota on I-5?",
+   "a": "Going north, three stone pillars called the Joaquin Rocks stand on the ridge to the left near exit 345, about 4,100 feet up. Near exit 349, Arroyo de Cantua lies about a mile and a half west of the freeway on the left, said to be a hideout of the Gold Rush bandit Joaquin Murrieta."
+  },
+  {
+   "q": "Where is the nearest rest area to Mendota on I-5?",
+   "a": "The Coalinga-Avenal Rest Area is at mile 320.2, about 28.8 miles south of Mendota, and serves both directions. The John \"Chuck\" Erreca Rest Area is at mile 385.9, about 36.9 miles north, also serving both directions."
+  },
+  {
+   "q": "What kind of farmland surrounds Mendota?",
+   "a": "Big farms of the Westlands Water District spread across the valley floor here, growing crops such as almonds, tomatoes, pistachios and wheat."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "and it is not affiliated with Caltrans or the CHP",
+   "reason": "Affiliation claim about Caltrans/CHP is not in the packet."
+  },
+  {
+   "field": "faq:1",
+   "text": "The packet says Mendota is known by that name but does not explain how it was earned.",
+   "reason": "Refers to the packet directly. This is meta commentary, not a fact for readers."
+  }
+ ]
+}

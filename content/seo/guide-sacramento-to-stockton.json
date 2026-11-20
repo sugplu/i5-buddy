@@ -1,0 +1,35 @@
+{
+ "title": "Sacramento to Stockton on I-5: Exits and Stops",
+ "meta": "Exit-by-exit guide for I-5 between Sacramento and Stockton, from exit 473 to 519: landmarks, plus gas, EV, food and lodging as mapped in the data.",
+ "intro": "This stretch of I-5 runs from exit 473 at Stockton to exit 519 in Sacramento, passing the Port of Stockton, the Lodi vineyards, the Delta levees and the Cosumnes River Preserve. I-5 Buddy talks you through what you pass, exit by exit. Gas, EV, food and lodging are listed from OpenStreetMap as mapped, not live.",
+ "faq": [
+  {
+   "q": "What exit is Lodi on I-5?",
+   "a": "Exit 485 is CA 12, where Highway 12 leads east to Lodi, a town surrounded by vineyards. Eight gas stations are mapped at this exit, along with ChargePoint and EVgo charging."
+  },
+  {
+   "q": "Where are the EV chargers between Sacramento and Stockton on I-5?",
+   "a": "EV chargers are mapped at seven exits in this stretch, including exit 476 (Tesla Supercharger), exit 481 (ChargePoint and Electrify America), exit 485 (ChargePoint and EVgo) and exit 510 (Shell, Tesla Supercharger and bp pulse). Exits 512, 515 and 519A also have mapped chargers. This is mapped data, not live availability."
+  },
+  {
+   "q": "What is the Sacramento-San Joaquin Delta that I-5 passes?",
+   "a": "West of the freeway near exit 490 lies the Sacramento-San Joaquin Delta, about 57 reclaimed islands and tracts ringed by 1,100 miles of levees."
+  },
+  {
+   "q": "Which exit has the most gas stations on this part of I-5?",
+   "a": "Exit 485 at CA 12 has eight gas stations mapped, the most in this stretch. Exit 519A at Q Street has five."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:1",
+   "text": "Where can I see the Cosumnes River Preserve from I-5?",
+   "reason": "Packet does not say the preserve is visible from I-5; it only says the visitor center is just east of the freeway."
+  },
+  {
+   "field": "faq:1",
+   "text": "Use exit 498",
+   "reason": "Packet lists landmark exit 498 but no services or exit details for 498; directing drivers to use it as access is an inference beyond the packet."
+  }
+ ]
+}

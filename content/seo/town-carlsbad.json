@@ -1,0 +1,28 @@
+{
+ "title": "Carlsbad on I-5: Exits, Gas, Food and Landmarks",
+ "meta": "Carlsbad sits around exit 50 on I-5, with listed gas, EV, food and lodging at nearby exits, plus flower fields, lagoons and the story of its mineral water.",
+ "intro": "Carlsbad's main exit on I-5 is exit 50, Carlsbad Village Drive. The town is named for a spa town in Bohemia, and in the 1880s a former sailor named John Frazier dug a well here and offered its water at the train stop, which became known as Frazier's Station. This stretch of I-5 passes flower and strawberry fields and several lagoons before reaching Oceanside.",
+ "faq": [
+  {
+   "q": "What exit is Carlsbad on I-5?",
+   "a": "Carlsbad Village Drive is exit 50. Nearby exits are Palomar Airport Road (47), Cannon Road (48), Tamarack Avenue (49) and Las Flores Drive (51A)."
+  },
+  {
+   "q": "Where can I find gas, food and lodging in Carlsbad on I-5?",
+   "a": "Exit 50 at Carlsbad Village Drive lists 3 gas stations, 21 food places and 14 lodging places in the data. Exit 47 at Palomar Airport Road lists 5 gas stations, 30 food places and 8 lodging places. These come from OpenStreetMap as mapped, not live."
+  },
+  {
+   "q": "Where are the EV chargers near Carlsbad on I-5?",
+   "a": "The data maps Tesla Supercharger and eVgo at exit 47, Electrify America at exit 48, EVgo at exit 49, and Electrify America and Tesla Supercharger at exit 51C. Exit 50 lists no EV charger networks. This is as mapped, not live."
+  },
+  {
+   "q": "What is the next rest area north of Carlsbad on I-5?",
+   "a": "The Aliso Creek Rest Area, at mile 59.4, is the nearest one north of town, 9.4 miles from here, and serves both directions."
+  },
+  {
+   "q": "Why is it called Carlsbad?",
+   "a": "Carlsbad is named for a spa town in Bohemia. John Frazier, a former sailor, dug a well here in the 1880s and offered its water at the train stop."
+  }
+ ],
+ "flags": []
+}

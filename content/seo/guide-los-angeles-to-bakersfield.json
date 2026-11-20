@@ -1,0 +1,28 @@
+{
+ "title": "Los Angeles to Bakersfield on I-5: Over the Grapevine",
+ "meta": "Drive I-5 from Los Angeles to Bakersfield, exits 135 to 257, past Burbank, Castaic, Gorman, Tejon Pass and the Grapevine, with mapped gas, EV and food.",
+ "intro": "This guide runs I-5 north from Boyle Heights at exit 135 over Newhall Pass, the Five Mile Grade, Tejon Pass and Grapevine Canyon to the San Joaquin Valley and exit 257 near Bakersfield. Landmarks are listed along the way, from Yaanga and Beale's Cut to Six Flags Magic Mountain and the Kern County orchards. Gas, EV charging, food and lodging are as mapped in OpenStreetMap, not live.",
+ "faq": [
+  {
+   "q": "Where is the rest area on I-5 between Los Angeles and Bakersfield?",
+   "a": "The Tejon Pass Rest Area is listed at mile 206.1 and serves both directions."
+  },
+  {
+   "q": "Where can I get gas on I-5 between Los Angeles and Bakersfield?",
+   "a": "Gas is mapped at 47 exits in this stretch, including exit 167 at Lyons Avenue, exit 176 at Castaic, exit 202 at Gorman and exit 253 at Stockdale Highway. Listings come from OpenStreetMap and are not live."
+  },
+  {
+   "q": "Where are EV chargers on I-5 between Los Angeles and Bakersfield?",
+   "a": "EV chargers are mapped at 20 exits in this range, including a Tesla Supercharger at exit 205 for Frazier Mountain Park Road and at exit 219B for Laval Road West. Charger counts and speeds are not in the data, and listings are not live."
+  },
+  {
+   "q": "What is Grapevine Canyon on I-5?",
+   "a": "Grapevine Canyon, around miles 210 to 215, carries the freeway's long, steep grade past Fort Tejon's centuries-old valley oaks down to the southern edge of the San Joaquin Valley."
+  },
+  {
+   "q": "What exit is Gorman on I-5?",
+   "a": "Gorman is exit 202. Gas, food and lodging are mapped there, and in spring after a wet winter poppies and lupine can cover the nearby hills."
+  }
+ ],
+ "flags": []
+}

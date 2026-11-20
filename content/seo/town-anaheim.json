@@ -1,0 +1,35 @@
+{
+ "title": "Anaheim on I-5: Exits, Gas, Food and Lodging",
+ "meta": null,
+ "intro": "Anaheim sits on I-5 around exit 111, where the freeway crosses what was once farmland: German families founded the town in 1857 to grow grapes. Exits 109 through 110B serve Katella Avenue, Harbor Boulevard and Disneyland Drive, with Disneyland just southwest of the freeway near exit 110. This guide lists the exits, landmarks and mapped services from I-5 Buddy, a free talking GPS guide to I-5 in California.",
+ "faq": [
+  {
+   "q": "What exit is Disneyland on I-5?",
+   "a": "Disneyland is just southwest of the freeway near exit 110, on the left going north. Exit 110B is signed Disneyland Drive, Ball Road."
+  },
+  {
+   "q": "What exit is Angel Stadium on I-5?",
+   "a": "Angel Stadium is east of the freeway near Katella Avenue at exit 109, on the right going north."
+  },
+  {
+   "q": "Where can I find gas and EV charging in Anaheim on I-5?",
+   "a": "Gas is mapped at several exits, including 109, 109A, 110, 110A, 110B, 112, 113A and 113. EV charging is mapped at exits including 109, 109A, 110A, 111 (Tesla Supercharger) and 112, listed in the data and not live."
+  },
+  {
+   "q": "Where are hotels near Disneyland on I-5?",
+   "a": "Lodging is mapped at exits 109A, 109B, 110 and 110A, with the most listed places at 109A (29) and 110A (21). These come from OpenStreetMap, as mapped, not live availability."
+  }
+ ],
+ "flags": [
+  {
+   "field": "meta",
+   "text": "gas, EV, food and lodging mapped at nearly every exit",
+   "reason": "Not supported: EV and lodging are mapped at only some exits (lodging at 8 of 14, EV at 9 of 14)."
+  },
+  {
+   "field": "faq:4",
+   "text": "open to both directions",
+   "reason": "The packet gives only the direction served, not whether the rest area is open."
+  }
+ ]
+}

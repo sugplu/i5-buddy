@@ -1,0 +1,28 @@
+{
+ "title": "Elk Grove on I-5: Exit 506, Gas, Food and Lodging",
+ "meta": "Elk Grove sits at exit 506 on I-5 (Elk Grove Boulevard), with gas, food and a hotel mapped there, plus Stone Lakes refuge nearby.",
+ "intro": "Elk Grove is at exit 506 on I-5, where Elk Grove Boulevard leads east into town. The town began in 1850 as a stagecoach stop between Sacramento and the Bay Area, and the freeway here runs along the eastern edge of Stone Lakes National Wildlife Refuge. I-5 Buddy talks you through it as you drive.",
+ "faq": [
+  {
+   "q": "What exit is Elk Grove on I-5?",
+   "a": "Elk Grove is at exit 506 on I-5, Elk Grove Boulevard. Exit 504, Hood-Franklin Road, is the nearest other exit in the data."
+  },
+  {
+   "q": "Is there gas, food and lodging at the Elk Grove exit?",
+   "a": "At exit 506, the data lists 3 gas stations (Arco, Chevron and Shell), 6 food places including McDonald's, Huckleberry's and Pete's, and a Holiday Inn Express & Suites. These come from OpenStreetMap as mapped, not live, so hours and availability are not shown."
+  },
+  {
+   "q": "Where is the nearest rest area to Elk Grove on I-5?",
+   "a": "Going north, Elkhorn Rest Area is at mile 529.3, about 23 miles from Elk Grove. To the south, Westley Rest Area is at mile 444.9, about 61 miles away, and serves both directions."
+  },
+  {
+   "q": "What is the history of Elk Grove, California?",
+   "a": "Elk Grove began in 1850 as a stagecoach stop for travelers between Sacramento and the Bay Area, when James Hall opened the Elk Grove Hotel. He is said to have named it for elk antlers found in the nearby groves."
+  },
+  {
+   "q": "What is the wildlife refuge next to I-5 near Elk Grove?",
+   "a": "Stone Lakes National Wildlife Refuge, set aside in 1994, lies along the freeway near exit 504, on the left going north. The freeway runs along the refuge's eastern edge."
+  }
+ ],
+ "flags": []
+}

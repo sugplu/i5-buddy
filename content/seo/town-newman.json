@@ -1,0 +1,30 @@
+{
+ "title": "Newman on I-5: Exit 423 Stuhr Road",
+ "meta": "Newman sits east of I-5 at exit 423, Stuhr Road. See the town's history, nearby landmarks and the closest rest areas north and south on Interstate 5.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Newman on I-5?",
+   "a": "Newman is at exit 423, Stuhr Road, and the town lies east of the freeway."
+  },
+  {
+   "q": "Who founded Newman, California?",
+   "a": "Simon Newman founded the town in 1888. Born Simon Neumann in Bavaria, he came to California in 1862 as a teenager speaking only German and Hebrew, then learned English and translated his family name."
+  },
+  {
+   "q": "Where is the nearest rest area to Newman on I-5?",
+   "a": "Going north, Westley Rest Area is at mile 444.9, about 21.9 miles from Newman, and serves both directions. Going south, Dos Amigos Vista Point is at mile 390, about 33 miles away."
+  },
+  {
+   "q": "What is there to see near Newman on I-5?",
+   "a": "At exit 421, on the right going north, the guide tells of Hills Ferry, a river crossing started in 1850 about 7 miles east where the Merced River meets the San Joaquin. At exit 426 it notes that almonds are the top farm product of Stanislaus County."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "Newman is a farm town east of I-5",
+   "reason": "The packet calls Newman an old railroad town, not a farm town. It only says farms spread toward it."
+  }
+ ]
+}

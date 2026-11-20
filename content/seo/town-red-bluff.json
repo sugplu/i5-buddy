@@ -1,0 +1,39 @@
+{
+ "title": "Red Bluff on I-5: Exits, Gas, Food & Lodging",
+ "meta": null,
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Red Bluff on I-5?",
+   "a": "Red Bluff has several exits on I-5, including exits 647, 647A, 647B, 649, 650 and 651. Exit 649 is the one for CA 36 East, CA 36 West and CA 99, with signs for Chico and Lassen Park."
+  },
+  {
+   "q": "Where can I get gas in Red Bluff off I-5?",
+   "a": "Gas is listed at exit 647 (Valero), exit 647B (Arco, Chevron and Speedway), exit 649 (Shell, Chevron, Mobil and Red Bluff Gas) and exit 650 (Arco and Chevron). This comes from mapped data, not live information, so check before you rely on a stop."
+  },
+  {
+   "q": "Are there EV chargers in Red Bluff near I-5?",
+   "a": "The data lists ChargePoint at exit 647, a Tesla Supercharger at exit 647B, ChargePoint and Tesla Supercharger at exit 649, and a Mercedes-Benz network at exit 650. These are mapped listings, not live availability."
+  },
+  {
+   "q": "Where are the rest areas near Red Bluff on I-5?",
+   "a": "The Herbert S. Miles Rest Area is at mile 654.1, about 4.9 miles north of town, and serves both directions. South of town, the Lt. John C. Helmick Rest Area is at mile 632.2, about 17 miles back, also for both directions."
+  },
+  {
+   "q": "Where can I find food and a place to stay in Red Bluff on I-5?",
+   "a": "Exit 649 lists the most, with 13 mapped food places and 7 lodging places, including Best Western, Comfort Suites, Riverbank Inn and Rodeway Inn. Exit 647B lists 7 food places and 4 lodging places, and exit 650 lists 4 food places and 3 lodging places."
+  }
+ ],
+ "flags": [
+  {
+   "field": "meta",
+   "text": "Red Bluff on I-5 runs from exit 647 to exit 653.",
+   "reason": "The packet lists exits 647 to 653 as nearby exits. It does not say the town spans that range, and exits 652 and 653 are not named Red Bluff."
+  },
+  {
+   "field": "intro",
+   "text": "Red Bluff sits at the head of navigation on the Sacramento River, and I-5 crosses the river twice in town",
+   "reason": "The packet only says 'the freeway' crosses the river twice in town. This is acceptable rewording, so it is not a problem."
+  }
+ ]
+}

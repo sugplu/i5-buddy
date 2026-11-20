@@ -1,0 +1,30 @@
+{
+ "title": null,
+ "meta": "Los Banos sits about 7 miles east of I-5 at exit 399. See the nearby landmarks and the closest rest areas listed in I-5 Buddy.",
+ "intro": "Los Banos is a city about 7 miles east of Interstate 5, reached from exit 399. Its name is Spanish for the baths, after pools known as the baths of Padre Arroyo. This page shows the landmarks near the exit and the nearest rest areas listed on I-5 Buddy.",
+ "faq": [
+  {
+   "q": "What exit is Los Banos on I-5?",
+   "a": "Los Banos is at exit 399 on I-5. The city itself is about 7 miles east of the freeway."
+  },
+  {
+   "q": "Why is Los Banos called Los Banos?",
+   "a": "Los Banos is Spanish for the baths. It is named for pools known as the baths of Padre Arroyo, a regular stop for priests from Mission San Juan Bautista, and Spanish explorers visited as early as 1805."
+  },
+  {
+   "q": "Where is the nearest rest area near Los Banos on I-5?",
+   "a": "Going north, Westley Rest Area is listed at mile 444.9, about 45.9 miles from here, with access in both directions. To the south, Dos Amigos Vista Point is listed at mile 390, about 9 miles from here; the data does not give its direction."
+  },
+  {
+   "q": "What is there to see along I-5 near Los Banos?",
+   "a": "At exit 397, Path 15, part of California's main north-south power corridor, runs along this side of the valley, generally 3 to 7 miles west of the freeway. At exit 400, the Morning Star Company opened its first tomato factory in Los Banos in 1990 and was the world's leading tomato processor as of 2023."
+  }
+ ],
+ "flags": [
+  {
+   "field": "title",
+   "text": "Services",
+   "reason": "The packet lists no services at the exits (services_at_exits is empty), so the title implies content the packet does not support."
+  }
+ ]
+}

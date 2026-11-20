@@ -1,0 +1,30 @@
+{
+ "title": "San Diego to Los Angeles on I-5: Exits & Stops",
+ "meta": "Drive I-5 from San Diego to Los Angeles, exits 16 to 135: the coast, Camp Pendleton, Disneyland, and gas, EV, food and lodging listed at exits.",
+ "intro": "This guide covers I-5 from San Diego north to Los Angeles, exit 16 to exit 135, counting miles up from the Mexico border. You pass San Diego Bay, the coastal lagoons, about 18 miles of ocean beside Camp Pendleton, and the Orange County suburbs on the way. Gas, EV, food and lodging are listed as mapped in OpenStreetMap, not live.",
+ "faq": [
+  {
+   "q": "Where does I-5 run along the ocean through Camp Pendleton?",
+   "a": "Between roughly mile 54 and mile 70, the freeway follows the ocean for about 18 miles through Marine Corps Base Camp Pendleton. The Surf Line railroad runs beside it, and the Aliso Creek Rest Area at mile 59.4 serves both directions."
+  },
+  {
+   "q": "What exit is Disneyland on I-5?",
+   "a": "Disneyland is just southwest of the freeway near exit 110. The data lists Harbor Boulevard at exit 110A, with 21 lodging places and 26 food places mapped there."
+  },
+  {
+   "q": "Where can I find gas on I-5 in Orange County?",
+   "a": "Gas stations are mapped at many exits, for example Crown Valley Parkway (exit 86), La Paz Road (exit 89), El Toro Road (exit 91) and Red Hill Avenue (exit 101B). This is mapped data, not live, so check a stop's hours and prices yourself."
+  },
+  {
+   "q": "Where are EV chargers along I-5 from San Diego to Los Angeles?",
+   "a": "EV chargers are mapped at 66 exits in this stretch, including Palomar Airport Road (exit 47), Vista Way and Cassidy Street (exit 51C) and Lake Forest Drive (exit 92A). Networks listed include Tesla Supercharger, Electrify America, EVgo and ChargePoint, as mapped, not live."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:0",
+   "text": "It then crosses the Los Angeles River near Elysian Park.",
+   "reason": "The packet places the river crossing in the miles 134-140 area, but the route ends at exit 135, so it is not supported that the route reaches the crossing."
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+{
+ "title": "I-5 Rest Areas in California: Gaps North and South",
+ "meta": null,
+ "intro": null,
+ "faq": [
+  {
+   "q": "What is the longest gap between rest areas on I-5 in California?",
+   "a": "The longest listed gap is 146.7 miles, between Aliso Creek Rest Area at mile 59.4 and Tejon Pass Rest Area at mile 206.1. The next longest is 84.4 miles, from Westley Rest Area at mile 444.9 to Elkhorn Rest Area at mile 529.3."
+  },
+  {
+   "q": "Where are the rest areas between Buttonwillow and Coalinga on I-5?",
+   "a": "Buttonwillow Rest Area is at mile 259.2 and Coalinga-Avenal Rest Area is at mile 320.2, a gap of 61.0 miles with no listed rest area between them. Both are listed as serving both directions."
+  },
+  {
+   "q": "Are there truck stops on I-5 where rest areas are far apart?",
+   "a": "Yes, the data maps several travel centers and truck stops along the route, including Castaic Truck Stop at mile 176.4, Flying J Travel Center at mile 204.9 and Petro Stopping Centers at mile 219.2. They are listed as mapped, so check hours and services yourself."
+  },
+  {
+   "q": "Which I-5 rest areas serve both directions?",
+   "a": "Aliso Creek, Tejon Pass, Buttonwillow, Coalinga-Avenal, John \"Chuck\" Erreca, Westley, Dunnigan, Maxwell, Willows, Lt. John C. Helmick, Herbert S. Miles and Weed Airport are listed as both directions. For Dos Amigos Vista Point, Elkhorn, O'Brien, Lakehead and Randolph E. Collier, the data does not state the direction."
+  }
+ ],
+ "flags": [
+  {
+   "field": "meta",
+   "text": "How far apart the rest areas on California's I-5 are, from Aliso Creek at mile 59.4 to Randolph E. Collier at mile 785.8, plus the longest stretches between them.",
+   "reason": "Meta is about 163 characters, over the 155-character limit."
+  },
+  {
+   "field": "intro",
+   "text": "long empty stretches",
+   "reason": "The packet gives gaps between rest areas but does not say those stretches are empty."
+  }
+ ]
+}

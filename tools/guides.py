@@ -14,7 +14,11 @@ import html
 import json
 import os
 import re
+import sys
 from urllib.parse import urlparse
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from seo import spec, template  # noqa: E402  (tools/seo: the town pages and the 12 topic guides)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://i5.dominares.org"
@@ -121,8 +125,8 @@ def src_label(url):
 
 
 def first_sentences(text, n=2):
-    parts = re.findall(r"[^.!?]+[.!?]+[\"')\]]*\s*|[^.!?]+$", text)
-    return "".join(parts[:n]).strip()
+    """The first n sentences, never cut inside "magnitude 6.7", "Jr." or "U.S. 99" (tools/seo/spec.py sentences())."""
+    return spec.first_sentences(text, n)
 
 
 def rest_name(r):
@@ -197,22 +201,22 @@ tr:last-child td{border-bottom:0}
 .app a.alt{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6)}
 .more{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
 .sec ul{padding-left:1.25em;margin:8px 0}.sec li{margin:4px 0}.sec p{margin:8px 0}.tw{overflow-x:auto}.lang{font-size:.9rem;margin:2px 0 0}
-.fine{color:var(--muted);font-size:.85rem;margin-top:24px}
+.q{font-size:1.05rem;margin:18px 0 2px}.fine{color:var(--muted);font-size:.85rem;margin-top:24px}
 """
 
 
-def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=None, fine=None):
+def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=None, fine=None, noindex=False, suffix=True, article=True):
     L = LANG[lang]
     url = f"{SITE}/{path}"
     depth = path.count("/")
     up = "../" * depth
-    ld = [
+    ld = ([] if not article else [
         {"@context": "https://schema.org", "@type": "Article", "headline": title, "description": desc, "url": url,
          "dateModified": TODAY, "inLanguage": L["ld"],
          "author": {"@type": "Organization", "name": "Dominares", "url": "https://dominares.org/"},
          "publisher": {"@type": "Organization", "name": "Dominares", "url": "https://dominares.org/"},
          "isPartOf": {"@type": "WebSite", "name": "I-5 Buddy", "url": SITE + "/"},
-         "image": SITE + "/icons/og-1200x630.png"},
+         "image": SITE + "/icons/og-1200x630.png"}]) + [
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + "/" + u} for i, (n, u) in enumerate(crumbs)]},
     ] + (ld_extra or [])
@@ -225,12 +229,12 @@ def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=N
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>{E(title)} · I-5 Buddy</title>
+<title>{E(title)}{" · I-5 Buddy" if suffix else ""}</title>
 <meta name="description" content="{E(desc)}">
 <meta name="theme-color" content="#0b6e3f">
 <meta name="author" content="Dominares">
 <link rel="canonical" href="{url}">
-{alt_html}<meta property="og:type" content="article">
+{'<meta name="robots" content="noindex,follow">' + chr(10) if noindex else ''}{alt_html}<meta property="og:type" content="article">
 <meta property="og:locale" content="{L['locale']}">
 <meta property="og:site_name" content="I-5 Buddy by Dominares">
 <meta property="og:url" content="{url}">
@@ -308,6 +312,7 @@ def guide_body(d, g):
     others = [x for x in GUIDES if x["slug"] != g["slug"]]
     out.append('  <h2>More I-5 guides</h2><ul class="more">' + "".join(
         f'<li><a href="../{x["slug"]}/">{E(x["h1"])}</a></li>' for x in others) +
+        '<li><a href="../../town/">Towns on I-5 in California</a></li>'
         '<li><a href="../../rest-areas/">Every I-5 rest area in California</a></li>'
         '<li><a href="../../grapevine/">Is the Grapevine open? (live)</a></li></ul>')
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": g["h1"], "numberOfItems": len(places),
@@ -407,7 +412,7 @@ def rest_body(d):
         out.append(f'    <tr><td>{r["m"]:.0f}</td><td>{E(r["name"])}</td><td>{E(near(r["m"]))}</td></tr>')
     out.append('  </tbody></table>')
     out.append('  <h2>Drive guides</h2><ul class="more">' + "".join(
-        f'<li><a href="../drive/{x["slug"]}/">{E(x["h1"])}</a></li>' for x in GUIDES) + '</ul>')
+        f'<li><a href="../drive/{x["slug"]}/">{E(x["h1"])}</a></li>' for x in GUIDES + NEW_GUIDES_DATA) + '<li><a href="../town/">Towns on I-5 in California</a></li></ul>')
     return "\n".join(out)
 
 
@@ -419,10 +424,263 @@ def hub_body():
         out.append(f'    <li><a href="{g["slug"]}/">{E(g["hub"]["en"])}</a> · <a href="../es/drive/{g["slug"]}/" hreflang="es" lang="es">en español</a></li>')
     for g in GUIDES:
         out.append(f'    <li><a href="{g["slug"]}/">{E(g["h1"])}</a><br><small>{E(g["desc"])}</small></li>')
+    for g in NEW_GUIDES_DATA:
+        out.append(f'    <li><a href="{g["slug"]}/">{E(g["h1"])}</a></li>')
+    out.append('    <li><a href="../town/">Towns on I-5 in California</a></li>')
     out.append('    <li><a href="../rest-areas/">I-5 rest areas in California</a></li>')
     out.append('    <li><a href="../grapevine/">Is the Grapevine open? Live I-5 pass status</a></li>')
     out.append('  </ul>')
     return "\n".join(out)
+
+
+# ── Town pages and the 12 topic guides (tools/seo): text from content/seo/*.json, facts from tools/seo/spec.py ──────────────
+
+SEO_FINE = ('Mileposts are California\'s exit numbers, which count up from the Mexico border. Landmark facts come from I-5 Buddy\'s own data, '
+            'each checked against the source it lists. Gas, EV charger, food and lodging listings are as mapped in OpenStreetMap '
+            '(&copy; OpenStreetMap contributors), not live: check a map app for what is open now. Made by <a href="https://dominares.org/">Dominares</a> '
+            'in San Diego. Not affiliated with Caltrans or the CHP. Questions or corrections: <a href="mailto:support@dominares.org">support@dominares.org</a>.')
+
+
+def seo_text(e):
+    """Title, meta, intro and FAQ for one page: the generated text that passed the grounding check, else the template."""
+    tmpl = template.town_seo(e) if e["kind"] == "town" else template.guide_seo(e)
+    try:
+        c = json.load(open(os.path.join(ROOT, "content", "seo", f'{e["kind"]}-{e["slug"]}.json'), encoding="utf-8"))
+    except OSError:
+        c = {}
+    out = {k: (c.get(k) or tmpl[k]) for k in ("title", "meta", "intro")}
+    out["faq"] = [x for x in (c.get("faq") or []) if x.get("q") and x.get("a")]
+    out["generated"] = [k for k in ("title", "meta", "intro") if c.get(k)]
+    return out
+
+
+def faq_html(faq):
+    if not faq:
+        return "", []
+    html_ = '  <h2>Questions drivers ask</h2>\n' + "".join(f'  <h3 class="q">{E(x["q"])}</h3><p>{E(x["a"])}</p>\n' for x in faq)
+    ld = [{"@context": "https://schema.org", "@type": "FAQPage",
+           "mainEntity": [{"@type": "Question", "name": x["q"], "acceptedAnswer": {"@type": "Answer", "text": x["a"]}} for x in faq]}]
+    return html_, ld
+
+
+def _names(lst, n, total):
+    shown = lst[:n]
+    if not shown:
+        return "" if not total else f"{total}"
+    return E(", ".join(shown)) + (f' <span class="src">(+{total - len(shown)} more)</span>' if total > len(shown) else "")
+
+
+def svc_table(services, up, ev_only=False):
+    if not services:
+        return ""
+    rows = []
+    for s in services:
+        rows.append(f'<tr><td>{E(s["ref"])}</td><td>{E(s["name"]) or "&nbsp;"}</td><td>{_names(s["fuel"], 4, s["fuelN"])}</td>'
+                    f'<td>{E(", ".join(s["ev"]))}</td><td>{_names(s["food"], 4, s["foodN"])}</td><td>{_names(s["sleep"], 3, s["sleepN"])}</td></tr>')
+    return ('  <div class="tw"><table><thead><tr><th>Exit</th><th>Road or town</th><th>Gas</th><th>EV charging</th><th>Food</th><th>Lodging</th></tr></thead><tbody>\n    '
+            + "\n    ".join(rows) + '\n  </tbody></table></div>\n')
+
+
+def rest_rows(rests):
+    out = ['  <div class="tw"><table><thead><tr><th>Mile</th><th>Rest area</th><th>Direction</th></tr></thead><tbody>']
+    for r in rests:
+        out.append(f'    <tr><td>{r["m"]:.0f}</td><td>{E(r["name"])}</td><td>{E(r["dirword"].capitalize() if r["dir"] else "Not stated in the data")}</td></tr>')
+    out.append('  </tbody></table></div>')
+    return "\n".join(out)
+
+
+def place_li(p, up):
+    sw = {1: "right", -1: "left"}.get(p["side"]) if not p["detour"] else ""
+    where = f'Exit {E(p["ex"])}' + (f" · on your {sw} going north" if sw else "") + f' · {CAT.get(p["cat"], "")}'
+    link = f' <a href="{up}drive/{p["story"]}/#{E(p["id"])}">Full story</a>' if p["story"] else ""
+    return (f'    <li><span class="where">{where}</span><h3>{E(p["name"])}</h3><p>{E(p["text"])}{link}</p></li>')
+
+
+def town_body(t, sx, up, towns_by_slug):
+    a = t["anchor"]
+    out = [f'  <h1>{E(t["name"])} on I-5 in California</h1>', f'  <p class="lede">{E(sx["intro"])}</p>']
+    n_gas = sum(1 for s in t["services"] if s["fuelN"])
+    n_ev = sum(1 for s in t["services"] if s["evN"])
+    out.append('  <div class="facts">'
+               f'<div><b>Exit {E(a["ex"])}</b><span>nearest I-5 exit to {E(t["name"])}</span></div>'
+               f'<div><b>{t["n_places"]}</b><span>landmarks and stories nearby</span></div>'
+               f'<div><b>{n_gas}</b><span>nearby {"exit" if n_gas == 1 else "exits"} with gas listed</span></div>'
+               f'<div><b>{n_ev}</b><span>nearby {"exit" if n_ev == 1 else "exits"} with EV charging listed</span></div></div>')
+    nav = []
+    if t["prev"]:
+        nav.append(f'<a href="{up}town/{t["prev"]["slug"]}/">&larr; {E(t["prev"]["name"])} (south)</a>')
+    if t["next"]:
+        nav.append(f'<a href="{up}town/{t["next"]["slug"]}/">{E(t["next"]["name"])} (north) &rarr;</a>')
+    out.append('  <p class="lang">' + " &middot; ".join(nav) + '</p>')
+    out.append(f'  <h2>Exits and services near {E(t["name"])}</h2>')
+    if t["services"] and any(s["fuelN"] or s["evN"] or s["foodN"] or s["sleepN"] for s in t["services"]):
+        out.append(f'  <p>Exits within a few miles of {E(t["name"])}, with what the data lists at each. Listings come from OpenStreetMap as mapped, not live.</p>')
+        out.append(svc_table(t["services"], up).rstrip())
+    else:
+        out.append(f'  <p>I-5 Buddy\'s data lists no gas, EV charging, food or lodging at an exit near {E(t["name"])}. '
+                   f'The exits in this stretch: {E("; ".join("exit " + x["ref"] + " " + x["name"] if x["name"] else "exit " + x["ref"] for x in t["exits"]))}.</p>')
+    out.append(f'  <h2>What to see near {E(t["name"])}</h2>')
+    out.append('  <ol class="places">')
+    out.append(place_li(a, up).replace("<li>", f'<li id="{E(a["id"])}">', 1))
+    for p in t["places"]:
+        out.append(place_li(p, up))
+    out.append('  </ol>')
+    if t["zone"]:
+        out.append(f'  <h2>{E(t["zone"]["label"])}</h2><p class="zone">{E(t["zone"]["text"])}</p>')
+    out.append('  <h2>Nearest rest areas</h2>')
+    rl = []
+    for label, r in (("South of town", t["rest_south"]), ("North of town", t["rest_north"])):
+        if r:
+            rl.append(f'<li>{label}: {E(r["name"])}, mile {r["m"]:.0f}, {r["miles"]:.0f} miles from {E(t["name"])} ({E(r["dirword"])}).</li>')
+    out.append('  <ul>' + "".join(rl) + '</ul>' if rl else '  <p>The data lists no rest area near here.</p>')
+    out.append('  <p class="fine">Caltrans closes rest areas for repairs from time to time; <a href="https://quickmap.dot.ca.gov/">Caltrans QuickMap</a> shows what is open.</p>')
+    fh, fld = faq_html(sx["faq"])
+    out.append(fh.rstrip())
+    guides_here = [g for g in NEW_GUIDES_DATA if g.get("covers") and any(c["slug"] == t["slug"] for c in g["covers"])]
+    more = [f'<li><a href="{up}drive/{g["slug"]}/">{E(g["h1"])}</a></li>' for g in guides_here]
+    for slug, lo, hi in spec.OLD_RANGES:
+        if lo <= t["m"] <= hi:
+            title = next(x["h1"] for x in GUIDES if x["slug"] == slug)
+            more.append(f'<li><a href="{up}drive/{slug}/">{E(title)}</a></li>')
+    more += [f'<li><a href="{up}town/">All towns on I-5 in California</a></li>', f'<li><a href="{up}rest-areas/">Every I-5 rest area in California</a></li>',
+             f'<li><a href="{up}grapevine/">Is the Grapevine open? (live)</a></li>']
+    out.append('  <h2>More on this part of I-5</h2><ul class="more">' + "".join(more) + '</ul>')
+    ld = [{"@context": "https://schema.org", "@type": "Place", "name": f'{t["name"]}, California', "url": f'{SITE}/town/{t["slug"]}/',
+           "description": sx["meta"], "containedInPlace": {"@type": "State", "name": "California"},
+           "publisher": {"@type": "Organization", "name": "Dominares", "url": "https://dominares.org/"}}] + fld
+    return "\n".join(out), ld
+
+
+def new_guide_body(g, sx, up):
+    k = g["gkind"]
+    out = [f'  <h1>{E(g["h1"])}</h1>', f'  <p class="lede">{E(sx["intro"])}</p>']
+    tiles = []
+    if k in ("route", "stops", "winter"):
+        gas = sum(1 for s in g["services"] if s["fuelN"])
+        tiles = [(f'{g["miles"]} mi', f'of I-5, exit {g["from"]} to {g["to"]}'), (str(len(g["places"])), "landmark or story" if len(g["places"]) == 1 else "landmarks and stories"),
+                 (str(gas), "exit with gas listed" if gas == 1 else "exits with gas listed"),
+                 (str(len(g["rests"])), ("rest area" if len(g["rests"]) == 1 else "rest areas") + ("" if k == "route" else " nearby"))]
+    elif k == "ev":
+        tiles = [(str(g["exits_with_ev"]), "exits with an EV charger mapped"), (str(len(g["networks"])), "charging networks named in the data"),
+                 (f'{g["gaps"][0]["miles"]:.0f} mi', "longest stretch between mapped chargers")]
+    elif k == "rest_gaps":
+        tiles = [(str(g["n_rest"]), "Caltrans rest areas"), (str(g["n_centers"]), "truck stops and travel centers"),
+                 (f'{g["longest"][0]["miles"]:.0f} mi', "longest gap between rest areas")]
+    elif k == "history99":
+        tiles = [(str(len(g["places"])), "I-5 Buddy landmarks that tell the Highway 99 story")]
+    out.append('  <div class="facts">' + "".join(f'<div><b>{E(a)}</b><span>{E(b)}</span></div>' for a, b in tiles) + '</div>')
+    if g.get("live"):
+        t_, href, sub = g["live"]
+        out.append(f'  <a class="live" href="{href}"><b>{E(t_)}</b><br>{E(sub)}</a>')
+    if k in ("route", "stops", "winter"):
+        out.append('  <p>Driving south instead? Read it from the bottom up; left and right swap.</p>')
+        if g["towns"]:
+            out.append('  <h2>Towns on this stretch</h2><ul class="more">' + "".join(
+                f'<li><a href="{up}town/{t["slug"]}/">{E(t["name"])}</a> (exit {int(t["m"])})</li>' for t in g["towns"]) + '</ul>')
+        out.append('  <h2>Exits with services</h2>')
+        out.append('  <p>Gas, EV charging, food and lodging listed at each exit, as mapped in OpenStreetMap (not live).</p>')
+        out.append(svc_table([s for s in g["services"] if s["fuelN"] or s["evN"] or s["foodN"] or s["sleepN"]], up).rstrip())
+        if g["rests"]:
+            out.append('  <h2>Rest areas</h2>')
+            out.append(rest_rows(g["rests"]))
+        if g.get("centers"):
+            out.append('  <p>Truck stops and travel centers nearby: ' + E("; ".join(f'{c["name"]} (mile {c["m"]:.0f})' for c in g["centers"])) + '.</p>')
+        for z in g["zones"]:
+            zp = [p for p in g["places"] if z["from"] <= p["m"] < z["to"]]
+            out.append(f'  <h2><small>Miles {max(g["from"], z["from"]):.0f} to {min(g["to"], z["to"]):.0f}</small>{E(z["label"])}</h2>')
+            out.append(f'  <p class="zone">{E(z["text"])}</p>')
+            if k == "winter" and z["seasons"].get("winter"):
+                out.append(f'  <p><b>In winter:</b> {E(z["seasons"]["winter"])}</p>')
+            if zp:
+                out.append('  <ol class="places">' + "\n".join(place_li(p, up) for p in zp) + '</ol>')
+    elif k == "ev":
+        out.append('  <h2>Longest stretches between mapped chargers</h2>')
+        out.append('  <div class="tw"><table><thead><tr><th>From</th><th>To</th><th>Miles</th></tr></thead><tbody>' + "".join(
+            f'<tr><td>Exit near mile {x["from_m"]:.0f}: {E(x["from_name"])}</td><td>Exit near mile {x["to_m"]:.0f}: {E(x["to_name"])}</td><td>{x["miles"]:.0f}</td></tr>'
+            for x in g["gaps"]) + '</tbody></table></div>')
+        out.append('  <p>A gap here is the distance between two exits that each have a charger mapped. A charger that is not on the map does not count, and a mapped charger can be out of service: check your charging app before a long gap.</p>')
+        out.append('  <h2>Every exit with an EV charger mapped</h2>')
+        out.append('  <div class="tw"><table><thead><tr><th>Mile</th><th>Exit</th><th>Road or town</th><th>Networks mapped</th></tr></thead><tbody>' + "".join(
+            f'<tr><td>{s["m"]:.0f}</td><td>{E(s["ref"])}</td><td>{E(s["name"])}</td><td>{E(", ".join(s["ev"]))}</td></tr>' for s in g["services"]) + '</tbody></table></div>')
+    elif k == "rest_gaps":
+        out.append('  <h2>The longest gaps between rest areas</h2>')
+        out.append('  <div class="tw"><table><thead><tr><th>From</th><th>To</th><th>Miles</th></tr></thead><tbody>' + "".join(
+            f'<tr><td>{E(x["from_name"])} (mile {x["from_m"]:.0f})</td><td>{E(x["to_name"])} (mile {x["to_m"]:.0f})</td><td>{x["miles"]:.0f}</td></tr>' for x in g["longest"]) + '</tbody></table></div>')
+        out.append('  <h2>Every rest area, south to north</h2>')
+        prev = None
+        rows = []
+        for r in g["rests"]:
+            gap = "" if prev is None else f'{r["m"] - prev:.0f}'
+            rows.append(f'<tr><td>{r["m"]:.0f}</td><td>{E(r["name"])}</td><td>{E(r["dirword"].capitalize() if r["dir"] else "Not stated in the data")}</td><td>{gap}</td></tr>')
+            prev = r["m"]
+        out.append('  <div class="tw"><table><thead><tr><th>Mile</th><th>Rest area</th><th>Direction</th><th>Miles since the one before</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></div>')
+        out.append('  <h2>Truck stops and travel centers</h2><p>' + E("; ".join(f'{c["name"]} (mile {c["m"]:.0f})' for c in g["centers"])) + '.</p>')
+        out.append('  <p class="fine">Caltrans closes rest areas for repairs from time to time; <a href="https://quickmap.dot.ca.gov/">Caltrans QuickMap</a> shows what is open.</p>')
+    elif k == "history99":
+        out.append('  <h2>The Highway 99 stories on I-5</h2><ol class="places">')
+        for p in g["places"]:
+            link = f' <a href="{up}drive/{p["story"]}/#{E(p["id"])}">Full story</a>' if p["story"] else ""
+            out.append(f'    <li><span class="where">Exit {E(p["ex"])} · {CAT.get(p["cat"], "")}</span><h3>{E(p["name"])}</h3><p>{E(p["text99"])}{link}</p></li>')
+        out.append('  </ol>')
+    fh, fld = faq_html(sx["faq"])
+    out.append(fh.rstrip())
+    more = [f'<li><a href="{up}drive/{x["slug"]}/">{E(x["h1"])}</a></li>' for x in NEW_GUIDES_DATA if x["slug"] != g["slug"]]
+    more += [f'<li><a href="{up}drive/{x["slug"]}/">{E(x["h1"])}</a></li>' for x in GUIDES]
+    more += [f'<li><a href="{up}town/">All towns on I-5 in California</a></li>', f'<li><a href="{up}rest-areas/">Every I-5 rest area in California</a></li>']
+    out.append('  <h2>More I-5 guides</h2><ul class="more">' + "".join(more) + '</ul>')
+    ld = []
+    if k in ("route", "stops", "winter") and g["places"]:
+        ld.append({"@context": "https://schema.org", "@type": "ItemList", "name": g["h1"], "numberOfItems": len(g["places"]),
+                   "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": p["name"]} for i, p in enumerate(g["places"])]})
+    return "\n".join(out), ld + fld
+
+
+def town_hub_body(towns):
+    out = ['  <h1>Towns on I-5 in California</h1>',
+           '  <p class="lede">The towns along Interstate 5 from the Mexico border to the Oregon line, south to north: the exit, what the data lists for gas, food and EV charging near it, the landmarks, and the nearest rest areas.</p>',
+           '  <ol class="places">']
+    for t in towns:
+        out.append(f'    <li><span class="where">Exit {E(t["anchor"]["ex"])}</span><h3><a href="{t["slug"]}/">{E(t["name"])}</a></h3></li>')
+    out.append('  </ol>')
+    out.append('  <h2>Drive guides</h2><ul class="more">' + "".join(f'<li><a href="../drive/{x["slug"]}/">{E(x["h1"])}</a></li>' for x in NEW_GUIDES_DATA + GUIDES) + '</ul>')
+    return "\n".join(out)
+
+
+NEW_GUIDES_DATA = []
+
+
+def build_seo_pages(d):
+    """Write town/<slug>/, town/index.html and the 12 topic guides. Returns the sitemap paths (thin towns are noindex and left out)."""
+    global NEW_GUIDES_DATA
+    r = spec.build(d, rest_stops, JUNK_REST)
+    NEW_GUIDES_DATA = r["guides"]
+    towns = r["towns"]
+    by_slug = {t["slug"]: t for t in towns}
+    urls = []
+    for g in NEW_GUIDES_DATA:
+        sx = seo_text(g)
+        path = f'drive/{g["slug"]}/'
+        body, ld = new_guide_body(g, sx, "../../")
+        write(path + "index.html", page(path, sx["title"], sx["meta"], body, [("I-5 Buddy", ""), ("Drive guides", "drive/"), (g["h1"], path)], ld,
+                                        fine=SEO_FINE, suffix=False))
+        urls.append(path)
+    n_thin = 0
+    for t in towns:
+        sx = seo_text(t)
+        path = f'town/{t["slug"]}/'
+        body, ld = town_body(t, sx, "../../", by_slug)
+        write(path + "index.html", page(path, sx["title"], sx["meta"], body, [("I-5 Buddy", ""), ("Towns on I-5", "town/"), (t["name"], path)], ld,
+                                        fine=SEO_FINE, noindex=t["thin"], suffix=False, article=False))
+        if t["thin"]:
+            n_thin += 1
+        else:
+            urls.append(path)
+    write("town/index.html", page("town/", "Towns on I-5 in California, south to north",
+                                  "Every town along Interstate 5 in California from the Mexico border to Oregon: exits, gas, food, EV charging listed near each, landmarks and rest areas.",
+                                  town_hub_body(towns), [("I-5 Buddy", ""), ("Towns on I-5", "town/")], fine=SEO_FINE))
+    urls.append("town/")
+    print("towns:", len(towns), "thin/noindex:", n_thin, "guides:", len(NEW_GUIDES_DATA))
+    return urls
 
 
 def write(rel, text):
@@ -436,6 +694,7 @@ def write(rel, text):
 def main():
     d = load()
     urls = []
+    seo_urls = build_seo_pages(d)
     for g in GUIDES:
         body, ld = guide_body(d, g)
         path = f'drive/{g["slug"]}/'
@@ -461,6 +720,7 @@ def main():
                                         "with mileposts, directions, and the truck stops and travel centers between them.",
                                         rest_body(d), [("I-5 Buddy", ""), ("Rest areas", "rest-areas/")]))
     urls.append("rest-areas/")
+    urls += [u for u in seo_urls]
     # sitemap: the guide lines live between two markers
     sm_path = os.path.join(ROOT, "sitemap.xml")
     sm = open(sm_path, encoding="utf-8").read()

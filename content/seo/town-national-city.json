@@ -1,0 +1,28 @@
+{
+ "title": "National City on I-5: Exits, Gas, EV and Food",
+ "meta": "National City sits at exits 7A to 15A on I-5 in California. See the exits, the ranch behind the name, and gas, EV, food and lodging as mapped.",
+ "intro": "National City takes its name from El Rancho del Rey, the Ranch of the King, where Spanish soldiers grazed their horses on 26,000 acres near exit 11. I-5 here follows the east side of San Diego Bay, past the Navy's piers, Barrio Logan and downtown. Gas, EV, food and lodging below come from OpenStreetMap as mapped, not live.",
+ "faq": [
+  {
+   "q": "What exit is National City on I-5?",
+   "a": "The National City landmark sits at exit 11, and nearby exits run from 7A at L Street through 15A at CA 94 East. Exit 11B is Plaza Boulevard, Downtown and 8th Street, National City, and exit 12 is Division Street and Main Street."
+  },
+  {
+   "q": "Where is gas near National City on I-5?",
+   "a": "Gas is mapped at exit 7A (Costco Gasoline), exit 8A (76), exit 9 (ARCO), exit 11B (Chevron) and exit 13B (NEX Autoport). This is listed data from OpenStreetMap, not live."
+  },
+  {
+   "q": "Where are EV chargers near National City on I-5?",
+   "a": "EV chargers are mapped at several exits: Tesla Supercharger at exits 9 and 13B, Electrify America at 11B, ChargePoint at 12, EVgo at 13A and Blink at 15A. Exit 10 also lists an EV charger. This is listed data, not live."
+  },
+  {
+   "q": "Where can I find food and lodging near National City on I-5?",
+   "a": "Food is mapped at most exits, with 31 places at exit 8A (H Street) and 12 at exit 13B. Lodging is mapped at exits 7B, 8A, 8B, 9, 10, 12, 13A, 13B and 15A, with 9 places at exit 12 (Main Street, National City Boulevard)."
+  },
+  {
+   "q": "Where is the Navy base near National City on I-5?",
+   "a": "Naval Base San Diego is at about exit 13, on the left going north. It is the main home port of the US Pacific Fleet."
+  }
+ ],
+ "flags": []
+}

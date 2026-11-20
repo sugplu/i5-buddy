@@ -1,0 +1,30 @@
+{
+ "title": "Coalinga on I-5: Exit 337, Gas, Food and Stops",
+ "meta": "Coalinga sits at exit 337 on I-5 in California. See nearby exits, listed gas, EV and food at exit 334, landmarks and the closest rest areas.",
+ "intro": "Coalinga is at exit 337 on Interstate 5, where CA 33 South and CA 145 North meet the freeway. The town began in 1888 as a Southern Pacific coaling stop, which the railroad called Coaling Station A. I-5 Buddy is a free talking GPS guide, and this page gathers what the data lists around Coalinga, with services shown as mapped, not live.",
+ "faq": [
+  {
+   "q": "What exit is Coalinga on I-5?",
+   "a": "Coalinga is at exit 337 on I-5, labeled CA 33 South, CA 145 North; Kerman; Coalinga. The Coalinga and the Iron Zoo landmark is listed at this exit."
+  },
+  {
+   "q": "Where is gas, food and lodging near Coalinga on I-5?",
+   "a": "The services listed in the data are at exit 334 (CA 198; Lemoore, Hanford), with 8 mapped gas stations, 9 food places and 3 lodging places. Brands mapped there include Valero, 76, Arco and Chevron for gas, Harris Ranch and Baja Fresh for food, and Best Western, Motel 6 and Travelodge for lodging, all as mapped and not live."
+  },
+  {
+   "q": "Are there EV chargers near Coalinga on I-5?",
+   "a": "At exit 334 the data lists Electrify America and Tesla Supercharger networks. This comes from OpenStreetMap, so it shows what is mapped, not current availability."
+  },
+  {
+   "q": "Where is the nearest rest area to Coalinga on I-5?",
+   "a": "South of town, the Coalinga-Avenal Rest Area is at mile 320.2, about 16.8 miles from here, serving both directions. North of town, the John \"Chuck\" Erreca Rest Area is at mile 385.9, about 48.9 miles away, also serving both directions."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:4",
+   "text": "The Harris Ranch Inn and restaurant is listed at exit 334, on the right going north, and opened beside the freeway in 1977.",
+   "reason": "The packet says only the restaurant opened in 1977. It gives no opening date for the Inn."
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "title": "Burbank on I-5: Exits, Gas, Food & Stops | I-5 Buddy",
+ "meta": "Burbank on I-5 runs from about exit 144 to 148, with mapped gas, EV charging, food and lodging at several exits. Free talking guide, not live info.",
+ "intro": "I-5 passes through Burbank, commonly known as the Media Capital of the World, with Warner Bros. and the Walt Disney Company headquartered in the Media District a couple of miles west of the freeway. The town sits on the flat east end of the San Fernando Valley, below the rocky Verdugo Mountains. I-5 Buddy lists the exits, mapped services and landmarks here so you can plan a stop; it is not live traffic or business information.",
+ "faq": [
+  {
+   "q": "What exit is Burbank on I-5?",
+   "a": "The Burbank, the Media Capital landmark is at exit 147. Nearby exits include 146B (Burbank Boulevard), 147B (Empire Avenue, San Fernando Boulevard) and 148 (Buena Vista Street)."
+  },
+  {
+   "q": "Where can I find gas and EV charging in Burbank on I-5?",
+   "a": "In the mapped data, gas is listed at exits 144, 145A, 145B, 146A, 146B, 147B and 148. EV charging is mapped at exit 146A (ChargePoint), 146B (Tesla Supercharger), 147B (Electrify America and Tesla Supercharger) and 148 (ChargePoint); none of this is live."
+  },
+  {
+   "q": "Where can I eat or find a hotel near I-5 in Burbank?",
+   "a": "Food is mapped at most Burbank exits, with the most places listed at exit 146B (80) and exit 146A (42). Lodging is mapped at exits 145A, 145B, 146A, 147B and 148, including Hotel Burbank at exit 146A and Courtyard at exit 147B."
+  },
+  {
+   "q": "What is there to see near I-5 in Burbank?",
+   "a": "Near exit 144 are the Los Angeles Zoo, the Autry Museum of the American West and Travel Town, a railroad museum with 43 full-size engines, cars and other rolling stock. Going north, the Verdugo Mountains rise on the right near mile 146.4, and the 1928 Grand Central Air Terminal building stands just east of the freeway."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:4",
+   "text": "open to both directions",
+   "reason": "The packet says the rest area serves both directions. It makes no claim about whether it is open."
+  }
+ ]
+}

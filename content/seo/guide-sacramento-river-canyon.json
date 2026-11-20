@@ -1,0 +1,28 @@
+{
+ "title": "Sacramento River Canyon on I-5: Shasta Lake to Dunsmuir",
+ "meta": "Drive I-5 from Shasta Lake past the Sacramento River canyon, Castle Crags and Dunsmuir, with listed gas, EV, food and lodging at exits 690 to 738.",
+ "intro": "From about exit 688 to 740, I-5 crosses Shasta Lake, follows the steep forested Sacramento River canyon, passes the granite spires of Castle Crags and Dunsmuir, and opens onto the foot of Mount Shasta. I-5 Buddy, a free talking GPS guide to Interstate 5 in California, tells the story of this stretch as you drive it. Gas, EV, food and lodging are as mapped in OpenStreetMap, not live.",
+ "faq": [
+  {
+   "q": "What exit is Shasta Lake on I-5?",
+   "a": "Shasta Lake is at exit 689, on the left going north. The lake is California's largest reservoir, with 365 miles of steep, wooded shoreline."
+  },
+  {
+   "q": "Where can I get gas on I-5 through the Sacramento River canyon?",
+   "a": "Mapped gas in this stretch includes Shell at exit 702 (Lakeshore Drive), Pollard Flat at exit 712, Chevron at exit 724 (Castella) and exit 730 (Central Dunsmuir), Valero at exit 729, and 76, Chevron and Valero at exit 738 (Central Mount Shasta). These are listed in the data, not live, so open hours and prices are not shown."
+  },
+  {
+   "q": "Are there EV chargers on I-5 between Shasta Lake and Mount Shasta?",
+   "a": "ChargePoint is mapped at exit 702 (Lakeshore Drive) and exit 730 (Central Dunsmuir). Exit 738 (Central Mount Shasta) lists ChargePoint, Tesla Supercharger, Rivian Adventure Network and Rivian Waypoints, all as mapped, not live."
+  },
+  {
+   "q": "Where are the rest areas on I-5 near Shasta Lake?",
+   "a": "O'Brien Rest Area is at mile 692.9 and Lakehead Rest Area is at mile 704.7. The data does not say which direction each one serves."
+  },
+  {
+   "q": "Where can I eat or stay in Dunsmuir on I-5?",
+   "a": "Exit 730 (Central Dunsmuir) lists seven mapped food places, including Burger Barn, Cafe Maddalena and Pizza Factory. Exit 732 lists eight mapped lodging places, including Cedar Lodge Motel and Travelodge, and exit 728 lists the Jubilee Railroad Wilderness Lodge with its dining car."
+  }
+ ],
+ "flags": []
+}

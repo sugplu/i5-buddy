@@ -1,0 +1,35 @@
+{
+ "title": "Manteca on I-5: Exit 461 (CA 120 East)",
+ "meta": "Manteca sits off I-5 at exit 461, where Highway 120 leads east. See nearby exit 460 gas, Mossdale Crossing, and the closest rest areas.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Manteca on I-5?",
+   "a": "Exit 461, signed CA 120 East; Manteca, Sonora. Highway 120 leads east from there to Manteca."
+  },
+  {
+   "q": "Is there gas near Manteca on I-5?",
+   "a": "One gas station, an Arco, is listed at exit 460 in the map data. That is as mapped, not live, so it does not say whether it is open."
+  },
+  {
+   "q": "Where does I-5 cross the San Joaquin River near Manteca?",
+   "a": "At Mossdale Crossing, near exit 460 on the left going north. The crossing is near a steel railroad lift bridge."
+  },
+  {
+   "q": "Why is Manteca named after lard?",
+   "a": "Manteca is Spanish for lard, which is odd for a town whose railroad stop shipped dairy products. According to the I-5 Buddy landmark text, nobody agrees on how the name came about."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "and it is not affiliated with Caltrans or the CHP",
+   "reason": "The packet says nothing about any affiliation with Caltrans or the CHP."
+  },
+  {
+   "field": "faq:3",
+   "text": "Going south, Westley Rest Area is about 16 miles back at mile 444.9",
+   "reason": "Going south, mile 444.9 is ahead of Manteca, not back. The packet gives only the distance, so 'back' misstates the relation."
+  }
+ ]
+}

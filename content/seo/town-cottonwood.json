@@ -1,0 +1,28 @@
+{
+ "title": "Cottonwood on I-5: Exits, Gas, Food and History",
+ "meta": "Cottonwood sits at exit 664 on I-5, the halfway town between Redding and Red Bluff. See nearby exits, mapped gas, food and EV charging, and rest areas.",
+ "intro": "Cottonwood is a stagecoach town settled in 1849, sitting halfway between Redding and Red Bluff, 15 miles from each, on both banks of Cottonwood Creek. I-5 Buddy's talking guide marks it at exit 664, with exits 662 and 665 close by. Gas, EV and food stops below are listed in OpenStreetMap data, not live.",
+ "faq": [
+  {
+   "q": "What exit is Cottonwood on I-5?",
+   "a": "The Cottonwood landmark is at exit 664, which is Gas Point Road and Balls Ferry Road. Exit 665 is also marked Cottonwood, and exit 662 is Bowman Road, Cottonwood."
+  },
+  {
+   "q": "Is there gas on I-5 at Cottonwood?",
+   "a": "Gas is mapped at two exits: a Chevron at exit 662 and a Chevron at exit 664. This comes from OpenStreetMap, so it is not a live check of what is open."
+  },
+  {
+   "q": "Is there an EV charger near Cottonwood on I-5?",
+   "a": "A Tesla Supercharger is mapped at exit 664, Gas Point Road and Balls Ferry Road. The data does not say how many chargers there are or whether they are available now."
+  },
+  {
+   "q": "Where can I eat in Cottonwood off I-5?",
+   "a": "Exit 664 lists three places in the map data: Cottonwood Eatery, Jake's Take & Bake Pizza and Subway. Exit 665 has one more food place mapped, listed only as Food."
+  },
+  {
+   "q": "Where is the nearest rest area to Cottonwood on I-5?",
+   "a": "South of town, the Herbert S. Miles Rest Area is at mile 654.1, 9.8 miles from here, and serves both directions. North of town, the O'Brien Rest Area is at mile 692.9, 29.0 miles away."
+  }
+ ],
+ "flags": []
+}

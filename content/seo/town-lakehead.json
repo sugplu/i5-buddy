@@ -1,0 +1,31 @@
+{
+ "title": "Lakehead on I-5: Exit 702, Services and Rest Areas",
+ "meta": "Lakehead sits at exit 702 on I-5, on the northern shore of Shasta Lake. See the mapped gas, EV, food and lodging there, plus nearby exits and rest areas.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Lakehead on I-5?",
+   "a": "Lakehead is at exit 702, Lakeshore Drive. The nearby exits are 698 (Gillman Road; Salt Creek Road) and 704 (Riverview Drive)."
+  },
+  {
+   "q": "Where are the rest areas near Lakehead on I-5?",
+   "a": "The Lakehead Rest Area is at mile 704.7, 3.5 miles north of town. To the south, O'Brien Rest Area is at mile 692.9, 8.3 miles from here. The data does not state which direction each one serves."
+  },
+  {
+   "q": "What happened near Lakehead's Salt Creek exit in 2021?",
+   "a": "On June 30, 2021, a fire started beside I-5 near the Salt Creek exit (exit 698) and shut down the freeway. It is called the Salt Fire, and the landmark sits on the right going north."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "I-5 Buddy is a free talking GPS guide and is not affiliated with Caltrans or the CHP.",
+   "reason": "The packet does not say anything about affiliation with Caltrans or the CHP; this is outside information."
+  },
+  {
+   "field": "faq:1",
+   "text": "a ChargePoint EV charger",
+   "reason": "The packet lists only the ChargePoint network, not a count of chargers. 'A charger' implies there is exactly one."
+  }
+ ]
+}

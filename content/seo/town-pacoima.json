@@ -1,0 +1,28 @@
+{
+ "title": "Pacoima on I-5: Exit 155, Ritchie Valens' Hometown",
+ "meta": "Pacoima sits at exit 155 on I-5, hometown of Ritchie Valens, with listed gas, food and EV charging at nearby exits. Free talking guide from I-5 Buddy.",
+ "intro": "Pacoima is at exit 155 on I-5, in the north San Fernando Valley with Mission Hills and Sylmar. Its name comes from Pakoinga, a Native village name meaning entrance, and it is the hometown of Ritchie Valens, born Richard Valenzuela here in 1941. I-5 Buddy's free talking guide covers the exits and stops around town, as mapped in OpenStreetMap data and not live.",
+ "faq": [
+  {
+   "q": "What exit is Pacoima on I-5?",
+   "a": "The Pacoima landmark is at exit 155, with exit 155A at Terra Bella Street and exit 155B at Van Nuys Boulevard."
+  },
+  {
+   "q": "Why is Pacoima called Pacoima?",
+   "a": "The name comes from Pakoinga, a Native village here whose name means entrance. Spanish ears heard its ng sound as an m."
+  },
+  {
+   "q": "Who is famous from Pacoima?",
+   "a": "Ritchie Valens, born Richard Valenzuela in Pacoima in 1941. In 1958 he turned the Mexican folk song La Bamba into a rock and roll hit."
+  },
+  {
+   "q": "Where can I get gas and food near Pacoima on I-5?",
+   "a": "Gas and food are listed at several nearby exits, including 154 (Osborne Street), 155A (Terra Bella Street) and 155B (Van Nuys Boulevard), where 7 food places are mapped. Exit 157 in San Fernando lists the most gas stations, 8, as mapped and not live."
+  },
+  {
+   "q": "Is there an EV charger near Pacoima on I-5?",
+   "a": "EVgo is listed at exit 154 (Osborne Street). A Tesla Supercharger is listed at exit 157, and exit 157B lists Tesla and other EV chargers, as mapped and not live."
+  }
+ ],
+ "flags": []
+}

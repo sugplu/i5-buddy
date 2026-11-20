@@ -1,0 +1,38 @@
+{
+ "title": "Grapevine Winter Driving on I-5: Tejon Pass to Gorman",
+ "meta": "Winter notes for I-5 from exit 176 to 221: Five Mile Grade, Gorman, Tejon Pass summit, Fort Tejon and listed gas, EV, food and lodging stops along the way.",
+ "intro": null,
+ "faq": [],
+ "flags": [
+  {
+   "field": "faq:0",
+   "text": "the shutdown usually lasts four to six hours, but some closures run longer than a day.",
+   "reason": "I did not search for an official source such as Caltrans or CHP, so I could not confirm this typical closure duration or the claim about longer closures."
+  },
+  {
+   "field": "faq:1",
+   "text": "Near the top of Tejon Pass, around exit 204, I-5 reaches 4,144 feet, its highest point in California.",
+   "reason": "I did not check the elevation figure or the exit number against a primary source such as Caltrans. Tejon Pass is usually given as 4,144 ft, but I did not confirm it."
+  },
+  {
+   "field": "faq:2",
+   "text": "Yes, the Tejon Pass Rest Area is listed at mile 206.1 and serves both directions.",
+   "reason": "I did not verify that this rest area exists, where it is, or whether it is open. Caltrans rest area status can change."
+  },
+  {
+   "field": "faq:3",
+   "text": "Gas is mapped at exit 202 (Gorman), exit 205 (Frazier Mountain Park Road), exit 215 (Grapevine) and exits 219A and 219B (Laval Road), among others.",
+   "reason": "I did not verify that these stations exist or that the exit numbers are correct, and businesses at exits change."
+  },
+  {
+   "field": "intro",
+   "text": "ice and snow sometimes lead the Highway Patrol to close the freeway between Castaic and Grapevine",
+   "reason": "I did not confirm the closure authority or the closure extent against CHP or Caltrans sources."
+  },
+  {
+   "field": "faq:4",
+   "text": "On it, the two sides of the freeway trade places, so for about 5 miles traffic keeps to the left.",
+   "reason": "I could not confirm this claim about the road layout. The Five Mile Grade description and the claim that traffic keeps left are unverified and look doubtful."
+  }
+ ]
+}

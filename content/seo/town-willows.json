@@ -1,0 +1,24 @@
+{
+ "title": "Willows on I-5: Exit 603, Gas, Food & Lodging",
+ "meta": "Willows sits at exit 603 on I-5 (CA 162). See the gas, EV, food and lodging mapped there, nearby exits, and the closest rest areas north and south.",
+ "intro": "Willows is at exit 603 on I-5, where CA 162 heads toward Oroville. The town takes its name from a shady watering place ringed by willow trees, where cattle drivers stopped to rest. I-5 Buddy tells these stories out loud as you drive.",
+ "faq": [
+  {
+   "q": "What exit is Willows on I-5?",
+   "a": "Willows is at exit 603, signed CA 162; Willows, Oroville. The nearby exits are 601 (County Road 57) and 607 (County Road 39)."
+  },
+  {
+   "q": "Is there gas and food at the Willows exit on I-5?",
+   "a": "At exit 603, the data lists three gas stations (Arco, Chevron and Diamond Gas) and 15 food places, including Black Bear Diner, Burger King, Casa Ramos and KFC. This comes from OpenStreetMap as mapped, not live, so hours and availability are not shown."
+  },
+  {
+   "q": "Are there EV chargers or hotels near Willows on I-5?",
+   "a": "At exit 603, EVgo and Electrify America chargers are mapped, along with 7 lodging places including Best Western, Holiday Inn Express & Suites and Motel 6. Exit 607 maps a 42kw fast charger and The Grove Motel."
+  },
+  {
+   "q": "Where is the nearest rest area to Willows on I-5?",
+   "a": "Willows Rest Area is at mile 607.7, about 4.7 miles north of town, and serves both directions. To the south, Maxwell Rest Area is at mile 583.5, about 19.5 miles away, also both directions."
+  }
+ ],
+ "flags": []
+}

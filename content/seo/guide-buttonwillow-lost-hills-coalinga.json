@@ -1,0 +1,28 @@
+{
+ "title": "Buttonwillow to Coalinga on I-5: Gas, Food, Rest Areas",
+ "meta": "Mapped gas, EV charging, food and lodging at I-5 exits 257, 278, 309 and 334, plus the two rest areas between Buttonwillow and Coalinga.",
+ "intro": "This stretch of I-5 runs from about mile 255 to 340 across open valley farmland, oil country and the West Side of Fresno County. The guide lists the exits with mapped gas, EV charging, food and lodging, along with the rest areas and truck stops, all as mapped in OpenStreetMap and not live. Miles are California exit numbers counting up from the Mexico border.",
+ "faq": [
+  {
+   "q": "Where are the rest areas on I-5 between Buttonwillow and Coalinga?",
+   "a": "Two are mapped here: Buttonwillow Rest Area at mile 259.2 and Coalinga-Avenal Rest Area at mile 320.2, both listed for both directions."
+  },
+  {
+   "q": "Which I-5 exits have gas between Buttonwillow and Coalinga?",
+   "a": "Seven exits in this range have gas mapped: 257, 278, 305, 309, 319, 325 and 334. Exits 278 and 309 list the most stations, 14 and 9 respectively, with exit 257 also listing 9."
+  },
+  {
+   "q": "Where can I charge an EV on I-5 near Lost Hills and Kettleman City?",
+   "a": "Charging is mapped at four exits in this range: 257, 278, 309 and 334. Exit 278 for Lost Hills lists Electrify America and Tesla Supercharger, and exit 309 for Kettleman City lists Tesla Supercharger, EV Range and Electrify America."
+  },
+  {
+   "q": "Where can I find food and a motel on I-5 near Kettleman City?",
+   "a": "Exit 309 for CA 41 lists 16 food places, including Baja Fresh, Bravo Farms and Denny's, and two lodging places, Best Western and Quality Inn. The data notes Kettleman City is near the halfway point between Los Angeles and San Francisco or Sacramento."
+  },
+  {
+   "q": "What exit is Lost Hills on I-5?",
+   "a": "Lost Hills is at exit 278, CA 46, which also serves Paso Robles and Wasco. The exit lists a Lost Hills Travel Center, 14 gas stations, 11 food places and two lodging places as mapped."
+  }
+ ],
+ "flags": []
+}

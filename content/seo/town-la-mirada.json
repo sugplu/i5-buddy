@@ -1,0 +1,35 @@
+{
+ "title": "La Mirada on I-5: Exit 118 and Nearby Services",
+ "meta": "La Mirada sits at exit 118 on I-5 in California. See nearby exits, mapped gas, food, EV and lodging, and the olive ranch story behind the name.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is La Mirada on I-5?",
+   "a": "La Mirada is at exit 118, Valley View Avenue and N Firestone Blvd, at mile 117.8. The exits just before it going north are exit 117 (Artesia Boulevard) and exit 116 (CA 39, Beach Boulevard); the next is exit 119 (Carmenita Road)."
+  },
+  {
+   "q": "Where is gas near La Mirada on I-5?",
+   "a": "Gas is mapped at exit 118, where an Arco is listed. Others are listed at exit 117 (Mobil, SC Fuels), exit 120B (76), exit 120 (Soniz) and exit 121 (Chevron, Shell). This comes from OpenStreetMap and is not live, so check hours and prices yourself."
+  },
+  {
+   "q": "Is there EV charging near La Mirada on I-5?",
+   "a": "EVgo is mapped at exit 118. Nearby, ChargePoint and Electrify America are mapped at exit 116, a Tesla Supercharger at exit 115, and ChargePoint and EVgo at exit 121. These are listings, not live availability."
+  },
+  {
+   "q": "Where can I stay or eat near La Mirada on I-5?",
+   "a": "Exit 118 has the most lodging listed nearby, 18 places including Extended Stay America, Holiday Inn and Marriott Residence Inn. Food mapped there includes Chick-fil-A, In-N-Out Burger, North Woods Inn, Starbucks and Subway."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:4",
+   "text": "open in both directions",
+   "reason": "Packet says the rest area serves both directions; it makes no claim about it being open."
+  },
+  {
+   "field": "intro",
+   "text": "between Buena Park and Norwalk",
+   "reason": "Packet names the area 'Buena Park to Norwalk' and says the freeway runs through La Mirada, Santa Fe Springs and Norwalk between Buena Park and Downey. It never places La Mirada itself between Buena Park and Norwalk. This is a borderline rewording."
+  }
+ ]
+}

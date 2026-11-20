@@ -1,0 +1,35 @@
+{
+ "title": "Yolo on I-5: Exit 542, Services and Landmarks",
+ "meta": "Yolo sits at exit 542 on I-5 beside Cache Creek. See nearby exits, gas and food listed at exit 540, and the closest rest areas in each direction.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Yolo on I-5?",
+   "a": "Yolo is exit 542 on I-5. The exits just before it going north are exit 540 (West Street) and exit 541 (CA 16 West; Esparto)."
+  },
+  {
+   "q": "Is there gas and food near Yolo on I-5?",
+   "a": "In the mapped data, the closest listed services are at exit 540 (West Street): two gas stations (Arco and Quik Stop) and two food places (Denny's and The Elephant Shack). This comes from OpenStreetMap as mapped, not live, so check hours and availability before you count on a stop."
+  },
+  {
+   "q": "Where is the nearest rest area to Yolo on I-5?",
+   "a": "Going north, the Dunnigan Rest Area is about 15.0 miles from Yolo, at mile 556.6, and serves both directions. To the south, the Elkhorn Rest Area is about 12.3 miles away at mile 529.3; the data does not say which direction it serves."
+  },
+  {
+   "q": "What is the Capay Valley and how do I get there from I-5?",
+   "a": "Highway 16 heads west past Esparto into the Capay Valley, which Cache Creek flows through. Take exit 541 (CA 16 West; Esparto); the valley is listed as the Yocha Dehe homeland, on the left going north."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "not affiliated with Caltrans or the CHP",
+   "reason": "The packet does not mention Caltrans or the CHP, and this goes beyond the allowed description of I-5 Buddy."
+  },
+  {
+   "field": "intro",
+   "text": "On I-5 it is exit 542, where the freeway crosses Cache Creek.",
+   "reason": "The packet places the Cache Creek crossing at exit 541 (mile 541.5), not exit 542."
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "title": "Kettleman City Stop on I-5: Exit 309 Gas and Food",
+ "meta": "Exit 309 for Kettleman City on I-5 has gas, food, EV charging and lodging listed in the map data. Also: the nearest rest area and nearby exits.",
+ "intro": "Kettleman City is at exit 309 on I-5, near the halfway point between Los Angeles and San Francisco or Sacramento. The map data lists gas, EV charging, food and lodging at this exit. These stops are as mapped in OpenStreetMap, not live.",
+ "faq": [
+  {
+   "q": "What exit is Kettleman City on I-5?",
+   "a": "Kettleman City is at exit 309, which is CA 41 toward Fresno and Paso Robles. The data notes it is near the halfway point between Los Angeles and San Francisco or Sacramento."
+  },
+  {
+   "q": "Is there gas at the Kettleman City exit on I-5?",
+   "a": "Yes, exit 309 lists 9 gas stations in the map data, with brands including 76, CFN, Chevron and Mobil. This is as mapped, not live."
+  },
+  {
+   "q": "Can I charge an electric car at exit 309?",
+   "a": "The map data lists Tesla Supercharger, EV Range and Electrify America charging at exit 309. Charger counts and speeds are not in the data, and availability is not live."
+  },
+  {
+   "q": "What food and hotels are at Kettleman City?",
+   "a": "Exit 309 lists 16 food places in the map data, with examples such as Baja Fresh, Bravo Farms, Carl's Jr. and Denny's. It also lists 2 lodging places, Best Western and Quality Inn."
+  },
+  {
+   "q": "Where is the nearest rest area near Kettleman City?",
+   "a": "The Coalinga-Avenal Rest Area is at mile 320.2, serving both directions. Exit 319 also lists an EZ Trip Travel Center at mile 319."
+  }
+ ],
+ "flags": []
+}

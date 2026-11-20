@@ -1,0 +1,34 @@
+{
+ "title": "Arbuckle on I-5: Exit 566, Gas and Landmarks",
+ "meta": "Arbuckle sits at exit 566 on I-5 in California. See nearby exits, listed gas and food, the town's story, and the closest rest areas north and south.",
+ "intro": null,
+ "faq": [
+  {
+   "q": "What exit is Arbuckle on I-5?",
+   "a": "Arbuckle is at exit 566, signed as Arbuckle, College City. The next exits north are exit 567 (Putnam Lateral) and exit 569 (Hahn Road)."
+  },
+  {
+   "q": "Is there gas in Arbuckle near I-5?",
+   "a": "In the I-5 Buddy data, exit 566 has two gas stations listed, 76 and J&J Gas Mart, and exit 567 has nine, including Chevron, Flyers and Poppy Gas. This comes from OpenStreetMap as mapped, not live, so it does not show whether a station is open."
+  },
+  {
+   "q": "Where can I eat near Arbuckle on I-5?",
+   "a": "Two food places are mapped at exit 567 (Putnam Lateral): El Jaliscience Méxican Grill and Orozco Boy's BBQ. These are listed in the map data, not confirmed live."
+  },
+  {
+   "q": "Where is the nearest rest area to Arbuckle on I-5?",
+   "a": "Going south, Dunnigan Rest Area is about 9.8 miles from Arbuckle, at mile 556.6. Going north, Maxwell Rest Area is about 17.1 miles away, at mile 583.5. Both serve both directions."
+  },
+  {
+   "q": "Who was Arbuckle named for?",
+   "a": "The town was named for Tacitus Arbuckle, on whose ranch it grew after it was laid out in 1875. He gave lots to anyone who would build on them and became the first postmaster."
+  }
+ ],
+ "flags": [
+  {
+   "field": "intro",
+   "text": "Arbuckle is a small Sacramento Valley town",
+   "reason": "Packet does not say 'small' or 'Sacramento Valley'; outside knowledge."
+  }
+ ]
+}

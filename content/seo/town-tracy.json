@@ -1,0 +1,26 @@
+{
+ "title": "Tracy on I-5: Exit 458, Railroad Town History",
+ "meta": "Tracy sits at exit 458 on I-5, a railroad town founded in 1878. See nearby exits, the Westley Rest Area, and the next towns north and south.",
+ "intro": "Tracy is a railroad town west of the freeway at exit 458, born on September 8, 1878, when a Southern Pacific line from Oakland joined the Central Pacific line there. North of the I-580 junction, I-5 crosses flat San Joaquin County farmland near the edge of the Delta. I-5 Buddy tells the story of Tracy as you drive by.",
+ "faq": [
+  {
+   "q": "How did Tracy get its name?",
+   "a": "The Tracy Historical Museum says the railroad junction was named for Lathrop J. Tracy, a railroad executive from back east. The town was born on September 8, 1878, when two rail lines were joined there."
+  },
+  {
+   "q": "Where is the nearest rest area to Tracy on I-5?",
+   "a": "South of Tracy, the Westley Rest Area is at mile 444.9, 13.1 miles from here, and serves both directions. North of town, the Elkhorn Rest Area is at mile 529.3, 71.3 miles away; the data does not state its direction."
+  },
+  {
+   "q": "What towns are before and after Tracy on I-5?",
+   "a": "Driving north, Banta is the next town to the south and Manteca is the next town to the north. The freeway between them crosses San Joaquin County farmland, a major national center of farming."
+  }
+ ],
+ "flags": [
+  {
+   "field": "faq:0",
+   "text": "which splits into exits 458A (11th Street) and 458B",
+   "reason": "The packet lists 458A and 458B as nearby exits but does not say exit 458 splits into them."
+  }
+ ]
+}

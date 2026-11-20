@@ -1,0 +1,28 @@
+{
+ "title": "Lathrop on I-5: Exits, Gas, EV, Food and Lodging",
+ "meta": "Lathrop sits at exits 462, 463 and 465 on I-5 in California, with gas, ChargePoint, Tesla Supercharger and EVgo, food and lodging mapped at these exits.",
+ "intro": "Lathrop is a railroad town on I-5 where the freeway crosses the San Joaquin River at Mossdale. It exists because Central Pacific president Leland Stanford built the line around Stockton and started a new town at a depot called Wilson's Station. Exits 462, 463 and 465 serve the area, with gas, EV charging, food and lodging as mapped in OpenStreetMap, not live.",
+ "faq": [
+  {
+   "q": "What exits serve Lathrop on I-5?",
+   "a": "The exits nearby are exit 462 (East Louise Avenue), exit 463 (Lathrop Road) and exit 465 (Roth Road, signed for Sharpe Depot)."
+  },
+  {
+   "q": "Where can I get gas near Lathrop on I-5?",
+   "a": "Gas is mapped at all three exits: Arco and Shell at exit 462, Chevron, Joel's Travel Plaza, Mobil and Power Market among five stations at exit 463, and four stations at exit 465. This is listed data, not live."
+  },
+  {
+   "q": "Where can I charge an EV in Lathrop on I-5?",
+   "a": "EV charging is mapped at all three exits. Exit 462 lists ChargePoint, exit 463 lists a Tesla Supercharger and another EV charger, and exit 465 lists EVgo. Availability is not live."
+  },
+  {
+   "q": "Where are the hotels and food near Lathrop on I-5?",
+   "a": "Exit 462 lists 19 food places and 3 lodging places, including Hampton Inn & Suites, Quality Inn and Tru. Exit 463 lists 15 food places and 3 lodging places, including Comfort Inn, Days Inn and Holiday Inn Express & Suites."
+  },
+  {
+   "q": "Where is the nearest rest area to Lathrop on I-5?",
+   "a": "Going south, Westley Rest Area is at mile 444.9, about 17.5 miles from Lathrop, and serves both directions. Going north, Elkhorn Rest Area is at mile 529.3, about 66.9 miles away."
+  }
+ ],
+ "flags": []
+}

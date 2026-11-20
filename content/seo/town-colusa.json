@@ -1,0 +1,28 @@
+{
+ "title": "Colusa Exit on I-5: Services & Landmarks",
+ "meta": "Colusa is reached from I-5 at exit 578 on Highway 20, about 8 miles east. See nearby gas, EV, food and lodging as mapped, plus rest areas and landmarks.",
+ "intro": "To reach Colusa, take exit 578 (CA 20; Colusa, Clear Lake) and follow Highway 20 about 8 miles east to the county seat on the Sacramento River. Its name comes from Korusi, a Patwin village that stood on the river's west bank. Rice fields spread across the valley here, and the marshes of the Sacramento National Wildlife Refuge sit just east of the freeway.",
+ "faq": [
+  {
+   "q": "What exit is Colusa on I-5?",
+   "a": "Take exit 578, CA 20; Colusa, Clear Lake. From there Highway 20 leads about 8 miles east to Colusa."
+  },
+  {
+   "q": "Is there gas at the Colusa exit on I-5?",
+   "a": "The data lists 3 gas stations at exit 578, with Love's and Shell mapped there. Exit 577 (Williams) lists 5 more, with brands 76, Arco, Chevron, Shell and Sinclair. This is as mapped in OpenStreetMap, not live."
+  },
+  {
+   "q": "Where can I charge an EV near Colusa on I-5?",
+   "a": "Exit 577 (Williams) lists EV chargers from networks including Skycharger Electric Era and Tesla Supercharger. No charger is listed at exit 578. This is as mapped, not live."
+  },
+  {
+   "q": "Where can I eat or find a hotel near the Colusa exit?",
+   "a": "Exit 578 lists Arby's and Godfather's Pizza, plus 4 lodging places including Motel 6, SureStay and Traveller's Inn. Exit 577 (Williams) lists 14 food places and 3 lodging places, including Granzella's Inn and Williams Hotel. All as mapped, not live."
+  },
+  {
+   "q": "Where is the nearest rest area to Colusa on I-5?",
+   "a": "Maxwell Rest Area is about 5.5 miles north, at mile 583.5, and serves both directions. Dunnigan Rest Area is about 21.4 miles south, at mile 556.6, also both directions."
+  }
+ ],
+ "flags": []
+}

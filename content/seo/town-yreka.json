@@ -1,0 +1,28 @@
+{
+ "title": "Yreka on I-5: Exits, Gas, Food and Lodging",
+ "meta": "Yreka sits at exits 773, 775 and 776 on I-5 in California. See listed gas, EV charging, food and lodging at each exit, plus the town's gold rush story.",
+ "intro": "Yreka is the gold rush county seat on Interstate 5, served by exits 773, 775 and 776. In March 1851 a mule packer named Abraham Thompson found gold here, and by April 2,000 miners had arrived. I-5 Buddy tells that story out loud as you drive, and the stops below are listed in the map data, not live.",
+ "faq": [
+  {
+   "q": "What exits serve Yreka on I-5?",
+   "a": "Yreka is served by exit 773 (CA 3; Yreka), exit 775 (Central Yreka) and exit 776 (Yreka, Montague; I 5 Business, CA 3)."
+  },
+  {
+   "q": "Where is gas listed in Yreka on I-5?",
+   "a": "The map data lists 3 gas stations at exit 773, including Chevron and Valero, 3 at exit 775, including 76 and Chevron, and 2 at exit 776, Exxon and Speedway. This is mapped data, not live, so it does not show what is open."
+  },
+  {
+   "q": "Where are EV chargers listed near Yreka on I-5?",
+   "a": "Exit 773 lists ChargePoint, Electrify America and Tesla Supercharger networks, exit 775 lists Electric Era, and exit 776 lists ChargePoint. These come from OpenStreetMap and are not live availability."
+  },
+  {
+   "q": "Where can I find food and a motel in Yreka off I-5?",
+   "a": "Exit 775 lists the most places in the data, with 12 food spots and 5 lodging places, including Best Western and Econo Lodge. Exit 773 lists 11 food spots and 3 motels, and exit 776 lists Holiday Inn Express, Mountain View Inn and Super 8."
+  },
+  {
+   "q": "Why is the town called Yreka?",
+   "a": "The name Yreka comes from waik'a, the Shasta people's word for Mount Shasta. Gold was found here in 1851, at what miners first called Thompson's Dry Diggings."
+  }
+ ],
+ "flags": []
+}

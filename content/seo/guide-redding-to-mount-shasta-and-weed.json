@@ -1,0 +1,35 @@
+{
+ "title": "Redding to Mount Shasta and Weed on I-5: Exits Guide",
+ "meta": null,
+ "intro": "This stretch of I-5 runs from Redding at exit 677 up past Shasta Lake, through the forested Sacramento River canyon, beneath the granite spires of Castle Crags and on to Mount Shasta and Weed. I-5 Buddy talks you through what you pass along the way, from the Carr Fire to Hedge Creek Falls and Pluto's Cave. Gas, EV, food and lodging shown here come from OpenStreetMap as mapped, not live.",
+ "faq": [
+  {
+   "q": "What exit is Hedge Creek Falls on I-5?",
+   "a": "Hedge Creek Falls is at exit 732, near Dunsmuir. A short trail from the exit leads to a waterfall with a small cave behind it, so you can walk behind the falling water."
+  },
+  {
+   "q": "Where can I find gas between Redding and Weed on I-5?",
+   "a": "In the data, 19 exits in this stretch have gas listed, from Cypress Avenue at exit 677 up to North Weed Boulevard at exit 748. Gas is mapped in OpenStreetMap, not live, so it does not tell you what is open."
+  },
+  {
+   "q": "Which exits on I-5 near Mount Shasta and Weed have EV charging mapped?",
+   "a": "Central Mount Shasta at exit 738 lists ChargePoint, Tesla Supercharger and Rivian networks, South Weed at exit 745 lists ChargePoint, EVgo and Tesla Supercharger, and North Weed Boulevard at exit 748 lists Electric Era and Tesla Supercharger. These are as mapped, not live."
+  },
+  {
+   "q": "Are there rest areas on I-5 between Redding and Weed?",
+   "a": "The data lists three: O'Brien Rest Area at mile 692.9, Lakehead Rest Area at mile 704.7, and Weed Airport Rest Area at mile 753.1, which is listed for both directions. The direction for the first two is not stated in the data."
+  }
+ ],
+ "flags": [
+  {
+   "field": "meta",
+   "text": "Drive I-5 from Redding (exit 677) to Weed (exit 748): Shasta Lake, the Sacramento River canyon, Castle Crags and Mount Shasta, with listed gas, EV, food and lodging.",
+   "reason": "Meta is about 165 characters, over the 155-character limit."
+  },
+  {
+   "field": "faq:4",
+   "text": "The Jubilee Railroad Wilderness Lodge is just off exit 728",
+   "reason": "The packet's caboose landmark does not name the lodge. Linking it to the Jubilee Railroad Wilderness Lodge listed in services is an inference the packet does not state."
+  }
+ ]
+}
