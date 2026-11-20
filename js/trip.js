@@ -36,6 +36,7 @@ let badges = {}, stats = null, prefs = { sayBadges: true };
 let coverage = null, covCount = 0, covDirty = false;
 let cur = null, curBits = null, anchor = null, anchorT = 0, lastSave = 0;
 let destFrom = null, destDone = null, celebrating = false, knownDest = "";
+let destFromDemo = false;   // destFrom was set during a demo drive (it is forgotten when the demo ends)
 
 /* ---------- small helpers ---------- */
 const $id = id => document.getElementById(id);
@@ -430,6 +431,12 @@ function endTrip() {
   const t = cur;
   cur = null; curBits = null; anchor = null;
   t.end = now(); t.updated = t.end;
+  // A demo is pretend (code review 2026-11-20): an arrival in it must not mark the destination "Made it" for the real drive
+  // (which then never arrived and showed the celebration), and its countdown start must not be the real drive's.
+  if (t.mode === "demo") {
+    if (destDone && destDone.demo) { destDone = null; store.del("destDone"); celebrating = false; }
+    if (destFromDemo) setDestFrom(null);
+  }
   store.del("tripCur");
   saveTrip(t);
   flushCoverage();
@@ -565,6 +572,7 @@ function onReset() {
 /* ---------- destination ---------- */
 function setDestFrom(m) {
   destFrom = typeof m === "number" && isFinite(m) ? m : null;
+  destFromDemo = destFrom != null && !!cur && cur.mode === "demo";
   if (destFrom == null) store.del("destFrom"); else store.set("destFrom", destFrom);
 }
 /** Another module (a voice command) may set S.dest directly: start its countdown the way setDest would. */

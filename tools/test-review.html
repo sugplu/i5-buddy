@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy: code review 2026-11-20 fixes</title>
+<!--
+  One check per fix from the 2026-11-20 code review (claude-power/runs/review-code-i5-command-2026-11-20.md), each in a
+  fresh copy of the app (srcdoc, service worker stubbed). Every check here failed on 3a2625a.
+    I01 a wake lock that arrives after the drive ended is let go; two overlapping requests hold one lock
+    I02 the "new version" bar steps aside while GPS runs, also when it was showing before GPS started
+    I08 an update another tab activated offers the reload here too (held back while GPS runs)
+    I04 a story (story time, Tell me more) gives way to a turn or a road alert
+    I05 the halfway line no longer cuts off a landmark
+    I10 fmtDuration never says "1 h 60 min"
+    I11 an arrival in a demo drive does not mark the destination "Made it" for the real drive
+    I12 the countdown start from a demo drive is not the real drive's
+    I13 a real navigation after a simulated one that arrived takes GPS fixes
+    I14 where the route crosses itself, a noisy fix snaps to the crossing near the last place
+    I15 passing the destination across a median does not "arrive" before the route gets there
+    I16 off the route for minutes: "Rerouting" once, and route requests back off
+    I17 a new route plan does not use the heading of a navigation that ended long ago
+  Prints PASS/FAIL lines in the console ("[test-review] ..."); the last line says RESULT ALL PASS or RESULT FAILED n.
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:390px;height:844px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+</style>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<div id="bar">starting…</div>
+<script type="module">
+const f = document.getElementById("f");
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 6000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) throw new Error("timed out waiting: " + fn.toString().slice(0, 120)); await wait(step); }
+}
+const checks = [];
+function log(...a) { console.log("[test-review] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); }
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + extra : ""}`); }
+function finish() {
+  const bad = checks.filter(c => !c[1]).length, bar = document.getElementById("bar");
+  bar.className = bad ? "fail" : "pass";
+  bar.textContent = `${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  document.title = bad ? `FAILED ${bad}` : "ALL PASS";
+  log(bad ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+
+// The service worker: by default never registers; {sw: true} gives a fake one (a waiting worker, a controller, and
+// controllerchange on demand through window.__sw).
+const SW_NONE = `<script>try{Object.defineProperty(navigator.serviceWorker,"register",{configurable:true,value:function(){return new Promise(function(){})}})}catch(e){}<\/script>`;
+const SW_FAKE = waiting => `<script>(function(){var sw=new EventTarget();sw.controller={};window.__swMsgs=[];
+  sw.register=function(){return Promise.resolve({waiting:${waiting ? "{postMessage:function(m){window.__swMsgs.push(m)}}" : "null"},installing:null,addEventListener:function(){}})};
+  sw.ready=new Promise(function(){});window.__sw=sw;
+  try{Object.defineProperty(navigator,"serviceWorker",{configurable:true,value:sw})}catch(e){}})();<\/script>`;
+async function boot({ sw = null } = {}) {
+  localStorage.clear();
+  const html = await (await fetch("../index.html", { cache: "no-store" })).text();
+  const stub = `<base href="${new URL("../", location.href).href}">` + (sw == null ? SW_NONE : SW_FAKE(sw.waiting));
+  f.srcdoc = html.replace(/<head>/i, "<head>" + stub);
+  await until(() => f.contentDocument && f.contentDocument.readyState === "complete" && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api.nav && f.contentWindow.I5BUDDY.api.trip, 20000);
+  await wait(300);
+  const win = f.contentWindow, doc = f.contentDocument, api = win.I5BUDDY.api;
+  win.__I5_FAKE_GEO__ = { watchPosition() { return 1; }, clearWatch() {}, getCurrentPosition(ok) { ok({ coords: { latitude: 34.19, longitude: -118.33, accuracy: 10 } }); } };
+  api.voice.unlock = () => {};
+  return { win, doc, api };
+}
+
+/* ---------- a small route service: hand-made routes near Burbank ---------- */
+const D2R = Math.PI / 180;
+const off = ([lat, lon], east, north) => [lat + north / 69.0, lon + east / (69.17 * Math.cos(lat * D2R))];
+function seg(a, b, step = 0.01) {
+  const L = Math.hypot((b[1] - a[1]) * 69.17 * Math.cos(a[0] * D2R), (b[0] - a[0]) * 69.0), n = Math.max(1, Math.ceil(L / step)), out = [];
+  for (let i = 1; i <= n; i++) out.push([a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n]);
+  return out;
+}
+/** corners -> {raw route, pts}: one step per leg (types given), arrival at the last corner. */
+function routeOf(corners, types) {
+  const geom = [corners[0]], idx = [0];
+  for (let k = 1; k < corners.length; k++) { geom.push(...seg(corners[k - 1], corners[k])); idx.push(geom.length - 1); }
+  const steps = types.map((type, k) => ({ type, i0: idx[k], i1: idx[k + 1], text: type, street: "Test Street", ref: null, exit: null, toward: null, roundabout_exit: null, speed_limit_mph: 25, distance_mi: 0.1, duration_s: 20 }));
+  steps.push({ type: "arrive", i0: idx[idx.length - 1], i1: idx[idx.length - 1], text: "Arrive", side: "right", street: null, ref: null, exit: null, toward: null, roundabout_exit: null, speed_limit_mph: null, distance_mi: 0, duration_s: 0 });
+  return { distance_mi: 1, duration_s: 300, geometry: geom, steps, attribution: "test" };
+}
+const A0 = [34.19, -118.33];
+function provider(routes) {
+  const calls = [];
+  return { calls,
+    search() { return Promise.resolve({ results: [] }); },
+    route(from, to, heading) {
+      calls.push({ from, to, heading });
+      const r = routes[Math.min(calls.length - 1, routes.length - 1)];
+      return typeof r === "function" ? r() : Promise.resolve(JSON.parse(JSON.stringify(r)));
+    } };
+}
+const destOf = p => ({ name: "Test place", address: "1 Test Street", lat: p[0], lon: p[1], kind: "poi" });
+
+/* ================================================================ the checks ================================================================ */
+const SECTIONS = {
+  /* I10 */
+  async duration() {
+    const { api } = await boot();
+    const F = api.data.fmtDuration;
+    check("I10 fmtDuration(1.995) is 2 h 00 min, not 1 h 60 min", F(1.995) === "2 h 00 min", F(1.995));
+    check("I10 fmtDuration(0.995) is 1 h 00 min, not 60 min", F(0.995) === "1 h 00 min", F(0.995));
+    check("I10 fmtDuration(1.5) and (0.25) unchanged", F(1.5) === "1 h 30 min" && F(0.25) === "15 min", F(1.5) + " / " + F(0.25));
+  },
+
+  /* I01 */
+  async wake() {
+    const { win, api } = await boot();
+    const held = new Set(); let made = 0;
+    const fake = { request() { const s = { n: ++made, release() { held.delete(s); return Promise.resolve(); }, addEventListener() {} }; return new Promise(r => setTimeout(() => { held.add(s); r(s); }, 60)); } };
+    Object.defineProperty(win.navigator, "wakeLock", { configurable: true, value: fake });
+    api.setMode("gps"); api.setMode("off");          // the drive ends while the lock is still on its way
+    await wait(200);
+    check("I01 a lock that arrives after the drive ended is let go", held.size === 0, `held ${held.size} of ${made}`);
+    api.setMode("gps"); api.setMode("demo");         // two requests at once
+    await wait(200);
+    check("I01 two overlapping requests hold one lock", held.size === 1, `held ${held.size}`);
+    api.setMode("off");
+    await wait(50);
+    check("I01 and End trip lets it go", held.size === 0, `held ${held.size}`);
+  },
+
+  /* I02 + I08 */
+  async updatebar() {
+    let { doc, api } = await boot({ sw: { waiting: true } });
+    const bar = () => doc.getElementById("updateBar");
+    await until(() => !bar().hidden, 3000).catch(() => {});
+    check("I02 (setup) a waiting version shows the bar before GPS", !bar().hidden);
+    api.startGps(); await wait(50);
+    check("I02 the bar steps aside when GPS starts", bar().hidden);
+    api.stopAll(false); await wait(50);
+    check("I02 and comes back when the drive ends", !bar().hidden);
+    ({ doc, api } = await boot({ sw: { waiting: false } }));
+    const win = f.contentWindow;
+    await wait(100);
+    check("I08 (setup) no waiting version: no bar", bar().hidden);
+    api.startGps(); await wait(30);
+    win.__sw.dispatchEvent(new win.Event("controllerchange"));
+    await wait(50);
+    check("I08 an update from another tab during GPS: no bar yet, no reload", bar().hidden && f.contentWindow === win);
+    api.stopAll(false); await wait(50);
+    check("I08 after the drive the reload is offered", !bar().hidden);
+  },
+
+  /* I04 + I05 */
+  async narration() {
+    const { api } = await boot();
+    const said = [], results = {};
+    const real = api.voice.say.bind(api.voice);
+    api.voice.say = (text, opts = {}) => { said.push({ text, ...opts }); const pr = real(text, opts); if (opts.id) results[opts.id] = pr; return pr; };
+    api.settings.narr = true; api.settings.chat = "normal"; api.settings.zoneNarr = false;
+    api.setMode("demo");
+    const half = api.data.MAX_M / 2;
+    api.setPosition(half - 0.4, { dir: "N", speed: 60, jumped: true, save: false });
+    api.setPosition(half + 0.1, { dir: "N", speed: 60, save: false });
+    const hw = said.find(s => s.id === "halfway");
+    check("I05 the halfway line is not urgent (prio below 2), so it never cuts off a landmark", !!hw && hw.prio < 2, hw ? "prio " + hw.prio : "not said");
+    // Tell me more, then a turn prompt (prio 3, not now): the story gives way
+    const p = api.data.PLACES.find(x => x.more && x.more.length > 300);
+    api.voice.stop();
+    api.narrator.tellMore(p);
+    await until(() => api.voice.currentId() === "more:" + p.id, 3000).catch(() => {});
+    const more = said.find(s => s.id === "more:" + p.id);
+    check("I04 Tell me more is interruptible", !!more && more.interruptible === true);
+    const turn = api.voice.say("In 500 feet, turn right.", { id: "nav:test", prio: 3 });
+    const storyEnd = await Promise.race([results["more:" + p.id], wait(60000).then(() => "timeout")]);
+    // the story gives way (resolves false, cut off) instead of being read to the end (true) while the turn waits
+    check("I04 a turn prompt queued during a story is spoken now, not after it", storyEnd === false && (await turn) === true, `story ${storyEnd}`);
+    // story time: high chattiness, quiet road after a landmark
+    said.length = 0;
+    api.settings.chat = "high"; api.settings.autoStories = true; api.settings.cats = new Set(["farm"]);   // a sparse kind: quiet miles between landmarks
+    api.stopAll(false); api.setMode("demo");
+    api.voice.say = (text, opts = {}) => { said.push({ text, ...opts }); return Promise.resolve(true); };
+    for (let m = 100; m <= 400 && !said.some(s => /^story:/.test(s.id || "")); m += 0.5) api.setPosition(m, { dir: "N", speed: 65, save: false });
+    const story = said.find(s => /^story:/.test(s.id || ""));
+    check("I04 story time is interruptible", !!story && story.interruptible === true, story ? story.id : "no story told");
+    api.voice.say = real;
+  },
+
+  /* I11 + I12 */
+  async trip() {
+    const { api } = await boot();
+    let T = Date.UTC(2026, 10, 20, 18);
+    api.trip.setClock(() => T);
+    api.settings.narr = false;
+    const dest = api.data.DESTS.find(d => d.m > 150 && d.m < 600);
+    check("(setup) a destination on the road", !!dest, dest && dest.name);
+    api.trip.setDest(dest.name);
+    const arrivals = [];
+    api.bus.on("trip:arrive", e => arrivals.push(e));
+    // a demo drive that reaches it
+    api.setMode("demo");
+    for (let m = dest.m - 8; m <= dest.m + 0.5; m += 0.25) { T += 15e3; api.setPosition(m, { dir: "N", speed: 60, save: false }); }
+    await wait(50);
+    check("(setup) the demo arrives", arrivals.length === 1, String(arrivals.length));
+    api.stopAll(false);
+    await wait(50);
+    // the real drive, from further back
+    api.setMode("gps");
+    T += 60e3; api.setPosition(dest.m - 30, { dir: "N", speed: 60, jumped: true });
+    await wait(400);
+    check("I12 the real drive's countdown starts where it starts, not at the demo's start", api.store.get("destFrom", null) === dest.m - 30, String(api.store.get("destFrom", null)));
+    check("I11 the real drive does not start out 'Made it'", !/Made it|We made it/i.test(f.contentDocument.getElementById("destStrip")?.textContent || ""), (f.contentDocument.getElementById("destStrip")?.textContent || "").trim().slice(0, 60));
+    for (let m = dest.m - 29.75; m <= dest.m + 0.5; m += 0.25) { T += 15e3; api.setPosition(m, { dir: "N", speed: 60 }); }
+    await wait(50);
+    check("I11 the real drive arrives too", arrivals.length === 2, String(arrivals.length));
+    api.stopAll(false);
+  },
+
+  /* I14 */
+  async snap() {
+    const { api } = await boot();
+    const T = api.nav._test;
+    // east 0.4 mi, north 0.1, west 0.2, south 0.2 (under the first leg at 0.2 mi), east 0.4: a loop that crosses itself
+    const P0 = A0, P1 = off(P0, 0.4, 0), P2 = off(P1, 0, 0.1), P3 = off(P2, -0.2, 0), P4 = off(P3, 0, -0.2), P5 = off(P4, 0.4, 0);
+    const r = T.buildRoute(routeOf([P0, P1, P2, P3, P4, P5], ["depart", "turn-left", "turn-left", "turn-left", "turn-left"]));
+    const X = off(P0, 0.2 - 1 / 1609.34, 3 / 1609.34);          // at the crossing: 3 m north of leg 1, 1 m west of leg 4
+    const s = T.snapToRoute(r, X[0], X[1], 0.18);
+    check("I14 a noisy fix at the crossing stays on the first pass (near the last place)", Math.abs(s.along - 0.2) < 0.05, `along ${s.along.toFixed(3)}`);
+    const Y = off(P0, 0.2 - 1 / 1609.34, 3 / 1609.34), s2 = T.snapToRoute(r, Y[0], Y[1], 0.78);
+    check("I14 and on the second pass it snaps to the second pass", Math.abs(s2.along - 0.8) < 0.05, `along ${s2.along.toFixed(3)}`);
+    const Z = off(P0, 0.3, 0), s3 = T.snapToRoute(r, Z[0], Z[1], 0.2);
+    check("I14 an ordinary fix ahead still snaps where it is", Math.abs(s3.along - 0.3) < 0.02, `along ${s3.along.toFixed(3)}`);
+  },
+
+  /* I15 + I13 + I17 */
+  async arrival() {
+    const { api } = await boot();
+    const nav = api.nav;
+    api.store.set("nav:consent", "yes");
+    api.S.lat = A0[0]; api.S.lon = A0[1];
+    // east 0.5 mi, a U-turn 25 m north, back west to a destination 25 m north of the first leg's middle
+    const B = off(A0, 0.5, 0), B2 = off(B, 0, 25 / 1609.34), D = off(B2, -0.25, 0);
+    const P = provider([routeOf([A0, B, B2, D], ["depart", "uturn", "straight"]), routeOf([D, off(D, 0, 0.3)], ["depart"])]);
+    nav.setProvider(P);
+    await nav.preview(destOf(D));
+    check("(setup) route ready", nav.state() === "previewing");
+    nav.start({ gps: false });
+    nav.simulate({ mph: 30, sync: true, until: 0.3 });
+    check("I15 driving past the destination on the other side of the road is not arrival", nav.state() === "navigating", nav.state());
+    nav.simulate({ mph: 30, sync: true });
+    check("(setup) the simulated drive arrives at the end", nav.state() === "arrived", nav.state());
+    // a real navigation next, without End (from the Arrived screen): GPS fixes must count
+    await nav.preview(destOf(off(D, 0, 0.3)));
+    nav.start();
+    const before = nav._test.N.fixes;
+    nav._test.fix({ lat: D[0], lon: D[1], accuracy: 8, speed: 20, heading: 0, t: Date.now() });
+    check("I13 after a simulated drive that arrived, a real navigation takes GPS fixes", nav._test.N.fixes === before + 1, `${before} -> ${nav._test.N.fixes}`);
+    nav.end();
+    // a new plan 10 minutes later: no heading from that drive
+    nav._test.setClock(() => Date.now() + 600e3);
+    P.calls.length = 0;
+    await nav.preview(destOf(off(A0, 0.2, 0.2)));
+    check("I17 a new route plan long after the last drive sends no stale heading", P.calls.length === 1 && P.calls[0].heading == null, JSON.stringify(P.calls.map(c => c.heading)));
+    nav.end();
+  },
+
+  /* I16 */
+  async reroute() {
+    const { api } = await boot();
+    const nav = api.nav;
+    api.store.set("nav:consent", "yes");
+    api.S.lat = A0[0]; api.S.lon = A0[1];
+    let T = Date.UTC(2026, 10, 20, 18);
+    nav._test.setClock(() => T);
+    const fail = () => Promise.reject(Object.assign(new Error("server"), { http: 500 }));
+    const P = provider([routeOf([A0, off(A0, 1, 0)], ["depart"]), fail]);
+    nav.setProvider(P);
+    await nav.preview(destOf(off(A0, 1, 0)));
+    nav.start();
+    const said = [];
+    api.bus.on("speaking", s => { if (s && /^nav:reroute/.test(s.id || "")) said.push(s.id); });
+    const far = off(A0, 0.2, 0.4);                         // 0.4 mi north of the route, moving
+    for (let k = 0; k < 90; k++) { T += 2000; nav._test.fix({ lat: far[0] + k * 1e-5, lon: far[1], accuracy: 8, speed: 20, heading: 0, t: T }); await wait(2); }
+    await wait(300);
+    const reroutes = nav._test.log().filter(x => /^nav:reroute/.test(x.id || ""));
+    check("I16 three minutes off the route: 'Rerouting' is said once", reroutes.length === 1, String(reroutes.length));
+    check("I16 and the route requests back off (at most 6 in 3 minutes, was one every 10 s)", P.calls.length - 1 <= 6 && P.calls.length - 1 >= 2, String(P.calls.length - 1));
+    // back on the route, then off again: a new episode says it again
+    for (let k = 0; k < 3; k++) { T += 2000; const on = off(A0, 0.1 + k * 0.01, 0); nav._test.fix({ lat: on[0], lon: on[1], accuracy: 8, speed: 20, heading: 90, t: T }); }
+    for (let k = 0; k < 10; k++) { T += 2000; nav._test.fix({ lat: far[0], lon: far[1] + k * 1e-4, accuracy: 8, speed: 20, heading: 0, t: T }); }
+    await wait(100);
+    check("I16 a new time off the route says 'Rerouting' again", nav._test.log().filter(x => /^nav:reroute/.test(x.id || "")).length === 2);
+    nav.end();
+  },
+};
+
+(async () => {
+  for (const [name, fn] of Object.entries(SECTIONS)) {
+    try { await fn(); } catch (e) { check(name + " ran", false, String((e && e.stack) || e).replace(/\n\s*/g, " | ")); }
+  }
+  finish();
+})();
+</script>
+</body>
+</html>

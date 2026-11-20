@@ -319,8 +319,19 @@ export function snapToRoute(route, lat, lon, hint = null) {
   };
   const scan = (from, to) => { let best = null; for (let i = from; i <= to; i++) { const r = one(i); if (!best || r.d < best.d) best = r; } return best; };
   const mk = r => ({ seg: r.i, t: r.t, along: c[r.i] + r.t * (c[r.i + 1] - c[r.i]), off: r.d * 1609.34 });
+  // Near the last place the nearest point wins, with a nudge toward continuity (100 m per mile from the hint): where the
+  // route crosses itself within the window (a cloverleaf loop under its own overpass), GPS noise used to pick the later
+  // crossing, the step index jumped past the ramp and never came back (code review 2026-11-20).
+  const scanNear = (from, to) => {
+    let best = null, bs = Infinity;
+    for (let i = from; i <= to; i++) {
+      const r = one(i), al = c[i] + r.t * (c[i + 1] - c[i]), sc = r.d * 1609.34 + 100 * Math.abs(al - hint);
+      if (sc < bs) { bs = sc; best = r; }
+    }
+    return best;
+  };
   let win = null;
-  if (hint != null) win = scan(segAt(route, Math.max(0, hint - 0.15)), Math.min(n - 2, segAt(route, Math.min(route.total, hint + 0.8)) + 1));
+  if (hint != null) win = scanNear(segAt(route, Math.max(0, hint - 0.15)), Math.min(n - 2, segAt(route, Math.min(route.total, hint + 0.8)) + 1));
   if (win && win.d * 1609.34 <= 70) return mk(win);
   // not near where we were: look everywhere, preferring what is close to the last place (a road that doubles back)
   let best = null, bestScore = Infinity;
@@ -762,12 +773,14 @@ function handleFix(f) {
   if (k > N.stepIdx) { N.stepIdx = k; emit("nav:step", { index: k, step: r.steps[k] }); }
   // arrival: within about 40 m of the destination, or past the end of the last step
   const end = r.geometry[r.geometry.length - 1];
-  if (onRoute && (N.stepIdx >= r.steps.length - 1 || (r.total - N.along) * 1609.34 <= 40 || geo.miles(lat, lon, end[0], end[1]) * 1609.34 <= 40)) { arrive(); return; }
+  // (the straight-line test only near the end of the route: a route that passes the destination across a median or a
+  // block and comes back to it must not "arrive" on the first pass; code review 2026-11-20)
+  if (onRoute && (N.stepIdx >= r.steps.length - 1 || (r.total - N.along) * 1609.34 <= 40 || (geo.miles(lat, lon, end[0], end[1]) * 1609.34 <= 40 && r.total - N.along <= 0.15))) { arrive(); return; }
   if (!onRoute) {
     if (moving) N.offCount++;
     if (N.offCount >= 3) { maybeReroute(lat, lon); }
   } else {
-    N.offCount = 0;
+    N.offCount = 0; N.rerouteGap = 0; N.rerouteSaid = false;   // back on a route: the next time off it starts over
     runPrompts(t);
   }
   guideUpdate();
@@ -778,7 +791,7 @@ function handleFix(f) {
 function maybeReroute(lat, lon) {
   if (N.rerouting || N.state !== "navigating") return;
   const t = now();
-  if (t - N.lastRerouteT < 10000) return;
+  if (t - N.lastRerouteT < (N.rerouteGap || 10000)) return;
   if (!isOnline()) {                                   // no connection: say so once, try again the moment it is back
     N.wantReroute = true;
     if (!N.offlineSaid) { N.offlineSaid = true; N.lastRerouteT = t; sayNav(SENT.offline, [SENT.offline], { id: `nav:${N.route.id}:offline`, kind: "alert", now: true }); }
@@ -789,9 +802,13 @@ function maybeReroute(lat, lon) {
 async function doReroute(lat, lon) {
   if (N.rerouting || N.state !== "navigating" || !N.dest) return;
   N.rerouting = true; N.lastRerouteT = now(); N.offCount = 0; N.wantReroute = false;
+  // Still off a route after a reroute (a parking lot, a road the map doesn't have, a service that keeps failing): ask
+  // again 10 s, 20 s, 40 s ... at most 2 minutes apart, and say "Rerouting" once per time off the route, not every 10 s
+  // (code review 2026-11-20). An on-route fix resets both.
+  N.rerouteGap = Math.min(120000, N.rerouteGap ? N.rerouteGap * 2 : 10000);
   const run = N.run, n = ++N.rerouteN, ctrl = new AbortController();
   N.rctrl = ctrl;
-  sayNav(SENT.reroute, [SENT.reroute], { id: `nav:reroute:${run}:${n}`, kind: "alert", now: true });
+  if (!N.rerouteSaid) { N.rerouteSaid = true; sayNav(SENT.reroute, [SENT.reroute], { id: `nav:reroute:${run}:${n}`, kind: "alert", now: true }); }
   try {
     const raw = await P.route({ lat, lon }, { lat: N.dest.lat, lon: N.dest.lon }, N.heading, ctrl.signal);
     if (N.run !== run || N.state !== "navigating") return;
@@ -836,12 +853,16 @@ function start(o = {}) {
   if (!N.route || !N.dest || (N.state !== "previewing" && N.state !== "navigating")) return false;
   if (N.state === "navigating") { openGuide(); return true; }
   try { voice && voice.unlock && voice.unlock(); } catch {}
+  // a real drive after a simulated one that ended in arrival: the simulator's clock and its "only simulated fixes" rule
+  // must go, or every GPS fix is ignored for the whole drive (code review 2026-11-20)
+  if (o.gps !== false && N.sim) stopSimulate();
   // navigation needs GPS: the same Start GPS as the Drive tab (a simulated drive brings its own position)
   if (o.gps !== false && A.S.mode !== "gps") { try { A.startGps && A.startGps(); } catch (e) { warn(e); } }
   N.run++;
   N.state = "navigating";
   N.snap = null; N.along = 0; N.stepIdx = 0; N.mph = null; N.heading = null; N.lastFix = null; N.fixes = 0; N.driven = 0;
   N.said = new Set(); N.plans = new Map(); N.lastPromptT = -1e9; N.offCount = 0; N.rerouting = false; N.offlineSaid = false; N.wantReroute = false; N.log = [];
+  N.rerouteGap = 0; N.rerouteSaid = false;
   N.startedAt = now(); N.startAlong = 0; N.follow = true; N.overview = false;
   applyTripDest();
   emit("nav:start", { route: N.route, dest: N.dest });
@@ -1793,7 +1814,10 @@ async function preview(dest) {
   if (!isOnline()) return fail("You're offline, so I can't plan a route. Places along I-5 still work in the app.");
   const ctrl = N.pctrl = new AbortController();
   try {
-    const hd = N.heading != null && (N.mph ?? 0) > 3 ? N.heading : (num(S.heading) ? S.heading : null);
+    // the heading of the last navigation only while it is fresh (a fix in the last 15 s): a stale one from a drive that
+    // ended earlier made the route start the wrong way (code review 2026-11-20)
+    const fresh = !!N.lastFix && now() - N.lastFix.t < 15000;
+    const hd = fresh && N.heading != null && (N.mph ?? 0) > 3 ? N.heading : (num(S.heading) ? S.heading : null);
     const raw = await P.route({ lat: from.lat, lon: from.lon }, { lat: d.lat, lon: d.lon }, hd, ctrl.signal);
     if (my !== N.token) return null;
     const route = buildRoute(raw, geo.miles);
@@ -1869,6 +1893,7 @@ function stopSimulate() {
   clearInterval(sim.timer);
   N.sim = null;
   N.lastPromptT = -1e9; N.lastRerouteT = -1e9; N.lastFix = null;
+  if (S) S.heading = null;   // the simulated car's heading (simStep sets it; nothing else does) must not plan the next route
   if (sim.setMode && A && A.S.mode === "demo") { try { A.stopAll(false); } catch (e) { warn(e); } }   // the drive was a demo: it ends with it
 }
 

@@ -165,7 +165,7 @@ export function fmtMiles(d) {
 }
 export function fmtDuration(hours) {
   if (!isFinite(hours) || hours <= 0) return "";
-  const h = Math.floor(hours), min = Math.round((hours - h) * 60);
+  const tot = Math.round(hours * 60), h = Math.floor(tot / 60), min = tot % 60;   // whole minutes first: never "1 h 60 min"
   return h ? `${h} h ${String(min).padStart(2, "0")} min` : `${min} min`;
 }
 

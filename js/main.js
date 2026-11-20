@@ -473,8 +473,23 @@ function stopAll(silent = false) {
 }
 
 /* Keep the screen awake while driving */
-let wake = null, wakeWanted = false;
-async function requestWake() { wakeWanted = true; if (native.NATIVE && await native.keepAwake(true)) return; try { if (!wake) { wake = await navigator.wakeLock?.request("screen"); wake?.addEventListener?.("release", () => { wake = null; }); } } catch { wake = null; } }
+let wake = null, wakeWanted = false, wakeAsking = false;
+// One request at a time, and a lock that arrives after the drive ended (End trip, or location refused before the
+// first fix, while the request was on its way) is let go at once: it used to be kept, and the screen stayed on with
+// nothing running (code review 2026-11-20).
+async function requestWake() {
+  wakeWanted = true;
+  if (native.NATIVE && await native.keepAwake(true)) return;
+  if (wake || wakeAsking) return;
+  wakeAsking = true;
+  try {
+    const s = await navigator.wakeLock?.request("screen");
+    if (!s) return;
+    if (!wakeWanted || wake) { try { s.release(); } catch {} return; }
+    wake = s;
+    s.addEventListener?.("release", () => { if (wake === s) wake = null; });
+  } catch {} finally { wakeAsking = false; }
+}
 function releaseWake() { wakeWanted = false; if (native.NATIVE) native.keepAwake(false); try { wake && wake.release(); } catch {} wake = null; }
 let hiddenAt = 0;
 document.addEventListener("visibilitychange", () => {
@@ -1267,11 +1282,19 @@ if (native.NATIVE) {
 /* ---------- service worker ---------- */
 // Not in the iPhone app: it ships every file and updates through the App Store (and WKWebView has no service worker here).
 if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NATIVE) {
+  // the page had a worker before this load: a later controllerchange it did not ask for is an update from another tab
+  const hadController = !!navigator.serviceWorker.controller;
+  let showUpdate = () => {};
   navigator.serviceWorker.register("sw.js").then(reg => {
     // while GPS runs, the bar waits: it would cover the header, and Reload stops the drive (3.0.1)
     let pending = false;
     const show = () => { if (S.mode === "gps") { pending = true; return; } $("updateBar").hidden = false; };
-    bus.on("mode", m => { if (m !== "gps" && pending) { pending = false; $("updateBar").hidden = false; } });
+    showUpdate = show;
+    // a bar already showing when GPS starts (Start GPS, or the drive resuming by itself) steps aside until the drive ends
+    bus.on("mode", m => {
+      if (m === "gps") { if (!$("updateBar").hidden) { $("updateBar").hidden = true; pending = true; } }
+      else if (pending) { pending = false; $("updateBar").hidden = false; }
+    });
     if (reg.waiting && navigator.serviceWorker.controller) show();
     reg.addEventListener("updatefound", () => {
       const nw = reg.installing;
@@ -1282,7 +1305,12 @@ if ("serviceWorker" in navigator && location.protocol !== "file:" && !native.NAT
   // Reload only when the user tapped "Reload" for a new version. On the very first visit the worker also takes
   // control of the page (clients.claim), and reloading then would interrupt whatever the user just started.
   let userAskedUpdate = false, reloaded = false;
-  navigator.serviceWorker.addEventListener("controllerchange", () => { if (userAskedUpdate && !reloaded) { reloaded = true; location.reload(); } });
+  // Another tab's Reload activates the new version for this page too (its old files are gone from the cache): offer the
+  // reload here as well (held back while GPS runs), so this page doesn't keep running old code next to new files.
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (userAskedUpdate) { if (!reloaded) { reloaded = true; location.reload(); } }
+    else if (hadController) showUpdate();
+  });
 }
 
 /* ---------- modules (each is optional: if one fails, the rest still work) ---------- */

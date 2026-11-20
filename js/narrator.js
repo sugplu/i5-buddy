@@ -146,7 +146,7 @@ function onPos(e) {
   const half = MAX_M / 2;
   if (!halfwayDone && prevM != null && !jumped && (prevM - half) * (m - half) <= 0 && prevM !== m) {
     halfwayDone = true;
-    voice.say(`You just crossed the halfway point of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}, about ${Math.round(half)} miles from both ${ENDS.S.short} and ${ENDS.N.short}.`, { id: "halfway", prio: 2, chime: "success" });
+    voice.say(`You just crossed the halfway point of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}, about ${Math.round(half)} miles from both ${ENDS.S.short} and ${ENDS.N.short}.`, { id: "halfway", prio: 1, chime: "success" });
   }
 
   // a big climb ahead
@@ -198,7 +198,8 @@ function onPos(e) {
     if (recent) {
       told.add(recent.id);
       lastSpokeAtM = m; lastSpokeAt = Date.now();
-      voice.say(`Here's a story while we drive, about ${recent.name}. ${recent.more}`, { id: "story:" + recent.id, prio: 0 });
+      // interruptible: a turn, a chain control or a road alert never waits minutes behind a story (code review 2026-11-20)
+      voice.say(`Here's a story while we drive, about ${recent.name}. ${recent.more}`, { id: "story:" + recent.id, prio: 0, interruptible: true });
     }
   }
 }
@@ -209,7 +210,7 @@ bus.on("mode", mode => { if (mode === "off") resetTrip(); });
 export function tellMore(p) {
   if (!p) return;
   told.add(p.id);
-  voice.say(p.more ? `${p.name}. ${p.more}` : `That's everything I have on ${p.name}. ${p.text}`, { now: true, id: "more:" + p.id });
+  voice.say(p.more ? `${p.name}. ${p.more}` : `That's everything I have on ${p.name}. ${p.text}`, { now: true, id: "more:" + p.id, interruptible: true });
 }
 export function hear(p) { if (p) voice.say(`${p.name}. ${p.text}`, { now: true, id: "hear:" + p.id }); }
 
