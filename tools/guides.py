@@ -55,7 +55,7 @@ GUIDES = [
         "h1": "Redding to Oregon on I-5: Mount Shasta and the Siskiyous",
         "desc": "Driving I-5 north from Redding to the Oregon line? Shasta Lake, the Sacramento River canyon, Mount Shasta "
                 "and the Siskiyous, mile by mile, with exits, rest areas and live pass status.",
-        "lede": "From Redding (exit 680) to the Oregon line is about {miles} miles of I-5 and the steepest, most scenic part "
+        "lede": "From Redding (exit 677) to the Oregon line is about {miles} miles of I-5 and the steepest, most scenic part "
                 "of the road in California: over Shasta Lake, up the Sacramento River canyon, past Mount Shasta and into "
                 "the Siskiyous. Here is what you pass on the way north, in order, with the exit and which side to look.",
         "live": ("Is I-5 open through the Siskiyous?", "../../grapevine/#siskiyous", "Live closures and chain controls through Mount Shasta and the Siskiyous."),
