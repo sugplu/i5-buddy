@@ -1370,7 +1370,7 @@ function cardData(kind) {
     const demo = t.mode === "demo" || !!t.demo;
     const showNew = fresh.length > 0;   // no new badges on this trip: show the collection instead of a zero
     return { kind: "trip", demo, kicker: demo ? "MY I-5 DEMO DRIVE" : dest ? `MY I-5 TRIP TO ${dest.toUpperCase()}` : "MY I-5 TRIP",
-      title, date: t.start, miles: num(t.miles), stamps: (t.stamps || []).length,
+      title, date: t.start, miles: num(t.miles), stamps: (t.stamps || []).length, dest, arrived: !!t.arrived,
       badges: showNew ? fresh.length : earned.length, newBadges: fresh.length,
       labels: ["MILES", "STAMPS", showNew ? (fresh.length === 1 ? "NEW BADGE" : "NEW BADGES") : earned.length === 1 ? "BADGE" : "BADGES"],
       subs: [demo ? "demo drive" : "this trip", "this trip", showNew ? "this trip" : `of ${DEFS.length}`],
@@ -1384,15 +1384,31 @@ function cardData(kind) {
     top: topRegions(ids), runs: runs(coverage), ticks: PLACES.filter(p => s[p.id]).map(p => p.m), at: posM(), medals: earned };
 }
 
+/** The first line of the shared summary: a headline template (tools/postcards.json, data.POSTCARDS) for this kind of
+    card. Only templates without a number placeholder are used (the summary gives the numbers); the trip's date picks
+    one, so Copy summary and Share give the same words. "" when there is none (data built before 3.0.7). Pure. */
+function headline(c) {
+  const T = (D && D.POSTCARDS) || {};
+  const kind = c.kind === "all" ? "all" : c.demo ? "demo" : c.arrived && c.dest ? "trip_dest" : c.title.length > 1 ? "trip_route" : "trip";
+  const fill = { from: c.title[0], to: String(c.title[1] || "").replace(/^to /, ""), dest: c.dest || "" };
+  const list = (Array.isArray(T[kind]) ? T[kind] : []).filter(t => typeof t === "string" && t.length <= 90 && !/\{(?:miles|stamps|badges)\}/.test(t) && !/[!—]/.test(t));
+  if (!list.length) return "";
+  let h = 7;
+  for (const ch of String(c.date) + kind) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const out = list[h % list.length].replace(/\{(\w+)\}/g, (m, k) => fill[k] || m);
+  return /[{}]/.test(out) ? "" : out;
+}
+
 function summaryText(kind) {
   const c = cardData(kind || defaultKind());
   const top = c.top.length ? ` Top regions: ${c.top.map(x => `${x.r.name} (${x.n})`).join(", ")}.` : "";
+  const hl = headline(c);
   if (c.kind === "trip") {
     const what = c.demo ? "My I-5 Buddy demo drive" : "My I-5 trip";
     const route = c.title.length > 1 ? `, ${c.title[0]} ${c.title[1]}` : c.title[0] !== "Interstate 5" ? `, ${c.title[0]}` : "";
-    return `${what} on ${fmtDay(c.date, true)}: ${fmtMi(c.miles)} miles${route}. ${plural(c.stamps, "landmark stamp")}${c.newBadges ? ` and ${plural(c.newBadges, "new badge")}` : ""}.${top} ${SHARE_URL}`;
+    return `${hl ? hl + " " : ""}${what} on ${fmtDay(c.date, true)}: ${fmtMi(c.miles)} miles${route}. ${plural(c.stamps, "landmark stamp")}${c.newBadges ? ` and ${plural(c.newBadges, "new badge")}` : ""}.${top} ${SHARE_URL}`;
   }
-  return `My I-5 passport: ${fmtInt(c.miles)} miles driven, ${fmtInt(c.stamps)} of ${fmtInt(PLACES.length)} landmark stamps and ${plural(c.badges, "badge")}.${top} ${SHARE_URL}`;
+  return `${hl ? hl + " " : "My I-5 passport: "}${fmtInt(c.miles)} miles driven, ${fmtInt(c.stamps)} of ${fmtInt(PLACES.length)} landmark stamps and ${plural(c.badges, "badge")}.${top} ${SHARE_URL}`;
 }
 
 function tokens() {

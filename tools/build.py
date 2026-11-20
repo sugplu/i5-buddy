@@ -4,7 +4,13 @@
 Inputs
   tools/route-full.json      corridor line (python3 tools/route.py)
   tools/extras.json          cameras, services, rest areas, exits, outline, elevation (python3 tools/extras.py)
-  tools/images.json          photo credits per place id (python3 tools/images.py), optional
+  tools/images.json          photo credits per place id (python3 tools/images.py), optional; alt_en / alt_es are the
+                             photo's alt text (2026-11-20 photo check), null = no photo (a wrong photo is worse than none)
+  tools/postcards.json       postcard lines per place id (places[].pc, at most 60 characters) and the share headline
+                             templates (data key POSTCARDS), optional (claude-power/jobs/i5_postcards.py)
+  tools/rest-status.json     rest-area closures from Caltrans QuickMap (REST[].status, .src, .until), optional, written by
+                             tools/rest_status.py; an entry checked more than REST_STATUS_DAYS ago, or past its reopening
+                             date, is ignored
   content/v2/*.json          researched places, zones, trivia (one file per stretch + *-gaps.json)
                              falls back to content/seg-*.json (California v1) when v2 is empty
                              ca-missions.json: the I-5 turn-offs to the California missions near I-5 (places with
@@ -49,6 +55,42 @@ DEST_LIST = [  # (label, state, exit ref) used for "Where are you headed?"
 ]
 
 warn = []
+REST_STATUS_DAYS = 7  # Caltrans statuses change within days: run tools/rest_status.py right before a release
+REST_STATUSES = {"closed", "partial", "truck_only"}
+
+
+def load_optional(name):
+    path = os.path.join(HERE, name)
+    return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+
+
+def rest_with_status(rows, today):
+    """REST rows with the Caltrans status overrides of tools/rest-status.json applied (matched by name, side and mile)."""
+    import datetime
+    over = load_optional("rest-status.json").get("overrides", [])
+    out = [dict(r) for r in rows]
+    for o in over:
+        if o.get("status") not in REST_STATUSES or not str(o.get("src", "")).startswith("https://"):
+            warn.append(f"rest status ignored (needs a closed/partial/truck_only status and a source link): {o.get('name')}")
+            continue
+        try:
+            age = (today - datetime.date.fromisoformat(o["checked"])).days
+        except (KeyError, ValueError):
+            age = None
+        if age is None or age > REST_STATUS_DAYS:
+            warn.append(f"rest status for {o.get('name')} is older than {REST_STATUS_DAYS} days ({o.get('checked')}): ignored, run tools/rest_status.py")
+            continue
+        if o.get("until") and str(o["until"]) < today.isoformat():
+            continue  # Caltrans' reopening date has passed
+        hit = [r for r in out if r["name"] == o["name"] and r.get("side") == o.get("side") and abs(r["m"] - o["m"]) < 0.5]
+        if not hit:
+            warn.append(f"rest status matches no rest area: {o.get('name')} mile {o.get('m')}")
+        for r in hit:
+            r["status"], r["src"] = o["status"], o["src"]
+            for k in ("since", "until"):
+                if o.get(k):
+                    r[k] = o[k]
+    return out
 
 # The content agent writes the mission files here; build.py copies them into content/ when they exist (env I5_MISSIONS_SRC).
 MISSIONS_SRC = os.environ.get("I5_MISSIONS_SRC", "/Volumes/sugsair/dominares/road-buddies/i5-missions")
@@ -268,6 +310,8 @@ def main():
     ip = os.path.join(HERE, "images.json")
     if os.path.exists(ip):
         images = json.load(open(ip))
+    postcards = load_optional("postcards.json")
+    pc_lines = postcards.get("lines", {})
 
     copy_missions()
     missions = load_missions()
@@ -376,9 +420,14 @@ def main():
             p["id"] += f"-{seen[p['id']]}"
         else:
             seen[p["id"]] = 1
-        im = images.get(p["id"]) or images.get(p.get("wiki") or "")
+        # a key that is there with null means "no photo": the wiki fallback must not bring one back
+        im = images.get(p["id"]) if p["id"] in images else images.get(p.get("wiki") or "")
         if im:
-            p["img"] = im
+            # alt_es stays in images.json for the Spanish app (not built yet): the English app ships alt_en only
+            p["img"] = {k: v for k, v in im.items() if k != "alt_es"}
+        pc = pc_lines.get(p["id"])
+        if isinstance(pc, str) and 0 < len(pc) <= 60:
+            p["pc"] = pc
 
     zones = []
     for z in zones_raw:
@@ -452,12 +501,13 @@ def main():
         "states": states, "route": route, "places": places, "zones": zones, "trivia": trivia, "dests": dests,
         "exits": [e for e in X["exits"] if e[1] in off],
         "services": [border_services(s) for s in X["services"] if s.get("st", "CA") in off],
-        "rest": [r for r in X["rest"] if in_road(r.get("m"))],
+        "rest": rest_with_status([r for r in X["rest"] if in_road(r.get("m"))], __import__("datetime").date.today()),
         "cams": [c for c in X["cams"] if in_road(c.get("m"))],
         "districts": X["districts"],
         "elev": elev, "passes": [p for p in X.get("passes", []) if in_road(p.get("m"))],
         "outline": [o for o in (X.get("outline") or []) if o.get("st") in keep_outline],
         "missions": missions,
+        "postcards": postcards.get("templates", {}),
     }
     os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
     js = json.dumps(out, ensure_ascii=False, separators=(",", ":"))

@@ -202,9 +202,13 @@ const SCENARIOS = {
     NAV(win, "share", async d => { calls2.push(d); });
     act.click();
     await wait(150);
-    const want = { title: p.name, text: api.share.placeLine(p), url: "https://i5.dominares.org/#place=" + encodeURIComponent(p.id) };
+    const want = { title: p.name, text: api.share.shareLine(p), url: "https://i5.dominares.org/#place=" + encodeURIComponent(p.id) };
     check("it shares the place name, one short line and its #place link", calls2.length === 1 && JSON.stringify(calls2[0]) === JSON.stringify(want), JSON.stringify(calls2[0]));
-    check("the line is one short sentence from the place's own text", want.text.length <= 142 && p.text.startsWith(want.text.replace(/…$/, "").slice(0, 30)) && !/[—!]/.test(want.text), want.text);
+    check("the line is the place's postcard line, or else one short sentence from its own text", p.pc ? want.text === p.pc : (want.text.length <= 142 && p.text.startsWith(want.text.replace(/…$/, "").slice(0, 30)) && !/[—!]/.test(want.text)), want.text);
+    // --- postcard lines (3.0.7, tools/postcards.json): at most 60 characters, plain, and used only when there
+    const pcs = api.data.PLACES.filter(q => q.pc);
+    check("most places have a postcard line, each at most 60 characters with no ! or dash", pcs.length > 200 && pcs.every(q => q.pc.length <= 60 && q.pc.length >= 6 && !/[!—–]/.test(q.pc)), `${pcs.length} lines; bad: ${pcs.filter(q => !(q.pc.length <= 60 && !/[!—–]/.test(q.pc))).slice(0, 2).map(q => q.id).join(",")}`);
+    check("a place without one shares its first sentence; a postcard line wins when there is one", api.share.shareLine({ text: "A long first sentence here. More." }) === "A long first sentence here." && api.share.shareLine({ pc: "A short postcard line", text: "Other. More." }) === "A short postcard line" && api.share.shareLine({ pc: "x".repeat(61), text: "Fallback here. More." }) === "Fallback here.");
     check("the place sheet stays open after a Web Share", !more.hidden);
     NAV(win, "share", undefined);
     act.click();

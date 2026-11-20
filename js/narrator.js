@@ -270,8 +270,16 @@ export function tellServices(kind = "fuel") {
   if (S.m == null) return voice.say("Start GPS first and I'll find the next stop.", { now: true });
   const word = { fuel: "gas", ev: "EV charging", food: "food", sleep: "a place to sleep" }[kind];
   if (kind === "rest") {
-    const r = restAhead(S.m, S.dir, 1)[0];
-    return voice.say(r ? `The next rest area on this side is ${r.name.replace(/\s*\((north|south)bound\)/i, "")}, in about ${Math.round(r.d)} miles.` : "I don't know of a rest area ahead on this side.", { now: true });
+    const list = restAhead(S.m, S.dir, 1), r = list[0];
+    const nm = x => x.name.replace(/\s*\((north|south)bound\)/i, "");
+    if (!r) return voice.say("I don't know of a rest area ahead on this side.", { now: true });
+    // a Caltrans closure (tools/rest-status.json): say it, then the next open one on this side
+    if (r.status === "closed") {
+      const nx = list.find(x => x.status !== "closed");
+      return voice.say(`${nm(r)}, in about ${Math.round(r.d)} miles, is closed, Caltrans says.${nx ? ` The next rest area on this side is ${nm(nx)}, in about ${Math.round(nx.d)} miles.` : ""}`, { now: true });
+    }
+    const note = r.status === "partial" ? " Caltrans says it is partly closed." : r.status === "truck_only" ? " Caltrans says it is open to trucks only." : "";
+    return voice.say(`The next rest area on this side is ${nm(r)}, in about ${Math.round(r.d)} miles.${note}`, { now: true });
   }
   const s = servicesAhead(S.m, S.dir, kind, 2);
   if (!s.length) {

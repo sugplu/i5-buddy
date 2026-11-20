@@ -7,7 +7,7 @@ Two engines (Joseph picked the voice by ear, 2026-11-17: Aura-2 "asteria"):
                    About $0.03 per 1,000 characters, once; the clips are then ours to play for free.
   --engine kokoro  the open local model (Kokoro-82M, Apache-2.0; ~/Dominares/tts, see setup.sh there), voice af_heart.
 Runs on the Pro:
-    ~/Dominares/tts/.venv/bin/python tools/voice/make.py [--engine aura] [--jobs 6] [--only N] [--force]
+    ~/Dominares/tts/.venv/bin/python tools/voice/make.py [--engine aura] [--jobs 6] [--only N] [--force] [--keys FILE]
 Writes voice/<id>/<k[:2]>/<k>.m4a (AAC, 24 kHz mono) and voice/<id>/index.json:
     {"v": 1, "voice": "heart", "n": <clips>, "bytes": <total>, "keys": "<14 hex digits per clip, back to back>"}
 The display text is what the app shows and the clip's name; spoken() rewrites it only for the ear (freeway numbers,
@@ -35,6 +35,38 @@ SAY = {
     "Tejon": "Teh-hone", "Sylmar": "Sil-mar", "IOOF": "I O O F", "Sepulveda": "Seh-pul-veh-da",
     "Cajon": "Ka-hone", "Shastina": "Shas-tee-na", "Suisun": "Suh-soon",
 }
+# 2026-11-20 pronunciation sweep (credit program, tools/voice/say-sweep-2026-11-20.json): Claude Opus 5.5 read every
+# capitalized word of the narration that is not in the English dictionary and named the ones an American voice is likely
+# to say wrong; these are the high-confidence ones plus a few hand-picked medium ones. Clips whose spoken() text changed
+# are listed there; re-record them with --keys (they still play the old reading until then).
+SAY.update({
+    "Aguaje": "Ah-gwah-heh", "Alejo": "Ah-leh-ho", "Almaden": "Al-muh-den", "Alpaugh": "Al-paw",
+    "Arrillaga": "Ah-ree-yah-gah", "Asís": "Ah-sees", "Avenal": "Av-uh-nal", "Avila": "Ah-vee-la", "Baez": "Bye-ez",
+    "Barbareño": "Bar-bah-rayn-yo", "Batiquitos": "Bah-tee-kee-tos", "Bautista": "Bow-tee-sta", "Beebe": "Bee-bee",
+    "Benicia": "Buh-nee-sha", "Bosquejo": "Bos-keh-ho", "Brea": "Bray-uh",
+    "Buellton": "Byool-tun", "Buttes": "Byoots", "Cabrillo": "Ka-bree-oh", "Carpinteria": "Car-pin-tuh-ree-uh",
+    "Carquinez": "Kar-kee-ness", "Cañada": "Kahn-yah-da", "Cholame": "Show-lam", "Cielito": "See-eh-lee-to",
+    "Colusa": "Ko-loo-suh", "Concepción": "Kon-sep-see-ohn", "DeHe": "Day-hay", "Dehe": "Day-hay",
+    "Diegueños": "Dee-eh-gay-nyos", "Dieguito": "Dee-eh-gee-toe", "Doheny": "Doe-hee-nee", "Ecke": "Eck-ee",
+    "Elijo": "Eh-lee-ho", "Estanislao": "Es-tah-nees-lah-oh", "Fages": "Fah-hess", "Feliz": "Fee-liz",
+    "Fernandeño": "Fer-nan-dayn-yo", "Firebaugh": "Fire-baw", "Francisquito": "Fran-sis-kee-toe", "Friant": "Fry-ant",
+    "Gabrieleño": "Gah-bree-el-ayn-yo", "Garcés": "Gar-sess", "Garzas": "Gar-sahs", "Guijarral": "Gee-ha-rahl",
+    "Gustine": "Gus-teen", "Hedionda": "Eh-dee-on-da", "Hipólito": "Ee-po-lee-to", "Idria": "Id-ree-uh",
+    "Inezeño": "Ee-neh-sayn-yo", "Inés": "Ee-nez", "Ishi": "Ee-shee", "Isleton": "Eye-ul-ton", "Jayme": "High-meh",
+    "Joaquins": "Wah-keens", "Jolla": "Hoy-uh", "Jolon": "Ho-lone", "Juaneño": "Wah-nayn-yo", "Juntas": "Hoon-tas",
+    "Karuk": "Kuh-rook", "Kizh": "Keech", "Kroeber": "Kro-ber", "Lathrop": "Lay-thrup", "Lebeck": "Luh-beck",
+    "Leucadia": "Loo-kay-dee-uh", "Liebre": "Lee-ay-bray", "Llagas": "Yah-gahs", "Lompoc": "Lom-poke",
+    "Madera": "Muh-dair-uh", "Miwok": "Mee-wok", "Modjeska": "Mo-jess-ka", "Moroni": "Mo-ro-nye", "Norte": "Nort",
+    "Nuys": "Nize", "Palóu": "Pah-lo", "Panochita": "Pa-no-chee-ta", "Pasajero": "Pa-sa-heh-ro",
+    "Perillas": "Peh-ree-yahs", "Permanente": "Per-muh-nen-tay", "Peña": "Pen-ya", "Peñasquitos": "Pen-yas-kee-tos",
+    "Piru": "Pie-roo", "Placerita": "Plass-er-ee-ta", "Pleito": "Play-toe", "Plumas": "Ploo-mus",
+    "Purisimeño": "Poo-ree-see-meh-nyo", "Pío": "Pee-oh", "Rainier": "Ray-neer", "Seco": "Say-ko", "Solis": "So-lees",
+    "Stanislaus": "Stan-iss-law", "Tehama": "Tuh-hay-muh", "tejón": "Teh-hone", "Temecula": "Tuh-meck-yoo-luh",
+    "Tiburcio": "Tee-boor-see-oh", "Tomales": "Toh-mal-ess", "Trabuco": "Truh-boo-ko", "Tujunga": "Tuh-hung-guh",
+    "Tuleburg": "Too-lee-burg", "Uvas": "Oo-vahs", "Vallejo": "Vuh-lay-ho", "Ventureño": "Ven-too-rayn-yo",
+    "Vernalis": "Ver-nal-iss", "Visalia": "Vy-sail-yuh", "Wallowa": "Wuh-lau-uh", "Yahi": "Yah-hee", "Ynez": "Ee-nez",
+    "Yolla": "Yo-luh", "Zanja": "Sahn-hah",
+})
 SAY_RE = re.compile(r"\b(" + "|".join(sorted(map(re.escape, SAY), key=len, reverse=True)) + r")\b")
 UNIT_AFTER = r"(?!\s*(?:feet|foot|ft|miles?|acres?|people|residents|cars|vehicles|trucks|tons|gallons|meters|students|workers|homes|beds|seats|years))"
 
@@ -77,6 +109,12 @@ def spoken(t):
     s = re.sub(r"\bSr\.", "Senior", s)
     s = re.sub(r"\bNo\. (?=\d)", "Number ", s)
     s = re.sub(r"\bHwy\.? ", "Highway ", s)
+    s = re.sub(r"\bBros\.(?=\s+[a-z])", "Brothers", s)                    # "Warner Bros. in 1942" (no sentence end)
+    s = re.sub(r"\bBros\b", "Brothers", s)
+    s = re.sub(r"\bSCU\b", "S C U", s)                                  # the SCU Lightning Complex
+    s = re.sub(r"\bOR-(\d+)\b", r"O R \1", s)                          # wolf tags: OR-7, OR-85
+    s = re.sub(r"\bEF(\d)\b", r"E F \1", s)                             # tornado scale: EF3
+    s = re.sub(r"\bSargon II\b", "Sargon the Second", s)
     # freeways and exits
     s = re.sub(r"\bI-(\d+)([NSEW]?)\b", lambda m: "I " + route_words(m.group(1)) + ({"N": " North", "S": " South", "E": " East", "W": " West"}.get(m.group(2), "")), s)
     s = re.sub(r"\bInterstate (\d+)\b", lambda m: "Interstate " + route_words(m.group(1)), s)
@@ -226,6 +264,7 @@ def main():
     ap.add_argument("--only", type=int, default=0, help="record at most N clips (a trial)")
     ap.add_argument("--force", action="store_true", help="record again even when the clip exists")
     ap.add_argument("--show", help="print the spoken form of this text and stop")
+    ap.add_argument("--keys", help="a file with one clip key per line: record only these (again, even when they exist)")
     a = ap.parse_args()
     if a.show:
         print(spoken(a.show))
@@ -233,9 +272,13 @@ def main():
     data = json.load(open(os.path.join(REPO, "tools", "voice", "units.json"), encoding="utf-8"))
     vdir = os.path.join(REPO, "voice", VOICE_ID)
     jobs = []
+    only = set(open(a.keys).read().split()) if a.keys else None
     for k, t, *_ in data["units"]:
         out = os.path.join(vdir, k[:2], k + ".m4a")
-        if a.force or not os.path.exists(out):
+        if only is not None:
+            if k in only:
+                jobs.append((k, t, out))
+        elif a.force or not os.path.exists(out):
             jobs.append((k, t, out))
     jobs.sort(key=lambda j: -len(j[1]))         # long ones first, so the pool ends evenly
     if a.only:

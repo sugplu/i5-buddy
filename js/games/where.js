@@ -144,7 +144,7 @@ export function create(ctx) {
     host.append(h("div", { class: "pl-w-top" },
       h("span", { class: "pl-sp-q" }, `Photo ${w.i + 1} of ${w.qs.length}`),
       h("span", { class: "pl-sp-score" }, h("b", null, w.score), " right")));
-    const alt = answered ? `${shortName(q.p)}. ${q.p.img.alt || ""}`.trim() : "A photo from along I-5. Which place is it?";
+    const alt = answered ? `${shortName(q.p)}. ${q.p.img.alt_en || q.p.img.alt || ""}`.trim() : "A photo from along I-5. Which place is it?";
     let fig;
     if (figFor && figFor.id === q.p.id) { fig = figFor.el; const im = fig.querySelector("img"); if (im) im.alt = alt; }   // the same photo: keep it (no flicker when the answer shows)
     else {

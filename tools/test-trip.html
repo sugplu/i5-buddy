@@ -619,6 +619,14 @@ async function auto() {
   const text = api.trip.summary("all");
   ok(/miles driven/.test(text) && text.includes("https://i5.dominares.org/"), "summary text has numbers and the app URL (i5.dominares.org)");
   ok(!/—/.test(text) && !/!/.test(text), "summary has no em dash and no exclamation mark");
+  // 3.0.7: a headline from data.POSTCARDS starts the summary, the same one every time for the same card
+  {
+    const T = api.data.POSTCARDS || {}, heads = (T.all || []).filter(t => !/\{(miles|stamps|badges)\}/.test(t));
+    const n = Object.values(T).reduce((a, v) => a + (Array.isArray(v) ? v.length : 0), 0);
+    ok(n >= 150 && ["trip_route", "trip_dest", "trip", "all", "demo"].every(k => (T[k] || []).length >= 20), `about 200 share headline templates in the data (${n})`);
+    ok(heads.some(h => text.startsWith(h + " ")) && api.trip.summary("all") === text, `the passport summary starts with a headline and repeats exactly ("${text.slice(0, 60)}")`);
+    ok(!/[{}]/.test(text) && !/[{}]/.test(api.trip.summary("trip")), "no placeholder is left in the shared text");
+  }
   const blob = await settle(api.trip.card("trip"));
   const bmp = await settle(createImageBitmap(blob));
   ok(blob.type === "image/png" && bmp.width === 1080 && bmp.height === 1350, `share card is a 1080x1350 PNG (${(blob.size / 1024).toFixed(0)} KB)`);

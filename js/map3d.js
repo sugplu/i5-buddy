@@ -732,7 +732,7 @@ function showCard(ses, p, opts = {}) {
   const top = el("div", "mp3d-card-top");
   if (p.img && p.img.f) {
     const im = el("img", "mp3d-card-img");
-    im.alt = p.img.alt && !/^[\w-]+$/.test(p.img.alt) ? p.img.alt : "";
+    im.alt = p.img.alt_en || (p.img.alt && !/^[\w-]+$/.test(p.img.alt) ? p.img.alt : "");
     im.src = new URL(p.img.f, BASE).href;
     im.onerror = () => im.remove();
     top.append(im);

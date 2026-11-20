@@ -82,6 +82,30 @@ async function run() {
     api.stopAll(false);
   }
 
+  // R3b (3.0.7). A rest area Caltrans lists as closed (tools/rest-status.json -> REST[].status) is announced as closed, then
+  //     the next open one on this side; the next-open count and the Drive row keep working.
+  {
+    const R = api.data.REST, dir = "N", at = 250;
+    const first = api.data.restAhead(at, dir, 1)[0];
+    const keep = first && { status: first.status, src: first.src };
+    const row = first && R.find(r => r.name === first.name && r.m === first.m && r.side === first.side);
+    if (row) { row.status = "closed"; row.src = "https://dot.ca.gov/test"; }
+    const two = api.data.restAhead(at, dir, 1);
+    ok(!!row && two.length === 2 && two[0].status === "closed" && two[1].status !== "closed", `restAhead keeps the closed one and still finds 1 open one (${two.map(r => r.name + (r.status ? " [" + r.status + "]" : "")).join(" | ")})`);
+    spy();
+    api.setMode("demo");
+    api.setPosition(at, { dir, speed: 65, jumped: true });
+    api.narrator.tellServices("rest");
+    const t = (said.find(x => /rest area|closed/i.test(x.text)) || { text: "" }).text;
+    unspy();
+    ok(/is closed, Caltrans says\. The next rest area on this side is .+, in about \d+ miles\./.test(t) && two[1] && t.includes(two[1].name.replace(/\s*\((north|south)bound\)/i, "")), `a closed rest area is announced as closed, then the next open one ("${t.slice(0, 140)}")`);
+    if (row) { if (keep.status) row.status = keep.status; else delete row.status; if (keep.src) row.src = keep.src; else delete row.src; }
+    const rs = api.data.restStatus, day = Date.parse("2026-11-20T12:00:00-08:00");
+    ok(rs({ status: "closed", until: "2026-11-23" }, day) === "closed" && rs({ status: "closed", until: "2026-11-19" }, day) === "" && rs({ status: "closed" }, day) === "closed" && rs({}, day) === "",
+      "a closure stops counting once Caltrans' reopening date has passed on the phone's clock");
+    api.stopAll(false);
+  }
+
   // R4. How-far answers say "9 h 30 min": a speech engine reads the h and min as letters or clips them.
   {
     spy();

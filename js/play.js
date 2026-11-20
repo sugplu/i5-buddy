@@ -1184,7 +1184,7 @@ function gamePhoto(p, o = {}) {
   if (!p || !p.img || !p.img.f) return null;
   const size = o.size || "full";
   const fig = h("figure", { class: "photo " + size });
-  const img = h("img", { src: p.img.f, alt: o.alt != null ? o.alt : (p.img.alt || p.name || ""), decoding: "async" });
+  const img = h("img", { src: p.img.f, alt: o.alt != null ? o.alt : (p.img.alt_en || p.img.alt || p.name || ""), decoding: "async" });
   if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
   img.addEventListener("error", () => { if (o.onError) o.onError(); else fig.remove(); });
   fig.append(img);

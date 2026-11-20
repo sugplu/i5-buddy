@@ -79,7 +79,7 @@ the Mexico border at San Ysidro to the Oregon line, 797 miles. The data says so 
 
 | export | shape |
 | --- | --- |
-| `PLACES` | sorted by m: `{id, m, st, ex, name, cat, side, vis, text, more?, spot?, months?, src, src2?, wiki?, lat?, lon?, off?, img?: {f, w, h, by, lic, url}}` (`cat` in farm, hist, nature, town, stop, odd; `img.f` is a relative path like `img/ca309-kettleman.jpg`) |
+| `PLACES` | sorted by m: `{id, m, st, ex, name, cat, side, vis, text, more?, spot?, months?, src, src2?, wiki?, lat?, lon?, off?, pc?, img?: {f, w, h, by, lic, url, alt?, alt_en?, alt_es?}}` (`cat` in farm, hist, nature, town, stop, odd; `img.f` is a relative path like `img/ca309-kettleman.jpg`; `img.alt_en` / `alt_es` say what the photo shows (3.0.7 photo check; `img.alt` is the old Commons title); `pc` is the place's postcard line, at most 60 characters, shared by js/share.js) |
 | `ZONES` | `{from, to, label, text, seasons?: {winter, spring, summer, fall}}` corridor miles, contiguous |
 | `TRIVIA` | `{m, q, choices: [..4], answer: index, why, src}` |
 | `SCOPE` | `["CA"]`: the states the data covers, south to north |
@@ -89,17 +89,18 @@ the Mexico border at San Ysidro to the Oregon line, 797 miles. The data says so 
 | `DESTS` | `[{name, m}]` cities and borders for "Where to?" (California cities, "Mexico border" at 0, "Oregon border" at 797) |
 | `EXITS` | `[m, st, ref, "signed destinations"]` |
 | `SERVICES` | `{m, st, ref, fuel[], fuelN, ev[], evN, food[], foodN, sleep[], sleepN}` per exit (brand names) |
-| `REST` | `{m, name, side, kind: "rest_area" or "services", toilets}` |
+| `REST` | `{m, name, side, kind: "rest_area" or "services", toilets, status?, src?, until?}` (`status`: closed, partial or truck_only, from Caltrans QuickMap via tools/rest_status.py; read it with `restStatus(r)`, which drops it after `until`) |
 | `CAMS` | `{m, name, near, img (live JPEG URL), by: "Caltrans", d?: Caltrans district}` (`by: "WSDOT"` only when Washington is covered; Oregon has none) |
 | `DISTRICTS` | Caltrans districts on I-5 `[{d: "02", from, to}]` (corridor miles) |
 | `ELEV` | feet at each whole corridor mile (index = mile) |
 | `OUTLINE` | `[{st, pts: [[lat, lon], ...]}]` simplified state rings: the covered states plus their neighbours, for context (now CA with OR, NV, AZ) |
 | `ROUTE` | `[[m, lat, lon], ...]` simplified corridor line |
 | `MISSIONS` | the 21 California missions in founding order `[{n, id, name, name_es, lat, lon, founded, founder, people, status, site, hours, wiki, text, more, visit, src, src2}]` (from `content/missions.json`; empty in data built before 2.6.0) |
+| `POSTCARDS` | share headline templates by kind `{trip_route, trip_dest, trip, all, demo: [..]}` with `{miles}`, `{stamps}`, `{badges}`, `{from}`, `{to}`, `{dest}` placeholders (tools/postcards.json; js/trip.js starts the shared summary with one) |
 | `CATS`, `CAT_ICON`, `REGIONS` | labels, emoji, passport regions `{id, name, st, from, to}` (only the covered states' regions: the six California ones sd, la, ws, dc, sv, sh) |
 
 Helpers in data.js: `stateAt(m)`, `localMile(m)`, `regionAt(m)`, `zoneAt(m)`, `seasonOf(date)`, `aheadOf`, `sideWord`,
-`elevAt(m)`, `summitAhead(m, dir)`, `nearestExit(m)`, `servicesAhead(m, dir, kind, n, max)`, `restAhead`, `camsAhead(m, dir, n, max)`,
+`elevAt(m)`, `summitAhead(m, dir)`, `nearestExit(m)`, `servicesAhead(m, dir, kind, n, max)`, `restAhead` (a closed rest area is listed but only open ones count toward n), `restStatus(r)`, `camsAhead(m, dir, n, max)`,
 `exitName(st, ref)`, `fmtMiles(d)`, `fmtDuration(hours)`, `placeById(id)`, `detourOf(p)`, `detourShort(p)`, `detourSentence(p)`.
 
 A place may also carry `detour: {exit, road, dir, miles}` and `mission: n` (2.6.0, from `content/v2/ca-missions.json`; a

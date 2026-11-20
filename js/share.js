@@ -83,7 +83,13 @@ function placeLine(p) {
   return s;
 }
 const appData = () => ({ title: TITLE, text: TEXT, url: GET });
-const placeData = p => ({ title: p.name, text: placeLine(p), url: placeLink(p) });
+/** The line a place share carries: its postcard line (places[].pc from tools/postcards.json, at most 60 characters,
+    checked against the place's own text), else its first sentence. */
+function shareLine(p) {
+  const pc = String((p && p.pc) || "").replace(/\s+/g, " ").trim();
+  return pc && pc.length <= 60 ? pc : placeLine(p);
+}
+const placeData = p => ({ title: p.name, text: shareLine(p), url: placeLink(p) });
 
 /** Web Share. "shared", "cancelled" (the user closed it, or a share was already open: do nothing more), "busy" (a share of ours
     is still open: a second tap does nothing) or "none" (missing or failed: use our sheet). */
@@ -141,7 +147,7 @@ function appSheet() {
   return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: GET, linkShown: "i5.dominares.org/get", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a free guide for your drive on I-5" };
 }
 function placeSheet(p) {
-  const line = placeLine(p), url = placeLink(p);
+  const line = shareLine(p), url = placeLink(p);
   return { heading: `Share ${p.name}`, linkLabel: `Link to ${p.name}`, link: url, linkShown: url.replace(/^https:\/\//, ""), invite: "Send it to a friend",
     message: `${p.name}, on I-5 in California. ${line} ${url}`, subject: `${p.name} on I-5` };
 }
@@ -256,9 +262,9 @@ export function init(a) {
     buildRow();
     if (bus) bus.on("place:sheet", onPlaceSheet);
     window.addEventListener("hashchange", () => { openFromHash(); });
-    api.share = { shareApp, sharePlace, openFromHash, placeLine, placeLink, placeIdFromHash };
+    api.share = { shareApp, sharePlace, openFromHash, placeLine, shareLine, placeLink, placeIdFromHash };
     openFromHash();
   } catch (e) { warn(e); }
 }
 
-export const _test = { firstSentence, ABBREVIATIONS, placeLine, placeLink, placeIdFromHash, appData, placeData, INVITE, INVITE_APP, inviteText, GET };
+export const _test = { firstSentence, ABBREVIATIONS, placeLine, shareLine, placeLink, placeIdFromHash, appData, placeData, INVITE, INVITE_APP, inviteText, GET };

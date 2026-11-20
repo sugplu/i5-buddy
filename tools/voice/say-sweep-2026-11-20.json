@@ -1,0 +1,2361 @@
+{
+ "when": "2026-11-20",
+ "what": "I-5 Buddy pronunciation sweep: units whose spoken() text changed with the 2026-11-20 SAY patch in tools/voice/make.py. Text only: nothing was recorded or played.",
+ "model": "Claude Opus 5.5 (batch, effort high) named the words; the SAY entries were picked by hand from its high-confidence list plus a few medium ones",
+ "n_units": 319,
+ "chars": 35739,
+ "aura_usd_est": 1.07,
+ "say_added": {
+  "Aguaje": "Ah-gwah-heh",
+  "Alejo": "Ah-leh-ho",
+  "Almaden": "Al-muh-den",
+  "Alpaugh": "Al-paw",
+  "Arrillaga": "Ah-ree-yah-gah",
+  "Asís": "Ah-sees",
+  "Avenal": "Av-uh-nal",
+  "Avila": "Ah-vee-la",
+  "Baez": "Bye-ez",
+  "Barbareño": "Bar-bah-rayn-yo",
+  "Batiquitos": "Bah-tee-kee-tos",
+  "Bautista": "Bow-tee-sta",
+  "Beebe": "Bee-bee",
+  "Benicia": "Buh-nee-sha",
+  "Bosquejo": "Bos-keh-ho",
+  "Brea": "Bray-uh",
+  "Buellton": "Byool-tun",
+  "Buttes": "Byoots",
+  "Cabrillo": "Ka-bree-oh",
+  "Carpinteria": "Car-pin-tuh-ree-uh",
+  "Carquinez": "Kar-kee-ness",
+  "Cañada": "Kahn-yah-da",
+  "Cholame": "Show-lam",
+  "Cielito": "See-eh-lee-to",
+  "Colusa": "Ko-loo-suh",
+  "Concepción": "Kon-sep-see-ohn",
+  "DeHe": "Day-hay",
+  "Dehe": "Day-hay",
+  "Diegueños": "Dee-eh-gay-nyos",
+  "Dieguito": "Dee-eh-gee-toe",
+  "Doheny": "Doe-hee-nee",
+  "Ecke": "Eck-ee",
+  "Elijo": "Eh-lee-ho",
+  "Estanislao": "Es-tah-nees-lah-oh",
+  "Fages": "Fah-hess",
+  "Feliz": "Fee-liz",
+  "Fernandeño": "Fer-nan-dayn-yo",
+  "Firebaugh": "Fire-baw",
+  "Francisquito": "Fran-sis-kee-toe",
+  "Friant": "Fry-ant",
+  "Gabrieleño": "Gah-bree-el-ayn-yo",
+  "Garcés": "Gar-sess",
+  "Garzas": "Gar-sahs",
+  "Guijarral": "Gee-ha-rahl",
+  "Gustine": "Gus-teen",
+  "Hedionda": "Eh-dee-on-da",
+  "Hipólito": "Ee-po-lee-to",
+  "Idria": "Id-ree-uh",
+  "Inezeño": "Ee-neh-sayn-yo",
+  "Inés": "Ee-nez",
+  "Ishi": "Ee-shee",
+  "Isleton": "Eye-ul-ton",
+  "Jayme": "High-meh",
+  "Joaquins": "Wah-keens",
+  "Jolla": "Hoy-uh",
+  "Jolon": "Ho-lone",
+  "Juaneño": "Wah-nayn-yo",
+  "Juntas": "Hoon-tas",
+  "Karuk": "Kuh-rook",
+  "Kizh": "Keech",
+  "Kroeber": "Kro-ber",
+  "Lathrop": "Lay-thrup",
+  "Lebeck": "Luh-beck",
+  "Leucadia": "Loo-kay-dee-uh",
+  "Liebre": "Lee-ay-bray",
+  "Llagas": "Yah-gahs",
+  "Lompoc": "Lom-poke",
+  "Madera": "Muh-dair-uh",
+  "Miwok": "Mee-wok",
+  "Modjeska": "Mo-jess-ka",
+  "Moroni": "Mo-ro-nye",
+  "Norte": "Nort",
+  "Nuys": "Nize",
+  "Palóu": "Pah-lo",
+  "Panochita": "Pa-no-chee-ta",
+  "Pasajero": "Pa-sa-heh-ro",
+  "Perillas": "Peh-ree-yahs",
+  "Permanente": "Per-muh-nen-tay",
+  "Peña": "Pen-ya",
+  "Peñasquitos": "Pen-yas-kee-tos",
+  "Piru": "Pie-roo",
+  "Placerita": "Plass-er-ee-ta",
+  "Pleito": "Play-toe",
+  "Plumas": "Ploo-mus",
+  "Purisimeño": "Poo-ree-see-meh-nyo",
+  "Pío": "Pee-oh",
+  "Rainier": "Ray-neer",
+  "Seco": "Say-ko",
+  "Solis": "So-lees",
+  "Stanislaus": "Stan-iss-law",
+  "Tehama": "Tuh-hay-muh",
+  "tejón": "Teh-hone",
+  "Temecula": "Tuh-meck-yoo-luh",
+  "Tiburcio": "Tee-boor-see-oh",
+  "Tomales": "Toh-mal-ess",
+  "Trabuco": "Truh-boo-ko",
+  "Tujunga": "Tuh-hung-guh",
+  "Tuleburg": "Too-lee-burg",
+  "Uvas": "Oo-vahs",
+  "Vallejo": "Vuh-lay-ho",
+  "Ventureño": "Ven-too-rayn-yo",
+  "Vernalis": "Ver-nal-iss",
+  "Visalia": "Vy-sail-yuh",
+  "Wallowa": "Wuh-lau-uh",
+  "Yahi": "Yah-hee",
+  "Ynez": "Ee-nez",
+  "Yolla": "Yo-luh",
+  "Zanja": "Sahn-hah"
+ },
+ "rules_added": [
+  "Bros. -> Brothers",
+  "SCU -> S C U",
+  "OR-7 -> O R 7",
+  "EF3 -> E F 3",
+  "Sargon II -> Sargon the Second"
+ ],
+ "rerecord": "~/Dominares/tts/.venv/bin/python tools/voice/make.py --engine aura --keys tools/voice/say-sweep-keys.txt (with the local sampler running; Joseph's Cloudflare account)",
+ "units": [
+  {
+   "key": "14e57f25dcbfef",
+   "src": "place",
+   "text": "The explorer Cabrillo named this water False Bay in 1542, when it was a shifting maze of lagoons and tidal marsh.",
+   "before": "The explorer Cabrillo named this water False Bay in 15 42, when it was a shifting maze of lagoons and tidal marsh.",
+   "after": "The explorer Ka-bree-oh named this water False Bay in 15 42, when it was a shifting maze of lagoons and tidal marsh."
+  },
+  {
+   "key": "1c1eb96ee45690",
+   "src": "place",
+   "text": "Its spires rise about 200 feet, and a gold-leaf statue of the angel Moroni stands on top of the eastern one.",
+   "before": "Its spires rise about 200 feet, and a gold-leaf statue of the angel Moroni stands on top of the eastern one.",
+   "after": "Its spires rise about 200 feet, and a gold-leaf statue of the angel Mo-ro-nye stands on top of the eastern one."
+  },
+  {
+   "key": "0ff55665d1f432",
+   "src": "place,more",
+   "text": "Torrey Pines and Peñasquitos Lagoon.",
+   "before": "Torrey Pines and Peñasquitos Lagoon.",
+   "after": "Torrey Pines and Pen-yas-kee-tos Lagoon."
+  },
+  {
+   "key": "07bf525044e745",
+   "src": "place,play",
+   "text": "West of the freeway, Los Peñasquitos Lagoon, Spanish for the little cliffs, spreads about 500 acres of marsh beside bluffs where Torrey pines grow, the rarest pine in North America.",
+   "before": "West of the freeway, Los Peñasquitos Lagoon, Spanish for the little cliffs, spreads about 500 acres of marsh beside bluffs where Torrey pines grow, the rarest pine in North America.",
+   "after": "West of the freeway, Los Pen-yas-kee-tos Lagoon, Spanish for the little cliffs, spreads about 500 acres of marsh beside bluffs where Torrey pines grow, the rarest pine in North America."
+  },
+  {
+   "key": "02e6cfc69f97c1",
+   "src": "place,play",
+   "text": "The racetrack and fairgrounds beside the San Dieguito River are where the turf meets the surf.",
+   "before": "The racetrack and fairgrounds beside the San Dieguito River are where the turf meets the surf.",
+   "after": "The racetrack and fairgrounds beside the San Dee-eh-gee-toe River are where the turf meets the surf."
+  },
+  {
+   "key": "11c0bec5fa320b",
+   "src": "place,more",
+   "text": "San Elijo Lagoon.",
+   "before": "San Elijo Lagoon.",
+   "after": "San Eh-lee-ho Lagoon."
+  },
+  {
+   "key": "0c8b9d5528941a",
+   "src": "place,play",
+   "text": "The freeway crosses San Elijo Lagoon, a 915-acre reserve where Escondido Creek meets the sea.",
+   "before": "The freeway crosses San Elijo Lagoon, a 915-acre reserve where Escondido Creek meets the sea.",
+   "after": "The freeway crosses San Eh-lee-ho Lagoon, a 915-acre reserve where Escondido Creek meets the sea."
+  },
+  {
+   "key": "185d9d770deda0",
+   "src": "place",
+   "text": "The Portolá expedition named it San Alejo, for Saint Alexius, in 1769.",
+   "before": "The Portolá expedition named it San Alejo, for Saint Alexius, in 17 69.",
+   "after": "The Portolá expedition named it San Ah-leh-ho, for Saint Alexius, in 17 69."
+  },
+  {
+   "key": "175d181a300f52",
+   "src": "place",
+   "text": "In 1769 the Portolá expedition met people from the Kumeyaay village of Jeyal near San Elijo Lagoon and named this valley Los Encinos, for its oak forest.",
+   "before": "In 17 69 the Portolá expedition met people from the Koo-meh-yai village of Jeyal near San Elijo Lagoon and named this valley Los Encinos, for its oak forest.",
+   "after": "In 17 69 the Portolá expedition met people from the Koo-meh-yai village of Jeyal near San Eh-lee-ho Lagoon and named this valley Los Encinos, for its oak forest."
+  },
+  {
+   "key": "14fb1dfeaa003b",
+   "src": "place",
+   "text": "A Mexican land grant called Rancho Las Encinitas followed in 1842, and today's city formed in 1986 from five communities, including Cardiff-by-the-Sea, Leucadia and Olivenhain.",
+   "before": "A Mexican land grant called Rancho Las Encinitas followed in 18 42, and today's city formed in 19 86 from five communities, including Cardiff-by-the-Sea, Leucadia and Olivenhain.",
+   "after": "A Mexican land grant called Rancho Las Encinitas followed in 18 42, and today's city formed in 19 86 from five communities, including Cardiff-by-the-Sea, Loo-kay-dee-uh and Olivenhain."
+  },
+  {
+   "key": "0174bfeb483594",
+   "src": "place,more",
+   "text": "Ecke poinsettia ranch.",
+   "before": "Ecke poinsettia ranch.",
+   "after": "Eck-ee poinsettia ranch."
+  },
+  {
+   "key": "1e217f29c72ea4",
+   "src": "place",
+   "text": "The Ecke family moved their poinsettia business from Los Angeles to Encinitas in 1923, buying 40 acres at $150 an acre.",
+   "before": "The Ecke family moved their poinsettia business from Los Angeles to Encinitas in 19 23, buying 40 acres at $150 an acre.",
+   "after": "The Eck-ee family moved their poinsettia business from Los Angeles to Encinitas in 19 23, buying 40 acres at $150 an acre."
+  },
+  {
+   "key": "1dbf24ebf7422a",
+   "src": "place,more",
+   "text": "Batiquitos Lagoon.",
+   "before": "Batiquitos Lagoon.",
+   "after": "Bah-tee-kee-tos Lagoon."
+  },
+  {
+   "key": "1439d3ef44487e",
+   "src": "place,play",
+   "text": "The freeway crosses Batiquitos Lagoon, 610 acres of tidal wetland where San Marcos Creek meets the sea.",
+   "before": "The freeway crosses Batiquitos Lagoon, 610 acres of tidal wetland where San Marcos Creek meets the sea.",
+   "after": "The freeway crosses Bah-tee-kee-tos Lagoon, 610 acres of tidal wetland where San Marcos Creek meets the sea."
+  },
+  {
+   "key": "0c2c8d7b22b6cc",
+   "src": "place,more",
+   "text": "Agua Hedionda and the desal plant.",
+   "before": "Agua Hedionda and the desal plant.",
+   "after": "Agua Eh-dee-on-da and the desal plant."
+  },
+  {
+   "key": "0478ea946c69cb",
+   "src": "place",
+   "text": "The freeway crosses Agua Hedionda Lagoon, Spanish for fetid water.",
+   "before": "The freeway crosses Agua Hedionda Lagoon, Spanish for fetid water.",
+   "after": "The freeway crosses Agua Eh-dee-on-da Lagoon, Spanish for fetid water."
+  },
+  {
+   "key": "1d2529b5038678",
+   "src": "place",
+   "text": "It runs about 31 miles from near Temecula to the sea, and its lower 10 miles spread into a wide floodplain across Camp Pendleton.",
+   "before": "It runs about 31 miles from near Temecula to the sea, and its lower 10 miles spread into a wide floodplain across Camp Pendleton.",
+   "after": "It runs about 31 miles from near Tuh-meck-yoo-luh to the sea, and its lower 10 miles spread into a wide floodplain across Camp Pendleton."
+  },
+  {
+   "key": "1d29fb3b4a125b",
+   "src": "place,more",
+   "text": "Trabuco Creek's lost gun.",
+   "before": "Trabuco Creek's lost gun.",
+   "after": "Truh-boo-ko Creek's lost gun."
+  },
+  {
+   "key": "13c521d5dafbca",
+   "src": "place,play",
+   "text": "The freeway crosses Arroyo Trabuco here, a 22-mile creek that runs out of the Santa Ana Mountains to meet San Juan Creek beside the mission.",
+   "before": "The freeway crosses Arroyo Trabuco here, a 22-mile creek that runs out of the Santa Ana Mountains to meet San Juan Creek beside the mission.",
+   "after": "The freeway crosses Arroyo Truh-boo-ko here, a 22-mile creek that runs out of the Santa Ana Mountains to meet San Juan Creek beside the mission."
+  },
+  {
+   "key": "045bd26e511864",
+   "src": "place",
+   "text": "Trabuco is Spanish for blunderbuss, a kind of old shotgun.",
+   "before": "Trabuco is Spanish for blunderbuss, a kind of old shotgun.",
+   "after": "Truh-boo-ko is Spanish for blunderbuss, a kind of old shotgun."
+  },
+  {
+   "key": "11012791b196df",
+   "src": "place",
+   "text": "The lower summit, Modjeska Peak, less than a mile away, is named for Helena Modjeska, a Polish stage star who lived in a canyon at its foot in her later years.",
+   "before": "The lower summit, Modjeska Peak, less than a mile away, is named for Helena Modjeska, a Polish stage star who lived in a canyon at its foot in her later years.",
+   "after": "The lower summit, Mo-jess-ka Peak, less than a mile away, is named for Helena Mo-jess-ka, a Polish stage star who lived in a canyon at its foot in her later years."
+  },
+  {
+   "key": "1cd0c6b6c86321",
+   "src": "place",
+   "text": "Its architects modeled it on the castle of the Assyrian king Sargon II, in a style called Exotic Revival, and the same firm designed the Mayan Theater in Los Angeles.",
+   "before": "Its architects modeled it on the castle of the Assyrian king Sargon II, in a style called Exotic Revival, and the same firm designed the Mayan Theater in Los Angeles.",
+   "after": "Its architects modeled it on the castle of the Assyrian king Sargon the Second, in a style called Exotic Revival, and the same firm designed the Mayan Theater in Los Angeles."
+  },
+  {
+   "key": "1b7124bdd8efe7",
+   "src": "place,more",
+   "text": "Arroyo Seco Parkway.",
+   "before": "Arroyo Seco Parkway.",
+   "after": "Arroyo Say-ko Parkway."
+  },
+  {
+   "key": "01c1493ed5acb1",
+   "src": "place",
+   "text": "The freeway crosses the Los Angeles River here, where the Arroyo Seco flows in, and meets the Arroyo Seco Parkway, one of the oldest freeways in the United States.",
+   "before": "The freeway crosses the Los Angeles River here, where the Arroyo Seco flows in, and meets the Arroyo Seco Parkway, one of the oldest freeways in the United States.",
+   "after": "The freeway crosses the Los Angeles River here, where the Arroyo Say-ko flows in, and meets the Arroyo Say-ko Parkway, one of the oldest freeways in the United States."
+  },
+  {
+   "key": "178c65634f229c",
+   "src": "place",
+   "text": "Warner Bros. and the Walt Disney Company both have their headquarters here, in the Media District, a couple of miles west of the freeway.",
+   "before": "Warner Bros. and the Walt Disney Company both have their headquarters here, in the Media District, a couple of miles west of the freeway.",
+   "after": "Warner Brothers and the Walt Disney Company both have their headquarters here, in the Media District, a couple of miles west of the freeway."
+  },
+  {
+   "key": "08227811c37b3b",
+   "src": "place",
+   "text": "Warner Bros. took over the First National studio lot in 1928, and Disney, after the success of Snow White and the Seven Dwarfs, finished its Burbank studio on Buena Vista Street in 1939.",
+   "before": "Warner Bros. took over the First National studio lot in 19 28, and Disney, after the success of Snow White and the Seven Dwarfs, finished its Burbank studio on Buena Vista Street in 19 39.",
+   "after": "Warner Brothers took over the First National studio lot in 19 28, and Disney, after the success of Snow White and the Seven Dwarfs, finished its Burbank studio on Buena Vista Street in 19 39."
+  },
+  {
+   "key": "1fee1d79ad1336",
+   "src": "place,play",
+   "text": "Long before it was Sun Valley, this was Wixánga, a Fernandeño Tongva village whose name means something like place of the thorns, for the prickly pear cactus growing here.",
+   "before": "Long before it was Sun Valley, this was Wixánga, a Fernandeño Tongva village whose name means something like place of the thorns, for the prickly pear cactus growing here.",
+   "after": "Long before it was Sun Valley, this was Wixánga, a Fer-nan-dayn-yo Tongva village whose name means something like place of the thorns, for the prickly pear cactus growing here."
+  },
+  {
+   "key": "0006f28de8021a",
+   "src": "place",
+   "text": "The Spanish name, Cañada de las Tunas, carried the same idea and survives in nearby La Tuna Canyon.",
+   "before": "The Spanish name, Cañada de las Tunas, carried the same idea and survives in nearby La Tuna Canyon.",
+   "after": "The Spanish name, Kahn-yah-da de las Tunas, carried the same idea and survives in nearby La Tuna Canyon."
+  },
+  {
+   "key": "0bc18b18a35ef5",
+   "src": "place,play",
+   "text": "In 1874, J. B. Lankershim and Isaac Van Nuys began dry-farming wheat across the southern half of the San Fernando Valley.",
+   "before": "In 18 74, J. B. Lankershim and Isaac Van Nuys began dry-farming wheat across the southern half of the San Fernando Valley.",
+   "after": "In 18 74, J. B. Lankershim and Isaac Van Nize began dry-farming wheat across the southern half of the San Fernando Valley."
+  },
+  {
+   "key": "069a5e0671d452",
+   "src": "place,play",
+   "text": "In Placerita Canyon, a few miles east, Francisco López made what the state's landmark plaque calls California's first authenticated gold discovery, on March 9, 1842.",
+   "before": "In Placerita Canyon, a few miles east, Francisco López made what the state's landmark plaque calls California's first authenticated gold discovery, on March 9, 18 42.",
+   "after": "In Plass-er-ee-ta Canyon, a few miles east, Francisco López made what the state's landmark plaque calls California's first authenticated gold discovery, on March 9, 18 42."
+  },
+  {
+   "key": "0749c1e2dc0a16",
+   "src": "place",
+   "text": "Their tribe today, the Fernandeño Tataviam Band of Mission Indians, is governed from San Fernando.",
+   "before": "Their tribe today, the Fernandeño Tataviam Band of Mission Indians, is governed from San Fernando.",
+   "after": "Their tribe today, the Fer-nan-dayn-yo Tataviam Band of Mission Indians, is governed from San Fernando."
+  },
+  {
+   "key": "0d1d60bb620611",
+   "src": "place,play",
+   "text": "Just before midnight on March 12, 1928, the St. Francis Dam failed in San Francisquito Canyon, about 10 miles north of Santa Clarita.",
+   "before": "Just before midnight on March 12, 19 28, the Saint Francis Dam failed in San Francisquito Canyon, about 10 miles north of Santa Clarita.",
+   "after": "Just before midnight on March 12, 19 28, the Saint Francis Dam failed in San Fran-sis-kee-toe Canyon, about 10 miles north of Santa Clarita."
+  },
+  {
+   "key": "127a853e1b8267",
+   "src": "place",
+   "text": "In 1933 the three-lane Ridge Route Alternate, later US 99, opened through the canyon of Piru Creek, with a middle lane that drivers in both directions used for passing, nicknamed the suicide lane.",
+   "before": "In 19 33 the three-lane Ridge Route Alternate, later U.S. 99, opened through the canyon of Piru Creek, with a middle lane that drivers in both directions used for passing, nicknamed the suicide lane.",
+   "after": "In 19 33 the three-lane Ridge Route Alternate, later U.S. 99, opened through the canyon of Pie-roo Creek, with a middle lane that drivers in both directions used for passing, nicknamed the suicide lane."
+  },
+  {
+   "key": "12f040e7cab90e",
+   "src": "place,more",
+   "text": "Peter Lebeck's oak.",
+   "before": "Peter Lebeck's oak.",
+   "after": "Peter Luh-beck's oak."
+  },
+  {
+   "key": "18c0f34904b749",
+   "src": "place,play",
+   "text": "On the fort grounds is the grave of Peter Lebeck, buried under a valley oak in 1837.",
+   "before": "On the fort grounds is the grave of Peter Lebeck, buried under a valley oak in 18 37.",
+   "after": "On the fort grounds is the grave of Peter Luh-beck, buried under a valley oak in 18 37."
+  },
+  {
+   "key": "15e5bbe4f89ff8",
+   "src": "place",
+   "text": "Peter Lebeck, killed by a X bear, October 17, 1837.",
+   "before": "Peter Lebeck, killed by a X bear, October 17, 18 37.",
+   "after": "Peter Luh-beck, killed by a X bear, October 17, 18 37."
+  },
+  {
+   "key": "0d3248290bf9b9",
+   "src": "place",
+   "text": "On its south shore stood Tulamniu, a Yokuts village lived in for several centuries, which the Spanish commander Pedro Fages named Buena Vista in 1772.",
+   "before": "On its south shore stood Tulamniu, a Yokuts village lived in for several centuries, which the Spanish commander Pedro Fages named Buena Vista in 17 72.",
+   "after": "On its south shore stood Tulamniu, a Yokuts village lived in for several centuries, which the Spanish commander Pedro Fah-hess named Buena Vista in 17 72."
+  },
+  {
+   "key": "1bcb79301748db",
+   "src": "place",
+   "text": "Long before that, in 1776, the Spanish missionary Francisco Garcés had called it the Río de San Felipe.",
+   "before": "Long before that, in 17 76, the Spanish missionary Francisco Garcés had called it the Río de San Felipe.",
+   "after": "Long before that, in 17 76, the Spanish missionary Francisco Gar-sess had called it the Río de San Felipe."
+  },
+  {
+   "key": "0b3e80d38ecd59",
+   "src": "place",
+   "text": "In 1922 Interior Secretary Albert Fall leased them, without competitive bidding, to oilman Edward Doheny, who had quietly lent Fall 100,000 dollars with no interest.",
+   "before": "In 19 22 Interior Secretary Albert Fall leased them, without competitive bidding, to oilman Edward Doheny, who had quietly lent Fall 100,000 dollars with no interest.",
+   "after": "In 19 22 Interior Secretary Albert Fall leased them, without competitive bidding, to oilman Edward Doe-hee-nee, who had quietly lent Fall 100,000 dollars with no interest."
+  },
+  {
+   "key": "17f74c2cd7a736",
+   "src": "place",
+   "text": "Like the La Brea Tar Pits in Los Angeles, these pits trapped animals during the ice ages, from about 15,000 to 50,000 years ago.",
+   "before": "Like the La Brea Tar Pits in Los Angeles, these pits trapped animals during the ice ages, from about 15,000 to 50,000 years ago.",
+   "after": "Like the La Bray-uh Tar Pits in Los Angeles, these pits trapped animals during the ice ages, from about 15,000 to 50,000 years ago."
+  },
+  {
+   "key": "1ec0c098f53449",
+   "src": "place",
+   "text": "James Dean stopped there in 1955, and it is often described as the last place he was seen alive before his fatal crash near Cholame.",
+   "before": "James Dean stopped there in 19 55, and it is often described as the last place he was seen alive before his fatal crash near Cholame.",
+   "after": "James Dean stopped there in 19 55, and it is often described as the last place he was seen alive before his fatal crash near Show-lam."
+  },
+  {
+   "key": "1fd914965d1462",
+   "src": "place,more",
+   "text": "Alpaugh and Atwell's Island.",
+   "before": "Alpaugh and Atwell's Island.",
+   "after": "Al-paw and Atwell's Island."
+  },
+  {
+   "key": "1aaefe30e3d1ec",
+   "src": "place",
+   "text": "Utica Avenue leads east to Alpaugh, a town on what was once Atwell's Island, the largest island in Tulare Lake.",
+   "before": "Utica Avenue leads east to Alpaugh, a town on what was once Atwell's Island, the largest island in Too-lair-ee Lake.",
+   "after": "Utica Avenue leads east to Al-paw, a town on what was once Atwell's Island, the largest island in Too-lair-ee Lake."
+  },
+  {
+   "key": "0642fe34e787ce",
+   "src": "place",
+   "text": "It was first known as Hog-Root Island, and a Visalia lawyer named Allen Atwell raised hogs on it.",
+   "before": "It was first known as Hog-Root Island, and a Visalia lawyer named Allen Atwell raised hogs on it.",
+   "after": "It was first known as Hog-Root Island, and a Vy-sail-yuh lawyer named Allen Atwell raised hogs on it."
+  },
+  {
+   "key": "0a07d894beac8c",
+   "src": "place,play",
+   "text": "About 30 miles east, past Alpaugh, Colonel Allensworth State Historic Park preserves the first California town founded, financed and governed by African Americans.",
+   "before": "About 30 miles east, past Alpaugh, Colonel Allensworth State Historic Park preserves the first California town founded, financed and governed by African Americans.",
+   "after": "About 30 miles east, past Al-paw, Colonel Allensworth State Historic Park preserves the first California town founded, financed and governed by African Americans."
+  },
+  {
+   "key": "06006843c66f08",
+   "src": "place,more",
+   "text": "Avenal, the oat field.",
+   "before": "Avenal, the oat field.",
+   "after": "Av-uh-nal, the oat field."
+  },
+  {
+   "key": "18c990e143bd23",
+   "src": "place,play",
+   "text": "Highway 269 crosses the Kettleman Hills to Avenal, whose name is Spanish for oat field.",
+   "before": "Highway 2 69 crosses the Kettleman Hills to Avenal, whose name is Spanish for oat field.",
+   "after": "Highway 2 69 crosses the Kettleman Hills to Av-uh-nal, whose name is Spanish for oat field."
+  },
+  {
+   "key": "025d78b11bd04a",
+   "src": "place,more",
+   "text": "Arroyo Pasajero bridges.",
+   "before": "Arroyo Pasajero bridges.",
+   "after": "Arroyo Pa-sa-heh-ro bridges."
+  },
+  {
+   "key": "0b63a9ed379fac",
+   "src": "place,play",
+   "text": "The freeway bridges here cross Los Gatos Creek, once called Arroyo Pasajero, the travelers' creek.",
+   "before": "The freeway bridges here cross Los Gatos Creek, once called Arroyo Pasajero, the travelers' creek.",
+   "after": "The freeway bridges here cross Los Gatos Creek, once called Arroyo Pa-sa-heh-ro, the travelers' creek."
+  },
+  {
+   "key": "120115379245eb",
+   "src": "place",
+   "text": "It stretches from the Carquinez Strait, near the Bay Area, south to Polonio Pass, near Cholame.",
+   "before": "It stretches from the Carquinez Strait, near the Bay Area, south to Polonio Pass, near Cholame.",
+   "after": "It stretches from the Kar-kee-ness Strait, near the Bay Area, south to Polonio Pass, near Show-lam."
+  },
+  {
+   "key": "0d68a95adb2269",
+   "src": "place,more",
+   "text": "Firebaugh's Ferry.",
+   "before": "Firebaugh's Ferry.",
+   "after": "Fire-baw's Ferry."
+  },
+  {
+   "key": "16f84fff5b35f2",
+   "src": "place",
+   "text": "East of the freeway, on the San Joaquin River, is Firebaugh, named for Andrew Firebaugh, a Virginian who ran a ferry across the river during the Gold Rush.",
+   "before": "East of the freeway, on the San Wah-keen River, is Firebaugh, named for Andrew Firebaugh, a Virginian who ran a ferry across the river during the Gold Rush.",
+   "after": "East of the freeway, on the San Wah-keen River, is Fire-baw, named for Andrew Fire-baw, a Virginian who ran a ferry across the river during the Gold Rush."
+  },
+  {
+   "key": "1079f0471d324d",
+   "src": "place",
+   "text": "The settlement, then called Firebaugh's Ferry, became a station on the Butterfield Overland stage line.",
+   "before": "The settlement, then called Firebaugh's Ferry, became a station on the Butterfield Overland stage line.",
+   "after": "The settlement, then called Fire-baw's Ferry, became a station on the Butterfield Overland stage line."
+  },
+  {
+   "key": "05bc0abd1276ea",
+   "src": "place,play",
+   "text": "East of the freeway, the San Joaquin River winds past Firebaugh.",
+   "before": "East of the freeway, the San Wah-keen River winds past Firebaugh.",
+   "after": "East of the freeway, the San Wah-keen River winds past Fire-baw."
+  },
+  {
+   "key": "13ba65bbe59596",
+   "src": "place",
+   "text": "It is named for pools known as the baths of Padre Arroyo, a regular stop for priests from Mission San Juan Bautista on trips into the valley, visited by Spanish explorers as early as 1805.",
+   "before": "It is named for pools known as the baths of Padre Arroyo, a regular stop for priests from Mission San Juan Bautista on trips into the valley, visited by Spanish explorers as early as 18 oh 5.",
+   "after": "It is named for pools known as the baths of Padre Arroyo, a regular stop for priests from Mission San Juan Bow-tee-sta on trips into the valley, visited by Spanish explorers as early as 18 oh 5."
+  },
+  {
+   "key": "10313276e7bf56",
+   "src": "place",
+   "text": "The name is an English mangling of the Spanish word centinela, sentinel, from Rancho de Centinela, a horse ranch started here in 1810 by stockmen from San Juan Bautista and Monterey.",
+   "before": "The name is an English mangling of the Spanish word centinela, sentinel, from Rancho de Centinela, a horse ranch started here in 18 10 by stockmen from San Juan Bautista and Monterey.",
+   "after": "The name is an English mangling of the Spanish word centinela, sentinel, from Rancho de Centinela, a horse ranch started here in 18 10 by stockmen from San Juan Bow-tee-sta and Monterey."
+  },
+  {
+   "key": "0c8ce58700b891",
+   "src": "place",
+   "text": "When the 1924 original in Buellton closed in January 2024, just before its 100th anniversary, this became the only Pea Soup Andersen's left.",
+   "before": "When the 19 24 original in Buellton closed in January 20 24, just before its 100th anniversary, this became the only Pea Soup Andersen's left.",
+   "after": "When the 19 24 original in Byool-tun closed in January 20 24, just before its 100th anniversary, this became the only Pea Soup Andersen's left."
+  },
+  {
+   "key": "0837f941961635",
+   "src": "place,more",
+   "text": "Gustine.",
+   "before": "Gustine.",
+   "after": "Gus-teen."
+  },
+  {
+   "key": "119ee018253ee2",
+   "src": "place,play",
+   "text": "The town of Gustine, east of the freeway, is named for Sara Miller, the daughter of cattle king Henry Miller.",
+   "before": "The town of Gustine, east of the freeway, is named for Sara Miller, the daughter of cattle king Henry Miller.",
+   "after": "The town of Gus-teen, east of the freeway, is named for Sara Miller, the daughter of cattle king Henry Miller."
+  },
+  {
+   "key": "12f94931156e95",
+   "src": "place",
+   "text": "Gustine grew up in the early 1900s as a Southern Pacific station, opened its post office in 1907 and became a city in 1915.",
+   "before": "Gustine grew up in the early 19 hundreds as a Southern Pacific station, opened its post office in 19 oh 7 and became a city in 19 15.",
+   "after": "Gus-teen grew up in the early 19 hundreds as a Southern Pacific station, opened its post office in 19 oh 7 and became a city in 19 15."
+  },
+  {
+   "key": "16d0f5ab7ce07c",
+   "src": "place,play",
+   "text": "Almonds are the top farm product of Stanislaus County, which the freeway crosses here.",
+   "before": "Almonds are the top farm product of Stanislaus County, which the freeway crosses here.",
+   "after": "Almonds are the top farm product of Stan-iss-law County, which the freeway crosses here."
+  },
+  {
+   "key": "111d23662c677d",
+   "src": "place",
+   "text": "The SCU Lightning Complex burned nearly 400,000 acres, more than 600 square miles, across six counties between August 16 and October 1, one of the largest wildfires in modern California history.",
+   "before": "The SCU Lightning Complex burned nearly 400,000 acres, more than 600 square miles, across six counties between August 16 and October 1, one of the largest wildfires in modern California history.",
+   "after": "The S C U Lightning Complex burned nearly 400,000 acres, more than 600 square miles, across six counties between August 16 and October 1, one of the largest wildfires in modern California history."
+  },
+  {
+   "key": "03146930a50e46",
+   "src": "place,more",
+   "text": "Vernalis.",
+   "before": "Vernalis.",
+   "after": "Ver-nal-iss."
+  },
+  {
+   "key": "01a64811177e01",
+   "src": "place,play",
+   "text": "Highway 33 leads to Vernalis, east of the freeway, whose name is Latin for springlike.",
+   "before": "Highway 33 leads to Vernalis, east of the freeway, whose name is Latin for springlike.",
+   "after": "Highway 33 leads to Ver-nal-iss, east of the freeway, whose name is Latin for springlike."
+  },
+  {
+   "key": "18db57bef218eb",
+   "src": "place,play",
+   "text": "East of the freeway, where the Tuolumne and Stanislaus rivers join the San Joaquin, San Joaquin River National Wildlife Refuge protects more than 7,000 acres of river woodland, wetlands and grassland.",
+   "before": "East of the freeway, where the Too-all-uh-mee and Stanislaus rivers join the San Wah-keen, San Wah-keen River National Wildlife Refuge protects more than 7,000 acres of river woodland, wetlands and grassland.",
+   "after": "East of the freeway, where the Too-all-uh-mee and Stan-iss-law rivers join the San Wah-keen, San Wah-keen River National Wildlife Refuge protects more than 7,000 acres of river woodland, wetlands and grassland."
+  },
+  {
+   "key": "01fe2fea5f6d83",
+   "src": "place,more",
+   "text": "Estanislao's river.",
+   "before": "Estanislao's river.",
+   "after": "Es-tah-nees-lah-oh's river."
+  },
+  {
+   "key": "105418cd396c5f",
+   "src": "place",
+   "text": "A few miles east, the Stanislaus River flows into the San Joaquin.",
+   "before": "A few miles east, the Stanislaus River flows into the San Wah-keen.",
+   "after": "A few miles east, the Stan-iss-law River flows into the San Wah-keen."
+  },
+  {
+   "key": "18cc98d0b6043f",
+   "src": "place",
+   "text": "The river is named for Estanislao, the baptized name of Cucunuchi, a leader of the Lakisamni, a Yokuts people, and a Native official at Mission San Jose.",
+   "before": "The river is named for Estanislao, the baptized name of Cucunuchi, a leader of the Lakisamni, a Yokuts people, and a Native official at Mission San Jose.",
+   "after": "The river is named for Es-tah-nees-lah-oh, the baptized name of Cucunuchi, a leader of the Lakisamni, a Yokuts people, and a Native official at Mission San Jose."
+  },
+  {
+   "key": "0c271f5616e5de",
+   "src": "place",
+   "text": "In the late 1820s he left the mission with about 400 followers and led raids on missions and settlers, until a Mexican army under Mariano Vallejo drove his people from the river in 1829.",
+   "before": "In the late 18 20s he left the mission with about 400 followers and led raids on missions and settlers, until a Mexican army under Mariano Vallejo drove his people from the river in 18 29.",
+   "after": "In the late 18 20s he left the mission with about 400 followers and led raids on missions and settlers, until a Mexican army under Mariano Vuh-lay-ho drove his people from the river in 18 29."
+  },
+  {
+   "key": "0cb468754da7e3",
+   "src": "place",
+   "text": "The Tracy Historical Museum says the junction was named for Lathrop J. Tracy, a railroad executive from back east.",
+   "before": "The Tracy Historical Museum says the junction was named for Lathrop J. Tracy, a railroad executive from back east.",
+   "after": "The Tracy Historical Museum says the junction was named for Lay-thrup J. Tracy, a railroad executive from back east."
+  },
+  {
+   "key": "1354a7f6bc256e",
+   "src": "place,more",
+   "text": "Lathrop, born of a quarrel.",
+   "before": "Lathrop, born of a quarrel.",
+   "after": "Lay-thrup, born of a quarrel."
+  },
+  {
+   "key": "1c94e50d603f12",
+   "src": "place,play",
+   "text": "Lathrop exists because of a quarrel.",
+   "before": "Lathrop exists because of a quarrel.",
+   "after": "Lay-thrup exists because of a quarrel."
+  },
+  {
+   "key": "0d7b3f37b5705f",
+   "src": "place",
+   "text": "In 1869 it was renamed for the family of his wife, Jane Lathrop Stanford, and her brother Charles, an engineer for the railroad.",
+   "before": "In 18 69 it was renamed for the family of his wife, Jane Lathrop Stanford, and her brother Charles, an engineer for the railroad.",
+   "after": "In 18 69 it was renamed for the family of his wife, Jane Lay-thrup Stanford, and her brother Charles, an engineer for the railroad."
+  },
+  {
+   "key": "0040ca6088e642",
+   "src": "place,more",
+   "text": "Stockton, once Tuleburg.",
+   "before": "Stockton, once Tuleburg.",
+   "after": "Stockton, once Too-lee-burg."
+  },
+  {
+   "key": "10199d095ddbc4",
+   "src": "place,play",
+   "text": "When Charles Weber laid out a town here in 1849, he called it Tuleburg.",
+   "before": "When Charles Weber laid out a town here in 18 49, he called it Tuleburg.",
+   "after": "When Charles Weber laid out a town here in 18 49, he called it Too-lee-burg."
+  },
+  {
+   "key": "0eb4ea7a8a2e5c",
+   "src": "place",
+   "text": "Both names come from Miwok.",
+   "before": "Both names come from Miwok.",
+   "after": "Both names come from Mee-wok."
+  },
+  {
+   "key": "1a623e0f89f61b",
+   "src": "place",
+   "text": "The new state's lawmakers first met in San Jose, moved to Vallejo in 1852 and to Benicia in 1853, and then settled here.",
+   "before": "The new state's lawmakers first met in San Jose, moved to Vallejo in 18 52 and to Benicia in 18 53, and then settled here.",
+   "after": "The new state's lawmakers first met in San Jose, moved to Vuh-lay-ho in 18 52 and to Buh-nee-sha in 18 53, and then settled here."
+  },
+  {
+   "key": "12cfa83b40b9f0",
+   "src": "place,more",
+   "text": "Capay Valley, Yocha Dehe homeland.",
+   "before": "Capay Valley, Yocha Dehe homeland.",
+   "after": "Capay Valley, Yocha Day-hay homeland."
+  },
+  {
+   "key": "16cc1515ce003a",
+   "src": "place",
+   "text": "The valley is the traditional home of Patwin, or southern Wintun, people, and today it is home to the Yocha Dehe Wintun Nation, a federally recognized Patwin tribe.",
+   "before": "The valley is the traditional home of Patwin, or southern Wintun, people, and today it is home to the Yocha Dehe Wintun Nation, a federally recognized Patwin tribe.",
+   "after": "The valley is the traditional home of Patwin, or southern Wintun, people, and today it is home to the Yocha Day-hay Wintun Nation, a federally recognized Patwin tribe."
+  },
+  {
+   "key": "03fb4c2cdc03bb",
+   "src": "place",
+   "text": "In 2024 almonds were Colusa County's most valuable crop, worth about 279 million dollars, from roughly 63,000 acres.",
+   "before": "In 20 24 almonds were Colusa County's most valuable crop, worth about 279 million dollars, from roughly 63,000 acres.",
+   "after": "In 20 24 almonds were Ko-loo-suh County's most valuable crop, worth about 279 million dollars, from roughly 63,000 acres."
+  },
+  {
+   "key": "1a491e89ee9704",
+   "src": "place,more",
+   "text": "Sutter Buttes, closest view.",
+   "before": "Sutter Buttes, closest view.",
+   "after": "Sutter Byoots, closest view."
+  },
+  {
+   "key": "0838eef550707d",
+   "src": "place,play",
+   "text": "On clear days, the cluster of peaks rising from the valley to the east is the Sutter Buttes, centered about 17 miles away.",
+   "before": "On clear days, the cluster of peaks rising from the valley to the east is the Sutter Buttes, centered about 17 miles away.",
+   "after": "On clear days, the cluster of peaks rising from the valley to the east is the Sutter Byoots, centered about 17 miles away."
+  },
+  {
+   "key": "110fcbf098b94f",
+   "src": "place",
+   "text": "Today Patwin people are citizens of three federally recognized tribes, including the Kletsel Dehe Wintun Nation, headquartered in Williams.",
+   "before": "Today Patwin people are citizens of three federally recognized tribes, including the Kletsel Dehe Wintun Nation, headquartered in Williams.",
+   "after": "Today Patwin people are citizens of three federally recognized tribes, including the Kletsel Day-hay Wintun Nation, headquartered in Williams."
+  },
+  {
+   "key": "02eab5e737d161",
+   "src": "place,more",
+   "text": "Colusa and Korusi.",
+   "before": "Colusa and Korusi.",
+   "after": "Ko-loo-suh and Korusi."
+  },
+  {
+   "key": "1635722a2523d8",
+   "src": "place,play",
+   "text": "Highway 20 leads about 8 miles east to Colusa, the county seat, on the Sacramento River.",
+   "before": "Highway 20 leads about 8 miles east to Colusa, the county seat, on the Sacramento River.",
+   "after": "Highway 20 leads about 8 miles east to Ko-loo-suh, the county seat, on the Sacramento River."
+  },
+  {
+   "key": "0cb9ed897389b5",
+   "src": "place",
+   "text": "In 2024, Colusa County harvested rice from about 118,000 acres, roughly 185 square miles, for a crop of more than half a million tons.",
+   "before": "In 20 24, Colusa County harvested rice from about 118,000 acres, roughly 185 square miles, for a crop of more than half a million tons.",
+   "after": "In 20 24, Ko-loo-suh County harvested rice from about 118,000 acres, roughly 185 square miles, for a crop of more than half a million tons."
+  },
+  {
+   "key": "09a7a507be4ca4",
+   "src": "place",
+   "text": "Visitors can watch wildlife from a simple roadside overlook on the Maxwell-Colusa Highway.",
+   "before": "Visitors can watch wildlife from a simple roadside overlook on the Maxwell-Colusa Highway.",
+   "after": "Visitors can watch wildlife from a simple roadside overlook on the Maxwell-Ko-loo-suh Highway."
+  },
+  {
+   "key": "0c92a7c84d83b4",
+   "src": "place",
+   "text": "Tehama and Glenn are among California's leading prune counties, and California grows more than 90 percent of the nation's prunes and about 40 percent of the world's.",
+   "before": "Tehama and Glenn are among California's leading prune counties, and California grows more than 90 percent of the nation's prunes and about 40 percent of the world's.",
+   "after": "Tuh-hay-muh and Glenn are among California's leading prune counties, and California grows more than 90 percent of the nation's prunes and about 40 percent of the world's."
+  },
+  {
+   "key": "0d0ba5645d622f",
+   "src": "place,play",
+   "text": "Many of the orchards in Tehama County are English walnuts.",
+   "before": "Many of the orchards in Tehama County are English walnuts.",
+   "after": "Many of the orchards in Tuh-hay-muh County are English walnuts."
+  },
+  {
+   "key": "1c67e3dd12c177",
+   "src": "place",
+   "text": "About 8 miles east, near Vina, lay Rancho Bosquejo, the land grant of Peter Lassen, the Danish blacksmith whose name is on Lassen Peak.",
+   "before": "About 8 miles east, near Vina, lay Rancho Bosquejo, the land grant of Peter Lassen, the Danish blacksmith whose name is on Lassen Peak.",
+   "after": "About 8 miles east, near Vina, lay Rancho Bos-keh-ho, the land grant of Peter Lassen, the Danish blacksmith whose name is on Lassen Peak."
+  },
+  {
+   "key": "1d9dff288983b5",
+   "src": "place,more",
+   "text": "Tehama, the first county seat.",
+   "before": "Tehama, the first county seat.",
+   "after": "Tuh-hay-muh, the first county seat."
+  },
+  {
+   "key": "178878f59817dd",
+   "src": "place,play",
+   "text": "About 5 miles east, on the Sacramento River, is the little city of Tehama, home to 435 people in 2020.",
+   "before": "About 5 miles east, on the Sacramento River, is the little city of Tehama, home to 435 people in 20 20.",
+   "after": "About 5 miles east, on the Sacramento River, is the little city of Tuh-hay-muh, home to 435 people in 20 20."
+  },
+  {
+   "key": "19c7ac3e33975c",
+   "src": "place",
+   "text": "When Tehama County was formed in 1856, Tehama was its county seat, but a county-wide election moved the seat to Red Bluff the very next year.",
+   "before": "When Tehama County was formed in 18 56, Tehama was its county seat, but a county-wide election moved the seat to Red Bluff the very next year.",
+   "after": "When Tuh-hay-muh County was formed in 18 56, Tuh-hay-muh was its county seat, but a county-wide election moved the seat to Red Bluff the very next year."
+  },
+  {
+   "key": "007918a3243fb8",
+   "src": "place,more",
+   "text": "Ishi and the Yahi.",
+   "before": "Ishi and the Yahi.",
+   "after": "Ee-shee and the Yah-hee."
+  },
+  {
+   "key": "01dbbd27b72b0c",
+   "src": "place,play",
+   "text": "The foothill canyons east of here, along Mill and Deer creeks, are the ancestral homeland of the Yahi, the southernmost group of the Yana people.",
+   "before": "The foothill canyons east of here, along Mill and Deer creeks, are the ancestral homeland of the Yahi, the southernmost group of the Yana people.",
+   "after": "The foothill canyons east of here, along Mill and Deer creeks, are the ancestral homeland of the Yah-hee, the southernmost group of the Yana people."
+  },
+  {
+   "key": "154315fe640ad8",
+   "src": "place",
+   "text": "After the Gold Rush, settlers killed nearly all of the Yahi; in 1865, about 40 were killed in the Three Knolls Massacre on Mill Creek.",
+   "before": "After the Gold Rush, settlers killed nearly all of the Yahi; in 18 65, about 40 were killed in the Three Knolls Massacre on Mill Creek.",
+   "after": "After the Gold Rush, settlers killed nearly all of the Yah-hee; in 18 65, about 40 were killed in the Three Knolls Massacre on Mill Creek."
+  },
+  {
+   "key": "1b63f1861868c1",
+   "src": "place",
+   "text": "The last known Yahi, a man the world came to call Ishi, walked out near Oroville in 1911, starving and alone.",
+   "before": "The last known Yahi, a man the world came to call Ishi, walked out near Oroville in 19 11, starving and alone.",
+   "after": "The last known Yah-hee, a man the world came to call Ee-shee, walked out near Oroville in 19 11, starving and alone."
+  },
+  {
+   "key": "1c6e4c2c1cefcf",
+   "src": "place",
+   "text": "Finished in 1964, it raised the river to feed the Tehama-Colusa and Corning canals, which water about 150,000 acres of farms.",
+   "before": "Finished in 19 64, it raised the river to feed the Tehama-Colusa and Corning canals, which water about 150,000 acres of farms.",
+   "after": "Finished in 19 64, it raised the river to feed the Tuh-hay-muh-Ko-loo-suh and Corning canals, which water about 150,000 acres of farms."
+  },
+  {
+   "key": "0310c2593b9c5a",
+   "src": "place,play",
+   "text": "The freeway crosses Cottonwood Creek here, which forms the line between Tehama and Shasta counties along its whole length.",
+   "before": "The freeway crosses Cottonwood Creek here, which forms the line between Tehama and Shasta counties along its whole length.",
+   "after": "The freeway crosses Cottonwood Creek here, which forms the line between Tuh-hay-muh and Shasta counties along its whole length."
+  },
+  {
+   "key": "1eb9376687bef6",
+   "src": "place",
+   "text": "That evening a fire whirl formed, with winds estimated above 143 miles an hour, as strong as an EF3 tornado, and it rose an estimated 18,000 feet into the sky.",
+   "before": "That evening a fire whirl formed, with winds estimated above 143 miles an hour, as strong as an EF3 tornado, and it rose an estimated 18,000 feet into the sky.",
+   "after": "That evening a fire whirl formed, with winds estimated above 143 miles an hour, as strong as an E F 3 tornado, and it rose an estimated 18,000 feet into the sky."
+  },
+  {
+   "key": "0dd177e6f1e823",
+   "src": "place",
+   "text": "In late December 2011, a collared wolf from Oregon known as OR-7 crossed the state line, the first wild wolf confirmed in California since 1924.",
+   "before": "In late December 20 11, a collared wolf from Oregon known as OR-7 crossed the state line, the first wild wolf confirmed in California since 19 24.",
+   "after": "In late December 20 11, a collared wolf from Oregon known as O R 7 crossed the state line, the first wild wolf confirmed in California since 19 24."
+  },
+  {
+   "key": "0362d5a2f5c925",
+   "src": "place,more",
+   "text": "Into Karuk country.",
+   "before": "Into Karuk country.",
+   "after": "Into Kuh-rook country."
+  },
+  {
+   "key": "04143d7bef49e5",
+   "src": "place,play",
+   "text": "Highway 96 follows the Klamath River west into Karuk country.",
+   "before": "Highway 96 follows the Klamath River west into Karuk country.",
+   "after": "Highway 96 follows the Klamath River west into Kuh-rook country."
+  },
+  {
+   "key": "1a44a8f6cfbfdc",
+   "src": "place",
+   "text": "Karuk means upriver, and traditionally the Karuk called themselves the middle of the world people.",
+   "before": "Karuk means upriver, and traditionally the Karuk called themselves the middle of the world people.",
+   "after": "Kuh-rook means upriver, and traditionally the Kuh-rook called themselves the middle of the world people."
+  },
+  {
+   "key": "18e5681a7a3672",
+   "src": "place",
+   "text": "The Karuk Tribe is one of the largest tribes in California, and the 2010 census counted about 6,100 Karuk people.",
+   "before": "The Karuk Tribe is one of the largest tribes in California, and the 20 10 census counted about 6,100 Karuk people.",
+   "after": "The Kuh-rook Tribe is one of the largest tribes in California, and the 20 10 census counted about 6,100 Kuh-rook people."
+  },
+  {
+   "key": "009250d80d5b78",
+   "src": "place",
+   "text": "Look for green signs pointing to Pasadena and the Arroyo Seco Parkway.",
+   "before": "Look for green signs pointing to Pasadena and the Arroyo Seco Parkway.",
+   "after": "Look for green signs pointing to Pasadena and the Arroyo Say-ko Parkway."
+  },
+  {
+   "key": "1e50ca828611b8",
+   "src": "more,story",
+   "text": "The Spanish called them Diegueños, after Mission San Diego, and in Mexico they are known as Kumiai.",
+   "before": "The Spanish called them Diegueños, after Mission San Diego, and in Mexico they are known as Kumiai.",
+   "after": "The Spanish called them Dee-eh-gay-nyos, after Mission San Diego, and in Mexico they are known as Kumiai."
+  },
+  {
+   "key": "15a08ce7748835",
+   "src": "more,story",
+   "text": "Before Cabrillo landed in 1542, trail runners carrying messages between bands had already spread word of the strangers.",
+   "before": "Before Cabrillo landed in 15 42, trail runners carrying messages between bands had already spread word of the strangers.",
+   "after": "Before Ka-bree-oh landed in 15 42, trail runners carrying messages between bands had already spread word of the strangers."
+  },
+  {
+   "key": "0b193965ebc123",
+   "src": "more,story",
+   "text": "The city promised a park, but on April 22, 1970, a student named Mario Solis found bulldozers preparing a Highway Patrol parking lot instead.",
+   "before": "The city promised a park, but on April 22, 19 70, a student named Mario Solis found bulldozers preparing a Highway Patrol parking lot instead.",
+   "after": "The city promised a park, but on April 22, 19 70, a student named Mario So-lees found bulldozers preparing a Highway Patrol parking lot instead."
+  },
+  {
+   "key": "0cd4a2691283bf",
+   "src": "more,story",
+   "text": "Cielito Lindo, opened on Olvera Street in 1934.",
+   "before": "Cielito Lindo, opened on Olvera Street in 19 34.",
+   "after": "See-eh-lee-to Lindo, opened on Olvera Street in 19 34."
+  },
+  {
+   "key": "08b39becb69827",
+   "src": "more,story",
+   "text": "Father Luis Jayme was killed in the 1775 revolt, and he is buried by the altar.",
+   "before": "Father Luis Jayme was killed in the 17 75 revolt, and he is buried by the altar.",
+   "after": "Father Luis High-meh was killed in the 17 75 revolt, and he is buried by the altar."
+  },
+  {
+   "key": "0b5daa5fde266f",
+   "src": "more,story",
+   "text": "Years earlier, Father Jayme had reported that soldiers abused Kumeyaay people.",
+   "before": "Years earlier, Father Jayme had reported that soldiers abused Koo-meh-yai people.",
+   "after": "Years earlier, Father High-meh had reported that soldiers abused Koo-meh-yai people."
+  },
+  {
+   "key": "15db66358ac33a",
+   "src": "story",
+   "text": "Here's a story while we drive, about Torrey Pines and Peñasquitos Lagoon.",
+   "before": "Here's a story while we drive, about Torrey Pines and Peñasquitos Lagoon.",
+   "after": "Here's a story while we drive, about Torrey Pines and Pen-yas-kee-tos Lagoon."
+  },
+  {
+   "key": "04a9f26740401a",
+   "src": "story",
+   "text": "Here's a story while we drive, about San Elijo Lagoon.",
+   "before": "Here's a story while we drive, about San Elijo Lagoon.",
+   "after": "Here's a story while we drive, about San Eh-lee-ho Lagoon."
+  },
+  {
+   "key": "1f83c5cd9247c5",
+   "src": "more,story",
+   "text": "Cardiff's streets are named for British cities and classical composers, while Leucadia, named for the Greek island of Lefkada, has streets like Neptune, Phoebe and Daphne.",
+   "before": "Cardiff's streets are named for British cities and classical composers, while Leucadia, named for the Greek island of Lefkada, has streets like Neptune, Phoebe and Daphne.",
+   "after": "Cardiff's streets are named for British cities and classical composers, while Loo-kay-dee-uh, named for the Greek island of Lefkada, has streets like Neptune, Phoebe and Daphne."
+  },
+  {
+   "key": "1f6c8d7551214f",
+   "src": "more,story",
+   "text": "Albert Ecke, a German immigrant, began growing poinsettias in Los Angeles in 1909 and sold them from street stands.",
+   "before": "Albert Ecke, a German immigrant, began growing poinsettias in Los Angeles in 19 oh 9 and sold them from street stands.",
+   "after": "Albert Eck-ee, a German immigrant, began growing poinsettias in Los Angeles in 19 oh 9 and sold them from street stands."
+  },
+  {
+   "key": "05d46f34ecc538",
+   "src": "story",
+   "text": "Here's a story while we drive, about Ecke poinsettia ranch.",
+   "before": "Here's a story while we drive, about Ecke poinsettia ranch.",
+   "after": "Here's a story while we drive, about Eck-ee poinsettia ranch."
+  },
+  {
+   "key": "080a82f1336288",
+   "src": "story",
+   "text": "Here's a story while we drive, about Batiquitos Lagoon.",
+   "before": "Here's a story while we drive, about Batiquitos Lagoon.",
+   "after": "Here's a story while we drive, about Bah-tee-kee-tos Lagoon."
+  },
+  {
+   "key": "04f89886f068b2",
+   "src": "more,story",
+   "text": "Today the Ecke family of poinsettia fame owns the land, Mellano and Company grows the flowers, and the main crop is ranunculus bulbs.",
+   "before": "Today the Ecke family of poinsettia fame owns the land, Mellano and Company grows the flowers, and the main crop is ranunculus bulbs.",
+   "after": "Today the Eck-ee family of poinsettia fame owns the land, Mellano and Company grows the flowers, and the main crop is ranunculus bulbs."
+  },
+  {
+   "key": "10135a06d26ee1",
+   "src": "story",
+   "text": "Here's a story while we drive, about Agua Hedionda and the desal plant.",
+   "before": "Here's a story while we drive, about Agua Hedionda and the desal plant.",
+   "after": "Here's a story while we drive, about Agua Eh-dee-on-da and the desal plant."
+  },
+  {
+   "key": "0676f895ebcfcf",
+   "src": "more,story",
+   "text": "For years people have debated whether to keep the lagoon fresh or open it to the ocean, as at nearby Agua Hedionda.",
+   "before": "For years people have debated whether to keep the lagoon fresh or open it to the ocean, as at nearby Agua Hedionda.",
+   "after": "For years people have debated whether to keep the lagoon fresh or open it to the ocean, as at nearby Agua Eh-dee-on-da."
+  },
+  {
+   "key": "0413a380fe92f8",
+   "src": "more,story",
+   "text": "In 1841 brothers Pío and Andrés Pico became its first private owners.",
+   "before": "In 18 41 brothers Pío and Andrés Pico became its first private owners.",
+   "after": "In 18 41 brothers Pee-oh and Andrés Pico became its first private owners."
+  },
+  {
+   "key": "0eafd814cc5dcd",
+   "src": "more,story",
+   "text": "In the 1860s Pío Pico's brother-in-law, John Forster, paid off Pico's gambling debts in exchange for the deed and turned the rancho into a thriving cattle operation.",
+   "before": "In the 18 60s Pío Pico's brother-in-law, John Forster, paid off Pico's gambling debts in exchange for the deed and turned the rancho into a thriving cattle operation.",
+   "after": "In the 18 60s Pee-oh Pico's brother-in-law, John Forster, paid off Pico's gambling debts in exchange for the deed and turned the rancho into a thriving cattle operation."
+  },
+  {
+   "key": "0937f244b739cf",
+   "src": "more,story",
+   "text": "In 1881 the California Southern Railroad followed the river up Temecula Canyon, crossing it on 241 bridges, and Chinese Americans worked on the line.",
+   "before": "In 18 81 the California Southern Railroad followed the river up Temecula Canyon, crossing it on 241 bridges, and Chinese Americans worked on the line.",
+   "after": "In 18 81 the California Southern Railroad followed the river up Tuh-meck-yoo-luh Canyon, crossing it on 241 bridges, and Chinese Americans worked on the line."
+  },
+  {
+   "key": "187d342fa74b7e",
+   "src": "more,story",
+   "text": "When the California Southern first built north from San Diego in the early 1880s, its tracks turned inland at Oceanside through Temecula Canyon.",
+   "before": "When the California Southern first built north from San Diego in the early 18 80s, its tracks turned inland at Oceanside through Temecula Canyon.",
+   "after": "When the California Southern first built north from San Diego in the early 18 80s, its tracks turned inland at Oceanside through Tuh-meck-yoo-luh Canyon."
+  },
+  {
+   "key": "0f36904d511510",
+   "src": "more,story",
+   "text": "In 1818 the privateer Hipólito Bouchard anchored here during his raid on the mission.",
+   "before": "In 18 18 the privateer Hipólito Bouchard anchored here during his raid on the mission.",
+   "after": "In 18 18 the privateer Ee-po-lee-to Bouchard anchored here during his raid on the mission."
+  },
+  {
+   "key": "1fe08fa6e17b8a",
+   "src": "more,story",
+   "text": "The last California grizzly bear in the Santa Ana Mountains was shot near Trabuco Canyon.",
+   "before": "The last California grizzly bear in the Santa Ana Mountains was shot near Trabuco Canyon.",
+   "after": "The last California grizzly bear in the Santa Ana Mountains was shot near Truh-boo-ko Canyon."
+  },
+  {
+   "key": "0595ed17f1c03c",
+   "src": "more,story",
+   "text": "The upper canyon became Rancho Trabuco, and much of that land is now O'Neill Regional Park.",
+   "before": "The upper canyon became Rancho Trabuco, and much of that land is now O'Neill Regional Park.",
+   "after": "The upper canyon became Rancho Truh-boo-ko, and much of that land is now O'Neill Regional Park."
+  },
+  {
+   "key": "15ba559dae96d7",
+   "src": "story",
+   "text": "Here's a story while we drive, about Trabuco Creek's lost gun.",
+   "before": "Here's a story while we drive, about Trabuco Creek's lost gun.",
+   "after": "Here's a story while we drive, about Truh-boo-ko Creek's lost gun."
+  },
+  {
+   "key": "01dbf6b86d1f74",
+   "src": "more,story",
+   "text": "Don Juan Forster, brother-in-law of Governor Pío Pico, put the ranch together in the 1840s and at one point held about 200,000 acres, making him one of the largest landowners in the state.",
+   "before": "Don Juan Forster, brother-in-law of Governor Pío Pico, put the ranch together in the 18 40s and at one point held about 200,000 acres, making him one of the largest landowners in the state.",
+   "after": "Don Juan Forster, brother-in-law of Governor Pee-oh Pico, put the ranch together in the 18 40s and at one point held about 200,000 acres, making him one of the largest landowners in the state."
+  },
+  {
+   "key": "0d4fa713f99a2a",
+   "src": "more,story",
+   "text": "Helena Modjeska is regarded as the greatest actress in the history of Polish theater.",
+   "before": "Helena Modjeska is regarded as the greatest actress in the history of Polish theater.",
+   "after": "Helena Mo-jess-ka is regarded as the greatest actress in the history of Polish theater."
+  },
+  {
+   "key": "1334dab22aa687",
+   "src": "more,story",
+   "text": "In September 2024 the Airport Fire, named for a model airplane club near where it started in Trabuco Canyon, burned about 24,000 acres and crossed the ridge of Santiago Peak, damaging some of its radio equipment.",
+   "before": "In September 20 24 the Airport Fire, named for a model airplane club near where it started in Trabuco Canyon, burned about 24,000 acres and crossed the ridge of Santiago Peak, damaging some of its radio equipment.",
+   "after": "In September 20 24 the Airport Fire, named for a model airplane club near where it started in Truh-boo-ko Canyon, burned about 24,000 acres and crossed the ridge of Santiago Peak, damaging some of its radio equipment."
+  },
+  {
+   "key": "09685096dc3a2c",
+   "src": "more,story",
+   "text": "Its Avila Adobe, built in 1818 with a roof sealed by tar from the La Brea Tar Pits, is the oldest house still standing in the city.",
+   "before": "Its Avila Adobe, built in 18 18 with a roof sealed by tar from the La Brea Tar Pits, is the oldest house still standing in the city.",
+   "after": "Its Ah-vee-la Adobe, built in 18 18 with a roof sealed by tar from the La Bray-uh Tar Pits, is the oldest house still standing in the city."
+  },
+  {
+   "key": "16fc738017f196",
+   "src": "more,story",
+   "text": "In 1994 California recognized the Gabrieleño, or Tongva, as the aboriginal tribe of the Los Angeles Basin, though no Tongva group has federal recognition.",
+   "before": "In 19 94 California recognized the Gabrieleño, or Tongva, as the aboriginal tribe of the Los Angeles Basin, though no Tongva group has federal recognition.",
+   "after": "In 19 94 California recognized the Gah-bree-el-ayn-yo, or Tongva, as the aboriginal tribe of the Los Angeles Basin, though no Tongva group has federal recognition."
+  },
+  {
+   "key": "1e9d9110be795b",
+   "src": "more,story",
+   "text": "Arroyo Seco is Spanish for dry creek, a seasonal stream that runs from the San Gabriel Mountains through Pasadena, and the parkway follows it.",
+   "before": "Arroyo Seco is Spanish for dry creek, a seasonal stream that runs from the San Gabriel Mountains through Pasadena, and the parkway follows it.",
+   "after": "Arroyo Say-ko is Spanish for dry creek, a seasonal stream that runs from the San Gabriel Mountains through Pasadena, and the parkway follows it."
+  },
+  {
+   "key": "1d04e4e6d31485",
+   "src": "story",
+   "text": "Here's a story while we drive, about Arroyo Seco Parkway.",
+   "before": "Here's a story while we drive, about Arroyo Seco Parkway.",
+   "after": "Here's a story while we drive, about Arroyo Say-ko Parkway."
+  },
+  {
+   "key": "09890af0efa22e",
+   "src": "more,story",
+   "text": "At the foot of these hills by the river, the founders of Los Angeles dug their first water system in 1781, an earthen ditch called the Zanja Madre, or Mother Trench.",
+   "before": "At the foot of these hills by the river, the founders of Los Angeles dug their first water system in 17 81, an earthen ditch called the Zanja Madre, or Mother Trench.",
+   "after": "At the foot of these hills by the river, the founders of Los Angeles dug their first water system in 17 81, an earthen ditch called the Sahn-hah Madre, or Mother Trench."
+  },
+  {
+   "key": "1e6082d87bfad5",
+   "src": "more,story",
+   "text": "Griffith had bought Rancho Los Feliz in 1882 and leased part of it for an ostrich farm, since ostrich feathers decorated women's hats.",
+   "before": "Griffith had bought Rancho Los Feliz in 18 82 and leased part of it for an ostrich farm, since ostrich feathers decorated women's hats.",
+   "after": "Griffith had bought Rancho Los Fee-liz in 18 82 and leased part of it for an ostrich farm, since ostrich feathers decorated women's hats."
+  },
+  {
+   "key": "0204687b4e9e2a",
+   "src": "more,story",
+   "text": "Most of Casablanca's major scenes were shot on Stage 1 at Warner Bros. in 1942.",
+   "before": "Most of Casablanca's major scenes were shot on Stage 1 at Warner Bros. in 19 42.",
+   "after": "Most of Casablanca's major scenes were shot on Stage 1 at Warner Brothers in 19 42."
+  },
+  {
+   "key": "1d5db27dc0a666",
+   "src": "more,story",
+   "text": "Warner Bros. runs public backlot tours, while Disney is the only major studio that does not.",
+   "before": "Warner Bros. runs public backlot tours, while Disney is the only major studio that does not.",
+   "after": "Warner Brothers runs public backlot tours, while Disney is the only major studio that does not."
+  },
+  {
+   "key": "0182cebb082a04",
+   "src": "more,story",
+   "text": "Nearby Tujunga Wash, whose name comes from a Tongva word meaning old woman's place, is usually dry and carries much water only during and after storms.",
+   "before": "Nearby Tujunga Wash, whose name comes from a Tongva word meaning old woman's place, is usually dry and carries much water only during and after storms.",
+   "after": "Nearby Tuh-hung-guh Wash, whose name comes from a Tongva word meaning old woman's place, is usually dry and carries much water only during and after storms."
+  },
+  {
+   "key": "0830a1a342870b",
+   "src": "more,story",
+   "text": "The Fernandeño Tataviam Band of Mission Indians, descended from people gathered at this mission, is working toward federal recognition.",
+   "before": "The Fernandeño Tataviam Band of Mission Indians, descended from people gathered at this mission, is working toward federal recognition.",
+   "after": "The Fer-nan-dayn-yo Tataviam Band of Mission Indians, descended from people gathered at this mission, is working toward federal recognition."
+  },
+  {
+   "key": "168ae4e3ccb31a",
+   "src": "more,story",
+   "text": "The oak stands in Placerita Canyon, homeland of the Tataviam people, where a rare clear oil still seeps beside a trail.",
+   "before": "The oak stands in Placerita Canyon, homeland of the Tataviam people, where a rare clear oil still seeps beside a trail.",
+   "after": "The oak stands in Plass-er-ee-ta Canyon, homeland of the Tataviam people, where a rare clear oil still seeps beside a trail."
+  },
+  {
+   "key": "0b85c43d11be08",
+   "src": "more,story",
+   "text": "Roadhouses served travelers along the way, including the National Forest Inn, the Tumble Inn and Sandberg's Summit Hotel, a log lodge from 1914 near the road's highest point, Liebre Summit, 4,233 feet.",
+   "before": "Roadhouses served travelers along the way, including the National Forest Inn, the Tumble Inn and Sandberg's Summit Hotel, a log lodge from 19 14 near the road's highest point, Liebre Summit, 4,233 feet.",
+   "after": "Roadhouses served travelers along the way, including the National Forest Inn, the Tumble Inn and Sandberg's Summit Hotel, a log lodge from 19 14 near the road's highest point, Lee-ay-bray Summit, 4,233 feet."
+  },
+  {
+   "key": "0b1ca993ec7af7",
+   "src": "more,story",
+   "text": "Lieutenant Pedro Fages crossed this pass in 1772 and called it Portezuelo de Cortes.",
+   "before": "Lieutenant Pedro Fages crossed this pass in 17 72 and called it Portezuelo de Cortes.",
+   "after": "Lieutenant Pedro Fah-hess crossed this pass in 17 72 and called it Portezuelo de Cortes."
+  },
+  {
+   "key": "081373d0550da2",
+   "src": "more,story",
+   "text": "In 1772 Pedro Fages named it Salinas de Cortes, and in the late 1800s and early 1900s its bed was sometimes mined for salt when it dried out.",
+   "before": "In 17 72 Pedro Fages named it Salinas de Cortes, and in the late 18 hundreds and early 19 hundreds its bed was sometimes mined for salt when it dried out.",
+   "after": "In 17 72 Pedro Fah-hess named it Salinas de Cortes, and in the late 18 hundreds and early 19 hundreds its bed was sometimes mined for salt when it dried out."
+  },
+  {
+   "key": "1aae2bac04ec2d",
+   "src": "story",
+   "text": "Here's a story while we drive, about Peter Lebeck's oak.",
+   "before": "Here's a story while we drive, about Peter Lebeck's oak.",
+   "after": "Here's a story while we drive, about Peter Luh-beck's oak."
+  },
+  {
+   "key": "0bcc1a0c8c3bab",
+   "src": "more,story",
+   "text": "in 1772 Pedro Fages called this canyon Cañada de las Uvas, the canyon of the grapes.",
+   "before": "in 17 72 Pedro Fages called this canyon Cañada de las Uvas, the canyon of the grapes.",
+   "after": "in 17 72 Pedro Fah-hess called this canyon Kahn-yah-da de las Oo-vahs, the canyon of the grapes."
+  },
+  {
+   "key": "0e9cdd9a6e8e22",
+   "src": "more,story",
+   "text": "It belongs to the Pleito-Wheeler Ridge thrust fault system, which has been active since the late Pleistocene.",
+   "before": "It belongs to the Pleito-Wheeler Ridge thrust fault system, which has been active since the late Pleistocene.",
+   "after": "It belongs to the Play-toe-Wheeler Ridge thrust fault system, which has been active since the late Pleistocene."
+  },
+  {
+   "key": "151ccd01f58035",
+   "src": "more,story",
+   "text": "The White Wolf Fault, which caused the 1952 earthquake, may merge with the Pleito thrust fault at its southwestern end.",
+   "before": "The White Wolf Fault, which caused the 19 52 earthquake, may merge with the Pleito thrust fault at its southwestern end.",
+   "after": "The White Wolf Fault, which caused the 19 52 earthquake, may merge with the Play-toe thrust fault at its southwestern end."
+  },
+  {
+   "key": "00c1b13d2699d7",
+   "src": "more,story",
+   "text": "At Pleito, a Chumash rock art site in the preserve, researchers have studied the fragile paintings with portable X-ray instruments and 3D scanning, methods that leave the paint untouched.",
+   "before": "At Pleito, a Chumash rock art site in the preserve, researchers have studied the fragile paintings with portable X-ray instruments and 3D scanning, methods that leave the paint untouched.",
+   "after": "At Play-toe, a Chumash rock art site in the preserve, researchers have studied the fragile paintings with portable X-ray instruments and 3D scanning, methods that leave the paint untouched."
+  },
+  {
+   "key": "0d733213f956ab",
+   "src": "more,story",
+   "text": "Convicted in 1929 of taking bribes from Doheny, Fall became the first Cabinet member to go to prison, while Doheny was acquitted of paying them.",
+   "before": "Convicted in 19 29 of taking bribes from Doheny, Fall became the first Cabinet member to go to prison, while Doheny was acquitted of paying them.",
+   "after": "Convicted in 19 29 of taking bribes from Doe-hee-nee, Fall became the first Cabinet member to go to prison, while Doe-hee-nee was acquitted of paying them."
+  },
+  {
+   "key": "1910927d1f827d",
+   "src": "more,story",
+   "text": "Doheny's company even foreclosed on Fall's home in New Mexico over that same 100,000 dollar loan.",
+   "before": "Doheny's company even foreclosed on Fall's home in New Mexico over that same 100,000 dollar loan.",
+   "after": "Doe-hee-nee's company even foreclosed on Fall's home in New Mexico over that same 100,000 dollar loan."
+  },
+  {
+   "key": "12b68d7ebc0b7a",
+   "src": "more,story",
+   "text": "here, La Brea and Carpinteria.",
+   "before": "here, La Brea and Carpinteria.",
+   "after": "here, La Bray-uh and Car-pin-tuh-ree-uh."
+  },
+  {
+   "key": "0714eb00323522",
+   "src": "more,story",
+   "text": "At about 5:45 that evening, near Cholame, a college student driving the other way turned left across his path toward Highway 41, and Dean could not stop in time.",
+   "before": "At about 5:45 that evening, near Cholame, a college student driving the other way turned left across his path toward Highway 41, and Dean could not stop in time.",
+   "after": "At about 5:45 that evening, near Show-lam, a college student driving the other way turned left across his path toward Highway 41, and Dean could not stop in time."
+  },
+  {
+   "key": "16a735fc5838f1",
+   "src": "more,story",
+   "text": "The death certificate placed the crash one mile east of Cholame, at the junction of Highways 466 and 41, and an inquest jury found no criminal act.",
+   "before": "The death certificate placed the crash one mile east of Cholame, at the junction of Highways 466 and 41, and an inquest jury found no criminal act.",
+   "after": "The death certificate placed the crash one mile east of Show-lam, at the junction of Highways 466 and 41, and an inquest jury found no criminal act."
+  },
+  {
+   "key": "0a44d0c9e9c887",
+   "src": "more,story",
+   "text": "In 1977 a Japanese businessman, Seita Ohnishi, brought a stainless-steel memorial, built in Japan, to Cholame, where it stands in front of the old post office.",
+   "before": "In 19 77 a Japanese businessman, Seita Ohnishi, brought a stainless-steel memorial, built in Japan, to Cholame, where it stands in front of the old post office.",
+   "after": "In 19 77 a Japanese businessman, Seita Ohnishi, brought a stainless-steel memorial, built in Japan, to Show-lam, where it stands in front of the old post office."
+  },
+  {
+   "key": "0e1b9f0b696179",
+   "src": "more,story",
+   "text": "In 2005, two state prisons on the West Side, near Coalinga and Avenal, had rates of at least 3,000 cases per 100,000 people.",
+   "before": "In 2005, two state prisons on the West Side, near Ko-uh-ling-guh and Avenal, had rates of at least 3,000 cases per 100,000 people.",
+   "after": "In 2005, two state prisons on the West Side, near Ko-uh-ling-guh and Av-uh-nal, had rates of at least 3,000 cases per 100,000 people."
+  },
+  {
+   "key": "1c5b3af03131fa",
+   "src": "more,story",
+   "text": "From there, an extension 42 miles long, finished in 1997, carries water through Lompoc, Buellton and Solvang to Lake Cachuma in the Los Padres National Forest.",
+   "before": "From there, an extension 42 miles long, finished in 19 97, carries water through Lompoc, Buellton and Solvang to Lake Cachuma in the Los Padres National Forest.",
+   "after": "From there, an extension 42 miles long, finished in 19 97, carries water through Lom-poke, Byool-tun and Solvang to Lake Cachuma in the Los Padres National Forest."
+  },
+  {
+   "key": "18c2c9135271ea",
+   "src": "more,story",
+   "text": "The pumping plants have names such as Las Perillas, Badger Hill, Devil's Den, Bluestone and Polonio Pass.",
+   "before": "The pumping plants have names such as Las Perillas, Badger Hill, Devil's Den, Bluestone and Polonio Pass.",
+   "after": "The pumping plants have names such as Las Peh-ree-yahs, Badger Hill, Devil's Den, Bluestone and Polonio Pass."
+  },
+  {
+   "key": "0015e992adb897",
+   "src": "more,story",
+   "text": "The town is named for John Alpaugh, an officer of the land colony that developed it, and oil and gas were found nearby in 1920 and 1921.",
+   "before": "The town is named for John Alpaugh, an officer of the land colony that developed it, and oil and gas were found nearby in 19 20 and 19 21.",
+   "after": "The town is named for John Al-paw, an officer of the land colony that developed it, and oil and gas were found nearby in 19 20 and 19 21."
+  },
+  {
+   "key": "0cc764c6aae2c9",
+   "src": "more,story",
+   "text": "When the lake came back in 2023, parts of Alpaugh were ordered to evacuate.",
+   "before": "When the lake came back in 20 23, parts of Alpaugh were ordered to evacuate.",
+   "after": "When the lake came back in 20 23, parts of Al-paw were ordered to evacuate."
+  },
+  {
+   "key": "19f29cf0d034d5",
+   "src": "story",
+   "text": "Here's a story while we drive, about Alpaugh and Atwell's Island.",
+   "before": "Here's a story while we drive, about Alpaugh and Atwell's Island.",
+   "after": "Here's a story while we drive, about Al-paw and Atwell's Island."
+  },
+  {
+   "key": "02dd038fc7c7dd",
+   "src": "more,story",
+   "text": "The water table dropped and alkali salts spread, the Santa Fe railroad moved its stop to Alpaugh in 1914, and that September, Colonel Allensworth was struck and killed by a motorcycle in Monrovia.",
+   "before": "The water table dropped and alkali salts spread, the Santa Fe railroad moved its stop to Alpaugh in 19 14, and that September, Colonel Allensworth was struck and killed by a motorcycle in Monrovia.",
+   "after": "The water table dropped and alkali salts spread, the Santa Fe railroad moved its stop to Al-paw in 19 14, and that September, Colonel Allensworth was struck and killed by a motorcycle in Monrovia."
+  },
+  {
+   "key": "0f3ac77d55f428",
+   "src": "more,story",
+   "text": "On August 4, 1985, an earthquake of about magnitude 6 caused slight damage in Avenal, Kettleman City, Hanford and Lemoore, and some scientists have suggested that decades of pumping oil out of these hills helped set it off.",
+   "before": "On August 4, 19 85, an earthquake of about magnitude 6 caused slight damage in Avenal, Kettleman City, Hanford and Luh-moor, and some scientists have suggested that decades of pumping oil out of these hills helped set it off.",
+   "after": "On August 4, 19 85, an earthquake of about magnitude 6 caused slight damage in Av-uh-nal, Kettleman City, Hanford and Luh-moor, and some scientists have suggested that decades of pumping oil out of these hills helped set it off."
+  },
+  {
+   "key": "19e0cfcdc99ad4",
+   "src": "more,story",
+   "text": "After Avenal became a city, it asked the state for a prison, the first California prison a community actively sought.",
+   "before": "After Avenal became a city, it asked the state for a prison, the first California prison a community actively sought.",
+   "after": "After Av-uh-nal became a city, it asked the state for a prison, the first California prison a community actively sought."
+  },
+  {
+   "key": "0d038240e553aa",
+   "src": "more,story",
+   "text": "Avenal State Prison opened in 1987, and in 2019 its inmates made up about a third of the city's population.",
+   "before": "Avenal State Prison opened in 19 87, and in 20 19 its inmates made up about a third of the city's population.",
+   "after": "Av-uh-nal State Prison opened in 19 87, and in 20 19 its inmates made up about a third of the city's population."
+  },
+  {
+   "key": "1ecc34e9268c47",
+   "src": "more,story",
+   "text": "Avenal also has a gliderport, one of the few airports in the western U.S. just for gliders.",
+   "before": "Avenal also has a gliderport, one of the few airports in the western U.S. just for gliders.",
+   "after": "Av-uh-nal also has a gliderport, one of the few airports in the western U.S. just for gliders."
+  },
+  {
+   "key": "0a2d8bb39f4cc6",
+   "src": "story",
+   "text": "Here's a story while we drive, about Avenal, the oat field.",
+   "before": "Here's a story while we drive, about Avenal, the oat field.",
+   "after": "Here's a story while we drive, about Av-uh-nal, the oat field."
+  },
+  {
+   "key": "08580cca2898b6",
+   "src": "more,story",
+   "text": "Its old waterhole, Poso de Chane, northwest of the Guijarral Hills, was the site of a Native village the Spanish called the Chane, and later a stop on El Camino Viejo, until the Great Flood of 1862 destroyed it.",
+   "before": "Its old waterhole, Poso de Chane, northwest of the Guijarral Hills, was the site of a Native village the Spanish called the Chane, and later a stop on El Camino Viejo, until the Great Flood of 18 62 destroyed it.",
+   "after": "Its old waterhole, Poso de Chane, northwest of the Gee-ha-rahl Hills, was the site of a Native village the Spanish called the Chane, and later a stop on El Camino Viejo, until the Great Flood of 18 62 destroyed it."
+  },
+  {
+   "key": "0ba82bcbee297a",
+   "src": "story",
+   "text": "Here's a story while we drive, about Arroyo Pasajero bridges.",
+   "before": "Here's a story while we drive, about Arroyo Pasajero bridges.",
+   "after": "Here's a story while we drive, about Arroyo Pa-sa-heh-ro bridges."
+  },
+  {
+   "key": "05b47ebdc61c68",
+   "src": "more,story",
+   "text": "The song, Deportee (Plane Wreck at Los Gatos), has been sung by Pete Seeger, Joan Baez, Johnny Cash, Dolly Parton and Bruce Springsteen, among many others.",
+   "before": "The song, Deportee (Plane Wreck at Los Gatos), has been sung by Pete Seeger, Joan Baez, Johnny Cash, Dolly Parton and Bruce Springsteen, among many others.",
+   "after": "The song, Deportee (Plane Wreck at Los Gatos), has been sung by Pete Seeger, Joan Bye-ez, Johnny Cash, Dolly Parton and Bruce Springsteen, among many others."
+  },
+  {
+   "key": "0b5ae43d0ca82b",
+   "src": "more,story",
+   "text": "In the years after the Gold Rush, a nearby settlement called Las Juntas was a haven for fugitives, visited by the bandits Joaquin Murrieta and Tiburcio Vasquez.",
+   "before": "In the years after the Gold Rush, a nearby settlement called Las Juntas was a haven for fugitives, visited by the bandits Wah-keen Murrieta and Tiburcio Vasquez.",
+   "after": "In the years after the Gold Rush, a nearby settlement called Las Hoon-tas was a haven for fugitives, visited by the bandits Wah-keen Murrieta and Tee-boor-see-oh Vasquez."
+  },
+  {
+   "key": "13227f6707c3da",
+   "src": "more,story",
+   "text": "The group was founded in 2000 by Denis Prosperi, a Madera almond and wine grape farmer, and in 2015 it ran solely on donations.",
+   "before": "The group was founded in 2000 by Denis Prosperi, a Madera almond and wine grape farmer, and in 20 15 it ran solely on donations.",
+   "after": "The group was founded in 2000 by Denis Prosperi, a Muh-dair-uh almond and wine grape farmer, and in 20 15 it ran solely on donations."
+  },
+  {
+   "key": "03628753bdfe7d",
+   "src": "more,story",
+   "text": "The range is part of the homelands of many Native peoples, including the Ohlone, Yokuts, Miwok, Amah Mutsun and Salinan.",
+   "before": "The range is part of the homelands of many Native peoples, including the Oh-lo-nee, Yokuts, Miwok, Amah Mutsun and Salinan.",
+   "after": "The range is part of the homelands of many Native peoples, including the Oh-lo-nee, Yokuts, Mee-wok, Amah Mutsun and Salinan."
+  },
+  {
+   "key": "022e28020bc865",
+   "src": "more,story",
+   "text": "Arroyo de las Garzas, Creek of the Herons, and Aguaje de las Berendas, Waterhole of the Pronghorns, in Merced County, and Arroyo de las Polvarduras, Creek of the Dust Storms, in Fresno County.",
+   "before": "Arroyo de las Garzas, Creek of the Herons, and Aguaje de las Berendas, Waterhole of the Pronghorns, in Merced County, and Arroyo de las Polvarduras, Creek of the Dust Storms, in Fresno County.",
+   "after": "Arroyo de las Gar-sahs, Creek of the Herons, and Ah-gwah-heh de las Berendas, Waterhole of the Pronghorns, in Merced County, and Arroyo de las Polvarduras, Creek of the Dust Storms, in Fresno County."
+  },
+  {
+   "key": "100090615059ef",
+   "src": "more,story",
+   "text": "Far upstream, in the southern Diablo Range near its highest peak, are the old New Idria mines, which dug mercury from 1854 until 1972 and were at one time the second most productive mercury mines in the country.",
+   "before": "Far upstream, in the southern Diablo Range near its highest peak, are the old New Idria mines, which dug mercury from 18 54 until 19 72 and were at one time the second most productive mercury mines in the country.",
+   "after": "Far upstream, in the southern Diablo Range near its highest peak, are the old New Id-ree-uh mines, which dug mercury from 18 54 until 19 72 and were at one time the second most productive mercury mines in the country."
+  },
+  {
+   "key": "17f0436a4572d2",
+   "src": "more,story",
+   "text": "Gold Rush miners needed mercury to pull gold out of ore, and before New Idria and New Almaden it came almost entirely from Europe.",
+   "before": "Gold Rush miners needed mercury to pull gold out of ore, and before New Idria and New Almaden it came almost entirely from Europe.",
+   "after": "Gold Rush miners needed mercury to pull gold out of ore, and before New Id-ree-uh and New Al-muh-den it came almost entirely from Europe."
+  },
+  {
+   "key": "16c64fd5e2f353",
+   "src": "more,story",
+   "text": "During the Gold Rush the spot was a watering place called Aguaje Panochita, where mustang catchers held captured horses, and it was a stop for the gang known as the Five Joaquins as they drove horses south to their hideout on Cantua Creek.",
+   "before": "During the Gold Rush the spot was a watering place called Aguaje Panochita, where mustang catchers held captured horses, and it was a stop for the gang known as the Five Joaquins as they drove horses south to their hideout on Cantua Creek.",
+   "after": "During the Gold Rush the spot was a watering place called Ah-gwah-heh Pa-no-chee-ta, where mustang catchers held captured horses, and it was a stop for the gang known as the Five Wah-keens as they drove horses south to their hideout on Cantua Creek."
+  },
+  {
+   "key": "123a578325f60f",
+   "src": "more,story",
+   "text": "In 1857 Firebaugh built a wagon road with a gentler grade over Pacheco Pass, replacing a steep, rough horse and mule trail that ran near today's Highway 152.",
+   "before": "In 18 57 Firebaugh built a wagon road with a gentler grade over Pa-cheh-co Pass, replacing a steep, rough horse and mule trail that ran near today's Highway 1 52.",
+   "after": "In 18 57 Fire-baw built a wagon road with a gentler grade over Pa-cheh-co Pass, replacing a steep, rough horse and mule trail that ran near today's Highway 1 52."
+  },
+  {
+   "key": "1bbfc3602a3257",
+   "src": "more,story",
+   "text": "Firebaugh became a city in 1914.",
+   "before": "Firebaugh became a city in 19 14.",
+   "after": "Fire-baw became a city in 19 14."
+  },
+  {
+   "key": "016d4f36e6aac0",
+   "src": "story",
+   "text": "Here's a story while we drive, about Firebaugh's Ferry.",
+   "before": "Here's a story while we drive, about Firebaugh's Ferry.",
+   "after": "Here's a story while we drive, about Fire-baw's Ferry."
+  },
+  {
+   "key": "163af6a12f9350",
+   "src": "more,story",
+   "text": "With most of its water now held behind Friant Dam and sent into canals, long stretches often run dry.",
+   "before": "With most of its water now held behind Friant Dam and sent into canals, long stretches often run dry.",
+   "after": "With most of its water now held behind Fry-ant Dam and sent into canals, long stretches often run dry."
+  },
+  {
+   "key": "1c3e7685b82f9f",
+   "src": "more,story",
+   "text": "In 2009 the federal government began releasing water from Friant again to restore two dry stretches, about 64 miles in all, part of one of the largest river recovery efforts in the country, with salmon to be brought back.",
+   "before": "In 2009 the federal government began releasing water from Friant again to restore two dry stretches, about 64 miles in all, part of one of the largest river recovery efforts in the country, with salmon to be brought back.",
+   "after": "In 2009 the federal government began releasing water from Fry-ant again to restore two dry stretches, about 64 miles in all, part of one of the largest river recovery efforts in the country, with salmon to be brought back."
+  },
+  {
+   "key": "085699a09279b3",
+   "src": "more,story",
+   "text": "In March 1978, ten tule elk from Merced County, two males and eight females, were moved to Tomales Point at Point Reyes, where the herd struggled at first, then began growing fast in 1981.",
+   "before": "In March 19 78, ten tule elk from Merced County, two males and eight females, were moved to Tomales Point at Point Reyes, where the herd struggled at first, then began growing fast in 19 81.",
+   "after": "In March 19 78, ten tule elk from Merced County, two males and eight females, were moved to Toh-mal-ess Point at Point Reyes, where the herd struggled at first, then began growing fast in 19 81."
+  },
+  {
+   "key": "0175bdc5daea2b",
+   "src": "more,story",
+   "text": "Friant Dam, far up the San Joaquin, sends that river's water into canals serving the east side of the valley, so the Delta-Mendota brings Sacramento River water from the Delta to replace it for farms downstream.",
+   "before": "Friant Dam, far up the San Wah-keen, sends that river's water into canals serving the east side of the valley, so the Delta-Mendota brings Sacramento River water from the Delta to replace it for farms downstream.",
+   "after": "Fry-ant Dam, far up the San Wah-keen, sends that river's water into canals serving the east side of the valley, so the Delta-Mendota brings Sacramento River water from the Delta to replace it for farms downstream."
+  },
+  {
+   "key": "032671ff7c03fe",
+   "src": "more,story",
+   "text": "In March 1970 Gustine became the first place in California with a 9-1-1 emergency phone system.",
+   "before": "In March 19 70 Gustine became the first place in California with a 9-1-1 emergency phone system.",
+   "after": "In March 19 70 Gus-teen became the first place in California with a 9-1-1 emergency phone system."
+  },
+  {
+   "key": "1be41aa7143f0d",
+   "src": "more,story",
+   "text": "Gustine High School hosts what is called the longest-running basketball tournament in California.",
+   "before": "Gustine High School hosts what is called the longest-running basketball tournament in California.",
+   "after": "Gus-teen High School hosts what is called the longest-running basketball tournament in California."
+  },
+  {
+   "key": "095e930d73aaad",
+   "src": "story",
+   "text": "Here's a story while we drive, about Gustine.",
+   "before": "Here's a story while we drive, about Gustine.",
+   "after": "Here's a story while we drive, about Gus-teen."
+  },
+  {
+   "key": "0318784754bbf5",
+   "src": "more,story",
+   "text": "The creek watered the Mexican-era Rancho Orestimba y Las Garzas, whose ranch house stood above a sycamore grove on its banks.",
+   "before": "The creek watered the Mexican-era Rancho Orestimba y Las Garzas, whose ranch house stood above a sycamore grove on its banks.",
+   "after": "The creek watered the Mexican-era Rancho Orestimba y Las Gar-sahs, whose ranch house stood above a sycamore grove on its banks."
+  },
+  {
+   "key": "17f633c85b7df1",
+   "src": "more,story",
+   "text": "In August 2020 the community was ordered to evacuate for about a day as the SCU Lightning Complex fires burned in the hills.",
+   "before": "In August 20 20 the community was ordered to evacuate for about a day as the SCU Lightning Complex fires burned in the hills.",
+   "after": "In August 20 20 the community was ordered to evacuate for about a day as the S C U Lightning Complex fires burned in the hills."
+  },
+  {
+   "key": "14bfc33c4239be",
+   "src": "more,story",
+   "text": "The Chochenyo-speaking Ohlone call the mountain Tuyshtak, meaning at the dawn of time, and in Miwok and Ohlone tradition it was the place of creation.",
+   "before": "The Chochenyo-speaking Oh-lo-nee call the mountain Tuyshtak, meaning at the dawn of time, and in Miwok and Oh-lo-nee tradition it was the place of creation.",
+   "after": "The Chochenyo-speaking Oh-lo-nee call the mountain Tuyshtak, meaning at the dawn of time, and in Mee-wok and Oh-lo-nee tradition it was the place of creation."
+  },
+  {
+   "key": "0360981bb19a1c",
+   "src": "more,story",
+   "text": "Most of the mountain, including its peak, was the homeland of the Volvon, a Bay Miwok-speaking people.",
+   "before": "Most of the mountain, including its peak, was the homeland of the Volvon, a Bay Miwok-speaking people.",
+   "after": "Most of the mountain, including its peak, was the homeland of the Volvon, a Bay Mee-wok-speaking people."
+  },
+  {
+   "key": "0fed7253d32a9b",
+   "src": "more,story",
+   "text": "The junction sits in San Joaquin County, just north of the Stanislaus County line.",
+   "before": "The junction sits in San Wah-keen County, just north of the Stanislaus County line.",
+   "after": "The junction sits in San Wah-keen County, just north of the Stan-iss-law County line."
+  },
+  {
+   "key": "1ab25c99a7bcf3",
+   "src": "more,story",
+   "text": "During World War Two, Vernalis had a Navy airfield, Naval Auxiliary Air Station Vernalis, along with a reconditioning center and a camp for prisoners of war.",
+   "before": "During World War Two, Vernalis had a Navy airfield, Naval Auxiliary Air Station Vernalis, along with a reconditioning center and a camp for prisoners of war.",
+   "after": "During World War Two, Ver-nal-iss had a Navy airfield, Naval Auxiliary Air Station Ver-nal-iss, along with a reconditioning center and a camp for prisoners of war."
+  },
+  {
+   "key": "1ed6be43efac88",
+   "src": "more,story",
+   "text": "San Joaquin City, near where the Stanislaus River joins the San Joaquin, was probably the largest of the boomtowns that sprang up after the Gold Rush.",
+   "before": "San Wah-keen City, near where the Stanislaus River joins the San Wah-keen, was probably the largest of the boomtowns that sprang up after the Gold Rush.",
+   "after": "San Wah-keen City, near where the Stan-iss-law River joins the San Wah-keen, was probably the largest of the boomtowns that sprang up after the Gold Rush."
+  },
+  {
+   "key": "1986939c293d33",
+   "src": "story",
+   "text": "Here's a story while we drive, about Vernalis.",
+   "before": "Here's a story while we drive, about Vernalis.",
+   "after": "Here's a story while we drive, about Ver-nal-iss."
+  },
+  {
+   "key": "0b357f0e4b6c2a",
+   "src": "more,story",
+   "text": "Estanislao trained his fighters in tactics learned from Spanish and Mexican soldiers, digging trenches and building palisades, and at one time he led as many as 4,000 men, including Chumash and other Yokuts.",
+   "before": "Estanislao trained his fighters in tactics learned from Spanish and Mexican soldiers, digging trenches and building palisades, and at one time he led as many as 4,000 men, including Chumash and other Yokuts.",
+   "after": "Es-tah-nees-lah-oh trained his fighters in tactics learned from Spanish and Mexican soldiers, digging trenches and building palisades, and at one time he led as many as 4,000 men, including Chumash and other Yokuts."
+  },
+  {
+   "key": "041ec5abc0588d",
+   "src": "more,story",
+   "text": "Estanislao was pardoned in 1829, and he spent his last years at Mission San Jose teaching others the Yokuts language and culture until his death in 1838.",
+   "before": "Estanislao was pardoned in 18 29, and he spent his last years at Mission San Jose teaching others the Yokuts language and culture until his death in 18 38.",
+   "after": "Es-tah-nees-lah-oh was pardoned in 18 29, and he spent his last years at Mission San Jose teaching others the Yokuts language and culture until his death in 18 38."
+  },
+  {
+   "key": "062bce2e6cb158",
+   "src": "story",
+   "text": "Here's a story while we drive, about Estanislao's river.",
+   "before": "Here's a story while we drive, about Estanislao's river.",
+   "after": "Here's a story while we drive, about Es-tah-nees-lah-oh's river."
+  },
+  {
+   "key": "011d4c70d111d2",
+   "src": "more,story",
+   "text": "In 1894 the railroad's local headquarters moved from Lathrop to Tracy, and a roundhouse followed in 1896.",
+   "before": "In 18 94 the railroad's local headquarters moved from Lathrop to Tracy, and a roundhouse followed in 18 96.",
+   "after": "In 18 94 the railroad's local headquarters moved from Lay-thrup to Tracy, and a roundhouse followed in 18 96."
+  },
+  {
+   "key": "0b711daccfd14d",
+   "src": "more,story",
+   "text": "By 1871 Lathrop was an important division point and rail stop, and the railroad built a $50,000 hotel here, said to be one of the largest in California at the time.",
+   "before": "By 18 71 Lathrop was an important division point and rail stop, and the railroad built a $50,000 hotel here, said to be one of the largest in California at the time.",
+   "after": "By 18 71 Lay-thrup was an important division point and rail stop, and the railroad built a $50,000 hotel here, said to be one of the largest in California at the time."
+  },
+  {
+   "key": "1d1713803392ad",
+   "src": "more,story",
+   "text": "In the 1880s the railroad moved its roundhouse and machine shop to Tracy, and Lathrop began a decline that lasted nearly 50 years, with a major fire in 1911 along the way.",
+   "before": "In the 18 80s the railroad moved its roundhouse and machine shop to Tracy, and Lathrop began a decline that lasted nearly 50 years, with a major fire in 19 11 along the way.",
+   "after": "In the 18 80s the railroad moved its roundhouse and machine shop to Tracy, and Lay-thrup began a decline that lasted nearly 50 years, with a major fire in 19 11 along the way."
+  },
+  {
+   "key": "108bf2b6d845c1",
+   "src": "more,story",
+   "text": "World War Two brought Permanente Metals, which made aircraft parts and magnesium bombs, and the Sharpe Army Depot, one of the Army's major supply depots in the West.",
+   "before": "World War Two brought Permanente Metals, which made aircraft parts and magnesium bombs, and the Sharpe Army Depot, one of the Army's major supply depots in the West.",
+   "after": "World War Two brought Per-muh-nen-tay Metals, which made aircraft parts and magnesium bombs, and the Sharpe Army Depot, one of the Army's major supply depots in the West."
+  },
+  {
+   "key": "1f19c37b61d2fc",
+   "src": "more,story",
+   "text": "Lathrop did not become a city until 1989.",
+   "before": "Lathrop did not become a city until 19 89.",
+   "after": "Lay-thrup did not become a city until 19 89."
+  },
+  {
+   "key": "153933f2725a1e",
+   "src": "story",
+   "text": "Here's a story while we drive, about Lathrop, born of a quarrel.",
+   "before": "Here's a story while we drive, about Lathrop, born of a quarrel.",
+   "after": "Here's a story while we drive, about Lay-thrup, born of a quarrel."
+  },
+  {
+   "key": "0c2f29337263a5",
+   "src": "story",
+   "text": "Here's a story while we drive, about Stockton, once Tuleburg.",
+   "before": "Here's a story while we drive, about Stockton, once Tuleburg.",
+   "after": "Here's a story while we drive, about Stockton, once Too-lee-burg."
+  },
+  {
+   "key": "0915d61920fbbe",
+   "src": "more,story",
+   "text": "In 1919 Thomas Foon Chew, known as the Asparagus King, moved his Bayside Cannery to Isleton, on the Sacramento River, and at its peak it was the third-largest canning company in the country.",
+   "before": "In 19 19 Thomas Foon Chew, known as the Asparagus King, moved his Bayside Cannery to Isleton, on the Sacramento River, and at its peak it was the third-largest canning company in the country.",
+   "after": "In 19 19 Thomas Foon Chew, known as the Asparagus King, moved his Bayside Cannery to Eye-ul-ton, on the Sacramento River, and at its peak it was the third-largest canning company in the country."
+  },
+  {
+   "key": "0ec03a1edf66f6",
+   "src": "more,story",
+   "text": "The Delta is the homeland of Miwok and Maidu people, whose villages of 200 to 1,000 people stood along its eastern edge, where the land was higher and less likely to flood.",
+   "before": "The Delta is the homeland of Miwok and My-doo people, whose villages of 200 to 1,000 people stood along its eastern edge, where the land was higher and less likely to flood.",
+   "after": "The Delta is the homeland of Mee-wok and My-doo people, whose villages of 200 to 1,000 people stood along its eastern edge, where the land was higher and less likely to flood."
+  },
+  {
+   "key": "0d23719924578d",
+   "src": "more,story",
+   "text": "This lower river country is thought to be mostly Plains Miwok homeland, with many villages once standing between the Sierra foothills and the edge of the Delta.",
+   "before": "This lower river country is thought to be mostly Plains Miwok homeland, with many villages once standing between the Sierra foothills and the edge of the Delta.",
+   "after": "This lower river country is thought to be mostly Plains Mee-wok homeland, with many villages once standing between the Sierra foothills and the edge of the Delta."
+  },
+  {
+   "key": "0351522b95f097",
+   "src": "more,story",
+   "text": "The Miwok called the river Wakalumitch, possibly meaning big river.",
+   "before": "The Miwok called the river Wakalumitch, possibly meaning big river.",
+   "after": "The Mee-wok called the river Wakalumitch, possibly meaning big river."
+  },
+  {
+   "key": "12f242291ede36",
+   "src": "more,story",
+   "text": "Elk Grove is also the home base of the Wilton Rancheria, a federally recognized tribe of Miwok people.",
+   "before": "Elk Grove is also the home base of the Wilton Rancheria, a federally recognized tribe of Miwok people.",
+   "after": "Elk Grove is also the home base of the Wilton Rancheria, a federally recognized tribe of Mee-wok people."
+  },
+  {
+   "key": "1ca02c24a0567c",
+   "src": "more,story",
+   "text": "Maidu, Miwok, Nisenan and Wintun peoples have lived along the American River for at least 5,000 years, and the Nisenan call it Kum Sayo, roundhouse river.",
+   "before": "My-doo, Miwok, Nee-seh-nan and Wintun peoples have lived along the American River for at least 5,000 years, and the Nee-seh-nan call it Kum Sayo, roundhouse river.",
+   "after": "My-doo, Mee-wok, Nee-seh-nan and Wintun peoples have lived along the American River for at least 5,000 years, and the Nee-seh-nan call it Kum Sayo, roundhouse river."
+  },
+  {
+   "key": "00e46aa76237cd",
+   "src": "more,story",
+   "text": "A Spanish expedition under Gabriel Moraga named it the Rio de las Llagas, the River of Wounds, perhaps because of hostile encounters with Native people.",
+   "before": "A Spanish expedition under Gabriel Moraga named it the Rio de las Llagas, the River of Wounds, perhaps because of hostile encounters with Native people.",
+   "after": "A Spanish expedition under Gabriel Moraga named it the Rio de las Yah-gahs, the River of Wounds, perhaps because of hostile encounters with Native people."
+  },
+  {
+   "key": "13852179062e57",
+   "src": "more,story",
+   "text": "The Yocha Dehe Wintun Nation was formerly known as the Rumsey Indian Rancheria of Wintun Indians, and its Rumsey Rancheria, established in 1907, covers 185 acres.",
+   "before": "The Yocha Dehe Wintun Nation was formerly known as the Rumsey Indian Rancheria of Wintun Indians, and its Rumsey Rancheria, established in 19 oh 7, covers 185 acres.",
+   "after": "The Yocha Day-hay Wintun Nation was formerly known as the Rumsey Indian Rancheria of Wintun Indians, and its Rumsey Rancheria, established in 19 oh 7, covers 185 acres."
+  },
+  {
+   "key": "14b10274d92cad",
+   "src": "story",
+   "text": "Here's a story while we drive, about Capay Valley, Yocha Dehe homeland.",
+   "before": "Here's a story while we drive, about Capay Valley, Yocha Dehe homeland.",
+   "after": "Here's a story while we drive, about Capay Valley, Yocha Day-hay homeland."
+  },
+  {
+   "key": "082a0d9674fc77",
+   "src": "more,story",
+   "text": "According to the county, the town's depot is now the only train depot left in Colusa County.",
+   "before": "According to the county, the town's depot is now the only train depot left in Colusa County.",
+   "after": "According to the county, the town's depot is now the only train depot left in Ko-loo-suh County."
+  },
+  {
+   "key": "1ebe41741362c0",
+   "src": "more,story",
+   "text": "Growers aim for about two hives per acre, and in 2024 Colusa County's almond growers used about 126,000 hives.",
+   "before": "Growers aim for about two hives per acre, and in 20 24 Colusa County's almond growers used about 126,000 hives.",
+   "after": "Growers aim for about two hives per acre, and in 20 24 Ko-loo-suh County's almond growers used about 126,000 hives."
+  },
+  {
+   "key": "1b56f865f5c13c",
+   "src": "more,story",
+   "text": "In Maidu and Nisenan religion, the Buttes are the place where dying people go to ascend to the afterlife.",
+   "before": "In My-doo and Nee-seh-nan religion, the Buttes are the place where dying people go to ascend to the afterlife.",
+   "after": "In My-doo and Nee-seh-nan religion, the Byoots are the place where dying people go to ascend to the afterlife."
+  },
+  {
+   "key": "13bc7e8b523012",
+   "src": "more,story",
+   "text": "In June 1846, John Frémont's party stopped at the Buttes and, fearing an attack, struck first, killing many Native people in what is known as the Sutter Buttes massacre.",
+   "before": "In June 18 46, John Frémont's party stopped at the Buttes and, fearing an attack, struck first, killing many Native people in what is known as the Sutter Buttes massacre.",
+   "after": "In June 18 46, John Frémont's party stopped at the Byoots and, fearing an attack, struck first, killing many Native people in what is known as the Sutter Byoots massacre."
+  },
+  {
+   "key": "16ffcd8e056c3b",
+   "src": "more,story",
+   "text": "In 2003 the state bought 1,785 acres there for a park, but it is still not open to the public, and almost all the land around the Buttes is privately owned.",
+   "before": "In 2003 the state bought 1,785 acres there for a park, but it is still not open to the public, and almost all the land around the Buttes is privately owned.",
+   "after": "In 2003 the state bought 1,785 acres there for a park, but it is still not open to the public, and almost all the land around the Byoots is privately owned."
+  },
+  {
+   "key": "13837fce43cb7b",
+   "src": "story",
+   "text": "Here's a story while we drive, about Sutter Buttes, closest view.",
+   "before": "Here's a story while we drive, about Sutter Buttes, closest view.",
+   "after": "Here's a story while we drive, about Sutter Byoots, closest view."
+  },
+  {
+   "key": "09441f7680243c",
+   "src": "more,story",
+   "text": "The Kletsel Dehe Wintun Nation has about 270 citizens and holds the Cortina Rancheria, a 640-acre reservation in the hills about 15 miles west of Arbuckle.",
+   "before": "The Kletsel Dehe Wintun Nation has about 270 citizens and holds the Cortina Rancheria, a 640-acre reservation in the hills about 15 miles west of Arbuckle.",
+   "after": "The Kletsel Day-hay Wintun Nation has about 270 citizens and holds the Cortina Rancheria, a 640-acre reservation in the hills about 15 miles west of Arbuckle."
+  },
+  {
+   "key": "12c6ffc1eb6f4f",
+   "src": "more,story",
+   "text": "The other two Patwin tribes are the Cachil DeHe Band of Wintun Indians of the Colusa Indian Community and the Yocha Dehe Wintun Nation.",
+   "before": "The other two Patwin tribes are the Cachil DeHe Band of Wintun Indians of the Colusa Indian Community and the Yocha Dehe Wintun Nation.",
+   "after": "The other two Patwin tribes are the Cachil Day-hay Band of Wintun Indians of the Ko-loo-suh Indian Community and the Yocha Day-hay Wintun Nation."
+  },
+  {
+   "key": "1509db812a5372",
+   "src": "more,story",
+   "text": "The legislature settled on the spelling Colusa in 1854.",
+   "before": "The legislature settled on the spelling Colusa in 18 54.",
+   "after": "The legislature settled on the spelling Ko-loo-suh in 18 54."
+  },
+  {
+   "key": "0e2543418a0a9b",
+   "src": "more,story",
+   "text": "Colusa still has a historic Chinatown, a Carnegie library from 1905, and a courthouse built in 1861 that is a California Historical Landmark.",
+   "before": "Colusa still has a historic Chinatown, a Carnegie library from 19 oh 5, and a courthouse built in 18 61 that is a California Historical Landmark.",
+   "after": "Ko-loo-suh still has a historic Chinatown, a Carnegie library from 19 oh 5, and a courthouse built in 18 61 that is a California Historical Landmark."
+  },
+  {
+   "key": "030b93e46102a1",
+   "src": "story",
+   "text": "Here's a story while we drive, about Colusa and Korusi.",
+   "before": "Here's a story while we drive, about Colusa and Korusi.",
+   "after": "Here's a story while we drive, about Ko-loo-suh and Korusi."
+  },
+  {
+   "key": "0614f8d112f785",
+   "src": "more,story",
+   "text": "Water would arrive through the Tehama-Colusa Canal from a pumping plant at Red Bluff, and through another canal from Hamilton City.",
+   "before": "Water would arrive through the Tehama-Colusa Canal from a pumping plant at Red Bluff, and through another canal from Hamilton City.",
+   "after": "Water would arrive through the Tuh-hay-muh-Ko-loo-suh Canal from a pumping plant at Red Bluff, and through another canal from Hamilton City."
+  },
+  {
+   "key": "0e0c87fc1b30dc",
+   "src": "more,story",
+   "text": "The forest holds four wilderness areas, the largest of them the Yolla Bolly-Middle Eel.",
+   "before": "The forest holds four wilderness areas, the largest of them the Yolla Bolly-Middle Eel.",
+   "after": "The forest holds four wilderness areas, the largest of them the Yo-luh Bolly-Middle Eel."
+  },
+  {
+   "key": "12723467435786",
+   "src": "more,story",
+   "text": "The Honeybee Discovery Center says about 80 percent of the queen bees used in the United States are raised in Butte, Glenn, Shasta and Tehama counties.",
+   "before": "The Honeybee Discovery Center says about 80 percent of the queen bees used in the United States are raised in Butte, Glenn, Shasta and Tehama counties.",
+   "after": "The Honeybee Discovery Center says about 80 percent of the queen bees used in the United States are raised in Butte, Glenn, Shasta and Tuh-hay-muh counties."
+  },
+  {
+   "key": "097d21f42d3811",
+   "src": "more,story",
+   "text": "Green packed a lot into one life after arriving in San Francisco in 1849 and in Colusa County in 1850.",
+   "before": "Green packed a lot into one life after arriving in San Francisco in 18 49 and in Colusa County in 18 50.",
+   "after": "Green packed a lot into one life after arriving in San Francisco in 18 49 and in Ko-loo-suh County in 18 50."
+  },
+  {
+   "key": "1b0f04dafbcd65",
+   "src": "more,story",
+   "text": "In 2024, Tehama County's table olives were worth about 25.6 million dollars, from about 3,900 acres of bearing trees, and oil olives covered about 3,800 acres more.",
+   "before": "In 20 24, Tehama County's table olives were worth about 25.6 million dollars, from about 3,900 acres of bearing trees, and oil olives covered about 3,800 acres more.",
+   "after": "In 20 24, Tuh-hay-muh County's table olives were worth about 25.6 million dollars, from about 3,900 acres of bearing trees, and oil olives covered about 3,800 acres more."
+  },
+  {
+   "key": "1cdac3ad393a44",
+   "src": "more,story",
+   "text": "The name Tehama is most often said to come from a Wintun word for high water, though other meanings have been suggested.",
+   "before": "The name Tehama is most often said to come from a Wintun word for high water, though other meanings have been suggested.",
+   "after": "The name Tuh-hay-muh is most often said to come from a Wintun word for high water, though other meanings have been suggested."
+  },
+  {
+   "key": "171721d621e826",
+   "src": "more,story",
+   "text": "Tehama had a freewheeling reputation as the last town in the county to go dry before Prohibition, and its population peaked around 2,000 in the 1890s.",
+   "before": "Tehama had a freewheeling reputation as the last town in the county to go dry before Prohibition, and its population peaked around 2,000 in the 18 90s.",
+   "after": "Tuh-hay-muh had a freewheeling reputation as the last town in the county to go dry before Prohibition, and its population peaked around 2,000 in the 18 90s."
+  },
+  {
+   "key": "1743a51c7ac4c4",
+   "src": "story",
+   "text": "Here's a story while we drive, about Tehama, the first county seat.",
+   "before": "Here's a story while we drive, about Tehama, the first county seat.",
+   "after": "Here's a story while we drive, about Tuh-hay-muh, the first county seat."
+  },
+  {
+   "key": "0b108dcb7882ee",
+   "src": "more,story",
+   "text": "Ishi means man in the Yana language.",
+   "before": "Ishi means man in the Yana language.",
+   "after": "Ee-shee means man in the Yana language."
+  },
+  {
+   "key": "0f4bb3ba7e46fe",
+   "src": "more,story",
+   "text": "Anthropologist Alfred Kroeber gave him the name, because Yahi custom kept a person from speaking his own name until another Yahi introduced him, and none were left.",
+   "before": "Anthropologist Alfred Kroeber gave him the name, because Yahi custom kept a person from speaking his own name until another Yahi introduced him, and none were left.",
+   "after": "Anthropologist Alfred Kro-ber gave him the name, because Yah-hee custom kept a person from speaking his own name until another Yah-hee introduced him, and none were left."
+  },
+  {
+   "key": "1c5c1bc8bed2d1",
+   "src": "more,story",
+   "text": "The 41,339-acre Ishi Wilderness, about 20 miles east of Red Bluff, protects canyons believed to be his people's ancestral grounds, and the 2024 Park Fire burned nearly all of it.",
+   "before": "The 41,339-acre Ishi Wilderness, about 20 miles east of Red Bluff, protects canyons believed to be his people's ancestral grounds, and the 20 24 Park Fire burned nearly all of it.",
+   "after": "The 41,339-acre Ee-shee Wilderness, about 20 miles east of Red Bluff, protects canyons believed to be his people's ancestral grounds, and the 20 24 Park Fire burned nearly all of it."
+  },
+  {
+   "key": "147816e8abad1f",
+   "src": "story",
+   "text": "Here's a story while we drive, about Ishi and the Yahi.",
+   "before": "Here's a story while we drive, about Ishi and the Yahi.",
+   "after": "Here's a story while we drive, about Ee-shee and the Yah-hee."
+  },
+  {
+   "key": "171d7ed90a4883",
+   "src": "more,story",
+   "text": "The Tehama-Colusa Canal, the larger of the two canals, runs 110.9 miles down the west side of the valley and was not finished until 1980.",
+   "before": "The Tehama-Colusa Canal, the larger of the two canals, runs 110.9 miles down the west side of the valley and was not finished until 19 80.",
+   "after": "The Tuh-hay-muh-Ko-loo-suh Canal, the larger of the two canals, runs 110.9 miles down the west side of the valley and was not finished until 19 80."
+  },
+  {
+   "key": "0424aac49588ac",
+   "src": "more,story",
+   "text": "The station sits in the rolling grass and oak hills of Tehama County, about 2 miles south of Cottonwood Creek, the Shasta County line.",
+   "before": "The station sits in the rolling grass and oak hills of Tehama County, about 2 miles south of Cottonwood Creek, the Shasta County line.",
+   "after": "The station sits in the rolling grass and oak hills of Tuh-hay-muh County, about 2 miles south of Cottonwood Creek, the Shasta County line."
+  },
+  {
+   "key": "0358c85e8c0cfa",
+   "src": "more,story",
+   "text": "When Tehama County was created in 1856, the county line was drawn along the creek.",
+   "before": "When Tehama County was created in 18 56, the county line was drawn along the creek.",
+   "after": "When Tuh-hay-muh County was created in 18 56, the county line was drawn along the creek."
+  },
+  {
+   "key": "04a9d40ef9f95d",
+   "src": "more,story",
+   "text": "Some residents would like Cottonwood to become a city, but the new Sunset Hills and Sun City Tehama neighborhoods lie across the county line, and California's constitution does not allow a city to cross a county line.",
+   "before": "Some residents would like Cottonwood to become a city, but the new Sunset Hills and Sun City Tehama neighborhoods lie across the county line, and California's constitution does not allow a city to cross a county line.",
+   "after": "Some residents would like Cottonwood to become a city, but the new Sunset Hills and Sun City Tuh-hay-muh neighborhoods lie across the county line, and California's constitution does not allow a city to cross a county line."
+  },
+  {
+   "key": "16be35b6e4c73a",
+   "src": "more,story",
+   "text": "Writer and train fan Lucius Beebe described riding all morning in the shadowy presence of Mount Shasta, a brooding, symmetrical cone of everlasting snow.",
+   "before": "Writer and train fan Lucius Beebe described riding all morning in the shadowy presence of Mount Shasta, a brooding, symmetrical cone of everlasting snow.",
+   "after": "Writer and train fan Lucius Bee-bee described riding all morning in the shadowy presence of Mount Shasta, a brooding, symmetrical cone of everlasting snow."
+  },
+  {
+   "key": "11c5ba50ab1c19",
+   "src": "more,story",
+   "text": "The Shasta people call the mountain Waka-nunee-Tuki-wuki, and in the Karuk language it is Uytaahkoo.",
+   "before": "The Shasta people call the mountain Waka-nunee-Tuki-wuki, and in the Karuk language it is Uytaahkoo.",
+   "after": "The Shasta people call the mountain Waka-nunee-Tuki-wuki, and in the Kuh-rook language it is Uytaahkoo."
+  },
+  {
+   "key": "06d3607269ee67",
+   "src": "more,story",
+   "text": "OR-7, nicknamed Journey, had wandered more than 1,000 miles from the Wallowa Mountains of northeastern Oregon, and in 2012 he roamed across seven counties of northeastern California.",
+   "before": "OR-7, nicknamed Journey, had wandered more than 1,000 miles from the Wallowa Mountains of northeastern Oregon, and in 20 12 he roamed across seven counties of northeastern California.",
+   "after": "O R 7, nicknamed Journey, had wandered more than 1,000 miles from the Wuh-lau-uh Mountains of northeastern Oregon, and in 20 12 he roamed across seven counties of northeastern California."
+  },
+  {
+   "key": "11f5e0dc81c78d",
+   "src": "more,story",
+   "text": "In 2021 another Oregon wolf, OR-85, and a female formed the Whaleback Pack in Siskiyou County, and seven pups were confirmed that September.",
+   "before": "In 20 21 another Oregon wolf, OR-85, and a female formed the Whaleback Pack in Siskiyou County, and seven pups were confirmed that September.",
+   "after": "In 20 21 another Oregon wolf, O R 85, and a female formed the Whaleback Pack in Siskiyou County, and seven pups were confirmed that September."
+  },
+  {
+   "key": "1b8733a508493f",
+   "src": "more,story",
+   "text": "In 2025, after nearly 100 tries at scaring them off, state wildlife officials killed four wolves from a Plumas County pack that kept preying on cattle, the first time the state had done so.",
+   "before": "In 20 25, after nearly 100 tries at scaring them off, state wildlife officials killed four wolves from a Plumas County pack that kept preying on cattle, the first time the state had done so.",
+   "after": "In 20 25, after nearly 100 tries at scaring them off, state wildlife officials killed four wolves from a Ploo-mus County pack that kept preying on cattle, the first time the state had done so."
+  },
+  {
+   "key": "187ea6d84bc85f",
+   "src": "more,story",
+   "text": "The plan joined Siskiyou, Del Norte and Modoc counties in California with four counties in Oregon, and Yreka was picked as the capital, thanks partly to State Senator Randolph Collier.",
+   "before": "The plan joined Siskiyou, Del Norte and Modoc counties in California with four counties in Oregon, and Why-ree-kuh was picked as the capital, thanks partly to State Senator Randolph Collier.",
+   "after": "The plan joined Siskiyou, Del Nort and Modoc counties in California with four counties in Oregon, and Why-ree-kuh was picked as the capital, thanks partly to State Senator Randolph Collier."
+  },
+  {
+   "key": "0336abe9791011",
+   "src": "more,story",
+   "text": "The Karuk Tribe has housing, offices and the Rain Rock Casino on its land here, and in the Karuk language Yreka is kahtishraam.",
+   "before": "The Karuk Tribe has housing, offices and the Rain Rock Casino on its land here, and in the Karuk language Why-ree-kuh is kahtishraam.",
+   "after": "The Kuh-rook Tribe has housing, offices and the Rain Rock Casino on its land here, and in the Kuh-rook language Why-ree-kuh is kahtishraam."
+  },
+  {
+   "key": "1319cc208bc38d",
+   "src": "more,story",
+   "text": "Karuk ancestral territory covers more than a million acres along the Klamath, land the tribe has never ceded.",
+   "before": "Karuk ancestral territory covers more than a million acres along the Klamath, land the tribe has never ceded.",
+   "after": "Kuh-rook ancestral territory covers more than a million acres along the Klamath, land the tribe has never ceded."
+  },
+  {
+   "key": "186b620830de5f",
+   "src": "more,story",
+   "text": "The river was once lined with more than 120 Karuk villages.",
+   "before": "The river was once lined with more than 120 Karuk villages.",
+   "after": "The river was once lined with more than 120 Kuh-rook villages."
+  },
+  {
+   "key": "0404002f2762d8",
+   "src": "more,story",
+   "text": "The Karuk language is not related to any other known language.",
+   "before": "The Karuk language is not related to any other known language.",
+   "after": "The Kuh-rook language is not related to any other known language."
+  },
+  {
+   "key": "0cebc61f979d1a",
+   "src": "story",
+   "text": "Here's a story while we drive, about Into Karuk country.",
+   "before": "Here's a story while we drive, about Into Karuk country.",
+   "after": "Here's a story while we drive, about Into Kuh-rook country."
+  },
+  {
+   "key": "0064c362b67164",
+   "src": "zone",
+   "text": "Mission Bay to La Jolla.",
+   "before": "Mission Bay to La Jolla.",
+   "after": "Mission Bay to La Hoy-uh."
+  },
+  {
+   "key": "0b9dbeeb913eb6",
+   "src": "zone",
+   "text": "A string of coastal lagoons where creeks and rivers meet the sea, Los Peñasquitos, San Dieguito and San Elijo, alternates with the beach towns of Del Mar, Solana Beach and Encinitas.",
+   "before": "A string of coastal lagoons where creeks and rivers meet the sea, Los Peñasquitos, San Dieguito and San Elijo, alternates with the beach towns of Del Mar, Solana Beach and Encinitas.",
+   "after": "A string of coastal lagoons where creeks and rivers meet the sea, Los Pen-yas-kee-tos, San Dee-eh-gee-toe and San Eh-lee-ho, alternates with the beach towns of Del Mar, Solana Beach and Encinitas."
+  },
+  {
+   "key": "1b561a9c43dc72",
+   "src": "zone",
+   "text": "Carlsbad's flower and strawberry fields, three more lagoons, Batiquitos, Agua Hedionda and Buena Vista, and the beach town of Oceanside fill this stretch of Luiseño and Kumeyaay country.",
+   "before": "Carlsbad's flower and strawberry fields, three more lagoons, Batiquitos, Agua Hedionda and Buena Vista, and the beach town of Oceanside fill this stretch of Loo-ee-sayn-yo and Koo-meh-yai country.",
+   "after": "Carlsbad's flower and strawberry fields, three more lagoons, Bah-tee-kee-tos, Agua Eh-dee-on-da and Buena Vista, and the beach town of Oceanside fill this stretch of Loo-ee-sayn-yo and Koo-meh-yai country."
+  },
+  {
+   "key": "06b498abc05125",
+   "src": "zone",
+   "text": "Between Dana Point and Mission Viejo the freeway runs inland through the valley of San Juan and Trabuco creeks, Acjachemen homeland, past the mission town of San Juan Capistrano, with the ranch lands of Rancho Mission Viejo to the east.",
+   "before": "Between Dana Point and Mission Viejo the freeway runs inland through the valley of San Juan and Trabuco creeks, Ahk-hah-cheh-men homeland, past the mission town of San Juan Capistrano, with the ranch lands of Rancho Mission Viejo to the east.",
+   "after": "Between Dana Point and Mission Viejo the freeway runs inland through the valley of San Juan and Truh-boo-ko creeks, Ahk-hah-cheh-men homeland, past the mission town of San Juan Capistrano, with the ranch lands of Rancho Mission Viejo to the east."
+  },
+  {
+   "key": "14201f1df2a462",
+   "src": "zone",
+   "text": "The freeway threads the East Los Angeles Interchange in Boyle Heights, runs through Lincoln Heights, the city's first suburb, and crosses the Los Angeles River where the Arroyo Seco joins it, beside the wooded hills of Elysian Park.",
+   "before": "The freeway threads the East Los Angeles Interchange in Boyle Heights, runs through Lincoln Heights, the city's first suburb, and crosses the Los Angeles River where the Arroyo Seco joins it, beside the wooded hills of Elysian Park.",
+   "after": "The freeway threads the East Los Angeles Interchange in Boyle Heights, runs through Lincoln Heights, the city's first suburb, and crosses the Los Angeles River where the Arroyo Say-ko joins it, beside the wooded hills of Elysian Park."
+  },
+  {
+   "key": "0cf7f5807a7d2a",
+   "src": "zone",
+   "text": "Tujunga Wash, a mostly dry riverbed in this part of the valley, usually carries much water only during storms between November and April.",
+   "before": "Tujunga Wash, a mostly dry riverbed in this part of the valley, usually carries much water only during storms between November and April.",
+   "after": "Tuh-hung-guh Wash, a mostly dry riverbed in this part of the valley, usually carries much water only during storms between November and April."
+  },
+  {
+   "key": "1da9706981ffd6",
+   "src": "zone",
+   "text": "Pyramid Lake fills the canyon of Piru Creek west of the freeway in the Sierra Pelona Mountains, and farther north the land opens into Peace Valley around Gorman.",
+   "before": "Pyramid Lake fills the canyon of Piru Creek west of the freeway in the Sierra Pelona Mountains, and farther north the land opens into Peace Valley around Gorman.",
+   "after": "Pyramid Lake fills the canyon of Pie-roo Creek west of the freeway in the Sierra Pelona Mountains, and farther north the land opens into Peace Valley around Gorman."
+  },
+  {
+   "key": "0157cafa29d48d",
+   "src": "zone",
+   "text": "Firebaugh and the canals.",
+   "before": "Firebaugh and the canals.",
+   "after": "Fire-baw and the canals."
+  },
+  {
+   "key": "0fc568206f14a6",
+   "src": "zone",
+   "text": "The aqueduct runs through flat farmland, with the San Joaquin River and the town of Firebaugh well off to the east and the Panoche Hills to the west.",
+   "before": "The aqueduct runs through flat farmland, with the San Wah-keen River and the town of Firebaugh well off to the east and the Pa-no-chee Hills to the west.",
+   "after": "The aqueduct runs through flat farmland, with the San Wah-keen River and the town of Fire-baw well off to the east and the Pa-no-chee Hills to the west."
+  },
+  {
+   "key": "192e22cc2e42b4",
+   "src": "zone",
+   "text": "Firebaugh's yearly Cantaloupe Round-Up celebrates the melon harvest, which peaks in late July.",
+   "before": "Firebaugh's yearly Cantaloupe Round-Up celebrates the melon harvest, which peaks in late July.",
+   "after": "Fire-baw's yearly Cantaloupe Round-Up celebrates the melon harvest, which peaks in late July."
+  },
+  {
+   "key": "0405a39bc92625",
+   "src": "zone",
+   "text": "Gustine and Newman.",
+   "before": "Gustine and Newman.",
+   "after": "Gus-teen and Newman."
+  },
+  {
+   "key": "05b7c7df5db409",
+   "src": "zone",
+   "text": "Farms spread east across Merced and Stanislaus counties toward the old railroad towns of Gustine and Newman and the San Joaquin River.",
+   "before": "Farms spread east across Merced and Stanislaus counties toward the old railroad towns of Gustine and Newman and the San Wah-keen River.",
+   "after": "Farms spread east across Merced and Stan-iss-law counties toward the old railroad towns of Gus-teen and Newman and the San Wah-keen River."
+  },
+  {
+   "key": "108577019ed008",
+   "src": "zone",
+   "text": "San Joaquin River and Lathrop.",
+   "before": "San Wah-keen River and Lathrop.",
+   "after": "San Wah-keen River and Lay-thrup."
+  },
+  {
+   "key": "02d078cba9ec29",
+   "src": "zone",
+   "text": "The freeway crosses the San Joaquin River at Mossdale and runs through Lathrop, a railroad town where large planned neighborhoods now spread west of the freeway.",
+   "before": "The freeway crosses the San Wah-keen River at Mossdale and runs through Lathrop, a railroad town where large planned neighborhoods now spread west of the freeway.",
+   "after": "The freeway crosses the San Wah-keen River at Mossdale and runs through Lay-thrup, a railroad town where large planned neighborhoods now spread west of the freeway."
+  },
+  {
+   "key": "0f922a9d9e49ce",
+   "src": "zone",
+   "text": "Farm country continues past Zamora and Dunnigan, near the Dunnigan Hills, and on clear days the Sutter Buttes rise from the valley floor to the north.",
+   "before": "Farm country continues past Zamora and Dunnigan, near the Dunnigan Hills, and on clear days the Sutter Buttes rise from the valley floor to the north.",
+   "after": "Farm country continues past Zamora and Dunnigan, near the Dunnigan Hills, and on clear days the Sutter Byoots rise from the valley floor to the north."
+  },
+  {
+   "key": "160eff9ecbfb9e",
+   "src": "zone",
+   "text": "Almonds, rice and the Sutter Buttes.",
+   "before": "Almonds, rice and the Sutter Buttes.",
+   "after": "Almonds, rice and the Sutter Byoots."
+  },
+  {
+   "key": "184583449861cb",
+   "src": "zone",
+   "text": "Almond orchards ring Arbuckle and rice fields spread across the flat valley floor, while the Sutter Buttes rise from the plain to the east.",
+   "before": "Almond orchards ring Arbuckle and rice fields spread across the flat valley floor, while the Sutter Buttes rise from the plain to the east.",
+   "after": "Almond orchards ring Arbuckle and rice fields spread across the flat valley floor, while the Sutter Byoots rise from the plain to the east."
+  },
+  {
+   "key": "0e638819320926",
+   "src": "zone",
+   "text": "Tehama County to Red Bluff.",
+   "before": "Tehama County to Red Bluff.",
+   "after": "Tuh-hay-muh County to Red Bluff."
+  },
+  {
+   "key": "0276a08a41deed",
+   "src": "missions",
+   "text": "Inside the church, look for Father Jayme's tomb near the altar.",
+   "before": "Inside the church, look for Father Jayme's tomb near the altar.",
+   "after": "Inside the church, look for Father High-meh's tomb near the altar."
+  },
+  {
+   "key": "12f26082729e30",
+   "src": "missions",
+   "text": "You reach it from Highway 101 by about 26 miles of Jolon Road, then about six more miles of Mission Road inside Fort Hunter Liggett.",
+   "before": "You reach it from Highway 1 oh 1 by about 26 miles of Jolon Road, then about six more miles of Mission Road inside Fort Hunter Liggett.",
+   "after": "You reach it from Highway 1 oh 1 by about 26 miles of Ho-lone Road, then about six more miles of Mission Road inside Fort Hunter Liggett."
+  },
+  {
+   "key": "18dbb2a505ba86",
+   "src": "missions",
+   "text": "The Tongva (some descendants use the name Kizh) people lived on this land long before the mission was built.",
+   "before": "The Tongva (some descendants use the name Kizh) people lived on this land long before the mission was built.",
+   "after": "The Tongva (some descendants use the name Keech) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "14598e4df80dfe",
+   "src": "missions",
+   "text": "The Ramaytush Ohlone (the Yelamu group), with Coast Miwok and others brought later people lived on this land long before the mission was built.",
+   "before": "The Ramaytush Oh-lo-nee (the Yelamu group), with Coast Miwok and others brought later people lived on this land long before the mission was built.",
+   "after": "The Ramaytush Oh-lo-nee (the Yelamu group), with Coast Mee-wok and others brought later people lived on this land long before the mission was built."
+  },
+  {
+   "key": "01d097fbc6f1a9",
+   "src": "missions",
+   "text": "Father Francisco Palóu, with Father Pedro Benito Cambón, under Junípero Serra's authority founded this mission.",
+   "before": "Father Francisco Palóu, with Father Pedro Benito Cambón, under Hoo-nee-peh-ro Serra's authority founded this mission.",
+   "after": "Father Francisco Pah-lo, with Father Pedro Benito Cambón, under Hoo-nee-peh-ro Serra's authority founded this mission."
+  },
+  {
+   "key": "108b3a6d82b3e3",
+   "src": "missions",
+   "text": "In Spanish, its name is Misión San Francisco de Asís.",
+   "before": "In Spanish, its name is Mee-see-ohn San Francisco de Asís.",
+   "after": "In Spanish, its name is Mee-see-ohn San Francisco de Ah-sees."
+  },
+  {
+   "key": "14b27815c2e90c",
+   "src": "missions",
+   "text": "The Acjachemen (also called Juaneño) people lived on this land long before the mission was built.",
+   "before": "The Ahk-hah-cheh-men (also called Juaneño) people lived on this land long before the mission was built.",
+   "after": "The Ahk-hah-cheh-men (also called Wah-nayn-yo) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "07b542cb126340",
+   "src": "missions",
+   "text": "Father Tomás de la Peña, under Junípero Serra's authority founded this mission.",
+   "before": "Father Tomás de la Peña, under Hoo-nee-peh-ro Serra's authority founded this mission.",
+   "after": "Father Tomás de la Pen-ya, under Hoo-nee-peh-ro Serra's authority founded this mission."
+  },
+  {
+   "key": "0e6369a4ed46c9",
+   "src": "missions",
+   "text": "In Spanish, its name is Misión Santa Clara de Asís.",
+   "before": "In Spanish, its name is Mee-see-ohn Santa Clara de Asís.",
+   "after": "In Spanish, its name is Mee-see-ohn Santa Clara de Ah-sees."
+  },
+  {
+   "key": "0b6622abac21f2",
+   "src": "missions",
+   "text": "The Chumash (Ventureño) people lived on this land long before the mission was built.",
+   "before": "The Chumash (Ventureño) people lived on this land long before the mission was built.",
+   "after": "The Chumash (Ven-too-rayn-yo) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "002d084f055780",
+   "src": "missions",
+   "text": "The Chumash (Barbareño) people lived on this land long before the mission was built.",
+   "before": "The Chumash (Barbareño) people lived on this land long before the mission was built.",
+   "after": "The Chumash (Bar-bah-rayn-yo) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "09b0cc33f46f96",
+   "src": "missions",
+   "text": "The Chumash (Purisimeño) people lived on this land long before the mission was built.",
+   "before": "The Chumash (Purisimeño) people lived on this land long before the mission was built.",
+   "after": "The Chumash (Poo-ree-see-meh-nyo) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "17ccc3d9663114",
+   "src": "missions",
+   "text": "In Spanish, its name is Misión La Purísima Concepción.",
+   "before": "In Spanish, its name is Mee-see-ohn La Poo-ree-see-ma Concepción.",
+   "after": "In Spanish, its name is Mee-see-ohn La Poo-ree-see-ma Kon-sep-see-ohn."
+  },
+  {
+   "key": "144f045e769dce",
+   "src": "missions",
+   "text": "the ruins of the first mission site in Lompoc, at 508 South F Street.",
+   "before": "the ruins of the first mission site in Lompoc, at 508 South F Street.",
+   "after": "the ruins of the first mission site in Lom-poke, at 508 South F Street."
+  },
+  {
+   "key": "0f15891a22f325",
+   "src": "missions",
+   "text": "The cemetery holds a marker for Governor Arrillaga.",
+   "before": "The cemetery holds a marker for Governor Arrillaga.",
+   "after": "The cemetery holds a marker for Governor Ah-ree-yah-gah."
+  },
+  {
+   "key": "09799c1b3a1cfd",
+   "src": "missions",
+   "text": "The Ohlone (Chochenyo speakers), with Bay Miwok, Yokuts, Plains Miwok and others brought later people lived on this land long before the mission was built.",
+   "before": "The Oh-lo-nee (Chochenyo speakers), with Bay Miwok, Yokuts, Plains Miwok and others brought later people lived on this land long before the mission was built.",
+   "after": "The Oh-lo-nee (Chochenyo speakers), with Bay Mee-wok, Yokuts, Plains Mee-wok and others brought later people lived on this land long before the mission was built."
+  },
+  {
+   "key": "1e4c77e32bc05d",
+   "src": "missions",
+   "text": "Welcome to Mission San Juan Bautista, the fifteenth of the 21 missions, founded in 1797.",
+   "before": "Welcome to Mission San Juan Bautista, the fifteenth of the 21 missions, founded in 17 97.",
+   "after": "Welcome to Mission San Juan Bow-tee-sta, the fifteenth of the 21 missions, founded in 17 97."
+  },
+  {
+   "key": "14ce2ae707ab60",
+   "src": "missions",
+   "text": "Mission San Juan Bautista was founded in 1797.",
+   "before": "Mission San Juan Bautista was founded in 17 97.",
+   "after": "Mission San Juan Bow-tee-sta was founded in 17 97."
+  },
+  {
+   "key": "13d83dd90ecc30",
+   "src": "missions",
+   "text": "Mission San Juan Bautista was the fifteenth of the 21 missions to be founded.",
+   "before": "Mission San Juan Bautista was the fifteenth of the 21 missions to be founded.",
+   "after": "Mission San Juan Bow-tee-sta was the fifteenth of the 21 missions to be founded."
+  },
+  {
+   "key": "093bba7da3f816",
+   "src": "missions",
+   "text": "In Spanish, its name is Misión San Juan Bautista.",
+   "before": "In Spanish, its name is Mee-see-ohn San Juan Bautista.",
+   "after": "In Spanish, its name is Mee-see-ohn San Juan Bow-tee-sta."
+  },
+  {
+   "key": "0aba5a57400020",
+   "src": "missions",
+   "text": "Active Catholic parish of the Diocese of Monterey, facing the plaza of San Juan Bautista State Historic Park.",
+   "before": "Active Catholic parish of the Diocese of Monterey, facing the plaza of San Juan Bautista State Historic Park.",
+   "after": "Active Catholic parish of the Diocese of Monterey, facing the plaza of San Juan Bow-tee-sta State Historic Park."
+  },
+  {
+   "key": "1a81aef28da8a0",
+   "src": "missions",
+   "text": "Mission San Juan Bautista.",
+   "before": "Mission San Juan Bautista.",
+   "after": "Mission San Juan Bow-tee-sta."
+  },
+  {
+   "key": "01fe7144dab25a",
+   "src": "missions",
+   "text": "The Tataviam, Tongva (Fernandeño) and Ventureño Chumash people lived on this land long before the mission was built.",
+   "before": "The Tataviam, Tongva (Fernandeño) and Ventureño Chumash people lived on this land long before the mission was built.",
+   "after": "The Tataviam, Tongva (Fer-nan-dayn-yo) and Ven-too-rayn-yo Chumash people lived on this land long before the mission was built."
+  },
+  {
+   "key": "05d00f5738268b",
+   "src": "missions",
+   "text": "Welcome to Mission Santa Inés, the nineteenth of the 21 missions, founded in 1804.",
+   "before": "Welcome to Mission Santa Inés, the nineteenth of the 21 missions, founded in 18 oh 4.",
+   "after": "Welcome to Mission Santa Ee-nez, the nineteenth of the 21 missions, founded in 18 oh 4."
+  },
+  {
+   "key": "1cee75ee45ac72",
+   "src": "missions",
+   "text": "Mission Santa Inés was founded in 1804.",
+   "before": "Mission Santa Inés was founded in 18 oh 4.",
+   "after": "Mission Santa Ee-nez was founded in 18 oh 4."
+  },
+  {
+   "key": "1ddfb84fbd4682",
+   "src": "missions",
+   "text": "Mission Santa Inés was the nineteenth of the 21 missions to be founded.",
+   "before": "Mission Santa Inés was the nineteenth of the 21 missions to be founded.",
+   "after": "Mission Santa Ee-nez was the nineteenth of the 21 missions to be founded."
+  },
+  {
+   "key": "1e3cc69f57e489",
+   "src": "missions",
+   "text": "The Chumash (Inezeño, Samala) people lived on this land long before the mission was built.",
+   "before": "The Chumash (Inezeño, Samala) people lived on this land long before the mission was built.",
+   "after": "The Chumash (Ee-neh-sayn-yo, Samala) people lived on this land long before the mission was built."
+  },
+  {
+   "key": "1c1492ba03607c",
+   "src": "missions",
+   "text": "In Spanish, its name is Misión Santa Inés.",
+   "before": "In Spanish, its name is Mee-see-ohn Santa Inés.",
+   "after": "In Spanish, its name is Mee-see-ohn Santa Ee-nez."
+  },
+  {
+   "key": "00d6fbee7e2570",
+   "src": "missions",
+   "text": "Mission Santa Inés.",
+   "before": "Mission Santa Inés.",
+   "after": "Mission Santa Ee-nez."
+  },
+  {
+   "key": "01168f65750999",
+   "src": "missions",
+   "text": "For the Chumash story, add the Santa Ynez Band's museum and cultural center in nearby Santa Ynez.",
+   "before": "For the Chumash story, add the Santa Ynez Band's museum and cultural center in nearby Santa Ynez.",
+   "after": "For the Chumash story, add the Santa Ee-nez Band's museum and cultural center in nearby Santa Ee-nez."
+  },
+  {
+   "key": "1d839241703b6a",
+   "src": "missions",
+   "text": "The Coast Miwok people lived on this land long before the mission was built.",
+   "before": "The Coast Miwok people lived on this land long before the mission was built.",
+   "after": "The Coast Mee-wok people lived on this land long before the mission was built."
+  },
+  {
+   "key": "09697fb42d6c8a",
+   "src": "missions",
+   "text": "For Coast Miwok history, ask at the parish office or visit the Graton Rancheria's website.",
+   "before": "For Coast Miwok history, ask at the parish office or visit the Graton Rancheria's website.",
+   "after": "For Coast Mee-wok history, ask at the parish office or visit the Graton Rancheria's website."
+  },
+  {
+   "key": "0f8a2dcb1aac92",
+   "src": "missions",
+   "text": "The Coast Miwok, Southern Pomo, Wappo and Patwin people lived on this land long before the mission was built.",
+   "before": "The Coast Miwok, Southern Pomo, Wappo and Patwin people lived on this land long before the mission was built.",
+   "after": "The Coast Mee-wok, Southern Pomo, Wappo and Patwin people lived on this land long before the mission was built."
+  },
+  {
+   "key": "06d016d37b4f5c",
+   "src": "missions",
+   "text": "The same state park includes the Sonoma Barracks and Vallejo's home, all around the town plaza.",
+   "before": "The same state park includes the Sonoma Barracks and Vallejo's home, all around the town plaza.",
+   "after": "The same state park includes the Sonoma Barracks and Vuh-lay-ho's home, all around the town plaza."
+  },
+  {
+   "key": "13096a20756184",
+   "src": "play",
+   "text": "Trabuco Creek is named for something a Portolá expedition soldier lost in 1769.",
+   "before": "Trabuco Creek is named for something a Portolá expedition soldier lost in 17 69.",
+   "after": "Truh-boo-ko Creek is named for something a Portolá expedition soldier lost in 17 69."
+  },
+  {
+   "key": "0881f7af70bb33",
+   "src": "play",
+   "text": "Trabuco is Spanish for blunderbuss, a kind of old shotgun, and the gun was never found.",
+   "before": "Trabuco is Spanish for blunderbuss, a kind of old shotgun, and the gun was never found.",
+   "after": "Truh-boo-ko is Spanish for blunderbuss, a kind of old shotgun, and the gun was never found."
+  },
+  {
+   "key": "18742ac3981270",
+   "src": "play",
+   "text": "In 1842, Francisco López found gold in Placerita Canyon clinging to the roots of what?",
+   "before": "In 18 42, Francisco López found gold in Placerita Canyon clinging to the roots of what?",
+   "after": "In 18 42, Francisco López found gold in Plass-er-ee-ta Canyon clinging to the roots of what?"
+  },
+  {
+   "key": "108adc765d6d3d",
+   "src": "play",
+   "text": "What does tejón mean in Spanish?",
+   "before": "What does tejón mean in Spanish?",
+   "after": "What does Teh-hone mean in Spanish?"
+  },
+  {
+   "key": "03dc2af672d76b",
+   "src": "play",
+   "text": "The name Avenal comes from Spanish.",
+   "before": "The name Avenal comes from Spanish.",
+   "after": "The name Av-uh-nal comes from Spanish."
+  },
+  {
+   "key": "16e2e1e8b54a6a",
+   "src": "play",
+   "text": "In 1970, Gustine became the first place in California to have what?",
+   "before": "In 19 70, Gustine became the first place in California to have what?",
+   "after": "In 19 70, Gus-teen became the first place in California to have what?"
+  },
+  {
+   "key": "08403f60d6a392",
+   "src": "play",
+   "text": "California's first 9-1-1 system was installed in Gustine in March 1970.",
+   "before": "California's first 9-1-1 system was installed in Gustine in March 19 70.",
+   "after": "California's first 9-1-1 system was installed in Gus-teen in March 19 70."
+  },
+  {
+   "key": "13fb5a62004ec6",
+   "src": "play",
+   "text": "The name Vernalis comes from a Latin word meaning what?",
+   "before": "The name Vernalis comes from a Latin word meaning what?",
+   "after": "The name Ver-nal-iss comes from a Latin word meaning what?"
+  },
+  {
+   "key": "0c4446be486ada",
+   "src": "play",
+   "text": "Vernalis is Latin for springlike, and a local historian said it was named for two ranchers' daughters, Verna and Alice.",
+   "before": "Vernalis is Latin for springlike, and a local historian said it was named for two ranchers' daughters, Verna and Alice.",
+   "after": "Ver-nal-iss is Latin for springlike, and a local historian said it was named for two ranchers' daughters, Verna and Alice."
+  },
+  {
+   "key": "1c704e6a4c4db0",
+   "src": "play",
+   "text": "Which famous British steam locomotive was hidden from creditors at an Army depot in Lathrop in 1972?",
+   "before": "Which famous British steam locomotive was hidden from creditors at an Army depot in Lathrop in 19 72?",
+   "after": "Which famous British steam locomotive was hidden from creditors at an Army depot in Lay-thrup in 19 72?"
+  },
+  {
+   "key": "0d537adc7b5c42",
+   "src": "play",
+   "text": "In Plains Miwok, Mokelumne means people of the what?",
+   "before": "In Plains Miwok, Mo-kull-uh-mee means people of the what?",
+   "after": "In Plains Mee-wok, Mo-kull-uh-mee means people of the what?"
+  },
+  {
+   "key": "0a4324e88f9256",
+   "src": "play",
+   "text": "The Sutter Buttes are the leftovers of what?",
+   "before": "The Sutter Buttes are the leftovers of what?",
+   "after": "The Sutter Byoots are the leftovers of what?"
+  },
+  {
+   "key": "103833db34d29a",
+   "src": "play",
+   "text": "Mount Rainier.",
+   "before": "Mount Rainier.",
+   "after": "Mount Ray-neer."
+  }
+ ]
+}

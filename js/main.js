@@ -82,14 +82,17 @@ $("sheetBack").addEventListener("click", closeSheet);
 // products. Nothing happens in a browser.
 native.init({ store, toast, openSheet, closeSheet });
 
+// a Caltrans rest-area status from tools/rest-status.json (data.REST[].status)
+const REST_NOTE = { closed: "Closed, Caltrans says", partial: "Partly closed, Caltrans says", truck_only: "Trucks only, Caltrans says" };
+
 /** A place photo with its credit. size: "hero" | "thumb" | "full". */
 function photo(p, size = "hero") {
   if (!p.img) return null;
   const fig = el("figure", "photo " + size);
   const img = el("img");
-  // alt="" (3.0.1): the place's name is the heading right by the photo; the Wikimedia titles used before read like file
-  // names ("Angelstadiummarch2019")
-  img.src = p.img.f; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+  // alt (3.0.7): what the photo shows (alt_en from the 2026-11-20 photo check, tools/images.json); without it alt="",
+  // because the Wikimedia titles used before read like file names ("Angelstadiummarch2019")
+  img.src = p.img.f; img.alt = p.img.alt_en || ""; img.loading = "lazy"; img.decoding = "async";
   if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
   img.onerror = () => fig.remove();
   fig.append(img);
@@ -772,7 +775,7 @@ function renderServices() {
     const t = el("span", "tx");
     if (s) {
       any = true;
-      t.append(el("b", null, `${Math.max(1, Math.round(s.d))} mi`), el("small", null, kind === "rest" ? s.name.replace(/\s*\((north|south)bound\)/i, "") : `${label} · ${exitName(s.st, s.ref)}`));
+      t.append(el("b", null, `${Math.max(1, Math.round(s.d))} mi`), el("small", null, kind === "rest" ? (s.status === "closed" ? "Closed · " : "") + s.name.replace(/\s*\((north|south)bound\)/i, "") : `${label} · ${exitName(s.st, s.ref)}`));
       if (kind !== "rest" && s[kind]?.length) t.append(el("small", "brands", s[kind].slice(0, 3).join(", ")));
     } else {
       t.append(el("b", null, "—"), el("small", null, `No ${label.toLowerCase()} listed nearby`));
@@ -903,6 +906,7 @@ function renderStops(ol, m) {
     const body = el("div", "body");
     if (x.kind === "rest") {
       body.append(el("div", "m", "Rest area"), el("b", null, x.s.name.replace(/\s*\((north|south)bound\)/i, "")));
+      if (REST_NOTE[x.s.status]) body.append(el("p", "rest-status", REST_NOTE[x.s.status]));
     } else {
       body.append(el("div", "m", exitName(x.s.st, x.s.ref)));
       const lines = [["⛽", "fuel"], ["⚡", "ev"], ["🍴", "food"], ["🛏", "sleep"]].filter(([, k]) => x.s[k + "N"] > 0)

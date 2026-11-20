@@ -14,7 +14,10 @@ export const STATES = D.states;
 export const DESTS = D.dests;
 export const EXITS = D.exits;          // [m, st, ref, destinations]
 export const SERVICES = D.services;    // [{m, st, ref, fuel[], fuelN, ev[], evN, food[], foodN, sleep[], sleepN}]
-export const REST = D.rest;            // [{m, name, side, kind, toilets}]
+export const REST = D.rest;            // [{m, name, side, kind, toilets, status?, src?, since?, until?}] (status: a Caltrans closure)
+/** Share headline templates by kind (trip_route, trip_dest, trip, all, demo) with {miles} {stamps} {badges} {from} {to}
+    {dest} placeholders; places also carry `pc`, a postcard line of at most 60 characters (tools/postcards.json). */
+export const POSTCARDS = D.postcards && typeof D.postcards === "object" ? D.postcards : {};
 export const CAMS = D.cams;            // [{m, name, near, img, by, d?}]
 export const DISTRICTS = D.districts;  // Caltrans districts [{d, from, to}]
 export const ELEV = D.elev;            // feet at each whole corridor mile
@@ -114,17 +117,29 @@ export function servicesAhead(m, dir, kind, n = 3, max = 120) {
   }
   return out;
 }
-/** Rest areas that serve your direction of travel (side 1 = northbound side). */
+/** The Caltrans status of a rest area (closed | partial | truck_only), or "" when it is open or the status has run out:
+    a reopening date (r.until, YYYY-MM-DD) that has passed on this phone's clock means open again. */
+export function restStatus(r, now = Date.now()) {
+  if (!r || !r.status) return "";
+  if (r.until && /^\d{4}-\d\d-\d\d$/.test(r.until) && now > Date.parse(r.until + "T23:59:59-08:00")) return "";
+  return r.status;
+}
+/** Rest areas that serve your direction of travel (side 1 = northbound side). Each one carries `status` only while it is
+    current (restStatus). A closed one is kept in the list so it can be announced as closed; only open ones count toward n. */
 export function restAhead(m, dir, n = 2, max = 150) {
   const out = [];
+  let open = 0;
   const list = dir === "N" ? REST : [...REST].reverse();
   for (const r of list) {
     const d = aheadOf(m, dir, r.m);
     if (d < 0.3 || d > max) continue;
     const serves = !r.side || (dir === "N" ? r.side === 1 : r.side === -1) || /both|NB.*SB|north.*south/i.test(r.name);
     if (!serves || r.kind !== "rest_area") continue;
-    out.push({ ...r, d });
-    if (out.length >= n) break;
+    const status = restStatus(r);
+    const x = { ...r, d };
+    if (status) x.status = status; else delete x.status;
+    out.push(x);
+    if (status !== "closed" && ++open >= n) break;
   }
   return out;
 }
