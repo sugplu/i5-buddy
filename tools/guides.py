@@ -58,6 +58,44 @@ GUIDES = [
     },
 ]
 
+# Seasonal pages: the text lives in content/guides/<file> (English and Spanish, written and fact-checked once; see
+# claude-power/jobs/i5_thanksgiving.py) and is rendered here by seasonal_body(). Each has an English and a Spanish URL.
+SEASONAL = [
+    {
+        "slug": "thanksgiving",
+        "file": "content/guides/thanksgiving-2026.json",
+        "hub": {"en": "Thanksgiving 2026 on I-5 in California", "es": "Thanksgiving 2026 en la I-5 en California"},
+        "live": {"en": ("Is the Grapevine open?", "../../grapevine/", "Live closures and chain controls over Tejon Pass, from the CHP and Caltrans."),
+                 "es": ("¿Está abierto el Grapevine?", "../../grapevine/", "Cierres y control de cadenas en vivo sobre Tejon Pass, de la CHP y Caltrans.")},
+    },
+]
+
+# Page furniture by language (English is the default everywhere else in this file).
+LANG = {
+    "en": {"html": "en", "ld": "en-US", "locale": "en_US", "home": "I-5 Buddy", "guides": "Drive guides",
+           "app_h": "Hear it as you drive",
+           "app_p": "I-5 Buddy is a free talking guide to I-5 in California. It follows you by GPS and tells you about each of these "
+                    "places a mile or two before you reach them, which side to look, and the story behind it. No account, no ads.",
+           "app_a": "Get the free iPhone app", "app_b": "Open it in your browser",
+           "fine": 'Mileposts are California\'s exit numbers, which count up from the Mexico border. Every landmark lists the '
+                   'source it was checked against. Made by <a href="https://dominares.org/">Dominares</a> in San Diego. Not affiliated with Caltrans or the CHP. Questions or corrections: <a href="mailto:support@dominares.org">support@dominares.org</a>.',
+           "fine_s": 'Mileposts are California\'s exit numbers, which count up from the Mexico border. Stops come from I-5 Buddy\'s own '
+                     'data; dates and rules link to the official page they come from. Made by <a href="https://dominares.org/">Dominares</a> '
+                     'in San Diego. Not affiliated with Caltrans or the CHP. Questions or corrections: <a href="mailto:support@dominares.org">support@dominares.org</a>.',
+           "sources": "Sources", "other": "Leer en español", "more": "More I-5 guides"},
+    "es": {"html": "es", "ld": "es-US", "locale": "es_US", "home": "I-5 Buddy", "guides": "Guías de viaje",
+           "app_h": "Escúchela mientras conduce",
+           "app_p": "I-5 Buddy es una guía parlante y gratuita de la I-5 en California. Lo sigue por GPS y le cuenta cada uno de estos "
+                    "lugares una o dos millas antes de llegar, de qué lado mirar y la historia detrás. Sin cuenta y sin anuncios.",
+           "app_a": "Obtener la app gratis para iPhone", "app_b": "Abrir en el navegador",
+           "fine": 'Los marcadores de milla son los números de salida de California, que aumentan desde la frontera con México. Hecho por <a href="https://dominares.org/">Dominares</a> '
+                   'en San Diego. Sin relación con Caltrans ni con la CHP. Preguntas o correcciones: <a href="mailto:support@dominares.org">support@dominares.org</a>.',
+           "fine_s": 'Los marcadores de milla son los números de salida de California, que aumentan desde la frontera con México. Las paradas salen de los datos de '
+                     'I-5 Buddy; las fechas y reglas enlazan a la página oficial de donde vienen. Hecho por <a href="https://dominares.org/">Dominares</a> '
+                     'en San Diego. Sin relación con Caltrans ni con la CHP. Preguntas o correcciones: <a href="mailto:support@dominares.org">support@dominares.org</a>.',
+           "sources": "Fuentes", "other": "Read in English", "more": "Más guías de la I-5"},
+}
+
 CAT = {"hist": "History", "nature": "Land & water", "town": "Towns", "odd": "Oddities", "farm": "Orchards & farms", "stop": "Good stops"}
 JUNK_REST = re.compile(r"^(water|rest area|services)$", re.I)
 
@@ -158,17 +196,19 @@ tr:last-child td{border-bottom:0}
 .app a{display:inline-flex;align-items:center;min-height:46px;padding:0 18px;border-radius:99px;background:var(--accent);color:#1b1a10;text-decoration:none;margin:0 8px 8px 0}
 .app a.alt{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6)}
 .more{display:grid;gap:8px;margin:12px 0 0;padding:0;list-style:none}
+.sec ul{padding-left:1.25em;margin:8px 0}.sec li{margin:4px 0}.sec p{margin:8px 0}.tw{overflow-x:auto}.lang{font-size:.9rem;margin:2px 0 0}
 .fine{color:var(--muted);font-size:.85rem;margin-top:24px}
 """
 
 
-def page(path, title, desc, body, crumbs, ld_extra=None):
+def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=None, fine=None):
+    L = LANG[lang]
     url = f"{SITE}/{path}"
     depth = path.count("/")
     up = "../" * depth
     ld = [
         {"@context": "https://schema.org", "@type": "Article", "headline": title, "description": desc, "url": url,
-         "dateModified": TODAY, "inLanguage": "en-US",
+         "dateModified": TODAY, "inLanguage": L["ld"],
          "author": {"@type": "Organization", "name": "Dominares", "url": "https://dominares.org/"},
          "publisher": {"@type": "Organization", "name": "Dominares", "url": "https://dominares.org/"},
          "isPartOf": {"@type": "WebSite", "name": "I-5 Buddy", "url": SITE + "/"},
@@ -176,9 +216,12 @@ def page(path, title, desc, body, crumbs, ld_extra=None):
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + "/" + u} for i, (n, u) in enumerate(crumbs)]},
     ] + (ld_extra or [])
+    alt_html = ""
+    if alternates:  # {"en": path, "es": path, "x-default": path}: hreflang pairs (each page lists itself too)
+        alt_html = "".join(f'<link rel="alternate" hreflang="{k}" href="{SITE}/{v}">\n' for k, v in alternates.items())
     crumb_html = " › ".join(f'<a href="{up}{u}">{E(n)}</a>' for n, u in crumbs[:-1]) + f" › {E(crumbs[-1][0])}"
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{L['html']}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -187,7 +230,8 @@ def page(path, title, desc, body, crumbs, ld_extra=None):
 <meta name="theme-color" content="#0b6e3f">
 <meta name="author" content="Dominares">
 <link rel="canonical" href="{url}">
-<meta property="og:type" content="article">
+{alt_html}<meta property="og:type" content="article">
+<meta property="og:locale" content="{L['locale']}">
 <meta property="og:site_name" content="I-5 Buddy by Dominares">
 <meta property="og:url" content="{url}">
 <meta property="og:title" content="{E(title)}">
@@ -207,14 +251,11 @@ def page(path, title, desc, body, crumbs, ld_extra=None):
   <nav class="crumbs" aria-label="Breadcrumb">{crumb_html}</nav>
 {body}
   <section class="app">
-    <b>Hear it as you drive</b>
-    <p>I-5 Buddy is a free talking guide to I-5 in California. It follows you by GPS and tells you about each of these
-      places a mile or two before you reach them, which side to look, and the story behind it. No account, no ads.</p>
-    <a href="{up}get/">Get the free iPhone app</a><a class="alt" href="{up}">Open it in your browser</a>
+    <b>{L['app_h']}</b>
+    <p>{L['app_p']}</p>
+    <a href="{up}get/">{L['app_a']}</a><a class="alt" href="{up}">{L['app_b']}</a>
   </section>
-  <p class="fine">Mileposts are California's exit numbers, which count up from the Mexico border. Every landmark lists the
-    source it was checked against. Made by <a href="https://dominares.org/">Dominares</a> in San Diego. Not affiliated with
-    Caltrans or the CHP. Questions or corrections: <a href="mailto:support@dominares.org">support@dominares.org</a>.</p>
+  <p class="fine">{fine or L['fine']}</p>
 </main>
 </body>
 </html>
@@ -275,6 +316,71 @@ def guide_body(d, g):
     return "\n".join(out), ld
 
 
+ES_TITLES = {"los-angeles-to-san-francisco": "De Los Ángeles a San Francisco por la I-5",
+             "sacramento-to-redding": "De Sacramento a Redding por la I-5",
+             "redding-to-oregon": "De Redding a Oregon por la I-5: Mount Shasta y los Siskiyous"}
+MD_LINK = re.compile(r"\[([^\]]+)\]\(([^)\s]+)\)")
+MD_BOLD = re.compile(r"\*\*([^*]+)\*\*")
+MONTHS = {"en": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          "es": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]}
+
+
+def inline(text, lang):
+    """Escape, then **bold** and [label](url). Relative links in the content are written for the English page two folders
+    deep (../../grapevine/); the Spanish page is one folder deeper, so they get one more ../."""
+    def link(m):
+        href = m.group(2)
+        if href.startswith("../") and lang == "es":
+            href = "../" + href
+        ext = ' rel="noopener"' if href.startswith("http") else ""
+        return f'<a href="{E(href, quote=True)}"{ext}>{m.group(1)}</a>'
+    t = E(text, quote=False)
+    t = MD_LINK.sub(link, t)
+    return MD_BOLD.sub(r"<b>\1</b>", t)
+
+
+def seasonal_path(g, lang):
+    return ("es/" if lang == "es" else "") + f'drive/{g["slug"]}/'
+
+
+def seasonal_body(g, lang):
+    """Render one language of a seasonal page from its content file. Returns (body html, page data)."""
+    data = json.load(open(os.path.join(ROOT, g["file"]), encoding="utf-8"))
+    c = data[lang]
+    L = LANG[lang]
+    y, m, dd = (int(x) for x in data["updated"].split("-"))
+    upd = f"Updated {MONTHS['en'][m - 1]} {dd}, {y}" if lang == "en" else f"Actualizado el {dd} de {MONTHS['es'][m - 1]} de {y}"
+    other = "en" if lang == "es" else "es"
+    out = [f'  <h1>{E(c["h1"])}</h1>', f'  <p class="lede">{inline(c["intro"], lang)}</p>',
+           f'  <p class="lang"><a href="{"../" * seasonal_path(g, lang).count("/")}{seasonal_path(g, other)}" hreflang="{other}" lang="{other}">{L["other"]}</a>'
+           f' · <span class="fine">{upd}</span></p>']
+    t, href, sub = g["live"][lang]
+    if lang == "es":
+        href = "../" + href
+    out.append(f'  <a class="live" href="{href}"><b>{E(t)}</b><br>{E(sub)}</a>')
+    for sec in c["sections"]:
+        out.append(f'  <section class="sec" id="{E(sec["id"])}"><h2>{E(sec["heading"])}</h2>')
+        for b in sec["blocks"]:
+            if b["type"] == "p":
+                out.append(f'    <p>{inline(b["text"], lang)}</p>')
+            elif b["type"] == "ul":
+                out.append("    <ul>" + "".join(f"<li>{inline(i, lang)}</li>" for i in b["items"]) + "</ul>")
+            else:
+                head, rows = b["rows"][0], b["rows"][1:]
+                out.append('    <div class="tw"><table><thead><tr>' + "".join(f"<th>{inline(h, lang)}</th>" for h in head) + "</tr></thead><tbody>")
+                out += ["      <tr>" + "".join(f"<td>{inline(x, lang)}</td>" for x in r) + "</tr>" for r in rows]
+                out.append("    </tbody></table></div>")
+        out.append("  </section>")
+    if c.get("sources"):
+        out.append(f'  <section class="sec" id="sources"><h2>{L["sources"]}</h2><ul>' + "".join(
+            f'<li><a href="{E(x["url"], quote=True)}" rel="noopener">{E(x["label"])}</a></li>' for x in c["sources"]) + "</ul></section>")
+    up = "../" * (seasonal_path(g, lang).count("/"))
+    out.append(f'  <h2>{L["more"]}</h2><ul class="more">' + "".join(
+        f'<li><a href="{up}drive/{x["slug"]}/">{E(ES_TITLES.get(x["slug"], x["h1"]) if lang == "es" else x["h1"])}</a></li>' for x in GUIDES) +
+        f'<li><a href="{up}rest-areas/">' + ("Every I-5 rest area in California" if lang == "en" else "Todas las áreas de descanso de la I-5 en California") + '</a></li></ul>')
+    return "\n".join(out), c
+
+
 def rest_body(d):
     rests = rest_stops(d, 0, 800)
     centers = [r for r in sorted(d["rest"], key=lambda r: r["m"]) if r["kind"] == "services" and not JUNK_REST.match(r["name"].strip())]
@@ -309,6 +415,8 @@ def hub_body():
     out = ['  <h1>I-5 drive guides for California</h1>',
            '  <p class="lede">What you pass on Interstate 5, mile by mile: the landmarks, towns, farms and stories, '
            'with exits, which side to look, and the rest areas on the way.</p>', '  <ul class="more">']
+    for g in SEASONAL:
+        out.append(f'    <li><a href="{g["slug"]}/">{E(g["hub"]["en"])}</a> · <a href="../es/drive/{g["slug"]}/" hreflang="es" lang="es">en español</a></li>')
     for g in GUIDES:
         out.append(f'    <li><a href="{g["slug"]}/">{E(g["h1"])}</a><br><small>{E(g["desc"])}</small></li>')
     out.append('    <li><a href="../rest-areas/">I-5 rest areas in California</a></li>')
@@ -338,6 +446,15 @@ def main():
                                    "Mile-by-mile guides to Interstate 5 in California: Los Angeles to San Francisco, "
                                    "Sacramento to Redding, Redding to Oregon, and every rest area.",
                                    hub_body(), [("I-5 Buddy", ""), ("Drive guides", "drive/")]))
+    for g in SEASONAL:
+        alts = {"en": seasonal_path(g, "en"), "es": seasonal_path(g, "es"), "x-default": seasonal_path(g, "en")}
+        for lang in ("en", "es"):
+            body, c = seasonal_body(g, lang)
+            path = seasonal_path(g, lang)
+            crumbs = [("I-5 Buddy", ""), (LANG[lang]["guides"] + ("" if lang == "en" else " (en inglés)"), "drive/")]
+            write(path + "index.html", page(path, c["title"], c["description"], body, crumbs + [(c["h1"], path)],
+                                            lang=lang, alternates=alts, fine=LANG[lang]["fine_s"]))
+            urls.append(path)
     urls.insert(0, "drive/")
     write("rest-areas/index.html", page("rest-areas/", "I-5 rest areas in California, south to north",
                                         "Every Caltrans rest area on I-5 in California from the Mexico border to Oregon, "

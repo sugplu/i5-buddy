@@ -6,10 +6,12 @@
   <url><loc>https://i5.dominares.org/support.html</loc></url>
   <url><loc>https://i5.dominares.org/grapevine/</loc><changefreq>always</changefreq></url>
   <!-- guides (tools/guides.py) -->
-  <url><loc>https://i5.dominares.org/drive/</loc><lastmod>2026-11-18</lastmod></url>
-  <url><loc>https://i5.dominares.org/drive/los-angeles-to-san-francisco/</loc><lastmod>2026-11-18</lastmod></url>
-  <url><loc>https://i5.dominares.org/drive/sacramento-to-redding/</loc><lastmod>2026-11-18</lastmod></url>
-  <url><loc>https://i5.dominares.org/drive/redding-to-oregon/</loc><lastmod>2026-11-18</lastmod></url>
-  <url><loc>https://i5.dominares.org/rest-areas/</loc><lastmod>2026-11-18</lastmod></url>
+  <url><loc>https://i5.dominares.org/drive/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/drive/los-angeles-to-san-francisco/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/drive/sacramento-to-redding/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/drive/redding-to-oregon/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/drive/thanksgiving/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/es/drive/thanksgiving/</loc><lastmod>2026-11-19</lastmod></url>
+  <url><loc>https://i5.dominares.org/rest-areas/</loc><lastmod>2026-11-19</lastmod></url>
   <!-- /guides -->
 </urlset>
