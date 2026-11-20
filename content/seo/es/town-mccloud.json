@@ -1,0 +1,38 @@
+{
+ "title": "McCloud en la I-5: salida 736, Highway 89 al este",
+ "meta": "McCloud, pueblo maderero en la ladera sur de Mount Shasta, se llega desde la salida 736 de la I-5 por la Highway 89 al este. Salidas y hospedaje cercanos.",
+ "intro": "McCloud está cerca de la milla 736 de la I-5 en California, junto a la salida 736. La Highway 89 va hacia el este hasta McCloud, un pueblo maderero de una compañía en la ladera sur de Mount Shasta. Durante décadas, el aserradero de la compañía abasteció de electricidad y hasta de calefacción de vapor a las casas. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está McCloud?",
+   "a": "McCloud está en la salida 736, donde la Highway 89 va hacia el este rumbo al pueblo. Los números de salida cuentan hacia arriba desde la frontera con México."
+  },
+  {
+   "q": "¿Qué salidas de la I-5 están cerca de McCloud?",
+   "a": "La salida 734 es Mott Road, la salida 736 es McCloud y la salida 737 es I 5 Business, hacia Mount Shasta."
+  },
+  {
+   "q": "¿Dónde hay hospedaje cerca de McCloud en la I-5?",
+   "a": "En la salida 737 (I 5 Business; Mount Shasta), el mapa muestra tres lugares de hospedaje, entre ellos Finlandia Motel, Mount Shasta Resort y Swiss Holiday Lodge. Esto viene de OpenStreetMap tal como está mapeado, no en tiempo real, así que verifique usted la disponibilidad."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a McCloud en la I-5?",
+   "a": "Hacia el norte, el Weed Airport Rest Area está en la milla 753.1, a 17.1 millas de McCloud, y atiende ambas direcciones. Hacia el sur, el Lakehead Rest Area está en la milla 704.7, a 31.3 millas."
+  }
+ ],
+ "src": {
+  "packet": "815600ad14e9",
+  "en": "41f0bd423c5b",
+  "draft": "p-town-mccloud.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-mccloud.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

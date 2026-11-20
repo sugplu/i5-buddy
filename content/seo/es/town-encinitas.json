@@ -1,0 +1,38 @@
+{
+ "title": "Encinitas en la I-5: salidas, gasolina, comida y hospedaje",
+ "meta": "Encinitas está en la salida 41 de la I-5. Vea las salidas cercanas y la gasolina, carga para autos eléctricos, comida y hospedaje mapeados.",
+ "intro": "Encinitas está en la salida 41 de la Interestatal 5, y el nombre en español significa \"pequeños robles\". En 1769 la expedición de Portolá encontró a gente de la aldea kumeyaay de Jeyal cerca de San Elijo Lagoon y llamó a este valle Los Encinos, por su bosque de robles. I-5 Buddy le acompaña con su voz por este tramo de costa, donde las lagunas se alternan con los pueblos de playa de Del Mar, Solana Beach y Encinitas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Encinitas?",
+   "a": "Encinitas está en la salida 41, que se divide en la 41A para Santa Fe Drive y la 41B para CR-S9 y Encinitas Boulevard. Leucadia Boulevard, en la salida 43, también queda cerca."
+  },
+  {
+   "q": "¿Hay carga para autos eléctricos cerca de Encinitas en la I-5?",
+   "a": "Según el mapa, la salida 41B muestra cargadores de EVCS y eVgo, y la salida 40 (Birmingham Drive) muestra un Tesla Supercharger. La salida 45 muestra un cargador Volta. Consulte con la red de cargadores para saber qué hay realmente disponible."
+  },
+  {
+   "q": "¿Dónde hay hoteles cerca de Encinitas en la I-5?",
+   "a": "La salida 41B muestra Days Inn y The Encinitan Hotel & Suites, y la salida 43 muestra Econo Lodge y Quality Inn Encinitas Near Legoland. La salida 45 tiene seis lugares de hospedaje mapeados, entre ellos Best Western y Hilton Hotels & Resorts."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de Encinitas en la I-5?",
+   "a": "El área de descanso más cercana al norte del pueblo es Aliso Creek Rest Area, en la milla 59.4, a unas 18.4 millas de aquí, y sirve en ambas direcciones. Los datos no incluyen ninguna al sur de Encinitas."
+  }
+ ],
+ "src": {
+  "packet": "37d57b4a8cd4",
+  "en": "52cd8fb96eca",
+  "draft": "p-town-encinitas.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-encinitas.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "title": "Pacoima en la I-5: salida 155, tierra de Ritchie Valens",
+ "meta": "Pacoima está en la salida 155 de la I-5, tierra natal de Ritchie Valens, con gasolina, comida y carga para autos eléctricos en salidas cercanas.",
+ "intro": "Pacoima está en la salida 155 de la I-5, en el norte del valle de San Fernando, junto con Mission Hills y Sylmar. Su nombre viene de Pakoinga, el nombre de un pueblo nativo que significa entrada, y es la tierra natal de Ritchie Valens, nacido aquí como Richard Valenzuela en 1941. La guía hablada de I-5 Buddy cubre las salidas y paradas alrededor del pueblo, según los datos de OpenStreetMap y no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Pacoima?",
+   "a": "El punto de interés de Pacoima está en la salida 155, con la salida 155A en Terra Bella Street y la salida 155B en Van Nuys Boulevard."
+  },
+  {
+   "q": "¿Por qué se llama Pacoima?",
+   "a": "El nombre viene de Pakoinga, un pueblo nativo de este lugar cuyo nombre significa entrada. Al oído de los españoles, su sonido ng sonaba como una m."
+  },
+  {
+   "q": "¿Quién famoso es de Pacoima?",
+   "a": "Ritchie Valens, nacido como Richard Valenzuela en Pacoima en 1941. En 1958 convirtió la canción folclórica mexicana La Bamba en un éxito de rock and roll."
+  },
+  {
+   "q": "¿Dónde hay gasolina y comida cerca de Pacoima en la I-5?",
+   "a": "Hay gasolina y comida registradas en varias salidas cercanas, entre ellas la 154 (Osborne Street), la 155A (Terra Bella Street) y la 155B (Van Nuys Boulevard), donde hay 7 lugares de comida en el mapa. La salida 157, en San Fernando, registra más gasolineras, 8, según el mapa y no en tiempo real."
+  },
+  {
+   "q": "¿Hay cargadores para autos eléctricos cerca de Pacoima en la I-5?",
+   "a": "EVgo aparece en la salida 154 (Osborne Street). Un Tesla Supercharger aparece en la salida 157, y la salida 157B registra Tesla y otros cargadores para autos eléctricos, según el mapa y no en tiempo real."
+  }
+ ],
+ "src": {
+  "packet": "dfb18082e2cb",
+  "en": "36e8f44437dc",
+  "draft": "p-town-pacoima.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-pacoima.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Banta en la I-5: salida 457, Kasson Road, California",
+ "meta": "Banta está en la salida 457 de la I-5 en California, al oeste de la autopista: un asentamiento de la década de 1840 y parada de diligencias.",
+ "intro": "Banta está cerca de la milla 457 de la I-5 en California, junto a la salida 457. Al oeste de la autopista está Banta, un asentamiento que data de la década de 1840. En la época de las diligencias era la última parada antes de Altamont Pass en el camino entre Stockton y el Área de la Bahía. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Banta?",
+   "a": "Banta está en la salida 457, Kasson Road. El asentamiento queda al oeste de la autopista."
+  },
+  {
+   "q": "¿Cuál es la historia de Banta, California?",
+   "a": "Banta data de la década de 1840. En la época de las diligencias era la última parada antes de Altamont Pass en el camino entre Stockton y el Área de la Bahía."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Banta en la I-5?",
+   "a": "Al sur de Banta, el Westley Rest Area está en la milla 444.9, a unas 12.5 millas de aquí, y atiende ambos sentidos. Al norte del pueblo, el Elkhorn Rest Area está en la milla 529.3, a unas 71.9 millas; los datos no indican su sentido."
+  },
+  {
+   "q": "¿Cuál es el siguiente pueblo al norte y al sur de Banta en la I-5?",
+   "a": "Hacia el norte, el siguiente pueblo es Tracy. Hacia el sur, el siguiente pueblo es Vernalis."
+  }
+ ],
+ "src": {
+  "packet": "7bd8c88631d8",
+  "en": "69a8f0280fd1",
+  "draft": "p-town-banta.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-banta.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

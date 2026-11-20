@@ -1,0 +1,38 @@
+{
+ "title": "Coalinga en la I-5: salida 337, gasolina, comida y paradas",
+ "meta": "Coalinga está en la salida 337 de la I-5 en California. Vea salidas cercanas, gasolina, carga EV y comida en la salida 334, y los descansos más cercanos.",
+ "intro": "Coalinga está en la salida 337 de la Interestatal 5, donde la CA 33 South y la CA 145 North se unen con la autopista. El pueblo nació en 1888 como una parada de carbón de Southern Pacific, que el ferrocarril llamó Coaling Station A. I-5 Buddy es una guía GPS que habla, y esta página reúne lo que los datos listan alrededor de Coalinga, con los servicios tal como aparecen en el mapa, no en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Coalinga?",
+   "a": "Coalinga está en la salida 337 de la I-5, con la indicación CA 33 South, CA 145 North; Kerman; Coalinga. En esta salida se lista el punto de interés Coalinga and the Iron Zoo."
+  },
+  {
+   "q": "¿Dónde hay gasolina, comida y hospedaje cerca de Coalinga en la I-5?",
+   "a": "Los servicios que listan los datos están en la salida 334 (CA 198; Lemoore, Hanford), con 8 gasolineras, 9 lugares de comida y 3 lugares de hospedaje en el mapa. Las marcas que aparecen allí son Valero, 76, Arco y Chevron para gasolina, Harris Ranch y Baja Fresh para comida, y Best Western, Motel 6 y Travelodge para hospedaje, todo según el mapa y no en vivo."
+  },
+  {
+   "q": "¿Hay cargadores para vehículos eléctricos cerca de Coalinga en la I-5?",
+   "a": "En la salida 334 los datos listan las redes Electrify America y Tesla Supercharger. Esto viene de OpenStreetMap, así que muestra lo que está en el mapa, no la disponibilidad actual."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Coalinga en la I-5?",
+   "a": "Al sur del pueblo, el Coalinga-Avenal Rest Area está en la milla 320.2, a unas 16.8 millas de aquí, y sirve a ambas direcciones. Al norte del pueblo, el John \"Chuck\" Erreca Rest Area está en la milla 385.9, a unas 48.9 millas, y también sirve a ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "b14a2e274a0d",
+  "en": "4c60f0dcfbdc",
+  "draft": "p-town-coalinga.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-coalinga.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

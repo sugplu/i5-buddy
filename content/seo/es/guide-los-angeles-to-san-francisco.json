@@ -1,0 +1,22 @@
+{
+ "title": "De Los Angeles a San Francisco por la I-5: lo que verá",
+ "meta": "¿Maneja por la I-5 de LA hacia San Francisco? Cada lugar, pueblo e historia desde Los Angeles por el Grapevine y el valle de San Joaquin hasta la I-580.",
+ "intro": "El tramo de la I-5 mide unas 311 millas, desde el centro de Los Angeles (salida 135), por el Grapevine y por el lado oeste del valle de San Joaquin hasta la salida 446, donde la I-580 sale hacia el Área de la Bahía por Altamont Pass. Aquí están los lugares por los que pasa rumbo al norte, en orden, con la salida y el lado donde mirar.",
+ "faq": [],
+ "h1": "De Los Angeles a San Francisco por la I-5",
+ "src": {
+  "packet": "4dbebf834ae2",
+  "en": "9a5060a86b9d",
+  "draft": "p-guide-los-angeles-to-san-francisco.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-los-angeles-to-san-francisco.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 5,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

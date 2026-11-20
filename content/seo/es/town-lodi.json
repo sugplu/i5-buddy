@@ -1,0 +1,42 @@
+{
+ "title": "Lodi en la I-5: salida 485, Highway 12 y servicios",
+ "meta": "Lodi está al este de la I-5, en la salida 485 (CA 12). Vea gasolina, carga para autos eléctricos, comida y hospedaje en las salidas cercanas.",
+ "intro": "Lodi está cerca de la milla 485 de la I-5 en California, junto a la salida 485. Highway 12 lleva hacia el este a Lodi, un pueblo rodeado de viñedos. Sus viticultores cultivan más de 130 variedades de uva, y muchas de las vides viejas de aquí se plantaron entre la fiebre del oro y la Prohibición. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Lodi?",
+   "a": "Lodi está en la salida 485, señalada como CA 12; Lodi, Fairfield. Desde ahí, Highway 12 lleva hacia el este hasta el pueblo."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Lodi en la I-5?",
+   "a": "Los datos listan 8 gasolineras en la salida 485, entre ellas 76, Arco, Flying J y Love's. Esto viene de OpenStreetMap tal como está mapeado, no en vivo, así que no indica qué está abierto hoy."
+  },
+  {
+   "q": "¿Dónde puedo cargar un auto eléctrico cerca de Lodi en la I-5?",
+   "a": "Hay carga para autos eléctricos mapeada en la salida 485 (ChargePoint y EVgo) y en la salida 481, Eight Mile Road (ChargePoint y Electrify America). Son solo datos de lista, sin disponibilidad en vivo."
+  },
+  {
+   "q": "¿Hay hoteles o comida en la salida de Lodi?",
+   "a": "La salida 485 lista 8 lugares de comida, como Carl's Jr., Denny's y Jack in the Box, y 2 lugares de hospedaje, Best Western y Microtel Inn & Suites. La salida 481 lista 21 lugares de comida, entre ellos Starbucks y Chipotle. Todo es según el mapa, no en vivo."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Lodi en la I-5?",
+   "a": "Según los datos, el Westley Rest Area está en la milla 444.9, a 40.1 millas al sur de Lodi y abierto en ambas direcciones. El Elkhorn Rest Area está en la milla 529.3, a 44.3 millas al norte."
+  }
+ ],
+ "src": {
+  "packet": "b0d446fa1ef3",
+  "en": "a082c065c290",
+  "draft": "p-town-lodi.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-lodi.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

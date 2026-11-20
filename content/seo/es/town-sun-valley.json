@@ -1,0 +1,38 @@
+{
+ "title": "Sun Valley en la I-5: salidas, gasolina, comida y hospedaje",
+ "meta": "Sun Valley está en la salida 150 de la I-5. Vea las salidas cercanas, gasolina, comida y hospedaje en el mapa, y la historia de su espinoso nombre.",
+ "intro": "Sun Valley está en la salida 150 de la I-5, en el extremo este y plano del valle de San Fernando, bajo las montañas Verdugo. Mucho antes de tener su nombre actual, este lugar fue Wixánga, un pueblo fernandeño tongva cuyo nombre significa algo así como lugar de las espinas. I-5 Buddy le indica las salidas, la gasolina, la comida y el hospedaje de los alrededores, según figuran en OpenStreetMap y no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Sun Valley?",
+   "a": "Sun Valley está en la salida 150, Sunland Boulevard, cerca de la milla 150.6 contando desde la frontera con México. Entre las salidas cercanas están la 149 (Hollywood Way), la 150A (Glenoaks Boulevard), la 150B (Sunland Boulevard) y la 151 (Penrose Street)."
+  },
+  {
+   "q": "¿Dónde puedo comer cerca de Sun Valley en la I-5?",
+   "a": "La salida 150 tiene siete lugares de comida en el mapa, entre ellos Ay Papa Que Rico, Chiguacle, Domino's, Jack in the Box y McDonald's. La salida 149 también enumera siete, entre ellos Dog Haus y Hill Street Cafe, y la salida 153 enumera cinco, incluidos Panda Express y KFC."
+  },
+  {
+   "q": "¿Hay algún hotel cerca de Sun Valley en la I-5?",
+   "a": "Hay hospedaje en el mapa en varias salidas cercanas: la salida 153 enumera cinco lugares, entre ellos Pink Motel y Lyfe Inn, y la salida 152 enumera cuatro, entre ellos Redwood Lodge Motel. La salida 149 tiene Hampton Inn & Suites y la salida 150A tiene Willow Tree Inn & Suites."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Sun Valley en la I-5?",
+   "a": "Hacia el norte, el Tejon Pass Rest Area, en la milla 206.1, queda a 55.5 millas de aquí. Hacia el sur, el Aliso Creek Rest Area, en la milla 59.4, queda a 91.2 millas. Ambos atienden el tráfico en los dos sentidos."
+  }
+ ],
+ "src": {
+  "packet": "2b39dcf8dfa2",
+  "en": "b6b8cd2ccd79",
+  "draft": "p-town-sun-valley.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-sun-valley.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

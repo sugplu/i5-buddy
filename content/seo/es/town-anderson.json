@@ -1,0 +1,42 @@
+{
+ "title": "Anderson en la I-5: salidas, gasolina, comida y descanso",
+ "meta": "Anderson, CA en la I-5: salida 668 para el centro de Anderson y Lassen National Park, más gasolina, carga EV, comida y hospedaje en salidas cercanas.",
+ "intro": "Anderson es un pueblo del ferrocarril: en 1872, el ranchero y hotelero Elias Anderson cedió al Central Pacific Railroad un derecho de paso, y el ferrocarril puso su nombre a la estación. El centro de Anderson y la salida a Lassen National Park están en la salida 668, con más servicios en las salidas vecinas. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje aquí son los que aparecen en OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Anderson?",
+   "a": "El centro de Anderson y Lassen National Park están en la salida 668. Las salidas 667, 667A y 667B dan a Deschutes Road y Factory Outlet Drive, y la salida 670 es Riverside Avenue."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para autos eléctricos en Anderson, en la I-5?",
+   "a": "La salida 668 tiene 7 gasolineras en el mapa, entre ellas Chevron, Marathon, Maverik y Safeway, además de carga ChargePoint y Electrify America. La salida 667B lista un Arco y un Tesla Supercharger, y la salida 667 lista un Shell. Todo esto es según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo comer o hospedarme en Anderson, cerca de la I-5?",
+   "a": "La salida 668 lista 14 lugares de comida en el mapa, entre ellos Bartels Giant Burger, Burger King y McDonald's, y 3 lugares de hospedaje como Best Western y Motel 6. La salida 667B lista 7 lugares de comida, y la salida 667 lista un Baymont. Los datos vienen de OpenStreetMap y no son en tiempo real."
+  },
+  {
+   "q": "¿Se puede ver Lassen Peak desde la I-5 en Anderson?",
+   "a": "En días despejados, la gran montaña en el horizonte del este, cerca de la salida 668, es Lassen Peak, a unas 40 millas. Es el volcán activo más al sur de la cordillera Cascade, y queda a la derecha yendo al norte."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Anderson en la I-5?",
+   "a": "Al sur del pueblo, Herbert S. Miles Rest Area está en la milla 654.1, a 13.9 millas hacia atrás, y sirve en ambas direcciones. Al norte del pueblo, O'Brien Rest Area está en la milla 692.9, a 24.9 millas adelante."
+  }
+ ],
+ "src": {
+  "packet": "39ea31327891",
+  "en": "d460780b55b2",
+  "draft": "p-town-anderson.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-anderson.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

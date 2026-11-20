@@ -1,0 +1,42 @@
+{
+ "title": "Arbuckle en la I-5: salida 566, gasolina y puntos de interés",
+ "meta": "Arbuckle está en la salida 566 de la I-5 en California. Vea salidas cercanas, gasolina y comida, la historia del pueblo y las áreas de descanso más cercanas.",
+ "intro": "Arbuckle está cerca de la milla 566 de la I-5 en California, junto a la salida 566. El pueblo se trazó en 1875 y lleva el nombre de Tacitus Arbuckle, en cuyo rancho creció. Para que el pueblo echara raíces, él regaló terrenos a quien quisiera construir en ellos, y fue su primer jefe de correos. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Arbuckle?",
+   "a": "Arbuckle está en la salida 566, señalizada como Arbuckle, College City. Las siguientes salidas hacia el norte son la salida 567 (Putnam Lateral) y la salida 569 (Hahn Road)."
+  },
+  {
+   "q": "¿Hay gasolina en Arbuckle cerca de la I-5?",
+   "a": "En los datos de I-5 Buddy, la salida 566 tiene dos gasolineras listadas, 76 y J&J Gas Mart, y la salida 567 tiene nueve, entre ellas Chevron, Flyers y Poppy Gas. Esto viene de OpenStreetMap tal como está mapeado, no en vivo, así que no indica si una gasolinera está abierta."
+  },
+  {
+   "q": "¿Dónde se puede comer cerca de Arbuckle en la I-5?",
+   "a": "Hay dos lugares de comida mapeados en la salida 567 (Putnam Lateral): El Jaliscience Méxican Grill y Orozco Boy's BBQ. Aparecen en los datos del mapa, no están confirmados en vivo."
+  },
+  {
+   "q": "¿Cuál es el área de descanso más cercana a Arbuckle en la I-5?",
+   "a": "Hacia el sur, el Dunnigan Rest Area queda a unas 9.8 millas de Arbuckle, en la milla 556.6. Hacia el norte, el Maxwell Rest Area queda a unas 17.1 millas, en la milla 583.5. Ambas sirven en los dos sentidos."
+  },
+  {
+   "q": "¿Por quién se llama Arbuckle el pueblo?",
+   "a": "El pueblo lleva el nombre de Tacitus Arbuckle, en cuyo rancho creció después de trazarse en 1875. Él regaló terrenos a quien quisiera construir en ellos y fue el primer jefe de correos."
+  }
+ ],
+ "src": {
+  "packet": "0c4ced98d7fb",
+  "en": "4eb3d510c229",
+  "draft": "p-town-arbuckle.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-arbuckle.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

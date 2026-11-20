@@ -1,0 +1,38 @@
+{
+ "title": "Anaheim en la I-5: salidas, gasolina, comida y hospedaje",
+ "meta": "Anaheim está cerca de la salida 111 de la I-5 en California (milla 111). Salidas cercanas con gasolina, comida y hospedaje según el mapa, no en vivo.",
+ "intro": "Anaheim está en la I-5 cerca de la salida 111, donde la autopista cruza lo que antes fueron tierras de cultivo: familias alemanas fundaron el pueblo en 1857 para sembrar uvas. Las salidas 109 a 110B dan a Katella Avenue, Harbor Boulevard y Disneyland Drive, con Disneyland justo al suroeste de la autopista, cerca de la salida 110. Esta guía enumera las salidas, los puntos de interés y los servicios mapeados de I-5 Buddy, una guía GPS parlante de la I-5 en California.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Disneyland?",
+   "a": "Disneyland está justo al suroeste de la autopista, cerca de la salida 110, a la izquierda yendo hacia el norte. La salida 110B está señalizada como Disneyland Drive, Ball Road."
+  },
+  {
+   "q": "¿En qué salida de la I-5 está Angel Stadium?",
+   "a": "Angel Stadium está al este de la autopista, cerca de Katella Avenue, en la salida 109, a la derecha yendo hacia el norte."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para autos eléctricos en Anaheim, en la I-5?",
+   "a": "La gasolina aparece en el mapa en varias salidas, entre ellas la 109, 109A, 110, 110A, 110B, 112, 113A y 113. La carga para autos eléctricos aparece en salidas como la 109, 109A, 110A, 111 (Tesla Supercharger) y 112, según los datos y no en vivo."
+  },
+  {
+   "q": "¿Dónde hay hoteles cerca de Disneyland, en la I-5?",
+   "a": "El hospedaje aparece en el mapa en las salidas 109A, 109B, 110 y 110A, con más lugares en la 109A (29) y en la 110A (21). Los datos vienen de OpenStreetMap, según el mapa, no de disponibilidad en vivo."
+  }
+ ],
+ "src": {
+  "packet": "aea664c6b748",
+  "en": "fbb1aa3f86d6",
+  "draft": "p-town-anaheim.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-anaheim.9.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

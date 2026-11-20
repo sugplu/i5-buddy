@@ -1,0 +1,42 @@
+{
+ "title": "Elk Grove en la I-5: salida 506, gasolina, comida y hospedaje",
+ "meta": "Elk Grove está en la salida 506 de la I-5 (Elk Grove Boulevard), con gasolina, comida y un hotel mapeados, y el refugio Stone Lakes cerca.",
+ "intro": "Elk Grove está en la salida 506 de la I-5, donde Elk Grove Boulevard lleva hacia el este, al pueblo. El pueblo comenzó en 1850 como parada de diligencias entre Sacramento y el Bay Area, y aquí la autopista bordea el lado este del Stone Lakes National Wildlife Refuge. I-5 Buddy le va contando todo esto mientras usted maneja.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Elk Grove?",
+   "a": "Elk Grove está en la salida 506 de la I-5, Elk Grove Boulevard. La salida 504, Hood-Franklin Road, es la otra salida más cercana en los datos."
+  },
+  {
+   "q": "¿Hay gasolina, comida y hospedaje en la salida de Elk Grove?",
+   "a": "En la salida 506, los datos incluyen 3 gasolineras (Arco, Chevron y Shell), 6 lugares de comida, entre ellos McDonald's, Huckleberry's y Pete's, y un Holiday Inn Express & Suites. Esta información viene de OpenStreetMap tal como está mapeada, no en vivo, así que no se muestran horarios ni disponibilidad."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Elk Grove en la I-5?",
+   "a": "Hacia el norte, el Elkhorn Rest Area está en la milla 529.3, a unas 23 millas de Elk Grove. Hacia el sur, el Westley Rest Area está en la milla 444.9, a unas 61 millas, y atiende en ambas direcciones."
+  },
+  {
+   "q": "¿Cuál es la historia de Elk Grove, California?",
+   "a": "Elk Grove comenzó en 1850 como parada de diligencias para los viajeros entre Sacramento y el Bay Area, cuando James Hall abrió el Elk Grove Hotel. Se dice que le puso ese nombre por unas astas de alce que encontró en los bosquecillos cercanos."
+  },
+  {
+   "q": "¿Qué refugio de vida silvestre está junto a la I-5 cerca de Elk Grove?",
+   "a": "El Stone Lakes National Wildlife Refuge, creado en 1994, queda junto a la autopista cerca de la salida 504, a la izquierda en dirección al norte. La autopista bordea el lado este del refugio."
+  }
+ ],
+ "src": {
+  "packet": "c0740778f735",
+  "en": "290d7ca7e5d4",
+  "draft": "p-town-elk-grove.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-elk-grove.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

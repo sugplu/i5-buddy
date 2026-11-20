@@ -1,0 +1,38 @@
+{
+ "title": "Zamora en la I-5: salida 548, historia y paradas cercanas",
+ "meta": "Zamora está en la salida 548 de la I-5 en California. Conozca su historia como Black's, el campo que la rodea y las áreas de descanso más cercanas.",
+ "intro": "Zamora es una comunidad agrícola en la salida 548 de la Interestatal 5, llamada antes Black's por J. J. Black, quien se estableció aquí en 1865. Cuando el Northern Railway construyó su línea hacia el norte desde Woodland en la década de 1870, Black donó terreno para una estación, y un pequeño pueblo creció a su alrededor. La guía parlante de I-5 Buddy le cuenta esta historia mientras usted pasa manejando.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Zamora?",
+   "a": "Zamora está en la salida 548 de la I-5 en California. Los números de salida cuentan hacia arriba desde la frontera con México."
+  },
+  {
+   "q": "¿Por qué Zamora se llamaba antes Black's?",
+   "a": "El pueblo recibió el nombre de J. J. Black, quien se estableció aquí en 1865. Más tarde donó una franja de terreno para una estación de ferrocarril cuando el Northern Railway construyó su línea hacia el norte desde Woodland en la década de 1870."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Zamora en la I-5?",
+   "a": "Hacia el norte, el Dunnigan Rest Area está en la milla 556.6, a 8.4 millas de Zamora, y atiende ambas direcciones. Hacia el sur, el Elkhorn Rest Area está en la milla 529.3, a 18.9 millas; los datos no indican en qué dirección atiende."
+  },
+  {
+   "q": "¿Cómo es el paisaje alrededor de Zamora en la I-5?",
+   "a": "Es zona agrícola cerca de las Dunnigan Hills. Algunos campos cercanos cultivan girasoles para semilla de siembra, y en días despejados los Sutter Buttes se alzan desde el suelo del valle hacia el norte."
+  }
+ ],
+ "src": {
+  "packet": "229322643a7a",
+  "en": "080b9b05a2cf",
+  "draft": "p-town-zamora.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-zamora.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Mount Shasta en la I-5: salidas, gasolina, carga EV, comida",
+ "meta": "Mount Shasta está cerca de la salida 738 de la I-5 en California (milla 738). Una salida cercana con gasolina, más comida y hospedaje según los datos.",
+ "intro": "Mount Shasta City está en la salida 738 de la I-5, donde el cañón se abre al pie del volcán, con Black Butte muy cerca. El pueblo se llamó Strawberry Valley, luego Berryvale y luego Sisson, y en 1925 pasó a ser la ciudad de Mount Shasta. I-5 Buddy le va contando la zona mientras usted maneja hacia el norte.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Mount Shasta?",
+   "a": "Mount Shasta City está en la salida 738, Central Mount Shasta. La salida 740 está señalada como Mount Shasta y la salida 741 es Abrams Lake Road."
+  },
+  {
+   "q": "¿Hay gasolina, carga para autos eléctricos, comida y hospedaje en la salida de Mount Shasta?",
+   "a": "En la salida 738, los datos incluyen tres gasolineras (76, Chevron y Valero), carga para autos eléctricos de ChargePoint, Tesla Supercharger, Rivian Adventure Network y Rivian Waypoints, 25 lugares de comida y 10 de hospedaje. La información viene de OpenStreetMap tal como está mapeada, no en vivo, así que no se muestran horarios ni disponibilidad."
+  },
+  {
+   "q": "¿Qué se puede ver cerca de Mount Shasta en la I-5?",
+   "a": "Rumbo al norte, la piscifactoría de truchas de Mount Shasta queda a la izquierda en la salida 737 y cría truchas desde 1888. El nacimiento del Sacramento en Big Springs, dentro de Mount Shasta City Park, queda a la derecha en la salida 739, y el propio Mount Shasta, de 14,179 pies, queda a la derecha en la salida 740."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Mount Shasta en la I-5?",
+   "a": "Weed Airport Rest Area está a 15.0 millas al norte del pueblo, en la milla 753.1, y atiende ambas direcciones. Lakehead Rest Area está a 33.4 millas al sur, en la milla 704.7."
+  }
+ ],
+ "src": {
+  "packet": "76cf55a78420",
+  "en": "b222f7e470e7",
+  "draft": "p-town-mount-shasta.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-mount-shasta.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

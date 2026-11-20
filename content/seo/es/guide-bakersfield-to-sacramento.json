@@ -1,0 +1,43 @@
+{
+ "title": "De Bakersfield a Sacramento por la I-5: paradas y salidas",
+ "meta": "La I-5 de Bakersfield a Sacramento por Kettleman City: salidas 257 a 519, gasolina, carga EV, comida, hospedaje y áreas de descanso.",
+ "intro": "Esta guía sigue la I-5 hacia el norte desde la salida 257, cerca de Buttonwillow, hasta la salida 519 en Sacramento, por la zona algodonera, las Kettleman Hills, la región agrícola de Westlands, Los Banos, Tracy, Stockton y la orilla del Delta. La gasolina, la carga para autos eléctricos, la comida y el hospedaje vienen de OpenStreetMap tal como están en el mapa, no en tiempo real; confirme antes de contar con una parada. Las millas aquí son los números de salida de California, contados hacia arriba desde la frontera con México.",
+ "faq": [
+  {
+   "q": "¿Dónde están las áreas de descanso en la I-5 entre Bakersfield y Sacramento?",
+   "a": "Los datos incluyen el Buttonwillow Rest Area en la milla 259.2, el Coalinga-Avenal Rest Area en la milla 320.2, el John \"Chuck\" Erreca Rest Area en la milla 385.9 y el Westley Rest Area en la milla 444.9, todos para ambos sentidos. También aparece el Dos Amigos Vista Point en la milla 390.0, sin sentido indicado."
+  },
+  {
+   "q": "¿Dónde hay gasolina, carga para autos eléctricos, comida y hospedaje en Kettleman City, en la I-5?",
+   "a": "En la salida 309 (CA 41, Kettleman City), los datos incluyen 9 gasolineras, cargadores Tesla Supercharger y Electrify America, 16 lugares de comida y 2 de hospedaje, entre ellos Best Western y Quality Inn. Son datos del mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Qué salidas de la I-5 entre Bakersfield y Sacramento tienen más hospedaje?",
+   "a": "La salida 407 (CA 33, Santa Nella) tiene 8 lugares de hospedaje, entre ellos Best Western y Holiday Inn Express. La salida 476 (March Lane), en Stockton, tiene 7, entre ellos Hilton y Courtyard."
+  },
+  {
+   "q": "¿En qué salida de la I-5 está Lost Hills?",
+   "a": "Lost Hills está en la salida 278 (CA 46). Los datos incluyen allí 14 gasolineras, cargadores Electrify America y Tesla, 11 lugares de comida y 2 de hospedaje, tal como están en el mapa. Hacia el norte, Blackwells Corner también está en esta salida, a la izquierda."
+  },
+  {
+   "q": "¿Qué se puede ver en la I-5 cerca de Stockton?",
+   "a": "La I-5 pasa por Stockton junto al puerto de aguas profundas y cruza el río Calaveras. La Highway 4 sale hacia el este en la salida 472 por la Crosstown Freeway, construida a principios de la década de 1970 a través de parte de Little Manila."
+  }
+ ],
+ "h1": "De Bakersfield a Sacramento por la I-5 vía Kettleman City",
+ "src": {
+  "packet": "1afdc9a35679",
+  "en": "a7718020aa2f",
+  "draft": "p-guide-bakersfield-to-sacramento.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-bakersfield-to-sacramento.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Vernalis en la I-5: salida 449 y acceso por la CA 33",
+ "meta": "Vernalis está al este de la I-5, en la salida 449, en el condado de San Joaquin. Vea salidas cercanas, el cruce con la I-580 y las áreas de descanso.",
+ "intro": "La carretera 33 lleva a Vernalis, al este de la autopista, y su nombre en latín significa \"primaveral\". I-5 Buddy ubica Vernalis en la salida 449, en tierras de cultivo planas del condado de San Joaquin, cerca del borde del Delta, entre el río San Joaquin y los antiguos pueblos ferroviarios de Banta y Tracy.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Vernalis?",
+   "a": "Vernalis está en la salida 449 en los datos de I-5 Buddy. Entre las salidas cercanas figuran la salida 452 para CA 33 South; Vernalis, y las salidas 449A y 449B para la CA 132."
+  },
+  {
+   "q": "¿De dónde viene el nombre de Vernalis?",
+   "a": "El nombre en latín significa \"primaveral\". El historiador local Earle Williams dijo que se puso por las hijas de dos rancheros, Verna Carpenter y Alice Hamilton."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Vernalis en la I-5?",
+   "a": "Hacia el sur, el Westley Rest Area está en la milla 444.9, a 3.8 millas de Vernalis, y atiende en ambas direcciones. Hacia el norte, el Elkhorn Rest Area está en la milla 529.3, a 80.6 millas de aquí."
+  },
+  {
+   "q": "¿Qué hay cerca de Vernalis en la I-5?",
+   "a": "El cruce con la I-580 en la salida 446 va hacia el Área de la Bahía por el paso Altamont. Al este de la autopista, en la salida 449, a la derecha rumbo al norte, el San Joaquin River National Wildlife Refuge protege más de 7,000 acres de bosque de ribera, humedales y pastizales."
+  }
+ ],
+ "src": {
+  "packet": "9f20ddc1f229",
+  "en": "c2913665d302",
+  "draft": "p-town-vernalis.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-vernalis.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

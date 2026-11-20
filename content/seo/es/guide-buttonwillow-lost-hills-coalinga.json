@@ -1,0 +1,43 @@
+{
+ "title": "De Buttonwillow a Coalinga en la I-5: gasolina, comida y descanso",
+ "meta": "Gasolina, carga eléctrica, comida y hospedaje en las salidas 257, 278, 309 y 334 de la I-5, y las dos áreas de descanso entre Buttonwillow y Coalinga.",
+ "intro": "Este tramo de la I-5 va de la milla 255 a la 340, más o menos, entre campos abiertos del valle, zona petrolera y el lado oeste del condado de Fresno. La guía enumera las salidas con gasolina, carga para autos eléctricos, comida y hospedaje mapeados, además de las áreas de descanso y las paradas de camiones, todo según OpenStreetMap y no en tiempo real. Las millas son los números de salida de California, contados desde la frontera con México.",
+ "faq": [
+  {
+   "q": "¿Dónde están las áreas de descanso de la I-5 entre Buttonwillow y Coalinga?",
+   "a": "Aquí hay dos mapeadas: el Buttonwillow Rest Area en la milla 259.2 y el Coalinga-Avenal Rest Area en la milla 320.2, ambas indicadas para los dos sentidos."
+  },
+  {
+   "q": "¿Qué salidas de la I-5 tienen gasolina entre Buttonwillow y Coalinga?",
+   "a": "Siete salidas de este tramo tienen gasolina mapeada: 257, 278, 305, 309, 319, 325 y 334. Las salidas 278 y 309 enumeran más estaciones, 14 y 9, y la salida 257 también enumera 9."
+  },
+  {
+   "q": "¿Dónde puedo cargar un auto eléctrico en la I-5 cerca de Lost Hills y Kettleman City?",
+   "a": "La carga está mapeada en cuatro salidas de este tramo: 257, 278, 309 y 334. La salida 278, para Lost Hills, enumera Electrify America y Tesla Supercharger, y la salida 309, para Kettleman City, enumera Tesla Supercharger, EV Range y Electrify America."
+  },
+  {
+   "q": "¿Dónde hay comida y motel en la I-5 cerca de Kettleman City?",
+   "a": "La salida 309, CA 41, enumera 16 lugares de comida, entre ellos Baja Fresh, Bravo Farms y Denny's, y dos de hospedaje, Best Western y Quality Inn. Los datos indican que Kettleman City está cerca de la mitad del camino entre Los Angeles y San Francisco o Sacramento."
+  },
+  {
+   "q": "¿En qué salida de la I-5 está Lost Hills?",
+   "a": "Lost Hills está en la salida 278, CA 46, que también sirve a Paso Robles y Wasco. La salida enumera un Lost Hills Travel Center, 14 gasolineras, 11 lugares de comida y dos de hospedaje, según el mapa."
+  }
+ ],
+ "h1": "Paradas en la I-5: Buttonwillow, Lost Hills y Coalinga",
+ "src": {
+  "packet": "f05151ad4b7a",
+  "en": "793666bc848a",
+  "draft": "p-guide-buttonwillow-lost-hills-coalinga.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-buttonwillow-lost-hills-coalinga.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

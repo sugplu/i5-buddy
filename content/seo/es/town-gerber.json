@@ -1,0 +1,38 @@
+{
+ "title": "Gerber, CA en la I-5: guía de la salida 642",
+ "meta": "Gerber está en la salida 642 de la I-5, en el condado de Tehama: parada ferroviaria de 1916 a 1965, con áreas de descanso a 7.6 millas al sur y 14.2 al norte.",
+ "intro": "Gerber es una parada del condado de Tehama en la I-5, a la que se llega por la salida 642 (Proberta, Gerber, Flores Avenue). Al este de la autopista, el pueblo fue trazado en 1910 y de 1916 a 1965 fue punto de división del ferrocarril Southern Pacific. Aquí termina, por el norte, una franja de tierras de cultivo que sigue casi sin interrupción hasta Bakersfield.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Gerber?",
+   "a": "Gerber está en la salida 642 de la I-5, señalizada como Proberta, Gerber, Flores Avenue. El pueblo queda al este de la autopista."
+  },
+  {
+   "q": "¿Cuál es la historia de Gerber, California?",
+   "a": "Gerber fue trazado en 1910 y lleva el nombre de la familia Gerber, dueña del terreno del pueblo. De 1916 a 1965 fue punto de división del ferrocarril Southern Pacific, donde las locomotoras de vapor cargaban combustible, recibían reparaciones y cambiaban de tripulación."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Gerber en la I-5?",
+   "a": "El Lt. John C. Helmick Rest Area está a 7.6 millas al sur, y el Herbert S. Miles Rest Area está a 14.2 millas al norte. Ambos atienden el tráfico en las dos direcciones."
+  },
+  {
+   "q": "¿Qué pueblos hay antes y después de Gerber en la I-5?",
+   "a": "Hacia el norte, Tehama es el siguiente pueblo al sur y Red Bluff es el siguiente pueblo al norte."
+  }
+ ],
+ "src": {
+  "packet": "63326cb8757a",
+  "en": "95a289227e08",
+  "draft": "p-town-gerber.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-gerber.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

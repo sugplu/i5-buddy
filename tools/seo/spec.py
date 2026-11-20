@@ -80,14 +80,15 @@ ABBREV = {"jr", "sr", "st", "mt", "mr", "mrs", "ms", "dr", "ft", "no", "co", "in
 
 
 def sentences(text):
-    """Split at . ! ? followed by space and a capital letter or quote, never after an abbreviation, an initial, or a digit
-    ("magnitude 6.7", "Jr.", "St. Louis", "U.S. 99")."""
+    """Split at . ! ? followed by space and a capital letter or quote, never after an abbreviation, an initial or initials, or
+    a digit ("magnitude 6.7", "Jr.", "St. Louis", "U.S. 99", "B.F. Sisk Dam": the Santa Nella page showed "West of the
+    freeway, B.F." as a whole sentence until 3.0.8)."""
     out, start = [], 0
     for m in re.finditer(r"[.!?][\"')\]]*\s+(?=[A-Z\"\u201c(])", text):
         head = text[start:m.start()]
         last = re.findall(r"[\w.]+$", head)
         tok = last[0].lower().rstrip(".") if last else ""
-        if tok in ABBREV or re.fullmatch(r"[a-z]", tok):
+        if tok in ABBREV or re.fullmatch(r"[a-z](?:\.[a-z])*", tok):  # an initial, or initials ("B.F. Sisk Dam", 3.0.8)
             continue
         out.append(text[start:m.end()].strip())
         start = m.end()

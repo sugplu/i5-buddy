@@ -1,0 +1,38 @@
+{
+ "title": "Newman en la I-5: salida 423, Stuhr Road",
+ "meta": "Newman está al este de la I-5, en la salida 423, Stuhr Road. Conozca la historia del pueblo, sus sitios cercanos y las áreas de descanso al norte y al sur.",
+ "intro": "Newman está cerca de la milla 423 de la I-5 en California, junto a la salida 423. El pueblo de Newman, al este de la autopista, fue fundado en 1888 por Simon Newman, un comerciante que llegó a California desde Baviera de adolescente, en 1862. Nacido como Simon Neumann, llegó hablando solo alemán y hebreo, aprendió inglés y tradujo su apellido. Abajo encontrará las salidas, los servicios, los sitios de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Newman?",
+   "a": "Newman está en la salida 423, Stuhr Road, y el pueblo queda al este de la autopista."
+  },
+  {
+   "q": "¿Quién fundó Newman, California?",
+   "a": "Simon Newman fundó el pueblo en 1888. Nacido como Simon Neumann en Baviera, llegó a California en 1862, de adolescente, hablando solo alemán y hebreo; después aprendió inglés y tradujo su apellido."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Newman en la I-5?",
+   "a": "Hacia el norte, Westley Rest Area está en la milla 444.9, a unas 21.9 millas de Newman, y atiende ambas direcciones. Hacia el sur, Dos Amigos Vista Point está en la milla 390, a unas 33 millas."
+  },
+  {
+   "q": "¿Qué hay para ver cerca de Newman en la I-5?",
+   "a": "En la salida 421, a la derecha rumbo al norte, la guía cuenta la historia de Hills Ferry, un cruce del río iniciado en 1850, a unas 7 millas al este, donde el río Merced se une al San Joaquin. En la salida 426 menciona que la almendra es el principal producto agrícola del condado de Stanislaus."
+  }
+ ],
+ "src": {
+  "packet": "63144ea76761",
+  "en": "b42425248496",
+  "draft": "p-town-newman.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-newman.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

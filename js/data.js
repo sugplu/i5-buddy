@@ -133,6 +133,15 @@ export function restStatus(r, now = Date.now()) {
   if (!isFinite(read) || now > read + REST_STATUS_DAYS * 864e5) return "";
   return r.status;
 }
+/** A rest area's name as the app says and shows it (3.0.8): without the direction Caltrans puts in the name, which the
+    side already tells. "Tejon Pass Rest Area - Southbound", "Aliso Creek Rest Area (Southbound)", "Willows Rest Area - NB",
+    "Maxwell Rest Area Northbound" and 'John "Chuck" Erreca Southbound Rest Area' are said without it (the 3.0.7 verify heard
+    "the next rest area on this side is Tejon Pass Rest Area - Southbound"). */
+export function restName(name) {
+  const n = String(name || "").replace(/\s*[-–]?\s*\(?\b(?:north|south)bound\b\)?/gi, "")
+    .replace(/\s*[-–]?\s*\(?\b[NS]B\b\)?\s*$/, "").replace(/\s*&\s*$/, "").replace(/\s{2,}/g, " ").trim();
+  return n || String(name || "").trim();
+}
 /** Rest areas that serve your direction of travel (side 1 = northbound side). Each one carries `status` only while it is
     current (restStatus). A closed one is kept in the list so it can be announced as closed; only open ones count toward n. */
 export function restAhead(m, dir, n = 2, max = 150) {

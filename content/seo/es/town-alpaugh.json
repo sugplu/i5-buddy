@@ -1,0 +1,42 @@
+{
+ "title": "Alpaugh en la I-5: salida 305, Utica Avenue",
+ "meta": "A Alpaugh se llega por la I-5 en la salida 305, Utica Avenue. Conozca su historia, las salidas cercanas, las gasolineras mapeadas y las áreas de descanso.",
+ "intro": "Tome la salida 305, Utica Avenue, y siga al este para llegar a Alpaugh, un pueblo en lo que fue la isla de Atwell, la isla más grande del lago Tulare. Primero se llamó Hog-Root Island, y un abogado de Visalia llamado Allen Atwell criaba cerdos allí. Al norte de la línea del condado de Kern, el antiguo lecho del lago Tulare, hoy tierras de cultivo, se extiende al este de la autopista.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Alpaugh?",
+   "a": "Alpaugh está en la salida 305, Utica Avenue. Siga Utica Avenue hacia el este desde la autopista para llegar al pueblo."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Alpaugh en la I-5?",
+   "a": "Hay dos gasolineras mapeadas en la salida 305, con Chevron y Shell en la lista. Los datos vienen de OpenStreetMap, así que muestran lo que está mapeado, no lo que está abierto ahora."
+  },
+  {
+   "q": "¿Dónde hay comida, carga para autos eléctricos y hospedaje cerca de Alpaugh?",
+   "a": "La salida 305 solo lista gasolina. Cuatro millas al norte, la salida 309 (CA 41, Kettleman City) tiene gasolina mapeada, 16 lugares de comida, 2 de hospedaje y carga para autos eléctricos de Tesla Supercharger, EV Range y Electrify America. Todo aparece en los datos, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Alpaugh en la I-5?",
+   "a": "El Coalinga-Avenal Rest Area está en la milla 320.2, a unas 15.2 millas al norte de aquí, y sirve en ambas direcciones. Hacia el sur, el Buttonwillow Rest Area está en la milla 259.2, a unas 45.8 millas atrás."
+  },
+  {
+   "q": "¿Cuál es la historia de Alpaugh?",
+   "a": "Alpaugh está en lo que fue la isla de Atwell, la isla más grande del lago Tulare, conocida primero como Hog-Root Island. Un abogado de Visalia llamado Allen Atwell criaba cerdos en ella."
+  }
+ ],
+ "src": {
+  "packet": "15cfa522cc37",
+  "en": "42f0cc5bd69a",
+  "draft": "p-town-alpaugh.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-alpaugh.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

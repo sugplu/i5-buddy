@@ -1,0 +1,42 @@
+{
+ "title": "Freeport en la I-5: salidas, gasolina, comida e historia",
+ "meta": "Freeport está justo al oeste de la I-5, cerca de las salidas 510 y 512. Conozca su historia y la gasolina, carga para EV y comida de las salidas cercanas.",
+ "intro": "Freeport es un pequeño pueblo a orillas del río, justo al oeste de la I-5, con su punto de interés en la salida 510. Nació en 1862 como una forma de evitar los impuestos del puerto de Sacramento, y aquí la autopista pasa junto a los humedales de la Cosumnes River Preserve y por el borde del refugio Stone Lakes.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Freeport?",
+   "a": "Freeport aparece nombrado en la salida 512, Pocket Road, Meadowview Road, Freeport. El punto de interés del pueblo, Freeport, un pueblo nacido de los impuestos, está ubicado en la salida 510, Cosumnes River Boulevard, con el pueblo justo al oeste de la autopista."
+  },
+  {
+   "q": "¿Cómo obtuvo su nombre Freeport?",
+   "a": "En 1862, unos empresarios cansados de pagar impuestos en el muelle de Sacramento a orillas del río formaron la Freeport Railroad Company para construir un puerto nuevo, libre de esos impuestos. El ferrocarril evitaba Sacramento, y de ahí creció el pueblo ribereño de Freeport."
+  },
+  {
+   "q": "¿Hay gasolina y carga para vehículos eléctricos cerca de Freeport en la I-5?",
+   "a": "En los datos mapeados, la salida 510 lista gasolina Arco y Chevron, además de las redes de carga Shell, Tesla Supercharger y bp pulse. La salida 512 lista gasolina Chevron y Shell, además de ChargePoint y otro cargador para EV. Son datos listados, no en vivo, por lo que no indican qué está abierto."
+  },
+  {
+   "q": "¿Dónde puedo comer cerca de Freeport en la I-5?",
+   "a": "La salida 510 tiene la mayor cantidad de comida mapeada, 26 lugares, entre ellos Chick-fil-A, Chipotle y Casa Flores. La salida 512 lista 13 lugares, como IHOP y Starbucks, y la salida 513 lista 20, entre ellos Burger King y Carl's Jr."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Freeport en la I-5?",
+   "a": "Hacia el norte, el Elkhorn Rest Area está en la milla 529.3, a 19.5 millas de Freeport. Hacia el sur, el Westley Rest Area está en la milla 444.9, a 64.9 millas, y atiende en ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "ca0b82ec3cce",
+  "en": "10759f45938a",
+  "draft": "p-town-freeport.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-freeport.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

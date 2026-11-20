@@ -1,0 +1,42 @@
+{
+ "title": "Lost Hills en la I-5: salida 278, gasolina, comida y descanso",
+ "meta": "Lost Hills está en la salida 278 de la I-5 en California, con gasolina, carga para EV, comida y hospedaje en la salida, y los descansos más cercanos.",
+ "intro": "Lost Hills es un pueblo de unas 2,400 personas a un par de millas al oeste de la I-5, y su nombre viene de la baja sierra de Lost Hills que lo acompaña. Tome la salida 278 (CA 46) para llegar al pueblo y a la gasolina, la carga para EV, la comida y el hospedaje que aparecen en el mapa de la salida. I-5 Buddy le va hablando durante el viaje.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Lost Hills?",
+   "a": "Lost Hills está en la salida 278, la de CA 46, que también indica Paso Robles y Wasco. El pueblo queda a un par de millas al oeste de la autopista."
+  },
+  {
+   "q": "¿Hay gasolina y comida en la salida de Lost Hills?",
+   "a": "Sí, según los datos del mapa: la salida 278 enumera 14 gasolineras (entre las marcas están 76, Arco, Chevron y Love's) y 11 lugares de comida, como Arby's, Carl's Jr., Dairy Queen y Jack in the Box. Los datos vienen de OpenStreetMap y no son en vivo, así que confirme qué está abierto al llegar."
+  },
+  {
+   "q": "¿Puedo cargar un EV o hallar hotel en Lost Hills, en la I-5?",
+   "a": "La salida 278 enumera carga para EV de Electrify America y Tesla, y dos lugares de hospedaje en el mapa, Days Inn y Motel 6. Es lo que aparece en el mapa, no información en vivo."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Lost Hills en la I-5?",
+   "a": "Hacia el sur, el Buttonwillow Rest Area está en la milla 259.2, a unas 20 millas de Lost Hills, y sirve a ambas direcciones. Hacia el norte, el Coalinga-Avenal Rest Area está en la milla 320.2, a unas 41 millas, también para ambas direcciones."
+  },
+  {
+   "q": "¿Qué hay para ver cerca de Lost Hills, en la I-5?",
+   "a": "Las bombas de petróleo salpican las bajas colinas de Lost Hills al oeste de la autopista, el acueducto pasa junto al pueblo y el Kern National Wildlife Refuge queda en el llano al este. Blackwells Corner, al oeste por la Highway 46 cerca de la salida 278, lleva el nombre de George Blackwell, quien abrió allí una parada de descanso en 1921."
+  }
+ ],
+ "src": {
+  "packet": "f8958141433f",
+  "en": "41efd5b8971e",
+  "draft": "p-town-lost-hills.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-lost-hills.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

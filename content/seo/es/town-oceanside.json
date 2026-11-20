@@ -1,0 +1,42 @@
+{
+ "title": "Oceanside en la I-5: salidas, muelle y paradas | I-5 Buddy",
+ "meta": "Oceanside está en la salida 54 de la I-5 en California. Vea las salidas 52 a 54C, el muelle de 1,942 pies y gasolina, carga EV, comida y hospedaje.",
+ "intro": "Oceanside está cerca de la milla 54 de la I-5 en California, junto a la salida 54. El muelle de madera de Oceanside mide 1,942 pies y es el segundo muelle de madera más largo de la Costa Oeste. El primero se construyó en 1888, el año en que se constituyó la ciudad, y las tormentas lo han destruido una y otra vez. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Oceanside?",
+   "a": "Oceanside y su muelle están en la salida 54. Las salidas cercanas van desde la salida 52 (Oceanside Boulevard) y la salida 53 (Mission Avenue) hasta las salidas 54A, 54B y 54C."
+  },
+  {
+   "q": "¿Cuánto mide el muelle de Oceanside?",
+   "a": "El muelle de madera mide 1,942 pies y es el segundo muelle de madera más largo de la Costa Oeste. El primer muelle se construyó en 1888, el año en que se constituyó la ciudad, y las tormentas lo han destruido una y otra vez."
+  },
+  {
+   "q": "¿Qué salida de la I-5 tomo para Mission San Luis Rey?",
+   "a": "La salida 54 es la Highway 76 al este, el camino a Mission San Luis Rey, a unas cuatro millas y media tierra adentro. Está a la derecha en dirección norte."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para autos eléctricos en Oceanside?",
+   "a": "La gasolina aparece en el mapa en las salidas 52, 53 y 54C, y la carga para autos eléctricos en las salidas 52, 53, 54A y 54C. Estos datos vienen de OpenStreetMap tal como están registrados, no en vivo, así que pueden no reflejar lo que está abierto o disponible ahora."
+  },
+  {
+   "q": "¿Dónde está la próxima área de descanso al norte de Oceanside en la I-5?",
+   "a": "El Aliso Creek Rest Area está en la milla 59.4, a unas 5.4 millas al norte de aquí, y sirve a ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "5c803e57f694",
+  "en": "05d1974bce60",
+  "draft": "p-town-oceanside.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-oceanside.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

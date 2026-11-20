@@ -1,0 +1,38 @@
+{
+ "title": "Diablo Grande en la I-5: guía de la salida 434",
+ "meta": "Diablo Grande está junto a la I-5 en la salida 434, Diablo Grande Parkway y Sperry Avenue, con gasolina, carga para EV, comida y hospedaje en el mapa.",
+ "intro": "Diablo Grande es una comunidad residencial cerrada en las colinas de la cordillera Diablo, a la que se llega desde la I-5 por la salida 434, por Diablo Grande Parkway. Esta página cubre la salida, lo que aparece en el mapa allí y lo que usted pasará rumbo al norte.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Diablo Grande?",
+   "a": "Diablo Grande está en la salida 434, señalizada como Diablo Grande Parkway y Sperry Avenue. El Parkway lleva hacia la cordillera Diablo hasta la comunidad, a unas 9 millas al suroeste de Patterson."
+  },
+  {
+   "q": "¿Hay gasolina, carga para EV, comida y hospedaje en la salida 434?",
+   "a": "Los datos del mapa muestran 8 gasolineras en la salida 434, entre ellas Love's, Chevron, National Petro y Valero. También muestran las redes Tesla Supercharger y EVgo, 10 lugares de comida como A&W, Arby's, Carl's Jr., Denny's y Dutch Bros. Coffee, y 2 lugares de hospedaje, Best Hotels y Hampton. Esto es lo que aparece en OpenStreetMap, no es información en vivo, así que no se muestran horarios ni disponibilidad."
+  },
+  {
+   "q": "¿Qué es Diablo Grande?",
+   "a": "Diablo Grande es una comunidad residencial cerrada en las colinas, a 1,535 pies de altura, en la cordillera Diablo. El desarrollador Donald Panoz soñaba con un pueblo turístico con hasta 10,000 casas, seis campos de golf, un hotel con spa, viñedos y una vinícola."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Diablo Grande en la I-5?",
+   "a": "Rumbo al norte, el Westley Rest Area está en la milla 444.9, a unas 10.9 millas de aquí, y sirve en ambos sentidos. Hacia el sur, el Dos Amigos Vista Point está en la milla 390, a unas 44 millas."
+  }
+ ],
+ "src": {
+  "packet": "2f16b528d0df",
+  "en": "ef1c9c12af56",
+  "draft": "p-town-diablo-grande.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-diablo-grande.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

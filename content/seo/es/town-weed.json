@@ -1,0 +1,42 @@
+{
+ "title": "Weed, CA en la I-5: salidas 745-748, gasolina, comida y hospedaje",
+ "meta": "Weed está en la salida 747 de la I-5. Vea las salidas cercanas, gasolina, carga para autos eléctricos, comida y hospedaje mapeados, y el monte Mount Eddy.",
+ "intro": "Weed está cerca de la milla 747 de la I-5 en California, junto a la salida 747. El nombre viene de Abner Weed, quien descubrió que los fuertes vientos de aquí eran buenos para secar madera. En 1897 compró un aserradero y 280 acres por 400 dólares. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Weed?",
+   "a": "Weed está en la salida 747, que también conecta con la US 97 hacia Klamath Falls y con South Weed Boulevard. La salida 745 es South Weed y la salida 748 es North Weed Boulevard."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de Weed en la I-5?",
+   "a": "Hay gasolina mapeada en dos salidas: seis estaciones en la salida 745 (entre las marcas figuran Pilot, CFN, Chevron y Valero) y dos en la salida 748 (Patriot y Valero). Los datos vienen de OpenStreetMap tal como están en el mapa, no en tiempo real, así que verifique antes de contar con ello."
+  },
+  {
+   "q": "¿Hay carga para autos eléctricos cerca de Weed en la I-5?",
+   "a": "Hay carga para autos eléctricos mapeada en la salida 745 (ChargePoint, EVgo y Tesla Supercharger) y en la salida 748 (Electric Era y Tesla Supercharger). Son redes que aparecen en los datos del mapa, no disponibilidad en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo comer o encontrar un motel en Weed?",
+   "a": "La salida 745 tiene ocho lugares de comida mapeados, entre ellos McDonald's, Starbucks y Dos Amigos, y tres lugares de hospedaje, como Comfort Inn. La salida 748 tiene seis lugares de comida, entre ellos Pizza Factory y Lily's Thai Cafe, y dos moteles, Hi-Lo Motel & RV Park y Motel 6."
+  },
+  {
+   "q": "¿Dónde está la próxima área de descanso al norte de Weed en la I-5?",
+   "a": "Weed Airport Rest Area está en la milla 753.1, a unas 5.7 millas del pueblo, y los datos la indican para ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "e6a5d759cd5a",
+  "en": "36b08998bc43",
+  "draft": "p-town-weed.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-weed.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

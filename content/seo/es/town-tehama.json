@@ -1,0 +1,38 @@
+{
+ "title": "Tehama en la I-5 en California: guía de la salida 636",
+ "meta": "Tehama está a unas 5 millas al este de la salida 636 de la I-5. Conozca el pueblo, Thomes Creek y las áreas de descanso más cercanas en cada sentido.",
+ "intro": "La salida 636 (Tehama, Los Molinos, Gyle Road) lleva unas 5 millas al este hasta la pequeña ciudad de Tehama, a orillas del río Sacramento, con 435 habitantes en 2020. Fue la primera sede del condado de Tehama en 1856, antes de que una elección la trasladara a Red Bluff al año siguiente. Este tramo es el extremo norte de una franja de tierras de cultivo que sigue casi sin interrupción hasta Bakersfield.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Tehama?",
+   "a": "A Tehama se llega por la salida 636, señalizada como Tehama, Los Molinos, Gyle Road. El pueblo queda a unas 5 millas al este de la autopista, a orillas del río Sacramento."
+  },
+  {
+   "q": "¿Por qué se dice que Tehama fue la primera sede del condado?",
+   "a": "Cuando se formó el condado de Tehama en 1856, Tehama fue su sede. Una elección en todo el condado trasladó la sede a Red Bluff al año siguiente."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Tehama en la I-5?",
+   "a": "Al sur de Tehama, el Lt. John C. Helmick Rest Area está en la milla 632.2, a unas 3.8 millas de aquí, y sirve a ambos sentidos. Al norte del pueblo, el Herbert S. Miles Rest Area está en la milla 654.1, a unas 18.1 millas, y también sirve a ambos sentidos."
+  },
+  {
+   "q": "¿Qué es Thomes Creek en la I-5 cerca de Tehama?",
+   "a": "La autopista cruza Thomes Creek cerca de la salida 633. Lleva el nombre de Robert Thomes, un pionero que llegó en la década de 1840."
+  }
+ ],
+ "src": {
+  "packet": "84a5a7f65556",
+  "en": "1722ed5674bc",
+  "draft": "p-town-tehama.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-tehama.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

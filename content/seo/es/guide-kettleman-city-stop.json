@@ -1,0 +1,43 @@
+{
+ "title": "Parada en Kettleman City en la I-5: salida 309, gas y comida",
+ "meta": "La salida 309 de la I-5 en Kettleman City tiene gasolina, comida, carga para autos eléctricos y hospedaje en el mapa. Incluye el área de descanso cercana.",
+ "intro": "Kettleman City está en la salida 309 de la I-5, cerca del punto medio entre Los Angeles y San Francisco o Sacramento. Los datos del mapa incluyen gasolina, carga para autos eléctricos, comida y hospedaje en esta salida. Son los lugares tal como aparecen en OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Kettleman City?",
+   "a": "Kettleman City está en la salida 309, que es la CA 41 hacia Fresno y Paso Robles. Los datos indican que está cerca del punto medio entre Los Angeles y San Francisco o Sacramento."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Kettleman City en la I-5?",
+   "a": "Sí, en los datos del mapa la salida 309 tiene 9 gasolineras, con marcas como 76, CFN, Chevron y Mobil. Es lo que aparece en el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Puedo cargar un auto eléctrico en la salida 309?",
+   "a": "Los datos del mapa incluyen carga Tesla Supercharger, EV Range y Electrify America en la salida 309. Los datos no indican cuántos cargadores hay ni su velocidad, y la disponibilidad no es en tiempo real."
+  },
+  {
+   "q": "¿Qué comida y hoteles hay en Kettleman City?",
+   "a": "En los datos del mapa la salida 309 tiene 16 lugares de comida, con ejemplos como Baja Fresh, Bravo Farms, Carl's Jr. y Denny's. También tiene 2 lugares de hospedaje, Best Western y Quality Inn."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Kettleman City?",
+   "a": "El Coalinga-Avenal Rest Area está en la milla 320.2 y da servicio en ambas direcciones. La salida 319 también tiene un EZ Trip Travel Center en la milla 319."
+  }
+ ],
+ "h1": "La parada en Kettleman City en la I-5",
+ "src": {
+  "packet": "d270e4257ded",
+  "en": "978ab8257298",
+  "draft": "p-guide-kettleman-city-stop.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-kettleman-city-stop.3.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

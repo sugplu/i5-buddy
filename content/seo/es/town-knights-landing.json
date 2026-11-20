@@ -1,0 +1,42 @@
+{
+ "title": "Knights Landing en la I-5: salida 536 y sus alrededores",
+ "meta": "Knights Landing está en la salida 536 de la I-5, por County Road 102. Vea gas, comida y hospedaje mapeados, áreas de descanso cercanas y el Yolo Bypass.",
+ "intro": "County Road 102, en la salida 536, lleva al norte hasta Knights Landing, a orillas del río Sacramento. El Dr. William Knight, un médico de Baltimore, fundó el pueblo en 1843 sobre un montículo que durante mucho tiempo fue lugar de reunión de los pueblos nativos que vivían cerca de Cache Creek y del río. I-5 Buddy cuenta esta historia en voz alta mientras usted maneja, y enumera gas, carga para vehículos eléctricos, comida y hospedaje tal como aparecen en OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Knights Landing?",
+   "a": "Knights Landing está en la salida 536, señalada como Road 102, County Road 102. El camino sale de la autopista hacia el norte y llega al pueblo, a orillas del río Sacramento."
+  },
+  {
+   "q": "¿Qué gasolineras, comida y hospedaje hay mapeados en la salida 536?",
+   "a": "Los datos enumeran 4 gasolineras, entre ellas 76, Arco, Chevron y Costco, y 12 lugares de comida, como Dutch Bros. Coffee, In-N-Out Burger y Jack in the Box. También enumeran 4 lugares de hospedaje, entre ellos Comfort Suites, Fairfield Inn & Suites, Hampton Inn & Suites y Holiday Inn Express. Es información mapeada, no en tiempo real."
+  },
+  {
+   "q": "¿Hay cargadores para vehículos eléctricos en la salida de Knights Landing?",
+   "a": "La salida 536 tiene registros mapeados de cargadores de ChargePoint, EvGateway y Tesla Supercharger, además de un registro general de cargador para vehículos eléctricos. Los datos no indican cuántos cargadores hay ni si funcionan."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Knights Landing en la I-5?",
+   "a": "Hacia el sur, el Elkhorn Rest Area está en la milla 529.3, a 6.7 millas de aquí. Hacia el norte, el Dunnigan Rest Area está en la milla 556.6, a 20.6 millas, y atiende en ambas direcciones."
+  },
+  {
+   "q": "¿Qué es el Yolo Bypass cerca de Knights Landing?",
+   "a": "El Yolo Bypass es un canal de desfogue de inundaciones de 41 millas de largo y unas 3 millas de ancho, que el Elkhorn Causeway cruza cerca de la salida 531. Entre una inundación y otra, gran parte de esa zona se cultiva, sobre todo con arroz."
+  }
+ ],
+ "src": {
+  "packet": "eb1716ed57c8",
+  "en": "db2ebebc1c8b",
+  "draft": "p-town-knights-landing.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-knights-landing.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Burbank en la I-5: salidas, gasolina, comida y paradas",
+ "meta": "Burbank en la I-5 va de la salida 144 a la 148, con gasolina, carga para autos eléctricos, comida y hospedaje en el mapa. Guía hablada, no datos en vivo.",
+ "intro": "La I-5 pasa por Burbank, conocida comúnmente como la Capital Mundial de los Medios, con Warner Bros. y la Walt Disney Company en el Media District, a un par de millas al oeste de la autopista. El pueblo está en el extremo este, plano, del valle de San Fernando, bajo las rocosas montañas Verdugo. I-5 Buddy le indica aquí las salidas, los servicios del mapa y los sitios de interés para planear una parada; no ofrece tráfico ni información de negocios en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Burbank?",
+   "a": "El sitio de interés Burbank, the Media Capital está en la salida 147. Entre las salidas cercanas están la 146B (Burbank Boulevard), la 147B (Empire Avenue, San Fernando Boulevard) y la 148 (Buena Vista Street)."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para autos eléctricos en Burbank, en la I-5?",
+   "a": "En los datos del mapa, hay gasolina en las salidas 144, 145A, 145B, 146A, 146B, 147B y 148. La carga para autos eléctricos aparece en la salida 146A (ChargePoint), la 146B (Tesla Supercharger), la 147B (Electrify America y Tesla Supercharger) y la 148 (ChargePoint); nada de esto es en vivo."
+  },
+  {
+   "q": "¿Dónde comer o encontrar hotel cerca de la I-5 en Burbank?",
+   "a": "Hay comida en el mapa en casi todas las salidas de Burbank; la salida 146B tiene más lugares (80) y le sigue la 146A (42). El hospedaje aparece en las salidas 145A, 145B, 146A, 147B y 148, entre ellos Hotel Burbank en la salida 146A y Courtyard en la salida 147B."
+  },
+  {
+   "q": "¿Qué hay para ver cerca de la I-5 en Burbank?",
+   "a": "Cerca de la salida 144 están el Los Angeles Zoo, el Autry Museum of the American West y Travel Town, un museo ferroviario con 43 locomotoras, vagones y otro material rodante de tamaño real. Hacia el norte, las montañas Verdugo se elevan a la derecha cerca de la milla 146.4, y el edificio de 1928 de la Grand Central Air Terminal está justo al este de la autopista."
+  }
+ ],
+ "src": {
+  "packet": "83f618551a85",
+  "en": "cba83672c73b",
+  "draft": "p-town-burbank.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-burbank.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

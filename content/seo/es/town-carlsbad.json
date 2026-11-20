@@ -1,0 +1,42 @@
+{
+ "title": "Carlsbad en la I-5: salidas, gasolina, comida y lugares",
+ "meta": "Carlsbad está en la salida 50 de la I-5, con gasolina, carga eléctrica, comida y hospedaje en salidas cercanas, además de campos de flores y lagunas.",
+ "intro": "La salida principal de Carlsbad en la I-5 es la salida 50, Carlsbad Village Drive. El pueblo lleva el nombre de una ciudad de aguas termales de Bohemia. En la década de 1880, un antiguo marino, John Frazier, cavó un pozo aquí y ofreció su agua en la parada del tren, que se conoció como Frazier's Station. Este tramo de la I-5 pasa junto a campos de flores y fresas y varias lagunas antes de llegar a Oceanside.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Carlsbad?",
+   "a": "Carlsbad Village Drive es la salida 50. Las salidas cercanas son Palomar Airport Road (47), Cannon Road (48), Tamarack Avenue (49) y Las Flores Drive (51A)."
+  },
+  {
+   "q": "¿Dónde hay gasolina, comida y hospedaje en Carlsbad sobre la I-5?",
+   "a": "La salida 50, Carlsbad Village Drive, registra en los datos 3 gasolineras, 21 lugares de comida y 14 de hospedaje. La salida 47, Palomar Airport Road, registra 5 gasolineras, 30 lugares de comida y 8 de hospedaje. Estos datos vienen de OpenStreetMap tal como están mapeados, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde hay cargadores para autos eléctricos cerca de Carlsbad en la I-5?",
+   "a": "Los datos muestran Tesla Supercharger y eVgo en la salida 47, Electrify America en la salida 48, EVgo en la salida 49, y Electrify America y Tesla Supercharger en la salida 51C. La salida 50 no registra redes de carga eléctrica. Es según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Cuál es el siguiente área de descanso al norte de Carlsbad en la I-5?",
+   "a": "El Aliso Creek Rest Area, en la milla 59.4, es el más cercano al norte del pueblo, a 9.4 millas de aquí, y atiende en ambas direcciones."
+  },
+  {
+   "q": "¿Por qué se llama Carlsbad?",
+   "a": "Carlsbad lleva el nombre de una ciudad de aguas termales de Bohemia. John Frazier, un antiguo marino, cavó un pozo aquí en la década de 1880 y ofreció su agua en la parada del tren."
+  }
+ ],
+ "src": {
+  "packet": "ee3b191a48ca",
+  "en": "9e0d3b7c9ce5",
+  "draft": "p-town-carlsbad.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-carlsbad.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

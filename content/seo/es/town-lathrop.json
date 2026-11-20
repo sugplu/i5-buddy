@@ -1,0 +1,42 @@
+{
+ "title": "Lathrop en la I-5: salidas, gasolina, carga EV, comida y hoteles",
+ "meta": "Lathrop está en las salidas 462, 463 y 465 de la I-5 en California, con gasolina, carga EV, comida y hoteles según el mapa de datos.",
+ "intro": "Lathrop es un pueblo ferroviario en la I-5, donde la autopista cruza el río San Joaquin en Mossdale. Existe porque Leland Stanford, presidente del Central Pacific, trazó la vía rodeando Stockton y fundó aquí un pueblo nuevo, en una estación llamada Wilson's Station. Las salidas 462, 463 y 465 sirven la zona, con gasolina, carga para vehículos eléctricos, comida y hoteles según OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿Qué salidas de la I-5 sirven a Lathrop?",
+   "a": "Las salidas cercanas son la salida 462 (East Louise Avenue), la salida 463 (Lathrop Road) y la salida 465 (Roth Road, señalizada para Sharpe Depot)."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de Lathrop en la I-5?",
+   "a": "Hay gasolina en las tres salidas: Arco y Shell en la salida 462; Chevron, Joel's Travel Plaza, Mobil y Power Market, entre cinco estaciones, en la salida 463; y cuatro estaciones en la salida 465. Son datos del mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo cargar un vehículo eléctrico en Lathrop, en la I-5?",
+   "a": "Hay carga para vehículos eléctricos en las tres salidas. La salida 462 incluye ChargePoint, la salida 463 incluye un Tesla Supercharger y otro cargador, y la salida 465 incluye EVgo. La disponibilidad no es en tiempo real."
+  },
+  {
+   "q": "¿Dónde hay hoteles y comida cerca de Lathrop en la I-5?",
+   "a": "La salida 462 enlista 19 lugares de comida y 3 de hospedaje, entre ellos Hampton Inn & Suites, Quality Inn y Tru. La salida 463 enlista 15 lugares de comida y 3 de hospedaje, entre ellos Comfort Inn, Days Inn y Holiday Inn Express & Suites."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Lathrop en la I-5?",
+   "a": "Hacia el sur, el Westley Rest Area está en la milla 444.9, a unas 17.5 millas de Lathrop, y atiende ambas direcciones. Hacia el norte, el Elkhorn Rest Area está en la milla 529.3, a unas 66.9 millas."
+  }
+ ],
+ "src": {
+  "packet": "9752a3476a03",
+  "en": "63f1bdab4d36",
+  "draft": "p-town-lathrop.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-lathrop.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

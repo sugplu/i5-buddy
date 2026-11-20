@@ -1,0 +1,42 @@
+{
+ "title": "Gustine en la I-5: salida 418, guía de la CA 140",
+ "meta": "Gustine está en la salida 418 de la I-5 (CA 140; Gustine, Merced), con dos gasolineras en el mapa y la historia del pueblo contada por I-5 Buddy.",
+ "intro": "Gustine está cerca de la milla 418 de la I-5 en California, junto a la salida 418. El pueblo de Gustine, al este de la autopista, lleva el nombre de Sara Miller, hija del rey del ganado Henry Miller. Su segundo nombre era Augustine y su apodo era Gussie, y murió a los ocho años tras ser arrojada de su caballo. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Gustine?",
+   "a": "Gustine está en la salida 418 de la I-5, señalizada como CA 140; Gustine, Merced. El pueblo queda al este de la autopista."
+  },
+  {
+   "q": "¿De dónde viene el nombre de Gustine?",
+   "a": "El pueblo lleva el nombre de Sara Miller, hija del rey del ganado Henry Miller. Su segundo nombre era Augustine y su apodo era Gussie, y murió a los ocho años tras ser arrojada de su caballo."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Gustine en la I-5?",
+   "a": "Los datos muestran dos gasolineras en la salida 418, una Chevron y una Gustine Shell. La información viene de OpenStreetMap tal como está en el mapa, no en tiempo real, así que no indica si alguna está abierta."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Gustine en la I-5?",
+   "a": "Al norte del pueblo, el Westley Rest Area está en la milla 444.9, a unas 26.9 millas de Gustine, y sirve en ambos sentidos. Al sur del pueblo, el Dos Amigos Vista Point está en la milla 390, a unas 28 millas."
+  },
+  {
+   "q": "¿Qué pueblos quedan junto a Gustine en la I-5?",
+   "a": "Newman es el siguiente pueblo al norte y Santa Nella es el siguiente pueblo al sur en la I-5."
+  }
+ ],
+ "src": {
+  "packet": "dfe7bd339668",
+  "en": "87df17a0f00c",
+  "draft": "p-town-gustine.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-gustine.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

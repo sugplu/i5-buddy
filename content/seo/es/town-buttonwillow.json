@@ -1,0 +1,42 @@
+{
+ "title": "Buttonwillow en la I-5: salidas, servicios y puntos de interés",
+ "meta": "Buttonwillow está cerca de la salida 262 de la I-5 en California (milla 261 desde la frontera con México). Gasolina, comida y hospedaje en la salida 257.",
+ "intro": "Buttonwillow queda sobre la Interestatal 5, entre las salidas 257 y 263. El pueblo lleva el nombre de un solo árbol que resultó ser un buttonbush, no un sauce. La autopista cruza el río Kern cerca de las cuencas de recarga del Kern Water Bank y pasa junto a las áridas y bajas Elk Hills. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje aparecen en los datos en la salida 257, según OpenStreetMap y no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Buttonwillow?",
+   "a": "La salida 263 está señalizada para Buttonwillow y McKittrick, y la salida 257 (CA 58) también indica Buttonwillow, McKittrick y Bakersfield. La salida 262 es 7th Standard Road y Rowlee Road."
+  },
+  {
+   "q": "¿Hay gasolina, carga para vehículos eléctricos, comida u hotel en Buttonwillow, en la I-5?",
+   "a": "En la salida 257 los datos incluyen 9 gasolineras (entre las marcas están Sinclair, Arco, Chevron y EZ Trip), las redes ChargePoint, Rivian y Tesla Supercharger, 13 lugares de comida y 4 de hospedaje, como Econo Lodge y Motel 6. Esto viene de OpenStreetMap tal como está mapeado, no en tiempo real, así que no indica qué está abierto ahora."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de Buttonwillow en la I-5?",
+   "a": "El Buttonwillow Rest Area está en la milla 259.2, a unas 1.4 millas al sur del pueblo, y sirve a ambas direcciones. Hacia el norte, la siguiente área de descanso es Coalinga-Avenal, en la milla 320.2, a unas 59.6 millas."
+  },
+  {
+   "q": "¿Por qué Buttonwillow se llama Buttonwillow?",
+   "a": "El pueblo lleva el nombre de un solo árbol, que no es un sauce sino un buttonbush. El árbol aparece en la lista cerca de la salida 262."
+  },
+  {
+   "q": "¿Qué se puede ver cerca de Buttonwillow en la I-5?",
+   "a": "Cerca de la salida 263, a la izquierda hacia el norte, están los McKittrick Tar Pits, donde el asfalto natural brota del campo petrolero que está debajo. Buttonwillow también fue sede de Miller and Lux, la empresa de Henry Miller, conocido como el Rey del Ganado de California."
+  }
+ ],
+ "src": {
+  "packet": "a21c6bc434b7",
+  "en": "9786bbbb21f5",
+  "draft": "p-town-buttonwillow.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-buttonwillow.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

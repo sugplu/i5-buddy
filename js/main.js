@@ -8,7 +8,7 @@ import * as native from "./native.js";
 
 const {
   PLACES, CATS, MAX_M, STATES, DESTS, ENDS, SCOPE, zoneAt, stateAt, localMile, regionAt, sideWord, aheadOf, elevAt,
-  servicesAhead, restAhead, exitName, fmtMiles, fmtDuration, placeById, detourShort, MISSIONS,
+  servicesAhead, restAhead, restName, exitName, fmtMiles, fmtDuration, placeById, detourShort, MISSIONS,
 } = data;
 // A mile saved by a version that covered more road (Oregon, Washington) is past the end now: forget it.
 if (S.m != null && !(S.m >= 0 && S.m <= MAX_M + 1)) { S.m = null; store.del("m"); }
@@ -790,7 +790,7 @@ function renderServices() {
     const t = el("span", "tx");
     if (s) {
       any = true;
-      t.append(el("b", null, `${Math.max(1, Math.round(s.d))} mi`), el("small", null, kind === "rest" ? (s.status === "closed" ? "Closed · " : "") + s.name.replace(/\s*\((north|south)bound\)/i, "") : `${label} · ${exitName(s.st, s.ref)}`));
+      t.append(el("b", null, `${Math.max(1, Math.round(s.d))} mi`), el("small", null, kind === "rest" ? (s.status === "closed" ? "Closed · " : "") + restName(s.name) : `${label} · ${exitName(s.st, s.ref)}`));
       if (kind !== "rest" && s[kind]?.length) t.append(el("small", "brands", s[kind].slice(0, 3).join(", ")));
     } else {
       t.append(el("b", null, "—"), el("small", null, `No ${label.toLowerCase()} listed nearby`));
@@ -920,7 +920,7 @@ function renderStops(ol, m) {
     const li = el("li", "row stop-row");
     const body = el("div", "body");
     if (x.kind === "rest") {
-      body.append(el("div", "m", "Rest area"), el("b", null, x.s.name.replace(/\s*\((north|south)bound\)/i, "")));
+      body.append(el("div", "m", "Rest area"), el("b", null, restName(x.s.name)));
       if (REST_NOTE[x.s.status]) body.append(el("p", "rest-status", REST_NOTE[x.s.status]));
     } else {
       body.append(el("div", "m", exitName(x.s.st, x.s.ref)));
@@ -1026,7 +1026,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.7";
+export const APP_VERSION = "3.0.8";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");

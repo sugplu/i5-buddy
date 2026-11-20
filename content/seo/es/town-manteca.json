@@ -1,0 +1,38 @@
+{
+ "title": "Manteca en la I-5: salida 461 (CA 120 Este)",
+ "meta": "Manteca está junto a la I-5 en la salida 461, donde la Highway 120 va al este. Vea la gasolinera de la salida 460, Mossdale Crossing y áreas de descanso.",
+ "intro": "Manteca está en la milla 461 de la I-5 en California, cerca de la salida 461. La Highway 120 lleva al este hasta Manteca, cuyo nombre en español significa grasa de cerdo. Es un nombre extraño para un pueblo cuya parada de ferrocarril servía para enviar productos lácteos, y nadie se pone de acuerdo en cómo sucedió. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Manteca?",
+   "a": "En la salida 461, señalizada como CA 120 East; Manteca, Sonora. Desde ahí, la Highway 120 lleva al este hasta Manteca."
+  },
+  {
+   "q": "¿Hay gasolina cerca de Manteca en la I-5?",
+   "a": "En los datos del mapa aparece una gasolinera, una Arco, en la salida 460. Es lo que indica el mapa, no información en vivo, así que no dice si está abierta."
+  },
+  {
+   "q": "¿Dónde cruza la I-5 el río San Joaquin cerca de Manteca?",
+   "a": "En Mossdale Crossing, cerca de la salida 460, a la izquierda yendo hacia el norte. El cruce queda cerca de un puente ferroviario levadizo de acero."
+  },
+  {
+   "q": "¿Por qué Manteca tiene nombre de grasa de cerdo?",
+   "a": "Manteca significa grasa de cerdo en español, algo extraño para un pueblo cuya parada de ferrocarril enviaba productos lácteos. Según el texto de I-5 Buddy sobre este lugar, nadie se pone de acuerdo en cómo surgió el nombre."
+  }
+ ],
+ "src": {
+  "packet": "d10ac51ffddf",
+  "en": "7cdb38ffb9ad",
+  "draft": "p-town-manteca.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-manteca.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

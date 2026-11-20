@@ -1,0 +1,22 @@
+{
+ "title": "Carga de vehículos eléctricos en la I-5 en California",
+ "meta": "Carga de vehículos eléctricos en la I-5 en California: salidas, paradas, áreas de descanso y puntos de interés, con las millas como números de salida.",
+ "intro": "Carga de vehículos eléctricos en la I-5 en California. Todo lo de esta página viene de los datos propios de I-5 Buddy: los números de salida de California (que suben desde la frontera con México), las paradas de cada salida, las áreas de descanso y los puntos de interés que usted va pasando.",
+ "faq": [],
+ "h1": "Carga de vehículos eléctricos en la I-5 en California",
+ "src": {
+  "packet": "28dfd5fb1bde",
+  "en": "cef33f099b39",
+  "draft": "p-guide-ev-charging.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-ev-charging.3.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

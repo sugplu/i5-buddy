@@ -1,0 +1,42 @@
+{
+ "title": "Yreka en la I-5: salidas, gasolina, comida y hospedaje",
+ "meta": "Yreka está en las salidas 773, 775 y 776 de la I-5 en California. Vea gasolina, carga eléctrica, comida y hospedaje listados, y su historia minera.",
+ "intro": "Yreka es la sede del condado en plena fiebre del oro sobre la Interestatal 5, con las salidas 773, 775 y 776. En marzo de 1851, un arriero llamado Abraham Thompson encontró oro aquí, y para abril ya habían llegado 2,000 mineros. I-5 Buddy le cuenta esa historia en voz alta mientras maneja, y los sitios de abajo salen de los datos del mapa, no en vivo.",
+ "faq": [
+  {
+   "q": "¿Qué salidas de la I-5 llevan a Yreka?",
+   "a": "A Yreka llegan la salida 773 (CA 3; Yreka), la salida 775 (Central Yreka) y la salida 776 (Yreka, Montague; I 5 Business, CA 3)."
+  },
+  {
+   "q": "¿Dónde hay gasolineras listadas en Yreka, sobre la I-5?",
+   "a": "Los datos del mapa listan 3 gasolineras en la salida 773, entre ellas Chevron y Valero, 3 en la salida 775, entre ellas 76 y Chevron, y 2 en la salida 776, Exxon y Speedway. Son datos del mapa, no en vivo, así que no indican qué está abierto."
+  },
+  {
+   "q": "¿Dónde hay cargadores para autos eléctricos listados cerca de Yreka, en la I-5?",
+   "a": "La salida 773 lista las redes ChargePoint, Electrify America y Tesla Supercharger, la salida 775 lista Electric Era y la salida 776 lista ChargePoint. Vienen de OpenStreetMap y no muestran disponibilidad en vivo."
+  },
+  {
+   "q": "¿Dónde encuentro comida y un motel en Yreka, cerca de la I-5?",
+   "a": "La salida 775 es la que más lugares lista en los datos, con 12 sitios de comida y 5 de hospedaje, entre ellos Best Western y Econo Lodge. La salida 773 lista 11 sitios de comida y 3 moteles, y la salida 776 lista Holiday Inn Express, Mountain View Inn y Super 8."
+  },
+  {
+   "q": "¿Por qué se llama Yreka el pueblo?",
+   "a": "El nombre Yreka viene de waik'a, la palabra del pueblo shasta para Mount Shasta. Aquí se encontró oro en 1851, en un lugar que los mineros llamaron primero Thompson's Dry Diggings."
+  }
+ ],
+ "src": {
+  "packet": "b5f3a0bbd091",
+  "en": "d947791c3a21",
+  "draft": "p-town-yreka.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-yreka.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "title": "San Clemente en la I-5: salidas, gasolina, comida y lugares",
+ "meta": "San Clemente está junto a la I-5, en las salidas 72 a 79. Vea las salidas, gasolina, comida y hospedaje mapeados, y la historia de Spanish Village by the Sea.",
+ "intro": "Las calles en la colina de San Clemente, con edificios de estilo español, están junto a la I-5 entre la salida 72 (Cristianitos Road) y la salida 79 (CA 1). I-5 Buddy le cuenta la historia de Spanish Village by the Sea en la salida 76, donde Ole Hanson trazó el pueblo en 1925. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje que aparecen abajo son los que muestra el mapa de OpenStreetMap, no datos en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está San Clemente?",
+   "a": "La salida marcada como San Clemente es la salida 75, en Avenida Presidio y Avenida Palizada. También se llega al pueblo por las salidas 72 a 79, entre ellas la salida 74 (El Camino Real) y la salida 76 (Avenida Pico)."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para vehículos eléctricos en San Clemente, cerca de la I-5?",
+   "a": "La gasolina aparece en el mapa en las salidas 73 a 79, y las salidas 76 y 79 tienen más estaciones (3 en cada una). La carga para vehículos eléctricos aparece en las salidas 75 a 79, con un Tesla Supercharger y ChargePoint en la salida 77, EVgo en la salida 78 y Electrify America en la salida 79. Esto es según el mapa, no en vivo."
+  },
+  {
+   "q": "¿Dónde puedo comer en San Clemente, cerca de la I-5?",
+   "a": "La comida aparece en el mapa en las salidas 72 a 78. La salida 75 tiene más lugares en la lista (65), seguida de la salida 76 (29) y la salida 78 (22). Algunos ejemplos son Antoine's Cafe en la salida 75 y Ruby's Diner en la salida 77."
+  },
+  {
+   "q": "¿Dónde puedo hospedarme en San Clemente, cerca de la I-5?",
+   "a": "El hospedaje aparece en el mapa en las salidas 72 a 76 y en la salida 79. La salida 73 lista 7 lugares, entre ellos Hampton Inn & Suites, y la salida 79 lista 7, entre ellos Best Western y Hilton Garden Inn."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de San Clemente en la I-5?",
+   "a": "El área de descanso más cercana al sur del pueblo es Aliso Creek Rest Area, en la milla 59.4, a 16.4 millas, para ambas direcciones. Al norte del pueblo, la más cercana es Tejon Pass Rest Area, en la milla 206.1, a 130.3 millas."
+  }
+ ],
+ "src": {
+  "packet": "dee78d80998c",
+  "en": "2cd3f627ba24",
+  "draft": "p-town-san-clemente.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-san-clemente.9.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

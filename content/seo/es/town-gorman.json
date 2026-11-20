@@ -1,0 +1,42 @@
+{
+ "title": "Gorman en la I-5: salida 202, gasolina, comida y flores",
+ "meta": "Gorman está en la salida 202 de la I-5, con gasolina, comida y hospedaje en el mapa, un lugar de flores silvestres y la cumbre de Tejon Pass cerca.",
+ "intro": "Gorman está en la salida 202 de la I-5. En primavera, después de un invierno lluvioso, las amapolas y el lupino pueden cubrir las colinas del pueblo, y este lugar fue antes la aldea tataviam de Kulshra'jek, un cruce de comercio. Esta página cubre lo que está en el mapa en la salida de Gorman y en la siguiente al norte, además de lugares de interés y áreas de descanso cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Gorman?",
+   "a": "Gorman está en la salida 202 de la I-5. Las siguientes salidas al norte son la salida 204 y la salida 205, Frazier Mountain Park Road."
+  },
+  {
+   "q": "¿Hay gasolina, comida y hospedaje en la salida de Gorman?",
+   "a": "En la salida 202 los datos incluyen 5 gasolineras (Shell, 76, Chevron y Gorman Chevron), 4 lugares de comida como Carl's Jr., El Grullense, McDonald's y Ranch House, y 7 lugares de hospedaje. Es lo que aparece en OpenStreetMap, no en tiempo real, así que revise los horarios antes de contar con una parada."
+  },
+  {
+   "q": "¿Dónde puedo cargar un vehículo eléctrico cerca de Gorman en la I-5?",
+   "a": "Los datos del mapa no muestran redes de carga para vehículos eléctricos en la salida 202. En la salida 205, Frazier Mountain Park Road, aparecen ChargePoint y Tesla Supercharger. Es lo que aparece en el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde está el punto más alto de la I-5 en California?",
+   "a": "Cerca de la cima de Tejon Pass, alrededor de la salida 204, la I-5 llega a 4,144 pies, su punto más alto en California. Está cerca del límite entre los condados de Los Angeles y Kern."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Gorman en la I-5?",
+   "a": "El Tejon Pass Rest Area está a 4.1 millas al norte de Gorman, en la milla 206.1, y sirve a ambas direcciones. Al sur del pueblo, la más cercana que aparece en la lista es el Aliso Creek Rest Area, en la milla 59.4, a 142.6 millas de aquí."
+  }
+ ],
+ "src": {
+  "packet": "f8c31a22e7d3",
+  "en": "855494270356",
+  "draft": "p-town-gorman.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-gorman.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

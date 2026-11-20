@@ -1,0 +1,43 @@
+{
+ "title": "Cañón del río Sacramento en la I-5: de Shasta Lake a Dunsmuir",
+ "meta": "Recorra la I-5 de Shasta Lake a Dunsmuir por el cañón del río Sacramento, con gas, carga EV, comida y hospedaje listados en las salidas 690 a 738.",
+ "intro": "Desde cerca de la salida 688 hasta la 740, la I-5 cruza Shasta Lake, sigue el empinado cañón boscoso del río Sacramento, pasa junto a las agujas de granito de Castle Crags y Dunsmuir, y se abre al pie del Mount Shasta. I-5 Buddy, una guía GPS parlante de la Interestatal 5 en California, le cuenta la historia de este tramo mientras usted maneja. El gas, la carga EV, la comida y el hospedaje son los que aparecen en OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Shasta Lake?",
+   "a": "Shasta Lake está en la salida 689, a la izquierda si va hacia el norte. El lago es el embalse más grande de California, con 365 millas de orilla empinada y arbolada."
+  },
+  {
+   "q": "¿Dónde puedo cargar gasolina en la I-5 por el cañón del río Sacramento?",
+   "a": "El gas que aparece en el mapa en este tramo incluye Shell en la salida 702 (Lakeshore Drive), Pollard Flat en la salida 712, Chevron en la salida 724 (Castella) y en la 730 (Central Dunsmuir), Valero en la salida 729, y 76, Chevron y Valero en la salida 738 (Central Mount Shasta). Están en los datos, no en tiempo real, así que no se muestran horarios ni precios."
+  },
+  {
+   "q": "¿Hay cargadores para autos eléctricos en la I-5 entre Shasta Lake y Mount Shasta?",
+   "a": "ChargePoint aparece en el mapa en la salida 702 (Lakeshore Drive) y en la salida 730 (Central Dunsmuir). La salida 738 (Central Mount Shasta) incluye ChargePoint, Tesla Supercharger, Rivian Adventure Network y Rivian Waypoints, todo según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde están las áreas de descanso de la I-5 cerca de Shasta Lake?",
+   "a": "O'Brien Rest Area está en la milla 692.9 y Lakehead Rest Area en la milla 704.7. Los datos no indican en qué dirección sirve cada una."
+  },
+  {
+   "q": "¿Dónde comer o hospedarse en Dunsmuir, en la I-5?",
+   "a": "La salida 730 (Central Dunsmuir) tiene siete lugares de comida en el mapa, entre ellos Burger Barn, Cafe Maddalena y Pizza Factory. La salida 732 tiene ocho lugares de hospedaje en el mapa, entre ellos Cedar Lodge Motel y Travelodge, y la salida 728 tiene el Jubilee Railroad Wilderness Lodge con su vagón comedor."
+  }
+ ],
+ "h1": "El cañón del río Sacramento en la I-5",
+ "src": {
+  "packet": "6db26ff62942",
+  "en": "8fde52e31711",
+  "draft": "p-guide-sacramento-river-canyon.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-sacramento-river-canyon.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 4,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

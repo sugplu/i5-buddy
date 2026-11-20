@@ -1,0 +1,34 @@
+{
+ "title": "Tracy en la I-5: salida 458, ciudad del ferrocarril",
+ "meta": "Tracy está en la salida 458 de la I-5, ciudad del ferrocarril fundada en 1878. Vea salidas cercanas, el área Westley y los pueblos vecinos.",
+ "intro": "Tracy es una ciudad del ferrocarril al oeste de la autopista, en la salida 458. Nació el 8 de septiembre de 1878, cuando una línea del Southern Pacific desde Oakland se unió allí con la línea del Central Pacific. Al norte del cruce con la I-580, la I-5 atraviesa tierras de cultivo planas del condado de San Joaquin, cerca del borde del Delta. I-5 Buddy le cuenta la historia de Tracy mientras usted pasa por ahí.",
+ "faq": [
+  {
+   "q": "¿De dónde viene el nombre de Tracy?",
+   "a": "El Tracy Historical Museum dice que el cruce de ferrocarriles recibió el nombre de Lathrop J. Tracy, un ejecutivo del ferrocarril venido del este del país. La ciudad nació el 8 de septiembre de 1878, cuando se unieron allí dos líneas de tren."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Tracy en la I-5?",
+   "a": "Al sur de Tracy, el Westley Rest Area está en la milla 444.9, a 13.1 millas de aquí, y atiende ambas direcciones. Al norte de la ciudad, el Elkhorn Rest Area está en la milla 529.3, a 71.3 millas; los datos no indican su dirección."
+  },
+  {
+   "q": "¿Qué pueblos hay antes y después de Tracy en la I-5?",
+   "a": "Si usted va hacia el norte, Banta es el siguiente pueblo al sur y Manteca es el siguiente pueblo al norte. Entre ellos, la autopista cruza tierras de cultivo del condado de San Joaquin, un importante centro agrícola del país."
+  }
+ ],
+ "src": {
+  "packet": "e7a538f41a80",
+  "en": "4c6e7985286c",
+  "draft": "p-town-tracy.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-tracy.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

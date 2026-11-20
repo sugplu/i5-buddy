@@ -207,6 +207,7 @@ body.talking .next .count .n{color:var(--c,var(--accent))}
 .ahead .m{font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--c,var(--muted))}
 .ahead b{font-size:1.05rem}
 .ahead p{margin:0;color:var(--muted);font-size:.93rem}
+.ahead p.rest-status{margin:0;color:var(--muted);font-size:.93rem} /* a Caltrans closure note on a rest-area row (3.0.8): the same look as the other stop notes */
 .ahead .rowacts{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.85rem}
 .ahead .rowacts .link{padding:4px 0;margin-right:10px;min-height:32px}
 .ahead .got{color:var(--ok);font-weight:800}

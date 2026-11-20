@@ -1,0 +1,38 @@
+{
+ "title": "Los Banos, California en la I-5: salidas, servicios y paradas",
+ "meta": "Los Banos está a unas 7 millas al este de la I-5, en la salida 399. Vea los puntos de interés cercanos y las áreas de descanso más próximas en I-5 Buddy.",
+ "intro": "Los Banos es una ciudad a unas 7 millas al este de la Interestatal 5, a la que se llega por la salida 399. Su nombre significa en español los baños, por unas pozas conocidas como los baños del Padre Arroyo. Esta página muestra los puntos de interés cercanos a la salida y las áreas de descanso más próximas que aparecen en I-5 Buddy.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Los Banos?",
+   "a": "Los Banos está en la salida 399 de la I-5. La ciudad queda a unas 7 millas al este de la autopista."
+  },
+  {
+   "q": "¿Por qué se llama Los Banos?",
+   "a": "Los Banos significa los baños en español. Se llama así por unas pozas conocidas como los baños del Padre Arroyo, una parada habitual de los sacerdotes de la Misión San Juan Bautista, y los exploradores españoles las visitaron ya en 1805."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Los Banos en la I-5?",
+   "a": "Hacia el norte, el Westley Rest Area aparece en la milla 444.9, a unas 45.9 millas de aquí, con acceso en ambos sentidos. Hacia el sur, el Dos Amigos Vista Point aparece en la milla 390, a unas 9 millas de aquí; los datos no indican su sentido."
+  },
+  {
+   "q": "¿Qué hay para ver en la I-5 cerca de Los Banos?",
+   "a": "En la salida 397, Path 15, parte del principal corredor eléctrico de California de norte a sur, recorre este lado del valle, por lo general a entre 3 y 7 millas al oeste de la autopista. En la salida 400, la Morning Star Company abrió su primera fábrica de tomate en Los Banos en 1990 y era la principal procesadora de tomate del mundo en 2023."
+  }
+ ],
+ "src": {
+  "packet": "58b239280ea8",
+  "en": "5ae1c37e99c8",
+  "draft": "p-town-los-banos.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-los-banos.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

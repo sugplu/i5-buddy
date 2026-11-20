@@ -1,0 +1,22 @@
+{
+ "title": "Conducir en invierno por el Grapevine en la I-5: Tejon Pass a Gorman",
+ "meta": "Notas de invierno para la I-5 de la salida 176 a la 221: Five Mile Grade, Gorman, Tejon Pass, Fort Tejon y paradas de gasolina, carga, comida y hospedaje.",
+ "intro": "Conducir en invierno por el Grapevine en la I-5. Todo lo de esta página viene de los datos propios de I-5 Buddy: los números de salida de California (que cuentan desde la frontera con México), las paradas listadas en cada salida, las áreas de descanso y los sitios de interés que usted va pasando.",
+ "faq": [],
+ "h1": "Conducir en invierno por el Grapevine en la I-5",
+ "src": {
+  "packet": "043244108958",
+  "en": "6977b4eb72da",
+  "draft": "p-guide-grapevine-winter-driving.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-grapevine-winter-driving.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

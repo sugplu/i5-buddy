@@ -1,0 +1,38 @@
+{
+ "title": "Hilt, CA en la I-5: salida 796, la última de California",
+ "meta": "Hilt tiene la salida más al norte de la I-5 en California, la salida 796 en Hilt Road, justo al sur del paralelo 42 y de la línea con Oregon.",
+ "intro": "Hilt está en la salida 796 de la I-5 y tiene la salida más al norte de California. Nació como un pueblo de compañía, primero para la Northern California Lumber Company y después para la Fruit Growers Supply Company, una filial de Sunkist. El paralelo 42, que marca la frontera entre California y Oregon, está en la milla 797.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Hilt?",
+   "a": "Hilt está en la salida 796, Hilt Road. Es la salida más al norte de la I-5 en California."
+  },
+  {
+   "q": "¿Cuál es la última salida de la I-5 en California?",
+   "a": "La salida más al norte de la I-5 en California es la salida 796, en Hilt. La salida 793, Bailey Hill Road, es la que está antes."
+  },
+  {
+   "q": "¿Dónde está la frontera entre California y Oregon en la I-5?",
+   "a": "La frontera sigue el paralelo 42, que cruza la I-5 en la milla 797, justo después de la salida de Hilt. Esa línea se fijó en un tratado de 1819 entre Estados Unidos y España."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de Hilt en la I-5?",
+   "a": "El área de descanso más cercana al sur de Hilt en los datos es Randolph E. Collier Rest Area, en la milla 785.8, a 10.4 millas de aquí. Los datos no incluyen ningún área de descanso al norte de Hilt, ni gasolina, comida u hospedaje marcados en las salidas de Hilt."
+  }
+ ],
+ "src": {
+  "packet": "c8564e91e805",
+  "en": "755a2e9777a1",
+  "draft": "p-town-hilt.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-hilt.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

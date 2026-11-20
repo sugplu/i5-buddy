@@ -1,0 +1,39 @@
+{
+ "title": "De Redding a Mount Shasta y Weed en la I-5: guía de salidas",
+ "meta": "De Redding a Mount Shasta y Weed en la I-5: salidas, paradas, áreas de descanso y puntos de interés, con millas según las salidas de California.",
+ "intro": "Este tramo de la I-5 va desde Redding, en la salida 677, pasando por Shasta Lake, por el cañón boscoso del río Sacramento y bajo las torres de granito de Castle Crags, hasta Mount Shasta y Weed. I-5 Buddy le cuenta lo que verá en el camino, desde el Carr Fire hasta Hedge Creek Falls y Pluto's Cave. La gasolina, la carga para autos eléctricos, la comida y el hospedaje que se muestran aquí vienen de OpenStreetMap tal como están mapeados, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Hedge Creek Falls?",
+   "a": "Hedge Creek Falls está en la salida 732, cerca de Dunsmuir. Un sendero corto desde la salida lleva a una cascada con una pequeña cueva detrás, así que se puede caminar detrás del agua que cae."
+  },
+  {
+   "q": "¿Dónde hay gasolina entre Redding y Weed en la I-5?",
+   "a": "En los datos, 19 salidas de este tramo tienen gasolina registrada, desde Cypress Avenue en la salida 677 hasta North Weed Boulevard en la salida 748. La gasolina viene mapeada de OpenStreetMap, no en tiempo real, así que no indica qué está abierto."
+  },
+  {
+   "q": "¿Qué salidas de la I-5 cerca de Mount Shasta y Weed tienen carga para autos eléctricos?",
+   "a": "Central Mount Shasta, en la salida 738, registra las redes ChargePoint, Tesla Supercharger y Rivian; South Weed, en la salida 745, registra ChargePoint, EVgo y Tesla Supercharger; y North Weed Boulevard, en la salida 748, registra Electric Era y Tesla Supercharger. Es lo que está mapeado, no en tiempo real."
+  },
+  {
+   "q": "¿Hay áreas de descanso en la I-5 entre Redding y Weed?",
+   "a": "Los datos registran tres: O'Brien Rest Area en la milla 692.9, Lakehead Rest Area en la milla 704.7 y Weed Airport Rest Area en la milla 753.1, que aparece para ambas direcciones. La dirección de las dos primeras no se indica en los datos."
+  }
+ ],
+ "h1": "De Redding a Mount Shasta y Weed en la I-5",
+ "src": {
+  "packet": "8c41c348af64",
+  "en": "87bd6c672e28",
+  "draft": "p-guide-redding-to-mount-shasta-and-weed.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-redding-to-mount-shasta-and-weed.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

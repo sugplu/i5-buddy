@@ -1,0 +1,42 @@
+{
+ "title": "Gazelle en la I-5: salida 759, Louie Road, Shasta Valley",
+ "meta": "Gazelle en la I-5 en California: un pueblo pequeño al oeste de la autopista, en la salida 759 (Louie Road), en Shasta Valley, con áreas de descanso cercanas.",
+ "intro": "Gazelle es un pueblo pequeño de unos 95 habitantes, al oeste de la I-5, en Shasta Valley, un valle amplio y seco de campos de heno, ganado y enebros. Su oficina de correos tomó el nombre de Gazelle en 1870. La salida más cercana en los datos de I-5 Buddy es la salida 759, Louie Road.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Gazelle?",
+   "a": "Gazelle está en la salida 759 de la I-5, que es Louie Road. El pueblo queda al oeste de la autopista."
+  },
+  {
+   "q": "¿Qué tan grande es Gazelle, California?",
+   "a": "Gazelle es un pueblo pequeño de unos 95 habitantes. Su oficina de correos tomó el nombre de Gazelle en 1870."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de Gazelle en la I-5?",
+   "a": "Al sur del pueblo, Weed Airport Rest Area está en la milla 753.1, a 3.9 millas de aquí, y sirve a ambas direcciones. Al norte del pueblo, Randolph E. Collier Rest Area está en la milla 785.8, a 28.8 millas de aquí."
+  },
+  {
+   "q": "¿Qué es la Old Highway 99 cerca de Gazelle?",
+   "a": "Cerca de la salida 755, la Old Highway 99 es un camino del condado de dos carriles entre Weed y Yreka. Conserva la misma forma que tenía cuando era la U.S. 99, la principal carretera de la Costa Oeste antes de la I-5."
+  },
+  {
+   "q": "¿Cómo es el paisaje alrededor de Gazelle?",
+   "a": "Gazelle está en Shasta Valley, un valle amplio y seco en la sombra de lluvia de las montañas Klamath. Está salpicado de montículos, con campos de heno, ganado y enebros."
+  }
+ ],
+ "src": {
+  "packet": "afc79db54216",
+  "en": "8e017d35d676",
+  "draft": "p-town-gazelle.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-gazelle.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

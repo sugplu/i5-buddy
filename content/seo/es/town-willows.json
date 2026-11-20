@@ -1,0 +1,38 @@
+{
+ "title": "Willows en la I-5: salida 603, gasolina, comida y hospedaje",
+ "meta": "Willows está en la salida 603 de la I-5 (CA 162). Vea la gasolina, carga eléctrica, comida y hospedaje mapeados, y las áreas de descanso.",
+ "intro": "Willows está en la salida 603 de la I-5, donde la CA 162 va hacia Oroville. El pueblo toma su nombre de un abrevadero sombreado, rodeado de sauces, donde los vaqueros que arreaban ganado se detenían a descansar. I-5 Buddy cuenta estas historias en voz alta mientras usted maneja.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Willows?",
+   "a": "Willows está en la salida 603, señalada como CA 162; Willows, Oroville. Las salidas cercanas son la 601 (County Road 57) y la 607 (County Road 39)."
+  },
+  {
+   "q": "¿Hay gasolina y comida en la salida de Willows en la I-5?",
+   "a": "En la salida 603, los datos incluyen tres gasolineras (Arco, Chevron y Diamond Gas) y 15 lugares de comida, entre ellos Black Bear Diner, Burger King, Casa Ramos y KFC. Esto viene de OpenStreetMap tal como está mapeado, no en vivo, así que no se muestran horarios ni disponibilidad."
+  },
+  {
+   "q": "¿Hay cargadores para autos eléctricos u hoteles cerca de Willows en la I-5?",
+   "a": "En la salida 603 hay cargadores de EVgo y Electrify America mapeados, además de 7 lugares de hospedaje, entre ellos Best Western, Holiday Inn Express & Suites y Motel 6. La salida 607 tiene mapeado un cargador rápido de 42kw y The Grove Motel."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Willows en la I-5?",
+   "a": "Willows Rest Area está en la milla 607.7, a unas 4.7 millas al norte del pueblo, y sirve en ambas direcciones. Hacia el sur, Maxwell Rest Area está en la milla 583.5, a unas 19.5 millas, también en ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "b05fd7561ec9",
+  "en": "2dfd7bdc30ff",
+  "draft": "p-town-willows.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-willows.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

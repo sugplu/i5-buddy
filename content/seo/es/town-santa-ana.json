@@ -1,0 +1,42 @@
+{
+ "title": "Santa Ana en la I-5: salidas, gasolina, comida y paradas",
+ "meta": "Santa Ana está en la salida 105 de la I-5. Vea las salidas cercanas, gasolina, carga EV, comida y hospedaje, el Santa Ana Zoo y los descansos.",
+ "intro": "Santa Ana es la sede del condado, en la salida 105 de la I-5, sobre tierras que fueron parte del Rancho Santiago de Santa Ana, otorgado en 1810 a José Antonio Yorba. Esta página enumera las salidas cercanas, desde Red Hill Avenue hasta Chapman Avenue, con la gasolina, la carga para autos eléctricos, la comida y el hospedaje que aparecen en el mapa de cada una. Los servicios vienen de OpenStreetMap tal como están mapeados, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Santa Ana?",
+   "a": "Santa Ana, la sede del condado, está en la salida 105 de la I-5. La salida 105A es 17th Street y la salida 105B es Main Street y Broadway."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de Santa Ana en la I-5?",
+   "a": "Hay gasolina mapeada en varias salidas cercanas. La salida 101B incluye Arco, Chevron, Mobil, Shell y Valero, la salida 103A incluye Arco, SC Fuels, Shell y Speeed Gas, y la salida 107B incluye 7-Eleven y Ralphs."
+  },
+  {
+   "q": "¿Dónde hay cargadores para autos eléctricos cerca de Santa Ana en la I-5?",
+   "a": "Entre los cargadores mapeados hay un Tesla Supercharger en las salidas 101B, 104B, 105A y 106, EVgo en la salida 104, y ChargePoint y Rove en la salida 105A. La salida 107B también incluye un cargador EV."
+  },
+  {
+   "q": "¿Hay un zoológico cerca de la I-5 en Santa Ana?",
+   "a": "Sí. El Santa Ana Zoo está junto a la autopista, en Prentice Park, cerca de la salida 104, y abrió el 8 de marzo de 1952."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Santa Ana en la I-5?",
+   "a": "Al sur, el área de descanso más cercana en la lista es Aliso Creek Rest Area, en la milla 59.4, a 45.6 millas. Al norte está Tejon Pass Rest Area, en la milla 206.1, a 101.1 millas, y ambas sirven en los dos sentidos."
+  }
+ ],
+ "src": {
+  "packet": "e9aa9140260d",
+  "en": "dd191a219c40",
+  "draft": "p-town-santa-ana.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-santa-ana.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

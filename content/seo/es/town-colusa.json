@@ -1,0 +1,42 @@
+{
+ "title": "Salida a Colusa en la I-5: servicios y puntos de interés",
+ "meta": "A Colusa se llega desde la I-5 por la salida 578, en la Highway 20, a unas 8 millas al este. Vea gasolina, carga EV, comida y hospedaje, áreas de descanso.",
+ "intro": "Para llegar a Colusa, tome la salida 578 (CA 20; Colusa, Clear Lake) y siga la Highway 20 unas 8 millas al este hasta la sede del condado, a orillas del río Sacramento. Su nombre viene de Korusi, una aldea patwin que estuvo en la margen oeste del río. Aquí los arrozales se extienden por el valle, y los pantanos del Sacramento National Wildlife Refuge quedan justo al este de la autopista.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Colusa?",
+   "a": "Tome la salida 578, CA 20; Colusa, Clear Lake. Desde ahí la Highway 20 lleva unas 8 millas al este hasta Colusa."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Colusa en la I-5?",
+   "a": "Los datos listan 3 gasolineras en la salida 578, con Love's y Shell en el mapa. La salida 577 (Williams) lista 5 más, con las marcas 76, Arco, Chevron, Shell y Sinclair. Es según OpenStreetMap, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo cargar un vehículo eléctrico cerca de Colusa en la I-5?",
+   "a": "La salida 577 (Williams) lista cargadores EV de redes como Skycharger Electric Era y Tesla Supercharger. No hay ningún cargador listado en la salida 578. Es según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo comer o hallar hotel cerca de la salida de Colusa?",
+   "a": "La salida 578 lista Arby's y Godfather's Pizza, además de 4 lugares de hospedaje, entre ellos Motel 6, SureStay y Traveller's Inn. La salida 577 (Williams) lista 14 lugares de comida y 3 de hospedaje, entre ellos Granzella's Inn y Williams Hotel. Todo según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Colusa en la I-5?",
+   "a": "El Maxwell Rest Area está a unas 5.5 millas al norte, en la milla 583.5, y sirve a ambos sentidos. El Dunnigan Rest Area está a unas 21.4 millas al sur, en la milla 556.6, también en ambos sentidos."
+  }
+ ],
+ "src": {
+  "packet": "c5fc15b51c69",
+  "en": "eb96f2d8b275",
+  "draft": "p-town-colusa.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-colusa.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

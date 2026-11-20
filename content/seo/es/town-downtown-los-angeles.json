@@ -1,0 +1,42 @@
+{
+ "title": "Downtown Los Angeles en la I-5: salidas, panorama y servicios",
+ "meta": "Downtown Los Angeles en la I-5 va de la salida 129 a la 137B: el panorama en la salida 133, el East LA Interchange cerca de la 134, gasolina y comida.",
+ "intro": "La I-5 pasa por Downtown Los Angeles entre la salida 129 y la salida 137B, con los edificios del centro que se elevan al oeste, al otro lado del río Los Angeles, cerca de la salida 133. Esta página enumera las salidas cercanas, puntos de interés como el East Los Angeles Interchange, y la gasolina, la carga para vehículos eléctricos, la comida y el hospedaje que aparecen en el mapa de cada salida. Los servicios vienen de OpenStreetMap tal como están en el mapa, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Downtown Los Angeles?",
+   "a": "El panorama de Downtown Los Angeles se señala en la salida 133, Grande Vista Avenue. Otras salidas cercanas son la 135B para Cesar Chavez Avenue, la 136B para Broadway y la 136A para Main Street."
+  },
+  {
+   "q": "¿Dónde se cruzan la I-5, la I-10, la US 101 y la CA 60 cerca de Downtown LA?",
+   "a": "Se cruzan en el East Los Angeles Interchange, cerca de la salida 134, a la izquierda en dirección norte: una maraña de rampas repartida en 135 acres de Boyle Heights. La salida 134B es Soto Street y la CA 60 East hacia Pomona, y la salida 135C es la I-10 East hacia San Bernardino."
+  },
+  {
+   "q": "¿Hay gasolina cerca de Downtown Los Angeles en la I-5?",
+   "a": "Sí, hay gasolineras en el mapa en muchas salidas de esta zona, por ejemplo 3 en la salida 133, 4 en la 134A y 4 en la 135C. Esto viene de OpenStreetMap tal como está en el mapa, no en tiempo real, así que no indica qué está abierto ni cuánto cuesta."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Downtown Los Angeles en la I-5?",
+   "a": "Hacia el sur, la más cercana es el Aliso Creek Rest Area en la milla 59.4, a 73.6 millas de aquí. Hacia el norte, es el Tejon Pass Rest Area en la milla 206.1, a 73.1 millas de aquí, y ambas sirven a los dos sentidos de circulación."
+  },
+  {
+   "q": "¿Qué se puede ver desde la I-5 en Downtown Los Angeles?",
+   "a": "Cerca de la salida 133, los edificios del centro se elevan al oeste, entre ellos el Wilshire Grand Center, con su delgada aguja, terminado en 2017. Cerca de la salida 134, a la izquierda en dirección norte, está la antigua torre de pedidos por correo de Sears, Roebuck, terminada en 1927 en 171 días."
+  }
+ ],
+ "src": {
+  "packet": "767a5397d221",
+  "en": "5f8c93bd3c66",
+  "draft": "p-town-downtown-los-angeles.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-downtown-los-angeles.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

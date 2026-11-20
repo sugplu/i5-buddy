@@ -1,0 +1,42 @@
+{
+ "title": "National City en la I-5: salidas, gasolina, carga EV y comida",
+ "meta": "National City está entre las salidas 7A y 15A de la I-5 en California. Vea las salidas, el rancho de su nombre y gasolina, carga EV, comida y hospedaje.",
+ "intro": "National City toma su nombre de El Rancho del Rey, el Rancho del Rey, donde soldados españoles apacentaban sus caballos en 26,000 acres cerca de la salida 11. Aquí la I-5 sigue el lado este de la bahía de San Diego, junto a los muelles de la Marina, Barrio Logan y el centro. La gasolina, la carga EV, la comida y el hospedaje que siguen vienen de OpenStreetMap tal como están mapeados, no en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está National City?",
+   "a": "El punto de referencia de National City está en la salida 11, y las salidas cercanas van de la 7A en L Street a la 15A en CA 94 East. La salida 11B es Plaza Boulevard, Downtown y 8th Street, National City, y la salida 12 es Division Street y Main Street."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de National City en la I-5?",
+   "a": "La gasolina aparece mapeada en la salida 7A (Costco Gasoline), la 8A (76), la 9 (ARCO), la 11B (Chevron) y la 13B (NEX Autoport). Son datos de lista de OpenStreetMap, no en vivo."
+  },
+  {
+   "q": "¿Dónde hay cargadores EV cerca de National City en la I-5?",
+   "a": "Los cargadores EV aparecen mapeados en varias salidas: Tesla Supercharger en las salidas 9 y 13B, Electrify America en la 11B, ChargePoint en la 12, EVgo en la 13A y Blink en la 15A. La salida 10 también indica un cargador EV. Son datos de lista, no en vivo."
+  },
+  {
+   "q": "¿Dónde hay comida y hospedaje cerca de National City en la I-5?",
+   "a": "La comida aparece mapeada en la mayoría de las salidas, con 31 lugares en la salida 8A (H Street) y 12 en la 13B. El hospedaje aparece mapeado en las salidas 7B, 8A, 8B, 9, 10, 12, 13A, 13B y 15A, con 9 lugares en la salida 12 (Main Street, National City Boulevard)."
+  },
+  {
+   "q": "¿Dónde está la base naval cerca de National City en la I-5?",
+   "a": "Naval Base San Diego está cerca de la salida 13, a la izquierda en dirección norte. Es el principal puerto base de la Flota del Pacífico de Estados Unidos."
+  }
+ ],
+ "src": {
+  "packet": "2230470769d9",
+  "en": "9adb7582d1d6",
+  "draft": "p-town-national-city.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-national-city.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

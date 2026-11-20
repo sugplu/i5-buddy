@@ -507,7 +507,7 @@ export function categoryAhead(cat, max = 6) {
   if (c.rest) {
     for (const r of data.restAhead(S.m, dir, max, 300)) {
       if (!num(r.lat)) continue;
-      out.push({ id: "rest:" + r.name, name: r.name.replace(/\s*\((north|south)bound\)/i, ""), sub: ["Rest area", r.status === "closed" ? "closed (Caltrans)" : "", `${fmtMi(r.d)} ahead`].filter(Boolean).join(" · "), kind: "rest", icon: KIND_ICON.rest, lat: r.lat, lon: r.lon, m: r.m, src: "local" });
+      out.push({ id: "rest:" + r.name, name: data.restName ? data.restName(r.name) : r.name.replace(/\s*\((north|south)bound\)/i, ""), sub: ["Rest area", r.status === "closed" ? "closed (Caltrans)" : "", `${fmtMi(r.d)} ahead`].filter(Boolean).join(" · "), kind: "rest", icon: KIND_ICON.rest, lat: r.lat, lon: r.lon, m: r.m, src: "local" });
     }
     return out;
   }

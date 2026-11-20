@@ -1,0 +1,42 @@
+{
+ "title": "Dunsmuir en la I-5: salidas, comida, gasolina y paradas",
+ "meta": "Dunsmuir está en la salida 729 de la I-5, con gasolina, comida y hospedaje registrados en salidas cercanas, además de Castle Crags y Hedge Creek Falls.",
+ "intro": "Dunsmuir es un pueblo ferrocarrilero en el cañón de la I-5, con las agujas de granito de Castle Crags al oeste de la autopista. Esta página enumera las salidas cercanas y la gasolina, la carga para vehículos eléctricos, la comida y el hospedaje que aparecen en el mapa alrededor de ellas, además de lugares que valen una parada. Los servicios provienen de OpenStreetMap y no son en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Dunsmuir?",
+   "a": "Dunsmuir está en la salida 729 (I 5 Business; Dunsmuir). La salida 730 (Central Dunsmuir) y la salida 732 (Siskiyou Avenue, Dunsmuir Avenue) también dan servicio al pueblo."
+  },
+  {
+   "q": "¿Dónde hay gasolina en Dunsmuir cerca de la I-5?",
+   "a": "La gasolina aparece en el mapa en dos salidas: una Valero en la salida 729 y una Chevron en la salida 730. También aparece un cargador ChargePoint para vehículos eléctricos en la salida 730. Estos datos vienen de una lista, no son en vivo, así que verifique antes de contar con ellos."
+  },
+  {
+   "q": "¿Dónde se puede comer en Dunsmuir cerca de la I-5?",
+   "a": "La salida 730 (Central Dunsmuir) tiene más comida registrada, con siete lugares, entre ellos Burger Barn, Cafe Maddalena y Pizza Factory. La salida 732 enumera Penny's Diner y Sten's Burger Strand, y la salida 728 enumera el Jubilee Railroad Dining Car."
+  },
+  {
+   "q": "¿Dónde hospedarse en Dunsmuir cerca de la I-5?",
+   "a": "La salida 732 tiene más hospedaje registrado, con ocho opciones, entre ellas Cedar Lodge Motel y Travelodge. La salida 728 enumera Jubilee Railroad Wilderness Lodge, un hospedaje fundado en 1968 donde los huéspedes duermen en antiguos cabooses."
+  },
+  {
+   "q": "¿Qué hay para ver en Dunsmuir sobre la I-5?",
+   "a": "Castle Crags está en la salida 726, a la izquierda yendo al norte. Un sendero corto desde la salida 732 lleva a Hedge Creek Falls, donde se puede caminar detrás del agua que cae, y Upper Soda Springs es un parque junto al río, bajo la autopista, en la salida 730."
+  }
+ ],
+ "src": {
+  "packet": "d35f3b5916fc",
+  "en": "72ceb4e3be26",
+  "draft": "p-town-dunsmuir.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-dunsmuir.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

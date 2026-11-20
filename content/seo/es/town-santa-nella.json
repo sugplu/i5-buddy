@@ -1,0 +1,42 @@
+{
+ "title": "Santa Nella en la I-5: salida 407, servicios y puntos de interés",
+ "meta": "Santa Nella está en la salida 407 de la I-5, con gasolina, carga para autos eléctricos, comida y hospedaje, además de Pea Soup Andersen's y San Luis.",
+ "intro": "Santa Nella está en la salida 407 de la I-5, donde la CA 33 se une a la autopista. El nombre solo parece de santa: es una deformación al inglés de la palabra española centinela, de Rancho de Centinela, un rancho de caballos que se fundó aquí en 1810. Cerca de aquí también se unen los proyectos de agua estatal y federal, que comparten el embalse San Luis, su presa y su antecámara.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Santa Nella?",
+   "a": "Santa Nella está en la salida 407, la salida de la CA 33 hacia Santa Nella y Gustine."
+  },
+  {
+   "q": "¿De dónde viene el nombre de Santa Nella?",
+   "a": "No existe ninguna santa Nella. El nombre es una deformación al inglés de la palabra española centinela, de Rancho de Centinela, un rancho de caballos que fundaron aquí en 1810 ganaderos de San Juan Bautista y Monterey."
+  },
+  {
+   "q": "¿Qué servicios hay en la salida de Santa Nella en la I-5?",
+   "a": "Los datos registran 10 gasolineras, 16 lugares de comida y 8 lugares de hospedaje en la salida 407, además de redes de carga para autos eléctricos como Tesla Supercharger y bp pulse. Esto es según OpenStreetMap, no en vivo, así que confirme antes de contar con alguna parada."
+  },
+  {
+   "q": "¿Pea Soup Andersen's está en Santa Nella?",
+   "a": "Sí, aparece en la milla 407.2, junto a la salida 407. Abrió ahí en 1976 como el segundo local de un restaurante de carretera famoso por su sopa de chícharo."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Santa Nella en la I-5?",
+   "a": "Hacia el sur, Dos Amigos Vista Point está en la milla 390, a unas 16.6 millas de Santa Nella. Hacia el norte, Westley Rest Area está en la milla 444.9, a unas 38.3 millas, y atiende ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "e0baf51b4205",
+  "en": "801baa4170ec",
+  "draft": "p-town-santa-nella.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-santa-nella.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Mendota en la I-5: salida 349, el pueblo del melón cantaloupe",
+ "meta": "Mendota está en la I-5, salida 349, por la Highway 33 y Derrick Avenue. Vea sitios cercanos, campos de cultivo y áreas de descanso.",
+ "intro": "Mendota está cerca de la milla 349 de la I-5 en California, junto a la salida 349. La Highway 33 lleva desde aquí hasta Mendota, conocida como la Capital Mundial del Melón Cantaloupe. Comenzó a prosperar en 1891 como patio de almacenamiento y maniobras del Southern Pacific, y el ferrocarril tomó prestado su nombre de Mendota, Illinois. Abajo encontrará las salidas, los servicios, los sitios de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Mendota?",
+   "a": "Mendota está en la salida 349, señalada como CA 33 North; Derrick Avenue; Mendota. La Highway 33 lleva de la salida al pueblo."
+  },
+  {
+   "q": "¿Qué se puede ver cerca de Mendota en la I-5?",
+   "a": "Rumbo al norte, tres pilares de piedra llamados Joaquin Rocks se alzan en la cresta a la izquierda, cerca de la salida 345, a unos 4,100 pies de altura. Cerca de la salida 349, Arroyo de Cantua queda a una milla y media al oeste de la autopista, a la izquierda, y se dice que fue guarida del bandido de la fiebre del oro Joaquin Murrieta."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Mendota en la I-5?",
+   "a": "El Coalinga-Avenal Rest Area está en la milla 320.2, a unas 28.8 millas al sur de Mendota, y atiende ambos sentidos. El John \"Chuck\" Erreca Rest Area está en la milla 385.9, a unas 36.9 millas al norte, y también atiende ambos sentidos."
+  },
+  {
+   "q": "¿Qué tipo de tierras de cultivo rodean Mendota?",
+   "a": "Grandes fincas del Westlands Water District se extienden por el fondo del valle, con cultivos como almendras, tomates, pistaches y trigo."
+  }
+ ],
+ "src": {
+  "packet": "c9d9a70c68b1",
+  "en": "48f2a296b1a3",
+  "draft": "p-town-mendota.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-mendota.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

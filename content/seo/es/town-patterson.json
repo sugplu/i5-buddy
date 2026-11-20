@@ -1,0 +1,38 @@
+{
+ "title": "Patterson en la I-5: salida 434, el pueblo con plan de París",
+ "meta": "Patterson, California, está en la salida 434 de la I-5. Conozca su trazado al estilo de París y Washington, D.C., y su título de Capital del Albaricoque.",
+ "intro": "Patterson está en la salida 434 de la Interestatal 5, al este de la autopista, con la sierra Diablo Range muy cerca al oeste. Su fundador, Thomas Patterson, diseñó el pueblo como Washington, D.C., y París, con círculos y calles que se abren como rayos, y en 1971 su cámara de comercio lo nombró la Capital Mundial del Albaricoque. La guía parlante de I-5 Buddy le cuenta esta historia mientras usted pasa.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Patterson?",
+   "a": "Patterson está en la salida 434 de la I-5 en California. Los números de salida aumentan a partir de la frontera con México."
+  },
+  {
+   "q": "¿Por qué Patterson tiene un trazado como el de París?",
+   "a": "Thomas Patterson quería que su pueblo se viera distinto de otros pueblos agrícolas, así que lo planeó como Washington, D.C., y París, con círculos y calles que se abren como rayos. Sus calles principales se plantaron con palmas, eucaliptos y sicomoros."
+  },
+  {
+   "q": "¿Por qué a Patterson le dicen la Capital Mundial del Albaricoque?",
+   "a": "En 1971 la cámara de comercio de Patterson nombró al pueblo la Capital Mundial del Albaricoque."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Patterson en la I-5?",
+   "a": "Hacia el norte, el Westley Rest Area está en la milla 444.9, a unas 11.8 millas de Patterson, y sirve en ambas direcciones. Hacia el sur, el Dos Amigos Vista Point está en la milla 390.0, a unas 43.1 millas; los datos no indican en qué dirección da servicio."
+  }
+ ],
+ "src": {
+  "packet": "9ba7ab83f4fb",
+  "en": "379c47090f29",
+  "draft": "p-town-patterson.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-patterson.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "title": "Huron en la I-5: salida 325, Jayne Avenue, servicios",
+ "meta": "Huron, California, queda al este de la I-5 en la salida 325 (Jayne Avenue). Vea gasolineras, áreas de descanso y puntos de interés en este tramo.",
+ "intro": "Huron es un pueblo agrícola de unas 6,200 personas, al este de la I-5 en la salida 325, Jayne Avenue. Nació en 1888 como parada de agua del Southern Pacific y crece a más de 15,000 habitantes en la cosecha. Aquí la autopista cruza las tierras de cultivo del West Side del condado de Fresno.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Huron?",
+   "a": "Huron está en la salida 325, Jayne Avenue, y el pueblo queda al este de la autopista."
+  },
+  {
+   "q": "¿Hay gasolina en la salida de Huron en la I-5?",
+   "a": "En los datos de OpenStreetMap hay gasolina en la salida 325: tres estaciones, con Shell y Valero entre las marcas que aparecen. Es lo que indica el mapa, no información en vivo, así que no muestra si alguna está abierta."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Huron en la I-5?",
+   "a": "El Coalinga-Avenal Rest Area, en la milla 320.2, queda a unas 4.8 millas al sur de Huron y atiende ambas direcciones. Hacia el norte, el John \"Chuck\" Erreca Rest Area, en la milla 385.9, queda a unas 60.9 millas y también atiende ambas direcciones."
+  },
+  {
+   "q": "¿Qué tan grande es Huron, California?",
+   "a": "Huron tiene unas 6,200 personas, que suben a más de 15,000 en la cosecha, cuando llegan los trabajadores agrícolas migrantes. Nació en 1888 como parada de agua del Southern Pacific Railroad."
+  },
+  {
+   "q": "¿Qué es el gran patio eléctrico cerca de Huron en la I-5?",
+   "a": "Es Gates Substation, a la derecha rumbo al norte, cerca de la milla 324. Es un cruce clave de las líneas eléctricas que unen el norte y el sur de California."
+  }
+ ],
+ "src": {
+  "packet": "c1e2bf14b759",
+  "en": "c0d4f2ae12b7",
+  "draft": "p-town-huron.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-huron.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

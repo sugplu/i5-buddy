@@ -1,0 +1,42 @@
+{
+ "title": "Dunnigan en la I-5: salida 556, servicios y área de descanso",
+ "meta": "Dunnigan está en la salida 556 de la I-5. Vea gasolina, carga para autos eléctricos, comida y hospedaje en las salidas 554 y 556, y el área de descanso.",
+ "intro": "Dunnigan está en la salida 556 de la I-5, en tierra de cultivos cerca de Dunnigan Hills. El pueblo empezó como Antelope: tras una inundación en el invierno de 1853, dos colonos, Copp y Wilson, fueron arrastrados de sus terrenos cerca del río Sacramento y se mudaron aquí, a terreno más alto. I-5 Buddy enumera gasolina, carga para autos eléctricos, comida y hospedaje en las salidas 554 y 556, según OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Dunnigan?",
+   "a": "Dunnigan está en la salida 556 de la I-5, que es la milla 556.2 contando desde la frontera con México."
+  },
+  {
+   "q": "¿Hay un área de descanso cerca de Dunnigan en la I-5?",
+   "a": "Sí. El Dunnigan Rest Area está en la milla 556.6, a unas 0.4 millas del pueblo, y sirve a ambas direcciones. Hacia el otro lado, el área de descanso más cercana al sur del pueblo en los datos es Elkhorn Rest Area, en la milla 529.3, a unas 26.9 millas."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para autos eléctricos cerca de Dunnigan?",
+   "a": "La salida 554 (County Road 8) enumera cinco gasolineras, entre ellas Pilot, Arco y Chevron, además de carga de Tesla Supercharger y GM Energy. La salida 556 enumera dos gasolineras, Chevron y Diamond, con carga de ChargePoint y Electrify America. Todo esto aparece según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde comer o hospedarse en Dunnigan?",
+   "a": "La salida 554 enumera seis lugares de comida, entre ellos Burger King, Starbucks, Taco Bell y Original Mel's, y un lugar de hospedaje, Hacienda Motel Dunnigan. La salida 556 enumera Jack in the Box y Americas Best Value Inn. Son datos del mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Por qué Dunnigan se llamó antes Antelope?",
+   "a": "Dunnigan empezó como Antelope. Una inundación en el invierno de 1853 arrastró a dos colonos, Copp y Wilson, de sus terrenos cerca del río Sacramento, y se mudaron aquí, a terreno más alto."
+  }
+ ],
+ "src": {
+  "packet": "009a4879a023",
+  "en": "647b5f5d3d05",
+  "draft": "p-town-dunnigan.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-dunnigan.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

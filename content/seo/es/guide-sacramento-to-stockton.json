@@ -1,0 +1,39 @@
+{
+ "title": "De Sacramento a Stockton por la I-5: salidas y paradas",
+ "meta": "Guía por salidas de la I-5 entre Sacramento y Stockton, de la salida 473 a la 519: puntos de interés, gasolina, carga EV, comida y hospedaje según los datos.",
+ "intro": "Este tramo de la I-5 va de la salida 473, en Stockton, a la salida 519, en Sacramento, y pasa por el Port of Stockton, los viñedos de Lodi, los diques del Delta y el Cosumnes River Preserve. I-5 Buddy le cuenta, salida por salida, lo que va dejando atrás. La gasolina, la carga para autos eléctricos, la comida y el hospedaje vienen de OpenStreetMap tal como están mapeados, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Lodi?",
+   "a": "La salida 485 es la CA 12, donde la Highway 12 lleva al este hasta Lodi, un pueblo rodeado de viñedos. En esta salida hay ocho gasolineras mapeadas, además de carga ChargePoint y EVgo."
+  },
+  {
+   "q": "¿Dónde hay cargadores para autos eléctricos entre Sacramento y Stockton en la I-5?",
+   "a": "Hay cargadores mapeados en siete salidas de este tramo, entre ellas la salida 476 (Tesla Supercharger), la 481 (ChargePoint y Electrify America), la 485 (ChargePoint y EVgo) y la 510 (Shell, Tesla Supercharger y bp pulse). Las salidas 512, 515 y 519A también tienen cargadores mapeados. Son datos mapeados, no disponibilidad en tiempo real."
+  },
+  {
+   "q": "¿Qué es el delta del Sacramento y San Joaquin que cruza la I-5?",
+   "a": "Al oeste de la autopista, cerca de la salida 490, está el Sacramento-San Joaquin Delta, con unas 57 islas y terrenos ganados al agua, rodeados por 1,100 millas de diques."
+  },
+  {
+   "q": "¿Qué salida tiene más gasolineras en este tramo de la I-5?",
+   "a": "La salida 485, en la CA 12, tiene ocho gasolineras mapeadas, la mayor cantidad de este tramo. La salida 519A, en Q Street, tiene cinco."
+  }
+ ],
+ "h1": "De Sacramento a Stockton por la I-5",
+ "src": {
+  "packet": "d6f7f2f4a7ad",
+  "en": "7341a9dd286a",
+  "draft": "p-guide-sacramento-to-stockton.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-sacramento-to-stockton.3.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 4,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

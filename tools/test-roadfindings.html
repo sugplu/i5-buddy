@@ -12,6 +12,7 @@
 // prints "now passes, switch it to ok()". Nothing here changes the app. All silent.
 // 3.0.7: all seven filed bugs (1-miles, rest-name-water, eta-abbrev, summit-stale, chunk-decimal, chunk-abbrev, mission-dup-exit)
 // are fixed and are ok() checks now, so the suite fails if one comes back; each fix has extra checks next to it.
+// 3.0.8: [rest-name-suffix] spoken rest-area names drop " - Southbound" / " - NB" like "(Southbound)" (R3c, and R3b's closed line).
 const out = document.getElementById("out"), lines = [];
 let fails = 0, known = 0;
 const ok = (c, m) => { lines.push(`${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
@@ -123,7 +124,8 @@ async function run() {
     api.narrator.tellServices("rest");
     const t = (said.find(x => /rest area|closed/i.test(x.text)) || { text: "" }).text;
     unspy();
-    ok(/is closed, Caltrans says\. The next rest area on this side is .+, in about \d+ miles\./.test(t) && two[1] && t.includes(two[1].name.replace(/\s*\((north|south)bound\)/i, "")), `a closed rest area is announced as closed, then the next open one ("${t.slice(0, 140)}")`);
+    ok(/is closed, Caltrans says\. The next rest area on this side is .+, in about \d+ miles\./.test(t) && two[1] && t.includes(api.data.restName(two[1].name)), `a closed rest area is announced as closed, then the next open one ("${t.slice(0, 140)}")`);
+    ok(!/\b(north|south)bound\b|\s-\s[NS]B\b/i.test(t), `[rest-name-suffix] the closed and the open rest area are named without a direction suffix ("${t.slice(0, 140)}")`);
     if (row) {
       if (keep.status) row.status = keep.status; else delete row.status; if (keep.src) row.src = keep.src; else delete row.src;
       if (keepChecked) row.checked = keepChecked; else delete row.checked;
@@ -138,6 +140,30 @@ async function run() {
       "[review] a closure with no reopening date runs out 7 days after Caltrans was read, and one without that date is not trusted");
     const withStatus = api.data.REST.filter(r => r.status);
     ok(withStatus.every(r => /^\d{4}-\d\d-\d\d$/.test(r.checked || "")), `[review] every closure in the data carries the date Caltrans was read (${withStatus.map(r => r.name + " " + (r.checked || "NO DATE")).join(" | ") || "no closures today"})`);
+    api.stopAll(false);
+  }
+
+  // R3c (3.0.8). Spoken rest-area names keep Caltrans' direction suffix: the 3.0.7 verify heard "the next rest area on this
+  //     side is Tejon Pass Rest Area - Southbound". " - Southbound", " - NB" and a bare direction word now go the way
+  //     "(Southbound)" went (data.restName, used by the narrator, the Drive and Ahead rows and Where to?).
+  {
+    const RN = api.data.restName;
+    ok(typeof RN === "function" && RN("Tejon Pass Rest Area - Southbound") === "Tejon Pass Rest Area" && RN("Tejon Pass Rest Area - Northbound") === "Tejon Pass Rest Area"
+      && RN("Aliso Creek Rest Area (Southbound)") === "Aliso Creek Rest Area" && RN("Willows Rest Area - NB") === "Willows Rest Area" && RN("Willows Rest Area - SB") === "Willows Rest Area"
+      && RN("Maxwell Rest Area Northbound") === "Maxwell Rest Area" && RN('John "Chuck" Erreca Southbound Rest Area') === 'John "Chuck" Erreca Rest Area'
+      && RN("Coalinga - Avenal Rest Area - Southbound") === "Coalinga - Avenal Rest Area" && RN("LT. John C. Helmick Rest Area") === "LT. John C. Helmick Rest Area",
+      "[rest-name-suffix] restName drops ' - Southbound', ' - NB', '(Southbound)' and a bare direction word, and keeps the rest of the name");
+    spy();
+    api.setMode("demo");
+    api.setPosition(215, { dir: "S", speed: 65, jumped: true });
+    api.narrator.tellServices("rest");
+    const t = (said.find(x => /rest area/i.test(x.text)) || { text: "" }).text;
+    unspy();
+    ok(/Tejon Pass Rest Area/.test(t) && !t.includes("Tejon Pass Rest Area - Southbound") && !/\b(north|south)bound\b|\s-\s[NS]B\b/i.test(t),
+      `[rest-name-suffix] southbound above Tejon Pass the next rest area is spoken without " - Southbound" ("${t.slice(0, 120)}")`);
+    // every rest area in the data, as the narrator would say it
+    const left = api.data.REST.map(r => RN(r.name)).filter(n => /\b(north|south)bound\b|\s-\s[NS]B\b|\([NS]B\)/i.test(n));
+    ok(!left.length, `[rest-name-suffix] no rest area in the data keeps a direction in its spoken name (${left.join(" | ") || "none"})`);
     api.stopAll(false);
   }
 

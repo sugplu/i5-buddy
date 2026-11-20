@@ -1,0 +1,42 @@
+{
+ "title": "Redding en la I-5: salidas 675 a 681, servicios e historia",
+ "meta": "Redding en la I-5 abarca de la salida 675 a la 681. Vea gasolina, carga EV, comida y hospedaje por salida, y la historia de Poverty Flats.",
+ "intro": "Redding está en el extremo noroeste del valle Central, con montañas al norte, al este y al oeste y tierras de cultivo al sur. La historia principal de Redding en I-5 Buddy está en la salida 678, donde un lugar llamado Poverty Flats se convirtió en un pueblo del ferrocarril con el nombre de Benjamin Redding. Las salidas de la zona, de la 675 a la 681, tienen gasolina, carga para vehículos eléctricos, comida y hospedaje según el mapa de OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Redding?",
+   "a": "El punto de interés de Redding en I-5 Buddy está en la salida 678, que da a la CA 44 y a Hilltop Drive hacia Eureka y Susanville. Las salidas cercanas van de la 675 (Bechelli Lane) a la 681B (CA 273, Market Street)."
+  },
+  {
+   "q": "¿Cómo recibió su nombre Redding?",
+   "a": "Durante la fiebre del oro los mineros encontraron poco oro aquí, y el lugar se llamó Poverty Flats. En 1868 Benjamin Redding, agente de tierras del Central Pacific Railroad, compró terrenos aquí para una estación terminal en el norte, y el ferrocarril construyó un pueblo y le puso su nombre."
+  },
+  {
+   "q": "¿Dónde hay gasolina y carga para vehículos eléctricos en Redding, en la I-5?",
+   "a": "En los datos del mapa, la salida 677 (Cypress Avenue) enumera la mayor cantidad de gasolineras, 10, y la salida 675 enumera 5. La carga para vehículos eléctricos aparece en las salidas 675, 677, 678, 678A y 678B, con redes como Tesla Supercharger, ChargePoint y EVgo. Estos datos vienen de OpenStreetMap, no son en tiempo real."
+  },
+  {
+   "q": "¿Dónde hay hoteles y comida en Redding cerca de la I-5?",
+   "a": "La salida 678 enumera 12 lugares de hospedaje, entre ellos Holiday Inn, Best Western Plus, Comfort Inn y Hampton Inn & Suites. La salida 677 enumera 47 lugares de comida y la 678A enumera 26, según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde está el Sundial Bridge cerca de la I-5 en Redding?",
+   "a": "El Sundial Bridge es una pasarela peatonal de 700 pies, diseñada por Santiago Calatrava, que cruza el río Sacramento. I-5 Buddy lo ubica en la salida 678, a la izquierda en dirección norte, al oeste de la autopista."
+  }
+ ],
+ "src": {
+  "packet": "1b650a3005f7",
+  "en": "5702c932c074",
+  "draft": "p-town-redding.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-redding.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

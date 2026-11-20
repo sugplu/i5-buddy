@@ -1,0 +1,38 @@
+{
+ "title": "Yolo en la I-5: salida 542, servicios y puntos de interés",
+ "meta": "Yolo está en la salida 542 de la I-5, junto a Cache Creek. Vea las salidas cercanas, gasolina y comida en la salida 540 y las áreas de descanso más cercanas.",
+ "intro": "Yolo está cerca de la milla 542 de la I-5 en California, junto a la salida 542. El pequeño pueblo de Yolo comparte su nombre con el condado, y el nombre viene de la lengua patwin. Nadie está del todo seguro de su origen. Aquí abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Yolo?",
+   "a": "Yolo está en la salida 542 de la I-5. Las salidas inmediatamente anteriores, rumbo al norte, son la salida 540 (West Street) y la salida 541 (CA 16 West; Esparto)."
+  },
+  {
+   "q": "¿Hay gasolina y comida cerca de Yolo en la I-5?",
+   "a": "En los datos del mapa, los servicios listados más cercanos están en la salida 540 (West Street): dos gasolineras (Arco y Quik Stop) y dos lugares de comida (Denny's y The Elephant Shack). Esto viene de OpenStreetMap tal como está mapeado, no en vivo, así que verifique horarios y disponibilidad antes de contar con una parada."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Yolo en la I-5?",
+   "a": "Rumbo al norte, el Dunnigan Rest Area está a unas 15.0 millas de Yolo, en la milla 556.6, y atiende ambas direcciones. Hacia el sur, el Elkhorn Rest Area está a unas 12.3 millas, en la milla 529.3; los datos no indican en qué dirección atiende."
+  },
+  {
+   "q": "¿Qué es el valle de Capay y cómo se llega desde la I-5?",
+   "a": "La carretera 16 va hacia el oeste, pasa por Esparto y entra al valle de Capay, por donde corre Cache Creek. Tome la salida 541 (CA 16 West; Esparto); el valle aparece como territorio de los Yocha Dehe, a la izquierda rumbo al norte."
+  }
+ ],
+ "src": {
+  "packet": "d08c4f65ba13",
+  "en": "55ea85ad88b2",
+  "draft": "p-town-yolo.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-yolo.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 1,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "title": "De Los Angeles a Bakersfield por la I-5: el Grapevine",
+ "meta": "Recorra la I-5 de Los Angeles a Bakersfield, salidas 135 a 257, por Burbank, Castaic, Gorman, Tejon Pass y el Grapevine, con gasolina, carga EV y comida.",
+ "intro": "Esta guía recorre la I-5 hacia el norte desde Boyle Heights, en la salida 135, por Newhall Pass, el Five Mile Grade, Tejon Pass y Grapevine Canyon, hasta el valle de San Joaquin y la salida 257, cerca de Bakersfield. Los puntos de interés se enumeran en el camino, desde Yaanga y Beale's Cut hasta Six Flags Magic Mountain y los huertos del condado de Kern. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje aparecen tal como están en el mapa de OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿Dónde está el área de descanso en la I-5 entre Los Angeles y Bakersfield?",
+   "a": "El Tejon Pass Rest Area está en la milla 206.1 y atiende ambas direcciones."
+  },
+  {
+   "q": "¿Dónde hay gasolina en la I-5 entre Los Angeles y Bakersfield?",
+   "a": "Hay gasolina en el mapa en 47 salidas de este tramo, entre ellas la salida 167 en Lyons Avenue, la salida 176 en Castaic, la salida 202 en Gorman y la salida 253 en Stockdale Highway. Los datos vienen de OpenStreetMap y no son en tiempo real."
+  },
+  {
+   "q": "¿Dónde hay cargadores para vehículos eléctricos en la I-5 entre Los Angeles y Bakersfield?",
+   "a": "Hay cargadores EV en el mapa en 20 salidas de este tramo, entre ellos un Tesla Supercharger en la salida 205, Frazier Mountain Park Road, y en la salida 219B, Laval Road West. Los datos no indican cuántos cargadores hay ni su velocidad, y no son en tiempo real."
+  },
+  {
+   "q": "¿Qué es Grapevine Canyon en la I-5?",
+   "a": "Grapevine Canyon, entre las millas 210 y 215, lleva la autopista por su larga y empinada pendiente, junto a los robles de valle centenarios de Fort Tejon, hasta el borde sur del valle de San Joaquin."
+  },
+  {
+   "q": "¿En qué salida de la I-5 está Gorman?",
+   "a": "Gorman está en la salida 202. Allí hay gasolina, comida y hospedaje en el mapa, y en primavera, después de un invierno lluvioso, las amapolas y el lupino pueden cubrir las colinas cercanas."
+  }
+ ],
+ "h1": "De Los Angeles a Bakersfield por la I-5: el Grapevine",
+ "src": {
+  "packet": "081634169b2f",
+  "en": "589476e95d8d",
+  "draft": "p-guide-los-angeles-to-bakersfield.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-los-angeles-to-bakersfield.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 4,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

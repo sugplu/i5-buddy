@@ -1,0 +1,42 @@
+{
+ "title": "Avenal en la I-5: salida 319, CA 269 y Lassen Avenue",
+ "meta": "Avenal está junto a la I-5 en la salida 319 (CA 269; Lassen Avenue), con gasolina y comida en el mapa y el Coalinga-Avenal Rest Area a 1.2 millas.",
+ "intro": "A Avenal se llega desde la I-5 por la salida 319, donde la carretera 269 cruza las Kettleman Hills. El nombre significa campo de avena en español y lo pusieron soldados y exploradores españoles por la avena silvestre que antes cubría la llanura. Aquí la autopista atraviesa las tierras de cultivo del West Side del condado de Fresno.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Avenal?",
+   "a": "Avenal está en la salida 319, señalizada como CA 269; Lassen Avenue."
+  },
+  {
+   "q": "¿Hay gasolina y comida en la salida de Avenal?",
+   "a": "Los datos registran dos gasolineras en la salida 319, con las marcas 76 y Gas. También registran tres lugares de comida, entre ellos Cinnabon, El Sabroso y Subway. Esta información viene de OpenStreetMap tal como está en el mapa, no en tiempo real, así que no se muestran horarios ni disponibilidad."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Avenal en la I-5?",
+   "a": "El Coalinga-Avenal Rest Area está en la milla 320.2, a unas 1.2 millas al norte de Avenal, y sirve a ambas direcciones. Hacia el sur, el Buttonwillow Rest Area está en la milla 259.2, a unas 59.8 millas, y también sirve a ambas direcciones."
+  },
+  {
+   "q": "¿Qué significa el nombre Avenal?",
+   "a": "Avenal significa campo de avena en español. Soldados y exploradores españoles le dieron ese nombre por la avena silvestre, a la altura de la cintura, que cubría la llanura como seda dorada."
+  },
+  {
+   "q": "¿Qué se puede ver cerca de Avenal en la I-5?",
+   "a": "El pozo de petróleo Kettleman de 1928 está en la milla 317.3, a la izquierda hacia el norte, donde el pozo Elliott Number 1 de la Milham Exploration Company encontró petróleo a más de 7,000 pies bajo las Kettleman Hills. Más al norte, la salida 322 es tierra de ajo: el condado de Fresno produce la mayor parte del ajo de Estados Unidos."
+  }
+ ],
+ "src": {
+  "packet": "37215c0790f4",
+  "en": "bd1ba2d4c220",
+  "draft": "p-town-avenal.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-avenal.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

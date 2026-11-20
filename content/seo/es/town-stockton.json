@@ -1,0 +1,42 @@
+{
+ "title": "Stockton en la I-5: salidas 469 a 476, gasolina y comida",
+ "meta": "Stockton en la I-5 va de la salida 469 a la 476. Vea la gasolina, comida, carga para autos eléctricos y hospedaje de cada salida, y la historia de Tuleburg.",
+ "intro": "La I-5 cruza Stockton junto al puerto de aguas profundas y su canal hacia la bahía de San Francisco, y atraviesa el río Calaveras. Las salidas de Stockton van de la 469 a la 476, y en varias hay gasolina, comida, carga para autos eléctricos y hospedaje. En 1849 Charles Weber trazó aquí un pueblo y lo llamó Tuleburg, antes de cambiarle el nombre en honor del comodoro Robert Stockton.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está el centro de Stockton?",
+   "a": "La salida 472 es CA 4 East, Fresno Avenue y Navy Drive, con letrero de Downtown Stockton. Es la salida que los datos usan para Stockton."
+  },
+  {
+   "q": "¿Dónde puedo cargar gasolina en Stockton, en la I-5?",
+   "a": "Hay gasolina en las salidas 469, 470, 471, 473, 474B y 476. La salida 471 (CA 4 West, Charter Way) tiene más, con 7 gasolineras en el mapa, entre ellas Chevron, Valero, Arco, Phillips 66 y Shell. Los datos vienen de OpenStreetMap tal como está mapeado, no en tiempo real."
+  },
+  {
+   "q": "¿Hay carga para autos eléctricos en Stockton, en la I-5?",
+   "a": "Los datos incluyen un Tesla Supercharger en la salida 476 (March Lane) y un cargador EVCS en la salida 472 (Fresno Avenue, Navy Drive). Es lo que aparece en OpenStreetMap, no en tiempo real."
+  },
+  {
+   "q": "¿Dónde hay hoteles y moteles en Stockton, en la I-5?",
+   "a": "Hay hospedaje en las salidas 470, 471, 472, 473 y 476. La salida 476 (March Lane) tiene más, con 7 lugares en el mapa, entre ellos Courtyard, Extended Stay America y Hilton; la salida 471 tiene 4, entre ellos Days Inn Stockton y Motel 6."
+  },
+  {
+   "q": "¿Qué es el Port of Stockton, junto a la I-5?",
+   "a": "En la salida 473, los muelles justo al oeste de la autopista, a la izquierda en dirección norte, pertenecen al Port of Stockton. Es un puerto marítimo a más de 70 millas náuticas del océano."
+  }
+ ],
+ "src": {
+  "packet": "bfaec65f373e",
+  "en": "176a650ac46b",
+  "draft": "p-town-stockton.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-stockton.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 3,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -2,7 +2,7 @@
 import { S, settings, bus, saveStamps } from "./store.js";
 import {
   PLACES, CATS, MAX_M, STATES, ENDS, SCOPE, zoneAt, seasonOf, stateAt, sideWord, aheadOf, summitAhead, elevAt, regionAt,
-  servicesAhead, restAhead, exitName, fmtDurationSpoken, localMile, placeById, detourSentence, detourOf,
+  servicesAhead, restAhead, restName, exitName, fmtDurationSpoken, localMile, placeById, detourSentence, detourOf,
 } from "./data.js";
 import { miles } from "./geo.js";
 import { voice } from "./voice.js";
@@ -304,7 +304,7 @@ export function tellServices(kind = "fuel") {
   const word = { fuel: "gas", ev: "EV charging", food: "food", sleep: "a place to sleep" }[kind];
   if (kind === "rest") {
     const list = restAhead(S.m, S.dir, 1), r = list[0];
-    const nm = x => x.name.replace(/\s*\((north|south)bound\)/i, "");
+    const nm = x => restName(x.name); // no " - Southbound" / "(Southbound)" / " - NB": "on this side" says it (3.0.8)
     if (!r) return voice.say("I don't know of a rest area ahead on this side.", { now: true });
     // a Caltrans closure (tools/rest-status.json): say it, then the next open one on this side
     if (r.status === "closed") {

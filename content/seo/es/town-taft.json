@@ -1,0 +1,38 @@
+{
+ "title": "Taft, CA en la I-5: salida 244 y la carretera 119",
+ "meta": "A Taft se llega desde la I-5 por la salida 244, en la CA 119. Hay gasolineras en el mapa, la historia del nombre Moron y áreas de descanso cercanas.",
+ "intro": "La carretera 119 sale de la I-5 en la salida 244 y lleva a Taft, un pueblo petrolero en el extremo suroeste del valle. I-5 Buddy cuenta cómo a Taft se le llamó Moron, y señala lo que está en el mapa cerca de la salida, como gasolineras y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Taft?",
+   "a": "A Taft se llega por la salida 244, CA 119 (Taft Highway). La salida 246, CA 43, también indica Taft y Maricopa como destinos."
+  },
+  {
+   "q": "¿Por qué a Taft se le llamó Moron?",
+   "a": "Los vecinos pidieron al ferrocarril que llamara a su estación Moro, pero el ferrocarril temió que la confundieran con Morro Bay y la llamó Moron, cuando la palabra todavía no tenía un sentido ofensivo. El museo del petróleo del pueblo cuenta la historia."
+  },
+  {
+   "q": "¿Hay gasolina cerca de Taft, en la I-5?",
+   "a": "Los datos indican 5 gasolineras en la salida 244, con marcas registradas como Mobil y otras. Esto viene de OpenStreetMap tal como está en el mapa, no en tiempo real, así que no muestra si alguna está abierta."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Taft en la I-5?",
+   "a": "Hacia el norte, el área de descanso Buttonwillow Rest Area está en la milla 259.2, a 15.2 millas de aquí, y sirve a ambas direcciones. Hacia el sur, el área de descanso Tejon Pass Rest Area está en la milla 206.1, a 37.9 millas, y también sirve a ambas direcciones."
+  }
+ ],
+ "src": {
+  "packet": "ace671c0932b",
+  "en": "fa0b7f4d89ad",
+  "draft": "p-town-taft.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-taft.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "title": "Áreas de descanso en la I-5 en California: distancias",
+ "meta": "Áreas de descanso en la I-5 en California, en ambos sentidos: cuánta distancia hay entre paradas, según los datos propios de I-5 Buddy.",
+ "intro": "Áreas de descanso en la I-5 en California, en ambos sentidos: cuánta distancia hay entre paradas. Todo lo de esta página viene de los datos propios de I-5 Buddy: los números de salida de California (que cuentan desde la frontera con México), las paradas que figuran en cada salida, las áreas de descanso y los puntos de interés que usted va pasando.",
+ "faq": [
+  {
+   "q": "¿Cuál es la mayor distancia entre áreas de descanso en la I-5 en California?",
+   "a": "La mayor distancia que figura es de 146.7 millas, entre Aliso Creek Rest Area en la milla 59.4 y Tejon Pass Rest Area en la milla 206.1. La siguiente es de 84.4 millas, de Westley Rest Area en la milla 444.9 a Elkhorn Rest Area en la milla 529.3."
+  },
+  {
+   "q": "¿Dónde están las áreas de descanso entre Buttonwillow y Coalinga en la I-5?",
+   "a": "Buttonwillow Rest Area está en la milla 259.2 y Coalinga-Avenal Rest Area en la milla 320.2, una distancia de 61.0 millas sin ninguna otra área de descanso en la lista entre ellas. Ambas figuran como áreas que dan servicio en ambos sentidos."
+  },
+  {
+   "q": "¿Hay paradas de camiones en la I-5 donde las áreas de descanso quedan lejos?",
+   "a": "Sí, los datos registran varios centros de viaje y paradas de camiones a lo largo de la ruta, entre ellos Castaic Truck Stop en la milla 176.4, Flying J Travel Center en la milla 204.9 y Petro Stopping Centers en la milla 219.2. Figuran tal como están en el mapa, así que conviene confirmar por su cuenta los horarios y los servicios."
+  },
+  {
+   "q": "¿Qué áreas de descanso de la I-5 dan servicio en ambos sentidos?",
+   "a": "Aliso Creek, Tejon Pass, Buttonwillow, Coalinga-Avenal, John \"Chuck\" Erreca, Westley, Dunnigan, Maxwell, Willows, Lt. John C. Helmick, Herbert S. Miles y Weed Airport figuran en ambos sentidos. En Dos Amigos Vista Point, Elkhorn, O'Brien, Lakehead y Randolph E. Collier, los datos no indican el sentido."
+  }
+ ],
+ "h1": "Áreas de descanso en la I-5 en California, en ambos sentidos: cuánta distancia hay entre paradas",
+ "src": {
+  "packet": "2af963a47ad2",
+  "en": "1b20d003f399",
+  "draft": "p-guide-rest-area-gaps.4.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-rest-area-gaps.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

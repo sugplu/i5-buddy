@@ -1,0 +1,42 @@
+{
+ "title": "Woodland en la I-5: salidas 537 y 538, gasolina y comida",
+ "meta": "Woodland está en la salida 537 de la I-5, con CA 113 South y Main Street. Vea gasolina, carga EV, comida y hospedaje mapeados en las salidas 537 y 538.",
+ "intro": "Woodland es la sede del condado de Yolo y se llama a sí misma City of Trees, por los robles del valle plantados alrededor del pueblo. La salida 537 es CA 113 South y Main Street, y la salida 538 es CA 113 North hacia Yuba City. Los lugares de ambas salidas vienen de OpenStreetMap tal como están mapeados, no en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Woodland?",
+   "a": "Woodland está en la salida 537, CA 113 South y Main Street. La salida 538, CA 113 North hacia Yuba City, es la siguiente."
+  },
+  {
+   "q": "¿Hay gasolina y carga para autos eléctricos en Woodland cerca de la I-5?",
+   "a": "En la salida 537 hay 5 gasolineras mapeadas, entre ellas 7-Eleven, Chevron y Quik Stop, y carga para autos eléctricos listada bajo 7-Eleven, EvGateway y Tesla Supercharger. En la salida 538 hay una Chevron mapeada, con carga de Blink y EvGateway. Son datos mapeados, no en vivo."
+  },
+  {
+   "q": "¿Dónde comer o hospedarse en Woodland cerca de la I-5?",
+   "a": "La salida 537 tiene 13 lugares de comida mapeados, como Black Bear Diner, Chipotle y Denny's, y 4 lugares de hospedaje, entre ellos Days Inn, Motel 6 y Quality Inn & Suites. La salida 538 tiene 2 lugares de comida, Corabella's Restaurant y Ranch Kitchen, y 2 de hospedaje, Best Western y Valley Oaks Inn."
+  },
+  {
+   "q": "¿Qué es la planta grande cerca de la I-5 en Woodland?",
+   "a": "Es la enlatadora de tomate de Woodland, a casi media milla de la autopista en la salida 537, a la izquierda yendo hacia el norte."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Woodland en la I-5?",
+   "a": "Hacia el norte, el Dunnigan Rest Area está a 19.1 millas de aquí, en la milla 556.6, y sirve a ambas direcciones. Hacia el sur, el Elkhorn Rest Area está a 8.2 millas, en la milla 529.3."
+  }
+ ],
+ "src": {
+  "packet": "f307ec30e9ae",
+  "en": "e85aaa4631d3",
+  "draft": "p-town-woodland.6.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-woodland.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "title": "Sacramento en la I-5: salidas, lugares de interés y paradas",
+ "meta": "Sacramento está en la salida 518 de la I-5, con las salidas 519A y 519B al centro, el Tower Bridge, el zoológico y gasolina, comida y hospedaje mapeados.",
+ "intro": "Sacramento, la capital de California desde 1854, está en la salida 518 de la I-5, donde la autopista pasa entre el centro y el río, junto a Old Sacramento y el Tower Bridge. Esta página enumera las salidas cercanas, los lugares de interés y las paradas de gasolina, carga para vehículos eléctricos, comida y hospedaje mapeadas en cada una, según los datos y no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Sacramento?",
+   "a": "El punto de interés de Sacramento está en la salida 518, donde la I-5 se cruza con la US 50 y la I 80 East. Las salidas al centro siguen en la 519A (Q Street) y la 519B (J Street)."
+  },
+  {
+   "q": "¿Qué salida de la I-5 queda más cerca del centro de Sacramento?",
+   "a": "La salida 519B, J Street, es la salida al centro. Los datos registran allí 57 lugares de comida y 20 de hospedaje mapeados, además de ChargePoint y Tesla Supercharger."
+  },
+  {
+   "q": "¿Dónde está el Tower Bridge en la I-5?",
+   "a": "Las torres doradas del Tower Bridge están justo al oeste de la autopista, cerca de la salida 519, a la izquierda en dirección norte. Es un puente levadizo sobre el río Sacramento, inaugurado en 1935."
+  },
+  {
+   "q": "¿Qué salida de la I-5 lleva al zoológico de Sacramento?",
+   "a": "La salida 516, Sutterville Road, lleva a William Land Park y al Sacramento Zoo, a unas cuadras al este de la autopista. El lado del zoológico queda a la derecha en dirección norte."
+  }
+ ],
+ "src": {
+  "packet": "605fc18b0f5d",
+  "en": "4d7564bf30f2",
+  "draft": "p-town-sacramento.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-sacramento.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

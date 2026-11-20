@@ -1,0 +1,42 @@
+{
+ "title": "Cottonwood en la I-5: salidas, gasolina, comida e historia",
+ "meta": "Cottonwood está en la salida 664 de la I-5, a medio camino entre Redding y Red Bluff. Vea salidas cercanas, gasolina, comida, carga EV y áreas de descanso.",
+ "intro": "Cottonwood es un pueblo de diligencias fundado en 1849, a medio camino entre Redding y Red Bluff, a 15 millas de cada uno, en ambas orillas de Cottonwood Creek. La guía hablada de I-5 Buddy lo marca en la salida 664, con las salidas 662 y 665 muy cerca. Las paradas de gasolina, carga EV y comida de abajo vienen de datos de OpenStreetMap, no son en vivo.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Cottonwood?",
+   "a": "El punto de interés de Cottonwood está en la salida 664, que es Gas Point Road y Balls Ferry Road. La salida 665 también está marcada como Cottonwood, y la salida 662 es Bowman Road, Cottonwood."
+  },
+  {
+   "q": "¿Hay gasolina en la I-5 en Cottonwood?",
+   "a": "Hay gasolina marcada en dos salidas: una Chevron en la salida 662 y una Chevron en la salida 664. Esto viene de OpenStreetMap, así que no confirma en vivo qué está abierto."
+  },
+  {
+   "q": "¿Hay cargador para vehículos eléctricos cerca de Cottonwood en la I-5?",
+   "a": "Hay un Tesla Supercharger marcado en la salida 664, Gas Point Road y Balls Ferry Road. Los datos no dicen cuántos cargadores hay ni si están disponibles ahora."
+  },
+  {
+   "q": "¿Dónde se puede comer en Cottonwood cerca de la I-5?",
+   "a": "La salida 664 lista tres lugares en los datos del mapa: Cottonwood Eatery, Jake's Take & Bake Pizza y Subway. La salida 665 tiene otro lugar de comida marcado, que aparece solo como Food."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Cottonwood en la I-5?",
+   "a": "Al sur del pueblo, el Herbert S. Miles Rest Area está en la milla 654.1, a 9.8 millas de aquí, y sirve en ambas direcciones. Al norte del pueblo, el O'Brien Rest Area está en la milla 692.9, a 29.0 millas."
+  }
+ ],
+ "src": {
+  "packet": "c0f6816019a2",
+  "en": "8ad4e4134a48",
+  "draft": "p-town-cottonwood.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-cottonwood.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 0,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

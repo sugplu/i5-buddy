@@ -1,0 +1,42 @@
+{
+ "title": "Red Bluff en la I-5: salidas, gasolina, comida y hospedaje",
+ "meta": "Red Bluff está cerca de la salida 649 de la I-5 en California (milla 649 desde la frontera con México). Gasolina, comida y hospedaje en las salidas cercanas.",
+ "intro": "Red Bluff está en la milla 649 de la I-5 en California, cerca de la salida 649. El nombre viene de los acantilados rojos que antes se destacaban a orillas del río Sacramento, que la autopista cruza dos veces en el pueblo, a menos de dos millas una de otra. El pueblo creció en el punto más lejano al que llegaban los barcos de río, y aquí desembarcaban los mineros rumbo a los campos de oro del condado de Trinity. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Red Bluff?",
+   "a": "Red Bluff tiene varias salidas en la I-5, entre ellas la 647, 647A, 647B, 649, 650 y 651. La salida 649 es la de CA 36 East, CA 36 West y CA 99, con letreros hacia Chico y Lassen Park."
+  },
+  {
+   "q": "¿Dónde hay gasolina en Red Bluff cerca de la I-5?",
+   "a": "Hay gasolina registrada en la salida 647 (Valero), la 647B (Arco, Chevron y Speedway), la 649 (Shell, Chevron, Mobil y Red Bluff Gas) y la 650 (Arco y Chevron). Estos datos vienen de un mapa, no de información en vivo, así que confirme antes de contar con una parada."
+  },
+  {
+   "q": "¿Hay cargadores para autos eléctricos en Red Bluff cerca de la I-5?",
+   "a": "Los datos registran ChargePoint en la salida 647, un Tesla Supercharger en la 647B, ChargePoint y Tesla Supercharger en la 649, y una red de Mercedes-Benz en la 650. Son registros del mapa, no disponibilidad en vivo."
+  },
+  {
+   "q": "¿Dónde están las áreas de descanso cerca de Red Bluff en la I-5?",
+   "a": "El Herbert S. Miles Rest Area está en la milla 654.1, a unas 4.9 millas al norte del pueblo, y sirve a ambas direcciones. Al sur del pueblo, el Lt. John C. Helmick Rest Area está en la milla 632.2, a unas 17 millas, también para ambas direcciones."
+  },
+  {
+   "q": "¿Dónde hay comida y hospedaje en Red Bluff cerca de la I-5?",
+   "a": "La salida 649 tiene más registros, con 13 lugares de comida y 7 de hospedaje en el mapa, entre ellos Best Western, Comfort Suites, Riverbank Inn y Rodeway Inn. La salida 647B registra 7 lugares de comida y 4 de hospedaje, y la salida 650 registra 4 de comida y 3 de hospedaje."
+  }
+ ],
+ "src": {
+  "packet": "9aece22a447a",
+  "en": "6858d6c60c09",
+  "draft": "p-town-red-bluff.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-red-bluff.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

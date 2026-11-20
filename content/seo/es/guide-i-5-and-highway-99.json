@@ -1,0 +1,43 @@
+{
+ "title": "La I-5 y la Highway 99 en California: el camino de antes",
+ "meta": "Cómo se relacionan la I-5 y la antigua Highway 99 en California, de los carriles de camiones de Newhall Pass a Old Highway 99 cerca de Weed.",
+ "intro": "Antes de la I-5, la US 99 era la carretera principal de la Costa Oeste. Fue creada en 1926 y corría de la frontera con México a la frontera con Canadá. Esta guía recorre los lugares de la I-5 donde la Highway 99 aún aparece, de los carriles de camiones de la salida 162 a Old Highway 99 cerca de la salida 755. I-5 Buddy cuenta estas historias en voz alta mientras usted maneja.",
+ "faq": [
+  {
+   "q": "¿Qué era la Highway 99 en California?",
+   "a": "La US 99 fue creada en 1926 y corría de la frontera con México a la frontera con Canadá. Era la carretera principal de la Costa Oeste antes de la I-5. Se le llamaba la calle principal de California."
+  },
+  {
+   "q": "¿Dónde se cruzan la I-5 y la Highway 99?",
+   "a": "Se encuentran en el cruce de Wheeler Ridge, en la salida 221. Grupos locales pidieron una autopista del lado oeste desde 1945. Cuando se creó el sistema Interestatal en 1956, esa propuesta se impuso a la idea de convertir la Highway 99 en la Interestatal."
+  },
+  {
+   "q": "¿Dónde se puede ver todavía una parte de la antigua US 99 junto a la I-5?",
+   "a": "En la salida 162, los carriles separados para camiones que rodean los carriles principales en el Newhall Pass Interchange son la autopista original de cuatro carriles, construida como la US 99. Cerca de la salida 755, un camino del condado de dos carriles llamado Old Highway 99 va entre Weed y Yreka con la misma forma que tenía cuando era la US 99."
+  },
+  {
+   "q": "¿Qué pasó con la antigua Highway 99 cerca de Shasta Lake?",
+   "a": "Antes del lago, la antigua Highway 99 pasaba por Mountain Gate y luego se hundía en el valle que hoy llena Shasta Lake. El sitio de la salida 688 se llama The drowned highway."
+  },
+  {
+   "q": "¿A quién multaron por exceso de velocidad en la Highway 99 cerca de la I-5?",
+   "a": "El 30 de septiembre de 1955, un oficial de la Highway Patrol detuvo al actor James Dean en la Highway 99, cerca de la salida 225, y le puso una multa por exceso de velocidad. Iba hacia el norte, rumbo a una carrera de autos deportivos en Salinas."
+  }
+ ],
+ "h1": "La I-5 y la Highway 99 en California",
+ "src": {
+  "packet": "f001e6871162",
+  "en": "4242f96442fd",
+  "draft": "p-guide-i-5-and-highway-99.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-i-5-and-highway-99.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

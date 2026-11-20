@@ -1,0 +1,38 @@
+{
+ "title": "La Mirada en la I-5: salida 118 y servicios cercanos",
+ "meta": "La Mirada está en la salida 118 de la I-5 en California. Vea salidas cercanas, gasolina, comida, carga EV y hospedaje mapeados, y la historia del rancho.",
+ "intro": "La Mirada está cerca de la milla 118 de la I-5 en California, junto a la salida 118. La Mirada, que en español significa la vista, nació como el rancho de Andrew McNally, el impresor y cartógrafo de Chicago de Rand McNally. En 1888 compró más de 2,200 acres por $200,000 y rodeó su casa, Windermere Ranch, con huertos de olivo, naranja y limón. Abajo encontrará las salidas, los servicios, los puntos de interés y las áreas de descanso más cercanas.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está La Mirada?",
+   "a": "La Mirada está en la salida 118, Valley View Avenue y N Firestone Blvd, en la milla 117.8. Las salidas anteriores yendo al norte son la salida 117 (Artesia Boulevard) y la salida 116 (CA 39, Beach Boulevard); la siguiente es la salida 119 (Carmenita Road)."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de La Mirada en la I-5?",
+   "a": "Hay gasolina mapeada en la salida 118, donde aparece un Arco. También aparecen otras en la salida 117 (Mobil, SC Fuels), la salida 120B (76), la salida 120 (Soniz) y la salida 121 (Chevron, Shell). Esto viene de OpenStreetMap y no es en tiempo real, así que verifique usted los horarios y los precios."
+  },
+  {
+   "q": "¿Hay carga para vehículos eléctricos cerca de La Mirada en la I-5?",
+   "a": "EVgo está mapeado en la salida 118. Cerca de ahí, ChargePoint y Electrify America están mapeados en la salida 116, un Tesla Supercharger en la salida 115, y ChargePoint y EVgo en la salida 121. Son datos de un mapa, no disponibilidad en tiempo real."
+  },
+  {
+   "q": "¿Dónde puedo hospedarme o comer cerca de La Mirada en la I-5?",
+   "a": "La salida 118 tiene la mayor cantidad de hospedaje listado cerca, 18 lugares, entre ellos Extended Stay America, Holiday Inn y Marriott Residence Inn. La comida mapeada ahí incluye Chick-fil-A, In-N-Out Burger, North Woods Inn, Starbucks y Subway."
+  }
+ ],
+ "src": {
+  "packet": "442201435889",
+  "en": "f1e964c4a04b",
+  "draft": "p-town-la-mirada.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-la-mirada.2.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

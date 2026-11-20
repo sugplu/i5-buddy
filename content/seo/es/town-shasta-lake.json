@@ -1,0 +1,42 @@
+{
+ "title": "Shasta Lake en la I-5: salidas 682 a 687, presa y paradas",
+ "meta": "Shasta Lake en la I-5 está cerca de la salida 684 (Pine Grove Avenue); la salida 685 lleva a Shasta Dam Boulevard, con gasolina, comida y hospedaje mapeados.",
+ "intro": "La ciudad de Shasta Lake nació de cinco pequeñas comunidades que surgieron en 1938, cuando comenzó la obra de la presa Shasta Dam. I-5 Buddy le cuenta la historia desde la salida 684, donde Pine Grove Avenue se une a la autopista, con Shasta Dam a unas millas al oeste. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje que aparecen abajo vienen del mapa de OpenStreetMap, no están en tiempo real.",
+ "faq": [
+  {
+   "q": "¿En qué salida de la I-5 está Shasta Lake?",
+   "a": "El principal punto de interés de Shasta Lake en I-5 Buddy está en la salida 684, Pine Grove Avenue. Las salidas cercanas son la 682 (Oasis Road), la 685 (CA 151, Shasta Dam Boulevard) y la 687 (Mountain Gate)."
+  },
+  {
+   "q": "¿Qué salida tomo para ir a Shasta Dam desde la I-5?",
+   "a": "Tome la salida 685, CA 151 (Shasta Dam Boulevard). La presa está a unas cuatro millas al oeste de la autopista, mide 602 pies de alto y queda a la izquierda si va hacia el norte."
+  },
+  {
+   "q": "¿Dónde hay gasolina cerca de Shasta Lake en la I-5?",
+   "a": "Hay gasolineras en la salida 682 (Arco, Shell y una más), la salida 684 (Valero), la salida 685 (76, Arco y Chevron) y la salida 687 (Chevron y Shell). Es según el mapa, no en tiempo real."
+  },
+  {
+   "q": "¿Hay comida y hospedaje en la salida de Shasta Dam Boulevard?",
+   "a": "En la salida 685 aparecen Burger King, Latino's Mexican Food, McDonald's, Oriental Express y Taco Shop, además del Shasta Dam Motel. Los datos vienen de OpenStreetMap y no están en tiempo real."
+  },
+  {
+   "q": "¿Dónde está el área de descanso más cercana a Shasta Lake en la I-5?",
+   "a": "El O'Brien Rest Area, en la milla 692.9, queda a unas 8 millas al norte de aquí. Al sur del pueblo, el Herbert S. Miles Rest Area, en la milla 654.1, atiende ambos sentidos y queda a unas 30.8 millas atrás."
+  }
+ ],
+ "src": {
+  "packet": "bea34f0d2b5c",
+  "en": "bd783e21f150",
+  "draft": "p-town-shasta-lake.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "town-shasta-lake.6.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 2,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}

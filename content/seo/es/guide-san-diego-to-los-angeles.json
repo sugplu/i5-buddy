@@ -1,0 +1,39 @@
+{
+ "title": "De San Diego a Los Angeles por la I-5: salidas y paradas",
+ "meta": "Maneje la I-5 de San Diego a Los Angeles, salidas 16 a 135: la costa, Camp Pendleton, Disneyland, y gasolina, carga EV, comida y hospedaje en las salidas.",
+ "intro": "Esta guía cubre la I-5 desde San Diego hacia el norte hasta Los Angeles, de la salida 16 a la salida 135, con las millas contadas desde la frontera con México. En el camino pasa por San Diego Bay, las lagunas costeras, unas 18 millas de océano junto a Camp Pendleton y los suburbios del condado de Orange. La gasolina, la carga para vehículos eléctricos, la comida y el hospedaje aparecen como están en OpenStreetMap, no en tiempo real.",
+ "faq": [
+  {
+   "q": "¿Dónde recorre la I-5 la costa del océano por Camp Pendleton?",
+   "a": "Entre la milla 54 y la milla 70, más o menos, la autopista sigue el océano unas 18 millas por la base Marine Corps Base Camp Pendleton. La vía del tren Surf Line corre a su lado, y el Aliso Creek Rest Area, en la milla 59.4, atiende a ambos sentidos."
+  },
+  {
+   "q": "¿En qué salida de la I-5 está Disneyland?",
+   "a": "Disneyland queda justo al suroeste de la autopista, cerca de la salida 110. Los datos señalan Harbor Boulevard en la salida 110A, con 21 lugares de hospedaje y 26 lugares de comida en el mapa."
+  },
+  {
+   "q": "¿Dónde hay gasolina en la I-5 en el condado de Orange?",
+   "a": "Hay gasolineras en el mapa en muchas salidas, por ejemplo Crown Valley Parkway (salida 86), La Paz Road (salida 89), El Toro Road (salida 91) y Red Hill Avenue (salida 101B). Son datos del mapa, no en tiempo real, así que revise usted mismo el horario y los precios de cada parada."
+  },
+  {
+   "q": "¿Dónde hay cargadores para vehículos eléctricos en la I-5 de San Diego a Los Angeles?",
+   "a": "Hay cargadores en el mapa en 66 salidas de este tramo, entre ellas Palomar Airport Road (salida 47), Vista Way y Cassidy Street (salida 51C) y Lake Forest Drive (salida 92A). Las redes que aparecen incluyen Tesla Supercharger, Electrify America, EVgo y ChargePoint, según el mapa, no en tiempo real."
+  }
+ ],
+ "h1": "De San Diego a Los Angeles por la I-5",
+ "src": {
+  "packet": "66b333f21105",
+  "en": "63c235d4a23f",
+  "draft": "p-guide-san-diego-to-los-angeles.2.json"
+ },
+ "status": "ok",
+ "check": {
+  "model": "claude-opus-5-5",
+  "batch_file": "guide-san-diego-to-los-angeles.9.json",
+  "verdict": "pass",
+  "blockers": 0,
+  "minor": 4,
+  "faq_dropped": [],
+  "unplaced": []
+ }
+}
