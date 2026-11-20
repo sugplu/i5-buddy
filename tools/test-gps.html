@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<title>I-5 Buddy GPS bank</title>
+<style>body{font:13px/1.4 ui-monospace,Menlo,monospace;margin:12px}.pass{color:#090}.fail{color:#c00;font-weight:bold}.skip{color:#888}</style>
+<pre id="out">running…</pre>
+<script src="simclock.js"></script>
+<script src="gps-bank.js"></script>
+<script>
+// Only the GPS bank (tools/fixtures/gps/), the same scenarios tools/e2e.html runs as its last section; for triage:
+//   test-gps.html?name=<part of a fixture name>&family=<a-f>
+// Prints one line per scenario. Silent: speech is recorded and never made.
+const Q = new URLSearchParams(location.search), out = document.getElementById("out");
+const only = Q.get("name"), fam = Q.get("family");
+(async () => {
+  const idx = await (await fetch("fixtures/gps/index.json")).json();
+  const names = idx.filter(r => (!only || r.name.includes(only)) && (!fam || r.family === fam));
+  const lines = []; let fails = 0, n = 0;
+  const bank = await window.runGpsBank({ base: "fixtures/gps/", filter: r => names.some(x => x.name === r.name) });
+  for (const r of bank) {
+    n++;
+    if (r.known && !r.pass) lines.push(`<span class="skip">KNOWN ${r.name} [${r.known_bug}]: ${esc(r.lines.join(" | "))}</span>`);
+    else if (r.pass) lines.push(`<span class="pass">PASS ${r.name}${r.known ? " (known_bug now passes: remove it)" : ""}</span>`);
+    else { fails++; lines.push(`<span class="fail">FAIL ${r.name}: ${esc(r.lines.join(" | "))}</span>`); }
+  }
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+  out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + ` ${n} scenarios\n` + lines.join("\n");
+  document.title = fails ? `FAILED ${fails}` : "ALL PASS";
+})().catch(e => { out.textContent = "ERROR " + (e.stack || e); document.title = "ERROR"; });
+</script>

@@ -1,0 +1,653 @@
+{
+ "family": "b",
+ "scenarios": [
+  {
+   "name": "b-buttonwillow-rest-stop-north",
+   "summary": "Northbound on I-5 in the valley, the car pulls into the Buttonwillow rest area (mile 259.2, about 0.1 mi east), parks 15 minutes with jitter, then continues north.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 245,
+     "to_mile": 258.9,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 258.9,
+     "to_mile": 259.2,
+     "mph": 25,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 0.1,
+     "every_s": 5
+    },
+    {
+     "op": "hold",
+     "secs": 900,
+     "at_mile": 259.2,
+     "lateral_mi": 0.1,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 259.2,
+     "to_mile": 259.6,
+     "mph": 40,
+     "lateral_start_mi": 0.1,
+     "lateral_end_mi": 0,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 259.6,
+     "to_mile": 275,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       252,
+       2
+      ]
+     },
+     "why": "onFix on-route branch; heading at speed > 6 mph votes N via dirFromHeading"
+    },
+    {
+     "after_op": 3,
+     "at": "0.05",
+     "state": {
+      "mode": "gps"
+     },
+     "why": "start of the hold: marks the point after which nothing new may be asked of the voice while parked"
+    },
+    {
+     "after_op": 3,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       259.2,
+       1.5
+      ],
+      "dir": "N",
+      "stale": false,
+      "pill": "GPS",
+      "max_said": 0
+     },
+     "why": "0.1 mi from line < 1.2 mi so not far; speed 0 gives no heading vote and jitter < 0.15 mi anchor, so dir stays N; fixes every 10 s keep gpsStale false (STALE_MS 15 s)"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mile": [
+       259.2,
+       1.5
+      ],
+      "dir": "N",
+      "off_route": false
+     },
+     "why": "parked whole hold: setPosition keeps mile, no direction flip from jitter"
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "dir": "N",
+      "mile": [
+       275,
+       2
+      ],
+      "pill": "GPS"
+     },
+     "why": "resumes north; on-route branch moves the mile"
+    }
+   ],
+   "triage": "max_said 2 counted the heads-ups asked while driving up to the rest area (Henry Miller, Midway Substation, Buttonwillow Tree); a checkpoint at the start of the hold now makes the parked window clean: nothing said while parked."
+  },
+  {
+   "name": "b-uturn-lost-hills-north-to-south",
+   "summary": "Northbound to exit 278 (Lost Hills), leaves 0.3 mi east, stops 3 minutes, and rejoins I-5 southbound; direction must flip to S.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 265,
+     "to_mile": 277.8,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 277.8,
+     "to_mile": 278,
+     "mph": 30,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 0.3,
+     "every_s": 5
+    },
+    {
+     "op": "hold",
+     "secs": 180,
+     "at_mile": 278,
+     "lateral_mi": 0.3,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 278,
+     "to_mile": 277.7,
+     "mph": 30,
+     "lateral_start_mi": 0.3,
+     "lateral_end_mi": 0,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 277.7,
+     "to_mile": 262,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       277.8,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "heading votes N at speed"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mile": [
+       278,
+       1.5
+      ],
+      "off_route": false,
+      "dir": "N"
+     },
+     "why": "0.3 mi lateral is within 1.2 mi; speed 0 casts no vote"
+    },
+    {
+     "after_op": 5,
+     "at": "0.2",
+     "state": {
+      "dir": "S",
+      "dir_sure": true,
+      "off_route": false
+     },
+     "why": "southbound heading: dirFromHeading gives S; dirVotes needs 2 of last 3 S, which happens within a few fixes"
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "dir": "S",
+      "mile": [
+       262,
+       2
+      ],
+      "off_route": false,
+      "not_said_re": "Kettleman|Coalinga"
+     },
+     "why": "heading south; landmarks north of 278 are behind and must not be announced (narrator upcoming() by S.dir)"
+    }
+   ]
+  },
+  {
+   "name": "b-two-hour-stop-then-overnight",
+   "summary": "Northbound near Westley rest area (mile 445): a 2-hour parked hold keeps the trip, then a 3.5-hour dropout starts a new trip with direction unsure until moving.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 430,
+     "to_mile": 445,
+     "mph": 65,
+     "every_s": 10
+    },
+    {
+     "op": "hold",
+     "secs": 7200,
+     "at_mile": 445,
+     "lateral_mi": 0.05,
+     "acc": 25,
+     "every_s": 60
+    },
+    {
+     "op": "drive",
+     "from_mile": 445,
+     "to_mile": 450,
+     "mph": 65,
+     "every_s": 10
+    },
+    {
+     "op": "hold",
+     "secs": 120,
+     "at_mile": 450,
+     "acc": 25,
+     "every_s": 10
+    },
+    {
+     "op": "dropout",
+     "secs": 12600
+    },
+    {
+     "op": "hold",
+     "secs": 60,
+     "at_mile": 450,
+     "acc": 25,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 450,
+     "to_mile": 458,
+     "mph": 65,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       445,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "gap 60 s < NEW_TRIP_MS: no resetTrip, dirSure stays true"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       450,
+       1.5
+      ]
+     },
+     "why": "trip carries on after 2 h stop"
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "mode": "gps",
+      "stale": true,
+      "pill": "GPS?"
+     },
+     "why": "STALE_MS interval sets gpsStale; render shows GPS? pill"
+    },
+    {
+     "after_op": 6,
+     "state": {
+      "dir_sure": false,
+      "stale": false,
+      "mile": [
+       450,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "onFix: timestamp gap > NEW_TRIP_MS triggers resetTrip and S.dirSure=false; parked fixes cannot vote"
+    },
+    {
+     "after_op": 7,
+     "state": {
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       458,
+       1.5
+      ]
+     },
+     "why": "heading at speed settles direction again"
+    }
+   ]
+  },
+  {
+   "name": "b-detour-50min-off-i5",
+   "summary": "Northbound to exit 309 (Kettleman City), then drives 3 mi east into town on CA 41 and stays 50 minutes; drive is over past DETOUR_MS, card switches to not-on-I-5.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 295,
+     "to_mile": 309,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 309,
+     "to_mile": 309.5,
+     "mph": 40,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 3,
+     "every_s": 5
+    },
+    {
+     "op": "hold",
+     "secs": 3000,
+     "at_mile": 309.5,
+     "lateral_mi": 3,
+     "acc": 20,
+     "every_s": 60
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "plus_s": 20,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "OFF I-5 FOR NOW",
+      "mile": [
+       309,
+       1.5
+      ]
+     },
+     "why": "two far fixes (>1.2 mi): offCount>=2 with drove keeps last mile; offI5Card"
+    },
+    {
+     "after_op": 3,
+     "at": "0.5",
+     "state": {
+      "off_route": true,
+      "card_re": "OFF I-5 FOR NOW"
+     },
+     "why": "25 min < DETOUR_MS: drove still true"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": true,
+      "mode": "gps",
+      "card_re": "NOT ON I-5 YET"
+     },
+     "why": "far branch: pos.timestamp-lastOnRouteFixT > DETOUR_MS sets drove=false, renderNext shows notOnI5Card"
+    }
+   ]
+  },
+  {
+   "name": "b-detour-20min-returns",
+   "summary": "Same Kettleman City detour 3 mi east for only 20 minutes, then back on I-5 north: mile resumes, card back to countdown.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 295,
+     "to_mile": 309,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 309,
+     "to_mile": 309.5,
+     "mph": 40,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 3,
+     "every_s": 5
+    },
+    {
+     "op": "hold",
+     "secs": 1200,
+     "at_mile": 309.5,
+     "lateral_mi": 3,
+     "acc": 20,
+     "every_s": 30
+    },
+    {
+     "op": "drive",
+     "from_mile": 309.5,
+     "to_mile": 310,
+     "mph": 40,
+     "lateral_start_mi": 3,
+     "lateral_end_mi": 0,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 310,
+     "to_mile": 325,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": true,
+      "card_re": "OFF I-5 FOR NOW",
+      "mile": [
+       309,
+       1.5
+      ]
+     },
+     "why": "20 min < DETOUR_MS: drove kept, offI5Card"
+    },
+    {
+     "after_op": 5,
+     "at": "0.3",
+     "state": {
+      "off_route": false,
+      "pill": "GPS",
+      "card_not_re": "OFF I-5|NOT ON I-5",
+      "dir": "N"
+     },
+     "why": "back near line: on-route branch with wasOff teleport, offRoute false"
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "off_route": false,
+      "mile": [
+       325,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "driving north resumes"
+    }
+   ]
+  },
+  {
+   "name": "b-creep-traffic-30min-valley",
+   "summary": "Northbound near mile 350 in the San Joaquin Valley, 30 minutes of 0-5 mph creep (hold with jitter), then 65 mph; direction must not flip from jitter.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 340,
+     "to_mile": 350,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 350,
+     "to_mile": 350.6,
+     "mph": 2,
+     "every_s": 10,
+     "heading": "none"
+    },
+    {
+     "op": "hold",
+     "secs": 600,
+     "jitter_m": 8,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 350.6,
+     "to_mile": 365,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "at": "0.5",
+     "state": {
+      "dir": "N",
+      "off_route": false,
+      "mile": [
+       350.3,
+       1.5
+      ],
+      "stale": false
+     },
+     "why": "slow movement without heading uses anchorM >0.15 mi votes, all N"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       350.6,
+       1.5
+      ],
+      "pill": "GPS"
+     },
+     "why": "8 m jitter < 0.15 mi anchor threshold, no S vote"
+    },
+    {
+     "after_op": 4,
+     "state": {
+      "dir": "N",
+      "mile": [
+       365,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "moving again at speed"
+    }
+   ]
+  },
+  {
+   "name": "b-parked-start-weed-rest-area",
+   "summary": "GPS started while parked at the Weed Airport rest area (mile 753.1), 5 minutes stationary, then pulls out southbound.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "hold",
+     "secs": 300,
+     "at_mile": 753.1,
+     "lateral_mi": 0.05,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 753.1,
+     "to_mile": 740,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "dir_sure": false,
+      "off_route": false,
+      "mile": [
+       753.1,
+       1.5
+      ],
+      "not_said_re": "^In about|^Right now|^Right about here"
+     },
+     "why": "startGps sets dirSure false; speed 0 and jitter < 0.15 mi give no vote so no landmark heads-up"
+    },
+    {
+     "after_op": 1,
+     "state": {
+      "dir_sure": false,
+      "pill": "GPS"
+     },
+     "why": "still parked"
+    },
+    {
+     "after_op": 2,
+     "at": "0.3",
+     "state": {
+      "dir": "S",
+      "dir_sure": true
+     },
+     "why": "heading at speed gives S via dirFromHeading"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "dir": "S",
+      "mile": [
+       740,
+       1.5
+      ]
+     },
+     "why": "driving south"
+    }
+   ]
+  }
+ ]
+}

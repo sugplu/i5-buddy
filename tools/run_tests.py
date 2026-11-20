@@ -6,6 +6,9 @@ Serves the repo root itself on a free port chosen at start (see serve()), so sev
 To use a server that is already running instead:
   --base http://127.0.0.1:8765/tools/   (python3 -m http.server 8765 --bind 127.0.0.1, from the repo root)
 Run:  python3 tools/run_tests.py [--quick] [--only NAME] [-j 4] [--root FOLDER] [--base URL]
+Drive transcripts for Claude to read (claude-power/jobs/i5_drive_eval.py):  python3 tools/run_tests.py --transcript [--only N-default]
+  four 797-mile drives on simulated time (tools/transcript.html), every spoken line written to
+  tools/qa-tmp/transcript-<dir>-<mode>.jsonl; nothing is heard, and the same silent guard applies.
 
 Silent: Chrome runs with --headless=new --mute-audio --disable-audio-output, every test page sets
 window.__BUDDY_SILENT__ and loads the app with ?silent=1, and js/voice.js then uses a fake speech engine and a silent
@@ -15,7 +18,7 @@ check: pmset -g assertions | grep -A2 BuiltInSpeakerDevice (no Chrome or test PI
 A test passes when its page title, or a console line, says ALL PASS / PASS and nothing says FAIL.
 Scenario lists come from the headers of each tools/test-*.html page.
 """
-import concurrent.futures as cf, functools, http.server, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, time
+import concurrent.futures as cf, functools, html, http.server, json, os, re, shutil, socketserver, subprocess, sys, tempfile, threading, time
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -66,7 +69,7 @@ SUITE = [
     ("voice", "test-voice.html", 60000, "900,960", True),
     # (test-voice.html?real=1 decodes the real clips: it needs real time, not this runner's virtual time, so it runs with
     #  python3 tools/voice/collect.py --page "tools/test-voice.html?real=1" --out /tmp/voice-real.json)
-    ("e2e drive", "e2e.html", 120000, "900,960", True),
+    ("e2e drive", "e2e.html", 400000, "900,960", True),
     # 3.0.1: the strength-audit fixes (speech watchdog, made-up speeds, turning around, a parked start, the border line,
     # not on I-5 yet, Precise Location, location refused, GPS lost, captions, the demo's end, Trip saved, rating rules,
     # resuming after a restart); it waits out a 4-minute demo in page time
@@ -114,6 +117,8 @@ SUITE = [
     ("map ride light", "test-map.html?scene=ride&theme=light", 30000, "900,960", False),
     ("map 3d", "test-map.html?scene=threed", 90000, "900,960", True),
     ("map fake routeonly", "test-map.html?scene=fake&variant=routeonly", 30000, "900,960", False),
+    # 2026-11-20 road tests: what Claude found reading four simulated drives, each reproduced; bugs still in the app print KNOWN BUG
+    ("road findings", "test-roadfindings.html", 90000, "900,960", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
     ("live traffic", "test-live.html?s=traffic", 800000, "900,960", False),
@@ -150,6 +155,57 @@ def silent_guard(tests):
     if bad:
         print("not silent, not running:\n  " + "\n  ".join(bad), file=sys.stderr)
         sys.exit(2)
+
+
+# --transcript: (file label, dir, chat, autoplay). N = Mexico to Oregon, S = back. default = Normal chattiness.
+TRANSCRIPTS = [
+    ("N-default", "N", "normal", True),
+    ("S-default", "S", "normal", True),
+    ("N-chatty-noauto", "N", "high", False),
+    ("S-quiet", "S", "low", True),
+]
+
+
+def run_transcript(label, d, chat, auto):
+    """One whole drive in headless Chrome (tools/transcript.html); returns (label, ok, detail, seconds)."""
+    prof = tempfile.mkdtemp(prefix="i5drive-")
+    page = f"transcript.html?dir={d}&chat={chat}&auto={1 if auto else 0}"
+    cmd = [CHROME, "--headless=new", "--mute-audio", "--disable-audio-output", "--disable-gpu", f"--user-data-dir={prof}",
+           "--autoplay-policy=no-user-gesture-required", "--window-size=900,960", "--virtual-time-budget=3000000",
+           "--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1", "--dump-dom", BASE + page]
+    t0 = time.time()
+    try:
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=900)
+        dom = p.stdout
+    except subprocess.TimeoutExpired:
+        return label, False, "TIMEOUT", time.time() - t0
+    finally:
+        shutil.rmtree(prof, ignore_errors=True)
+    title = (re.search(r"<title>(.*?)</title>", dom, re.S) or [None, ""])[1].strip()
+    m = re.search(r'<pre id="out">(.*?)</pre>', dom, re.S)
+    if not title.startswith("DONE") or not m:
+        return label, False, (m.group(1)[:300] if m else title or "no result"), time.time() - t0
+    body = html.unescape(m.group(1)).strip()
+    os.makedirs(os.path.join(REPO, "tools", "qa-tmp"), exist_ok=True)
+    path = os.path.join(REPO, "tools", "qa-tmp", f"transcript-{label}.jsonl")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(body + "\n")
+    last = json.loads(body.splitlines()[-1])
+    return label, True, f"{last.get('spoken')} lines, {last.get('sim_seconds')} s simulated, dropped {last.get('dropped')} -> {os.path.relpath(path, REPO)}", time.time() - t0
+
+
+def main_transcript():
+    global BASE
+    only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
+    todo = [t for t in TRANSCRIPTS if not only or only in t[0]]
+    silent_guard([("transcript", "transcript.html", 0, "", True)])
+    BASE = sys.argv[sys.argv.index("--base") + 1] if "--base" in sys.argv else serve()
+    bad = 0
+    for t in todo:
+        label, ok, detail, secs = run_transcript(*t)
+        bad += not ok
+        print(f"{'OK' if ok else 'FAILED':8} {label:18} {secs:5.0f}s  {detail}", flush=True)
+    sys.exit(1 if bad else 0)
 
 
 FAIL_RE = re.compile(r"\b(FAILED|FAIL)\b")
@@ -195,6 +251,8 @@ def run(test):
 
 def main():
     global BASE, ROOT
+    if "--transcript" in sys.argv:
+        return main_transcript()
     quick = "--quick" in sys.argv
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
     jobs = int(sys.argv[sys.argv.index("-j") + 1]) if "-j" in sys.argv else 4

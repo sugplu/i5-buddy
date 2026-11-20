@@ -1,0 +1,503 @@
+{
+ "family": "d",
+ "scenarios": [
+  {
+   "name": "d-call-mid-headsup-queue-moves",
+   "summary": "Northbound through Orange County at 65 mph, a phone call starts mid-drive and ends 2 miles later; narration must continue afterwards without repeats.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 95,
+     "to_mile": 125,
+     "mph": 65,
+     "every_s": 5,
+     "events": [
+      {
+       "at_mile": 105,
+       "op": "call_start"
+      },
+      {
+       "at_mile": 107.5,
+       "op": "call_end"
+      }
+     ]
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.3",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       104,
+       2
+      ],
+      "dir": "N"
+     },
+     "why": "onFix on-route branch, heading votes N via dirFromHeading"
+    },
+    {
+     "after_op": 1,
+     "at": "0.45",
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "stale": false
+     },
+     "why": "fixes keep arriving during the call; lastGoodT refreshed so no STALE_MS"
+    },
+    {
+     "after_op": 1,
+     "at": "end",
+     "state": {
+      "mode": "gps",
+      "mile": [
+       125,
+       2
+      ],
+      "dir": "N",
+      "dir_sure": true,
+      "said_re": "miles|right",
+      "queued_max": 3
+     },
+     "why": "voice watchdog cancels stuck chunk; 'pos' events keep narrator announcing after the call, queue not stuck"
+    }
+   ]
+  },
+  {
+   "name": "d-restart-tap-resume",
+   "summary": "Driving north on I-5 near Stockton, the web view restarts for 60 s and the driver taps Resume drive.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 460,
+     "to_mile": 472,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "restart",
+     "gap_s": 60,
+     "resume": "tap"
+    },
+    {
+     "op": "drive",
+     "from_mile": 473,
+     "to_mile": 485,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       472,
+       2
+      ],
+      "dir": "N"
+     },
+     "why": "on-route onFix, store.set drive every 30 s"
+    },
+    {
+     "after_op": 2,
+     "plus_s": 10,
+     "state": {
+      "mode": "gps",
+      "notices_exclude": [
+       "resume"
+      ],
+      "start_button": "Start GPS"
+     },
+     "why": "startGps with S.resumable hides resume notice, resets button, no greet"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       485,
+       2
+      ],
+      "dir": "N",
+      "dir_sure": true,
+      "pill": "GPS"
+     },
+     "why": "first fix teleport (S.m set, lastFix null => maxDrive 3, ok) then votes resettle direction"
+    }
+   ]
+  },
+  {
+   "name": "d-restart-auto-resume",
+   "summary": "Restart mid-drive north of Sacramento with location already allowed; app resumes by itself after 1.5 s.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 540,
+     "to_mile": 550,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "restart",
+     "gap_s": 30,
+     "resume": "auto"
+    },
+    {
+     "op": "drive",
+     "from_mile": 550.5,
+     "to_mile": 560,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       550,
+       2
+      ]
+     },
+     "why": "on-route onFix"
+    },
+    {
+     "after_op": 3,
+     "at": "0.2",
+     "state": {
+      "mode": "gps",
+      "notices_exclude": [
+       "resume"
+      ],
+      "start_button": "Start GPS"
+     },
+     "why": "autoResume: permission granted, S.resumable, mode off -> startGps"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       560,
+       2
+      ],
+      "dir": "N",
+      "off_route": false,
+      "pill": "GPS"
+     },
+     "why": "onFix continues after auto resume"
+    }
+   ]
+  },
+  {
+   "name": "d-restart-no-tap-waits",
+   "summary": "Restart mid-drive with nobody tapping and location not auto-resumed: app waits with Resume drive and no narration.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 250,
+     "to_mile": 262,
+     "mph": 70,
+     "every_s": 10
+    },
+    {
+     "op": "restart",
+     "gap_s": 20,
+     "resume": "none"
+    },
+    {
+     "op": "drive",
+     "from_mile": 263,
+     "to_mile": 275,
+     "mph": 70,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       262,
+       2
+      ]
+     },
+     "why": "on-route onFix"
+    },
+    {
+     "after_op": 3,
+     "at": "0.3",
+     "state": {
+      "mode": "off",
+      "start_button": "Resume drive",
+      "notices_include": [
+       "resume"
+      ],
+      "pill": "OFF"
+     },
+     "why": "resumeOffer: drive saved <RESUME_MS, S.m set; no watch running"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "off",
+      "start_button": "Resume drive",
+      "notices_include": [
+       "resume"
+      ],
+      "mile": [
+       262,
+       2
+      ],
+      "max_said": 0
+     },
+     "why": "no watchGps, so no fixes processed; S.m stays at saved mile, no narration"
+    }
+   ]
+  },
+  {
+   "name": "d-restart-after-46-min-forgotten",
+   "summary": "Restart with a 50-minute gap (longer than RESUME_MS) in the Central Valley: no resume offer, drive forgotten.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 300,
+     "to_mile": 310,
+     "mph": 70,
+     "every_s": 10
+    },
+    {
+     "op": "restart",
+     "gap_s": 3000,
+     "resume": "none"
+    },
+    {
+     "op": "hold",
+     "secs": 60
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       310,
+       2
+      ]
+     },
+     "why": "on-route onFix"
+    },
+    {
+     "after_op": 2,
+     "plus_s": 5,
+     "state": {
+      "mode": "off",
+      "start_button": "Start GPS",
+      "notices_exclude": [
+       "resume"
+      ]
+     },
+     "why": "resumeOffer: Date.now()-d.t >= RESUME_MS -> store.del drive, no offer; tap has no button to hit"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "off",
+      "notices_exclude": [
+       "resume"
+      ],
+      "pill": "OFF",
+      "max_said": 0
+     },
+     "why": "nothing started GPS; status Paused"
+    }
+   ],
+   "triage": "two fixture/runner fixes: resume \"tap\" made the runner tap Start GPS although no Resume button exists, and a restart must start the new page AFTER the gap (the saved drive is 50 minutes old, past RESUME_MS). Now nobody taps."
+  },
+  {
+   "name": "d-restart-jump-10-miles",
+   "summary": "Restart over 10 min while still driving north through the Grapevine area; resume 10+ miles further: no catch-up flood for skipped miles, no repeats.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 160,
+     "to_mile": 175,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "restart",
+     "gap_s": 600,
+     "resume": "tap"
+    },
+    {
+     "op": "drive",
+     "from_mile": 186,
+     "to_mile": 200,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       175,
+       2
+      ],
+      "dir": "N"
+     },
+     "why": "on-route onFix"
+    },
+    {
+     "after_op": 3,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "mile": [
+       187.5,
+       2
+      ],
+      "off_route": false,
+      "not_said_re": "Right (now|about here).*(Castaic|Santa Clarita|Valencia)",
+      "max_said": 3
+     },
+     "why": "first fix after restart: lastFix null and S.m restored; |186-175|>3 teleport -> jumped, nothing between narrated"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       200,
+       2
+      ],
+      "dir": "N",
+      "dir_sure": true,
+      "pill": "GPS"
+     },
+     "why": "normal narration ahead resumes with votes"
+    }
+   ]
+  },
+  {
+   "name": "d-restart-while-off-i5",
+   "summary": "Driver leaves I-5 at Kettleman City onto CA-41 west, app restarts while off I-5 and resumes by tap: still off I-5, no narration.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 330,
+     "to_mile": 337,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 337,
+     "to_mile": 340,
+     "mph": 45,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 4,
+     "every_s": 5
+    },
+    {
+     "op": "hold",
+     "secs": 60,
+     "lateral_mi": 4
+    },
+    {
+     "op": "restart",
+     "gap_s": 120,
+     "resume": "tap"
+    },
+    {
+     "op": "hold",
+     "secs": 60,
+     "at_mile": 340,
+     "lateral_mi": 4
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "OFF I-5 FOR NOW"
+     },
+     "why": "two far fixes (>1.2 mi), drove true -> offI5Card"
+    },
+    {
+     "after_op": 4,
+     "plus_s": 5,
+     "state": {
+      "start_button": "Start GPS",
+      "notices_exclude": [
+       "resume"
+      ],
+      "mode": "gps"
+     },
+     "why": "resumeOffer then tap -> startGps hides resume"
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "mode": "gps",
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "NOT ON I-5",
+      "max_said": 0
+     },
+     "why": "stopAll resets drove=false; off fixes after restart -> notOnI5Card; narration paused off route"
+    }
+   ]
+  }
+ ]
+}

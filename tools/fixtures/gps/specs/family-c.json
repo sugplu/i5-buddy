@@ -1,0 +1,527 @@
+{
+ "family": "c",
+ "scenarios": [
+  {
+   "name": "c-grapevine-20s-dropout-stale",
+   "summary": "Northbound over Tejon Pass, fixes stop for 20 s then resume; pill goes GPS? and recovers.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 200,
+     "to_mile": 205,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "dropout",
+     "secs": 20
+    },
+    {
+     "op": "drive",
+     "from_mile": 205.4,
+     "to_mile": 208,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       202.5,
+       1.5
+      ],
+      "dir": "N",
+      "stale": false,
+      "pill": "GPS"
+     },
+     "why": "onFix on-route branch, heading at speed votes N via dirFromHeading"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "stale": true,
+      "pill": "GPS?",
+      "status_re": "waiting for a gps signal",
+      "mile": [
+       205,
+       1.5
+      ]
+     },
+     "why": "5 s interval sets S.gpsStale when Date.now()-lastGoodT > STALE_MS 15 s; render shows GPS?"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "stale": false,
+      "pill": "GPS",
+      "mile": [
+       208,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "onFix clears S.gpsStale on next good fix"
+    }
+   ]
+  },
+  {
+   "name": "c-canyon-3min-gap-jump-ahead",
+   "summary": "Southbound... no, northbound through the Sacramento River canyon near Dunsmuir: 3-minute dropout then fixes resume 3 miles ahead without flooding announcements.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 715,
+     "to_mile": 722,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "dropout",
+     "secs": 180
+    },
+    {
+     "op": "drive",
+     "from_mile": 725,
+     "to_mile": 730,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "mile": [
+       718.5,
+       1.5
+      ],
+      "dir": "N",
+      "off_route": false
+     },
+     "why": "onFix on-route"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "stale": true,
+      "pill": "GPS?",
+      "mile": [
+       722,
+       1.5
+      ]
+     },
+     "why": "STALE_MS 15 s staleness timer; mile kept"
+    },
+    {
+     "after_op": 3,
+     "at": "start",
+     "plus_s": 10,
+     "state": {
+      "stale": false,
+      "mile": [
+       725.5,
+       1.5
+      ],
+      "off_route": false,
+      "not_said_re": "in about 1 mile"
+     },
+     "why": "3 mi in 180 s < maxDrive so not a teleport, but places in the gap are behind; narrator should not say them as 'in about a mile'"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mile": [
+       730,
+       1.5
+      ],
+      "pill": "GPS",
+      "dir": "N"
+     },
+     "why": "resumes normal on-route tracking"
+    }
+   ]
+  },
+  {
+   "name": "c-grapevine-fuzzy-blips-precise",
+   "summary": "Grapevine northbound with alternating good and 300-2000 m fixes; two >1500 m in a row shows the precise notice, a good fix hides it.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 207,
+     "to_mile": 210,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "fix",
+     "lat": 34.8746,
+     "lon": -118.8919,
+     "acc": 400,
+     "speed_mph": 60
+    },
+    {
+     "op": "fix",
+     "lat": 34.879,
+     "lon": -118.8975,
+     "acc": 2000,
+     "speed_mph": 60
+    },
+    {
+     "op": "fix",
+     "lat": 34.8805,
+     "lon": -118.8987,
+     "acc": 1800,
+     "speed_mph": 60
+    },
+    {
+     "op": "hold",
+     "secs": 5,
+     "every_s": 5,
+     "jitter_m": 0
+    },
+    {
+     "op": "drive",
+     "from_mile": 210.6,
+     "to_mile": 213,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       210,
+       1.5
+      ],
+      "off_route": false,
+      "dir": "N"
+     },
+     "why": "coarse fix (acc > COARSE_M 250) still moves marker, votes no direction"
+    },
+    {
+     "after_op": 4,
+     "state": {
+      "notices_include": [
+       "precise"
+      ],
+      "mile": [
+       210,
+       1.5
+      ]
+     },
+     "why": "onFix: accuracy>1500 ignored, ++fuzzyN>=2 -> showPrecise"
+    },
+    {
+     "after_op": 6,
+     "state": {
+      "notices_exclude": [
+       "precise"
+      ],
+      "mile": [
+       213,
+       1.5
+      ],
+      "off_route": false,
+      "pill": "GPS"
+     },
+     "why": "good fix resets fuzzyN and hideNotice('precise')"
+    }
+   ]
+  },
+  {
+   "name": "c-canyon-wild-jump-40mi",
+   "summary": "Northbound near Castella, one fix lands 40 miles north then the car is back on its line; the marker must return without staying at the jump.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 735,
+     "to_mile": 740,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "fix",
+     "lat": 41.6185,
+     "lon": -122.5151,
+     "acc": 10,
+     "speed_mph": 60
+    },
+    {
+     "op": "drive",
+     "from_mile": 740.2,
+     "to_mile": 744,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mile": [
+       740,
+       1.5
+      ],
+      "dir": "N",
+      "off_route": false
+     },
+     "why": "on-route tracking"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "max_said": 1
+     },
+     "why": "jump > maxDrive (MAX_MPH*dt*1.5+1) is a teleport: jumped=true so no stack of landmark lines"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mile": [
+       744,
+       1.5
+      ],
+      "off_route": false,
+      "pill": "GPS"
+     },
+     "why": "next fixes snap back near hint; teleport again, then normal"
+    }
+   ]
+  },
+  {
+   "name": "c-grapevine-southbound-dropout",
+   "summary": "Southbound down the Grapevine from Lebec, 40 s dropout then resume 0.7 mile lower; direction stays S.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 214,
+     "to_mile": 205,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "dropout",
+     "secs": 40
+    },
+    {
+     "op": "drive",
+     "from_mile": 204.3,
+     "to_mile": 198,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "dir": "S",
+      "dir_sure": true,
+      "mile": [
+       209.5,
+       1.5
+      ]
+     },
+     "why": "dirFromHeading with flipped heading at speed"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "stale": true,
+      "pill": "GPS?",
+      "dir": "S"
+     },
+     "why": "STALE_MS staleness"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "stale": false,
+      "dir": "S",
+      "mile": [
+       198,
+       1.5
+      ],
+      "pill": "GPS"
+     },
+     "why": "onFix resumes, heading votes S"
+    }
+   ]
+  },
+  {
+   "name": "c-canyon-overnight-gap-new-trip",
+   "summary": "Parked at Dunsmuir with the app open, 4-hour dropout, then driving north again: new trip, direction re-learned.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 725,
+     "to_mile": 729,
+     "mph": 55,
+     "every_s": 5
+    },
+    {
+     "op": "dropout",
+     "secs": 14400
+    },
+    {
+     "op": "drive",
+     "from_mile": 729,
+     "to_mile": 733,
+     "mph": 55,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mile": [
+       729,
+       1.5
+      ],
+      "dir": "N"
+     },
+     "why": "on-route"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "mode": "gps",
+      "stale": true,
+      "pill": "GPS?",
+      "mile": [
+       729,
+       1.5
+      ]
+     },
+     "why": "no fixes: stale, mode stays gps"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "stale": false,
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       733,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "gap > NEW_TRIP_MS resets trip and dirSure, heading resettles N"
+    }
+   ]
+  },
+  {
+   "name": "c-canyon-null-speed-no-accuracy",
+   "summary": "Near Lakehead northbound, fixes with speed null and no heading after a dropout; no fake speed, still placed.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 700,
+     "to_mile": 704,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "dropout",
+     "secs": 60
+    },
+    {
+     "op": "drive",
+     "from_mile": 705,
+     "to_mile": 708,
+     "mph": 60,
+     "every_s": 5,
+     "speed_field": false,
+     "heading": "none",
+     "acc": 300
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mile": [
+       704,
+       1.5
+      ],
+      "dir": "N"
+     },
+     "why": "on-route"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "stale": true,
+      "pill": "GPS?"
+     },
+     "why": "STALE_MS"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "stale": false,
+      "off_route": false,
+      "mile": [
+       708,
+       1.5
+      ],
+      "dir": "N",
+      "max_said": 4
+     },
+     "why": "coarse fixes (acc>COARSE_M) move marker, no computed speed, no direction vote; dir kept"
+    }
+   ]
+  }
+ ]
+}

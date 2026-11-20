@@ -1,0 +1,248 @@
+[
+ {
+  "name": "a-ca99-split-north",
+  "family": "a",
+  "points": 212,
+  "checks": 3
+ },
+ {
+  "name": "a-805-parallel-north",
+  "family": "a",
+  "points": 163,
+  "checks": 3
+ },
+ {
+  "name": "a-i580-west-off",
+  "family": "a",
+  "points": 157,
+  "checks": 3
+ },
+ {
+  "name": "a-ca99-return-south",
+  "family": "a",
+  "points": 196,
+  "checks": 3
+ },
+ {
+  "name": "a-405-sfv-turnaround",
+  "family": "a",
+  "points": 160,
+  "checks": 3
+ },
+ {
+  "name": "a-el-toro-y-south",
+  "family": "a",
+  "points": 119,
+  "checks": 3
+ },
+ {
+  "name": "a-ca99-slow-diverge-dropout",
+  "family": "a",
+  "points": 96,
+  "checks": 3
+ },
+ {
+  "name": "b-buttonwillow-rest-stop-north",
+  "family": "b",
+  "points": 435,
+  "checks": 5
+ },
+ {
+  "name": "b-uturn-lost-hills-north-to-south",
+  "family": "b",
+  "points": 350,
+  "checks": 4
+ },
+ {
+  "name": "b-two-hour-stop-then-overnight",
+  "family": "b",
+  "points": 296,
+  "checks": 5
+ },
+ {
+  "name": "b-detour-50min-off-i5",
+  "family": "b",
+  "points": 216,
+  "checks": 3
+ },
+ {
+  "name": "b-detour-20min-returns",
+  "family": "b",
+  "points": 383,
+  "checks": 3
+ },
+ {
+  "name": "b-creep-traffic-30min-valley",
+  "family": "b",
+  "points": 442,
+  "checks": 3
+ },
+ {
+  "name": "b-parked-start-weed-rest-area",
+  "family": "b",
+  "points": 188,
+  "checks": 4
+ },
+ {
+  "name": "c-grapevine-20s-dropout-stale",
+  "family": "c",
+  "points": 86,
+  "checks": 3
+ },
+ {
+  "name": "c-canyon-3min-gap-jump-ahead",
+  "family": "c",
+  "points": 146,
+  "checks": 4
+ },
+ {
+  "name": "c-grapevine-fuzzy-blips-precise",
+  "family": "c",
+  "points": 71,
+  "checks": 3
+ },
+ {
+  "name": "c-canyon-wild-jump-40mi",
+  "family": "c",
+  "points": 109,
+  "checks": 3
+ },
+ {
+  "name": "c-grapevine-southbound-dropout",
+  "family": "c",
+  "points": 186,
+  "checks": 3
+ },
+ {
+  "name": "c-canyon-overnight-gap-new-trip",
+  "family": "c",
+  "points": 106,
+  "checks": 3
+ },
+ {
+  "name": "c-canyon-null-speed-no-accuracy",
+  "family": "c",
+  "points": 86,
+  "checks": 3
+ },
+ {
+  "name": "d-call-mid-headsup-queue-moves",
+  "family": "d",
+  "points": 333,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-tap-resume",
+  "family": "d",
+  "points": 268,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-auto-resume",
+  "family": "d",
+  "points": 218,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-no-tap-waits",
+  "family": "d",
+  "points": 126,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-after-46-min-forgotten",
+  "family": "d",
+  "points": 58,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-jump-10-miles",
+  "family": "d",
+  "points": 323,
+  "checks": 3
+ },
+ {
+  "name": "d-restart-while-off-i5",
+  "family": "d",
+  "points": 140,
+  "checks": 3
+ },
+ {
+  "name": "e-denied-first-start-then-allowed",
+  "family": "e",
+  "points": 195,
+  "checks": 4
+ },
+ {
+  "name": "e-denied-mid-drive-la-then-allowed",
+  "family": "e",
+  "points": 282,
+  "checks": 5
+ },
+ {
+  "name": "e-permission-flapping-grapevine",
+  "family": "e",
+  "points": 134,
+  "checks": 3
+ },
+ {
+  "name": "e-denied-ten-minutes-12-miles-on",
+  "family": "e",
+  "points": 198,
+  "checks": 5
+ },
+ {
+  "name": "e-imprecise-from-start-then-precise",
+  "family": "e",
+  "points": 165,
+  "checks": 5
+ },
+ {
+  "name": "e-denied-at-resume-after-restart",
+  "family": "e",
+  "points": 180,
+  "checks": 5
+ },
+ {
+  "name": "e-precise-off-mid-drive-sacramento",
+  "family": "e",
+  "points": 289,
+  "checks": 5
+ },
+ {
+  "name": "f-i15-lake-elsinore-home",
+  "family": "f",
+  "points": 114,
+  "checks": 2
+ },
+ {
+  "name": "f-bakersfield-roaming-20min",
+  "family": "f",
+  "points": 97,
+  "checks": 2
+ },
+ {
+  "name": "f-frontage-road-inside-radius",
+  "family": "f",
+  "points": 111,
+  "checks": 2
+ },
+ {
+  "name": "f-mexico-queue-creep",
+  "family": "f",
+  "points": 156,
+  "checks": 1
+ },
+ {
+  "name": "f-oregon-start-heading-south",
+  "family": "f",
+  "points": 120,
+  "checks": 2
+ },
+ {
+  "name": "f-join-i5-from-city-then-direction",
+  "family": "f",
+  "points": 256,
+  "checks": 2
+ }
+]

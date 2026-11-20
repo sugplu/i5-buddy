@@ -5,6 +5,8 @@
 <style>body{font:14px/1.4 ui-monospace,Menlo,monospace;margin:12px}iframe{width:430px;height:900px;border:1px solid #888;float:right}.pass{color:#090}.fail{color:#c00;font-weight:bold}.skip{color:#888}</style>
 <iframe id="f" src="../index.html?silent=1"></iframe>
 <pre id="out">running…</pre>
+<script src="simclock.js"></script>
+<script src="gps-bank.js"></script>
 <script>
 // Feeds a fake GPS track into the real app (via window.__I5_FAKE_GEO__) and checks what it does.
 // The road comes from the data (data.MAX_M, ENDS, STATES), so the drives fit whatever tools/build.py covers:
@@ -665,6 +667,23 @@ async function run() {
     api.stopAll(false);
     Object.assign(api.settings, prior); api.saveSettings();
     await sleep(30);
+  }
+
+  // 20. The GPS bank (tools/fixtures/gps/, 2026-11-20): hostile GPS scenarios, each in its own hidden copy of the app on
+  //     simulated time (tools/simclock.js, tools/gps-bank.js): road splits (I-805, I-405, CA-99, I-580), a rest-area U-turn and a
+  //     two-hour stop, GPS dropouts, a phone call and a restart mid-drive, location denied then allowed, and starting off I-5.
+  //     A fixture with known_bug is a suspected app bug filed with this repro: its failure shows as KNOWN, and the day it
+  //     passes the line says so (remove known_bug then).
+  {
+    api.stopAll(false); await sleep(30);
+    const bank = await window.runGpsBank({ base: "fixtures/gps/" });
+    ok(bank.length >= 30, `the GPS bank has ${bank.length} scenarios (at least 30)`);
+    for (const r of bank) {
+      const tag = `GPS bank [${r.family}] ${r.name}`;
+      if (r.known && !r.pass) lines.push(`SKIP KNOWN BUG ${tag}: ${r.lines.join(" | ").slice(0, 300)}`);
+      else if (r.known && r.pass) ok(true, `${tag} now passes: remove its known_bug`);
+      else ok(r.pass, r.pass ? tag : `${tag}: ${r.lines.join(" | ").slice(0, 500)}`);
+    }
   }
 
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + "\n" +

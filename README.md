@@ -211,6 +211,16 @@ python3 tools/run_tests.py -j 4            # four pages at a time
 #   /tools/e2e.html    fake GPS drives: narration timing, sides, off-route, glitches, the halfway point,
 #                      the end of the road at the Oregon line and at the Mexico border, demo, modules (ALL PASS)
 #   /tools/test-{live,map,play,trip,listen,ride}.html   per-module pages (test-map also covers the ride marker and the 3D fallback)
+#                      its last section runs the GPS bank: the hostile scenarios in tools/fixtures/gps/ (road splits, rest-area
+#                      U-turns, a 2-hour stop, GPS dropouts, a phone call and a restart mid-drive, location denied then allowed,
+#                      starting off I-5), each in its own hidden copy of the app on simulated time (tools/simclock.js).
+#                      /tools/test-gps.html?name=...&family=a-f runs only some of them. The scenarios are written as specs
+#                      (tools/fixtures/gps/specs/*.json; the language is in tools/gps_expand.py) and `python3 tools/gps_expand.py`
+#                      turns them into the fixtures. A spec with known_bug is a suspected app bug filed with its repro: it prints
+#                      KNOWN BUG instead of failing, and says so on the day it passes.
+#   /tools/test-roadfindings.html   what Claude found reading four simulated drives (a bug that is still in the app prints KNOWN BUG)
+#   python3 tools/run_tests.py --transcript   four 797-mile drives on simulated time (tools/transcript.html), every spoken line in
+#                      tools/qa-tmp/transcript-<dir>-<mode>.jsonl, for claude-power/jobs/i5_drive_eval.py to read (silent)
 #   /tools/test-missions.html   the missions module on synthetic data (passport, visit, nearest, kid, sheet, layout)
 #   /tools/test-getapp.html?s=app|get|site   "Get the iPhone app" by browser, i5.dominares.org/get, store tags, sw.js offline pages
 ```

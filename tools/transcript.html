@@ -1,0 +1,110 @@
+<!doctype html>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<title>I-5 Buddy drive transcript</title>
+<style>body{font:12px/1.4 ui-monospace,Menlo,monospace;margin:12px}iframe{width:430px;height:900px;border:1px solid #888;float:right}</style>
+<iframe id="f" src="../index.html?silent=1"></iframe>
+<pre id="out">running...</pre>
+<script src="simclock.js"></script>
+<script>
+const { installClock, installSpeech } = I5Sim;
+// A whole drive of I-5 on simulated time, for tools/run_tests.py --transcript (and for a person to open).
+// The real app is driven by fake GPS fixes (window.__I5_FAKE_GEO__), and its clock is replaced by ours: Date.now(),
+// performance.now(), setTimeout/setInterval and requestAnimationFrame inside the app window all run on simulated time,
+// so the 797 miles take seconds, while the app's own pacing (the speech queue's gaps, quiet-stretch stories, the 250 ms
+// pump) behaves as it would at 70 mph. Speech is the silent stub's idea of speaking, with a duration of about 13
+// characters a second; nothing is ever heard.
+// Query: dir=N|S  chat=low|normal|high  auto=1|0 (autoplay of full stories)  mph=70  step=0.25  from=  to=  (miles)
+//        asks=1|0 (the driver asks "where are we", "how far", "next gas", "next rest area" along the way)
+// Result: #out holds one JSON object per line (a header line, every spoken line, a trailer), and document.title says DONE.
+const Q = new URLSearchParams(location.search);
+const out = document.getElementById("out");
+const DIR = Q.get("dir") === "S" ? "S" : "N", CHAT = Q.get("chat") || "normal", AUTO = Q.get("auto") !== "0";
+const MPH = +(Q.get("mph") || 70), STEP = +(Q.get("step") || 0.25), ASKS = Q.get("asks") !== "0";
+const run = async () => {
+  const win = document.getElementById("f").contentWindow;
+  for (let i = 0; i < 200 && !win.I5BUDDY; i++) await new Promise(r => setTimeout(r, 50));
+  const api = win.I5BUDDY.api;
+  await new Promise(r => setTimeout(r, 800)); // modules load (real time)
+  const { MAX_M } = api.data;
+  const lines = [];
+  const emit = o => lines.push(JSON.stringify(o));
+
+  const clk = installClock(win, Date.now());
+  const T0 = clk.now;
+  const secs = () => Math.round((clk.now - T0) / 100) / 10;
+  let cur = null; // the spoken record being filled in
+  installSpeech(win, text => { if (cur) cur.parts.push(text); });
+
+  const kindOf = id => {
+    id = String(id || "");
+    if (!id) return "other";
+    const p = id.split(":")[0];
+    if (["zone", "state", "summit", "badge", "story", "more", "hear", "look", "where", "howfar", "arrive", "end-of-road", "halfway"].includes(p)) return p;
+    if (api.data.PLACES.some(x => x.id === id)) return "landmark";
+    return p;
+  };
+  const dropped = {}, spoken = [];
+  const S = api.S;
+  const real = api.voice.say.bind(api.voice);
+  api.voice.say = (text, opts = {}) => {
+    const rec = { id: opts.id || null, kind: kindOf(opts.id), prio: opts.prio ?? 1, now: !!opts.now, asked_t: secs(), asked_mile: S.m == null ? null : +S.m.toFixed(2), wanted: String(text), parts: [], started: false };
+    const o = { ...opts, onstart: () => { rec.started = true; rec.t = secs(); rec.mile = S.m == null ? null : +S.m.toFixed(2); rec.dir = S.dir; rec.queue_len = api.voice.queued().length; cur = rec; try { if (opts.onstart) opts.onstart(); } catch (e) { console.error(e); } } };
+    const pr = real(text, o);
+    Promise.resolve(pr).then(ok => {
+      if (rec.started) {
+        spoken.push(rec);
+        rec.preempted = !ok;
+        rec.text = rec.parts.join(" ") || rec.wanted;
+        rec.end_t = secs();
+        if (cur === rec) cur = null;
+      } else dropped[rec.kind] = (dropped[rec.kind] || 0) + 1;
+    });
+    return pr;
+  };
+
+  // settings: a fresh install on a long drive
+  api.stopAll(false);
+  api.settings.narr = true; api.settings.chat = CHAT; api.settings.autoStories = AUTO; api.settings.zoneNarr = true;
+  api.settings.chime = false; api.settings.live = false;
+  api.settings.cats = new Set(["farm", "hist", "nature", "town", "stop", "odd"]);
+  for (const k of Object.keys(S.stamps)) delete S.stamps[k];
+  const dd = api.data.DESTS.find(d => d.name === (DIR === "N" ? "Oregon border" : "Mexico border"));  // the app's own destinations
+  const dest = { name: dd.name, m: dd.m };
+  S.dest = dest;
+
+  let cb = null;
+  const G = { watchPosition(s) { cb = s; return 1; }, clearWatch() { cb = null; }, fix(lat, lon, o) { cb && cb({ coords: { latitude: lat, longitude: lon, speed: o.speed, heading: o.heading, accuracy: 8 }, timestamp: clk.now }); } };
+  win.__I5_FAKE_GEO__ = G;
+
+  const from = Q.get("from") != null ? +Q.get("from") : (DIR === "N" ? 0.3 : MAX_M - 0.3);
+  const to = Q.get("to") != null ? +Q.get("to") : (DIR === "N" ? MAX_M - 0.2 : 0.2);
+  emit({ header: true, app: api.APP_VERSION, dir: DIR, chat: CHAT, autoplay: AUTO, mph: MPH, step_mi: STEP, from, to, max_m: MAX_M, dest: dest.name, asks: ASKS, speech: "13 chars/s plus 0.3 s, simulated time" });
+
+  api.startGps();
+  await clk.advance(1000);
+  const sgn = to > from ? 1 : -1;
+  let nextAsk = from + sgn * 60, askN = 0;
+  const askList = [() => api.narrator.whereAreWe(), () => api.narrator.tellServices("fuel"), () => api.narrator.howFar(), () => api.narrator.tellServices("rest"), () => api.narrator.look("left")];
+  let steps = 0;
+  for (let m = from; sgn > 0 ? m <= to + 1e-9 : m >= to - 1e-9; m += sgn * STEP) {
+    const [lat, lon] = api.geo.coordAt(m);
+    const brg = api.geo.bearingAt(m);
+    const mph = MPH - 5 + 5 * Math.sin(m / 9); // 60-70 on the default speed: the road is never exactly the same speed
+    G.fix(lat, lon, { speed: mph / 2.23694, heading: sgn > 0 ? brg : (brg + 180) % 360 });
+    await clk.advance(0); // let the app handle the fix
+    if (ASKS && (sgn > 0 ? m >= nextAsk : m <= nextAsk)) { try { askList[askN++ % askList.length](); } catch (e) { console.error(e); } nextAsk += sgn * 60; }
+    await clk.advance(STEP / mph * 3600 * 1000);
+    steps++;
+  }
+  await clk.advance(60000);
+  api.stopAll(false);
+  await clk.advance(1000);
+
+  for (const r of spoken) emit({ t: r.t, mile: r.mile, dir: r.dir, kind: r.kind, id: r.id, text: r.text, queue_len: r.queue_len, preempted: !!r.preempted, prio: r.prio, asked_t: r.asked_t, asked_mile: r.asked_mile, wait_s: Math.round((r.t - r.asked_t) * 10) / 10, end_t: r.end_t });
+  emit({ trailer: true, spoken: spoken.length, dropped, fixes: steps, sim_seconds: secs(), timers_fired: clk.fired, final_mile: S.m == null ? null : +S.m.toFixed(2) });
+  out.textContent = lines.join("\n");
+  document.title = "DONE " + spoken.length;
+};
+run().catch(e => { out.textContent = "ERROR " + (e && e.stack || e); document.title = "ERROR"; });
+</script>

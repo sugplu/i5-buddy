@@ -1,0 +1,374 @@
+{
+ "family": "f",
+ "scenarios": [
+  {
+   "name": "f-i15-lake-elsinore-home",
+   "summary": "GPS started at home on I-15 in Lake Elsinore and driven south along I-15 toward Temecula: never on I-5, so no countdown, nothing announced, the Not on I-5 card.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "path",
+     "waypoints": [
+      [
+       33.675,
+       -117.33
+      ],
+      [
+       33.6,
+       -117.25
+      ],
+      [
+       33.5,
+       -117.15
+      ],
+      [
+       33.45,
+       -117.1
+      ]
+     ],
+     "mph": 65,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.6",
+     "state": {
+      "mode": "gps",
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "not on i-5 yet",
+      "card_not_re": "\\d\\s*mi\\b",
+      "not_said_re": [
+       "in about",
+       "right now",
+       "right about here"
+      ]
+     },
+     "why": "onFix far branch: off route after two far fixes; drove is false so the closest point is shown, not saved (3.0.1)"
+    },
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "off_route": true,
+      "card_re": "not on i-5 yet",
+      "max_said": 3
+     },
+     "why": "nothing narrated off I-5 (onPos returns when S.offRoute); only greeting/badges"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  },
+  {
+   "name": "f-bakersfield-roaming-20min",
+   "summary": "Started in Bakersfield, 30 miles from I-5, driving around town for 20 minutes.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "path",
+     "waypoints": [
+      [
+       35.3733,
+       -119.0187
+      ],
+      [
+       35.38,
+       -119.03
+      ],
+      [
+       35.39,
+       -119.02
+      ],
+      [
+       35.37,
+       -119.0
+      ],
+      [
+       35.3733,
+       -119.0187
+      ]
+     ],
+     "mph": 25,
+     "every_s": 10
+    },
+    {
+     "op": "hold",
+     "secs": 900,
+     "jitter_m": 5,
+     "every_s": 30
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "end",
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "not on i-5 yet"
+     },
+     "why": "far from I-5 the whole time"
+    },
+    {
+     "after_op": 2,
+     "at": "end",
+     "state": {
+      "mode": "gps",
+      "off_route": true,
+      "card_re": "not on i-5 yet",
+      "card_not_re": "\\d\\s*mi\\b",
+      "max_said": 3
+     },
+     "why": "no countdown, nothing announced; GPS stays on"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  },
+  {
+   "name": "f-frontage-road-inside-radius",
+   "summary": "A northbound car on a frontage road 0.8 mile from I-5 (inside the 1.2-mile on-road radius) is treated as on I-5; at 1.9 miles it is off.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 300,
+     "to_mile": 306,
+     "mph": 60,
+     "lateral_mi": 0.8,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 306,
+     "to_mile": 312,
+     "mph": 60,
+     "lateral_start_mi": 0.8,
+     "lateral_end_mi": 1.9,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 312,
+     "to_mile": 318,
+     "mph": 60,
+     "lateral_mi": 1.9,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.9",
+     "state": {
+      "off_route": false,
+      "mile": [
+       305,
+       2
+      ],
+      "pill": "GPS"
+     },
+     "why": "hit.dist 0.8 < max(1.2, acc radius): on route"
+    },
+    {
+     "after_op": 3,
+     "at": "end",
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5"
+     },
+     "why": "1.9 miles from the line for many fixes: off route (far branch, two in a row)"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  },
+  {
+   "name": "f-mexico-queue-creep",
+   "summary": "Started in the border queue at the road's first point, then creeping north into California.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "hold",
+     "secs": 300,
+     "at_mile": 0.3,
+     "lateral_mi": 0,
+     "jitter_m": 4,
+     "every_s": 20
+    },
+    {
+     "op": "drive",
+     "from_mile": 0.3,
+     "to_mile": 6,
+     "mph": 20,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 6,
+     "to_mile": 12,
+     "mph": 60,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 3,
+     "at": "end",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "dir": "N",
+      "mile": [
+       12,
+       1.5
+      ],
+      "not_said_re": [
+       "end of the road"
+      ]
+     },
+     "why": "never says the goodbye: it is only said after driving to an end (drove)"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  },
+  {
+   "name": "f-oregon-start-heading-south",
+   "summary": "GPS started past the north end (42.1 N, in Oregon) and driving south onto I-5 in Siskiyou County.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "path",
+     "waypoints": [
+      [
+       42.1,
+       -122.6
+      ],
+      [
+       42.03,
+       -122.613
+      ]
+     ],
+     "mph": 60,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 796,
+     "to_mile": 780,
+     "mph": 65,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "end",
+     "state": {
+      "mode": "gps",
+      "not_said_re": [
+       "end of the road for i-5 buddy"
+      ]
+     },
+     "why": "started past the end: no goodbye (drove false)"
+    },
+    {
+     "after_op": 2,
+     "at": "end",
+     "state": {
+      "off_route": false,
+      "dir": "S",
+      "mile": [
+       780,
+       2
+      ],
+      "not_said_re": [
+       "end of the road for i-5 buddy"
+      ]
+     },
+     "why": "driving south on I-5, heading votes S"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  },
+  {
+   "name": "f-join-i5-from-city-then-direction",
+   "summary": "Starts in a city off I-5 (Fresno area), then a long drive reaches I-5 near mile 380 and heads north: narration only from the road, direction from heading.",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "path",
+     "waypoints": [
+      [
+       36.74,
+       -119.79
+      ],
+      [
+       36.8,
+       -120.2
+      ],
+      [
+       36.9,
+       -120.6
+      ]
+     ],
+     "mph": 65,
+     "every_s": 15
+    },
+    {
+     "op": "drive",
+     "from_mile": 380,
+     "to_mile": 392,
+     "mph": 65,
+     "every_s": 8
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "end",
+     "state": {
+      "off_route": true,
+      "card_re": "not on i-5 yet"
+     },
+     "why": "Fresno is far from I-5"
+    },
+    {
+     "after_op": 2,
+     "at": "end",
+     "state": {
+      "off_route": false,
+      "dir": "N",
+      "dir_sure": true,
+      "mile": [
+       392,
+       2
+      ],
+      "pill": "GPS"
+     },
+     "why": "on I-5 after the jump: on route, direction N"
+    }
+   ],
+   "suspect": false,
+   "suspect_why": ""
+  }
+ ],
+ "authored_by": "the session (hand-written; the API budget for the family-f request was spent)"
+}

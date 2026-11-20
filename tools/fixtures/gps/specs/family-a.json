@@ -1,0 +1,520 @@
+{
+ "family": "a",
+ "scenarios": [
+  {
+   "name": "a-ca99-split-north",
+   "summary": "Northbound car takes CA-99 at Wheeler Ridge (~mile 221) toward Bakersfield, diverging east to 15 miles; must go OFF I-5 and stay quiet.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 205,
+     "to_mile": 221,
+     "mph": 65,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 221,
+     "to_mile": 235,
+     "mph": 65,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": 12,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 235,
+     "to_mile": 250,
+     "mph": 65,
+     "lateral_mi": 15,
+     "every_s": 20
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "off_route": false,
+      "mile": [
+       213,
+       2
+      ],
+      "dir": "N"
+     },
+     "why": "on-route branch of onFix; heading votes N"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "OFF I-5 FOR NOW"
+     },
+     "why": "far = dist>1.2 for 2 fixes (offCount>=2), drove=true so offI5Card"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "mile": [
+       225,
+       5
+      ],
+      "not_said_re": "In about|Right now|Right about here"
+     },
+     "why": "drove: setPosition keeps S.m, no further pos updates while off; narration paused"
+    }
+   ]
+  },
+  {
+   "name": "a-805-parallel-north",
+   "summary": "Northbound car on I-805 modeled 0.8 mi east of I-5 from mile 22 to 31 then merging back; app stays on I-5 (within 1.2 mi) and mile must not go backwards.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 15,
+     "to_mile": 22,
+     "mph": 60,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 22,
+     "to_mile": 31,
+     "mph": 60,
+     "lateral_mi": 0.8,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 31,
+     "to_mile": 33,
+     "mph": 60,
+     "lateral_start_mi": 0.8,
+     "lateral_end_mi": 0,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 33,
+     "to_mile": 40,
+     "mph": 65,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "at": "0.5",
+     "state": {
+      "off_route": false,
+      "mile": [
+       26.5,
+       2.5
+      ],
+      "pill": "GPS"
+     },
+     "why": "dist 0.8 < 1.2 mi threshold in onFix far test"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": false,
+      "mile": [
+       33,
+       2
+      ],
+      "dir": "N"
+     },
+     "why": "merge back; locate snaps to I-5"
+    },
+    {
+     "after_op": 4,
+     "state": {
+      "off_route": false,
+      "mile": [
+       40,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "on-route, heading votes"
+    }
+   ]
+  },
+  {
+   "name": "a-i580-west-off",
+   "summary": "Northbound car leaves I-5 at exit 446 onto I-580 heading west toward Tracy, ramping to 8 miles west; off-route detected within a few fixes and stays.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 430,
+     "to_mile": 446,
+     "mph": 70,
+     "every_s": 10
+    },
+    {
+     "op": "path",
+     "waypoints": [
+      [
+       37.5923,
+       -121.3352
+      ],
+      [
+       37.62,
+       -121.38
+      ],
+      [
+       37.66,
+       -121.42
+      ],
+      [
+       37.7,
+       -121.48
+      ]
+     ],
+     "mph": 65,
+     "every_s": 10
+    },
+    {
+     "op": "hold",
+     "secs": 120
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.8",
+     "state": {
+      "off_route": false,
+      "mile": [
+       443,
+       2
+      ]
+     },
+     "why": "on-route"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "mile": [
+       446,
+       3
+      ]
+     },
+     "why": "I-580 ~5+ mi west at end; far>1.2 twice; drove keeps last mile"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": true,
+      "card_re": "OFF I-5 FOR NOW",
+      "not_said_re": "In about|Right now"
+     },
+     "why": "offI5Card while drove and off"
+    }
+   ]
+  },
+  {
+   "name": "a-ca99-return-south",
+   "summary": "Car on CA-99 southbound 15 mi east rejoins I-5 at Wheeler Ridge and drives south; off-route clears, mile jumps without narrating, dir S.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 245,
+     "to_mile": 232,
+     "mph": 65,
+     "lateral_mi": 15,
+     "every_s": 20
+    },
+    {
+     "op": "drive",
+     "from_mile": 232,
+     "to_mile": 221,
+     "mph": 65,
+     "lateral_start_mi": 12,
+     "lateral_end_mi": 0,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 221,
+     "to_mile": 205,
+     "mph": 60,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "card_re": "NOT ON I-5 YET"
+     },
+     "why": "never drove this session: notOnI5Card, setPosition save:false"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "off_route": false,
+      "mile": [
+       221,
+       2
+      ],
+      "pill": "GPS"
+     },
+     "why": "on-route branch, wasOff teleport"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": false,
+      "mile": [
+       205,
+       2
+      ],
+      "dir": "S",
+      "dir_sure": true
+     },
+     "why": "heading flipped south votes S"
+    }
+   ]
+  },
+  {
+   "name": "a-405-sfv-turnaround",
+   "summary": "Northbound car takes I-405 west of I-5 near mile 159, diverges 3 mi, turns around and returns to I-5 southbound; narration resumes and dir becomes S.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 150,
+     "to_mile": 159,
+     "mph": 60,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 159,
+     "to_mile": 163,
+     "mph": 60,
+     "lateral_start_mi": 0,
+     "lateral_end_mi": -3,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 163,
+     "to_mile": 159,
+     "mph": 60,
+     "lateral_start_mi": -3,
+     "lateral_end_mi": 0,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 159,
+     "to_mile": 150,
+     "mph": 60,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5"
+     },
+     "why": "3 mi > 1.2 two fixes"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": false,
+      "mile": [
+       159,
+       2
+      ]
+     },
+     "why": "back within 1.2 mi, on-route branch"
+    },
+    {
+     "after_op": 4,
+     "state": {
+      "off_route": false,
+      "mile": [
+       150,
+       2
+      ],
+      "dir": "S",
+      "dir_sure": true
+     },
+     "why": "heading south votes S"
+    }
+   ]
+  },
+  {
+   "name": "a-el-toro-y-south",
+   "summary": "Southbound car on I-405 joining I-5 at the El Toro Y (~mile 92): approaching from 3 mi west, then on I-5 south; no backwards mile once on.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 100,
+     "to_mile": 95,
+     "mph": 65,
+     "lateral_mi": -3,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 95,
+     "to_mile": 92,
+     "mph": 65,
+     "lateral_start_mi": -3,
+     "lateral_end_mi": 0,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 92,
+     "to_mile": 82,
+     "mph": 65,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "off_route": true,
+      "card_re": "NOT ON I-5"
+     },
+     "why": "never on I-5: notOnI5Card"
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "off_route": false,
+      "mile": [
+       92,
+       2
+      ]
+     },
+     "why": "merge onto line"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": false,
+      "mile": [
+       82,
+       2
+      ],
+      "dir": "S",
+      "pill": "GPS"
+     },
+     "why": "heading votes S"
+    }
+   ]
+  },
+  {
+   "name": "a-ca99-slow-diverge-dropout",
+   "summary": "Car takes CA-99 north with a 60 s GPS dropout right at the split; after dropout it is 5 mi east and must be off-route, not snapped ahead.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 210,
+     "to_mile": 221,
+     "mph": 65,
+     "every_s": 10
+    },
+    {
+     "op": "dropout",
+     "secs": 60
+    },
+    {
+     "op": "drive",
+     "from_mile": 226,
+     "to_mile": 232,
+     "mph": 65,
+     "lateral_start_mi": 5,
+     "lateral_end_mi": 8,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "state": {
+      "stale": true,
+      "pill": "GPS?"
+     },
+     "why": "STALE_MS 15s timer"
+    },
+    {
+     "after_op": 3,
+     "at": "0.3",
+     "state": {
+      "off_route": true,
+      "stale": false,
+      "mile": [
+       221,
+       3
+      ]
+     },
+     "why": "far twice; drove keeps S.m"
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "off_route": true,
+      "pill": "OFF I-5",
+      "not_said_re": "In about|Right now"
+     },
+     "why": "offI5Card, no pos updates"
+    }
+   ]
+  }
+ ]
+}

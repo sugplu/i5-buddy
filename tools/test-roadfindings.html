@@ -1,0 +1,149 @@
+<!doctype html>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<title>I-5 Buddy road-test findings</title>
+<style>body{font:13px/1.4 ui-monospace,Menlo,monospace;margin:12px}iframe{width:430px;height:900px;border:1px solid #888;float:right}.pass{color:#090}.fail{color:#c00;font-weight:bold}.skip{color:#888}</style>
+<iframe id="f" src="../index.html?silent=1"></iframe>
+<pre id="out">running…</pre>
+<script>
+// Findings of the 2026-11-20 road tests (Claude read four full simulated drives, tools/transcript.html, and each finding was
+// reproduced here before anything was fixed). A check that holds is a normal PASS. A check for a bug that is still in the app is
+// filed as `bug(id, cond, message)`: while it fails it prints KNOWN BUG and does not fail the suite; the day the app is fixed it
+// prints "now passes, switch it to ok()". Nothing here changes the app. All silent.
+const out = document.getElementById("out"), lines = [];
+let fails = 0, known = 0;
+const ok = (c, m) => { lines.push(`${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
+const bug = (id, c, m) => { if (c) lines.push(`PASS (fixed? switch to ok) [${id}] ${m}`); else { known++; lines.push(`KNOWN BUG [${id}] ${m}`); } };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function run() {
+  const win = document.getElementById("f").contentWindow;
+  for (let i = 0; i < 100 && !win.I5BUDDY; i++) await sleep(100);
+  const api = win.I5BUDDY.api;
+  await sleep(800);
+  const { PLACES, ROUTE } = api.data;
+  api.settings.narr = true; api.settings.chime = false; api.settings.live = false;
+  const said = [];
+  const realSay = api.voice.say;
+  const spy = () => { said.length = 0; api.voice.say = (text, o = {}) => { said.push({ text, o }); return Promise.resolve(true); }; };
+  const unspy = () => { api.voice.say = realSay; };
+
+  // R1. Which side of I-5 a place is on matches where the place is: 197 landmarks more than 0.2 miles from the road.
+  //     (Claude suspected wrong sides at Midway Substation and the Agua Hedionda desalination plant; the data agrees with the
+  //     coordinates, so those lines are about the record's own point, not a bug in the app.)
+  {
+    const sideOf = (lat, lon) => {
+      let best = null;
+      for (let i = 0; i < ROUTE.length - 1; i++) {
+        const [m0, a0, o0] = ROUTE[i], [m1, a1, o1] = ROUTE[i + 1];
+        const kx = 69.17 * Math.cos(lat * Math.PI / 180);
+        const ax = (o0 - lon) * kx, ay = (a0 - lat) * 69, dx = (o1 - o0) * kx, dy = (a1 - a0) * 69;
+        const L = dx * dx + dy * dy || 1e-12, t = Math.max(0, Math.min(1, -(ax * dx + ay * dy) / L));
+        const px = ax + t * dx, py = ay + t * dy, dist = Math.hypot(px, py);
+        if (!best || dist < best.dist) best = { dist, side: dx * -py - dy * -px < 0 ? 1 : -1 };
+      }
+      return best;
+    };
+    let n = 0; const wrong = [];
+    for (const p of PLACES) {
+      if (p.lat == null || !p.side || p.detour) continue;
+      const s = sideOf(p.lat, p.lon);
+      if (s.dist < 0.2) continue;
+      n++;
+      if (s.side !== p.side) wrong.push(p.id);
+    }
+    ok(n > 150 && !wrong.length, `the left/right side of ${n} landmarks matches their coordinates (${wrong.length ? "wrong: " + wrong.slice(0, 5).join(", ") : "none wrong"})`);
+  }
+
+  // R2. "Next gas: Exit 120, in about 1 miles" (S-default and N drives, mile 120.3, 76.7): never "1 miles"; an exit already behind
+  //     the car is not "ahead".
+  {
+    spy();
+    api.setMode("demo");
+    api.setPosition(120.3, { dir: "N", speed: 65, jumped: true });
+    api.narrator.tellServices("fuel");
+    const t = (said.find(x => /Next gas/.test(x.text)) || { text: "" }).text;
+    unspy();
+    bug("1-miles", !/\b1 miles\b/.test(t), `the next-gas answer reads "1 miles" (${t.slice(0, 90)})`);
+    api.stopAll(false);
+  }
+
+  // R3. A rest area with no real name is spoken as "the next rest area on this side is Water" (S-default, mile 256; the data
+  //     has rest areas named Water, Rest area, and truck stops named TA and Services).
+  {
+    const junk = api.data.REST ? api.data.REST : null;
+    spy();
+    api.setMode("demo");
+    api.setPosition(256.7, { dir: "S", speed: 65, jumped: true });
+    api.narrator.tellServices("rest");
+    const t = (said.find(x => /rest area/i.test(x.text)) || { text: "" }).text;
+    unspy();
+    bug("rest-name-water", !/ is (Water|Rest area|TA|Services),/.test(t), `the next-rest-area answer names a place "Water" (${t.slice(0, 100)})`);
+    api.stopAll(false);
+  }
+
+  // R4. How-far answers say "9 h 30 min": a speech engine reads the h and min as letters or clips them.
+  {
+    spy();
+    api.setMode("demo");
+    api.S.dest = { name: "Oregon border", m: 797 };
+    api.setPosition(180.3, { dir: "N", speed: 65, jumped: true });
+    for (let i = 0; i < 40; i++) api.setPosition(180.3 + i * 0.02, { dir: "N", speed: 65 });
+    api.narrator.howFar();
+    const t = (said.find(x => /miles away/.test(x.text)) || { text: "" }).text;
+    unspy();
+    bug("eta-abbrev", !/\b\d+ h \d+ min\b/.test(t), `how-far speaks abbreviations (${t.slice(0, 100)})`);
+    ok(/about \d+ miles away/.test(t) && !/\bthe the\b/i.test(t), `how-far names the destination once ("${t.slice(0, 60)}")`);
+    api.S.dest = null;
+    api.stopAll(false);
+  }
+
+  // R5. A "The road climbs ... over the next 12 miles" line waits behind a story with no check: it plays miles late (N-default:
+  //     asked at mile 784.3, spoken at 788.3 with 8 miles of California left; S-default: 6 miles late at the Grapevine).
+  {
+    spy();
+    api.stopAll(false);
+    api.setMode("demo");
+    api.setPosition(189, { dir: "N", speed: 65, jumped: true });
+    api.setPosition(190.5, { dir: "N", speed: 65 });
+    const s = said.find(x => /^summit:/.test(x.o.id || ""));
+    unspy();
+    ok(!!s, "the climb warning is asked for ahead of the Grapevine");
+    bug("summit-stale", !!s && (typeof s.o.check === "function" || typeof s.o.fresh === "function"), "the climb warning has no check or fresh text, so it can play after the climb has been passed");
+    api.stopAll(false);
+  }
+
+  // R6. The device-voice chunker (js/voice.js chunks()) cuts a number at its decimal point and a name at "Jr.": the engine then
+  //     says "seven" and "two-mile" apart, or starts a chunk with ", who" (19 numbers and 4 names in one drive).
+  {
+    unspy();
+    api.stopAll(false);
+    win.__BUDDY_SPOKEN__ = [];
+    const pad = "x ".repeat(105);                         // a first sentence right at the 220-character limit
+    api.voice.say(pad + "The pipe is 7.2 miles long. Next.", { id: "chunk-test", now: true });
+    await sleep(6000);
+    const sp = (win.__BUDDY_SPOKEN__ || []).filter(s => /pipe|miles long|^2 miles/.test(s));
+    const split = sp.some(s => /\d\.$/.test(s.trim())) && sp.some(s => /^\d/.test(s.trim()));
+    bug("chunk-decimal", !split, `a number is split at its decimal point between two utterances (${sp.map(s => JSON.stringify(s.slice(-22))).join(" | ")})`);
+    win.__BUDDY_SPOKEN__ = [];
+    api.voice.stop();
+    api.voice.say(pad.slice(0, 190) + " It is named for Richard Henry Dana Jr., who sailed here in 1835. Next.", { id: "chunk-test2", now: true });
+    await sleep(6000);
+    const sp2 = (win.__BUDDY_SPOKEN__ || []).filter(s => /Dana|who sailed|named/.test(s));
+    bug("chunk-abbrev", !sp2.some(s => /^[,;]/.test(s.trim())), `a chunk starts with a comma after "Jr." (${sp2.map(s => JSON.stringify(s.slice(0, 16))).join(" | ")})`);
+    api.stopAll(false);
+  }
+
+  // R7. Mission lines: the exit and distance are said twice in a row ("At exit 54, Highway 76 heads about 4.5 miles east to Mission
+  //     San Luis Rey. Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four and a half miles inland.").
+  {
+    const dup = PLACES.filter(p => { const t = api.narrator.announceText(p, 2, "N"); return (t.match(/\bexit \d+[A-Z]?\b/gi) || []).length > 1 && /^Exit \d/.test(p.text); });
+    bug("mission-dup-exit", dup.length === 0, `${dup.length} landmark lines say their exit twice in a row (${dup.slice(0, 4).map(p => p.id).join(", ")})`);
+  }
+
+  out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + ` (${known} known bugs filed)\n` +
+    lines.map(l => `<span class="${l.startsWith("PASS") ? "pass" : l.startsWith("FAIL") ? "fail" : "skip"}">${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("\n");
+  document.title = fails ? `FAILED ${fails}` : "ALL PASS";
+}
+document.getElementById("f").addEventListener("load", () => run().catch(e => { out.textContent = "ERROR " + e.stack; document.title = "ERROR"; }));
+</script>

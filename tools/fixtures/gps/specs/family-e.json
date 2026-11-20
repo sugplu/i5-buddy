@@ -1,0 +1,807 @@
+{
+ "family": "e",
+ "scenarios": [
+  {
+   "name": "e-denied-first-start-then-allowed",
+   "summary": "Location is refused at the very first Start GPS near Castaic (I-5 mile 180). The driver keeps driving with the app off, allows location without tapping anything, then taps Start GPS and it works.",
+   "suspect": false,
+   "suspect_why": "In watchGps() the line `watchId = G.watchPosition(...)` assigns the id only after watchPosition returns. If the error-1 callback fires synchronously (a watch started while refused errors at once), stopAll() runs while watchId is still null, and then the dead watch's id is stored in watchId with the mode off. If that watch stays registered, fixes after allow reach onFix() with S.mode 'off'. onFix() would then hide the denied card, move S.m, write store 'drive' and requestWake, all without Start GPS.",
+   "script": [
+    {
+     "op": "deny"
+    },
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 180,
+     "to_mile": 185,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "allow"
+    },
+    {
+     "op": "drive",
+     "from_mile": 185,
+     "to_mile": 190,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 190,
+     "to_mile": 196,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 2,
+     "at": "0.5",
+     "state": {
+      "mode": "off",
+      "pill": "OFF",
+      "notices_include": [
+       "denied"
+      ],
+      "start_button": "Start GPS",
+      "mile_null": true,
+      "said_re": "I-5 buddy"
+     },
+     "why": "startGps() greets, then watchGps() gets error code 1 with gpsGotFix false, so it calls stopAll() (setMode off) and then showDenied(). render() in off mode shows the OFF pill. There was never a fix, so there is no mile."
+    },
+    {
+     "after_op": 4,
+     "state": {
+      "mode": "off",
+      "pill": "OFF",
+      "notices_include": [
+       "denied"
+      ],
+      "mile_null": true,
+      "start_button": "Start GPS"
+     },
+     "why": "Allowing location without tapping must not start tracking: stopAll() cleared the watch and the mode stays off. The denied card stays until the driver acts, because only a watch success callback hides it."
+    },
+    {
+     "after_op": 6,
+     "at": "0.3",
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       191.8,
+       2
+      ],
+      "off_route": false,
+      "stale": false,
+      "said_re": "I-5 buddy"
+     },
+     "why": "Start GPS again: setMode('gps') hides 'denied', greet() runs, and the watch success callback goes to onFix's on-route branch, which calls setPosition()."
+    },
+    {
+     "after_op": 6,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       196,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true,
+      "notices_exclude": [
+       "denied"
+      ]
+     },
+     "why": "The road heading at more than 6 mph gives dirFromHeading 'N', and dirVotes agree, so S.dirSure is set."
+    }
+   ],
+   "triage": "Claude suspected a synchronous error callback leaves a live watch; browsers call the error callback asynchronously and the scenario passes: not a bug."
+  },
+  {
+   "name": "e-denied-mid-drive-la-then-allowed",
+   "summary": "Location is refused for about 3 minutes while driving north through East LA on I-5 (miles 130 to 133). The drive stays on, says it is waiting, shows the denied card after 2 minutes, and picks up narration again once location is allowed.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 125,
+     "to_mile": 130,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "deny"
+    },
+    {
+     "op": "drive",
+     "from_mile": 130,
+     "to_mile": 133,
+     "mph": 55,
+     "every_s": 5
+    },
+    {
+     "op": "allow"
+    },
+    {
+     "op": "drive",
+     "from_mile": 133,
+     "to_mile": 148,
+     "mph": 60,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "mile": [
+       130,
+       1.5
+      ],
+      "stale": false,
+      "dir": "N"
+     },
+     "why": "Normal driving: onFix's on-route branch calls setPosition()."
+    },
+    {
+     "after_op": 3,
+     "at": "0.2",
+     "state": {
+      "mode": "gps",
+      "stale": true,
+      "pill": "GPS?",
+      "status_re": "waiting for a gps signal",
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       130,
+       1.5
+      ]
+     },
+     "why": "3.0.6 watchGps error path: code 1 with gpsGotFix true does not call stopAll(). It sets S.gpsStale and the status line, and re-watches every 5 s. render() shows GPS? when gpsStale and not offRoute. The denied card waits for 120 s of refusals."
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "pill": "GPS?",
+      "notices_include": [
+       "denied"
+      ],
+      "mile": [
+       130,
+       2
+      ]
+     },
+     "why": "Refusals for more than 120 s since deniedSince: showDenied() runs from the rewatch every 5 s. The mode is still gps, so the drive did not end."
+    },
+    {
+     "after_op": 5,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "stale": false,
+      "pill": "GPS",
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       134.5,
+       2
+      ],
+      "off_route": false
+     },
+     "why": "After allow, the next watchGps() (at most 5 s later) gets fixes. The success callback resets deniedSince and calls hideNotice('denied'), and onFix clears gpsStale."
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       148,
+       1.5
+      ],
+      "dir": "N",
+      "off_route": false,
+      "said_re": "in about|right now|right about here"
+     },
+     "why": "Narration continues: 3 miles in about 200 s is under maxDrive, so it is not a teleport. setPosition emits 'pos' with jumped false, and the narrator announces the LA landmarks between miles 134 and 148 (Dodger Stadium, Griffith Park, the Zoo)."
+    }
+   ]
+  },
+  {
+   "name": "e-permission-flapping-grapevine",
+   "summary": "Location permission flaps between refused and allowed 3 times in about a minute while climbing the Grapevine on I-5 (miles 202 to 203). The drive must never end and no denied card should appear.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 200,
+     "to_mile": 212,
+     "mph": 65,
+     "every_s": 5,
+     "events": [
+      {
+       "at_mile": 202.0,
+       "op": "deny"
+      },
+      {
+       "at_mile": 202.18,
+       "op": "allow"
+      },
+      {
+       "at_mile": 202.36,
+       "op": "deny"
+      },
+      {
+       "at_mile": 202.54,
+       "op": "allow"
+      },
+      {
+       "at_mile": 202.72,
+       "op": "deny"
+      },
+      {
+       "at_mile": 202.9,
+       "op": "allow"
+      }
+     ]
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "stale": false,
+      "dir": "N",
+      "mile": [
+       201.2,
+       1.5
+      ]
+     },
+     "why": "Before the flapping: onFix's on-route branch, with direction from the heading."
+    },
+    {
+     "after_op": 1,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "stale": false,
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       206,
+       1.5
+      ]
+     },
+     "why": "Each refusal came after fixes (gpsGotFix true), so watchGps does not call stopAll(). Each fix resets deniedSince to 0, so the 120 s threshold for showDenied() is never reached. The rewatch every 5 s restored fixes, and onFix cleared gpsStale."
+    },
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       212,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true,
+      "off_route": false,
+      "notices_exclude": [
+       "denied"
+      ],
+      "stale": false
+     },
+     "why": "The drive survives the flapping: there is no trip:end and no mode change, and dirVotes keep the direction sure."
+    }
+   ]
+  },
+  {
+   "name": "e-denied-ten-minutes-12-miles-on",
+   "summary": "Location is refused for 10 minutes while driving north on I-5 near Kettleman City. When it is allowed again the car is 12 miles further, and the app must pick up at the new mile, out of the waiting state.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 296,
+     "to_mile": 310,
+     "mph": 72,
+     "every_s": 10
+    },
+    {
+     "op": "deny"
+    },
+    {
+     "op": "drive",
+     "from_mile": 310,
+     "to_mile": 322,
+     "mph": 72,
+     "every_s": 10
+    },
+    {
+     "op": "allow"
+    },
+    {
+     "op": "drive",
+     "from_mile": 322,
+     "to_mile": 335,
+     "mph": 72,
+     "every_s": 10
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "mile": [
+       310,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "Normal on-route fixes in onFix."
+    },
+    {
+     "after_op": 3,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "stale": true,
+      "pill": "GPS?",
+      "notices_exclude": [
+       "denied"
+      ]
+     },
+     "why": "About 60 s into the refusal: watchGps' error-1 branch with gpsGotFix true. gpsStale is set, and deniedSince is under 120 s."
+    },
+    {
+     "after_op": 3,
+     "at": "0.5",
+     "state": {
+      "mode": "gps",
+      "stale": true,
+      "pill": "GPS?",
+      "status_re": "waiting for a gps signal",
+      "notices_include": [
+       "denied"
+      ],
+      "mile": [
+       310,
+       2
+      ]
+     },
+     "why": "About 300 s into the refusal: past 120 s, so showDenied() runs from the rewatch every 5 s. The drive is still gps mode, and the mile stays where the last fix left it."
+    },
+    {
+     "after_op": 5,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "stale": false,
+      "pill": "GPS",
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       323.3,
+       2
+      ],
+      "off_route": false
+     },
+     "why": "Back on: the watch success callback calls hideNotice('denied'), and onFix clears gpsStale. 12 miles in 10 minutes is under maxDrive (100 mph x dtH x 1.5 + 1, about 26 mi), so it is not a teleport, and setPosition moves the car to the new mile."
+    },
+    {
+     "after_op": 5,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       335,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "Driving continues normally after the long refusal."
+    }
+   ]
+  },
+  {
+   "name": "e-imprecise-from-start-then-precise",
+   "summary": "Precise Location is off from the moment GPS starts in Glendale/Burbank on I-5 (fixes of 3000 to 5000 m). The app should show the precise card and announce nothing, then find the car once precise fixes arrive.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 140,
+     "to_mile": 150,
+     "mph": 60,
+     "acc": 4000,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 150,
+     "to_mile": 153,
+     "mph": 60,
+     "acc": 3000,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 153,
+     "to_mile": 160,
+     "mph": 60,
+     "acc": 10,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "at": "0.1",
+     "state": {
+      "mode": "gps",
+      "notices_include": [
+       "precise"
+      ],
+      "mile_null": true,
+      "off_route": false,
+      "pill": "GPS?",
+      "status_re": "waiting for a gps signal",
+      "said_re": "I-5 buddy"
+     },
+     "why": "onFix: accuracy over 1500 returns early, and after 2 fuzzy fixes in a row (fuzzyN) showPrecise() runs. No setPosition call, so there is no mile and no off-route. The stale interval sets gpsStale 15 s after gpsStartT (STALE_MS), so the pill shows GPS?. greet() ran at Start."
+    },
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "notices_include": [
+       "precise"
+      ],
+      "mile_null": true,
+      "off_route": false,
+      "stale": true,
+      "not_said_re": "in about|right now|right about here"
+     },
+     "why": "Fuzzy fixes never reach setPosition, so no 'pos' event goes out and the narrator announces no landmark."
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "mode": "gps",
+      "notices_include": [
+       "precise"
+      ],
+      "mile_null": true,
+      "off_route": false,
+      "not_said_re": "in about|right now|right about here"
+     },
+     "why": "3000 m is still over the 1500 m cutoff in onFix: the same early return."
+    },
+    {
+     "after_op": 3,
+     "at": "0.2",
+     "state": {
+      "mode": "gps",
+      "notices_exclude": [
+       "precise"
+      ],
+      "stale": false,
+      "pill": "GPS",
+      "mile": [
+       154.4,
+       2
+      ],
+      "off_route": false
+     },
+     "why": "A good fix resets fuzzyN, calls hideNotice('precise') and clears gpsStale. The first position has S.m null, so it is a teleport and is placed with jumped true."
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       160,
+       1.5
+      ],
+      "dir": "N",
+      "notices_exclude": [
+       "precise"
+      ]
+     },
+     "why": "Normal on-route tracking after Precise Location comes back."
+    }
+   ]
+  },
+  {
+   "name": "e-denied-at-resume-after-restart",
+   "summary": "While driving north near Lathrop (I-5 mile 458), location is refused and the web view restarts. Resume drive is tapped while still refused, which should show the denied card. Then the driver allows location and starts again.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 450,
+     "to_mile": 458,
+     "mph": 65,
+     "every_s": 5
+    },
+    {
+     "op": "deny"
+    },
+    {
+     "op": "restart",
+     "gap_s": 60,
+     "resume": "none"
+    },
+    {
+     "op": "start"
+    },
+    {
+     "op": "dropout",
+     "secs": 30
+    },
+    {
+     "op": "allow"
+    },
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 458,
+     "to_mile": 466,
+     "mph": 65,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "mile": [
+       458,
+       1.5
+      ]
+     },
+     "why": "Normal on-route fixes. onFix also saves store 'drive' every 30 s."
+    },
+    {
+     "after_op": 3,
+     "plus_s": -5,
+     "state": {
+      "mode": "off",
+      "pill": "OFF",
+      "start_button": "Resume drive",
+      "notices_include": [
+       "resume"
+      ],
+      "notices_exclude": [
+       "denied"
+      ],
+      "mile": [
+       458,
+       2
+      ]
+     },
+     "why": "resumeOffer(): the drive was saved less than 45 min ago (RESUME_MS) and S.m is restored, so S.resumable is set with the Resume drive button and the resume card. autoResume() sees permission not 'granted' and does not call startGps()."
+    },
+    {
+     "after_op": 5,
+     "at": "0.5",
+     "state": {
+      "mode": "off",
+      "pill": "OFF",
+      "notices_include": [
+       "denied"
+      ],
+      "notices_exclude": [
+       "resume"
+      ],
+      "start_button": "Start GPS",
+      "mile": [
+       458,
+       2
+      ],
+      "status_re": "paused",
+      "not_said_re": "Hi, I'm your"
+     },
+     "why": "Tapping Resume drive runs startGps(): resuming is true, so there is no greet, hideNotice('resume') runs and the button label resets. gpsGotFix is false and the first callback is error 1, so watchGps calls stopAll() and then showDenied(). render() in off mode with a mile shows 'Paused \u00b7 region'."
+    },
+    {
+     "after_op": 8,
+     "at": "0.3",
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "notices_exclude": [
+       "denied",
+       "resume"
+      ],
+      "mile": [
+       460.4,
+       2
+      ],
+      "stale": false
+     },
+     "why": "After allow, Start GPS: setMode('gps') hides 'denied', and the watch success callback goes to onFix's on-route branch."
+    },
+    {
+     "after_op": 8,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       466,
+       1.5
+      ],
+      "dir": "N",
+      "off_route": false
+     },
+     "why": "Tracking continues normally."
+    }
+   ],
+   "triage": "Checkpoint moved 10 s earlier: it fell after the driver had already tapped Resume (fixture timing, not an app bug)."
+  },
+  {
+   "name": "e-precise-off-mid-drive-sacramento",
+   "summary": "Precise Location is turned off in the middle of a drive north through Sacramento on I-5 (fixes of 4500 m from mile 526 to 536), then back on. The mile should hold with the precise card showing and no off-route, then tracking resumes.",
+   "suspect": false,
+   "suspect_why": "",
+   "script": [
+    {
+     "op": "start"
+    },
+    {
+     "op": "drive",
+     "from_mile": 516,
+     "to_mile": 526,
+     "mph": 60,
+     "every_s": 5
+    },
+    {
+     "op": "drive",
+     "from_mile": 526,
+     "to_mile": 536,
+     "mph": 65,
+     "acc": 4500,
+     "every_s": 10
+    },
+    {
+     "op": "drive",
+     "from_mile": 536,
+     "to_mile": 546,
+     "mph": 65,
+     "acc": 8,
+     "every_s": 5
+    }
+   ],
+   "expect": [
+    {
+     "after_op": 1,
+     "state": {
+      "mode": "gps",
+      "pill": "GPS",
+      "mile": [
+       526,
+       1.5
+      ],
+      "notices_exclude": [
+       "precise"
+      ],
+      "dir": "N"
+     },
+     "why": "Accurate on-route fixes in onFix."
+    },
+    {
+     "after_op": 2,
+     "at": "0.3",
+     "state": {
+      "mode": "gps",
+      "notices_include": [
+       "precise"
+      ],
+      "stale": true,
+      "pill": "GPS?",
+      "mile": [
+       526,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "onFix: accuracy over 1500 returns before locate() and setPosition. After 2 such fixes, showPrecise() runs. lastGoodT stops advancing, so the stale interval sets gpsStale after 15 s and render() shows GPS?. The far/offCount logic is never reached, so there is no off-route."
+    },
+    {
+     "after_op": 2,
+     "state": {
+      "mode": "gps",
+      "notices_include": [
+       "precise"
+      ],
+      "stale": true,
+      "mile": [
+       526,
+       1.5
+      ],
+      "off_route": false
+     },
+     "why": "Still fuzzy: the mile is frozen at the last good fix."
+    },
+    {
+     "after_op": 3,
+     "at": "0.15",
+     "state": {
+      "mode": "gps",
+      "notices_exclude": [
+       "precise"
+      ],
+      "stale": false,
+      "pill": "GPS",
+      "mile": [
+       537.5,
+       2
+      ],
+      "off_route": false
+     },
+     "why": "A good fix resets fuzzyN and calls hideNotice('precise'), and gpsStale clears. 10 miles in about 9 minutes is under maxDrive, so setPosition moves the car on."
+    },
+    {
+     "after_op": 3,
+     "state": {
+      "mode": "gps",
+      "mile": [
+       546,
+       1.5
+      ],
+      "dir": "N",
+      "dir_sure": true
+     },
+     "why": "Normal tracking, with direction from the heading at speed."
+    }
+   ]
+  }
+ ]
+}

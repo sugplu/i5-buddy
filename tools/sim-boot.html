@@ -1,0 +1,14 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>I-5 Buddy (simulated time)</title>
+<script>
+// Loader for the road tests (tools/gps-bank.js): puts the simulated clock and speech engine into this window, then
+// replaces the document with ../index.html (the same window, so the clock stays). Only for tests inside a page that has
+// loaded tools/simclock.js. Silent: the parent page sets window.__BUDDY_SILENT__.
+parent.I5Sim.bootInto(window);
+fetch("../index.html").then(r => r.text()).then(h => {
+  document.open();
+  document.write(h.replace("<head>", '<head><base href="../">'));
+  document.close();
+});
+</script>
