@@ -720,7 +720,8 @@ async function selftest(w, api) {
   const ENDS = api.data.ENDS, TOP = api.data.MAX_M, STATES = api.data.STATES;
   const Cap = s => s.replace(/^\w/, c => c.toUpperCase());
   const cover = `I-5 Buddy covers I-5 in ${STATES.map(s => s.name).join(" and ")}`;
-  const around = d => api.data.fmtDuration(d / 64); // the test drives at 64 mph
+  // the test drives at 64 mph; spoken answers say the time in words (3.0.7: "9 hours and 30 minutes", never "9 h 30 min")
+  const around = d => api.data.fmtDurationSpoken(d / 64);
   const mine = from => (spoken.slice(from).find(s => /^listen:/.test(s.id || "")) || {}).text || ""; // our own reply
   const capText = () => { const c = doc.querySelector(".lsn-reply"); return c && !c.hidden ? doc.querySelector(".lsn-reply-a").textContent : ""; };
   const ask = async text => { api.voice.stop(); await sleep(40); const at = spoken.length; api.listen.run(text); await sleep(150); return mine(at); };
@@ -730,6 +731,7 @@ async function selftest(w, api) {
   let said2 = await ask("how far to Oregon");
   e2e("'how far to Oregon' counts down to the Oregon line, the end of the road", said2 === northEnd && capText() === northEnd && api.S.dest.name === "Redding" && toastText() === "How far to Oregon",
     `${said2} · ${toastText()}`);
+  e2e("the time is said in words, not 'h' and 'min'", / hours? and \d+ minutes?\.| hours?\.| minutes?\./.test(said2) && !/\d+ h\b|\bmin\b/.test(said2), said2);
   said2 = await ask("how far to the Oregon border");
   e2e("'how far to the Oregon border' says the same", said2 === northEnd, said2);
   said2 = await ask("how far to the state line");

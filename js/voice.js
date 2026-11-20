@@ -384,17 +384,18 @@ function pickVoice() {
   return voices.find(v => v.voiceURI === settings.voice) || voices[0] || null;
 }
 
-/** Split long text into sentence chunks (Chrome cuts off long utterances; iOS stutters). */
+/** Split long text into chunks of whole sentences, at most about 220 characters each (Chrome cuts off long utterances;
+    iOS stutters). The sentences are the natural voice's own units (speechUnits), so a chunk never ends inside "7.2 miles"
+    or after "Jr." (3.0.7 road test: the device voice said "seven" and "two-mile" apart, or began a chunk with ", who"). */
 function chunks(text) {
-  const parts = text.replace(/\s+/g, " ").match(/[^.!?]+[.!?]+["')\]]*\s*|[^.!?]+$/g) || [text];
   const out = [];
   let cur = "";
-  for (const p of parts) {
-    if ((cur + p).length > 220 && cur) { out.push(cur.trim()); cur = ""; }
-    cur += p;
+  for (const u of speechUnits(text)) {
+    if (cur && cur.length + 1 + u.length > 220) { out.push(cur); cur = ""; }
+    cur = cur ? cur + " " + u : u;
   }
-  if (cur.trim()) out.push(cur.trim());
-  return out;
+  if (cur) out.push(cur);
+  return out.length ? out : [String(text)];
 }
 
 function audio() {

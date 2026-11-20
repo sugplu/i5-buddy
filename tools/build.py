@@ -56,7 +56,13 @@ DEST_LIST = [  # (label, state, exit ref) used for "Where are you headed?"
 
 warn = []
 REST_STATUS_DAYS = 7  # Caltrans statuses change within days: run tools/rest_status.py right before a release
+                      # (js/data.js REST_STATUS_DAYS applies the same age in the app, from each row's `checked` date)
 REST_STATUSES = {"closed", "partial", "truck_only"}
+# A rest stop with no real name ("Water", a radiator-water turnout on the Grapevine, and two unnamed OpenStreetMap areas
+# named "Rest area" by tools/extras.py) is left out of the app (3.0.7 road test: "the next rest area on this side is
+# Water"). None of them is in Caltrans' rest area list (tools/rest_status.py); tools/guides.py JUNK_REST already left them
+# off the web pages.
+NAMELESS_REST = re.compile(r"^(water|rest area|services)$", re.I)
 
 
 def load_optional(name):
@@ -86,7 +92,7 @@ def rest_with_status(rows, today):
         if not hit:
             warn.append(f"rest status matches no rest area: {o.get('name')} mile {o.get('m')}")
         for r in hit:
-            r["status"], r["src"] = o["status"], o["src"]
+            r["status"], r["src"], r["checked"] = o["status"], o["src"], o["checked"]   # the app stops trusting it after REST_STATUS_DAYS
             for k in ("since", "until"):
                 if o.get(k):
                     r[k] = o[k]
@@ -501,7 +507,8 @@ def main():
         "states": states, "route": route, "places": places, "zones": zones, "trivia": trivia, "dests": dests,
         "exits": [e for e in X["exits"] if e[1] in off],
         "services": [border_services(s) for s in X["services"] if s.get("st", "CA") in off],
-        "rest": rest_with_status([r for r in X["rest"] if in_road(r.get("m"))], __import__("datetime").date.today()),
+        "rest": rest_with_status([r for r in X["rest"] if in_road(r.get("m")) and not NAMELESS_REST.match(str(r.get("name", "")).strip())],
+                                 __import__("datetime").date.today()),
         "cams": [c for c in X["cams"] if in_road(c.get("m"))],
         "districts": X["districts"],
         "elev": elev, "passes": [p for p in X.get("passes", []) if in_road(p.get("m"))],

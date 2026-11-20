@@ -1207,7 +1207,8 @@ function askText(text) {
   return hit ? hit.a : null;
 }
 const exitName = (st, ref) => { try { return D().exitName(st, ref); } catch { return `Exit ${ref}`; } };
-const dur = hrs => { try { return D().fmtDuration ? D().fmtDuration(hrs) : ""; } catch { return ""; } };
+// spoken answers say the time in words, "5 hours and 56 minutes" (3.0.7 road test: "5 h 56 min" was read as letters)
+const dur = hrs => { try { const d = D(); return d.fmtDurationSpoken ? d.fmtDurationSpoken(hrs) : d.fmtDuration ? d.fmtDuration(hrs) : ""; } catch { return ""; } };
 const fmtNum = n => { try { return Number(n).toLocaleString("en-US"); } catch { return String(n); } };
 function listJoin(a) { return a.length < 2 ? a.join("") : `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`; }
 function shortDest(name) {
@@ -2358,7 +2359,7 @@ function clockLine(hrs) {
   const day = at.toDateString() === new Date(now()).toDateString() ? "" : at.getDate() === new Date(now() + 864e5).getDate() ? " tomorrow" : "";
   return clock ? ` Without stops, we'd get there about ${clock}${day}.` : "";
 }
-/** "Redding is about 368 miles away, around 5 h 56 min of driving. Without stops, we'd get there about 9:40 PM." */
+/** "Redding is about 368 miles away, around 5 hours and 56 minutes of driving. Without stops, we'd get there about 9:40 PM." */
 function etaText(dest) {
   const st = S();
   if (!dest || st.m == null || !isFinite(dest.m)) return "";

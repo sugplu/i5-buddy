@@ -14,7 +14,7 @@ export const STATES = D.states;
 export const DESTS = D.dests;
 export const EXITS = D.exits;          // [m, st, ref, destinations]
 export const SERVICES = D.services;    // [{m, st, ref, fuel[], fuelN, ev[], evN, food[], foodN, sleep[], sleepN}]
-export const REST = D.rest;            // [{m, name, side, kind, toilets, status?, src?, since?, until?}] (status: a Caltrans closure)
+export const REST = D.rest;            // [{m, name, side, kind, toilets, status?, src?, checked?, since?, until?}] (status: a Caltrans closure)
 /** Share headline templates by kind (trip_route, trip_dest, trip, all, demo) with {miles} {stamps} {badges} {from} {to}
     {dest} placeholders; places also carry `pc`, a postcard line of at most 60 characters (tools/postcards.json). */
 export const POSTCARDS = D.postcards && typeof D.postcards === "object" ? D.postcards : {};
@@ -117,11 +117,20 @@ export function servicesAhead(m, dir, kind, n = 3, max = 120) {
   }
   return out;
 }
+/** How long a Caltrans rest-area status counts after it was read (r.checked): the same rule as tools/build.py's
+    REST_STATUS_DAYS, which keeps an older one out of a new build. */
+export const REST_STATUS_DAYS = 7;
+const endOfDay = ymd => (/^\d{4}-\d\d-\d\d$/.test(String(ymd || "")) ? Date.parse(ymd + "T23:59:59-08:00") : NaN);
 /** The Caltrans status of a rest area (closed | partial | truck_only), or "" when it is open or the status has run out:
-    a reopening date (r.until, YYYY-MM-DD) that has passed on this phone's clock means open again. */
+    a reopening date (r.until, YYYY-MM-DD) that has passed on this phone's clock means open again, and so does a status
+    read (r.checked) more than REST_STATUS_DAYS ago (3.0.7, nightly review: a closure with no reopening date used to stay
+    "closed" in the app until the next data build, weeks after Caltrans reopened it). A status without the date it was
+    read is not trusted. */
 export function restStatus(r, now = Date.now()) {
   if (!r || !r.status) return "";
-  if (r.until && /^\d{4}-\d\d-\d\d$/.test(r.until) && now > Date.parse(r.until + "T23:59:59-08:00")) return "";
+  const until = endOfDay(r.until), read = endOfDay(r.checked);
+  if (isFinite(until) && now > until) return "";
+  if (!isFinite(read) || now > read + REST_STATUS_DAYS * 864e5) return "";
   return r.status;
 }
 /** Rest areas that serve your direction of travel (side 1 = northbound side). Each one carries `status` only while it is
@@ -167,6 +176,14 @@ export function fmtDuration(hours) {
   if (!isFinite(hours) || hours <= 0) return "";
   const tot = Math.round(hours * 60), h = Math.floor(tot / 60), min = tot % 60;   // whole minutes first: never "1 h 60 min"
   return h ? `${h} h ${String(min).padStart(2, "0")} min` : `${min} min`;
+}
+/** The same time for the voice (3.0.7 road test: "9 h 30 min" was read as letters or clipped): "9 hours and 30 minutes",
+    "1 hour", "45 minutes". The same whole-minute rounding as fmtDuration. */
+export function fmtDurationSpoken(hours) {
+  if (!isFinite(hours) || hours <= 0) return "";
+  const tot = Math.max(1, Math.round(hours * 60)), h = Math.floor(tot / 60), min = tot % 60;
+  const H = h ? `${h} ${h === 1 ? "hour" : "hours"}` : "", M = min ? `${min} ${min === 1 ? "minute" : "minutes"}` : "";
+  return H && M ? `${H} and ${M}` : H || M;
 }
 
 const DIR_WORD = { n: "north", s: "south", e: "east", w: "west", ne: "northeast", nw: "northwest", se: "southeast", sw: "southwest" };

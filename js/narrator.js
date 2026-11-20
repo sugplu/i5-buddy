@@ -2,7 +2,7 @@
 import { S, settings, bus, saveStamps } from "./store.js";
 import {
   PLACES, CATS, MAX_M, STATES, ENDS, SCOPE, zoneAt, seasonOf, stateAt, sideWord, aheadOf, summitAhead, elevAt, regionAt,
-  servicesAhead, restAhead, exitName, fmtDuration, localMile, placeById, detourSentence,
+  servicesAhead, restAhead, exitName, fmtDurationSpoken, localMile, placeById, detourSentence, detourOf,
 } from "./data.js";
 import { miles } from "./geo.js";
 import { voice } from "./voice.js";
@@ -47,11 +47,22 @@ export function whereWords(p, dir = S.dir) {
   return p.vis ? "" : "nearby";
 }
 
+/** A turn-off's own text opens with its exit ("Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four
+    and a half miles inland."), which the turn sentence has just said, so the spoken line leaves that sentence out (3.0.7
+    road test: the exit and the distance were said twice in a row). The sentences left are the ones recorded before, so
+    the natural voice still has a clip for each; the place sheet keeps the whole text. */
+function turnBody(p) {
+  const d = detourOf(p), u = voice.speechUnits(p.text);
+  const m = u.length > 1 && /^Exit (\d+[A-Z]?)\b/.exec(u[0]);
+  return d && m && m[1] === d.exit ? u.slice(1).join(" ") : p.text;
+}
+
 export function announceText(p, d, dir = S.dir) {
   const turn = detourSentence(p);
   if (turn) {
     // a turn-off (a mission a few miles off I-5): said at its exit, never "on your left/right"
-    const s = d < 0.4 ? `${turn} ${p.text}` : `In about ${d < 1.5 ? "a mile" : `${Math.round(d)} miles`}, ${turn[0].toLowerCase()}${turn.slice(1)} ${p.text}`;
+    const body = turnBody(p);
+    const s = d < 0.4 ? `${turn} ${body}` : `In about ${d < 1.5 ? "a mile" : `${Math.round(d)} miles`}, ${turn[0].toLowerCase()}${turn.slice(1)} ${body}`;
     return settings.kid && p.spot && p.vis ? `${s} I spy challenge: ${p.spot}` : s;
   }
   const where = whereWords(p, dir);
@@ -149,12 +160,20 @@ function onPos(e) {
     voice.say(`You just crossed the halfway point of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}, about ${Math.round(half)} miles from both ${ENDS.S.short} and ${ENDS.N.short}.`, { id: "halfway", prio: 1, chime: "success" });
   }
 
-  // a big climb ahead
+  // a big climb ahead. 3.0.7 (road test): queued behind a long story, this line played 4 to 6 miles late, with most of the
+  // climb already behind the car. Now it is worded again from where the car is when it starts (fresh), and dropped once
+  // the top is less than 2 miles ahead or less than 300 feet of climb is left (check; voice.prune runs it on every fix).
   const sum = summitAhead(m, dir, 12);
   if (sum && sum.ft > 2500 && (!lastSummit || Math.abs(lastSummit - sum.m) > 15) && !jumped) {
     lastSummit = sum.m;
-    const here = elevAt(m);
-    voice.say(`The road climbs about ${Math.round((sum.ft - here) / 100) * 100} feet over the next ${Math.max(1, Math.round(Math.abs(sum.m - m)))} miles, to roughly ${sum.ft.toLocaleString()} feet.`, { id: "summit:" + sum.m, prio: 0 });
+    const top = sum.m, ft = sum.ft;
+    const climbLine = at => {
+      const n = Math.max(1, Math.round(Math.abs(top - at)));
+      return `The road climbs about ${Math.round((ft - elevAt(at)) / 100) * 100} feet over the next ${n} ${n === 1 ? "mile" : "miles"}, to roughly ${ft.toLocaleString()} feet.`;
+    };
+    voice.say(climbLine(m), { id: "summit:" + top, prio: 0,
+      check: () => S.m != null && S.mode !== "off" && S.dir === dir && aheadOf(S.m, dir, top) >= 2 && ft - elevAt(S.m) >= 300,
+      fresh: () => (S.m != null && S.dir === dir ? climbLine(S.m) : null) });
   }
 
   // landscape zone
@@ -272,8 +291,13 @@ export function howFar(dest = S.dest) {
   const d = Math.abs(dest.m - S.m);
   const mph = S.cruise && S.cruise > 25 ? S.cruise : S.speed && S.speed > 25 ? S.speed : 62;
   const n = upcoming(S.m, dest.m >= S.m ? "N" : "S", settings.cats, d).length;
-  voice.say(d < 1 ? `We're there. This is ${name}.` : `${Name} is about ${Math.round(d)} miles away. That's around ${fmtDuration(d / mph)}, with ${n} landmarks to go.`, { now: true, id: "howfar" });
+  // the time in words (3.0.7 road test: "around 9 h 30 min" was read as letters or clipped)
+  voice.say(d < 1 ? `We're there. This is ${name}.` : `${Name} is about ${Math.round(d)} miles away. That's around ${fmtDurationSpoken(d / mph)}, with ${n} landmarks to go.`, { now: true, id: "howfar" });
 }
+
+/** How far a stop is, for the voice: "just ahead", "in about a mile", "in about 12 miles" (3.0.7 road test: "Next gas: Exit
+    120, in about 1 miles. After that, Exit 121 in 1 miles."). */
+const inMiles = d => (d < 0.5 ? "just ahead" : d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`);
 
 export function tellServices(kind = "fuel") {
   if (S.m == null) return voice.say("Start GPS first and I'll find the next stop.", { now: true });
@@ -285,10 +309,10 @@ export function tellServices(kind = "fuel") {
     // a Caltrans closure (tools/rest-status.json): say it, then the next open one on this side
     if (r.status === "closed") {
       const nx = list.find(x => x.status !== "closed");
-      return voice.say(`${nm(r)}, in about ${Math.round(r.d)} miles, is closed, Caltrans says.${nx ? ` The next rest area on this side is ${nm(nx)}, in about ${Math.round(nx.d)} miles.` : ""}`, { now: true });
+      return voice.say(`${nm(r)}, ${inMiles(r.d)}, is closed, Caltrans says.${nx ? ` The next rest area on this side is ${nm(nx)}, ${inMiles(nx.d)}.` : ""}`, { now: true });
     }
     const note = r.status === "partial" ? " Caltrans says it is partly closed." : r.status === "truck_only" ? " Caltrans says it is open to trucks only." : "";
-    return voice.say(`The next rest area on this side is ${nm(r)}, in about ${Math.round(r.d)} miles.${note}`, { now: true });
+    return voice.say(`The next rest area on this side is ${nm(r)}, ${inMiles(r.d)}.${note}`, { now: true });
   }
   const s = servicesAhead(S.m, S.dir, kind, 2);
   if (!s.length) {
@@ -299,7 +323,7 @@ export function tellServices(kind = "fuel") {
   }
   const a = s[0];
   const names = (a[kind] || []).slice(0, 3).join(", ");
-  voice.say(`Next ${word}: ${exitName(a.st, a.ref)}, in about ${Math.max(1, Math.round(a.d))} miles${names ? `: ${names}` : ""}.${s[1] ? ` After that, ${exitName(s[1].st, s[1].ref)} in ${Math.round(s[1].d)} miles.` : ""}`, { now: true });
+  voice.say(`Next ${word}: ${exitName(a.st, a.ref)}, ${inMiles(a.d)}${names ? `: ${names}` : ""}.${s[1] ? ` After that, ${exitName(s[1].st, s[1].ref)}, ${inMiles(s[1].d)}.` : ""}`, { now: true });
 }
 
 export function nextOne() {

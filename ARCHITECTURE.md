@@ -94,7 +94,7 @@ the Mexico border at San Ysidro to the Oregon line, 797 miles. The data says so 
 | `DESTS` | `[{name, m}]` cities and borders for "Where to?" (California cities, "Mexico border" at 0, "Oregon border" at 797) |
 | `EXITS` | `[m, st, ref, "signed destinations"]` |
 | `SERVICES` | `{m, st, ref, fuel[], fuelN, ev[], evN, food[], foodN, sleep[], sleepN}` per exit (brand names) |
-| `REST` | `{m, name, side, kind: "rest_area" or "services", toilets, status?, src?, until?}` (`status`: closed, partial or truck_only, from Caltrans QuickMap via tools/rest_status.py; read it with `restStatus(r)`, which drops it after `until`) |
+| `REST` | `{m, name, side, kind: "rest_area" or "services", toilets, status?, src?, checked?, until?}` (`status`: closed, partial or truck_only, from Caltrans QuickMap via tools/rest_status.py; read it with `restStatus(r)`, which drops it after `until` and `REST_STATUS_DAYS` (7) after `checked`, the day Caltrans was read, and never trusts one without `checked`; build.py leaves out rest stops with no real name: "Water", "Rest area", "Services") |
 | `CAMS` | `{m, name, near, img (live JPEG URL), by: "Caltrans", d?: Caltrans district}` (`by: "WSDOT"` only when Washington is covered; Oregon has none) |
 | `DISTRICTS` | Caltrans districts on I-5 `[{d: "02", from, to}]` (corridor miles) |
 | `ELEV` | feet at each whole corridor mile (index = mile) |
@@ -106,7 +106,8 @@ the Mexico border at San Ysidro to the Oregon line, 797 miles. The data says so 
 
 Helpers in data.js: `stateAt(m)`, `localMile(m)`, `regionAt(m)`, `zoneAt(m)`, `seasonOf(date)`, `aheadOf`, `sideWord`,
 `elevAt(m)`, `summitAhead(m, dir)`, `nearestExit(m)`, `servicesAhead(m, dir, kind, n, max)`, `restAhead` (a closed rest area is listed but only open ones count toward n), `restStatus(r)`, `camsAhead(m, dir, n, max)`,
-`exitName(st, ref)`, `fmtMiles(d)`, `fmtDuration(hours)`, `placeById(id)`, `detourOf(p)`, `detourShort(p)`, `detourSentence(p)`.
+`exitName(st, ref)`, `fmtMiles(d)`, `fmtDuration(hours)` ("2 h 05 min", on screen), `fmtDurationSpoken(hours)` ("2 hours and
+5 minutes", in spoken lines), `placeById(id)`, `detourOf(p)`, `detourShort(p)`, `detourSentence(p)`.
 
 A place may also carry `detour: {exit, road, dir, miles}` and `mission: n` (2.6.0, from `content/v2/ca-missions.json`; a
 turn-off already in a stretch file keeps its place and only gains the two fields; see build-report.txt).
@@ -322,7 +323,9 @@ visited, fact, directions, state, check}`.
 
 **Update notice.** (a) The new-version bar (`#updateBar`, website only: the service worker) reads "A new version of I-5 Buddy
 is ready. Reload to get it." (b) `store.RETURNING` is true when any `i5b:` key was saved before this launch; main.js then
-shows `#whatsNew` once, above the next card so it is on the first screen ("New in I-5 Buddy: the 21 California missions", See the missions / Got it, stored as `whatsNew` =
+shows `#whatsNew` once, above the next card so it is on the first screen (3.0.7: "New in I-5 Buddy 3.0.7: ask about the
+places you pass", main.js `WHATS_NEW`, Got it, stored as `whatsNew` = `"3.0.7-ask-buddy"`; without voice commands the Ask
+Buddy line is left out and the title is "calmer directions and clearer words". Before: 3.0 `"3.0.0-voice-gps"`, 2.6.0
 `"2.6.0-missions"`). A first visit stores it at once, so new users never see it. The iPhone app keeps localStorage through an
 App Store update, so it shows there too. (c) In the iPhone app only, `native.storeUpdate()` asks
 `https://itunes.apple.com/lookup?id=6834991531` at most once a day (`storeCheck`; CapacitorHttp when present, else fetch;

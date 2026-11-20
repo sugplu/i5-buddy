@@ -10,6 +10,8 @@
 // reproduced here before anything was fixed). A check that holds is a normal PASS. A check for a bug that is still in the app is
 // filed as `bug(id, cond, message)`: while it fails it prints KNOWN BUG and does not fail the suite; the day the app is fixed it
 // prints "now passes, switch it to ok()". Nothing here changes the app. All silent.
+// 3.0.7: all seven filed bugs (1-miles, rest-name-water, eta-abbrev, summit-stale, chunk-decimal, chunk-abbrev, mission-dup-exit)
+// are fixed and are ok() checks now, so the suite fails if one comes back; each fix has extra checks next to it.
 const out = document.getElementById("out"), lines = [];
 let fails = 0, known = 0;
 const ok = (c, m) => { lines.push(`${c ? "PASS" : "FAIL"} ${m}`); if (!c) fails++; };
@@ -64,8 +66,28 @@ async function run() {
     api.narrator.tellServices("fuel");
     const t = (said.find(x => /Next gas/.test(x.text)) || { text: "" }).text;
     unspy();
-    bug("1-miles", !/\b1 miles\b/.test(t), `the next-gas answer reads "1 miles" (${t.slice(0, 90)})`);
+    ok(!!t && !/\b1 miles\b/.test(t), `[1-miles] the next-gas answer never reads "1 miles" (${t.slice(0, 90)})`);
+    spy();
+    api.setPosition(120.15, { dir: "N", speed: 65, jumped: true });
+    api.narrator.tellServices("fuel");
+    const t2 = (said.find(x => /Next gas/.test(x.text)) || { text: "" }).text;
+    unspy();
+    ok(/^Next gas: Exit 120, just ahead: .+\. After that, Exit 121, in about a mile\.$/.test(t2), `[1-miles] an exit under half a mile ahead is "just ahead", one 0.85 miles ahead "in about a mile" (${t2})`);
+    // the same words for a rest area about 1.2 miles ahead (Buttonwillow northbound, mile 259.19)
+    spy();
+    api.setPosition(258, { dir: "N", speed: 65, jumped: true });
+    api.narrator.tellServices("rest");
+    const r = (said.find(x => /rest area/i.test(x.text)) || { text: "" }).text;
+    unspy();
+    ok(/in about a mile\./.test(r) && !/\b[01] miles\b/.test(r), `[1-miles] a rest area 1.2 miles ahead is "in about a mile" (${r.slice(0, 90)})`);
     api.stopAll(false);
+    // chain controls (js/live.js chainLine) 1.2 and 1.4 miles ahead
+    const doc = win.document;
+    if (!win.__liveMod) { const sc = doc.createElement("script"); sc.type = "module"; sc.textContent = "import * as m from './js/live.js'; window.__liveMod = m;"; doc.head.append(sc); }
+    for (let i = 0; i < 40 && !win.__liveMod; i++) await sleep(100);
+    const T = win.__liveMod && win.__liveMod._test;
+    const cl = T && T.chainLine ? T.chainLine({ status: "R-1", place: "Lakehead", d: 1.2, level: 1 }, [{ status: "R-2", place: "Castella", d: 1.4 }]) : "";
+    ok(/R 1 near Lakehead, in about a mile\. Then R 2 near Castella, in about a mile\./.test(cl) && !/\b1 miles\b/.test(cl), `[1-miles] chain controls about a mile ahead (${cl.slice(0, 110)})`);
   }
 
   // R3. A rest area with no real name is spoken as "the next rest area on this side is Water" (S-default, mile 256; the data
@@ -78,7 +100,9 @@ async function run() {
     api.narrator.tellServices("rest");
     const t = (said.find(x => /rest area/i.test(x.text)) || { text: "" }).text;
     unspy();
-    bug("rest-name-water", !/ is (Water|Rest area|TA|Services),/.test(t), `the next-rest-area answer names a place "Water" (${t.slice(0, 100)})`);
+    ok(!!t && !/ is (Water|Rest area|TA|Services),/.test(t), `[rest-name-water] the next-rest-area answer names a real rest area (${t.slice(0, 100)})`);
+    const nameless = (junk || []).filter(r => /^(water|rest area|services)$/i.test(String(r.name).trim()));
+    ok(!!junk && !nameless.length, `[rest-name-water] the data has no rest stop without a real name (${nameless.map(r => r.name + " " + r.m).join(", ") || "none"})`);
     api.stopAll(false);
   }
 
@@ -89,7 +113,8 @@ async function run() {
     const first = api.data.restAhead(at, dir, 1)[0];
     const keep = first && { status: first.status, src: first.src };
     const row = first && R.find(r => r.name === first.name && r.m === first.m && r.side === first.side);
-    if (row) { row.status = "closed"; row.src = "https://dot.ca.gov/test"; }
+    const keepChecked = row && row.checked;
+    if (row) { row.status = "closed"; row.src = "https://dot.ca.gov/test"; row.checked = new Date().toISOString().slice(0, 10); }
     const two = api.data.restAhead(at, dir, 1);
     ok(!!row && two.length === 2 && two[0].status === "closed" && two[1].status !== "closed", `restAhead keeps the closed one and still finds 1 open one (${two.map(r => r.name + (r.status ? " [" + r.status + "]" : "")).join(" | ")})`);
     spy();
@@ -99,10 +124,20 @@ async function run() {
     const t = (said.find(x => /rest area|closed/i.test(x.text)) || { text: "" }).text;
     unspy();
     ok(/is closed, Caltrans says\. The next rest area on this side is .+, in about \d+ miles\./.test(t) && two[1] && t.includes(two[1].name.replace(/\s*\((north|south)bound\)/i, "")), `a closed rest area is announced as closed, then the next open one ("${t.slice(0, 140)}")`);
-    if (row) { if (keep.status) row.status = keep.status; else delete row.status; if (keep.src) row.src = keep.src; else delete row.src; }
-    const rs = api.data.restStatus, day = Date.parse("2026-11-20T12:00:00-08:00");
-    ok(rs({ status: "closed", until: "2026-11-23" }, day) === "closed" && rs({ status: "closed", until: "2026-11-19" }, day) === "" && rs({ status: "closed" }, day) === "closed" && rs({}, day) === "",
+    if (row) {
+      if (keep.status) row.status = keep.status; else delete row.status; if (keep.src) row.src = keep.src; else delete row.src;
+      if (keepChecked) row.checked = keepChecked; else delete row.checked;
+    }
+    const rs = api.data.restStatus, day = Date.parse("2026-11-20T12:00:00-08:00"), D1 = 864e5, c = "2026-11-20";
+    ok(rs({ status: "closed", checked: c, until: "2026-11-23" }, day) === "closed" && rs({ status: "closed", checked: c, until: "2026-11-19" }, day) === "" && rs({}, day) === "",
       "a closure stops counting once Caltrans' reopening date has passed on the phone's clock");
+    // nightly review 2026-11-20: a closure with no reopening date never ran out in the app; now it counts for
+    // REST_STATUS_DAYS after Caltrans was read (build.py ships `checked`), like build.py's own rule
+    ok(api.data.REST_STATUS_DAYS === 7 && rs({ status: "closed", checked: c }, day + 6 * D1) === "closed" && rs({ status: "closed", checked: c }, day + 8 * D1) === ""
+      && rs({ status: "partial", checked: c, until: "2027-03-01" }, day + 10 * D1) === "" && rs({ status: "closed" }, day) === "" && rs({ status: "closed", checked: "soon" }, day) === "",
+      "[review] a closure with no reopening date runs out 7 days after Caltrans was read, and one without that date is not trusted");
+    const withStatus = api.data.REST.filter(r => r.status);
+    ok(withStatus.every(r => /^\d{4}-\d\d-\d\d$/.test(r.checked || "")), `[review] every closure in the data carries the date Caltrans was read (${withStatus.map(r => r.name + " " + (r.checked || "NO DATE")).join(" | ") || "no closures today"})`);
     api.stopAll(false);
   }
 
@@ -116,7 +151,10 @@ async function run() {
     api.narrator.howFar();
     const t = (said.find(x => /miles away/.test(x.text)) || { text: "" }).text;
     unspy();
-    bug("eta-abbrev", !/\b\d+ h \d+ min\b/.test(t), `how-far speaks abbreviations (${t.slice(0, 100)})`);
+    ok(!!t && !/\b\d+ h\b|\bmin\b/.test(t) && /around \d+ hours?( and \d+ minutes?)?,|around \d+ minutes?,/.test(t), `[eta-abbrev] how-far says the time in words (${t.slice(0, 100)})`);
+    const W = api.data.fmtDurationSpoken;
+    ok(W(9.5) === "9 hours and 30 minutes" && W(1) === "1 hour" && W(1 / 60) === "1 minute" && W(0.75) === "45 minutes" && W(1.995) === "2 hours" && W(2 + 1 / 60) === "2 hours and 1 minute" && W(0) === "",
+      `[eta-abbrev] spoken durations: ${[9.5, 1, 1 / 60, 0.75, 1.995].map(W).join(" | ")}`);
     ok(/about \d+ miles away/.test(t) && !/\bthe the\b/i.test(t), `how-far names the destination once ("${t.slice(0, 60)}")`);
     api.S.dest = null;
     api.stopAll(false);
@@ -133,7 +171,19 @@ async function run() {
     const s = said.find(x => /^summit:/.test(x.o.id || ""));
     unspy();
     ok(!!s, "the climb warning is asked for ahead of the Grapevine");
-    bug("summit-stale", !!s && (typeof s.o.check === "function" || typeof s.o.fresh === "function"), "the climb warning has no check or fresh text, so it can play after the climb has been passed");
+    ok(!!s && typeof s.o.check === "function" && typeof s.o.fresh === "function", "[summit-stale] the climb warning has a check and fresh text, so it can't play after the climb has been passed");
+    if (s && s.o.check && s.o.fresh) {
+      const top = Number(String(s.o.id).split(":")[1]);
+      const now0 = s.o.check(), words0 = s.o.fresh();
+      api.setPosition(top - 5, { dir: "N", speed: 65, jumped: true });
+      const mid = s.o.check(), words1 = s.o.fresh();
+      api.setPosition(top - 1, { dir: "N", speed: 65, jumped: true });
+      const late = s.o.check();
+      api.setPosition(top - 5, { dir: "S", speed: 65, jumped: true });
+      const turned = s.o.check();
+      ok(now0 && mid && !late && !turned && /over the next 5 miles/.test(words1 || "") && words0 !== words1,
+        `[summit-stale] it is worded again from where the car is and dropped near the top or after turning around (${[now0, mid, late, turned].join(", ")}; "${(words1 || "").slice(0, 70)}")`);
+    }
     api.stopAll(false);
   }
 
@@ -148,13 +198,21 @@ async function run() {
     await sleep(6000);
     const sp = (win.__BUDDY_SPOKEN__ || []).filter(s => /pipe|miles long|^2 miles/.test(s));
     const split = sp.some(s => /\d\.$/.test(s.trim())) && sp.some(s => /^\d/.test(s.trim()));
-    bug("chunk-decimal", !split, `a number is split at its decimal point between two utterances (${sp.map(s => JSON.stringify(s.slice(-22))).join(" | ")})`);
+    ok(sp.length > 0 && !split, `[chunk-decimal] a number is never split at its decimal point between two utterances (${sp.map(s => JSON.stringify(s.slice(-22))).join(" | ")})`);
     win.__BUDDY_SPOKEN__ = [];
     api.voice.stop();
     api.voice.say(pad.slice(0, 190) + " It is named for Richard Henry Dana Jr., who sailed here in 1835. Next.", { id: "chunk-test2", now: true });
     await sleep(6000);
     const sp2 = (win.__BUDDY_SPOKEN__ || []).filter(s => /Dana|who sailed|named/.test(s));
-    bug("chunk-abbrev", !sp2.some(s => /^[,;]/.test(s.trim())), `a chunk starts with a comma after "Jr." (${sp2.map(s => JSON.stringify(s.slice(0, 16))).join(" | ")})`);
+    ok(sp2.length > 0 && !sp2.some(s => /^[,;]/.test(s.trim())), `[chunk-abbrev] no chunk starts with a comma after "Jr." (${sp2.map(s => JSON.stringify(s.slice(0, 16))).join(" | ")})`);
+    // a long line is still cut into chunks of whole sentences of at most about 220 characters
+    win.__BUDDY_SPOKEN__ = [];
+    api.voice.stop();
+    const long = Array.from({ length: 6 }, (_, i) => `Sentence ${i + 1} is about the road at mile ${i + 7}.5 and the hills beside it, ${"near ".repeat(6)}here.`).join(" ");
+    api.voice.say(long, { id: "chunk-test3", now: true });
+    await sleep(6000);
+    const sp3 = (win.__BUDDY_SPOKEN__ || []).filter(s => /Sentence/.test(s));
+    ok(sp3.length >= 2 && sp3.every(s => s.length <= 220 && /^Sentence \d/.test(s) && /here\.$/.test(s)) && sp3.join(" ") === long, `[chunk] a long line is spoken in whole sentences of at most 220 characters (${sp3.map(s => s.length).join(", ")})`);
     api.stopAll(false);
   }
 
@@ -162,7 +220,18 @@ async function run() {
   //     San Luis Rey. Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four and a half miles inland.").
   {
     const dup = PLACES.filter(p => { const t = api.narrator.announceText(p, 2, "N"); return (t.match(/\bexit \d+[A-Z]?\b/gi) || []).length > 1 && /^Exit \d/.test(p.text); });
-    bug("mission-dup-exit", dup.length === 0, `${dup.length} landmark lines say their exit twice in a row (${dup.slice(0, 4).map(p => p.id).join(", ")})`);
+    ok(dup.length === 0, `[mission-dup-exit] no landmark line says its exit twice in a row (${dup.slice(0, 4).map(p => p.id).join(", ") || "none"})`);
+    // the shorter lines are made of the sentences recorded before (the natural voice keeps a clip for each), and the
+    // turn-offs still say their exit once
+    const U = api.voice.speechUnits, turns = PLACES.filter(p => api.data.detourSentence(p));
+    const lc = t => t[0].toLowerCase() + t.slice(1);
+    const subset = turns.every(p => [0, 2].every(d => {
+      const old = d < 0.4 ? `${api.data.detourSentence(p)} ${p.text}` : `In about ${d} miles, ${lc(api.data.detourSentence(p))} ${p.text}`;
+      const had = new Set(U(old));
+      return U(api.narrator.announceText(p, d, "N")).every(u => had.has(u));
+    }));
+    const once = turns.every(p => (api.narrator.announceText(p, 2, "N").match(/\bexit \d+[A-Z]?\b/gi) || []).length === 1);
+    ok(turns.length >= 5 && subset && once, `[mission-dup-exit] ${turns.length} turn-off lines keep their recorded sentences and say the exit once (${subset}, ${once})`);
   }
 
   out.innerHTML = (fails ? `<b class="fail">FAILED ${fails}</b>` : `<b class="pass">ALL PASS</b>`) + ` (${known} known bugs filed)\n` +

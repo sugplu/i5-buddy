@@ -3,7 +3,8 @@
 
 Every town and topic page exists with one canonical, one h1 and valid JSON-LD; generated text respects its limits; every
 relative link resolves to a file; thin towns are noindex and out of the sitemap; sw.js precaches none of them; no page says
-"our AI"."""
+"our AI"; no page written by tools/guides.py calls the app free (the owner's rule for public app text, 3.0.7); a content
+link with "&" in it is escaped once."""
 import json
 import os
 import re
@@ -84,6 +85,24 @@ for path, e, thin in paths:
             fail(f"{path}: broken link {href}")
     for href in set(re.findall(r'href="([^"]+)#([^"]+)"', h)):
         pass
+# The owner's rule (nightly review 2026-11-20): public app text never calls the app free or states a price. The landmark
+# stories may say "free-flowing" or "a free lunch"; what is checked is the app's own wording, in English and Spanish.
+APP_FREE = re.compile(r"(?i)\bfree\s+(?:talking|narrated|road|guide|gps|iphone|app|download)\b|\b(?:it'?s|is)\s+free\b|"
+                      r"\bfree\s+on\s+the\s+app\s+store|\bgratuit\w*|\bgratis\b")
+every = [p for p, _, _ in paths] + [f'drive/{g["slug"]}/' for g in guides.GUIDES] + ["drive/", "rest-areas/"]
+every += [guides.seasonal_path(g, lang) for g in guides.SEASONAL for lang in ("en", "es")]
+for path in every:
+    try:
+        h = read(path + "index.html")
+    except OSError:
+        fail(f"missing {path}")
+        continue
+    hit = APP_FREE.search(h)
+    if hit:
+        fail(f"{path}: app text says {hit.group(0)!r} (no 'free' or price in public app text)")
+link = guides.inline("[the sign](https://dot.ca.gov/x?a=1&b=2)", "en")
+if 'href="https://dot.ca.gov/x?a=1&amp;b=2"' not in link or "&amp;amp;" in link:
+    fail(f"a content link with & is escaped twice: {link}")
 sw = read("sw.js")
 shell = sw[sw.index("const SHELL"): sw.index("const PHOTOS")]
 for bad_word in ("town/", "drive/", "place/"):
@@ -91,7 +110,7 @@ for bad_word in ("town/", "drive/", "place/"):
         fail(f"sw.js precaches {bad_word}")
 if "<!-- guides" not in sitemap or sitemap.count("<loc>") < 70:
     fail("sitemap block")
-print(f"checked {len(paths)} pages; sitemap has {sitemap.count('<loc>')} URLs;", "FAIL" if bad else "ok")
+print(f"checked {len(paths)} pages ({len(every)} for app wording); sitemap has {sitemap.count('<loc>')} URLs;", "FAIL" if bad else "ok")
 for b in bad[:60]:
     print(" -", b)
 sys.exit(1 if bad else 0)

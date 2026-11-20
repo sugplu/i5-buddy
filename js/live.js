@@ -606,10 +606,11 @@ function chainTitle(g) {
   return `Chain controls ${g.status} near ${chainWhere(g)}, ${g.d < 0.3 ? "starting here" : fmtMi(g.d) + " mi ahead"}`;
 }
 /** Spoken chain controls: the nearest level first, then any other level further on, then what it means. */
+const inAbout = d => (d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`);   // never "in about 1 miles" (3.0.7)
 function chainLine(g, rest = []) {
   const where = chainWhere(g);
-  const lead = g.d < 1 ? `Chain controls, ${g.status}, start right about here, near ${where}.` : `Chain controls ahead. ${g.status} near ${where}, in about ${Math.max(1, Math.round(g.d))} miles.`;
-  const then = rest.map(x => `Then ${x.status} near ${chainWhere(x)}, in about ${Math.max(1, Math.round(x.d))} miles.`).join(" ");
+  const lead = g.d < 1 ? `Chain controls, ${g.status}, start right about here, near ${where}.` : `Chain controls ahead. ${g.status} near ${where}, ${inAbout(g.d)}.`;
+  const then = rest.map(x => `Then ${x.status} near ${chainWhere(x)}, ${inAbout(x.d)}.`).join(" ");
   // "R-2" can come out as "R minus 2" in some voices
   return [lead, then, g.desc || R_LEVELS[g.level] || ""].filter(Boolean).join(" ").replace(/\bR-([0-3])\b/g, "R $1");
 }
@@ -2070,5 +2071,5 @@ export function init(a) {
 
 // Pure helpers, exported for tools/test-live.html (plus camsSeen, the IntersectionObserver callback, which headless
 // test runs cannot always trigger by scrolling).
-export const _test = { stripKeep, parseTraffic, snapTraffic, trSpeech, trUrl, cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList,
+export const _test = { stripKeep, parseTraffic, snapTraffic, trSpeech, trUrl, cleanLoc, signWhere, signSpeech, signLine, isTravelTime, parseCC, parseCMS, parseAlert, alertSections, wxIcon, when, whenSaid, targets, districtsNear, ctUrl, areaSaid, decode, sentence, camName, soonText, aheadSaid, agencies, andList, chainLine,
   camsSeen: entries => safe(camsSeen)(entries), camOnScreen: li => onScreen.has(li) };

@@ -68,10 +68,13 @@ const SCENARIOS = {
     const sheet = () => $(doc, "#shareSheet");
     const open = () => sheet() && !sheet().hidden;
     // sharing the app: the /get link (an iPhone or iPad goes straight to the App Store; see get/index.html)
-    const APP = { title: "I-5 Buddy", text: "I-5 Buddy: a free narrated guide to I-5 in California.", url: "https://i5.dominares.org/get" };
-    const INVITE = "I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/get";
+    const APP = { title: "I-5 Buddy", text: "I-5 Buddy: a narrated guide to I-5 in California.", url: "https://i5.dominares.org/get" };
+    const INVITE = "I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. Try it: https://i5.dominares.org/get";
     const mod = await import("../js/share.js");
-    check("the iPhone app's invitation uses the same /get link", mod._test.INVITE_APP === "I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: https://i5.dominares.org/get" && mod._test.GET === APP.url, mod._test.INVITE_APP);
+    check("the iPhone app's invitation uses the same /get link", mod._test.INVITE_APP === "I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. Try it: https://i5.dominares.org/get" && mod._test.GET === APP.url, mod._test.INVITE_APP);
+    // 3.0.7 (nightly review 2026-11-20): nothing shared calls the app free or states a price (the owner's rule)
+    const shared = [APP.text, INVITE, mod._test.INVITE_APP, mod._test.TEXT, mod._test.INVITE, (mod._test.appSheet ? mod._test.appSheet() : {}).subject].filter(x => x != null);
+    check("no 'free' or price in the share texts", shared.length >= 4 && !shared.some(t => /\bfree\b|\$\s?\d|\bprice\b/i.test(String(t))), shared.join(" | "));
     const btn = $(doc, "#shareBtn");
     // --- the header button
     check("share button is shown with an icon and a label", !btn.hidden && !!btn.querySelector("svg") && /Share/.test(btn.getAttribute("aria-label")));

@@ -1026,7 +1026,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = `Data version ${data.D.version}.`;
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.6";
+export const APP_VERSION = "3.0.7";
 $("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", "Rate I-5 Buddy");
@@ -1223,8 +1223,21 @@ if (native.NATIVE) { // the iPhone app carries every file, photos and the voice 
   $("offlineText").textContent = `Everything is on this phone, photos and the voice included. Live road info${native.VOICE ? ", voice commands" : ""}, routes and the 3D map need a connection.`;
 }
 
-/* ---------- what's new in 3.0: once, for people who used the app before (also in the iPhone app after its update) ---------- */
-const NEW_ID = "3.0.0-voice-gps";
+/* ---------- what's new in 3.0.7: once, for people who used the app before (also in the iPhone app after its update) ---------- */
+// A new id shows the card once more to everyone who saw the 3.0 one ("3.0.0-voice-gps"). The Ask Buddy line and title
+// need voice commands (speech recognition, and not turned off in the iPhone app: the same test as listen.js init).
+const NEW_ID = "3.0.7-ask-buddy";
+export const WHATS_NEW = {
+  title: "New in I-5 Buddy 3.0.7: ask about the places you pass",
+  titleNoMic: "New in I-5 Buddy 3.0.7: calmer directions and clearer words",
+  ask: "Ask about the places you pass: tap the mic and say “how tall is Mount Shasta?” The answers are saved on your phone.",
+  items: [
+    "Calmer turn-by-turn directions: “Rerouting” once when you leave the route, and the arrival only when you get there.",
+    "Stories step aside for turns, chain controls and road alerts.",
+    "Rest areas that Caltrans lists as closed are called out, with the next open one on your side.",
+    "Better photos, and clearer spoken distances, times and numbers.",
+  ],
+};
 function whatsNew() {
   const box = $("whatsNew");
   if (!box) return;
@@ -1234,21 +1247,15 @@ function whatsNew() {
   const done = () => { store.set("whatsNew", NEW_ID); box.hidden = true; box.textContent = ""; };
   const card = el("article", "whats-new");
   card.setAttribute("aria-labelledby", "wnTitle");
-  const h = el("h2", null, "New in I-5 Buddy 3.0: a real voice, turn-by-turn directions and more");
+  const mic = !!(window.SpeechRecognition || window.webkitSpeechRecognition) && !(native.NATIVE && native.VOICE === false);
+  const h = el("h2", null, mic ? WHATS_NEW.title : WHATS_NEW.titleNoMic);
   h.id = "wnTitle";
   const list = el("ul", "wn-list");
-  for (const t of [
-    "A new natural voice tells every story, and it works in dead zones too.",
-    "Where to? Search any address or place, and I'll guide you turn by turn like a regular GPS.",
-    "The 3D map has photo pins, a narrated Landmark tour, a chase camera and taller mountains.",
-    "Seven new games on the Play tab, like Plate Hunt, Higher or Lower and Where Is This?",
-  ]) list.append(el("li", null, t));
+  for (const t of mic ? [WHATS_NEW.ask, ...WHATS_NEW.items] : WHATS_NEW.items) list.append(el("li", null, t));
   const acts = el("div", "acts");
-  const hear = el("button", "primary", "Hear the new voice"); hear.type = "button";
-  hear.onclick = () => { voice.unlock(); voice.say("Hi, I'm your I-5 buddy. I'll tell you about what's coming up as we drive.", { now: true, id: "wn-voice" }); };
-  const ok = el("button", "secondary", "Got it"); ok.type = "button";
+  const ok = el("button", "primary", "Got it"); ok.type = "button";
   ok.onclick = () => { done(); ($("nextCard").querySelector("h2") || $("startGps")).focus?.({ preventScroll: true }); };
-  acts.append(hear, ok);
+  acts.append(ok);
   card.append(el("div", "meta", "WHAT'S NEW"), h, list, acts);
   box.textContent = ""; box.append(card); box.hidden = false;
   place(S.mode);

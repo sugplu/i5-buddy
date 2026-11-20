@@ -486,7 +486,8 @@ async function run() {
     api.ui.closeSheet();
   }
 
-  // 15. "New in I-5 Buddy" (3.0): once for people who used the app before, never for a first visit
+  // 15. "New in I-5 Buddy" (3.0.7; it was the 3.0 card before): once for people who used the app before, never for a first
+  //     visit, and once more for someone who saw the 3.0 card
   {
     const keep = {};
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith("i5b:")) keep[k] = localStorage.getItem(k); }
@@ -503,15 +504,19 @@ async function run() {
     };
     clear();
     let r = await boot();
-    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.0-voice-gps"', `a first visit: no card, and it is remembered as seen (${r.box && r.box.hidden})`);
+    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.7-ask-buddy"', `a first visit: no card, and it is remembered as seen (${r.box && r.box.hidden})`);
     r.f3.remove();
     clear(); localStorage.setItem("i5b:stamps", JSON.stringify({ "x": 1 }));
     r = await boot();
     const h = r.box && r.box.querySelector("h2");
-    ok(r.box && !r.box.hidden && h && h.textContent === "New in I-5 Buddy 3.0: a real voice, turn-by-turn directions and more" && r.box.querySelectorAll("li").length === 4, `a returning user sees it: ${h && h.textContent}`);
+    const mic = !!(r.w3.SpeechRecognition || r.w3.webkitSpeechRecognition);
+    const lis = r.box ? [...r.box.querySelectorAll("li")].map(li => li.textContent) : [];
+    ok(r.box && !r.box.hidden && h && h.textContent === (mic ? "New in I-5 Buddy 3.0.7: ask about the places you pass" : "New in I-5 Buddy 3.0.7: calmer directions and clearer words")
+      && lis.length === (mic ? 5 : 4) && (!mic || /^Ask about the places you pass: tap the mic/.test(lis[0])), `a returning user sees it: ${h && h.textContent} (${lis.length} lines)`);
     const bts = r.box ? [...r.box.querySelectorAll("button")].map(b => b.textContent) : [];
-    ok(bts.join() === "Hear the new voice,Got it", `its buttons: ${bts.join(", ")}`);
-    ok(!/—/.test(r.box ? r.box.textContent : "") && !/!/.test(r.box ? r.box.textContent : ""), "no em dashes or exclamation marks");
+    ok(bts.join() === "Got it", `its button: ${bts.join(", ")}`);
+    const words = r.box ? r.box.textContent : "";
+    ok(!/—/.test(words) && !/!/.test(words) && !/\bfree\b|\bAI\b|\$\s?\d/i.test(words), "no em dashes, exclamation marks, 'free', 'AI' or prices");
     const wnRect = r.box.getBoundingClientRect(), nc = r.w3.document.getElementById("nextCard").getBoundingClientRect();
     ok(wnRect.bottom <= nc.top + 1 && wnRect.top < 844 && wnRect.top > 0, `it sits above the next-landmark card, on the first screen (top ${Math.round(wnRect.top)})`);
     {
@@ -522,19 +527,20 @@ async function run() {
       const back = r.box.getBoundingClientRect().bottom <= r.w3.document.getElementById("nextCard").getBoundingClientRect().top + 1;
       ok(below && back && !r.box.hidden, `on the move it steps under the next card, and back on top when stopped (${below}, ${back})`);
     }
-    { const said = []; r.w3.I5BUDDY.api.voice.say = t => { said.push(t); return Promise.resolve(true); };
-      r.box.querySelectorAll("button")[0].click(); await sleep(200);
-      ok(!r.box.hidden && said.length === 1 && /I-5 buddy/.test(said[0]), "Hear the new voice speaks and keeps the card"); }
     [...r.box.querySelectorAll("button")].find(b => b.textContent === "Got it").click(); await sleep(200);
-    ok(r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.0-voice-gps"', "Got it hides it, and it is stored as seen");
+    ok(r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.7-ask-buddy"', "Got it hides it, and it is stored as seen");
     r.f3.remove();
     r = await boot();
     ok(r.box && r.box.hidden, "after that it never shows again");
     r.f3.remove();
+    localStorage.setItem("i5b:whatsNew", '"3.0.0-voice-gps"');
+    r = await boot();
+    ok(r.box && !r.box.hidden && /3\.0\.7/.test((r.box.querySelector("h2") || {}).textContent || ""), "someone who saw the 3.0 card sees the 3.0.7 one once");
+    r.f3.remove();
     localStorage.removeItem("i5b:whatsNew");
     r = await boot();
     if (r.box && !r.box.hidden) { [...r.box.querySelectorAll("button")].find(b => b.textContent === "Got it").click(); await sleep(50); }
-    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.0-voice-gps"', "Got it hides it and stores it");
+    ok(r.box && r.box.hidden && localStorage.getItem("i5b:whatsNew") === '"3.0.7-ask-buddy"', "Got it hides it and stores it");
     r.f3.remove();
     clear();
     for (const [k, v] of Object.entries(keep)) localStorage.setItem(k, v);
