@@ -33,8 +33,61 @@ export function normText(s) {
     .trim();
 }
 
+// What phone recognizers write in a car, and the Spanish a bilingual family mixes in, said the way the parser reads
+// English (tools/fixtures/listen-bank.json found these). Whole words and phrases only, after normText.
+const ASR_FIX = [
+  [/\b(dont|doesnt|didnt|isnt|arent|wasnt|werent|cant|wont|couldnt|wouldnt|shouldnt|havent|hasnt)\b/g, w => ({ cant: "cannot", wont: "will not" }[w] || w.slice(0, -2) + " not")],
+  [/^(?:hows|ow|howfar|how s) far\b|^howfar\b/, "how far"], [/ (?:um+|uh+|er+|erm|hmm+)(?= )/g, ""],
+  [/\b(whats|wheres|hows|thats|theres|whos|whens|heres)\b/g, w => w.slice(0, -1) + " is"], [/\bim\b/g, "i am"], [/\blets\b/g, "let us"],
+  [/\b(youre|were) (are|talking|done|almost|home|parked|exhausted|going|meeting|driving)\b/g, (m, a, b) => (a === "youre" ? "you are " : "we are ") + b],
+  [/\b(were|wear|we are) are we\b/g, "where are we"], [/\bwherearewe\b/g, "where are we"], [/\bwhatsonmy(left|right)\b/g, "what is on my $1"],
+  [/\bhow far a\b/g, "how far to"], [/^far to\b/, "how far to"], [/\bhowmuch\b/g, "how much"],
+  [/\bbe quite\b/g, "be quiet"], [/\bnex\b/g, "next"], [/\bmor\b/g, "more"], [/\bagane\b/g, "again"], [/\btank you\b/g, "thank you"],
+  [/\b(kwiz|quizz)\b/g, "quiz"], [/\bmapp\b/g, "map"], [/\bsettins\b/g, "settings"], [/\b(wheather|wether)\b/g, "weather"],
+  [/\b(bathrooom|bath room|banyo|bano|bao)\b/g, "bathroom"], [/\bwrest stop\b/g, "rest stop"], [/\b(moat tell|moe tell|moat el|ho tel|hotell)\b/g, "motel"],
+  [/\b(gaz|gass)\b/g, "gas"], [/\btuck stop\b/g, "truck stop"], [/\bfillup\b/g, "fill up"], [/\bdamo\b/g, "demo"], [/\bstarter demo\b/g, "start the demo"],
+  [/\b(g p s|gee pee ess)\b/g, "gps"], [/\benditrip\b/g, "end the trip"], [/\bend the (trap|route)\b/g, "end the trip"], [/^and the trip$/, "end the trip"],
+  [/\bmill shake\b/g, "milkshake"], [/\bex it\b/g, "exit"], [/\bchoke\b/g, "joke"], [/\btell me a jo$/, "tell me a joke"], [/\bbo+red\b|\bboarded\b/g, "bored"],
+  [/\bmood (on|off)\b/g, "mode $1"], [/\bnarrations\b/g, "narration"], [/\bnarration of$/, "narration off"],
+];
+const SPANISH = [
+  [/\b(cuanto|que tan) (falta|lejos|tiempo mas|tiempo) (para llegar|pa llegar)\b/g, "how much longer"],
+  [/\b(cuanto falta|que tan lejos esta|que tan lejos es|que tan lejos|cuantas millas|cuanto tiempo mas|cuanto tiempo) (para|pa|a|to|hasta)? ?/g, "how far to "],
+  [/\b(cuanto falta|que tan lejos)$/g, "how much longer"], [/\ba que hora llegamos a\b/g, "what time will we get to"], [/\bya llegamos\b/g, "are we there yet"],
+  [/\b(llevame|llevanos) a\b/g, "take me to"], [/\bla frontera( de mexico)?\b/g, "the mexico border"],
+  [/\b(necesito|quiero ir al|donde hay un|hay un) (un )?bathroom\b/g, "i need a bathroom"], [/\bel bathroom\b/g, "the bathroom"],
+  [/\b(gasolinera|gasolina|llenar el tanque|el tanque esta)\b/g, "gas"], [/\b(estacion de carga|cargador electrico|cargador)\b/g, "ev charger"],
+  [/\b(tengo hambre|comida|comer|restaurantes?)\b/g, "food"], [/\b(donde dormir|un hotel|un motel)\b/g, "a hotel"],
+  [/\b(callate|cayate|silencio|ya no hables)\b/g, "be quiet"], [/\b(narracion|narrador)\b/g, "narration"],
+  [/\b(quita|quitale|apaga|no mas|ya no) (la |el )?(narration|modo)/g, "turn off $3"], [/\b(pon|ponle|enciende|activa) (la |el )?(narration|modo)/g, "turn on $3"],
+  [/\bmodo (de )?(los )?(ninos|kids|nino)\b|\b(kids|ninos) mode\b/g, "kid mode"], [/\bmodo oscuro\b/g, "dark mode"], [/\bmodo claro\b/g, "light mode"],
+  [/\b(donde estamos|en donde estamos)\b/g, "where are we"], [/\bque pueblo es\b/g, "what town is"],
+  [/\b(a )?la izquierda\b|\bel lado izquierdo\b/g, "on my left"], [/\b(a )?la derecha\b|\bel lado derecho\b/g, "on my right"],
+  [/\b(que hay|que es eso)( de interesante)?( por aqui| cerca| de alla| alla)( cerca)?\b/g, "anything interesting nearby"], [/\bque es eso\b/g, "what is that"],
+  [/\b(dime|cuentame|cuentanos|hablame) (mas|una historia|un cuento|un chiste|una story)\b/g, (m, a, b) => ({ mas: "tell me more", "un chiste": "tell me a joke" }[b] || "tell me a story")],
+  [/\b(un chiste|chiste)\b/g, "a joke"], [/\bmas info\b/g, "more info"], [/\bmas histori?as\b/g, "more stories"],
+  [/\b(otra vez|repitelo|repite eso|puedes repetir eso)\b/g, "say that again"], [/\bmas alto\b|\bsubele al volumen\b/g, "louder"],
+  [/\b(no te (escucho|oigo)|no escucho)\b/g, "i cannot hear you"], [/\bmas rapido\b/g, "faster"], [/\bmas despacio\b/g, "slower"],
+  [/\bhabla menos\b/g, "talk less"], [/\b(siguiente)\b/g, "next"], [/\b(la )?proxima salida\b|\bel proximo exit\b|\bproximo exit\b/g, "the next exit"], [/\bsalida\b/g, "exit"],
+  [/\b(hay )?(mucho )?trafico( mas)?( adelante)?\b/g, "traffic ahead"], [/\b(como esta el|que)? ?clima( hace alla)?\b/g, "weather"],
+  [/\b(que|cual es la) altura( tenemos aqui| donde estamos)?\b/g, "elevation"], [/\bque tan (rapido|fast) vamos\b|\bque tan fast are we going\b/g, "how fast are we going"],
+  [/\bcuantos stamps (tenemos|llevamos)\b/g, "how many stamps do we have"], [/\bgracias\b/g, "thanks"], [/\bhola\b/g, "hello"],
+  [/\b(que (puedo|se puede) decir( aqui)?|ayuda)\b/g, "what can i say"], [/\botra pregunta( de trivia)?( porfa| por favor)?\b/g, "next question"],
+  [/\b(abre|muestrame) el (mapa|map)\b/g, "show the map"], [/\babre el pasaporte\b/g, "show the passport"], [/\bquiero jugar (los games|un juego)\b/g, "play games"],
+  [/\b(que (dice|dicen) (el|los|la|las) (signs?|letreros?)( de la freeway)?)\b/g, "what do the signs say"], [/\blee la tarjeta\b/g, "read the card"],
+  [/\b(terminar|termina|acabar|acaba|parar)( el)? (viaje|trip)\b|\bya terminamos( el viaje)?\b/g, "end the trip"],
+  [/\b(empieza|empezar con|empezar|puedes empezar)( el)? (gps|demo)\b/g, "start the $3"], [/\b(cancela eso|no importa)\b/g, "cancel"],
+  [/\blo siento\b/g, "sorry"], [/\b(es la|la|quiero la letra|yo digo la) (a|b|c|d)\b/g, "answer $2"], [/\b(por favor|porfa|ahorita|oye|mijo|amigo|amiga|ya estuvo|creo|pienso)\b/g, " "], [/\bpleez\b/g, "please"],
+  [/\b(siembran|sembrando|plantan)\b/g, "growing"],
+];
+function prep(t) {
+  for (const [re, to] of SPANISH) t = t.replace(re, to);
+  for (const [re, to] of ASR_FIX) t = t.replace(re, to);
+  return t.replace(/\s+/g, " ").trim();
+}
+
 // Wake words and politeness around a command ("hey buddy, could you tell me more please").
-const LEAD = /^(?:hey|hi|hello|ok|okay|yo|so|um+|uh+|uhm|er+|erm|hmm+|well|please|buddy|i ?5 buddy|i five buddy|can you|could you|would you|will you|can i|could i|may i|i want to|i would like to|i wanna|i need you to|let us|just|and|now|alright|all right) /;
+const LEAD = /^(?:hey|hi|hello|ok|okay|yo|so|um+|uh+|uhm|er+|erm|hmm+|well|please|buddy|oh|ah|nah|oops|sorry|dude|mom|mommy|dad|daddy|excuse me|i ?5 buddy|i five buddy|can you|could you|would you|will you|can i|could i|may i|i want to|i would like to|i wanna|i need you to|let us|just|and|now|alright|all right) /;
 const TAIL = / (?:please|buddy|thanks|thank you|for me|for us|real quick|ok|okay)$/;
 function stripFill(t) {
   for (let i = 0; i < 6; i++) {
@@ -348,7 +401,7 @@ function findPlace(q, places, near, side, strict) {
 }
 
 /** "left" | "right" | null: a side the user named. "Right now", "all right" and "how much time is left" are not sides. */
-const NOT_SIDE = /\b(right (now|here|away|there|then)|all right|alright|that is right|you are right|right on|(time|miles?|hours?|minutes?|much|long|far)( is| are)? left|left (to go|over))\b/g;
+const NOT_SIDE = /\b(right (now|here|away|there|then)|all right|alright|that is right|you are right|right on|(time|miles?|hours?|minutes?|much|long|far)( is| are)? left|left (to go|over)|(anything|nothing|much|only \w+( \w+)?|any of it) left|left (of|today)|after the \w+ left)\b/g;
 function sideSaid(t) {
   const m = t.match(/\b(?:the|my|your|our|to|on) (left|right)\b/); // "on the right there", "to my left"
   if (m) return m[1];
@@ -380,7 +433,7 @@ const END_Q = /^(?:very )?end(?: of (?:the )?(?:road|line|i 5|interstate|freeway
 const OFF = /\b(off|stop|stopping|pause|disable|quiet|silence|end|no more|shut off|cancel|kill|deactivate|not|less)\b/;
 const ON = /\b(on|start|resume|enable|back|continue|begin|activate|restart|keep|more)\b/;
 const DIST_TRIG = /\b(how far|how much (longer|farther|further|more)|how long|how many (more )?(miles|minutes|hours)|how (close|near)|distance|when (do|will|are|should|can) we|where is|where are|take me|navigate|drive me|directions|the way|head(ing|ed)? (to|for)|we are going|going to|destination|eta)\b/;
-const T_LEAD = new Set(("is it to till til until we get getting do does will would reach reaching arrive arriving arrival in at be away from here for " +
+const T_LEAD = new Set(("is it to till til until we get getting do does will would reach reaching arrive arriving arrival in at be away from here for yet " +
   "before there still more longer farther further of drive driving going go us me the a an set destination up much many miles minutes hours by are " +
   "left time close closer near almost nearly cross crossing into enter entering hit how long").split(" "));
 const T_TAIL = /(?: (?:from here|from us|from where we are|away|yet|now|still|please|left|to go|exactly|again|right now|by car|driving|is|are|located|on i 5|on the freeway|on the highway|from me|anymore))+$/;
@@ -396,6 +449,13 @@ function distFlags(trig) {
   if (/^(what time|when|eta|arrival)/.test(trig)) f.eta = true;
   return f.ask || f.eta ? f : undefined;
 }
+// Ask Buddy steps aside for these: a distance on the trip, the next stop, live road and weather questions, services
+const DIST_STRONG = /\b(how far( away)?( is| are| to| until| till| from| do we| till we| until we| we|$)|how much (longer|farther|further|more)|how long (until|till|til|to|before|will it take|do we|till we|is the drive)|how many (more )?(miles|minutes|hours)|distance (to|from)|when (do|will|are|should|can) we|where is|where are|take me|navigate|drive me|directions|the way to|head(ing|ed)? (to|for)|we are going|going to|destination|eta|are we (there|almost|close|getting|near))\b/;
+const ASK_LIVE = /\b(weather|forecast|raining|snowing|temperature|traffic|accidents?|crash|closures?|chain control|backed up|wrecks?)\b/;
+const ASK_NOT = new RegExp("\\b(next|nearest|closest|upcoming|weather|forecast|raining|snowing|temperature|traffic|accidents?|crash|closures?|chain control|" +
+  "gas station|fuel|charger|charging|tesla|bathroom|restroom|potty|hotels?|motels?|hungry|starving|eat now|place to (eat|sleep|stay)|" +
+  "(this|the) (town|city|place|county) called|name of this|what (town|city|state|county)|are we (still )?in|kind of land|" +
+  "(anything|something) (to see|to do|cool|interesting|fun))\\b");
 const MORE_TRIG = /\b(tell me (more |a story |the story |a little |something |a bit |all )?(about|on|regarding)|(more|story|stories|history|info|information|facts?) (about|on|of|behind|regarding)|what is|what are|what was|what were|who is|who was|who were|learn about|know about|describe|explain)\b/g;
 /** "Tell me about X", "what's that X": the place named after the last trigger that names anything. */
 function moreTarget(t, o, strict, side) {
@@ -420,22 +480,30 @@ const LAND = new RegExp("\\b(what (is|are) (they |we |people )?(growing|farming|
   "(what (is|are)|tell me about|what about|describe) (that|this|those|these|the|all (the|these|those)) (trees?|orchards?|groves?|fields?|crops?|plants?|" +
   "vines?|vineyards?|farms?|farmland|cows|cattle|hills?|mountains?|valley|land|area|region|stretch|landscape|scenery|countryside)|" +
   "what is out here|the (landscape|scenery|countryside))\\b");
-const LAND_FARM = /\b(grow|growing|farming|planting|crops?|trees?|orchards?|groves?|fields?|plants?|vines?|vineyards?|farms?|farmland|cows|cattle)\b/;
+// more ways people ask about the land: "are those almonds", "rows of trees", "whose farm is this", "why is it so flat here"
+const LAND_MORE = new RegExp("\\b(what (are|is) (they|we|people|farmers|those people) (\\w+ )?(grow|growin|growing|plant|planting|picking)|what grows|what is growing|whatcha growing|" +
+  "crops|farm stuff|(rows|lines) of (trees|plants|bushes)|(trees|bushes|plants) in (rows|lines)|whose farm|these fields|all (this|these) (land|fields)|this (whole )?(area|region|stretch of land)|" +
+  "(are|is) (those|that|these|it) (almonds?|walnuts?|pistachios?|grapes?|oranges?|orange trees|corn|cotton|tomato(e)?s|olives?|cherr(y|ies)|peach(es)?|apricots?|plums?|citrus|lettuce|strawberr(y|ies)|rice|alfalfa|wheat)|" +
+  "so (flat|hilly|brown|green)|geography|kind of land|what are the cows eating|cows eating)\\b");
+const LAND_FARM = /\b(grow|growing|growin|grows|farming|planting|picking|crops?|trees?|orchards?|groves?|fields?|plants?|vines?|vineyards?|farms?|farmers|farmland|cows|cattle|almonds?|walnuts?|grapes?|corn|bushes)\b/;
 const TAB = { map: "map", maps: "map", passport: "passport", stamps: "passport", badges: "passport", game: "play", games: "play", bingo: "play", play: "play", "i spy": "play", drive: "drive", driving: "drive", home: "drive", ahead: "ahead", list: "ahead" };
 
 /**
  * Turn what was heard into a command. Pure: same input, same output.
  * @param {string} text what the recognizer heard
  * @param {string[]} destNames DESTS names ("Sacramento", "Oregon border", ...)
- * @param {{places?: string[], dir?: "N"|"S", near?: Array<{name: string, side?: string, d?: number}>}} opts place names
- *   (for "tell me about X", "how far to X"), travel direction, and the places near us (for "what's that castle")
- * @returns {{cmd: string, arg: any, q?: string, partial?: boolean, cands?: string[], ask?: boolean, eta?: boolean, st?: string, past?: string}}
+ * @param {{places?: string[], dir?: "N"|"S", near?: Array<{name: string, side?: string, d?: number}>, ask?: {idx, here?: string[], zone?: string}}} opts
+ *   place names (for "tell me about X", "how far to X"), travel direction, the places near us (for "what's that
+ *   castle"), and Ask Buddy's index with what "it" and "this area" mean (see matchAsk)
+ * @returns {{cmd: string, arg: any, q?: string, partial?: boolean, cands?: string[], ask?: boolean, eta?: boolean, st?: string, past?: string, i?: number, a?: string, name?: string}}
+ *   For "ask": arg = the I5ASK key, i = the question's index, q / a = its question and answer, name = the place's name.
  *   cmd is "unknown" when nothing fits. For "howfar": ask = only asking (keep the destination), eta = wants a clock time,
  *   st = a state line ("CA" | "OR" | "WA" | "next") or an end of the road ("N" | "S"), past = a WHOLE_ROAD place
  *   that DESTS doesn't have ("Portland" when the app covers California).
  */
 export function parseCommand(text, destNames = [], opts = {}) {
-  const t = stripFill(normText(text));
+  const raw = prep(normText(text));
+  const t = stripFill(raw);
   const out = (cmd, arg = null, extra) => (extra ? Object.assign({ cmd, arg }, extra) : { cmd, arg });
   if (!t) return out("unknown");
   const has = re => re.test(t);
@@ -463,58 +531,125 @@ export function parseCommand(text, destNames = [], opts = {}) {
     }
     if (d) return out("howfar", null, f({ past: d }));
     if (border) return out("howfar", null, f({ st: dir }));
+    // a city inside more words ("have to go to yreka", "burbank from our spot", "cool inga mom"): the longest run of
+    // up to 4 words that is a destination, or a state line
+    const ws = bare.split(" ");
+    if (ws.length > 1) {
+      for (let len = Math.min(4, ws.length - 1); len >= 1; len--) for (let i = 0; i + len <= ws.length; i++) {
+        const part = ws.slice(i, i + len).join(" ");
+        if (len === 1 && (part.length < 4 || STOP.has(part))) continue;
+        const st2 = stateTarget(part);
+        if (st2 && len > 1) return out("howfar", null, f({ st: st2 }));
+        const d2 = matchDest(part, roadDests(dests), dir);
+        if (d2 && dests.includes(d2)) { const line = stateTarget(normText(d2)); return line ? out("howfar", null, f({ st: line })) : out("howfar", d2, flags); }
+      }
+    }
     const p = findPlace(q, o.places, o.near, side, false);
     return p ? out("distance", p.name, { cands: p.cands }) : null;
   };
 
   // never mind
   if (has(/^(cancel( that| it)?|never ?mind|nevermind|forget (it|that|about it)|nothing|no|nope|no thanks|no thank you|not now|stop listening|dismiss|close( this| it)?|exit|go away|done|all done|that is (all|it))$/)) return out("cancel");
+  if (has(/\b(never ?mind|nevermind|scratch that|forget (it|i asked)|wrong button|did not mean to (press|push|tap|hit)|cancel cancel|no mind cancel)\b/) ||
+      has(/^(?:actually |no )?(cancel|close)( it| that| this)?( never ?mind)?$/)) return out("cancel");
 
   // narration on / off (before "stop" and "quiet")
-  if (has(/\b(narration|narrating|narrate|narrator|commentary|announcements?|announcing|tour guide)\b/) || has(/\b(start|keep|resume) talking\b/) || has(/\b(un ?mute|mute)\b/)) {
+  if (has(/\b(you can|go ahead and|ok you can) (talk|speak) again\b/)) return out("narr", true);
+  if (has(/\b(narration|narrating|narrate|narrator|commentary|announcements?|announcing|tour guide|story voice)\b/) || has(/\b(start|keep|resume) talking\b/) || has(/\b(un ?mute|mute)\b/)) {
     if (has(/\bun ?mute\b/)) return out("narr", true);
     if (has(/\bmute\b/) || has(OFF)) return out("narr", false);
     if (has(ON)) return out("narr", true);
     return out("narr", null);
   }
 
+  if (has(/\btoo (quiet|soft)\b|\bcannot hear (you|it|anything)\b|\bcan not hear\b|\bmy ears hurt\b/)) return out("volume");
   // be quiet (the strong forms win over everything below)
   if (has(/\b(shut up|be quiet|quiet|keep quiet|stop talking|stop it|stop that|silence|hush|shush|sh+|zip it|cut it out|stop stop|ok stop|okay stop|no more talking|enough talking)\b/) || has(/^(that is |thats )?enough( already)?$|^no more$/)) return out("quiet");
 
   // settings by voice
-  if (has(/\b(kid|kids|kiddo|children|child|family|i spy) ?mode\b/)) return out("kid", has(OFF) ? false : has(ON) ? true : null);
-  if (has(/\b(story time|story mode|more stories|talk more|be (more )?chatty|chattier)\b/)) return out("chat", "high");
+  if (has(/\b(kid|kids|kiddo|children|child|family|i spy) ?mode\b/)) return out("kid", has(OFF) || has(/\bno (more )?kid/) ? false : has(ON) || has(/\b(switch to|go to|put|use|want|please|awake)\b/) ? true : null);
+  if (has(/\bkids? (friendly|stuff|thing|version)\b|\b(talk|speak) (like )?for (the )?kids\b|\bkids are (asleep|sleeping)\b|\blike a (little )?kid\b/))
+    return out("kid", has(/\b(asleep|sleeping|do not need|stop|anymore|normal|regular)\b/) || has(OFF) ? false : true);
+  if (has(/\b(story time|story mode|more stories|talk (a lot |a little )?more|be (more )?(chatty|talkative)|more (chatty|talkative)|chattier|chat (a little |a lot )?more|tell us (a lot )?more along the way)\b/)) return out("chat", "high");
+  if (has(/\b(dial it back|chat less|talk (a little |a bit )?less|talk(ing)? too much|fewer stories|chill)\b/)) return out("chat", "low");
+  if (has(/\b(normal amount of talking|chat(ty)? level normal)\b/)) return out("chat", "normal");
   if (has(/\b(talk less|less chatty|less talking|only (the )?big (stuff|things)|big stuff only|just the big (stuff|things)|fewer announcements|not so chatty|too chatty|too much talking)\b/)) return out("chat", "low");
   if (has(/\b(normal|regular) (chat|chattiness|chatter|mode|talking)\b/)) return out("chat", "normal");
-  if (has(/\b(auto|automatic|day and night|day night) ?(mode|theme)\b/)) return out("theme", "auto");
+  if (has(/\b(auto|automatic|day and night|day night) ?(mode|theme)\b|\btheme (to )?(auto|automatic)\b|\b(screen|theme|app) (switch|pick|change)\w* (the theme )?(on its own|by itself)\b|\bpick the theme by itself\b/)) return out("theme", "auto");
+  if (has(/\b(screen|look|theme)\b/) && has(/\b(dark|night|darker)\b/) && has(/\b(switch|make|set|change|turn|go)\b/)) return out("theme", "dark");
+  if (has(/\b(screen|look|theme)\b/) && has(/\b(light|bright|brighter|day)\b/) && has(/\b(switch|make|set|change|turn|go)\b/)) return out("theme", "light");
   if (has(/\b(dark|night|nighttime|night time) ?(mode|theme|screen|colou?rs?)\b|\b(darker|too bright)\b/)) return out("theme", "dark");
   if (has(/\b(light|day|daytime|day time|bright) ?(mode|theme|screen|colou?rs?)\b|\b(brighter|lighter|too dark)\b/)) return out("theme", "light");
 
   // trip control
+  if (has(/\b(shut it down|wrap (it|the trip) up|wrap up the trip|(quit|stop) following (us|our location)|turn off (the )?(location|tracking)( tracking)?|shut off the (tracking|trip)|trip over|that is the end of the trip|we are done (driving|end it)|end it$)\b/) ||
+      has(/\bwe are (home|parked|here|at grandmas)\b/) && has(/\b(turn it off|shut it down|end|stop|done)\b/)) return out("end");
+  if (has(/\b(demo|pretend drive|fake (trip|drive))\b/) && has(/\b(start|kick off|play|show|see|run|try|begin|go)\b/) && !has(/\b(end|stop|quit)\b/)) return out("start", "demo");
+  if (has(/\b(go live|real gps|gps (on|start)|start (the )?(real )?gps|track (us|our)|use my (real )?location|(start|go) (the )?(real|live) (one|trip|drive)|start (the )?car trip|real location)\b/) && !has(/\b(end|stop|quit|turn off)\b/)) return out("start", "gps");
   if (has(/\b(end|stop|finish|quit|exit|cancel|close|turn off|kill|done with)( the| this| my| our)? (trip|drive|driving|road trip|journey|gps|tracking|demo|demo drive|navigation)\b/)) return out("end");
   if (has(/\b(start|begin|run|take|do|try|play)( the| a| my)? demo( drive| mode)?\b|^demo( drive| mode)?$/)) return out("start", "demo");
   if (has(/\b(start|begin|turn on|use|enable|switch on|open)( the| a| my| our| a new)? (gps|tracking|location|trip|drive|driving|road trip|journey)\b/)) return out("start", "gps");
 
   // speaking speed and volume
-  if (!has(/\b(traffic|going|driving|am i|are we|fast food)\b/)) {
-    if (has(/\btoo (slow|slowly)\b/)) return out("rate", "faster");
+  if (!has(/\b(traffic|going|driving|am i|are we|fast food|charg\w*|wind|did it|so fast|was)\b/)) {
+    if (has(/\btoo (slow|slowly)\b|\b(you are |you )(talking|talk|speaking|speak) (a bit |so |kind of |really )?(slow|slowly)\b|\bspeed (it )?up\b/)) return out("rate", "faster");
     if (has(/\btoo (fast|quick|quickly)\b/)) return out("rate", "slower");
     if (has(/\b(slower|more slowly|slow down|slow it down|slow)\b/)) return out("rate", "slower");
     if (has(/\b(faster|more quickly|speed up|speed it up|quicker|hurry up|fast)\b/)) return out("rate", "faster");
   }
   if (has(/\b(louder|volume|quieter|softer|speak up|turn (it |yourself |the sound )?(up|down)|can(not)? hear (you|it|anything)|too (loud|quiet|soft))\b/)) return out("volume");
 
+  // Ask Buddy (opts.ask, once data/ask.js has loaded): a question about a place, stretch or mission that has a
+  // pre-written answer, named ("how old is Mission San Juan Capistrano") or in front of us ("why is it called that",
+  // "what is this place famous for"). Not a trip distance ("how far to Lassen Peak"), a side, the next stop, a live
+  // question (weather, traffic) or "what are they growing" (the commands below). A question that does not say which
+  // place waits until no command fits (the end of this function).
+  if (opts && opts.ask && opts.ask.idx && !side) {
+    // a trip distance or a live question never; a stop, the land or "where are we" only when a place is named
+    const skip = has(DIST_STRONG) || has(HOWFAR) || IS_FAR.test(t) || has(ASK_LIVE) || has(/ (how far|how long|how much longer|eta|how many( more)? miles|distance|miles)$/);
+    const guarded = has(LAND) || has(LAND_MORE) || has(ASK_NOT);
+    const a = skip ? null : matchAsk(t, opts.ask.idx, Object.assign({}, opts.ask, { early: true, namedOnly: guarded }));
+    if (a) return out("ask", a.key, { i: a.i, q: a.q, a: a.a, name: a.name });
+  }
+
   // games and fun
+  {
+    // "uh B I think", "I'm gonna guess D", "it's the third one I'm pretty sure", "letter c final answer"
+    const a = t.replace(/^(?:(?:say|i think|i guess|i pick|i choose|i will pick|i am gonna guess|i am going to guess|let us say|let us go with|it is|its|be|my answer is|the answer is|my guess is) )+/, "")
+      .replace(/(?: (?:i think|i guess|i am pretty sure|pretty sure|final answer|is my answer|i think it is \w+|i think its \w+|for sure))+$/, "");
+    if (a !== t) {
+      if ((m = a.match(/^(?:(?:the )?(?:answer|letter|option) )?(a|b|c|d)$/))) return out("answer", LETTER_WORDS.findIndex(v => v.includes(m[1])));
+      if ((m = a.match(/^(?:the )?(first|second|third|fourth|last)(?: one| answer| option)?$/))) return out("answer", { first: 0, second: 1, third: 2, fourth: 3, last: 3 }[m[1]]);
+    }
+    if ((m = t.match(/^(a|b|c|d)(?: \1)+$/))) return out("answer", LETTER_WORDS.findIndex(v => v.includes(m[1])));
+    if ((m = t.match(/^(?:letter |answer )?(a|b|c|d) final answer$/))) return out("answer", LETTER_WORDS.findIndex(v => v.includes(m[1])));
+    if ((m = t.match(/^(?:my answer is |i pick )?the (first|second|third|fourth|last)(?: one)?$/))) return out("answer", { first: 0, second: 1, third: 2, fourth: 3, last: 3 }[m[1]]);
+  }
   if ((m = t.match(/^(?:(?:the |my |final )?answer(?: is)?|option|letter|choice|pick|choose|is it|it is|i think it is|i say|i will go with|go with) ?(a|b|c|d|e|f|bee|be|see|sea|dee)$|^(a|b|c|d|bee|see|sea|dee)$/))) {
     return out("answer", LETTER_WORDS.findIndex(v => v.includes(m[1] || m[2])));
   }
   if ((m = t.match(/^(?:the )?(first|second|third|fourth|last) (?:one|answer|option|choice)$/))) {
     return out("answer", { first: 0, second: 1, third: 2, fourth: 3, last: 3 }[m[1]]);
   }
-  if (has(/\b(next|another|different|new) (trivia )?question\b|\bskip (the |this )?question\b/)) return out("trivia", "next");
+  if (has(/\b(next|another|different|new) (trivia )?question\b|\bskip (the |this |that )?question\b/)) return out("trivia", "next");
   if (has(/\b(repeat|read|say|reread) (me )?(the |that )?question( again)?\b|\bwhat (was|is) the question\b/)) return out("trivia", "read");
-  if (has(/\b(trivia|quiz|ask me (a |some |something|anything)|ask a question|question for me|test me)\b/)) return out("trivia");
-  if (has(/\b(jokes?|make me laugh|something funny|funny)\b/)) return out("joke");
+  if (has(/\bwhat did you (just )?ask\b|\b(repeat|read) the (quiz|trivia) question\b/)) return out("trivia", "read");
+  if (has(/\b(trivia|quiz|ask me (a |some |something|anything)|ask a question|question for me|test me|riddles?)\b/)) return out("trivia");
+  if (has(/\b(jokes?|make (me|us) laugh|something funny|funny|a laugh|knock knock)\b/) && !has(/\b(why|name|called)\b/)) return out("joke");
+
+  if (has(/\b(miles an hour|miles per hour|mph|are we speeding|are we going (too )?fast|how fast are we going)\b/)) return out("speed");
+  if (has(/\b(climbing a (mountain|pass|hill)|feet above (the )?sea|on (top of )?a mountain( right now)?|how high up are we)\b/)) return out("elevation");
+  if (has(/\b(stickers|(new|another|more) stamps?|getting another stamp)\b/) || t === "stamps") return out("stamps");
+  // "Redding how far", "Grapevine eta": the place first
+  if ((m = t.match(/^(.+?) (?:how far(?: away)?(?: is (?:it|that))?|how long|how much longer|how many (?:more )?miles|eta|distance|miles)(?: (?:mom|dad|buddy))?$/))) {
+    const r = resolve(target(m[1].replace(/^(?:we are |we re |let us |my \w+ lives |we need to get to )/, "")), { ask: true });
+    if (r) return r;
+  }
+  // "are we almost to Stockton", "are we at Sacramento yet", "how soon do we get to Redding"
+  if ((m = t.match(/^(?:are we (?:almost |nearly |close |getting close )?(?:to|at|in|near) |how soon (?:do|will) we (?:get|be) (?:to|in|at) )(.+?)(?: yet)?$/))) {
+    const r = resolve(target(m[1]), { ask: true });
+    if (r) return r;
+  }
 
   // "is Redding far", "is it far"
   if ((m = t.match(IS_FAR))) {
@@ -534,29 +669,36 @@ export function parseCommand(text, destNames = [], opts = {}) {
   const strictMore = moreTarget(t, o, true, side);
   if (strictMore) return strictMore;
 
-  if (has(/\b(fun fact|a fact|tell me (a |another )?story|another story|something interesting|interesting fact|tell me something|entertain me|i am bored|we are bored|bored)\b/)) return out("story");
+  if (has(/\b(fun fact|a fact|tell (me|us) (a |another )?story|how about a story|got (a |any )?(good )?(stories|story|tale|tail)|entertain (me|us)|^story$|another story|something interesting|interesting fact|tell me something|entertain me|i am bored|we are bored|bored)\b/)) return out("story");
   if (has(/\b(stamps?|passport|badges?)\b/) && has(/\b(how many|count|progress|score|so far|collected|got|have i|do i have|do we have|have we|total|number of)\b/)) return out("stamps");
-  if (has(/\b(settings|preferences|setup|options menu)\b/)) return out("settings");
+  if (has(/\b(settings|preferences|setup|options menu|options screen|change (some |the )?options)\b/)) return out("settings");
 
   // tabs (and which game, for Play)
   const game = w => (w === "bingo" ? { game: "bingo" } : w === "i spy" ? { game: "spy" } : undefined);
-  if ((m = t.match(/\b(?:show|open|go to|goto|switch to|take me to|bring up|pull up|view|display|let me see|i want to see|back to|go back to)\b(?:\s+\w+){0,3}?\s+(maps?|passport|stamps|badges|games?|bingo|play|i spy|drive|driving|home|ahead|list)\b/))) return out("tab", TAB[m[1]], game(m[1]));
+  if ((m = t.match(/\b(?:show|open|go to|goto|switch to|take me to|bring up|pull up|view|display|let me see|i want to see|see|back to|go back to)\b(?:\s+\w+){0,3}?\s+(maps?|passport|stamps|badges|games?|bingo|play|i spy|drive|driving|home|ahead|list)\b/))) return out("tab", TAB[m[1]], game(m[1]));
   if ((m = t.match(/^(?:the )?(maps?|passport|bingo|games?|i spy)(?: tab| screen| page| view| card)?$/))) return out("tab", TAB[m[1]], game(m[1]));
-  if ((m = t.match(/\b(?:play|start) (?:a |some )?(games?|bingo|i spy)\b/))) return out("tab", "play", game(m[1]));
+  if ((m = t.match(/\b(?:play|start) (?:a |some |the )?(?:road trip |car )?(games?|bingo|i spy)\b/))) return out("tab", "play", game(m[1]));
+  if (has(/^(my )?passport( book)?$/)) return out("tab", "passport");
 
-  if (has(/\b(next|upcoming|nearest|closest|coming|what|which) exit\b|\bexit (is )?(next|coming up|ahead)\b|\bexit number\b/)) return out("exit");
+  if (has(/\b(next|upcoming|nearest|closest|coming|what|which) exit\b|\bexit (is )?(next|coming up|ahead)\b|\bexit number\b/) && !has(/\b(chargers?|charging|gas|fuel|food|restaurants?|mcdonalds|lodging|hotels?|motels?|eat|diner)\b/) ||
+      has(/\b(where|when) do we get off\b|\b(next|our next) off ramp\b|\bis there an exit soon\b|\bwhat is the exit\b/)) return out("exit");
 
   // services: the order matters ("charging station" is EV, "truck stop" is fuel, "rest stop" is a rest area)
-  if (has(/\b(ev|e v|evs|electric|chargers?|charging|charge|superchargers?|tesla|plug in|plugin)\b/)) return out("services", "ev");
-  if (has(/\b(gas|gasoline|fuel|petrol|diesel|fill up|refuel|refueling|gas station|filling station|truck stop|unleaded|chevron|shell|arco|exxon|mobil|valero)\b/)) return out("services", "fuel");
+  if (has(/\b(ev|e v|evs|electric|chargers?|charging|charge|charged|recharge|superchargers?|supercharge|tesla|plug in|plugin|top off the battery|juice up|electrify america)\b/)) return out("services", "ev");
+  if (has(/\b(gas|gasoline|fuel|petrol|diesel|fill up|fill er up|fill the tank|top off|refuel|refueling|gas station|filling station|truck stop|unleaded|chevron|shell|arco|exxon|mobil|valero|on empty|running on fumes|tank is|pump|pilot|flying j|loves)\b/) && !has(/\bpump(ing)? plant\b/)) return out("services", "fuel");
+  if (has(/\b(stretch|walk around|get out|pull over|use the facilities|ladies room|mens room|number (one|two)|wee wee|gotta go|have to go|pit stop|diaper|carsick|stand up)\b/) && !has(/\b(stretch of|this stretch|road|freeway|highway)\b/)) return out("services", "rest");
+  if (has(/\b(crash|get a room|a room|spend the night|for the night|exhausted|lie down|best western|rest for the night)\b/) && !has(/\b(accidents?|wrecks?|traffic|was there)\b/)) return out("services", "sleep");
+  if (has(/\b(sandwich|double double|fries|french fries|diner|diners|caffeine|tummy|stomach|nuggets|milkshake|ice cream|eaten|lunchtime|chicken)\b/)) return out("services", "food");
   if (has(/\b(rest ?areas?|rest ?stops?|rest ?rooms?|bathrooms?|toilets?|potty|pee|peeing|loo|washroom|lavatory|comfort station|(take|need|want) a break|stretch (my|our) legs)\b/)) return out("services", "rest");
   if (has(/\b(hotels?|motels?|sleep|sleeping|lodging|lodge|inn|place to stay|somewhere to stay|room for the night|tired|sleepy|drowsy|bed)\b/)) return out("services", "sleep");
   if (has(/\b(food|eat|eating|hungry|starving|starved|restaurants?|lunch|dinner|breakfast|brunch|supper|snacks?|coffee|cafe|burgers?|pizza|tacos?|fast food|drive thru|drive through|in n out|in and out|starbucks|mcdonalds|meal|bite to eat|grab a bite)\b/)) return out("services", "food");
 
   // live road info
-  if (has(/\b(freeway|message|electronic|overhead|highway|road) signs?\b|\bwhat (does|do) the (next )?signs? say\b|\bnext sign\b/)) return out("sign");
-  if (has(/\b(weather|forecast|rain|raining|rainy|snow|snowing|snowy|temperature|how hot|how cold|hot outside|cold outside|storms?|stormy|fog|foggy|windy|wind|sunny|degrees|umbrella|ice|icy|heat)\b/)) return out("weather");
-  if (has(/\b(traffic|chains?|chain control|road conditions?|conditions|closures?|closed|accidents?|crash|road ?work|construction|alerts?|delays?|jam|congestion|warnings?)\b/)) return out("road");
+  if (has(/\b(freeway|message|electronic|overhead|highway|road) signs?\b|\bwhat (does|do) the (next )?signs? say\b|\bnext sign\b/) ||
+      has(/\b(what|whats) (is |does |did |do |are )?(that|the|this|those)( big| last| green| \w+)? signs? (just )?(say|saying|mean|said)\b|\bread (me |us )?the signs?\b|^signs?$|\b(missed|miss) (that|the) sign\b|\bwhat did (that|the) (last )?sign\b/)) return out("sign");
+  if (has(/\b(weather|forecast|rain|raining|rainy|snow|snowing|snowy|temperature|how hot|how cold|hot outside|cold outside|storms?|stormy|fog|foggy|windy|wind|sunny|degrees|umbrella|ice|icy|heat|jackets?|cold out)\b/)) return out("weather");
+  if (has(/\b(traffic|chains?|chain control|road conditions?|conditions|closures?|closed|accidents?|crash|road ?work|construction|alerts?|delays?|jam|congestion|warnings?|wrecks?|backed up|slowing down|going so slow|why are we stopped|stopping so much)\b/) ||
+      has(/\bis the (pass|grapevine|road|freeway|highway) open\b|\bif the pass is open\b/)) return out("road");
 
   if (has(/\b(elevation|altitude|how high|above sea level|how far up|feet up)\b/)) return out("elevation");
   if (has(/\b(how fast|what is (our|my|the) speed|our speed|my speed|current speed|speedometer|what speed|speed)\b/)) return out("speed");
@@ -569,28 +711,37 @@ export function parseCommand(text, destNames = [], opts = {}) {
     return out("howfar", null, flags && flags.eta ? { eta: true } : undefined);
   }
 
+  if (has(/^(where|town)$|\bwhere (exactly |the heck |on earth )?are we\b|\bwhat place is this\b|\bare we (still )?in (california|a city|a town)\b|\bwhat town is (this|dis)\b/)) return out("where");
   if (has(/\b(where are we|where am i|where (is|are) (this|here)|where we at|what (state|town|city|county|area|region|mile|milepost|mile marker|road|highway|freeway)( is this| are we( in| on| at)?| am i( in| on| at)?| is it)?|what is (this|the name of this) (town|city|county|state)|our location|my location|current location|location|whereabouts|which (state|town|city)|what milepost)\b/)) return out("where");
 
   // left / right ("right now", "all right" and "time left" are not directions)
   if (side) return out("look", side);
 
   // the land itself: "what's growing here", "what are those trees", "tell me about this area"
-  if (has(LAND)) return out("land", has(LAND_FARM) ? "farm" : "land");
+  if (has(LAND) || has(LAND_MORE)) return out("land", has(LAND_FARM) ? "farm" : "land");
 
-  if (has(/\b(repeat|say (that|it) again|say again|again|what was that|what did you (just )?say|come again|pardon|one more time|did not (hear|catch|get)|missed (that|it)|replay)\b/) || has(/^(what|huh|sorry|excuse me|pardon me|sorry what|what what)$/)) return out("repeat");
+  if (has(/\b(repeat|say (that|it) again|say again|again|what was that|did not catch that|was not listening|what did you (just )?say|come again|pardon|one more time|did not (hear|catch|get)|missed (that|it)|replay)\b/) || has(/^(what|huh|sorry|excuse me|pardon me|sorry what|what what)$/)) return out("repeat");
 
   // a place named loosely ("tell me about pea soup andersons")
   const looseMore = moreTarget(t, o, false, side);
   if (looseMore) return looseMore;
 
   if (has(/\b(tell me more|more about (it|that|this|them|there)|more info|more information|more details|details|keep going|go on|continue|and then|what else|tell me about (it|that|this|that place|this place|them|there|the place|this one|that one)|tell me the story|the story|go deeper|elaborate|expand|explain|learn more|know more|hear more|more please)\b/) || has(/\bmore\b/)) return out("more");
-  if (has(/\b(next|skip|coming up|up next|upcoming|another (one|place|landmark)|something else|what is ahead|ahead|move on)\b/)) return out("next");
+  if (has(/\b(next|skip|coming up|up next|upcoming|another (one|place|landmark)|something else|what is ahead|ahead|move on|what is after this|a different one|what else you got)\b/)) return out("next");
   if (has(/\b(stop|pause|wait|hold on|hang on|okay okay|enough|no more|quiet down)\b/)) return out("quiet");
-  if (has(/\b(what is (that|this|here|there|around|out there|over there|nearby|near us|near here|close by|this place|that place|it)|what am i (looking at|seeing)|what are (we|those|these|they)( passing| looking at| seeing)?|what are those|what did we (just )?(pass|see|drive by|go by)|anything (interesting|nearby|around|here|cool|to see)|what is around|around here|around us|nearby|near here|what is out( the)? window|look around|what do (i|we) see|what can (i|we) see)\b/)) return out("around");
-  if (has(/^(play|play it|play that|read it|read that|read|announce|announce it|hear it|play (the )?(card|landmark|announcement))$/)) return out("announce");
-  if (has(/\b(help|what can (i|you) (say|do|ask)|what (do|should|can) i (say|ask)|commands?|options|how does (this|it) work|how (do|does) (i|this|you) (use|work)|what do you do|instructions|tutorial|what are you)\b/)) return out("help");
+  if (has(/\b(what is (that|this|here|there|around|out there|over there|nearby|near us|near here|close by|this place|that place|it)|what am i (looking at|seeing)|what are (we|those|these|they)( passing| looking at| seeing)?|what are those|what did we (just )?(pass|see|drive by|go by)|anything (interesting|nearby|around|here|cool|to see|neat|fun|worth seeing|good)|something (cool|interesting|famous)|landmarks? (around|close|near)|worth seeing|what is that( thing| big \\w+)?( out the window| over there)?$|what was that (back there|we just passed)|sights|what is around|around here|around us|nearby|near here|what is out( the)? window|look around|what do (i|we) see|what can (i|we) see)\b/)) return out("around");
+  if (has(/^(play|play it|play that|read it|read that|read|announce|announce it|hear it|play (the )?(card|landmark|announcement))$/) ||
+      has(/\b(play|read|hear)( \w+){0,3} (the )?card\b|\b(go ahead and )?announce it\b|\bread it out loud\b|\bplay what you have got\b/)) return out("announce");
+  if (has(/\b(help|what can (i|you) (even )?(say|do|ask)|what (are the things|things) i can (ask|say)|how (does|do) (this|it) (thing )?work|how do i talk to you|what do i do|what (are you|you are) able to do|not sure how this works|what (do|should|can) i (say|ask)|commands?|options|how does (this|it) work|how (do|does) (i|this|you) (use|work)|what do you do|instructions|tutorial|what are you)\b/)) return out("help");
   if (has(/\b(thanks|thank you|thank u|thx|cheers|appreciate (it|you)|good job|great job|well done|nice job|you are (great|awesome|the best))\b/)) return out("thanks");
-  if (has(/^(hi|hello|hey|hey there|hi there|hello there|howdy|yo|good (morning|afternoon|evening)|buddy|are you there|you there|can you hear me|testing|test|is this working|mic check)$/)) return out("hello");
+  if (has(/^(hi|hello|hey|hey there|hi there|hello there|howdy|yo|good (morning|afternoon|evening)|buddy|are you there|you there|can you hear me|testing|test|is this working|mic check)$/) ||
+      has(/\bare you (still )?(there|with us|awake|on)\b|\byou awake\b|\bhow is it going\b|^hello (there|buddy)$/)) return out("hello");
+  // Ask Buddy again, now that no command fits: a question about the place in front of us ("when was it built"), even
+  // one that does not say "it" ("who planted the vines", "can we ride the train")
+  if (opts && opts.ask && opts.ask.idx && !side) {
+    const a = matchAsk(t, opts.ask.idx, Object.assign({}, opts.ask, { loose: true }));
+    if (a) return out("ask", a.key, { i: a.i, q: a.q, a: a.a, name: a.name });
+  }
   // a place past the road the app covers, named in any words ("tell me about Seattle"): say where the road ends
   const far = pastIn(t, dests);
   if (far) return out("howfar", null, { past: far });
@@ -607,6 +758,245 @@ export function chooseCommand(alts, destNames = [], opts = {}) {
     if (!first) first = Object.assign(c, { heard: a });
   }
   return first || { cmd: "unknown", arg: null, heard: (alts && alts[0]) || "" };
+}
+
+/* =========================================================================================
+   Ask Buddy (pure): pre-written answers to the questions passengers ask about a place, a stretch or a mission
+   ========================================================================================= */
+// data/ask.js (window.I5ASK, made by tools/ask.py) is loaded on demand, so it is not part of the service worker's
+// all-or-nothing install. Each entry: {n: name, k: "p"|"z"|"m", q: [[question, answer, "alt|alt|alt", kind], ...],
+// l?: the mission key of a mission's place on I-5}. askIndex() indexes it once; matchAsk() is the lookup.
+
+// Words that carry no meaning for picking a question ("is it", "can you tell me"), and words that alone only say
+// the kind of question (a "how far" or a "where" is a live question the commands above answer).
+const ASK_DROP = new Set(("the a an of and or in on at to for by with from is are was were be been am it its this that these those my our your " +
+  "me us i we you they them their he she his her there here these please tell know about does did could would will should just really " +
+  "okay ok so um uh like kind sort thing things stuff one ones spot buddy hey hi get got go going went yet anything something some any " +
+  "more info information details say said hear us i5 i 5 freeway highway interstate road actually even ever also then now right left " +
+  "up over under down out across past front back around near nearby ahead behind side sides lane way bit lot look looking seeing " +
+  "deal story stories history whats mom dad mommy daddy mama papa mami papi grandma grandpa guys dude bro yo hey wow super pretty kinda").split(" "));
+const ASK_WEAK = new Set("what where how when who why which far long much many close near miles minutes hours".split(" "));
+// with a place named, these ARE the question ("how long is the Santa Margarita River", "when is the almond bloom")
+// words GENERIC lists that are still a question, not a kind of thing ("how OLD is it", "what EXIT is this")
+const ASK_QWORDS = new Set("old new big little great first exit history story stories".split(" "));
+const ASK_NAMED_Q = new Set("when why far long much many big".split(" "));
+// "tell me about X", "what is X": the whole story (the "more" command), unless more is asked
+const ASK_MORE = /^(?:tell (?:me|us) (?:more )?about|what (?:is|are|was|were)|who (?:is|was|were)|describe|explain|what about|what is up with)\b|\b(?:story|what happened|tell me)$/;
+// A few word families, so "how old" finds "when was it built" less often than "how old is it" but more than nothing
+const ASK_SYN = new Map(Object.entries({
+  eat: "food", eating: "food", restaurant: "food", restaurants: "food", hungry: "food", meal: "food", lunch: "food", dinner: "food", snack: "food", snacks: "food",
+  kids: "kid", children: "kid", child: "kid", family: "kid",
+  named: "name", names: "name", called: "name", call: "name",
+  famous: "known", special: "known", cool: "known", interesting: "known", notable: "known",
+  visit: "stop", visiting: "stop", stopping: "stop", worth: "stop",
+  age: "old", older: "old", oldest: "old", years: "year",
+  build: "built", made: "built", make: "built", constructed: "built", construct: "built", founded: "built", started: "built", opened: "built", began: "built",
+  animals: "animal", wildlife: "animal", creatures: "animal",
+  grow: "growing", grows: "growing", grown: "growing", crops: "growing", crop: "growing",
+  large: "big", huge: "big", size: "big", tall: "big", height: "big", biggest: "big", largest: "big",
+  lived: "live", lives: "live", living: "live", tribe: "native", tribes: "native", indians: "native", indigenous: "native",
+  currently: "today", still: "today", anymore: "today", nowadays: "today",
+  happen: "happened", happening: "happened", reason: "why",
+}));
+const askStem = w => { const s = stem(w); return ASK_SYN.get(w) || ASK_SYN.get(s) || s; };
+function askToks(t) {
+  return String(t || "").split(" ").filter(w => w && !ASK_DROP.has(w)).map(askStem);
+}
+
+let askMemo = { key: null, idx: null };
+/** The names a place goes by: "Weed, a windy lumber town" -> Weed; "Montgomery's Silver Wing" -> Montgomery;
+    "Coronado Bridge and Chicano Park" -> each; a mission without "Mission" ("San Juan Capistrano"). */
+function askNames(e) {
+  const out = [e.n];
+  const n = e.n.replace(/^the /i, "");
+  if (/, /.test(n)) out.push(n.split(", ")[0]);
+  const pos = n.match(/^(.+?)['’]s /);
+  if (pos && !/^(california|oregon|washington|mexico|america|the nation|the state)$/i.test(pos[1])) out.push(pos[1]);
+  if (/ and /.test(n)) out.push(...n.split(", ")[0].split(" and "));
+  if (e.k === "m") out.push(n.replace(/^Mission /, ""));
+  const of = n.match(/^(?:start|end|crossing|top|foot|site|ghost|birth|heart|mouth) of (?:the )?(.+)$/i); // "Start of the West Side Freeway"
+  if (of) out.push(of[1]);
+  return [...new Set(out)];
+}
+/**
+ * Index I5ASK once: every entry's name words (to find a place named in a question) and every question's word bag
+ * (its own words, its other phrasings and its kind) with how rare each word is.
+ * @param {{e: Object<string, {n: string, k: string, q: Array}>}} ask window.I5ASK
+ */
+export function askIndex(ask) {
+  if (!ask || !ask.e) return null;
+  if (askMemo.key === ask) return askMemo.idx;
+  const ents = [], df = new Map(), byTok = new Map();
+  let nq = 0;
+  for (const [key, e] of Object.entries(ask.e)) {
+    const nm = askNames(e).map(n => toks(normText(n))).filter(x => x.length);
+    const qs = (e.q || []).map((row, i) => {
+      const bag = new Set([...askToks(normText(row[0])), ...askToks(normText(row[2] || "").replace(/\|/g, " ")), row[3] || "other"]);
+      nq++;
+      for (const w of bag) df.set(w, (df.get(w) || 0) + 1);
+      return { i, q: row[0], a: row[1], bag, own: askToks(normText(row[0])) };
+    });
+    const E = { key, name: e.n, kind: e.k, link: e.l || null, nm, nameW: new Set(nm.flat().map(x => x.w)), qs };
+    ents.push(E);
+    for (const x of new Set(nm.flat().filter(x => !x.g).map(x => x.w))) {
+      if (!byTok.has(x)) byTok.set(x, []);
+      if (!byTok.get(x).includes(E)) byTok.get(x).push(E);
+    }
+  }
+  // how rare a word is among all the questions; a word no question has (a misheard word, a stray name) counts little
+  const idf = w => (df.has(w) ? Math.log(1 + nq / (1 + df.get(w))) : 1);
+  const byKey = new Map(ents.map(E => [E.key, E]));
+  // a name word that the questions and answers also write in lower case ("orange trees", "empty", "signs") is an
+  // everyday word, not a proper name ("Lassen", "Kumeyaay"): alone it can't name a place
+  const lower = new Map(), upper = new Map();
+  const bump = (M, w) => M.set(w, (M.get(w) || 0) + 1);
+  for (const e of Object.values(ask.e)) for (const row of e.q || []) {
+    const s = String(row[0] + " " + row[1] + " " + (row[2] || "").replace(/\|/g, ". "));
+    for (const m of s.matchAll(/(?:^|[^A-Za-z'])([a-z][a-z']+)/g)) bump(lower, normText(m[1]));
+    for (const m of s.matchAll(/[a-z,;] ([A-Z][a-z']+)/g)) bump(upper, normText(m[1])); // mid-sentence capitals: a name
+  }
+  const n2 = (M, w) => (M.get(w) || 0) + (M.get(w + "s") || 0);
+  const common = new Set([...byTok.keys()].filter(w => n2(lower, w) >= 2 && n2(lower, w) > n2(upper, w)));
+  const idx = { ents, byKey, byTok, idf, common, toks: [...byTok.keys()], everyday: w => (df.get(w) || 0) > nq / 25 };
+  askMemo = { key: ask, idx };
+  return idx;
+}
+
+const askEq = (w, y) => tokEq(w, y, w.length < 5);
+/**
+ * The entries named in the words ("how old is mission san juan capistrano", "when was the olive pit built"), best
+ * first, each with the words that said its name (so the rest is the question).
+ */
+function askNamed(words0, idx, strict = false) {
+  // the recognizer splits rare names in two ("kettle man hills", "coal inga"): try each pair of words joined, too
+  const words = [...words0];
+  const joined = [];
+  for (let j = 0; j + 1 < words0.length; j++) if (words0[j].length >= 3 && words0[j + 1].length >= 2 && !STOP.has(words0[j]) && !STOP.has(words0[j + 1])) joined.push(words0[j] + words0[j + 1]);
+  const cand = new Set();
+  for (const w of [...words, ...joined]) {
+    if (STOP.has(w) || isGen(w) || w.length < 3) continue;
+    for (const k of idx.toks) {
+      if (k[0] !== w[0] || Math.abs(k.length - w.length) > 2) continue; // cheap first: the recognizer keeps the first letter
+      if (askEq(w, k)) for (const E of idx.byTok.get(k)) cand.add(E);
+    }
+  }
+  let best = [], bestSc = 0;
+  for (const E of cand) {
+    let sc = 0, span = null;
+    for (const nt of E.nm) {
+      const wt = x => (x.g ? 1 : 2);
+      let hit = 0, all = 0, spec = 0, specHit = 0, rareHit = 0, unique = false;
+      const at = new Map(); // word index -> generic?
+      for (const y of nt) {
+        all += wt(y);
+        if (!y.g) spec++;
+        let j = words.findIndex(w => askEq(w, y.w));
+        if (j < 0) {
+          // said in two pieces: both words are part of the name
+          j = words.findIndex((w, i) => i + 1 < words.length && joined.includes(w + words[i + 1]) && askEq(w + words[i + 1], y.w));
+          if (j < 0) continue;
+          at.set(j + 1, y.g);
+        }
+        hit += wt(y);
+        at.set(j, y.g);
+        if (!y.g) { specHit++; if (!idx.common.has(y.w)) rareHit++; if (y.w.length >= 5 && (idx.byTok.get(y.w) || []).length === 1 && !idx.common.has(y.w)) unique = true; }
+      }
+      const rec = hit / all;
+      // all of the name's own words, most of the name, or one word only this place has ("kumeyaay", "capistrano");
+      // a name made only of common words ("National City") must be said in full
+      // ... and a name whose words are everyday words ("Orange County", "The farm water signs") must be said in full
+      const ok = strict ? rec === 1 && (nt.length > 1 || rareHit > 0) : rec === 1 && nt.length > 1 || (spec > 0 && rareHit > 0 && (specHit === spec || rec >= 0.6 || unique));
+      if (!ok) continue;
+      const v = rec + specHit * 0.05;
+      if (v <= sc) continue;
+      sc = v;
+      span = new Set([...at].filter(([, g]) => !g || !spec).map(([j]) => j));
+    }
+    if (!sc) continue;
+    const core = new Set(span);
+    // the name's words: its specific ones, and any of its other name words right next to them ("the olive PIT",
+    // "mission SAN gabriel", "the james dean TICKET")
+    const isName = j => [...E.nameW].some(y => askEq(words[j], y)) || (j > 0 && span.has(j - 1) && [...E.nameW].some(y => askEq(words[j - 1] + words[j], y)));
+    for (let grew = true; grew;) {
+      grew = false;
+      for (let j = 0; j < words.length; j++) if (!span.has(j) && isName(j) && (span.has(j - 1) || span.has(j + 1) || (STOP.has(words[j + 1]) && span.has(j + 2)) || (STOP.has(words[j - 1]) && span.has(j - 2)))) { span.add(j); grew = true; }
+    }
+    if (sc > bestSc + 1e-6) { best = [{ E, span, core }]; bestSc = sc; } else if (Math.abs(sc - bestSc) <= 1e-6) best.push({ E, span, core });
+  }
+  return best;
+}
+
+// a request to the phone or the app, not a question ("call mom", "say it again", "go live")
+const ASK_CMD = /^(?:say|repeat|play|show|open|start|stop|turn|call|text|message|set|go|track|switch|end|cancel|mute|unmute|read|skip|navigate|take|find|search|put|pause|resume|louder|quieter)\b/;
+const ASK_DEIXIS = /\b(it|that|this|there|here|they|them|those|these|its)\b/;
+const ASK_NOT_DEIXIS = /\b(is there|are there|there is|there are|get there|go there|be there|there yet|that is all|that is it)\b/g;
+/**
+ * The question asked about a place, stretch or mission, or null. Pure.
+ * @param {string} text what was heard
+ * @param {object} idx askIndex(window.I5ASK)
+ * @param {{here?: string[], zone?: string}} ctx the keys "it" or "this place" means (the place we last talked about),
+ *   and the stretch of road we are on ("this area")
+ * @returns {null | {key: string, i: number, q: string, a: string, name: string, score: number, named: boolean}}
+ */
+export function matchAsk(text, idx, ctx = {}) {
+  if (!idx) return null;
+  const loose = !!ctx.loose; // nothing else understood it: a question with no "it" may still be about the place in front of us
+  const t = stripFill(normText(text));
+  if (!t || ASK_CMD.test(t)) return null;
+  const words = t.split(" ");
+  const found = askNamed(words, idx, !!ctx.namedOnly); // next to a command's words, only a place's full name counts
+  const named = found.length > 0;
+  const pool = found.map(f => f.E);
+  const span = named ? new Set(found[0].span) : new Set();
+  const deixis = ASK_DEIXIS.test(t.replace(ASK_NOT_DEIXIS, " "));
+  if (!named && (ctx.namedOnly || (!deixis && !loose))) return null;
+  if (!ctx.namedOnly && (deixis || loose)) {
+    // "it", "this place": the place in front of us (after any place named, which comes first)
+    const area = /\b(area|valley|stretch|region|land|countryside|out here|around here)\b/.test(t);
+    const keys = area ? [ctx.zone, ...(ctx.here || [])] : [...(ctx.here || []), ctx.zone];
+    for (const E of keys.filter(Boolean).map(k => idx.byKey.get(k)).filter(Boolean).slice(0, 2)) if (!pool.includes(E)) pool.push(E);
+    // "this mission", "that bridge": the word for the thing points at it, it is not the question
+    words.forEach((w, j) => { if (j && /^(this|that|these|those)$/.test(words[j - 1]) && (isGen(w) || VAGUE.has(w) || HERE_WORDS.has(stem(w)))) span.add(j); });
+  }
+  if (!pool.length && !loose) return null;
+  // a mission's turn-off place answers with the mission's questions too
+  for (const E of [...pool]) if (E.link && idx.byKey.get(E.link) && !pool.includes(idx.byKey.get(E.link))) pool.push(idx.byKey.get(E.link));
+  const weak = w => ASK_WEAK.has(w) && !(named && ASK_NAMED_Q.has(w));
+  let qt = [...new Set(askToks(words.filter((w, j) => !span.has(j)).join(" ")))];
+  // "why is Kern Lake EMPTY now": a word of the full name may still be the question, when nothing else is
+  if (ASK_MORE.test(t) && !qt.some(w => !weak(w))) return null;
+  if (named && !qt.some(w => !weak(w))) qt = [...new Set(askToks(words.filter((w, j) => !found[0].core.has(j)).join(" ")))];
+  if (!qt.some(w => !weak(w))) return null;
+  const wq = w => (weak(w) ? 0.5 : 1) * idx.idf(w);
+  const tot = qt.reduce((a, w) => a + wq(w), 0);
+  const scoreIn = (list, minStrong, minRare = 0) => {
+    let best = null;
+    list.forEach((E, ei) => {
+      for (const Q of E.qs) {
+        let hit = 0, strong = 0, unusual = 0, plain = 0, rare = 0;
+        for (const w of qt) if (Q.bag.has(w)) { hit += wq(w); if (!weak(w)) { strong++; if (!idx.everyday(w)) unusual++; rare += idx.idf(w); if (!isGen(w) || ASK_QWORDS.has(w)) plain++; } }
+        if (!strong || (minStrong > 1 && unusual < minStrong) || rare < minRare) continue;
+        if (!named && !plain) continue; // "what's that thing on the HILL": a kind of thing alone is "what's that", not a question
+        const prec = hit / tot;
+        const own = Q.own.filter(w => !E.nameW.has(w));
+        const rec = own.length ? own.filter(w => qt.includes(w)).length / own.length : 0;
+        const sc = prec * 0.75 + rec * 0.25 - Math.min(ei, 3) * 0.02;
+        if (!best || sc > best.score) best = { key: E.key, i: Q.i, q: Q.q, a: Q.a, name: E.name, score: sc, named };
+      }
+    });
+    return best;
+  };
+  let best = scoreIn(pool, 1, !named && !deixis ? 3 : 0);
+  // before the other commands, "it" alone must be a clear match; after them (nothing else fit) a little less
+  const need = named ? 0.5 : deixis && !ctx.early ? 0.58 : 0.66;
+  // nothing else understood it and the place in front of us has no such question: a question about one subject
+  // that only one place's questions talk about ("who owns rolling hills casino"), with two or more rare words
+  if (loose && (!best || best.score < need)) {
+    const g = scoreIn(idx.ents.filter(E => !pool.includes(E)), 2);
+    if (g && g.score >= 0.78) best = g;
+  }
+  if (ctx.debug) return best;
+  return best && best.score >= need ? best : null;
 }
 
 /* =========================================================================================
@@ -788,7 +1178,34 @@ function nearPlaces() {
   }
   return out;
 }
-const parseOpts = () => ({ places: placeNames(), dir: S().dir, near: nearPlaces() });
+const parseOpts = () => ({ places: placeNames(), dir: S().dir, near: nearPlaces(), ask: askOpts() });
+
+/* Ask Buddy's answers (data/ask.js) come on demand: a few seconds after start (so the service worker keeps a copy for
+   dead zones), and again when the mic opens if that failed. Until they are here, questions go to the other commands. */
+let askIdx = null, askLoading = null;
+function loadAsk() {
+  if (askIdx || askLoading) return askLoading || Promise.resolve(askIdx);
+  askLoading = import("../data/ask.js")
+    .then(() => { askIdx = askIndex(window.I5ASK); return askIdx; })
+    .catch(e => { warn(e); return null; })
+    .finally(() => { askLoading = null; });
+  return askLoading;
+}
+/** What "it" and "this area" mean right now: the place we last talked about (or the one on the card), the stretch we're on. */
+function askOpts() {
+  if (!askIdx) return null;
+  const p = currentPlace();
+  let z = null;
+  try { if (S().m != null && D().zoneAt) z = D().zoneAt(S().m); } catch {}
+  return { idx: askIdx, here: p && p.id ? [p.id] : [], zone: z && z.from != null ? "z:" + z.from : null };
+}
+/** Siri and other askers in the app (narrator.answer("ask", text)): the answer's words, or null. */
+function askText(text) {
+  if (!askIdx) { loadAsk(); return null; }
+  const o = askOpts();
+  const hit = matchAsk(String(text || ""), askIdx, o || {});
+  return hit ? hit.a : null;
+}
 const exitName = (st, ref) => { try { return D().exitName(st, ref); } catch { return `Exit ${ref}`; } };
 const dur = hrs => { try { return D().fmtDuration ? D().fmtDuration(hrs) : ""; } catch { return ""; } };
 const fmtNum = n => { try { return Number(n).toLocaleString("en-US"); } catch { return String(n); } };
@@ -1126,6 +1543,7 @@ function listenNow(m) {
 }
 
 function beginRec(m) {
+  loadAsk(); // in case the start-up load failed (offline then): it is usually here long before the question ends
   const C = getSR();
   if (!C) { setState("error", errState("unsupported")); releaseVoice(); return false; }
   if (sess) abortRec();
@@ -1574,6 +1992,7 @@ function label(c) {
   switch (c.cmd) {
     case "look": return a === "left" ? "What's on my left" : "What's on my right";
     case "more": return a ? `About ${a}` : "Tell me more";
+    case "ask": return c.name ? `About ${c.name}` : "Ask Buddy";
     case "repeat": return "Say that again";
     case "next": return "Next landmark";
     case "quiet": return "Quiet";
@@ -1653,6 +2072,13 @@ function runInner(c, meta) {
       const p = c.arg ? resolvePlace(c.arg, c.cands) : currentPlace();
       if (!p) { reply("I'm not sure which place you mean. Start a drive, or pick one on the Ahead tab.", head); break; }
       if (!nar("tellMore", p)) unavailable();
+      break;
+    }
+    case "ask": {
+      // a pre-written answer (data/ask.js); the place it is about becomes "it" for a follow-up ("tell me more")
+      const p = placeById(c.arg);
+      if (p) lastPlace = { p, t: now() };
+      reply(c.a || "I don't have an answer for that yet.", head, "ask");
       break;
     }
     case "repeat": {
@@ -2139,6 +2565,9 @@ export function init(api) {
   // The iPhone app: its own words if the recognizer fails, and native.VOICE false leaves voice commands out there
   // (the same as a web view without speech recognition).
   const app = !!(api && api.native && api.native.NATIVE);
+  // Ask Buddy for Siri too (even where there is no speech recognition here): narrator.answer("ask", text)
+  try { if (api && api.narrator && typeof api.narrator.setAsker === "function") api.narrator.setAsker(askText); } catch (e) { warn(e); }
+  later("askLoad", 4000, loadAsk);
   if (app) ERR.unsupported = ["Voice commands aren't available on this iPhone", "Use the buttons instead.", "hard"];
   try {
     if (!getSR() || (app && api.native.VOICE === false)) {

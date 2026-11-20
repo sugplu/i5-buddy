@@ -215,8 +215,16 @@ export function hear(p) { if (p) voice.say(`${p.name}. ${p.text}`, { now: true, 
 
 /** The words for a question asked through Siri in the iPhone app (I5Native.swift): "left", "right", "where", or a
     service ("fuel", "food", "ev", "sleep", "rest"). The same answers the buttons speak; Siri says them, so nothing is
-    queued here. */
-export function answer(kind) {
+    queued here. answer("ask", "how old is the mission") gives Ask Buddy's pre-written answer (data/ask.js, through
+    js/listen.js's setAsker) for a free-form question, for the next iPhone build's Siri intent. */
+let asker = null;
+export function setAsker(fn) { asker = typeof fn === "function" ? fn : null; }
+export function answer(kind, text) {
+  if (kind === "ask") {
+    let a = null;
+    try { a = asker ? asker(String(text || "")) : null; } catch (e) { a = null; }
+    return a || "I don't have an answer for that yet.";
+  }
   const said = [];
   const real = voice.say;
   voice.say = text => { said.push(String(text)); return Promise.resolve(true); };
@@ -300,4 +308,4 @@ export function nextOne() {
 }
 
 export function markHeard(id) { heard.add(hk(id)); }
-export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, answer, placeById, CATS, STATES };
+export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, answer, setAsker, placeById, CATS, STATES };

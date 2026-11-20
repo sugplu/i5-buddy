@@ -54,12 +54,16 @@
   <table id="tCmd"><tr><th>Result</th><th>Phrase</th><th>Expected</th><th>Got</th></tr></table>
   <h2>chooseCommand (recognizer alternatives)</h2>
   <table id="tAlt"><tr><th>Result</th><th>Alternatives</th><th>Expected</th><th>Got</th></tr></table>
+  <h2>Ask Buddy and the command bank (data/ask.js, tools/fixtures/listen-bank.json)</h2>
+  <p id="bankLine"></p>
+  <table id="tAsk"><tr><th>Result</th><th>Check</th><th>Expected</th><th>Got</th></tr></table>
   <h2>parseAnswer</h2>
   <table id="tAns"><tr><th>Result</th><th>Phrase</th><th>Choices</th><th>Expected</th><th>Got</th></tr></table>
 </main>
 
 <script type="module">
-import { parseCommand, parseAnswer, chooseCommand, normText, init as initListen } from "../js/listen.js";
+import { parseCommand, parseAnswer, chooseCommand, normText, askIndex, matchAsk, init as initListen } from "../js/listen.js";
+import { bankContext, runBank } from "./listen-bank.js";
 
 const Q = new URLSearchParams(location.search);
 const STATE = Q.get("state") || "listening";
@@ -100,7 +104,7 @@ const NEAR_SAC = [{ name: "Tower Bridge", side: "", d: 2 }, { name: "Old Sacrame
 const NEAR_BUTTON = [{ name: "The Buttonwillow tree", side: "", d: 2 }];
 const NEAR_LA = [{ name: "Los Angeles Aqueduct Cascades", side: "right", d: 1.2 }, { name: "The Death Valley rescue", side: "left", d: 11.7 }];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const tally = { cmd: [0, 0], alt: [0, 0], ans: [0, 0], e2e: [0, 0] };
+const tally = { cmd: [0, 0], alt: [0, 0], ask: [0, 0], ans: [0, 0], e2e: [0, 0] };
 const fails = [];
 const show = v => v === undefined ? "" : JSON.stringify(v);
 
@@ -348,6 +352,66 @@ for (const [alts, cmd, arg, extra] of ALT) {
   addRow("tAlt", beyond.length > 15 && !pastBad.length, [`California only: "how far to <each of ${beyond.length} whole-road cities past the Oregon line>"`, "past: that city", pastBad.length ? pastBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ") : "all"]);
   count("alt", beyond.length > 15 && !pastBad.length, `California only: whole-road cities not answered as past the road: ${pastBad.map(([n, r]) => `${n} -> ${show(r)}`).join("; ")}`);
 }
+
+/* ---------------- Ask Buddy (data/ask.js, loaded the way the app loads it) and the command bank ---------------- */
+// Floors for the synthetic bank (about 3,000 rows written by Claude Sonnet 5.5, labels checked by Claude Opus 5.5 where
+// the parser disagreed): a change to listen.js that loses coverage fails here. Raise them as the parser improves.
+const BANK_FLOOR = 0.88, ASK_FLOOR = 0.75, STOLEN_MAX = 0.01, OWN_FLOOR = 0.94, ALT_FLOOR = 0.85; // measured 2026-11-20: 89.1%, 76.6%, 4 rows, 94.7%, 86%
+const askReady = (async () => {
+  const L = { parseCommand, chooseCommand, askIndex };
+  const row = (ok, check, want, got, line) => { addRow("tAsk", ok, [check, want, got]); count("ask", ok, line || `${check}: want ${want}, got ${got}`); };
+  try {
+    await import("../data/ask.js");
+    const ASK = window.I5ASK;
+    const ents = Object.entries((ASK && ASK.e) || {});
+    const nq = ents.reduce((a, [, e]) => a + e.q.length, 0);
+    const placesWith = ents.filter(([, e]) => e.k === "p").length;
+    row(placesWith >= DATA.places.length * 0.95 && nq >= 4 * ents.length * 0.9, "data/ask.js: places with answers, answers each",
+      `>= 95% of ${DATA.places.length} places, about 4-6 each`, `${placesWith} places, ${ents.length} entries, ${nq} answers (${(nq / Math.max(1, ents.length)).toFixed(1)} each)`);
+    // every pre-written question finds its own answer when asked by name, and its first other phrasing (often with
+    // "it") when that place is the one in front of us; for "what is X" or "who was X" the place's whole story is right too
+    const idx = askIndex(ASK);
+    const PN = DATA.places.map(p => p.name);
+    const hits = (c, key, e) => (c.cmd === "ask" && (c.arg === key || c.arg === e.l)) ||
+      (c.cmd === "more" && [c.arg, ...(c.cands || [])].some(x => x && normText(x) === normText(e.n)));
+    let own = 0, itOk = 0, n = 0;
+    const bad = [];
+    for (const [key, e] of ents) for (let i = 0; i < e.q.length; i++) {
+      n++;
+      const c = parseCommand(e.q[i][0], DESTS, { places: PN, ask: { idx, here: [key] } });
+      if (hits(c, key, e)) own++; else if (bad.length < 8) bad.push(`${e.q[i][0]} -> ${c.cmd}${c.name ? " " + c.name + ": " + c.q : ""}`);
+      const alt = String(e.q[i][2] || "").split("|")[0];
+      if (!alt || hits(parseCommand(alt, DESTS, { places: PN, ask: { idx, here: [key] } }), key, e)) itOk++;
+    }
+    row(own >= n * OWN_FLOOR, "every question asked as written finds its place", `>= ${OWN_FLOOR * 100}%`, `${own}/${n}${bad.length ? " · e.g. " + bad.slice(0, 4).join("; ") : ""}`);
+    row(itOk >= n * ALT_FLOOR, "its first other phrasing (often with \"it\") finds the place", `>= ${ALT_FLOOR * 100}%`, `${itOk}/${n}`);
+    const near = [...ents].find(([k]) => /^ca309/.test(k)) || ents[0];
+    const c1 = parseCommand("how old is it", DESTS, { places: DATA.places.map(p => p.name), ask: { idx, here: [near[0]] } });
+    row(c1.cmd === "ask" || c1.cmd === "unknown", `"how old is it" at ${near[1].n}`, "ask (or nothing to say)", `${c1.cmd}${c1.q ? ": " + c1.q : ""}`);
+    for (const [t, want] of [["tell me about harris ranch", "more"], ["what's on my left", "look"], ["next gas", "services"], ["how far to redding", "howfar"],
+      ["be quiet", "quiet"], ["what is that", "around"], ["tell me more", "more"], ["are we there yet", "howfar"]]) {
+      const c = parseCommand(t, DESTS, { places: DATA.places.map(p => p.name), near: NEAR_LA, ask: { idx, here: [near[0]], zone: "z:300" } });
+      row(c.cmd === want, `Ask Buddy leaves ${show(t)} alone`, want, c.cmd);
+    }
+    // the bank
+    const bank = await (await fetch("fixtures/listen-bank.json")).json();
+    const ctx = bankContext(L, DATA, ASK);
+    const res = runBank(bank.rows, L, ctx);
+    const pct = (a, b) => (b ? (100 * a / b).toFixed(1) : "-") + "%";
+    const bl = `Command bank: ${res.pass}/${res.total} = ${pct(res.pass, res.total)} · Ask Buddy rows ${res.ask.pass}/${res.ask.total} = ${pct(res.ask.pass, res.ask.total)}` +
+      ` (the very question ${res.ask.exact}; by name ${pct(...res.ask.named)}, as "it" ${pct(...res.ask.here)}) · Ask Buddy took over ${res.stolen} other rows · ` +
+      Object.entries(res.byGroup).sort().map(([g, [p, n]]) => `${g} ${pct(p, n)}`).join(", ");
+    document.getElementById("bankLine").textContent = bl;
+    console.log("LISTEN TEST bank " + bl);
+    row(res.total >= 2800, "bank size", ">= 2,800 rows", String(res.total));
+    row(res.pass >= res.total * BANK_FLOOR, "bank coverage (all rows)", `>= ${BANK_FLOOR * 100}%`, pct(res.pass, res.total));
+    row(res.ask.pass >= res.ask.total * ASK_FLOOR, "bank coverage (Ask Buddy rows)", `>= ${ASK_FLOOR * 100}%`, pct(res.ask.pass, res.ask.total));
+    row(res.stolen <= (res.total - res.ask.total) * STOLEN_MAX, "Ask Buddy answers only questions about a place", `<= ${STOLEN_MAX * 100}% of other rows`, `${res.stolen}`);
+    for (const f of res.fails.slice(0, 40)) console.log("LISTEN TEST bank miss " + JSON.stringify(f));
+  } catch (e) {
+    row(false, "Ask Buddy setup", "loads", String(e && e.message || e));
+  }
+})();
 
 /* ---------------- parseAnswer table (choices from the real trivia) ---------------- */
 const SING = ["Frank Sinatra", "Bing Crosby", "Elvis Presley", "Dean Martin"];
@@ -1075,8 +1139,9 @@ async function showState(w, api, state) {
     document.getElementById("e2eBox").hidden = false;
     addRow("tE2E", false, ["setup", String(e && e.stack || e)]);
   }
+  await askReady;
   const tot = Object.values(tally).reduce((a, [p, n]) => [a[0] + p, a[1] + n], [0, 0]);
-  const line = `${tot[0] === tot[1] ? "ALL PASS" : `FAILED ${tot[1] - tot[0]}`} · commands ${tally.cmd[0]}/${tally.cmd[1]} · alternatives ${tally.alt[0]}/${tally.alt[1]} · answers ${tally.ans[0]}/${tally.ans[1]}` +
+  const line = `${tot[0] === tot[1] ? "ALL PASS" : `FAILED ${tot[1] - tot[0]}`} · commands ${tally.cmd[0]}/${tally.cmd[1]} · alternatives ${tally.alt[0]}/${tally.alt[1]} · ask ${tally.ask[0]}/${tally.ask[1]} · answers ${tally.ans[0]}/${tally.ans[1]}` +
     (tally.e2e[1] ? ` · app checks ${tally.e2e[0]}/${tally.e2e[1]}` : "");
   document.getElementById("sum").textContent = line;
   document.getElementById("info").textContent = `state=${STATE} theme=${THEME} mile=${M} ${DIR}`;
