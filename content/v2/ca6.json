@@ -15,7 +15,20 @@
    "months": null,
    "wiki": "Mossdale bridge",
    "src": "https://en.wikipedia.org/wiki/Mossdale_bridge",
-   "src2": "https://en.wikipedia.org/wiki/Mossdale_bridge"
+   "src2": "https://en.wikipedia.org/wiki/Mossdale_bridge",
+   "name_es": "El cruce de Mossdale",
+   "text_es": "Aquí la autopista cruza el río San Joaquin, cerca de un puente levadizo de acero del ferrocarril. El primer puente ferroviario en este lugar se abrió el 6 de septiembre de 1869, y esa tarde el primer tren directo desde Sacramento lo cruzó y llegó a Alameda al anochecer, donde lo esperaba un ferry hacia San Francisco. Fue el último tramo del primer ferrocarril transcontinental hasta el Pacífico.",
+   "more_es": "Mucho antes del ferrocarril, una curva cerrada hacía más lento el río aquí y formaba un vado poco profundo, uno de los lugares de pesca favoritos de los yokuts, cuya tierra ancestral es esta. Los españoles lo llamaron El Pescadero, el lugar de pesca. En 1848 John Doak y Jacob Bonsell pusieron aquí el primer ferry para cruzar el San Joaquin, jalando una barcaza a lo largo de una cuerda tendida de una orilla a la otra. Cobraban un dólar por persona a pie y ocho dólares por una carreta con caballos. William Moss, antiguo capitán de barcos fluviales de Ohio, compró el ferry en 1856, y el valle junto a él pasó a llamarse Moss' Dale. Para agosto de 1869, unos 600 hombres construían el puente del ferrocarril, 500 de ellos chinos. Un reportero escribió que el último riel se colocó a las 3 de la tarde, justo antes de que cruzara el primer tren. El puente giratorio de madera se reconstruyó en acero en 1895 y se reemplazó por el actual puente levadizo en 1942.",
+   "spot_es": "Busque el puente levadizo de acero del ferrocarril que cruza el río cerca de la autopista.",
+   "es_src": {
+    "name": "2201bcb4e7",
+    "text": "354bda5087",
+    "more": "f1e5a20046",
+    "spot": "debf982997"
+   },
+   "kids": "Here we cross the San Joaquin River, near a steel railroad bridge that can lift. The first railroad bridge here opened in 1869. That afternoon the first train from Sacramento crossed it. It was the last link of the first railroad across the country to the Pacific. Look for the steel railroad lift bridge crossing the river near the freeway.",
+   "kids_es": "Aquí cruzamos el río San Joaquin, cerca de un puente de acero del ferrocarril que se puede levantar. El primer puente de tren aquí abrió en 1869. Esa tarde, el primer tren desde Sacramento lo cruzó. Fue el último tramo del primer ferrocarril que atravesó el país hasta el Pacífico. Busquen el puente levadizo de acero que cruza el río cerca de la autopista.",
+   "kids_src": "354bda5087"
   },
   {
    "state": "CA",
@@ -31,7 +44,18 @@
    "months": null,
    "wiki": "Manteca, California",
    "src": "https://mantecabulletin.com/news/local-news/whats-in-mantecas-name",
-   "src2": "https://en.wikipedia.org/wiki/Manteca,_California"
+   "src2": "https://en.wikipedia.org/wiki/Manteca,_California",
+   "name_es": "Manteca, un pueblo lechero llamado como la grasa de cerdo",
+   "text_es": "La Highway 120 lleva al este, hacia Manteca, cuyo nombre en español significa grasa de cerdo. Es un nombre raro para un pueblo cuya parada de tren estaba ahí para enviar productos lácteos, y nadie se pone de acuerdo en cómo sucedió. Una historia dice que los vecinos querían una palabra para mantequilla y el ferrocarril la escribió mal. Los autores de una historia del condado creen que la Southern Pacific simplemente gustaba de ponerles a sus paradas nombres atractivos en español.",
+   "more_es": "Joshua Cowell, el fundador del pueblo, trajo la industria lechera a la zona. La parada del tren se llamó primero Cowell Station, pero la línea tenía otra Cowell Station, nombrada por su hermano Henry, así que hacía falta un nombre nuevo. Una leyenda local dice que los vecinos eligieron el nombre Monteca y el ferrocarril lo imprimió mal, pero un columnista local señala que la palabra monteca no aparece en ningún diccionario de español. Cuando Manteca se constituyó como ciudad en 1918, Cowell fue elegido su primer alcalde. Todavía en los años setenta, Manteca vivía sobre todo de la agricultura. Luego, el alza en los precios de las casas en el Área de la Bahía la convirtió en una ciudad de gente que viaja a trabajar, y su población ha crecido más del triple desde 1980.",
+   "es_src": {
+    "name": "987ac06f5e",
+    "text": "81a4372c3f",
+    "more": "e2eb98af76"
+   },
+   "kids": "Highway 120 leads east to Manteca. Its name is Spanish for lard, a kind of cooking fat. That is a funny name for a town that shipped dairy products. One story says people wanted the word for butter, and the railroad got it wrong. What silly name would you give a town?",
+   "kids_es": "La Highway 120 lleva al este, hacia Manteca. Su nombre significa grasa de cerdo en español. Es un nombre curioso para un pueblo que enviaba productos lácteos. Una historia dice que la gente quería la palabra para mantequilla, y el ferrocarril la escribió mal. ¿Qué nombre chistoso le pondrían a un pueblo?",
+   "kids_src": "81a4372c3f"
   },
   {
    "state": "CA",
@@ -47,7 +71,18 @@
    "months": null,
    "wiki": "Lathrop, California",
    "src": "https://www.ci.lathrop.ca.us/node/3541",
-   "src2": "https://en.wikipedia.org/wiki/Lathrop,_California"
+   "src2": "https://en.wikipedia.org/wiki/Lathrop,_California",
+   "name_es": "Lathrop, nacido de una disputa",
+   "text_es": "Lathrop existe por una disputa. Cuando Stockton se tardó en decidir por dónde debía pasar el ferrocarril, Leland Stanford, presidente del Central Pacific, construyó la línea rodeando la ciudad y fundó un pueblo nuevo aquí, en una estación llamada Wilson's Station. En 1869 le cambiaron el nombre en honor a la familia de su esposa, Jane Lathrop Stanford, y de su hermano Charles, ingeniero del ferrocarril.",
+   "more_es": "Para 1871, Lathrop era un importante punto de división y parada del ferrocarril, y la compañía construyó aquí un hotel de 50,000 dólares, que según se dice era uno de los más grandes de California en esa época. Para 1879 vivían aquí unas 600 personas. En la década de 1880 el ferrocarril trasladó su casa de máquinas y su taller a Tracy, y Lathrop empezó una decadencia que duró casi 50 años, con un gran incendio en 1911 de por medio. La Segunda Guerra Mundial trajo Permanente Metals, que fabricaba piezas de avión y bombas de magnesio, y el Sharpe Army Depot, uno de los principales depósitos de suministros del Ejército en el Oeste. Lathrop no se convirtió en ciudad sino hasta 1989. Hoy, grandes vecindarios planificados, entre ellos River Islands, se extienden al oeste de la autopista.",
+   "es_src": {
+    "name": "fec78f079b",
+    "text": "66eff7c1d5",
+    "more": "bde602ac15"
+   },
+   "kids": "Lathrop started because of a quarrel. Stockton was slow to choose where the railroad should run. So railroad president Leland Stanford built the line around the city and started a new town here. In 1869 it was named for his wife's family, the Lathrops. What do you think of a town that started over a quarrel?",
+   "kids_es": "Lathrop nació por una disputa. Stockton se tardó en decidir por dónde debía pasar el ferrocarril. Entonces Leland Stanford, presidente del ferrocarril, construyó la línea rodeando la ciudad y fundó un pueblo nuevo aquí. En 1869 le pusieron el nombre de la familia de su esposa, los Lathrop. ¿Qué piensan de un pueblo que empezó por una disputa?",
+   "kids_src": "66eff7c1d5"
   },
   {
    "state": "CA",
@@ -63,7 +98,18 @@
    "months": null,
    "wiki": "LNER Class A3 4472 Flying Scotsman",
    "src": "https://en.wikipedia.org/wiki/LNER_Class_A3_4472_Flying_Scotsman",
-   "src2": "https://en.wikipedia.org/wiki/LNER_Class_A3_4472_Flying_Scotsman"
+   "src2": "https://en.wikipedia.org/wiki/LNER_Class_A3_4472_Flying_Scotsman",
+   "name_es": "El Flying Scotsman escondido",
+   "text_es": "La salida de Roth Road tiene letreros hacia Sharpe Depot, una base de suministros del Ejército. En 1972 se convirtió en el escondite del Flying Scotsman, a menudo llamada la locomotora de vapor más famosa del mundo. Su dueño se había ido a la bancarrota llevándola de gira por Norteamérica, así que guardó la máquina aquí, en el depósito del Ejército, fuera del alcance de sus acreedores.",
+   "more_es": "Construida en 1923, el Flying Scotsman fue la primera locomotora de vapor cronometrada oficialmente a 100 millas por hora, y se retiró del servicio regular en 1963 tras recorrer más de 2 millones de millas. El empresario Alan Pegler la compró y, con apoyo del gobierno británico, la mandó de gira por Estados Unidos y Canadá a partir de 1969 para promover las exportaciones británicas, equipada con un quitapiedras, una campana y un silbato al estilo estadounidense. La gira recorrió 15,400 millas, pero algunos estados consideraron la máquina de vapor un riesgo de incendio, y en 1972 Pegler, muy endeudado, se declaró en bancarrota. Después de que la máquina estuvo en Sharpe Depot, el empresario William McAlpine pagó las deudas y la compró por 72,000 dólares. Volvió a casa por barco a través del Canal de Panamá, llegó a Liverpool en febrero de 1973 y viajó a vapor hasta Derby por una ruta llena de multitudes.",
+   "es_src": {
+    "name": "d9511f9a03",
+    "text": "134515aaf5",
+    "more": "e4f6f83486"
+   },
+   "kids": "Near here is Sharpe Depot, an Army supply base. In 1972 it became a hiding place for Flying Scotsman, a very famous steam engine. Its owner had run out of money taking it on a tour. So he stored it here, out of reach of the people he owed money. Where would you hide a giant train?",
+   "kids_es": "Cerca de aquí está Sharpe Depot, una base de suministros del Ejército. En 1972 se convirtió en el escondite del Flying Scotsman, una locomotora de vapor muy famosa. Su dueño se quedó sin dinero llevándola de gira, así que la guardó aquí, lejos de la gente a quien le debía. ¿Dónde esconderían ustedes un tren gigante?",
+   "kids_src": "134515aaf5"
   },
   {
    "state": "CA",
@@ -79,7 +125,18 @@
    "months": null,
    "wiki": "French Camp, California",
    "src": "https://ohp.parks.ca.gov/ListedResources/Detail/668",
-   "src2": "https://en.wikipedia.org/wiki/French_Camp,_California"
+   "src2": "https://en.wikipedia.org/wiki/French_Camp,_California",
+   "name_es": "French Camp",
+   "text_es": "French Camp se considera el asentamiento más antiguo del condado de San Joaquin. De aproximadamente 1832 a 1845, tramperos francocanadienses que trabajaban para la Hudson's Bay Company acampaban aquí cada año con sus familias. Era el campamento regular más al sur de las brigadas peleteras enviadas desde Fort Vancouver, en lo que hoy es Vancouver, Washington. El lugar también se llamaba Castoria, de castor, la palabra en latín para el castor.",
+   "more_es": "Su nombre en español, Campo de los Franceses, siguió vivo en una concesión de tierras mexicana de 1844. Ese año Charles Weber y William Gulnac promovieron la primera colonia de colonos blancos en la concesión, que abarcaba tanto French Camp como el futuro sitio de Stockton. El campamento estaba en la punta sur del canal pantanoso más al sur del Delta, así que los barcos podían llegar, y de aquí salía un sendero hacia las faldas de la Sierra. Ese sendero se convirtió después en una ruta alterna del Mariposa Road, preferida en temporada de lluvias porque drenaba muy bien, y sobrevive como French Camp Road. Hoy en French Camp están el hospital del condado y un depósito del Ejército.",
+   "es_src": {
+    "name": "93bdab4d63",
+    "text": "58cdc5b232",
+    "more": "656311a7e0"
+   },
+   "kids": "French Camp is thought to be the oldest settlement in San Joaquin County. Long ago, French Canadian trappers camped here every year with their families. They came all the way from Fort Vancouver, in what is now Washington. The place was also called Castoria, from the Latin word for beaver. What would you pack for a long camping trip?",
+   "kids_es": "French Camp se considera el asentamiento más antiguo del condado de San Joaquin. Hace mucho tiempo, tramperos francocanadienses acampaban aquí cada año con sus familias. Venían desde Fort Vancouver, en lo que hoy es Washington. El lugar también se llamaba Castoria, por la palabra en latín para castor. ¿Qué llevarían ustedes a un campamento largo?",
+   "kids_src": "58cdc5b232"
   },
   {
    "state": "CA",
@@ -95,7 +152,18 @@
    "months": null,
    "wiki": "Gurdwara Sahib of Stockton",
    "src": "https://en.wikipedia.org/wiki/Gurdwara_Sahib_of_Stockton",
-   "src2": "https://en.wikipedia.org/wiki/Stockton,_California"
+   "src2": "https://en.wikipedia.org/wiki/Stockton,_California",
+   "name_es": "El primer templo sij de Estados Unidos",
+   "text_es": "A como una milla al este de la autopista, en South Grant Street, está la primera casa de culto sij de Estados Unidos. Gurdwara Sahib Stockton abrió el 24 de octubre de 1912, en una casa. Sus fundadores fueron inmigrantes sijs del Punjab que cultivaban las tierras alrededor de Stockton.",
+   "more_es": "Uno de los fundadores, Jawala Singh, era un exitoso productor de papa que trabajaba un rancho de 500 acres junto a Stockton con su socio Wasakha Singh. Los agricultores sijs recién llegados del Punjab se reunieron primero a rezar en un cuarto de ese rancho. Jawala Singh ayudó después a formar el Partido Ghadar, un movimiento que pedía el fin del dominio británico en la India. La gurdwara de Stockton lo apoyó y patrocinó el primer periódico en idioma punjabi de Estados Unidos. La gurdwara también pagó los estudios universitarios de Dalip Singh Saund, quien más tarde fue el primer sij estadounidense y el primer estadounidense de origen asiático elegido al Congreso.",
+   "es_src": {
+    "name": "941ee5c148",
+    "text": "0f81956e27",
+    "more": "f096b61f4b"
+   },
+   "kids": "About a mile east of the freeway is a special place. It is the first Sikh house of worship in the United States. It opened on October 24, 1912, in a house. It was started by Sikh families from Punjab who farmed near Stockton. What makes a place feel special to you?",
+   "kids_es": "A como una milla al este de la autopista está la primera casa de culto sij de Estados Unidos. Se llama Gurdwara Sahib Stockton y abrió el 24 de octubre de 1912, en una casa. La fundaron inmigrantes sijs del Punjab que cultivaban las tierras cerca de Stockton. ¿Qué hace que un lugar sea especial para ustedes?",
+   "kids_src": "0f81956e27"
   },
   {
    "state": "CA",
@@ -113,7 +181,18 @@
    ],
    "wiki": "Little Manila, Stockton, California",
    "src": "https://en.wikipedia.org/wiki/Little_Manila,_Stockton,_California",
-   "src2": "https://en.wikipedia.org/wiki/Little_Manila,_Stockton,_California"
+   "src2": "https://en.wikipedia.org/wiki/Little_Manila,_Stockton,_California",
+   "name_es": "Little Manila",
+   "text_es": "Desde aquí, la Highway 4 va al este por la Crosstown Freeway, construida a principios de los años setenta a través de parte de Little Manila. Para 1946, este barrio del centro, al sur de Main Street, tenía la comunidad filipina más grande de Estados Unidos. Los residentes lucharon contra la autopista y perdieron, y esta desplazó muchas casas y negocios filipinos.",
+   "more_es": "Muchos jóvenes filipinos llegaron a Stockton para trabajar en el campo. Leyes racistas impedían que la mayoría se casara, y hasta les prohibían cruzar Main Street hacia lo que entonces era el lado norte blanco de la ciudad. Así que construyeron su propia comunidad, con hoteles, peluquerías, restaurantes y clubes sociales. Líderes laborales como Larry Itliong, Carlos Bulosan y Philip Vera Cruz trabajaron todos desde Stockton, y trabajadores agrícolas y líderes filipinos como ellos estuvieron detrás del éxito de United Farm Workers. La comunidad reunió dinero para construir el Filipino Plaza, terminado en 1972, que se volvió hogar de familias desplazadas y del Barrio Fiesta, un festival cultural filipino que se celebra cada agosto. La Little Manila Foundation trabaja para salvar los últimos edificios que quedan.",
+   "es_src": {
+    "name": "80ae62029f",
+    "text": "1e1e0733fb",
+    "more": "c0be94e811"
+   },
+   "kids": "Highway 4 heads east from here through part of a neighborhood called Little Manila. By 1946, it had the largest Filipino community in the United States. When a freeway was built here in the early 1970s, many homes and businesses were lost. The people who lived here tried to stop it. Why do you think neighborhoods matter so much to people?",
+   "kids_es": "Desde aquí, la Highway 4 va al este por parte de un barrio llamado Little Manila. Para 1946, tenía la comunidad filipina más grande de Estados Unidos. A principios de los años setenta construyeron una autopista ahí, y se perdieron muchas casas y negocios, aunque los vecinos intentaron detenerla. ¿Por qué creen que los barrios son tan importantes para la gente?",
+   "kids_src": "1e1e0733fb"
   },
   {
    "state": "CA",
@@ -129,7 +208,18 @@
    "months": null,
    "wiki": "Stockton, California",
    "src": "https://en.wikipedia.org/wiki/Stockton,_California",
-   "src2": "https://en.wikipedia.org/wiki/Stockton,_California"
+   "src2": "https://en.wikipedia.org/wiki/Stockton,_California",
+   "name_es": "Stockton, antes Tuleburg",
+   "text_es": "Cuando Charles Weber trazó un pueblo aquí en 1849, lo llamó Tuleburg. Pronto le cambió el nombre en honor al comodoro Robert Stockton, un famoso comandante naval de la guerra entre México y Estados Unidos. Eso hizo de Stockton el primer pueblo de California con un nombre que no era ni español ni indígena. Como punto más alto navegable del río San Joaquin, creció rápidamente como parada de abastecimiento para los mineros de oro.",
+   "more_es": "Esta es la tierra ancestral de los yatchicumne, una rama de los yokuts del norte del valle, que construían sus poblados sobre montículos bajos para quedar por encima de las inundaciones frecuentes. Un poblado, Pasasimas, estaba sobre un montículo junto a lo que hoy es el Stockton Channel, en el centro. Weber, un inmigrante alemán, obtuvo la tierra como parte de una concesión de tierras mexicana. En sus primeros años, Stockton también se conoció como Weberville, Fat City y Mudville, y es una de un puñado de ciudades que aseguran haber inspirado el poema de 1888 Casey at the Bat. Miles de inmigrantes chinos llegaron en la década de 1850, y para 1880 Stockton tenía la tercera comunidad china más grande de California.",
+   "es_src": {
+    "name": "517e3b71df",
+    "text": "138db09ade",
+    "more": "f960954d31"
+   },
+   "kids": "In 1849, Charles Weber started a town here and called it Tuleburg. Soon he renamed it Stockton, after a navy commander. It was the first California town with a name that was not Spanish or Native American. It grew fast helping gold miners get supplies. Which name do you like better, Tuleburg or Stockton?",
+   "kids_es": "En 1849, Charles Weber trazó un pueblo aquí y lo llamó Tuleburg. Pronto le cambió el nombre a Stockton, por un comandante naval. Fue el primer pueblo de California con un nombre que no era ni español ni indígena. Creció rápido ayudando a los mineros de oro a conseguir provisiones. ¿Qué nombre les gusta más, Tuleburg o Stockton?",
+   "kids_src": "138db09ade"
   },
   {
    "state": "CA",
@@ -145,7 +235,20 @@
    "months": null,
    "wiki": "Port of Stockton",
    "src": "https://en.wikipedia.org/wiki/Port_of_Stockton",
-   "src2": "https://en.wikipedia.org/wiki/Stockton,_California"
+   "src2": "https://en.wikipedia.org/wiki/Stockton,_California",
+   "name_es": "Puerto de Stockton",
+   "text_es": "Los muelles justo al oeste de la autopista pertenecen al Port of Stockton, un puerto marítimo a más de 70 millas náuticas del océano. Barcos de altamar de hasta 900 pies de largo suben por un canal dragado, de 35 pies de profundidad, desde la bahía de San Francisco. El puerto moderno abrió el 2 de febrero de 1933, cuando llegó el barco Daisy Grey con un cargamento de madera de Oregon.",
+   "more_es": "Stockton y Sacramento son los únicos puertos marítimos tierra adentro de California. Durante la fiebre del oro, el río San Joaquin era lo bastante profundo para barcos de altamar, lo que hizo de Stockton un punto natural de abastecimiento para los mineros. El primer barco de carga, la balandra Maria, llegó aquí en 1848. Durante la Segunda Guerra Mundial, el Departamento de Guerra quería que se construyeran barcos en un puerto tierra adentro, a salvo de ataques en la costa, así que aquí se construyeron muchos barcos nuevos. El depósito de suministros de la Marina en Rough and Ready Island, un importante puesto de comunicaciones para los submarinos en el Pacífico durante la Guerra Fría, es hoy el West Complex del puerto. Por superficie de terreno, es el segundo puerto más grande de California, con unos 4,200 acres.",
+   "spot_es": "Busque grandes bodegas y muelles junto al canal de navegación, y quizá un buque de carga oceánico.",
+   "es_src": {
+    "name": "dbae768a47",
+    "text": "980103b3ae",
+    "more": "79979105ad",
+    "spot": "55e5ea9761"
+   },
+   "kids": "Just west of the freeway is the Port of Stockton. It is a seaport more than 70 nautical miles from the ocean! Ocean ships up to 900 feet long sail up a deep channel from San Francisco Bay. Look for big warehouses and docks beside the ship channel, and maybe an ocean freighter.",
+   "kids_es": "Justo al oeste de la autopista está el Port of Stockton. Es un puerto marítimo a más de 70 millas náuticas del océano. Barcos de altamar de hasta 900 pies de largo suben por un canal profundo desde la bahía de San Francisco. Busquen grandes bodegas y muelles junto al canal, y quizá un buque de carga.",
+   "kids_src": "980103b3ae"
   },
   {
    "state": "CA",
@@ -161,7 +264,18 @@
    "months": null,
    "wiki": "University of the Pacific (United States)",
    "src": "https://en.wikipedia.org/wiki/University_of_the_Pacific_(United_States)",
-   "src2": "https://en.wikipedia.org/wiki/University_of_the_Pacific_(United_States)"
+   "src2": "https://en.wikipedia.org/wiki/University_of_the_Pacific_(United_States)",
+   "name_es": "University of the Pacific",
+   "text_es": "A aproximadamente milla y media al este de la autopista está la University of the Pacific. Fue la primera universidad con carta constitutiva en California, en 1851, y comenzó en Santa Clara. Se mudó a San Jose en 1871 y a Stockton en 1924.",
+   "more_es": "Pacific también abrió la primera escuela de medicina de la Costa Oeste, en 1858. Esa escuela después se convirtió en la Stanford University School of Medicine. Su Conservatory of Music, fundado en 1878, fue el primero de su tipo al oeste del Mississippi, y el pianista y compositor Dave Brubeck se graduó de Pacific en 1942. Como sus edificios de ladrillo, su torre y sus jardines de rosas parecen de una vieja universidad de la Costa Este, Hollywood ha filmado aquí muchas veces, incluidas escenas de Raiders of the Lost Ark. El río Calaveras atraviesa el campus.",
+   "es_src": {
+    "name": "bbca3853b2",
+    "text": "b3cfc27386",
+    "more": "f6bbf3faa8"
+   },
+   "kids": "About a mile and a half east is the University of the Pacific. It was the first university chartered in California, in 1851. It started in Santa Clara. Then it moved to San Jose, and later to Stockton in 1924. What would you like to learn about at a university?",
+   "kids_es": "A como milla y media al este está la University of the Pacific. Fue la primera universidad con carta constitutiva en California, en 1851. Empezó en Santa Clara, luego se mudó a San Jose, y en 1924 llegó a Stockton. ¿Qué les gustaría aprender en una universidad?",
+   "kids_src": "b3cfc27386"
   },
   {
    "state": "CA",
@@ -177,7 +291,18 @@
    "months": null,
    "wiki": "Calaveras River",
    "src": "https://en.wikipedia.org/wiki/Calaveras_River",
-   "src2": "https://en.wikipedia.org/wiki/Calaveras_River"
+   "src2": "https://en.wikipedia.org/wiki/Calaveras_River",
+   "name_es": "Río Calaveras, río de calaveras",
+   "text_es": "Aquí la autopista cruza el río Calaveras. Calaveras es la palabra en español para skulls. Se dice que el río recibió su nombre en 1806 del explorador español Gabriel Moraga, cuando encontró muchas calaveras de personas indígenas a lo largo de sus orillas.",
+   "more_es": "Moraga creía que esas personas habían muerto de hambre o en peleas por los terrenos de caza y pesca. Otra historia dice que un grupo de 1836, que incluía a John Marsh y José Noriega, acampó junto al río una noche y al despertar encontró calaveras y huesos por todas partes a su alrededor, y le dieron el mismo nombre. El Calaveras corre unas 52 millas desde el condado de Calaveras hasta el río San Joaquin, con un solo embalse en el camino, New Hogan Lake. El río y su canal lateral, Mormon Slough, rodean el centro de Stockton, así que buena parte de la ciudad es en realidad una de las muchas islas del Delta.",
+   "es_src": {
+    "name": "2f41d87b95",
+    "text": "bfc71215e0",
+    "more": "12c399fc04"
+   },
+   "kids": "Here we cross the Calaveras River. Calaveras is Spanish for skulls. A Spanish explorer named Gabriel Moraga is said to have named it in 1806. Look out of the window for the Calaveras River as we cross it.",
+   "kids_es": "Aquí cruzamos el río Calaveras. Calaveras es la palabra en español para skulls. Se dice que un explorador español llamado Gabriel Moraga le puso ese nombre en 1806. ¿Se les ocurre otro nombre para este río?",
+   "kids_src": "bfc71215e0"
   },
   {
    "state": "CA",
@@ -193,7 +318,18 @@
    "months": null,
    "wiki": "Benjamin Holt",
    "src": "https://en.wikipedia.org/wiki/Stockton,_California",
-   "src2": "https://en.wikipedia.org/wiki/Benjamin_Holt"
+   "src2": "https://en.wikipedia.org/wiki/Benjamin_Holt",
+   "name_es": "Benjamin Holt y el Caterpillar",
+   "text_es": "La salida Benjamin Holt Drive comparte su nombre con un inventor de Stockton. El Día de Acción de Gracias, 24 de noviembre de 1904, Holt probó un tractor que avanzaba sobre orugas en lugar de ruedas, arando tierras de cultivo encharcadas del Delta cerca de Stockton. Según se informó, un fotógrafo de la compañía dijo que se arrastraba como una oruga, caterpillar en inglés. A Holt le gustó: Caterpillar será, dijo, y el nombre sigue vivo en la compañía Caterpillar Inc.",
+   "more_es": "Holt llegó a Stockton en 1883 y, con sus hermanos, fundó una compañía que fabricaba ruedas de carreta, luego cosechadoras combinadas y tractores. La mayoría de los campos alrededor de Stockton se habían ganado al Delta, y las orugas repartían el peso de una máquina pesada para que no se hundiera en la tierra blanda. Durante la Primera Guerra Mundial, los ejércitos aliados usaron unos 10,000 vehículos Holt, muchos de ellos para jalar artillería pesada. Holt murió en 1920, y cinco años después su compañía se fusionó con su mayor rival, la compañía C. L. Best, para formar lo que hoy es Caterpillar Inc. Un tractor Holt Caterpillar restaurado, de alrededor de 1918, se exhibe en el Haggin Museum de Stockton.",
+   "es_src": {
+    "name": "508e0b5410",
+    "text": "d5405d377f",
+    "more": "20d6e24bff"
+   },
+   "kids": "Benjamin Holt was an inventor from Stockton. On Thanksgiving Day in 1904, he tested a tractor that rode on tracks instead of wheels. It plowed soggy farmland. Someone said it crawled like a caterpillar, and Holt liked that name. The company Caterpillar Inc. still uses it. What would you name a new machine?",
+   "kids_es": "Benjamin Holt fue un inventor de Stockton. El Día de Acción de Gracias de 1904, probó un tractor que avanzaba sobre orugas en lugar de ruedas, arando tierras encharcadas. Alguien dijo que se arrastraba como una oruga, caterpillar en inglés, y a Holt le gustó el nombre. La compañía Caterpillar Inc. todavía lo usa. ¿Cómo llamarían ustedes a una máquina nueva?",
+   "kids_src": "d5405d377f"
   },
   {
    "state": "CA",
@@ -209,7 +345,18 @@
    "months": null,
    "wiki": "Interstate 5 in California",
    "src": "https://en.wikipedia.org/wiki/October_1979",
-   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California",
+   "name_es": "El último tramo de la I-5",
+   "text_es": "Un tramo de 4.6 millas de autopista al norte de Stockton fue el último pedazo de la Interestatal 5 en abrirse. El 12 de octubre de 1979, después de 26 años de construcción, los cónsules de Canadá y México se unieron a la secretaria de transporte de California para cortar una cadena dorada, completando la Interestatal 5 desde la frontera con México hasta la frontera con Canadá.",
+   "more_es": "La secretaria de transporte de California, Adriana Gianturco, comparó el momento con la colocación del clavo de oro en el ferrocarril transcontinental. El tráfico en la West Side Freeway, el tramo de la I-5 que baja por el lado oeste del valle de San Joaquin, aumentó cuando abrió su segunda fase en 1972, porque en Stockton la nueva autopista llegaba a 4 millas de la Golden State Highway, la Route 99. Su tercera fase, terminada en 1979, llevó la I-5 al norte hasta Sacramento. Ahí se unió con la mitad norte de la autopista.",
+   "es_src": {
+    "name": "0f2a42bd57",
+    "text": "4bcccd4340",
+    "more": "c57a794f96"
+   },
+   "kids": "A stretch of freeway north of Stockton, 4.6 miles long, was the very last piece of Interstate 5 to open. That was in 1979, after 26 years of building. Officials from Canada, Mexico and California cut a gold-colored chain. Now the road ran from Mexico all the way to Canada! How long do you think that drive would take?",
+   "kids_es": "Un tramo de autopista al norte de Stockton, de 4.6 millas, fue el último pedazo de la Interestatal 5 en abrirse. Fue en 1979, después de 26 años de construcción. Representantes de Canadá, México y California cortaron una cadena dorada. ¡Así la carretera quedó completa desde México hasta Canadá! ¿Cuánto creen que tardaría ese viaje?",
+   "kids_src": "4bcccd4340"
   },
   {
    "state": "CA",
@@ -227,7 +374,18 @@
    ],
    "wiki": "Lodi, California",
    "src": "https://www.lodiwine.com/about-lodi",
-   "src2": "https://en.wikipedia.org/wiki/Lodi,_California"
+   "src2": "https://en.wikipedia.org/wiki/Lodi,_California",
+   "name_es": "Lodi, vino y root beer",
+   "text_es": "La Highway 12 lleva al este a Lodi, un pueblo rodeado de viñedos. Sus productores cultivan más de 130 variedades de uva, y muchas de las viñas viejas de aquí se plantaron entre la fiebre del oro y la Prohibición. Lodi también es la cuna de A&W Root Beer: en 1919 Roy Allen vendió su primer lote desde un carrito durante un desfile, y una placa marca el lugar.",
+   "more_es": "El pueblo se llamó primero Mokelumne, por el río cercano, pero eso causaba confusión con otros pueblos, así que se cambió el nombre. Nadie sabe con certeza por qué se eligió Lodi. Una historia se lo atribuye a un caballo trotón local que rompió récords, otra al pueblo italiano donde Napoleón ganó su primera victoria, pero lo más probable es que algunos de los primeros colonos vinieran de un lugar llamado Lodi en Illinois. Desde principios del siglo XX hasta la década de 1980, Lodi se promovió como la Capital Mundial del Tokay, por las uvas Flame Tokay que se cultivan aquí. Cada septiembre el pueblo celebra el Lodi Grape Festival. La canción Lodi, de Creedence Clearwater Revival, lleva el nombre de este pueblo, aunque el compositor John Fogerty admite que nunca había estado aquí y simplemente pensó que era el nombre que mejor sonaba.",
+   "es_src": {
+    "name": "86de15bb88",
+    "text": "58a001c53b",
+    "more": "4de43e683f"
+   },
+   "kids": "East of here is Lodi, a town surrounded by vineyards, where grapes grow. Farmers here grow more than 130 kinds of grapes. Lodi is also where A&W Root Beer began. In 1919, Roy Allen sold his first batch from a cart during a parade. What flavor would you sell from a cart in a parade?",
+   "kids_es": "Al este de aquí está Lodi, un pueblo rodeado de viñedos, donde crecen uvas. Sus productores cultivan más de 130 variedades de uva. Lodi también es la cuna de A&W Root Beer. En 1919, Roy Allen vendió su primer lote desde un carrito durante un desfile. ¿Qué sabor les gustaría vender desde un carrito en un desfile?",
+   "kids_src": "58a001c53b"
   },
   {
    "state": "CA",
@@ -243,7 +401,18 @@
    "months": null,
    "wiki": "Asparagus",
    "src": "https://soundingsmag.net/2019/02/20/asparagus-historic-signature-crop-of-the-delta/",
-   "src2": "https://soundingsmag.net/2019/02/20/asparagus-historic-signature-crop-of-the-delta/"
+   "src2": "https://soundingsmag.net/2019/02/20/asparagus-historic-signature-crop-of-the-delta/",
+   "name_es": "Los espárragos del Delta",
+   "text_es": "Desde aproximadamente 1900 hasta la década de 1970, el espárrago fue un cultivo emblemático del Delta, al oeste de aquí. La primera cosecha comercial la cultivaron agricultores chinos en 1892 en Bouldin Island. Cada espárrago se cortaba a mano, con un cuchillo largo metido justo debajo de la superficie del pegajoso suelo de turba, y las cuadrillas recorrían cada campo cada pocos días durante la cosecha de primavera.",
+   "more_es": "Los inmigrantes chinos hicieron el primer trabajo manual, seguidos por trabajadores japoneses, luego filipinos y después trabajadores mexicanos. En 1930 el Delta tenía más de 350 campamentos de espárragos con unos 7,000 trabajadores de cosecha, 5,500 de ellos filipinos. En 1919 Thomas Foon Chew, conocido como el Rey del Espárrago, trasladó su Bayside Cannery a Isleton, sobre el río Sacramento, y en su mejor momento fue la tercera compañía enlatadora más grande del país. Más tarde, los vagones de ferrocarril refrigerados con hielo permitieron a los productores enviar los espárragos frescos en lugar de enlatados, y las siembras volvieron a crecer. Para mediados de los años 80, la competencia de países con salarios más bajos, como Perú y México, había reducido el cultivo, y el espárrago fresco del Delta se ha vuelto difícil de encontrar.",
+   "es_src": {
+    "name": "0d52529413",
+    "text": "856885db2b",
+    "more": "e849b84a9c"
+   },
+   "kids": "Long ago, asparagus was a famous crop in the Delta, west of here. Chinese farmers grew the first crop to sell in 1892, on Bouldin Island. Every spear was cut by hand with a long knife, just below the sticky soil. Workers walked each field every few days in spring. Would you like to pick asparagus by hand?",
+   "kids_es": "Hace mucho tiempo, el espárrago fue un cultivo muy famoso del Delta, al oeste de aquí. Agricultores chinos cultivaron la primera cosecha para vender en 1892, en Bouldin Island. Cada espárrago se cortaba a mano con un cuchillo largo, justo debajo del suelo pegajoso. Las cuadrillas recorrían cada campo cada pocos días en primavera. ¿Les gustaría cosechar espárragos a mano?",
+   "kids_src": "856885db2b"
   },
   {
    "state": "CA",
@@ -265,7 +434,18 @@
    ],
    "wiki": "Sandhill crane",
    "src": "https://wildlife.ca.gov/Lands/Places-to-Visit/Woodbridge-ER",
-   "src2": "https://en.wikipedia.org/wiki/Sandhill_crane"
+   "src2": "https://en.wikipedia.org/wiki/Sandhill_crane",
+   "name_es": "Reserva de grullas canadienses",
+   "text_es": "A un par de millas al oeste de la autopista, saliendo por Woodbridge Road, está la Woodbridge Ecological Reserve, de 353 acres, también llamada Isenberg Sandhill Crane Reserve. Las grullas canadienses llegan al Delta hacia finales de septiembre y pasan aquí el otoño y el invierno. El atardecer es el mejor momento para verlas llegar volando, con un llamado fuerte, como de trompeta, que se oye desde muy lejos.",
+   "more_es": "Las grullas canadienses tienen uno de los registros fósiles más largos de cualquier ave viva, y el fósil seguro más antiguo tiene 2.5 millones de años. Sus alas miden unos seis pies y medio de punta a punta. En invierno, grullas que no son parientes se juntan en grupos que comen y duermen juntos. El sitio sur de la reserva está abierto al público a cualquier hora del día o de la tarde. El sitio norte, con su refugio para observar grullas, solo se puede visitar en recorridos guiados por voluntarios, que se hacen los fines de semana de octubre a febrero. California declaró amenazada a la grulla canadiense mayor en 1983, después de que bajaron sus números. Cada noviembre, Lodi celebra un Sandhill Crane Festival.",
+   "es_src": {
+    "name": "f29de28ed5",
+    "text": "dcb61e2b69",
+    "more": "634403e2b1"
+   },
+   "kids": "A couple of miles west of the freeway is a nature reserve for sandhill cranes. These birds come to the Delta around late September. They stay through fall and winter. At sunset they fly in, calling with a loud, trumpeting sound you can hear from far away. Can you make a trumpeting call like a crane?",
+   "kids_es": "A un par de millas al oeste de la autopista hay una reserva para las grullas canadienses. Estas aves llegan al Delta hacia finales de septiembre y pasan aquí el otoño y el invierno. Al atardecer llegan volando, con un llamado fuerte, como de trompeta, que se oye desde muy lejos. ¿Pueden hacer un llamado de trompeta como una grulla?",
+   "kids_src": "dcb61e2b69"
   },
   {
    "state": "CA",
@@ -281,7 +461,18 @@
    "months": null,
    "wiki": "Sacramento–San Joaquin River Delta",
    "src": "https://en.wikipedia.org/wiki/Sacramento%E2%80%93San_Joaquin_River_Delta",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento%E2%80%93San_Joaquin_River_Delta"
+   "src2": "https://en.wikipedia.org/wiki/Sacramento%E2%80%93San_Joaquin_River_Delta",
+   "name_es": "El Delta, la Holanda de California",
+   "text_es": "Al oeste de la autopista se extiende el Delta de Sacramento-San Joaquin, unas 57 islas y terrenos ganados al agua y rodeados por 1,100 millas de diques. Una vez que se secó la marisma, su suelo de turba quedó expuesto al aire y se fue descomponiendo poco a poco, y la tierra se ha hundido hasta 25 pies desde finales del siglo XIX. Gran parte del Delta occidental y central está ahora al menos 15 pies por debajo del nivel del mar.",
+   "more_es": "Durante miles de años, los tules y juncos crecieron y se pudrieron aquí hasta formar turba de hasta 50 pies de profundidad, y por eso el suelo es tan rico. El Delta es la tierra ancestral de los miwok y los maidu, cuyas aldeas de 200 a 1,000 personas estaban a lo largo de su orilla este, donde el terreno era más alto y había menos riesgo de inundación. Con los tules hacían casas, botes y ropa. Trabajadores chinos hicieron gran parte de la primera construcción de diques, de la década de 1850 a la de 1870. Cerca de la mitad de toda el agua de los ríos de California pasa por el Delta, y el agua que se bombea desde su extremo sur ayuda a abastecer a unos 23 millones de personas. Desde 1900 los diques han fallado más de 160 veces, y en 2004 una sola ruptura inundó todo Jones Tract.",
+   "es_src": {
+    "name": "ac9b730597",
+    "text": "0332496bde",
+    "more": "66f0900fb8"
+   },
+   "kids": "West of the freeway is the Delta, about 57 islands and pieces of land. Walls of earth called levees, 1,100 miles of them, ring them. When the marshy land was drained, its soil slowly broke down and sank. Much of the western and central Delta now sits at least 15 feet below sea level. How do you think people keep the water out?",
+   "kids_es": "Al oeste de la autopista está el Delta, unas 57 islas y terrenos rodeados por 1,100 millas de diques, que son como muros de tierra. Cuando se secó la marisma, su suelo se fue deshaciendo poco a poco y la tierra se hundió. Gran parte del Delta occidental y central está ahora al menos 15 pies por debajo del nivel del mar. ¿Cómo creen que la gente mantiene fuera el agua?",
+   "kids_src": "0332496bde"
   },
   {
    "state": "CA",
@@ -297,7 +488,18 @@
    "months": null,
    "wiki": "Mokelumne River",
    "src": "https://en.wikipedia.org/wiki/Mokelumne_River",
-   "src2": "https://en.wikipedia.org/wiki/Mokelumne_Aqueduct"
+   "src2": "https://en.wikipedia.org/wiki/Mokelumne_Aqueduct",
+   "name_es": "Mokelumne, Gente de la Red de Pesca",
+   "text_es": "Aquí la autopista cruza el río Mokelumne, más o menos media milla abajo del punto donde desemboca en él el río Cosumnes. Los dos nombres vienen del miwok. Mokelumne une moke, red de pesca, con umne, gente de, así que significa Gente de la Red de Pesca. Se cree que Cosumnes se formó de la misma manera, a partir de kosum, salmón.",
+   "more_es": "Se cree que esta zona baja del río era sobre todo tierra ancestral de los miwok de las llanuras, con muchas aldeas que antes estaban entre las faldas de la Sierra y la orilla del Delta. Los miwok llamaban al río Wakalumitch, que posiblemente significa río grande. Un misionero español escribió el nombre por primera vez como Muquelumnes en 1817, y a John C. Frémont se le atribuye la forma actual. Muy río arriba, la presa Pardee Dam, terminada en 1929, alimenta el Mokelumne Aqueduct, que lleva el agua del río a través del Delta hasta el East Bay. El acueducto es el único suministro de agua para unas 1.4 millones de personas allá. Río abajo desde aquí, el Mokelumne se divide en dos alrededor de Staten Island antes de llegar al San Joaquin.",
+   "es_src": {
+    "name": "140173ae24",
+    "text": "db06abb72a",
+    "more": "1354aa5506"
+   },
+   "kids": "Here we cross the Mokelumne River. Its name comes from the Miwok language. Moke means fishnet, and umne means people of. So Mokelumne means People of the Fish Net. The nearby Cosumnes River may be named for salmon. If you named a river, what would you call it?",
+   "kids_es": "Aquí cruzamos el río Mokelumne. Su nombre viene del idioma miwok. Moke quiere decir red de pesca, y umne quiere decir gente de. Así que Mokelumne significa Gente de la Red de Pesca. Se cree que el nombre del río Cosumnes viene de kosum, salmón. Si ustedes le pusieran nombre a un río, ¿cómo lo llamarían?",
+   "kids_src": "db06abb72a"
   },
   {
    "state": "CA",
@@ -313,7 +515,18 @@
    "months": null,
    "wiki": "Locke, California",
    "src": "https://www.nps.gov/places/locke-historic-district.htm",
-   "src2": "https://en.wikipedia.org/wiki/Locke,_California"
+   "src2": "https://en.wikipedia.org/wiki/Locke,_California",
+   "name_es": "Locke, un pueblo chino a orillas del río",
+   "text_es": "Unas tres millas al oeste de la autopista, sobre el dique del río Sacramento, una milla al norte de Walnut Grove, está Locke, el último de los barrios chinos del río Sacramento que se construyó. Inmigrantes del condado de Heungshan, en Guangdong, lo levantaron después de que un incendio en 1915 destruyó la comunidad china de Walnut Grove. La Alien Land Law de California les prohibía ser dueños de tierras, así que le rentaron unos nueve acres a George Locke y solo eran dueños de sus edificios.",
+   "more_es": "Tres comerciantes chinos levantaron aquí los primeros edificios en 1912. El incendio del 7 de octubre de 1915 quemó tanto el barrio chino como el barrio japonés de Walnut Grove. A veces vivían en Locke hasta 1,000 a 1,500 personas chinas, y la cifra crecía durante las temporadas de siembra y cosecha. Durante décadas, los residentes no pudieron comprar el terreno bajo sus casas. Un desarrollador compró el pueblo a los herederos de Locke en 1977, la agencia de vivienda y renovación urbana de Sacramento lo compró en 2002, y en 2004 la agencia por fin dejó que los residentes de muchos años compraran su terreno. Locke fue declarado Hito Histórico Nacional en 1990.",
+   "es_src": {
+    "name": "1939b6cc08",
+    "text": "3be01fad85",
+    "more": "2ae7ea6738"
+   },
+   "kids": "About three miles west of the freeway is Locke, a Chinese river town. It was the last Chinatown built along the Sacramento River. People from China built it up after a fire in nearby Walnut Grove in 1915. A law said they could not own land, so they rented it and owned only their buildings. What would you build in a new town?",
+   "kids_es": "Unas tres millas al oeste de la autopista está Locke, un pueblo chino a orillas del río. Fue el último barrio chino que se construyó en el río Sacramento. Inmigrantes de China lo levantaron después de un incendio en Walnut Grove en 1915. Una ley no les dejaba ser dueños de tierras, así que rentaron el terreno y solo eran dueños de sus edificios. ¿Qué construirían ustedes en un pueblo nuevo?",
+   "kids_src": "3be01fad85"
   },
   {
    "state": "CA",
@@ -329,7 +542,18 @@
    "months": null,
    "wiki": "Cosumnes River",
    "src": "https://en.wikipedia.org/wiki/Cosumnes_River",
-   "src2": "https://wildlife.ca.gov/Lands/Places-to-Visit/Cosumnes-River-ER"
+   "src2": "https://wildlife.ca.gov/Lands/Places-to-Visit/Cosumnes-River-ER",
+   "name_es": "Cosumnes River Preserve",
+   "text_es": "La Cosumnes River Preserve, cuyo centro de visitantes está justo al este de la autopista, abarca casi 50,000 acres, incluidos algunos de los humedales y hábitats ribereños más grandes que quedan en el Valle Central. El Cosumnes es uno de los muy pocos ríos de la vertiente oeste de la Sierra Nevada sin una presa grande, así que todavía se desborda en temporada y crea un hábitat importante para las aves que pasan el invierno aquí.",
+   "more_es": "El centro de visitantes está en Franklin Boulevard, y la reserva la administra una alianza de grupos estatales, locales, federales y privados. La usan aves rapaces, garzas, grullas canadienses, aves playeras y aves acuáticas. El río todavía se inunda con fuerza: sus inundaciones más notables de las últimas décadas fueron en 1986, 1997, 2017 y 2023. La tormenta de 1997 fue la más grande registrada y rompió muchos de los diques del Cosumnes. Las propuestas para represar el río principal se han estancado en gran parte, en parte por su condición de río de flujo libre y su valor para la vida silvestre.",
+   "es_src": {
+    "name": "0a799c3b2d",
+    "text": "af781d1dd3",
+    "more": "0119f388ad"
+   },
+   "kids": "The Cosumnes River Preserve covers almost 50,000 acres. It has some of the biggest wetlands left in the Central Valley. The Cosumnes River has no big dam, so in some seasons it spills over its banks. That makes an important home for birds that spend the winter. Why do you think birds might like a river that floods?",
+   "kids_es": "La Cosumnes River Preserve abarca casi 50,000 acres. Tiene algunos de los humedales más grandes que quedan en el Valle Central. El río Cosumnes no tiene una presa grande, así que en algunas temporadas se desborda. Eso crea un hogar importante para las aves que pasan aquí el invierno. ¿Por qué creen que a las aves les gusta un río que se desborda?",
+   "kids_src": "af781d1dd3"
   },
   {
    "state": "CA",
@@ -345,7 +569,20 @@
    "months": null,
    "wiki": "Stone Lakes National Wildlife Refuge",
    "src": "https://en.wikipedia.org/wiki/Stone_Lakes_National_Wildlife_Refuge",
-   "src2": "https://www.fws.gov/refuge/stone-lakes"
+   "src2": "https://www.fws.gov/refuge/stone-lakes",
+   "name_es": "Stone Lakes National Wildlife Refuge",
+   "text_es": "La autopista corre a lo largo del borde este del Stone Lakes National Wildlife Refuge, creado en 1994. Tiene humedales temporales y permanentes, pastizales, bosque ribereño y algunos de los últimos lagos de agua dulce que quedan en el Valle Central. Está en el Delta, el destino de miles de aves acuáticas, aves playeras y otras aves de agua que migran.",
+   "more_es": "El refugio protege hábitat silvestre y tierras de cultivo en una zona apretada por el crecimiento urbano, entre la ciudad de Elk Grove y el campo. Tiene una gran colonia de anidación donde garzas azules grandes y otras aves anidan juntas en colonias. Entre las especies amenazadas o de estatus especial de aquí están el escarabajo de cuernos largos del saúco del valle, el aguililla de Swainson y la grulla canadiense mayor. El refugio tiene una milla de senderos pavimentados en circuito alrededor de humedales manejados y un área de juegos natural para niños, pero no tiene centro de visitantes. Voluntarios de Friends of Stone Lakes enseñan a los visitantes sobre este refugio en la orilla de la ciudad.",
+   "spot_es": "Busque pantanos y estanques cerca de la autopista, y tal vez una garza azul grande y alta.",
+   "es_src": {
+    "name": "de9f70c9b7",
+    "text": "fbadd615c9",
+    "more": "fd04b4c87f",
+    "spot": "61d09ab1ea"
+   },
+   "kids": "The freeway runs along the eastern edge of Stone Lakes National Wildlife Refuge. It was set aside in 1994 as a place for wild animals. It has wetlands, grasslands, forest and some freshwater lakes. Thousands of water birds travel here. Look for marshes and ponds near the freeway, and maybe a tall great blue heron.",
+   "kids_es": "La autopista corre por el borde este del Stone Lakes National Wildlife Refuge, creado en 1994. Tiene humedales, pastizales, bosque junto al río y algunos lagos de agua dulce. Miles de aves acuáticas llegan aquí cuando migran. Busquen pantanos y estanques cerca de la autopista, y tal vez una garza azul grande y alta.",
+   "kids_src": "fbadd615c9"
   },
   {
    "state": "CA",
@@ -361,7 +598,18 @@
    "months": null,
    "wiki": "Elk Grove, California",
    "src": "https://en.wikipedia.org/wiki/Elk_Grove,_California",
-   "src2": "https://en.wikipedia.org/wiki/Wilton_Rancheria"
+   "src2": "https://en.wikipedia.org/wiki/Wilton_Rancheria",
+   "name_es": "Elk Grove",
+   "text_es": "Elk Grove Boulevard lleva hacia el este a Elk Grove, que empezó en 1850 como parada de diligencias para los viajeros entre Sacramento y el Área de la Bahía, cuando James Hall abrió el Elk Grove Hotel. Se dice que Hall le puso el nombre por unas astas de alce que encontró en las arboledas cercanas, aunque también había vivido en un pueblo de Missouri con el mismo nombre.",
+   "more_es": "Cuando las vías del Central Pacific pasaron por aquí en 1868, como a una milla al este del pueblo original, se construyó un segundo Elk Grove Hotel cerca del ferrocarril. Elk Grove siguió siendo un pequeño pueblo agrícola durante más de un siglo, hasta que los suburbios empezaron a extenderse aquí a finales de la década de 1980, y no se convirtió en ciudad sino hasta el 1 de julio de 2000. En 2004 y 2005 fue declarada la ciudad de crecimiento más rápido del país, y su población casi se triplicó entre 2000 y 2020. Elk Grove también es la sede de la Wilton Rancheria, una tribu del pueblo miwok reconocida por el gobierno federal. El gobierno federal le quitó el reconocimiento a la tribu en 1958, y la tribu lo recuperó en 2009. En 2022 abrió el Sky River Casino en Elk Grove, en el terreno de un centro comercial a medio construir.",
+   "es_src": {
+    "name": "e719ebc4ce",
+    "text": "b6f44094a4",
+    "more": "e497716b8d"
+   },
+   "kids": "East of here is Elk Grove. It began in 1850 as a stagecoach stop for travelers. James Hall opened a hotel called the Elk Grove Hotel. People say he named it for elk antlers he found in the groves nearby. He had also lived in a Missouri town with the same name. What would you name a town?",
+   "kids_es": "Al este de aquí está Elk Grove. Empezó en 1850 como parada de diligencias para viajeros, cuando James Hall abrió el Elk Grove Hotel. Se dice que le puso el nombre por unas astas de alce que encontró en las arboledas cercanas. También había vivido en un pueblo de Missouri con el mismo nombre. ¿Qué nombre le pondrían ustedes a un pueblo?",
+   "kids_src": "b6f44094a4"
   },
   {
    "state": "CA",
@@ -377,7 +625,18 @@
    "months": null,
    "wiki": "Freeport, California",
    "src": "https://en.wikipedia.org/wiki/Freeport,_California",
-   "src2": "https://en.wikipedia.org/wiki/List_of_crossings_of_the_Sacramento_River"
+   "src2": "https://en.wikipedia.org/wiki/List_of_crossings_of_the_Sacramento_River",
+   "name_es": "Freeport, un pueblo nacido de los impuestos",
+   "text_es": "El pequeño pueblo ribereño de Freeport, justo al oeste de la autopista, nació como una forma de evitar los impuestos del puerto de Sacramento. En 1862, unos empresarios cansados de pagar impuestos en el muelle de Sacramento a orillas del río formaron la Freeport Railroad Company para construir un nuevo puerto, libre de esos impuestos, con un ferrocarril que evitaba Sacramento. El pueblo creció rápidamente durante tres años y llegó a tener de 300 a 400 habitantes.",
+   "more_es": "El plan era que el Freeport Railroad se uniera al Sacramento Valley Railroad a medio camino entre Sacramento y Folsom, para que la carga pudiera evitar Sacramento por completo. El auge no duró. Freeport está en la orilla este del río Sacramento, a unas 7.5 millas al sur del centro, y el censo de 2020 contó apenas 58 habitantes aquí. Su puente levadizo sobre el río, un puente basculante, se abrió en 1929 y fue reconstruido en 1955.",
+   "es_src": {
+    "name": "65614ba3ec",
+    "text": "de54aaf54a",
+    "more": "98dda6f1ee"
+   },
+   "kids": "The tiny river town of Freeport is just west of the freeway. Long ago, businessmen were tired of paying taxes at Sacramento's river landing. So they made a new port with no taxes, plus a railroad that went around Sacramento. The town grew fast for three years, to 300 to 400 people. If you started a new town, what would you name it?",
+   "kids_es": "El pequeño pueblo de Freeport está justo al oeste de la autopista, junto al río. Hace mucho tiempo, unos empresarios estaban cansados de pagar impuestos en el muelle de Sacramento. Así que hicieron un puerto nuevo sin esos impuestos, con un ferrocarril que pasaba por fuera de Sacramento. El pueblo creció rápido durante tres años y llegó a tener de 300 a 400 habitantes. ¿Cómo llamarían ustedes a un pueblo nuevo?",
+   "kids_src": "de54aaf54a"
   },
   {
    "state": "CA",
@@ -393,7 +652,18 @@
    "months": null,
    "wiki": "Sacramento Zoo",
    "src": "https://en.wikipedia.org/wiki/Sacramento_Zoo",
-   "src2": "https://en.wikipedia.org/wiki/William_Land_Park"
+   "src2": "https://en.wikipedia.org/wiki/William_Land_Park",
+   "name_es": "Sacramento Zoo y Land Park",
+   "text_es": "La salida de Sutterville Road lleva a William Land Park y al Sacramento Zoo, a unas cuadras al este de la autopista. El zoológico abrió el 2 de junio de 1927 como el William Land Park Zoo, con 40 animales reunidos de parques locales, entre ellos monos, mapaches, aves y venados.",
+   "more_es": "En 1948, el periódico Sacramento Union organizó una colecta para comprarle una elefanta al zoológico, y en 1949 ella llegó. Dos hermanas de la ciudad la llamaron Sue, por Sacramento Union Elephant. El zoológico pasó de 4.2 acres a 14.3 acres a principios de los años sesenta y tenía poco más de 500 animales para 2012. Un plan de 2024 para trasladarlo a un sitio más grande en Elk Grove se canceló en abril de 2025 por su costo, y el concejo municipal aprobó una ampliación donde está. El parque que lo rodea lleva el nombre de William Land, un pionero que construyó el Western Hotel en 1875. También alberga Fairytale Town, un parque cuyos juegos están basados en cuentos de hadas y rimas infantiles, y Funderland, con pequeños juegos mecánicos de feria para niños pequeños.",
+   "es_src": {
+    "name": "719d326d1e",
+    "text": "90e7eff5c7",
+    "more": "da4eac35f6"
+   },
+   "kids": "A few blocks east of the freeway are William Land Park and the Sacramento Zoo. The zoo opened on June 2, 1927. It began with 40 animals from local parks. Among them were monkeys, raccoons, birds and deer. Which of those first zoo animals would you most like to see?",
+   "kids_es": "A unas cuadras al este de la autopista están William Land Park y el Sacramento Zoo. El zoológico abrió el 2 de junio de 1927. Empezó con 40 animales de parques locales. Entre ellos había monos, mapaches, aves y venados. ¿Cuál de esos primeros animales del zoológico les gustaría más ver?",
+   "kids_src": "90e7eff5c7"
   },
   {
    "state": "CA",
@@ -409,7 +679,20 @@
    "months": null,
    "wiki": "Old Sacramento State Historic Park",
    "src": "https://en.wikipedia.org/wiki/Interstate_5_in_California",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento,_California"
+   "src2": "https://en.wikipedia.org/wiki/Sacramento,_California",
+   "name_es": "La Boat Section",
+   "text_es": "Al pasar por el centro de Sacramento, la I-5 corre por debajo del nivel freático, muy cerca del río Sacramento. Caltrans llama a este tramo la Boat Section. Se construyó por debajo del nivel de la calle en los años sesenta y setenta para que la autopista no se viera desde las oficinas y tiendas del centro, y bombas, drenajes y un muro de contención mantienen fuera el agua que se filtra del río.",
+   "more_es": "Para construirlo, los trabajadores excavaron el terreno y bombearon el agua que se filtraba, y en 1980 unas lluvias récord lo inundaron con 15 pies de agua. Sacramento ha luchado contra el agua desde el principio. En la Gran Inundación de 1862, el río American dejó gran parte de la ciudad bajo el agua durante tres meses, y el gobernador recién electo, Leland Stanford, tuvo que ir a su propia toma de posesión en bote de remos. Por eso, de 1862 hasta mediados de la década de 1870, la ciudad elevó su centro, construyendo muros de ladrillo a lo largo de las calles y rellenándolos con tierra, y los antiguos primeros pisos se convirtieron en sótanos. Partes de este Sacramento Underground todavía se pueden ver. Entre la autopista y el río está Old Sacramento, un distrito histórico de 28 acres con 53 edificios históricos.",
+   "spot_es": "Busque los muros de este tramo hundido de la autopista, construido por debajo del nivel de la calle.",
+   "es_src": {
+    "name": "a19dbd6211",
+    "text": "a1cfe34f96",
+    "more": "4c2f8c35e6",
+    "spot": "ccab1565b7"
+   },
+   "kids": "Through downtown Sacramento, the freeway runs low, close beside the Sacramento River. It was built below street level, so people in downtown offices and shops would not see it. Caltrans calls this stretch the Boat Section. Pumps, drains and a strong wall keep river water from leaking in. Look for the walls of this sunken stretch of freeway, built below street level.",
+   "kids_es": "En el centro de Sacramento, la autopista va muy abajo, cerca del río Sacramento. Se construyó por debajo del nivel de la calle para que no se viera desde las oficinas y tiendas. Caltrans llama a este tramo la Boat Section. Bombas, drenajes y un muro fuerte mantienen fuera el agua del río. Busquen los muros de este tramo hundido de la autopista.",
+   "kids_src": "a1cfe34f96"
   },
   {
    "state": "CA",
@@ -425,7 +708,20 @@
    "months": null,
    "wiki": "Tower Bridge (Sacramento, California)",
    "src": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)",
-   "src2": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)"
+   "src2": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)",
+   "name_es": "Tower Bridge",
+   "text_es": "Las torres doradas justo al oeste de la autopista pertenecen al Tower Bridge, un puente levadizo sobre el río Sacramento inaugurado en 1935. Sus torres de 160 pies sostienen contrapesos tan pesados como el tramo central de 1,150 toneladas, así que bastan dos motores eléctricos de 100 caballos de fuerza para levantarlo y dejar pasar los barcos altos.",
+   "more_es": "Reemplazó a un puente de ferrocarril de 1911, y los trenes lo cruzaron hasta 1962. Sus torres lisas y revestidas son un raro ejemplo del estilo Streamline Moderne en un puente levadizo. En la inauguración, el 15 de diciembre de 1935, se soltaron mil palomas mensajeras para llevar la noticia por todo California. Durante años el puente estuvo pintado de plateado, y en 1976 lo pintaron de color ocre amarillo para que combinara con la cúpula dorada del cercano Capitolio estatal. En 2001, los residentes que vivían a menos de 35 millas votaron por una nueva combinación de colores, y el dorado completo les ganó a otras dos opciones. Justo río arriba, el Delta King, un barco de vapor de rueda de popa de 285 pies que viajaba a San Francisco de 1927 a 1940, está amarrado como hotel. Al otro lado del río, el estadio de ligas menores Sutter Health Park se convirtió en la casa temporal de los Athletics en 2025.",
+   "spot_es": "Busque las dos torres doradas y altas del Tower Bridge.",
+   "es_src": {
+    "name": "affcc3cd47",
+    "text": "cf735272d1",
+    "more": "405cee8265",
+    "spot": "2f40bf223a"
+   },
+   "kids": "Just west of the freeway is the Tower Bridge, over the Sacramento River. Its middle part can lift up to let tall boats pass through. Its towers are 160 feet tall. Heavy weights inside help, so just two electric motors can raise it. Look for the two tall gold towers of the Tower Bridge!",
+   "kids_es": "Justo al oeste de la autopista está el Tower Bridge, sobre el río Sacramento. Su parte de en medio se puede levantar para dejar pasar barcos altos. Sus torres miden 160 pies. Gracias a unos contrapesos muy pesados, bastan dos motores eléctricos para levantarlo. ¡Busquen las dos torres doradas y altas del Tower Bridge!",
+   "kids_src": "cf735272d1"
   },
   {
    "state": "CA",
@@ -441,7 +737,18 @@
    "months": null,
    "wiki": "California State Railroad Museum",
    "src": "https://en.wikipedia.org/wiki/California_State_Railroad_Museum",
-   "src2": "https://en.wikipedia.org/wiki/Central_Pacific_Railroad"
+   "src2": "https://en.wikipedia.org/wiki/Central_Pacific_Railroad",
+   "name_es": "California State Railroad Museum",
+   "text_es": "El California State Railroad Museum, en Old Sacramento, tiene 21 locomotoras y vagones restaurados, algunos de 1862. Adentro, una gran maqueta recrea la construcción del ferrocarril en lo alto de la Sierra, en Donner Pass, alrededor de 1867. En ella aparece la primera locomotora del Central Pacific, la Gov. Stanford, que llegó a California en piezas por barco, rodeando el Cabo de Hornos.",
+   "more_es": "Cerca de aquí, al pie de K Street, el Central Pacific, la mitad occidental del primer ferrocarril transcontinental, comenzó las obras el 8 de enero de 1863. Su presidente, Leland Stanford, era al mismo tiempo gobernador de California. Trabajadores chinos hicieron la mayor parte del trabajo pesado para llevar la línea a través de la Sierra Nevada, y en 1869 se unió con el Union Pacific en Promontory Summit. Al este de la autopista, los talleres del ferrocarril llegaron a ser la instalación ferroviaria más grande al oeste del Mississippi, y empleaban a cerca de un tercio de los trabajadores de Sacramento a principios del siglo veinte. El abogado del ferrocarril, Edwin Crocker, hermano del socio Charles Crocker, gastó su fortuna ferroviaria en arte, y la galería de su familia se convirtió en el Crocker Art Museum, el museo de arte más antiguo del oeste de Estados Unidos. La colección del museo incluye la única cab-forward de la Southern Pacific que se conserva, una locomotora de vapor de 1944 con la cabina del maquinista al frente.",
+   "es_src": {
+    "name": "ed3673e187",
+    "text": "3ad8a1e3a1",
+    "more": "ed8c6b3bb8"
+   },
+   "kids": "The California State Railroad Museum is in Old Sacramento. It holds 21 restored train engines and railroad cars, some from 1862. Inside, a big model shows workers building a railroad high in the mountains at Donner Pass. The Central Pacific's first train engine, the Gov. Stanford, came to California in pieces on a ship. How do you think they put it back together?",
+   "kids_es": "El California State Railroad Museum está en Old Sacramento. Tiene 21 locomotoras y vagones restaurados, algunos de 1862. Adentro, una gran maqueta muestra la construcción del ferrocarril en lo alto de la Sierra, en Donner Pass. La primera locomotora del Central Pacific, la Gov. Stanford, llegó a California en piezas, por barco. ¿Cómo creen que la volvieron a armar?",
+   "kids_src": "3ad8a1e3a1"
   },
   {
    "state": "CA",
@@ -457,7 +764,18 @@
    "months": null,
    "wiki": "American River",
    "src": "https://regionalparks.saccounty.gov/us/en/parks/american-river-parkway/discovery-park.html",
-   "src2": "https://en.wikipedia.org/wiki/American_River"
+   "src2": "https://en.wikipedia.org/wiki/American_River",
+   "name_es": "Donde se unen dos ríos",
+   "text_es": "Aquí la autopista cruza el río American, cerca de donde desemboca en el Sacramento. El parque donde se unen los dos ríos, Discovery Park, está diseñado para inundarse. Cuando el agua sube en invierno, puede quedar bajo el agua, lo que alivia la presión sobre los diques del río American.",
+   "more_es": "Los pueblos maidu, miwok, nisenan y wintun han vivido a lo largo del río American durante al menos 5,000 años, y los nisenan lo llaman Kum Sayo, río de la casa redonda. Una expedición española dirigida por Gabriel Moraga lo llamó Río de las Llagas, quizá por encuentros hostiles con personas indígenas. El 13 de agosto de 1839, John Sutter llegó a la unión de los ríos, y al año siguiente su grupo construyó Sutter's Fort. En 1848 se encontró oro río arriba, en Sutter's Mill, lo que dio inicio a la fiebre del oro. Hoy el río American es la principal fuente de agua potable de Sacramento.",
+   "es_src": {
+    "name": "8a42263943",
+    "text": "9811bbc154",
+    "more": "81711a2921"
+   },
+   "kids": "Here the freeway crosses the American River, close to where it flows into the Sacramento River. The park where the two rivers meet is called Discovery Park. It is made to flood! In winter high water, it can end up underwater, which takes pressure off the levees along the American River. Would you rather visit this park in summer or see it flooded in winter?",
+   "kids_es": "Aquí la autopista cruza el río American, cerca de donde se une al río Sacramento. El parque donde se juntan los dos ríos se llama Discovery Park, y está hecho para inundarse. Cuando el agua sube en invierno, puede quedar bajo el agua, y eso ayuda a los diques del río American. ¿Preferirían ver este parque en verano o inundado en invierno?",
+   "kids_src": "9811bbc154"
   },
   {
    "state": "CA",
@@ -473,7 +791,18 @@
    "months": null,
    "wiki": "ARCO Arena",
    "src": "https://en.wikipedia.org/wiki/ARCO_Arena",
-   "src2": "https://en.wikipedia.org/wiki/ARCO_Arena"
+   "src2": "https://en.wikipedia.org/wiki/ARCO_Arena",
+   "name_es": "ARCO Arena, ya desaparecido pero muy ruidoso",
+   "text_es": "Justo al este de la salida de Arena Boulevard estaba ARCO Arena, casa de los Sacramento Kings de 1988 a 2016. Construido por apenas 40 millones de dólares, era el estadio más barato de la NBA y el más pequeño. En 2013 impuso un Récord Guinness por el rugido deportivo más fuerte, con 126 decibeles.",
+   "more_es": "Cuando abrió, el estadio estaba en un lugar aislado en el creciente extremo norte de la ciudad. Recibió conciertos, espectáculos sobre hielo, rodeos y exhibiciones de monster trucks, y en algún momento casi dos millones de personas al año pasaban por sus puertas. LeBron James jugó aquí su primer partido de temporada regular en la NBA el 29 de octubre de 2003, y anotó 25 puntos en una derrota ante los Kings. Los Kings se mudaron al nuevo Golden 1 Center, en el centro, en 2016. El terreno fue donado en 2021 a California Northstate University para una escuela de medicina y un hospital, y después de un evento de despedida gratuito en marzo de 2022, el estadio fue demolido ese mismo año.",
+   "es_src": {
+    "name": "4f694fbabb",
+    "text": "6fe3c5c756",
+    "more": "74a615a413"
+   },
+   "kids": "Just east of the Arena Boulevard exit stood ARCO Arena. The Sacramento Kings basketball team played there from 1988 to 2016. It was the cheapest arena in the NBA, and the smallest. In 2013, fans set a world record for the loudest sports roar. How loud do you think you could cheer for your favorite team?",
+   "kids_es": "Justo al este de la salida de Arena Boulevard estaba ARCO Arena. Ahí jugaron los Sacramento Kings de 1988 a 2016. Era el estadio más barato de la NBA y el más pequeño. En 2013 impuso un Récord Guinness por el rugido deportivo más fuerte, con 126 decibeles. ¿Qué tan fuerte creen que podrían animar a su equipo favorito?",
+   "kids_src": "6fe3c5c756"
   },
   {
    "state": "CA",
@@ -489,7 +818,18 @@
    "months": null,
    "wiki": "Sacramento International Airport",
    "src": "https://flysmf.gov/about/art",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento_International_Airport"
+   "src2": "https://en.wikipedia.org/wiki/Sacramento_International_Airport",
+   "name_es": "El aeropuerto y el gran conejo rojo",
+   "text_es": "El Aeropuerto Internacional de Sacramento, justo al norte de la autopista, abrió el 21 de octubre de 1967, con una sola pista de 8,600 pies. Dentro de la Terminal B está una de sus vistas más curiosas: Leap, un conejo rojo de 56 pies del artista Lawrence Argent, hecho para que parezca que saltó al edificio desde afuera. Pesa unas 10,000 libras.",
+   "more_es": "El aeropuerto abrió como Sacramento Metropolitan Airport con cinco aerolíneas: Pacific Air Lines, Pacific Southwest Airlines, United, Western y West Coast Airlines. Tomó el lugar del viejo aeropuerto municipal, hoy Sacramento Executive Airport. Hoy ocupa unos 6,000 acres, y se dice que eso lo convierte en el aeropuerto comercial más grande de California por superficie. La nueva Terminal B abrió el 6 de octubre de 2011. El conejo está hecho de aluminio, acero, granito y bronce, y el aeropuerto deja sin respuesta la pregunta de por qué un conejo rojo, para que los visitantes inventen su propia historia.",
+   "es_src": {
+    "name": "87dddc04ef",
+    "text": "a759e1e5e9",
+    "more": "0edc2e4974"
+   },
+   "kids": "Sacramento International Airport is just north of the freeway. It opened in 1967 with just one runway. Inside one building is a giant red rabbit named Leap, made by the artist Lawrence Argent. It is made to look like it jumped into the building from outside. It weighs about 10,000 pounds. What animal would you make jump into a building?",
+   "kids_es": "El Aeropuerto Internacional de Sacramento está justo al norte de la autopista. Abrió en 1967 con una sola pista. Dentro de la Terminal B hay un conejo rojo gigante llamado Leap, del artista Lawrence Argent. Está hecho para que parezca que saltó al edificio desde afuera, y pesa unas 10,000 libras. ¿Qué animal harían ustedes saltar dentro de un edificio?",
+   "kids_src": "a759e1e5e9"
   },
   {
    "state": "CA",
@@ -505,7 +845,18 @@
    "months": null,
    "wiki": "Sacramento River",
    "src": "https://en.wikipedia.org/wiki/Sacramento_River",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento,_California"
+   "src2": "https://en.wikipedia.org/wiki/Sacramento,_California",
+   "name_es": "El cruce del río Sacramento",
+   "text_es": "Aquí la autopista cruza el río Sacramento, el límite entre los condados de Sacramento y Yolo, por el Elkhorn Bridge, construido en 1969 y también llamado Vietnam Servicemen Memorial Bridge. El Sacramento es el río más grande de California. Corre unas 400 millas desde las montañas Klamath hasta el Delta y drena unas 26,500 millas cuadradas.",
+   "more_es": "En 1808, el explorador español Gabriel Moraga lo llamó Rio del Santisimo Sacramento, el río del Santísimo Sacramento. Se cita a un cronista de la expedición que describió encinos y álamos cubiertos de vides silvestres, pájaros parlanchines y peces grandes en el agua clara, y a los españoles exclamando que era como el Santísimo Sacramento. Por su caudal es el segundo río más grande de la costa del Pacífico en los 48 estados contiguos, después del Columbia, y aporta más del 80 por ciento del agua dulce que llega al Delta. Su cuenca tuvo una de las poblaciones indígenas más densas de California, y antes tenía una de las grandes corridas de salmón chinook más al sur de Norteamérica.",
+   "es_src": {
+    "name": "394925995b",
+    "text": "e6db36df5e",
+    "more": "91fa1ab4dc"
+   },
+   "kids": "Here the freeway crosses the Sacramento River on the Elkhorn Bridge, built in 1969. The river is the line between Sacramento and Yolo counties. The Sacramento is the largest river in California. It flows about 400 miles, from the Klamath Mountains to the Delta. Where do you think all that water comes from?",
+   "kids_es": "Aquí la autopista cruza el río Sacramento por el Elkhorn Bridge, construido en 1969. El río es el límite entre los condados de Sacramento y Yolo. El Sacramento es el río más grande de California. Corre unas 400 millas, desde las montañas Klamath hasta el Delta. ¿De dónde creen que viene toda esa agua?",
+   "kids_src": "e6db36df5e"
   },
   {
    "state": "CA",
@@ -521,7 +872,20 @@
    "months": null,
    "wiki": "Yolo Bypass",
    "src": "https://en.wikipedia.org/wiki/Yolo_Bypass",
-   "src2": "https://californiawaterblog.com/2017/02/20/yolo-bypass-the-inland-sea-of-sacramento/"
+   "src2": "https://californiawaterblog.com/2017/02/20/yolo-bypass-the-inland-sea-of-sacramento/",
+   "name_es": "Yolo Bypass",
+   "text_es": "El Elkhorn Causeway cruza aquí el Yolo Bypass, un canal de desagüe de 41 millas de largo y unas 3 millas de ancho. Cuando el río Sacramento crece, se desborda por vertedores hacia el bypass, que puede llevar unas cuatro veces el caudal del propio río y se convierte en un mar tierra adentro. Eso alivia la presión sobre los diques y reduce el riesgo de inundación para Sacramento y Davis.",
+   "more_es": "Los dos vertedores principales son el Sacramento Weir, construido en 1916, cuyas 48 compuertas se abren a mano con largas varas de gancho, y el Fremont Weir, de dos millas de largo y terminado en 1929, que simplemente se desborda cuando el río sube lo suficiente. Cache Creek también desemboca aquí desde el oeste. A fines de la primavera y en verano, gran parte del bypass se cultiva, sobre todo con arroz, además de cártamo, tomates, maíz y girasoles. Las inundaciones forman un criadero rico: los salmones chinook jóvenes crecen mucho más rápido en el bypass que en el propio río. El bypass también alberga el Vic Fazio Yolo Wildlife Area, un refugio para aves acuáticas, aves playeras y aves zancudas.",
+   "spot_es": "Busque el amplio y plano canal de desagüe junto a la calzada, inundado en los años lluviosos y cultivado en verano.",
+   "es_src": {
+    "name": "67a0b03046",
+    "text": "8127e7ba17",
+    "more": "1a89a1aa30",
+    "spot": "6f97bf8619"
+   },
+   "kids": "Here the road crosses the Yolo Bypass, a floodway 41 miles long and about 3 miles wide. When the Sacramento River runs high, water spills into it. Then it turns into a giant lake, called an inland sea. That helps keep Sacramento and Davis safer from floods. Look for the wide, flat floodway beside the road, flooded in wet years and farmed in summer.",
+   "kids_es": "Aquí el camino cruza el Yolo Bypass, un canal de desagüe de 41 millas de largo y unas 3 millas de ancho. Cuando el río Sacramento crece, el agua se pasa hacia él y se convierte en un mar tierra adentro. Eso ayuda a proteger a Sacramento y Davis de las inundaciones. Busquen el canal ancho y plano junto al camino, inundado en años lluviosos y cultivado en verano.",
+   "kids_src": "8127e7ba17"
   },
   {
    "state": "CA",
@@ -537,7 +901,18 @@
    "months": null,
    "wiki": "Knights Landing, California",
    "src": "https://en.wikipedia.org/wiki/Knights_Landing,_California",
-   "src2": "https://en.wikipedia.org/wiki/Woodland,_California"
+   "src2": "https://en.wikipedia.org/wiki/Woodland,_California",
+   "name_es": "Knights Landing",
+   "text_es": "La County Road 102 lleva al norte a Knights Landing, sobre el río Sacramento. El doctor William Knight, un médico de Baltimore, lo fundó en 1843 sobre un montículo que por mucho tiempo había sido lugar de reunión de los pueblos indígenas que vivían alrededor de Cache Creek y el río. Creció hasta ser un embarcadero de barcos de vapor y un cruce de transbordador.",
+   "more_es": "Cuando se trazó el pueblo en 1849 se llamó Baltimore, pero una disputa por la venta de los lotes le costó ese nombre. Esta es tierra ancestral patwin, y un grupo patwin llamado los yolotoi vivía cerca de Woodland y del actual Knights Landing. El 25 de marzo de 1890, la Southern Pacific terminó un ramal hasta el pueblo, y más tarde un puente sobre el río aumentó mucho su prosperidad. Su cementerio es uno de varios lugares donde se dice que está la tumba sin nombre del asaltante de diligencias Black Bart. Hoy viven allí unas 1,100 personas.",
+   "es_src": {
+    "name": "3f51287073",
+    "text": "1c51f51211",
+    "more": "6eacd32921"
+   },
+   "kids": "County Road 102 leads north to Knights Landing, on the Sacramento River. A doctor named William Knight started the town in 1843. He chose a mound that had long been a meeting place for the Native people living near Cache Creek and the river. Later, steamboats stopped there and a ferry carried people across. Would you rather ride a steamboat or a ferry?",
+   "kids_es": "La County Road 102 lleva al norte a Knights Landing, sobre el río Sacramento. Un médico llamado William Knight lo fundó en 1843. Escogió un montículo que por mucho tiempo fue lugar de reunión de los pueblos indígenas que vivían cerca de Cache Creek y el río. Después llegaron barcos de vapor y un transbordador cruzaba a la gente. ¿Preferirían subirse a un barco de vapor o a un transbordador?",
+   "kids_src": "1c51f51211"
   },
   {
    "state": "CA",
@@ -553,7 +928,18 @@
    "months": null,
    "wiki": "Woodland, California",
    "src": "https://en.wikipedia.org/wiki/Woodland,_California",
-   "src2": "https://en.wikipedia.org/wiki/Woodland,_California"
+   "src2": "https://en.wikipedia.org/wiki/Woodland,_California",
+   "name_es": "Woodland, la Ciudad de los Árboles",
+   "text_es": "Woodland es la cabecera del condado de Yolo y se hace llamar la Ciudad de los Árboles, por los encinos del valle plantados por el pueblo. En 1853, Henry Wyckoff construyó aquí una tienda llamada Yolo City. Frank Freeman la compró en 1857, regaló terreno a quien lo desmontara y construyera una casa, y en 1859 propuso el nombre de Woodland.",
+   "more_es": "Woodland pasó a ser cabecera del condado en 1862, después de que una inundación azotó la antigua cabecera en Washington, hoy parte de West Sacramento. Durante décadas creció gracias a la agricultura, con tres molinos de arroz, una refinería de remolacha azucarera y una enlatadora de tomate, y en los años 1950 se decía que tenía más millonarios por habitante que cualquier otra ciudad de California. En el centro, la Woodland Opera House, construida por primera vez en 1885 y reconstruida tras un incendio en los años 1890, fue la primera casa de ópera del valle de Sacramento, y John Philip Sousa y su banda tocaron allí. Cerró en 1913 y estuvo a oscuras durante décadas. Ahora es un parque histórico estatal y vuelve a presentar espectáculos. La biblioteca de Woodland, de 1905, es la biblioteca financiada por Carnegie más antigua que sigue funcionando en California.",
+   "es_src": {
+    "name": "e68ddd98ea",
+    "text": "5715ee1143",
+    "more": "5edd2f52ea"
+   },
+   "kids": "Woodland calls itself the City of Trees, for the valley oaks planted around town. In 1853 Henry Wyckoff built a store here called Yolo City. Later Frank Freeman bought the store and gave land to people who would clear it and build homes. In 1859 he suggested the name Woodland. What name would you give a town full of trees?",
+   "kids_es": "Woodland se hace llamar la Ciudad de los Árboles, por los encinos del valle plantados en el pueblo. En 1853, Henry Wyckoff construyó aquí una tienda llamada Yolo City. Después Frank Freeman la compró y regaló terreno a quien lo limpiara y construyera una casa. En 1859 propuso el nombre de Woodland. ¿Qué nombre le pondrían a un pueblo lleno de árboles?",
+   "kids_src": "5715ee1143"
   },
   {
    "state": "CA",
@@ -573,7 +959,18 @@
    ],
    "wiki": "Woodland, California",
    "src": "https://www.waterboards.ca.gov/centralvalley/board_decisions/adopted_orders/yolo/r5-2018-0051.pdf",
-   "src2": "https://www.waterboards.ca.gov/centralvalley/board_decisions/adopted_orders/yolo/r5-2018-0051.pdf"
+   "src2": "https://www.waterboards.ca.gov/centralvalley/board_decisions/adopted_orders/yolo/r5-2018-0051.pdf",
+   "name_es": "La enlatadora de tomate de Woodland",
+   "text_es": "La gran planta a media milla de la autopista es la enlatadora de tomate de Woodland. Aquí se procesan y enlatan tomates desde 1958, con dueños como Contadina y Del Monte, y Pacific Coast Producers la opera desde 2001. Trabaja por temporada, por lo general de julio a septiembre, y procesa unas 495,000 toneladas de tomate al año.",
+   "more_es": "Eso es casi mil millones de libras de tomate en unos tres meses. Lavar los tomates frescos requiere mucha agua, y el agua reciclada de las torres de enfriamiento de la planta forma cerca del 30 por ciento del agua de lavado de cada día. El lodo que llega de los campos con los tomates se asienta en tanques. Luego el agua residual se rocía sobre unos 900 acres de campos, a unas cuatro millas al sureste de la planta, sembrados sobre todo con pastos como el pasto Bermuda, que absorben nitrógeno.",
+   "es_src": {
+    "name": "e76452d809",
+    "text": "731ae2ac58",
+    "more": "1341391e50"
+   },
+   "kids": "The big building half a mile from the freeway is the Woodland tomato cannery. People have been canning tomatoes here since 1958. It works mostly from July through September. Each year it handles about 495,000 tons of tomatoes. Look for the big cannery building half a mile from the freeway.",
+   "kids_es": "La gran planta a media milla de la autopista es la enlatadora de tomate de Woodland. Aquí se enlatan tomates desde 1958. Trabaja por lo general de julio a septiembre. Cada año procesa unas 495,000 toneladas de tomate. Busquen el gran edificio de la enlatadora, a media milla de la autopista.",
+   "kids_src": "731ae2ac58"
   },
   {
    "state": "CA",
@@ -589,7 +986,18 @@
    "months": null,
    "wiki": "Yocha Dehe Wintun Nation",
    "src": "https://en.wikipedia.org/wiki/Capay_Valley",
-   "src2": "https://en.wikipedia.org/wiki/Yocha_Dehe_Wintun_Nation"
+   "src2": "https://en.wikipedia.org/wiki/Yocha_Dehe_Wintun_Nation",
+   "name_es": "El valle de Capay, tierra ancestral de los Yocha Dehe",
+   "text_es": "La Highway 16 va al oeste, pasando Esparto, hacia el valle de Capay, por donde corre Cache Creek. El valle es la tierra tradicional del pueblo patwin, o wintun del sur, y hoy es hogar de la Yocha Dehe Wintun Nation, una tribu patwin reconocida por el gobierno federal. La tribu tiene su sede en Brooks, en el valle, donde opera el Cache Creek Casino Resort.",
+   "more_es": "La Yocha Dehe Wintun Nation antes se conocía como Rumsey Indian Rancheria of Wintun Indians, y su Rumsey Rancheria, establecida en 1907, abarca 185 acres. La vida tradicional patwin incluía la pesca del salmón real, la recolección de bellotas, la caza y la recolección. Los misioneros españoles esclavizaron a muchos patwin, y las epidemias de malaria a principios de los años 1830 y de viruela en 1837 mataron a muchos de los sobrevivientes. Hoy la tribu también cultiva uvas para vino y olivos, y vende aceite de oliva, vinagre y vino con su marca Seka Hills. En el siglo XIX, el valle pertenecía a una concesión de tierras mexicana, el Rancho Canada de Capay.",
+   "es_src": {
+    "name": "82ac6bffbe",
+    "text": "150c12b411",
+    "more": "35d7a001ee"
+   },
+   "kids": "West of here is the Capay Valley, where Cache Creek flows. It has long been home to the Patwin people. Today it is home to the Yocha Dehe Wintun Nation, a Patwin tribe. Their center is in Brooks, in the valley. What do you think makes a valley a good home?",
+   "kids_es": "Al oeste de aquí está el valle de Capay, por donde corre Cache Creek. Es la tierra tradicional del pueblo patwin. Hoy es hogar de la Yocha Dehe Wintun Nation, una tribu patwin, que tiene su sede en Brooks, en el valle. ¿Qué creen que hace de un valle un buen hogar?",
+   "kids_src": "150c12b411"
   },
   {
    "state": "CA",
@@ -605,7 +1013,18 @@
    "months": null,
    "wiki": "Cache Creek (Sacramento River tributary)",
    "src": "https://en.wikipedia.org/wiki/Cache_Creek_(Sacramento_River_tributary)",
-   "src2": "https://en.wikipedia.org/wiki/Cache_Creek_(Sacramento_River_tributary)"
+   "src2": "https://en.wikipedia.org/wiki/Cache_Creek_(Sacramento_River_tributary)",
+   "name_es": "Cache Creek, el arroyo de los tramperos",
+   "text_es": "Aquí la autopista cruza Cache Creek. Su nombre viene de los tramperos de pieles de la Hudson's Bay Company, que escondían sus pieles a lo largo del río Sacramento y sus arroyos más pequeños. A este lo llamaron Riviere la Cache. Uno de sus campamentos, que los primeros colonos conocían como French Camp, estaba en un bosquecillo de encinos en la orilla norte del arroyo, como a una milla al este del pueblo de Yolo.",
+   "more_es": "Cache Creek corre 87 millas desde la salida de Clear Lake, por un cañón y el valle de Capay, y luego a través del fondo del valle. Una presa derivadora construida cerca de Capay en 1914 manda su agua por unas 175 millas de canales a través del condado de Yolo. Cerca de su final, el arroyo se extiende en una cuenca de sedimentación al este de Woodland, cuyo desborde llega al Yolo Bypass en las inundaciones. El arroyo era una ruta de comercio mucho antes de que llegaran los tramperos: el principal sendero comercial de los patwin lo seguía. En 1906, el terremoto de San Francisco provocó un deslave que represó brevemente el arroyo río arriba, al norte de Rumsey.",
+   "es_src": {
+    "name": "8139bcfbd2",
+    "text": "5986a9ffe3",
+    "more": "9bad642afd"
+   },
+   "kids": "The freeway crosses Cache Creek here. Long ago, fur trappers hid their furs along streams like this one. To cache means to hide. They called this stream Riviere la Cache. One of their camps stood in an oak grove beside the creek. Look for Cache Creek as we cross it.",
+   "kids_es": "Aquí la autopista cruza Cache Creek. Hace mucho tiempo, unos tramperos de pieles escondían sus pieles a lo largo del río Sacramento y sus arroyos. A este arroyo lo llamaron Riviere la Cache. Uno de sus campamentos estaba en un bosquecillo de encinos en la orilla norte del arroyo. Busquen Cache Creek mientras lo cruzamos.",
+   "kids_src": "5986a9ffe3"
   },
   {
    "state": "CA",
@@ -621,7 +1040,18 @@
    "months": null,
    "wiki": "Yolo County, California",
    "src": "https://en.wikipedia.org/wiki/Yolo_County,_California",
-   "src2": "https://en.wikipedia.org/wiki/Yolo,_California"
+   "src2": "https://en.wikipedia.org/wiki/Yolo,_California",
+   "name_es": "Yolo, lugar de juncos",
+   "text_es": "El pequeño pueblo de Yolo comparte su nombre con el condado, y el nombre viene del idioma patwin. Nadie está del todo seguro de su origen. Puede venir de Yo-loy, que según se dice significa un lugar donde abundan los juncos, de una aldea llamada Yodoi cerca de Knights Landing, o del jefe de esa aldea, Yodo. En la ley original del estado de 1850, el condado se escribía Yola.",
+   "more_es": "Antes de quedarse con Yolo, el pueblo se llamó Cacheville, Cochran's Crossing, Hutton's Ranch y Travelers Home. Unas 425 personas vivían aquí en el censo de 2020. El condado de Yolo fue uno de los condados originales de California, creado al obtener la condición de estado en 1850. Sus caminos rurales en su mayoría tienen números en lugar de nombres, y por lo general cada camino de número entero está a una milla del siguiente, por eso las salidas aquí están señalizadas con caminos como County Road 102 y Road 22.",
+   "es_src": {
+    "name": "4f721cae37",
+    "text": "1256f5e382",
+    "more": "b92c11852a"
+   },
+   "kids": "The little town of Yolo shares its name with the county. The name comes from the Patwin language. Nobody is quite sure where it came from. It may mean a place full of rushes, which are tall plants that grow near water. What name would you give a place full of tall plants?",
+   "kids_es": "El pequeño pueblo de Yolo comparte su nombre con el condado. El nombre viene del idioma patwin, y nadie está del todo seguro de su origen. Tal vez significa un lugar donde abundan los juncos, que son plantas que crecen junto al agua. ¿Qué nombre le pondrían ustedes a un lugar lleno de plantas?",
+   "kids_src": "1256f5e382"
   },
   {
    "state": "CA",
@@ -637,7 +1067,18 @@
    "months": null,
    "wiki": "Common sunflower",
    "src": "https://www.agalert.com/california-ag-news/archives/february-6-2024/sunflower-seed-firms-leave-state-impacting-growers/",
-   "src2": "https://www.agalert.com/california-ag-news/archives/february-6-2024/sunflower-seed-firms-leave-state-impacting-growers/"
+   "src2": "https://www.agalert.com/california-ag-news/archives/february-6-2024/sunflower-seed-firms-leave-state-impacting-growers/",
+   "name_es": "Campos de semilla de girasol",
+   "text_es": "Algunos campos en esta parte del valle cultivan girasoles para semilla de siembra, no para botanas. Históricamente, California ha producido cerca del 95 por ciento de la semilla híbrida de girasol que se siembra en Estados Unidos, y una cuarta parte del suministro mundial, con campos de semilla en el condado de Yolo y en otras partes del valle de Sacramento. Las abejas llevan el polen entre hileras intercaladas de plantas macho y hembra para producir la semilla híbrida.",
+   "more_es": "La semilla híbrida da plantas con más vigor y otras características que buscan los agricultores. Pero el negocio se ha ido reduciendo aquí. Los campos certificados de semilla híbrida de girasol en California superaron los 53,600 acres en 2018 y bajaron a unos 27,000 acres para 2023, a medida que las compañías de semillas trasladaron la producción al extranjero. Pioneer dijo que ya no necesitaba la capacidad de producción adicional en su sede de Woodland, porque tenía suficiente capacidad en Europa para el mercado europeo, y un productor culpó al tipo de cambio de llevar la producción de regreso a Europa.",
+   "es_src": {
+    "name": "26941edbd0",
+    "text": "acbd0fa676",
+    "more": "215ee329b0"
+   },
+   "kids": "Some fields around here grow sunflowers for planting seed, not for snacks. California has long grown about 95 percent of the hybrid sunflower seed planted in the United States. That is about a quarter of the world's supply. Bees carry pollen between rows of male and female plants to make the seed. Would you rather be a bee or a sunflower for a day?",
+   "kids_es": "Algunos campos por aquí cultivan girasoles para semilla de siembra, no para botanas. California ha producido cerca del 95 por ciento de la semilla híbrida de girasol que se siembra en Estados Unidos, y una cuarta parte de la del mundo. Las abejas llevan el polen entre hileras de plantas macho y hembra. ¿Qué preferirían ser por un día, abeja o girasol?",
+   "kids_src": "acbd0fa676"
   },
   {
    "state": "CA",
@@ -653,7 +1094,18 @@
    "months": null,
    "wiki": "Zamora, California",
    "src": "https://en.wikipedia.org/wiki/Zamora,_California",
-   "src2": "https://en.wikipedia.org/wiki/Zamora,_California"
+   "src2": "https://en.wikipedia.org/wiki/Zamora,_California",
+   "name_es": "Zamora, dividida por las carreteras",
+   "text_es": "La comunidad agrícola de Zamora antes se llamaba Black's, por J. J. Black, quien se estableció aquí en 1865. Cuando el Northern Railway construyó su línea hacia el norte desde Woodland en la década de 1870, Black donó una franja de terreno para una estación, y alrededor de ella creció un pequeño pueblo, con un hotel, tiendas, una cárcel, herrerías y seis almacenes.",
+   "more_es": "Como dice una historia local, las carreteras modernas pasaron por aquí en 1949 y 1969 y le arrancaron el corazón al pueblo. Lo que quedó fue un pueblo sin servicios: un salón IOOF reconstruido, un ayuntamiento reconstruido, un taller de cepillado de madera, la iglesia católica St. Agnes, el edificio de la escuela y unas cuantas casas. Las autoridades del condado calcularon apenas 61 residentes en 2005. Esta es tierra ancestral de los patwin. Los cazadores patwin acechaban venados, alces de tule y berrendos aquí, y cazaban patos, gansos y cisnes con arcos y redes en los pantanos de tule. Hasta 1994, decenas de familias habían cultivado o vivido en el distrito de Zamora durante tres generaciones o más.",
+   "es_src": {
+    "name": "cc018c1442",
+    "text": "bb6e9f2273",
+    "more": "224db26624"
+   },
+   "kids": "The farm town of Zamora was once called Black's. It was named after J. J. Black, who settled here in 1865. When a railroad came, he gave land for a train station. A little town grew up around it, with a hotel, stores and six warehouses. What would you build next to a train station?",
+   "kids_es": "El pueblo agrícola de Zamora antes se llamaba Black's, por J. J. Black, quien se estableció aquí en 1865. Cuando llegó el tren, Black donó terreno para una estación. Alrededor creció un pueblito, con un hotel, tiendas y seis almacenes. ¿Qué construirían ustedes junto a una estación de tren?",
+   "kids_src": "bb6e9f2273"
   },
   {
    "state": "CA",
@@ -669,7 +1121,18 @@
    "months": null,
    "wiki": "Interstate 505",
    "src": "https://en.wikipedia.org/wiki/Interstate_505",
-   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California",
+   "name_es": "I-505, antes I-5W",
+   "text_es": "La Interestatal 505 se une aquí con la I-5 y va hacia el sur hasta la I-80 en Vacaville. Primero se planeó como parte de la I-5W, un ramal occidental de la Interestatal 5 por el Área de la Bahía, mientras que la ruta por Sacramento iba a ser la I-5E. La numeración dividida se abandonó, y el ramal occidental se convirtió en partes de la I-580, la I-80 y la I-505.",
+   "more_es": "El tramo más al norte de la I-505, desde la Highway 16 en Madison hasta este cruce, se abrió en agosto de 1977. Hoy es la ruta principal entre el Área de la Bahía y el norte del valle de Sacramento, y permite a los conductores evitar Sacramento y su tráfico. Es una autopista de cuatro carriles en toda su longitud y bordea el extremo este de la ciudad de Winters. La mayoría de las otras interestatales divididas del país también cambiaron de número, pero la I-35E y la I-35W siguen existiendo en Texas y Minnesota.",
+   "es_src": {
+    "name": "b9b07df0ab",
+    "text": "5a08ae79f7",
+    "more": "4e16410ce6"
+   },
+   "kids": "Here another freeway, Interstate 505, meets this one. It runs south to Vacaville. Long ago, it was planned as part of I-5W, a western loop of Interstate 5. The plan changed, and the loop got other numbers instead. What would you call a road that loops around a bay?",
+   "kids_es": "Aquí otra autopista, la Interestatal 505, se une con esta y va hacia el sur hasta Vacaville. Hace mucho tiempo se planeó como parte de la I-5W, un ramal occidental de la Interestatal 5 por el Área de la Bahía. El plan cambió, y ese ramal recibió otros números. ¿Qué nombre le pondrían ustedes a un camino así?",
+   "kids_src": "5a08ae79f7"
   },
   {
    "state": "CA",
@@ -685,7 +1148,18 @@
    "months": null,
    "wiki": "Dunnigan, California",
    "src": "https://en.wikipedia.org/wiki/Dunnigan,_California",
-   "src2": "https://en.wikipedia.org/wiki/Dunnigan,_California"
+   "src2": "https://en.wikipedia.org/wiki/Dunnigan,_California",
+   "name_es": "Dunnigan, antes Antelope",
+   "text_es": "Dunnigan comenzó como Antelope. En el invierno de 1853, una inundación arrastró a dos colonos, Copp y Wilson, fuera de sus terrenos cerca del río Sacramento, y se mudaron a tierras más altas aquí. Al año siguiente llegó un empleado postal del condado de Yolo llamado A. W. Dunnigan y se metió al negocio hotelero con Henry Yarick. Su posada se conocía simplemente como Dunnigan's, y el pueblo tomó su nombre.",
+   "more_es": "Aquí se abrió una oficina de correos en 1856, y la primera tienda en 1866. El ferrocarril llegó en 1876, el mismo año en que la oficina de correos cambió su nombre de Antelope a Dunnigan. Esta es tierra ancestral de los patwin. Hoy Dunnigan es una pequeña comunidad junto a la autopista con unas 1,400 personas, a casi 40 millas tanto de Vacaville como de Sacramento.",
+   "es_src": {
+    "name": "6241c5e57c",
+    "text": "bf1fc4d465",
+    "more": "04dd9d9c17"
+   },
+   "kids": "The town of Dunnigan began with a different name: Antelope. In 1853, a flood pushed two settlers, Copp and Wilson, up to higher ground here. The next year a man named A. W. Dunnigan came and opened a hotel with Henry Yarick. People called their inn Dunnigan's, and the town took his name. If a town were named after you, what would it be called?",
+   "kids_es": "El pueblo de Dunnigan comenzó con otro nombre: Antelope. En 1853, una inundación hizo que dos colonos, Copp y Wilson, se mudaran a tierras más altas aquí. Al año siguiente, A. W. Dunnigan abrió una posada con Henry Yarick, y el pueblo tomó su nombre. Si un pueblo llevara su nombre, ¿cómo se llamaría?",
+   "kids_src": "bf1fc4d465"
   }
  ],
  "zones": [
@@ -695,7 +1169,14 @@
    "to": 467,
    "label": "San Joaquin River and Lathrop",
    "text": "The freeway crosses the San Joaquin River at Mossdale and runs through Lathrop, a railroad town where large planned neighborhoods now spread west of the freeway.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "El río San Joaquin y Lathrop",
+   "text_es": "La autopista cruza el río San Joaquin en Mossdale y pasa por Lathrop, un pueblo ferrocarrilero donde ahora se extienden grandes vecindarios planificados al oeste de la autopista.",
+   "es_src": {
+    "label": "7142678245",
+    "text": "d3ad27a4de",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -706,6 +1187,17 @@
    "seasons": {
     "winter": "Nearly all of Stockton's rain falls from October through April.",
     "summer": "Summers here are very hot and dry."
+   },
+   "label_es": "Stockton",
+   "text_es": "La I-5 pasa por Stockton, junto al puerto de aguas profundas y su canal hacia la bahía de San Francisco, y cruza el río Calaveras.",
+   "seasons_es": {
+    "winter": "Casi toda la lluvia de Stockton cae de octubre a abril.",
+    "summer": "Los veranos aquí son muy calurosos y secos."
+   },
+   "es_src": {
+    "label": "bbf7aeae7d",
+    "text": "0dd72243f7",
+    "seasons": "21c836ba8e"
    }
   },
   {
@@ -716,6 +1208,16 @@
    "text": "Vineyards spread east toward Lodi, while the flat, reclaimed islands of the Delta, held in by levees, stretch off to the west.",
    "seasons": {
     "winter": "Cranes, geese and swans use the Woodbridge reserve as their winter home."
+   },
+   "label_es": "Los viñedos de Lodi y la orilla del Delta",
+   "text_es": "Los viñedos se extienden al este hacia Lodi, mientras que las islas planas y ganadas al agua del Delta, protegidas por diques, se extienden al oeste.",
+   "seasons_es": {
+    "winter": "Grullas, gansos y cisnes pasan el invierno en la reserva de Woodbridge."
+   },
+   "es_src": {
+    "label": "e737ffb851",
+    "text": "26a7e0f3ee",
+    "seasons": "34ab3337c3"
    }
   },
   {
@@ -724,7 +1226,14 @@
    "to": 510,
    "label": "Cosumnes wetlands and Elk Grove",
    "text": "Wetlands of the Cosumnes River Preserve lie near the freeway, which runs along the eastern edge of the Stone Lakes refuge as it passes through Elk Grove.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Los humedales del Cosumnes y Elk Grove",
+   "text_es": "Los humedales de la Cosumnes River Preserve están cerca de la autopista, que corre por la orilla este del refugio Stone Lakes al pasar por Elk Grove.",
+   "es_src": {
+    "label": "0c746c9e1a",
+    "text": "7c54226203",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -732,7 +1241,14 @@
    "to": 518,
    "label": "Along the river to Land Park",
    "text": "The freeway runs close to the Sacramento River through the south side of Sacramento, near William Land Park and the zoo.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Junto al río hasta Land Park",
+   "text_es": "La autopista corre cerca del río Sacramento por el lado sur de Sacramento, cerca de William Land Park y el zoológico.",
+   "es_src": {
+    "label": "faf13c0739",
+    "text": "f0683d5489",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -740,7 +1256,14 @@
    "to": 524,
    "label": "Downtown Sacramento",
    "text": "I-5 runs between downtown and the river, past Old Sacramento and the Tower Bridge.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "El centro de Sacramento",
+   "text_es": "La I-5 pasa entre el centro y el río, junto a Old Sacramento y el Tower Bridge.",
+   "es_src": {
+    "label": "d9ffc36d74",
+    "text": "520ec51460",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -748,7 +1271,14 @@
    "to": 531,
    "label": "The airport and the Sacramento River",
    "text": "North of downtown the freeway passes the old ARCO Arena site and the airport and crosses the Sacramento River.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "El aeropuerto y el río Sacramento",
+   "text_es": "Al norte del centro, la autopista pasa por el antiguo sitio de la ARCO Arena y por el aeropuerto, y cruza el río Sacramento.",
+   "es_src": {
+    "label": "2b1b1d225f",
+    "text": "b9aae0457a",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -758,6 +1288,16 @@
    "text": "Between floods, much of the Yolo Bypass is farmed, mostly in rice.",
    "seasons": {
     "winter": "In wet winters and springs, the bypass floods and becomes a huge wetland for birds and young salmon."
+   },
+   "label_es": "El Yolo Bypass",
+   "text_es": "Entre una inundación y otra, gran parte del Yolo Bypass se cultiva, sobre todo con arroz.",
+   "seasons_es": {
+    "winter": "En los inviernos y primaveras de lluvia, el bypass se inunda y se convierte en un enorme humedal para las aves y los salmones jóvenes."
+   },
+   "es_src": {
+    "label": "67a0b03046",
+    "text": "c6ae89308a",
+    "seasons": "4f44fbcaf2"
    }
   },
   {
@@ -766,7 +1306,14 @@
    "to": 548,
    "label": "Woodland and Cache Creek",
    "text": "The freeway passes Woodland, a farm town with a big tomato cannery, and crosses Cache Creek beside the little town of Yolo.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Woodland y Cache Creek",
+   "text_es": "La autopista pasa por Woodland, un pueblo agrícola con una gran enlatadora de tomate, y cruza Cache Creek junto al pueblito de Yolo.",
+   "es_src": {
+    "label": "77da5c1a3c",
+    "text": "7da0fe3194",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -774,7 +1321,14 @@
    "to": 560,
    "label": "Zamora and the Dunnigan Hills",
    "text": "Farm country continues past Zamora and Dunnigan, near the Dunnigan Hills, and on clear days the Sutter Buttes rise from the valley floor to the north.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Zamora y las Dunnigan Hills",
+   "text_es": "El campo agrícola continúa más allá de Zamora y Dunnigan, cerca de las Dunnigan Hills, y en días despejados las Sutter Buttes se alzan del fondo del valle hacia el norte.",
+   "es_src": {
+    "label": "f2ad7693cb",
+    "text": "a890439e1f",
+    "seasons": "bf21a9e8fb"
+   }
   }
  ],
  "trivia": [
@@ -790,7 +1344,20 @@
    ],
    "answer": 1,
    "why": "Manteca means lard, an odd name for a town whose railroad stop shipped dairy products.",
-   "src": "https://en.wikipedia.org/wiki/Manteca,_California"
+   "src": "https://en.wikipedia.org/wiki/Manteca,_California",
+   "q_es": "Manteca, el nombre de un pueblo lechero, es una palabra en español. ¿Qué significa?",
+   "choices_es": [
+    "Queso",
+    "Manteca de cerdo",
+    "Crema",
+    "Leche"
+   ],
+   "why_es": "Manteca significa manteca de cerdo, un nombre raro para un pueblo cuya estación de ferrocarril enviaba productos lácteos.",
+   "es_src": {
+    "q": "0f6cf548d3",
+    "choices": "06ecc03fe7",
+    "why": "40525b0ba2"
+   }
   },
   {
    "state": "CA",
@@ -804,7 +1371,20 @@
    ],
    "answer": 3,
    "why": "Its bankrupt owner stored Flying Scotsman at Sharpe Depot until a new owner paid the debts and shipped it home.",
-   "src": "https://en.wikipedia.org/wiki/LNER_Class_A3_4472_Flying_Scotsman"
+   "src": "https://en.wikipedia.org/wiki/LNER_Class_A3_4472_Flying_Scotsman",
+   "q_es": "¿Qué famosa locomotora de vapor británica fue escondida de los acreedores en un depósito del Ejército en Lathrop en 1972?",
+   "choices_es": [
+    "Mallard",
+    "Rocket",
+    "Big Boy",
+    "Flying Scotsman"
+   ],
+   "why_es": "Su dueño en bancarrota guardó el Flying Scotsman en Sharpe Depot hasta que un nuevo dueño pagó las deudas y lo mandó de regreso a casa.",
+   "es_src": {
+    "q": "eb8adef0e9",
+    "choices": "d079e01891",
+    "why": "886edafadb"
+   }
   },
   {
    "state": "CA",
@@ -818,7 +1398,20 @@
    ],
    "answer": 2,
    "why": "Castor is Latin for beaver, a nod to the camp's role in the fur trade.",
-   "src": "https://en.wikipedia.org/wiki/French_Camp,_California"
+   "src": "https://en.wikipedia.org/wiki/French_Camp,_California",
+   "q_es": "El otro nombre antiguo de French Camp, Castoria, viene de la palabra en latín para ¿qué animal?",
+   "choices_es": [
+    "Nutria",
+    "Visón",
+    "Castor",
+    "Zorro"
+   ],
+   "why_es": "Castor es castor en latín, un guiño al papel del campamento en el comercio de pieles.",
+   "es_src": {
+    "q": "dff251da65",
+    "choices": "808f025813",
+    "why": "a9b0a0e4df"
+   }
   },
   {
    "state": "CA",
@@ -832,7 +1425,20 @@
    ],
    "answer": 0,
    "why": "Calaveras means skulls; the river is said to be named for skulls a Spanish expedition found on its banks in 1806.",
-   "src": "https://en.wikipedia.org/wiki/Calaveras_River"
+   "src": "https://en.wikipedia.org/wiki/Calaveras_River",
+   "q_es": "El río Calaveras tiene un nombre en español. ¿Cómo se dice calaveras en inglés?",
+   "choices_es": [
+    "Skulls",
+    "Willows",
+    "Bridges",
+    "Grapes"
+   ],
+   "why_es": "Calaveras quiere decir skulls en inglés; se dice que el río lleva ese nombre por unas calaveras que una expedición española encontró en sus orillas en 1806.",
+   "es_src": {
+    "q": "d67f6e0a8c",
+    "choices": "d75f417852",
+    "why": "7c9f7ef3a3"
+   }
   },
   {
    "state": "CA",
@@ -846,7 +1452,20 @@
    ],
    "answer": 1,
    "why": "A company photographer reportedly said the machine crawled like a caterpillar, and Holt adopted the name.",
-   "src": "https://en.wikipedia.org/wiki/Stockton,_California"
+   "src": "https://en.wikipedia.org/wiki/Stockton,_California",
+   "q_es": "El tractor de orugas de Benjamin Holt, de 1904, le dio su nombre a ¿qué compañía?",
+   "choices_es": [
+    "John Deere",
+    "Caterpillar",
+    "Ford",
+    "International Harvester"
+   ],
+   "why_es": "Según se cuenta, un fotógrafo de la compañía dijo que la máquina se arrastraba como una oruga, caterpillar en inglés, y Holt adoptó el nombre.",
+   "es_src": {
+    "q": "53ee1d5b88",
+    "choices": "42457c21bb",
+    "why": "2e86f59114"
+   }
   },
   {
    "state": "CA",
@@ -860,7 +1479,20 @@
    ],
    "answer": 2,
    "why": "The last 4.6 miles opened on October 12, 1979, completing the freeway from Mexico to Canada.",
-   "src": "https://en.wikipedia.org/wiki/October_1979"
+   "src": "https://en.wikipedia.org/wiki/October_1979",
+   "q_es": "¿En qué año se abrió el último tramo de la I-5, justo al norte de Stockton?",
+   "choices_es": [
+    "1959",
+    "1969",
+    "1979",
+    "1989"
+   ],
+   "why_es": "Las últimas 4.6 millas se abrieron el 12 de octubre de 1979, y así se completó la autopista de México a Canadá.",
+   "es_src": {
+    "q": "e5aae20d5c",
+    "choices": "5250775d71",
+    "why": "31c97b4e50"
+   }
   },
   {
    "state": "CA",
@@ -874,7 +1506,20 @@
    ],
    "answer": 3,
    "why": "Roy Allen sold his first batch of A&W Root Beer from a cart during a parade in Lodi.",
-   "src": "https://en.wikipedia.org/wiki/Lodi,_California"
+   "src": "https://en.wikipedia.org/wiki/Lodi,_California",
+   "q_es": "¿Qué bebida se vendió por primera vez en Lodi en 1919?",
+   "choices_es": [
+    "Dr Pepper",
+    "7 Up",
+    "Orange Crush",
+    "A&W Root Beer"
+   ],
+   "why_es": "Roy Allen vendió su primera tanda de A&W Root Beer desde un carrito durante un desfile en Lodi.",
+   "es_src": {
+    "q": "158983c61d",
+    "choices": "777864c260",
+    "why": "794ddd89ea"
+   }
   },
   {
    "state": "CA",
@@ -888,7 +1533,20 @@
    ],
    "answer": 0,
    "why": "About 1,100 miles of levees protect the Delta's islands, many of which sit below sea level.",
-   "src": "https://en.wikipedia.org/wiki/Sacramento%E2%80%93San_Joaquin_River_Delta"
+   "src": "https://en.wikipedia.org/wiki/Sacramento%E2%80%93San_Joaquin_River_Delta",
+   "q_es": "¿Aproximadamente cuántas millas de diques rodean las islas del Delta?",
+   "choices_es": [
+    "1,100",
+    "110",
+    "500",
+    "5,000"
+   ],
+   "why_es": "Unas 1,100 millas de diques protegen las islas del Delta, muchas de las cuales están por debajo del nivel del mar.",
+   "es_src": {
+    "q": "74c70be784",
+    "choices": "f105ea16e7",
+    "why": "5772fc6dec"
+   }
   },
   {
    "state": "CA",
@@ -902,7 +1560,20 @@
    ],
    "answer": 1,
    "why": "Moke means fishnet and umne means people of.",
-   "src": "https://en.wikipedia.org/wiki/Mokelumne_River"
+   "src": "https://en.wikipedia.org/wiki/Mokelumne_River",
+   "q_es": "En miwok de las llanuras, Mokelumne significa gente de ¿qué?",
+   "choices_es": [
+    "El encino",
+    "La red de pesca",
+    "La montaña",
+    "La tierra roja"
+   ],
+   "why_es": "Moke significa red de pesca y umne significa gente de.",
+   "es_src": {
+    "q": "94a3b83629",
+    "choices": "9345fa26f9",
+    "why": "977aa08be1"
+   }
   },
   {
    "state": "CA",
@@ -916,7 +1587,20 @@
    ],
    "answer": 2,
    "why": "In 2001 residents living within 35 miles voted, and all gold beat two other color schemes.",
-   "src": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)"
+   "src": "https://en.wikipedia.org/wiki/Tower_Bridge_(Sacramento,_California)",
+   "q_es": "¿Cómo se eligió el color dorado del Tower Bridge?",
+   "choices_es": [
+    "Lo eligió el gobernador",
+    "Lo eligió un artista",
+    "Por votación de los residentes locales",
+    "Lo eligió el ferrocarril"
+   ],
+   "why_es": "En 2001 votaron los residentes que vivían a menos de 35 millas, y el dorado completo le ganó a otras dos combinaciones de colores.",
+   "es_src": {
+    "q": "d5de77b5fd",
+    "choices": "d0f54428a6",
+    "why": "8f7de4d9d9"
+   }
   },
   {
    "state": "CA",
@@ -930,7 +1614,20 @@
    ],
    "answer": 3,
    "why": "Leap, a 56-foot red rabbit by the artist Lawrence Argent, is in Terminal B.",
-   "src": "https://flysmf.gov/about/art"
+   "src": "https://flysmf.gov/about/art",
+   "q_es": "¿Qué escultura gigante de un animal hay dentro de la Terminal B del aeropuerto de Sacramento?",
+   "choices_es": [
+    "Un oso",
+    "Un salmón",
+    "Un águila",
+    "Un conejo rojo"
+   ],
+   "why_es": "Leap, un conejo rojo de 56 pies del artista Lawrence Argent, está en la Terminal B.",
+   "es_src": {
+    "q": "32286ec014",
+    "choices": "e01ec24317",
+    "why": "049a281ae7"
+   }
   },
   {
    "state": "CA",
@@ -944,7 +1641,20 @@
    ],
    "answer": 0,
    "why": "Hudson's Bay Company trappers cached their furs along the Sacramento River and its streams.",
-   "src": "https://en.wikipedia.org/wiki/Cache_Creek_(Sacramento_River_tributary)"
+   "src": "https://en.wikipedia.org/wiki/Cache_Creek_(Sacramento_River_tributary)",
+   "q_es": "¿Por qué se llama así Cache Creek?",
+   "choices_es": [
+    "Por las pieles que los tramperos escondían a lo largo del arroyo",
+    "Por una palabra patwin que significa río",
+    "Por una mina de la fiebre del oro",
+    "Por una concesión de tierras mexicana"
+   ],
+   "why_es": "Los tramperos de la Hudson's Bay Company escondían sus pieles a lo largo del río Sacramento y sus arroyos.",
+   "es_src": {
+    "q": "06224fe942",
+    "choices": "bdac773e9d",
+    "why": "b655fe2407"
+   }
   }
  ]
 }

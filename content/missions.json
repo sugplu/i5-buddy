@@ -17,7 +17,21 @@
   "more": "Father Junípero Serra founded the mission in 1769 beside a new Spanish fort. Few Kumeyaay people joined at first. The California Indian Museum and Cultural Center counts only 26 baptisms in the first three years. On November 4 and 5, 1775, people from several Kumeyaay villages surrounded the mission and burned it. Father Luis Jayme was killed. He is buried by the altar and is remembered as California's first Christian martyr. Years earlier, Father Jayme had reported that soldiers abused Kumeyaay people. Thirteen alleged leaders of the revolt were jailed afterward. The Spanish rebuilt the mission like a fort. Mexico ended the mission system in the 1830s. Today the Kumeyaay Nation includes twelve federally recognized bands in the United States.",
   "visit": "Plan about an hour. The church you see is the fifth on this site. It was largely rebuilt in 1931, following the design of the church dedicated in 1813. A single room, the Casa del Padre Serra, dates to 1774 and is believed to be the only original room that survived. Inside the church, look for Father Jayme's tomb near the altar. Outside stands a tall bell wall with five bells. The visitor center has a small museum, and the gardens are quiet. The mission's own website has a page on the Kumeyaay, and it is worth reading before you go. Easy to miss: the Casa del Padre Serra, tucked in with the museum rooms. This is a working parish, so be quiet during services. Hours and fees change and the grounds sometimes close for special events, so check before you go. The official page is linked in the app.",
   "src": "https://www.missionsandiego.org/kumeyaay",
-  "src2": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/",
+  "text_es": "Esta es la Misión San Diego de Alcalá, la primera de las 21 misiones de California, fundada el 16 de julio de 1769. Comenzó en una colina junto a la bahía y se trasladó aquí en 1774, más cerca de las aldeas kumeyaay y del agua. Los kumeyaay han vivido en este valle por miles de años, y hoy viven en el condado de San Diego.",
+  "more_es": "El padre Junípero Serra fundó la misión en 1769 junto a un nuevo fuerte español. Al principio, pocas personas kumeyaay se unieron. El California Indian Museum and Cultural Center cuenta solo 26 bautizos en los primeros tres años. El 4 y 5 de noviembre de 1775, gente de varias aldeas kumeyaay rodeó la misión y la quemó. El padre Luis Jayme fue asesinado. Está sepultado junto al altar y se le recuerda como el primer mártir cristiano de California. Años antes, el padre Jayme había informado que los soldados maltrataban a la gente kumeyaay. Después, trece supuestos líderes de la revuelta fueron encarcelados. Los españoles reconstruyeron la misión como un fuerte. México puso fin al sistema de misiones en la década de 1830. Hoy la Nación Kumeyaay incluye doce bandas con reconocimiento federal en Estados Unidos.",
+  "visit_es": "Calcule cerca de una hora. La iglesia que usted ve es la quinta en este sitio. Se reconstruyó en gran parte en 1931, siguiendo el diseño de la iglesia dedicada en 1813. Una sola habitación, la Casa del Padre Serra, data de 1774 y se cree que es la única habitación original que sobrevivió. Dentro de la iglesia, busque la tumba del padre Jayme cerca del altar. Afuera se levanta un alto muro de campanas con cinco campanas. El centro de visitantes tiene un pequeño museo, y los jardines son tranquilos. El sitio web de la propia misión tiene una página sobre los kumeyaay, y vale la pena leerla antes de ir. Fácil de pasar por alto: la Casa del Padre Serra, metida entre las salas del museo. Esta es una parroquia activa, así que guarde silencio durante los servicios. Los horarios y las tarifas cambian, y el lugar a veces cierra por eventos especiales, así que consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa y basílica menor de la Diócesis de San Diego",
+  "people_es": "Kumeyaay (ipai y tipai)",
+  "founder_es": "Junípero Serra",
+  "es_src": {
+   "text": "12ec8f6f34",
+   "more": "a2f3315e7e",
+   "visit": "584f2334a0",
+   "status": "161a1dd98e",
+   "people": "4e32b4abe7",
+   "founder": "4438b7ac93"
+  }
  },
  {
   "n": 2,
@@ -37,7 +51,21 @@
   "more": "Serra moved the mission here from Monterey, partly to keep Native people away from the soldiers. He led all the missions from this place until he died on August 28, 1784. He is buried beneath the sanctuary floor. Esselen and Rumsen Ohlone people were baptized here, moved to the mission and put to work. About 900 Esselen people were baptized and brought to missions in this region. Disease, hunger and overwork killed many. Pope Francis canonized Serra on September 23, 2015. Many Catholics honor him as a saint. Many Native Californians objected, saying he stands for the system that broke their families, and this mission was vandalized days later. In 2020 the Esselen Tribe of Monterey County regained 1,199 acres of its homeland near Big Sur.",
   "visit": "Plan one to two hours. The stone church was finished in 1797 and its walls are original. Its roof fell in 1852, and the church stood open to the sky for about thirty years until repairs began in 1884. A restorer named Harry Downie then worked here for about fifty years, so much of what you see has been carefully rebuilt. Pope John the Twenty-third made it a minor basilica in 1960. Four small museums cover mission life, the Munras family and Serra's own simple cell in the convento. A chapel gallery holds a 1924 monument to Serra. The cemetery and gardens are peaceful. Easy to miss: Serra's cell in the convento museum. This is an active parish, so some areas close during Mass. Hours and fees change, and the mission has been closed on some weekdays, so check before you go. The official page is linked in the app.",
   "src": "https://carmelmission.org/plan-your-visit/",
-  "src2": "https://californiamissionsfoundation.org/mission-san-carlos-borromeo/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-carlos-borromeo/",
+  "text_es": "Esta es la Misión San Carlos Borromeo de Carmelo. El padre Junípero Serra la fundó en Monterey en 1770 y la trasladó aquí en 1771. Fue su sede hasta que murió en 1784, y está sepultado en la iglesia. Esta es la tierra ancestral de los rumsen ohlone y los esselen, cuyos descendientes todavía viven en esta región.",
+  "more_es": "Serra trasladó la misión aquí desde Monterey, en parte para mantener a las personas indígenas lejos de los soldados. Dirigió todas las misiones desde este lugar hasta su muerte, el 28 de agosto de 1784. Está sepultado bajo el piso del santuario. Personas esselen y rumsen ohlone fueron bautizadas aquí, trasladadas a la misión y puestas a trabajar. Unas 900 personas esselen fueron bautizadas y llevadas a misiones de esta región. Las enfermedades, el hambre y el exceso de trabajo mataron a muchas. El papa Francisco canonizó a Serra el 23 de septiembre de 2015. Muchos católicos lo honran como santo. Muchos indígenas de California se opusieron, diciendo que él representa el sistema que destruyó a sus familias, y días después esta misión fue vandalizada. En 2020, la Esselen Tribe of Monterey County recuperó 1,199 acres de su tierra ancestral cerca de Big Sur.",
+  "visit_es": "Calcule de una a dos horas. La iglesia de piedra se terminó en 1797 y sus muros son originales. Su techo se cayó en 1852, y la iglesia quedó a cielo abierto unos treinta años, hasta que las reparaciones comenzaron en 1884. Después, un restaurador llamado Harry Downie trabajó aquí unos cincuenta años, así que mucho de lo que usted ve ha sido reconstruido con cuidado. El papa Juan XXIII la hizo basílica menor en 1960. Cuatro pequeños museos tratan sobre la vida en la misión, la familia Munras y la sencilla celda del propio Serra en el convento. Una galería de la capilla guarda un monumento a Serra de 1924. El cementerio y los jardines son tranquilos. Fácil de pasar por alto: la celda de Serra en el museo del convento. Esta es una parroquia activa, así que algunas áreas cierran durante la misa. Los horarios y las tarifas cambian, y la misión ha cerrado algunos días entre semana, así que consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa y basílica menor de la Diócesis de Monterey",
+  "people_es": "Rumsen ohlone y esselen",
+  "founder_es": "Junípero Serra",
+  "es_src": {
+   "text": "8896686322",
+   "more": "c587907e9a",
+   "visit": "875c8e222e",
+   "status": "887e6bcf2d",
+   "people": "0fa1574e52",
+   "founder": "4438b7ac93"
+  }
  },
  {
   "n": 3,
@@ -57,7 +85,21 @@
   "more": "San Antonio was among the first places in Alta California to make fired red clay roof tiles, which protected buildings from fire. Its builders also dug channels from the San Antonio River, and parts of that water system can still be seen. Salinan people did the farming and building, and once baptized they were not free to leave. After Mexico ended the mission system in the 1830s, the church fell into ruin. It was rebuilt in the twentieth century. In World War Two the Army took over the surrounding ranch land, so the mission now sits inside a military base. The Salinan Tribe of Monterey and San Luis Obispo Counties has worked to restore the cemetery wall, which honors the Salinan ancestors buried there. The tribe is seeking federal recognition.",
   "visit": "This is the most remote mission on the list, so plan half a day. You reach it from Highway 101 by about 26 miles of Jolon Road, then about six more miles of Mission Road inside Fort Hunter Liggett. The base has its own gate rules, so read the mission's directions page first. The church was begun in 1810, fell into ruin and was rebuilt in the twentieth century. It is a reconstruction on the original plan. The museum holds Native American and mission-era archaeology and is the best stop for the Salinan story. Walk out to the remains of the water system, which are original and easy to overlook. There is also a gift shop and a retreat center, and fiestas are held on the grounds. Easy to miss: the water system ruins beyond the church. Hours and fees change, and the mission has posted holiday closures, so check before you go. The official page is linked in the app.",
   "src": "https://www.missionsanantonio.net/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_San_Antonio_de_Padua"
+  "src2": "https://en.wikipedia.org/wiki/Mission_San_Antonio_de_Padua",
+  "text_es": "Esta es la Misión San Antonio de Padua, la tercera misión, fundada por Serra el 14 de julio de 1771. Se trasladó a este lugar en 1773 para tener un suministro de agua más constante. Está en la tierra ancestral del pueblo salinan, y hoy la Salinan Tribe ayuda a cuidar el cementerio de aquí.",
+  "more_es": "San Antonio fue de los primeros lugares de la Alta California en hacer tejas de barro rojo cocido, que protegían los edificios del fuego. Sus constructores también cavaron canales desde el río San Antonio, y partes de ese sistema de agua todavía se pueden ver. Las personas salinan hacían el trabajo del campo y la construcción, y una vez bautizadas no eran libres de irse. Después de que México puso fin al sistema de misiones en la década de 1830, la iglesia quedó en ruinas. Se reconstruyó en el siglo veinte. En la Segunda Guerra Mundial, el Ejército tomó los terrenos del rancho que la rodeaban, así que hoy la misión está dentro de una base militar. La Salinan Tribe of Monterey and San Luis Obispo Counties ha trabajado para restaurar el muro del cementerio, que honra a los ancestros salinan sepultados ahí. La tribu busca el reconocimiento federal.",
+  "visit_es": "Esta es la misión más apartada de la lista, así que calcule medio día. Se llega desde la Highway 101 por unas 26 millas de Jolon Road, y luego unas seis millas más de Mission Road dentro de Fort Hunter Liggett. La base tiene sus propias reglas de entrada, así que lea primero la página de indicaciones de la misión. La iglesia se comenzó en 1810, quedó en ruinas y se reconstruyó en el siglo veinte. Es una reconstrucción sobre el plano original. El museo guarda arqueología indígena y de la época de la misión, y es la mejor parada para conocer la historia salinan. Camine hasta los restos del sistema de agua, que son originales y fáciles de pasar por alto. También hay una tienda de regalos y un centro de retiros, y en el terreno se celebran fiestas. Fácil de pasar por alto: las ruinas del sistema de agua, más allá de la iglesia. Los horarios y las tarifas cambian, y la misión ha anunciado cierres en días festivos, así que consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Iglesia parroquial católica, museo y centro de retiros de la Diócesis de Monterey, dentro de Fort Hunter Liggett",
+  "people_es": "Salinan",
+  "founder_es": "Junípero Serra",
+  "es_src": {
+   "text": "4bdcb30b47",
+   "more": "dfe6cf07e2",
+   "visit": "a9d7a190ae",
+   "status": "7c25be02b1",
+   "people": "9f194b9342",
+   "founder": "4438b7ac93"
+  }
  },
  {
   "n": 4,
@@ -77,7 +119,21 @@
   "more": "Fathers Pedro Benito Cambón and Ángel Fernández de la Somera founded the mission, under Serra's authority. In 1782 the governor ordered soldiers to stop baptized Tongva people from holding their dances. In 1785 a medicine woman named Toypurina helped organize a revolt. It failed. At her trial she said she was angry that the missionaries had settled on her people's land. She was convicted, baptized under pressure and sent far away, and she died in 1799. The mission museum names 7,054 Native people baptized here from 1771 to 1848. A missionary of the time reported that three of every four children died before the age of two. An arson fire destroyed the church roof on July 11, 2020. The museum reopened in 2023 with an exhibit on Native history.",
   "visit": "Plan one to two hours. The church was finished in 1805 and its walls are original. The roof burned in 2020 and was rebuilt, so look up to see the new work. The church is unlike the other missions. Its architect, Father Antonio Cruzado, gave it tall narrow windows and capped buttresses, a style the California Missions Foundation ties to the cathedral of Córdoba in Spain. The earthquake of December 8, 1812 toppled the first bell tower, and the six-bell wall beside the church replaced it. The museum has the 2023 exhibit on Native people, the missionaries and the birth of Los Angeles. Easy to miss: the Wall of Names, which lists Native people baptized here. The cemetery and gardens are quiet, and the Claretian Missionaries still run this as a parish. The official site sometimes blocks automated readers, so confirm hours and fees by phone or on the site before you go. The official page is linked in the app.",
   "src": "https://californiamissionsfoundation.org/mission-san-gabriel/",
-  "src2": "https://en.wikipedia.org/wiki/Toypurina"
+  "src2": "https://en.wikipedia.org/wiki/Toypurina",
+  "text_es": "Esta es la Misión San Gabriel Arcángel, fundada el 8 de septiembre de 1771 y trasladada aquí unos años después tras unas inundaciones. Está en la tierra ancestral del pueblo tongva, y algunos de sus descendientes usan el nombre kizh. Unas 6,000 personas indígenas están enterradas en estos terrenos.",
+  "more_es": "Los padres Pedro Benito Cambón y Ángel Fernández de la Somera fundaron la misión, bajo la autoridad de Serra. En 1782 el gobernador ordenó a los soldados impedir que los tongva bautizados hicieran sus danzas. En 1785 una curandera llamada Toypurina ayudó a organizar una rebelión. Fracasó. En su juicio dijo que estaba enojada porque los misioneros se habían asentado en la tierra de su pueblo. Fue declarada culpable, bautizada bajo presión y enviada muy lejos, y murió en 1799. El museo de la misión nombra a 7,054 personas indígenas bautizadas aquí de 1771 a 1848. Un misionero de la época informó que tres de cada cuatro niños morían antes de cumplir dos años. Un incendio provocado destruyó el techo de la iglesia el 11 de julio de 2020. El museo reabrió en 2023 con una exhibición sobre la historia indígena.",
+  "visit_es": "Calcule de una a dos horas. La iglesia se terminó en 1805 y sus muros son originales. El techo se quemó en 2020 y fue reconstruido, así que mire hacia arriba para ver el trabajo nuevo. La iglesia es distinta a las de las otras misiones. Su arquitecto, el padre Antonio Cruzado, le dio ventanas altas y angostas y contrafuertes rematados, un estilo que la California Missions Foundation relaciona con la catedral de Córdoba, en España. El terremoto del 8 de diciembre de 1812 derribó el primer campanario, y el muro de seis campanas junto a la iglesia lo reemplazó. El museo tiene la exhibición de 2023 sobre los pueblos indígenas, los misioneros y el nacimiento de Los Angeles. Fácil de pasar por alto: el Muro de los Nombres, que enumera a las personas indígenas bautizadas aquí. El cementerio y los jardines son tranquilos, y los Misioneros Claretianos todavía la administran como parroquia. El sitio oficial a veces bloquea a los lectores automáticos, así que confirme horarios y costos por teléfono o en el sitio antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa de la Arquidiócesis de Los Angeles, administrada por los Misioneros Claretianos, con un museo",
+  "people_es": "Tongva (algunos descendientes usan el nombre kizh)",
+  "founder_es": "Los padres Pedro Benito Cambón y Ángel Fernández de la Somera, bajo la autoridad de Junípero Serra",
+  "es_src": {
+   "text": "0160083229",
+   "more": "03f220ee66",
+   "visit": "56ec8e9b85",
+   "status": "f73a7819fd",
+   "people": "5a5a8a6b89",
+   "founder": "912e3e1a79"
+  }
  },
  {
   "n": 5,
@@ -97,7 +153,21 @@
   "more": "In 1772 the soldiers and priests at Monterey were short of food. Serra sent a hunting party to this valley, and the hunters brought back so much bear meat that he chose it for a mission. Father José Cavaller built it with Chumash labor. Once people were baptized they were not free to leave. In 1776 a flaming arrow set the mission's thatched roofs on fire. The padres then began firing clay roof tiles here. The last Franciscan of the era died in 1842, and the buildings decayed. In 2020 the Diocese of Monterey took down a statue of Serra at the mission. One Northern Chumash tribe calls San Luis Obispo its cultural capital. The Salinan Tribe also claims part of this region, and the two disagree.",
   "visit": "Plan about an hour. The church and convento are original, from the 1790s. In the 1880s the buildings were remodeled in a New England style. That remodel was undone in the 1930s, so what you see is a restoration. The church is L-shaped, with a long second nave beside the main one. The old convento once held the first county courthouse and jail. The church doors are open every day, and a small museum and gift shop sit beside it. Docent tours run on a posted schedule. Out front, Mission Plaza slopes down to the creek and has a bronze grizzly bear. Easy to miss: the second nave, which makes the L. The mission is still a working parish. Hours and fees change, so check before you go. The official page is linked in the app.",
   "src": "https://missionsanluisobispo.org/visit/",
-  "src2": "https://californiamissionsfoundation.org/mission-san-luis-obispo/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-luis-obispo/",
+  "text_es": "Esta es la Misión San Luis Obispo de Tolosa, la quinta misión, fundada por Serra el 1 de septiembre de 1772, junto al arroyo San Luis Creek. Está en la tierra ancestral de los chumash del norte, y el pueblo chumash todavía vive en esta región. Su iglesia es la única en forma de L entre las misiones de California.",
+  "more_es": "En 1772 los soldados y sacerdotes de Monterey tenían poca comida. Serra mandó una partida de caza a este valle, y los cazadores trajeron tanta carne de oso que él lo eligió para una misión. El padre José Cavaller la construyó con mano de obra chumash. Una vez bautizadas, las personas no eran libres de irse. En 1776 una flecha en llamas incendió los techos de paja de la misión. Entonces los padres empezaron a cocer aquí tejas de barro. El último franciscano de esa época murió en 1842, y los edificios se deterioraron. En 2020 la Diócesis de Monterey retiró una estatua de Serra en la misión. Una tribu chumash del norte considera a San Luis Obispo su capital cultural. La Salinan Tribe también reclama parte de esta región, y las dos no están de acuerdo.",
+  "visit_es": "Calcule aproximadamente una hora. La iglesia y el convento son originales, de la década de 1790. En la década de 1880 los edificios se remodelaron en un estilo de Nueva Inglaterra. Esa remodelación se deshizo en la década de 1930, así que lo que usted ve es una restauración. La iglesia tiene forma de L, con una segunda nave larga junto a la principal. El antiguo convento albergó alguna vez el primer juzgado y la primera cárcel del condado. Las puertas de la iglesia están abiertas todos los días, y junto a ella hay un pequeño museo y una tienda de regalos. Hay recorridos con guías voluntarios según un horario publicado. Al frente, la Mission Plaza baja en pendiente hasta el arroyo y tiene un oso grizzly de bronce. Fácil de pasar por alto: la segunda nave, que forma la L. La misión sigue siendo una parroquia activa. Los horarios y costos cambian, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa (Old Mission Parish) de la Diócesis de Monterey, con un museo",
+  "people_es": "Chumash del norte",
+  "founder_es": "Junípero Serra",
+  "es_src": {
+   "text": "cc6291071d",
+   "more": "ab63dafca1",
+   "visit": "e58de90167",
+   "status": "160b037e90",
+   "people": "f86b07a9ca",
+   "founder": "4438b7ac93"
+  }
  },
  {
   "n": 6,
@@ -117,7 +187,21 @@
   "more": "Father Francisco Palóu founded the mission with Father Pedro Benito Cambón. Serra was not there. The mission counts June 29, 1776 as the first Mass and October 9 as the formal dedication. The Ohlone provided most of the labor that built the adobe chapel. People from the Yelamu, the Ramaytush Ohlone group of this peninsula, joined the mission. Coast Miwok and others were brought from farther away. Conditions were hard and disease spread. By 1832 more than 5,000 Native people had died here, says the California Missions Foundation. At its peak about 1,100 Native people lived at the mission. The cemetery holds Ohlone, Miwok and other First Californians. Today an Ohlone garden grows on the grounds, and the Association of Ramaytush Ohlone speaks for the original peoples of the Peninsula.",
   "visit": "Plan 45 minutes to an hour. The adobe chapel is original, finished in 1791, and it survived the 1906 earthquake. The ceiling still shows Ohlone designs painted in plant dyes. The brick church built next door in 1876 did not survive 1906. The tall basilica you see beside the chapel was finished in 1918 and became a minor basilica in 1952. A small museum explains mission life, and the walk-through is self guided. The cemetery holds early California leaders and about 5,000 Native people. Easy to miss: the Ohlone garden of native plants in the grounds. The mission is a living parish with Mass on a schedule. Hours change, and guided tours have been paused, so check before you go. The official page is linked in the app.",
   "src": "https://www.missiondolores.org/old-mission",
-  "src2": "https://californiamissionsfoundation.org/mission-san-francisco-de-asis/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-francisco-de-asis/",
+  "text_es": "Esta es la Misión San Francisco de Asís, conocida como Misión Dolores, en San Francisco. La primera misa aquí se celebró el 29 de junio de 1776. La pequeña capilla de adobe junto a la iglesia grande, terminada en 1791, es el edificio intacto más antiguo de la ciudad. Esta es la tierra ancestral de los ramaytush ohlone, que siguen aquí.",
+  "more_es": "El padre Francisco Palóu fundó la misión con el padre Pedro Benito Cambón. Serra no estuvo presente. La misión cuenta el 29 de junio de 1776 como la primera misa y el 9 de octubre como la dedicación formal. Los ohlone aportaron la mayor parte del trabajo para construir la capilla de adobe. Personas de los yelamu, el grupo ramaytush ohlone de esta península, se unieron a la misión. Los miwok de la costa y otros fueron traídos de más lejos. Las condiciones eran duras y las enfermedades se propagaron. Para 1832 más de 5,000 personas indígenas habían muerto aquí, según la California Missions Foundation. En su punto máximo, unas 1,100 personas indígenas vivían en la misión. El cementerio guarda a ohlone, miwok y otros primeros californianos. Hoy crece un jardín ohlone en el terreno, y la Association of Ramaytush Ohlone habla en nombre de los pueblos originarios de la península.",
+  "visit_es": "Calcule de 45 minutos a una hora. La capilla de adobe es original, terminada en 1791, y sobrevivió al terremoto de 1906. El techo todavía muestra diseños ohlone pintados con tintes vegetales. La iglesia de ladrillo construida al lado en 1876 no sobrevivió a 1906. La basílica alta que usted ve junto a la capilla se terminó en 1918 y se convirtió en basílica menor en 1952. Un pequeño museo explica la vida en la misión, y el recorrido es por cuenta propia. El cementerio guarda a líderes de los inicios de California y a unas 5,000 personas indígenas. Fácil de pasar por alto: el jardín ohlone de plantas nativas en el terreno. La misión es una parroquia viva con misas según un horario. Los horarios cambian, y los recorridos guiados se han suspendido, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa de la Arquidiócesis de San Francisco; en la antigua capilla todavía se celebra misa y está abierta a los visitantes, con un pequeño museo",
+  "people_es": "Ramaytush ohlone (el grupo yelamu), con miwok de la costa y otros traídos después",
+  "founder_es": "El padre Francisco Palóu, con el padre Pedro Benito Cambón, bajo la autoridad de Junípero Serra",
+  "es_src": {
+   "text": "9c66af2faa",
+   "more": "89b66a0a13",
+   "visit": "051f027a2a",
+   "status": "e38ff35396",
+   "people": "c304432c33",
+   "founder": "098df4f09b"
+  }
  },
  {
   "n": 7,
@@ -137,7 +221,21 @@
   "more": "Father Fermín Lasuén raised a cross here on October 30, 1775. When word came that Kumeyaay people had burned Mission San Diego, the priests buried the bells and left. Serra returned and founded the mission on All Saints' Day, 1776. The Acjachemen lived in villages along these creeks, and the large village of Putuidem lay about a mile north. More than 4,000 Native people were baptized here between 1776 and 1847. Construction of the Great Stone Church needed the labor of the whole Native community. It collapsed in the earthquake of December 8, 1812, during Mass, and about 40 people died. The ruins still stand. Mexico ended the mission system in 1833. Acjachemen families still live in this region and keep their language and traditions alive.",
   "visit": "Plan one and a half to two hours. The Serra Chapel is original, from 1782, restored in the early 1900s. It holds a gilded Baroque altarpiece and is the only standing building where Serra is known to have said Mass. The Great Stone Church was begun in 1797 and finished in 1806, and what you see now are its ruins, kept as ruins. The grounds also have gardens, a bell wall, a museum and the old cemetery. The big modern church next door is a separate basilica. The swallows are celebrated each year on March 19, but they spend only part of the year here. Easy to miss: the quiet old cemetery, where mission-era people were buried. The Serra Chapel still serves the parish, so some visits are limited during services. Hours and fees change, and the mission closes for some events, so check before you go. The official page is linked in the app.",
   "src": "https://www.missionsjc.com/hours-and-admission/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)"
+  "src2": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
+  "text_es": "Esta es la Misión San Juan Capistrano, fundada el 1 de noviembre de 1776, después de que un primer intento en 1775 se abandonó a los pocos días. Esta es tierra ancestral de los acjachemen. La Capilla Serra, terminada en 1782, se considera el edificio más antiguo de California que sigue en uso. La misión es famosa por sus golondrinas.",
+  "more_es": "El padre Fermín Lasuén levantó una cruz aquí el 30 de octubre de 1775. Cuando llegó la noticia de que personas kumeyaay habían quemado la Misión San Diego, los sacerdotes enterraron las campanas y se fueron. Serra regresó y fundó la misión el Día de Todos los Santos de 1776. Los acjachemen vivían en aldeas a lo largo de estos arroyos, y la gran aldea de Putuidem estaba a cerca de una milla al norte. Más de 4,000 personas indígenas fueron bautizadas aquí entre 1776 y 1847. Para construir la Gran Iglesia de Piedra se necesitó el trabajo de toda la comunidad indígena. Se derrumbó en el terremoto del 8 de diciembre de 1812, durante la misa, y murieron unas 40 personas. Las ruinas siguen en pie. México puso fin al sistema de misiones en 1833. Familias acjachemen todavía viven en esta región y mantienen vivos su idioma y sus tradiciones.",
+  "visit_es": "Calcule de una hora y media a dos horas. La Capilla Serra es original, de 1782, y fue restaurada a principios del siglo XX. Tiene un retablo barroco dorado y es el único edificio en pie donde se sabe que Serra dijo misa. La Gran Iglesia de Piedra se comenzó en 1797 y se terminó en 1806, y lo que se ve ahora son sus ruinas, conservadas como ruinas. El terreno también tiene jardines, un muro de campanas, un museo y el antiguo cementerio. La gran iglesia moderna de al lado es una basílica aparte. Las golondrinas se celebran cada año el 19 de marzo, pero solo pasan aquí parte del año. Fácil de pasar por alto: el tranquilo cementerio antiguo, donde se enterró a personas de la época de la misión. La Capilla Serra todavía sirve a la parroquia, así que algunas visitas se limitan durante los servicios. Los horarios y las tarifas cambian, y la misión cierra por algunos eventos, así que consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Museo de la misión y sitio histórico; la Capilla Serra forma parte de la parroquia de la misión (Diócesis de Orange); al lado hay una basílica moderna aparte",
+  "people_es": "Acjachemen (también llamados juaneño)",
+  "founder_es": "Junípero Serra, el Día de Todos los Santos de 1776, después de un primer intento de Fermín Lasuén en 1775",
+  "es_src": {
+   "text": "b95cca6aa0",
+   "more": "0acf93cdc3",
+   "visit": "8f766e218a",
+   "status": "1b0ab63a84",
+   "people": "6670bc144a",
+   "founder": "8b28a1ce5f"
+  }
  },
  {
   "n": 8,
@@ -157,7 +255,21 @@
   "more": "Father Tomás de la Peña said the first Mass at the Tamien village of So-co-is-u-ka on the Guadalupe River. Floods, fires and earthquakes forced the mission to move and rebuild. Tamien Ohlone people were baptized and put to work here, and Bay Miwok and Yokuts people joined them later. King Charles the Third of Spain sent bells in 1777 and asked that they be rung each evening in memory of the dead. After Mexico ended the system in 1833, most of the land and livestock were sold. In 1851 the Jesuits took over and opened a college, now Santa Clara University, the oldest university in California. Today the university works with the Muwekma Ohlone Tribe. The Tamien Nation also traces its roots to this valley.",
   "visit": "Plan 45 minutes. This is the only mission on a university campus. A fire in October 1926 destroyed the church, which had been enlarged and given a wooden front in the 1800s. It was rebuilt in concrete in 1928 and 1929, with one bell tower like the 1825 church, so it is a replica. The mission gardens on campus are open for a quiet walk. The university offers a self-guided walking tour of the mission grounds and a virtual tour. The bell tower holds bells cast in different years, including one given by King Alfonso the Thirteenth of Spain in 1929. Easy to miss: the mission gardens, tucked among the campus paths. The church is open to visitors. It is also a working chapel, so some hours are set aside for services. Check before you go. The official page is linked in the app.",
   "src": "https://www.scu.edu/missionchurch/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_Clara_de_As%C3%ADs"
+  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_Clara_de_As%C3%ADs",
+  "text_es": "Esta es la Misión Santa Clara de Asís, fundada el 12 de enero de 1777, la primera misión de California con nombre de mujer. Está en el campus de Santa Clara University, en la tierra ancestral de los tamien ohlone. La iglesia que se ve fue reconstruida después de un incendio en 1926, con un campanario como el de la iglesia de 1825.",
+  "more_es": "El padre Tomás de la Peña dijo la primera misa en la aldea tamien de So-co-is-u-ka, junto al río Guadalupe. Inundaciones, incendios y terremotos obligaron a la misión a mudarse y reconstruirse. Personas tamien ohlone fueron bautizadas y puestas a trabajar aquí, y más tarde se les unieron personas bay miwok y yokuts. El rey Carlos III de España envió campanas en 1777 y pidió que se tocaran cada tarde en memoria de los muertos. Después de que México puso fin al sistema en 1833, la mayor parte de la tierra y del ganado se vendió. En 1851 los jesuitas se hicieron cargo y abrieron un colegio, hoy Santa Clara University, la universidad más antigua de California. Hoy la universidad trabaja con la Muwekma Ohlone Tribe. La Tamien Nation también tiene sus raíces en este valle.",
+  "visit_es": "Calcule 45 minutos. Esta es la única misión en un campus universitario. Un incendio en octubre de 1926 destruyó la iglesia, que había sido ampliada y recibido una fachada de madera en el siglo XIX. Se reconstruyó en concreto en 1928 y 1929, con un campanario como el de la iglesia de 1825, así que es una réplica. Los jardines de la misión en el campus están abiertos para un paseo tranquilo. La universidad ofrece un recorrido a pie autoguiado por el terreno de la misión y un recorrido virtual. El campanario tiene campanas fundidas en distintos años, entre ellas una que donó el rey Alfonso XIII de España en 1929. Fácil de pasar por alto: los jardines de la misión, escondidos entre los caminos del campus. La iglesia está abierta a los visitantes. También es una capilla activa, así que algunas horas se reservan para los servicios. Consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Capilla de Santa Clara University (jesuita), una capilla estudiantil y no una parroquia comunitaria; abierta a los visitantes",
+  "people_es": "Tamien ohlone",
+  "founder_es": "El padre Tomás de la Peña, bajo la autoridad de Junípero Serra",
+  "es_src": {
+   "text": "228b49ab1e",
+   "more": "6e4f576278",
+   "visit": "a012d636ad",
+   "status": "c4e631ac12",
+   "people": "6442de3748",
+   "founder": "93741c7776"
+  }
  },
  {
   "n": 9,
@@ -177,7 +289,21 @@
   "more": "Serra planned this mission early, but it became the ninth. Chumash people, who lived in villages along the coast and the river, were baptized and kept at the mission to work its fields and herds. Between 1805 and 1815 they built a seven-mile aqueduct of earth and stone from the Ventura River. The church was dedicated in 1809. The earthquakes of 1812 and a wave from the sea sent the friars and Chumash people inland for a time. Mexico ended the mission system in 1834. In 2020 the city of Ventura took down its Serra statue, and in 2024 the statue was given a home at the mission. Pope Francis named the church a minor basilica in 2020. Descendants include the Barbareño/Ventureño Band of Mission Indians.",
   "visit": "Plan about an hour. The church was dedicated in 1809, and its walls are original. In 1893 a remodel painted over its old decoration, and a careful restoration was finished in 1957. A small museum holds two wooden bells, the only wooden bells known from any California mission. They were rung during Holy Week, when the metal bells were silent. The museum also shows Chumash and mission-era objects. A thirty-minute video tells the history, and the garden has a grotto. The mission sits on Main Street in downtown Ventura, so it is easy to pair with a walk. Easy to miss: the wooden bells in the museum. The mission is a living parish, so be quiet during Mass. Tour times and prices change, so check before you go. The official page is linked in the app.",
   "src": "https://www.sanbuenaventuramission.org/Gift-Shop",
-  "src2": "https://californiamissionsfoundation.org/mission-san-buenaventura/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-buenaventura/",
+  "text_es": "Esta es la Misión San Buenaventura, en Ventura, fundada por Serra el Domingo de Pascua, 31 de marzo de 1782. Fue la última misión que fundó. Esta es tierra ancestral de los chumash, y personas chumash todavía viven a lo largo de esta costa.",
+  "more_es": "Serra planeó esta misión desde temprano, pero terminó siendo la novena. Las personas chumash, que vivían en aldeas a lo largo de la costa y del río, fueron bautizadas y retenidas en la misión para trabajar sus campos y rebaños. Entre 1805 y 1815 construyeron un acueducto de tierra y piedra de siete millas desde el río Ventura. La iglesia se dedicó en 1809. Los terremotos de 1812 y una ola del mar llevaron a los frailes y a las personas chumash tierra adentro por un tiempo. México puso fin al sistema de misiones en 1834. En 2020 la ciudad de Ventura retiró su estatua de Serra, y en 2024 la estatua recibió un lugar en la misión. El papa Francisco nombró a la iglesia basílica menor en 2020. Entre los descendientes está la Barbareño/Ventureño Band of Mission Indians.",
+  "visit_es": "Calcule cerca de una hora. La iglesia se dedicó en 1809, y sus muros son originales. En 1893 una remodelación pintó encima de su antigua decoración, y en 1957 se terminó una restauración cuidadosa. Un pequeño museo guarda dos campanas de madera, las únicas campanas de madera que se conocen de cualquier misión de California. Se tocaban durante la Semana Santa, cuando las campanas de metal guardaban silencio. El museo también muestra objetos chumash y de la época de la misión. Un video de treinta minutos cuenta la historia, y el jardín tiene una gruta. La misión está en Main Street, en el centro de Ventura, así que es fácil combinarla con un paseo. Fácil de pasar por alto: las campanas de madera del museo. La misión es una parroquia activa, así que guarde silencio durante la misa. Los horarios y precios de los recorridos cambian, así que consulte antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa y basílica menor de la Arquidiócesis de Los Angeles, con un museo",
+  "people_es": "Chumash (ventureño)",
+  "founder_es": "Junípero Serra, la última misión que fundó",
+  "es_src": {
+   "text": "052c8ae03e",
+   "more": "dafd0bd5b8",
+   "visit": "58e06e94e3",
+   "status": "db650f00cc",
+   "people": "e615f97b27",
+   "founder": "1dfae995c0"
+  }
  },
  {
   "n": 10,
@@ -197,7 +323,21 @@
   "more": "Father Fermín Lasuén founded the mission on the feast of Saint Barbara. The mission's herds disrupted the Chumash way of hunting and gathering, and epidemics struck people who had no immunity. In 1803 a record 1,792 Chumash people lived in adobe huts around the mission. By 1820 the number had fallen to 1,132, and by 1823 to 962. In February 1824 a soldier beat a Chumash man at Mission Santa Inés, and a revolt spread across the region. At Santa Barbara, Chumash people led by Andrés Sagimomatsee seized the mission. Many later withdrew into the interior mountains. About 4,000 Chumash people are buried in the mission cemetery. Today the mission offers space for classes in the Barbareño Chumash language.",
   "visit": "Plan about an hour and a half. The earthquake of December 21, 1812 destroyed the third church. The stone church you see was built from about 1815 to 1820. A 1925 earthquake caused extensive damage, and repairs finished in 1927. In the 1950s the facade and towers were rebuilt, and the towers changed from stone to wood and concrete, painted to look like stone. The museum fills nine rooms, and the gardens cover fifteen acres. Near the entrance stand the original fountain and the lavadero, a stone basin where women washed clothes. An audio tour comes in six languages. The cemetery holds both Chumash and Spanish-era graves. Easy to miss: Mission Historical Park across the street, with remains of the aqueduct and reservoir. The church is a living parish, so parts close for services, weddings and funerals. Hours and fees change, so check before you go. The official page is linked in the app.",
   "src": "https://www.santabarbaramission.org/tours",
-  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_Barbara"
+  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_Barbara",
+  "text_es": "Esta es la Misión Santa Bárbara, llamada la Reina de las Misiones, fundada el 4 de diciembre de 1786. Frailes franciscanos han vivido aquí sin interrupción desde el día de su fundación. Esta es tierra ancestral chumash, y el pueblo chumash barbareño sigue aquí.",
+  "more_es": "El padre Fermín Lasuén fundó la misión en la fiesta de Santa Bárbara. Los rebaños de la misión trastornaron la forma de cazar y recolectar de los chumash, y las epidemias golpearon a personas que no tenían inmunidad. En 1803, un récord de 1,792 personas chumash vivían en chozas de adobe alrededor de la misión. Para 1820 la cifra había bajado a 1,132, y para 1823 a 962. En febrero de 1824, un soldado golpeó a un hombre chumash en la Misión Santa Inés, y una revuelta se extendió por la región. En Santa Barbara, personas chumash encabezadas por Andrés Sagimomatsee tomaron la misión. Muchos se retiraron después a las montañas del interior. Unas 4,000 personas chumash están enterradas en el cementerio de la misión. Hoy la misión ofrece espacio para clases de la lengua chumash barbareña.",
+  "visit_es": "Calcule aproximadamente una hora y media. El terremoto del 21 de diciembre de 1812 destruyó la tercera iglesia. La iglesia de piedra que usted ve se construyó entre aproximadamente 1815 y 1820. Un terremoto en 1925 causó daños extensos, y las reparaciones terminaron en 1927. En la década de 1950 se reconstruyeron la fachada y las torres, y las torres pasaron de piedra a madera y concreto, pintadas para parecer piedra. El museo ocupa nueve salas, y los jardines cubren quince acres. Cerca de la entrada están la fuente original y el lavadero, una pila de piedra donde las mujeres lavaban la ropa. Hay un recorrido en audio en seis idiomas. El cementerio tiene tumbas chumash y de la época española. Fácil de pasar por alto: el Mission Historical Park, al otro lado de la calle, con restos del acueducto y del embalse. La iglesia es una parroquia activa, así que algunas partes cierran durante misas, bodas y funerales. Los horarios y las tarifas cambian, así que verifíquelos antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia activa de la Arquidiócesis de Los Angeles, donde viven frailes franciscanos desde 1786; museo",
+  "people_es": "Chumash (barbareño)",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "ef01bc6cc9",
+   "more": "93ccadcdf3",
+   "visit": "127ac85d42",
+   "status": "d4ea1781a9",
+   "people": "4ffa35d36f",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 11,
@@ -217,7 +357,21 @@
   "more": "Father Fermín Lasuén founded the mission at a Chumash place called Algsacpi, near today's downtown Lompoc. By 1803 about 1,436 Chumash people lived under mission control. The earthquake and heavy rains of December 21, 1812 destroyed the buildings. The mission was re-founded on April 23, 1813 at this new site. In February 1824 a revolt that began at Mission Santa Inés spread here, and Chumash people took over La Purísima and held it for about a month. After Mexico ended the mission system, the buildings were abandoned and fell into ruin. The Civilian Conservation Corps began rebuilding the mission from the ruins in 1934. It was dedicated on December 7, 1941, the day Pearl Harbor was attacked. The nearest federally recognized Chumash tribe is the Santa Ynez Band of Chumash Indians.",
   "visit": "Plan a half day. State Parks calls this the most completely restored mission in California. It is a reconstruction, built from ruins by Civilian Conservation Corps crews from 1934 to 1941, so the walls are not original. The church and the padre's chapel stand with ten restored and furnished buildings, including shops, living quarters and a blacksmith. There is a five-acre garden, and the corrals hold burros, horses, longhorn cattle, sheep and goats. The visitor center has exhibits, and trails and horseback rides cross the hills. Easy to miss: the ruins of the first mission site in Lompoc, at 508 South F Street. This is not a church, so you can wander at your own pace. It is a state park, so check hours and fees before you go. The official page is linked in the app.",
   "src": "https://www.parks.ca.gov/?page_id=598",
-  "src2": "https://en.wikipedia.org/wiki/La_Pur%C3%ADsima_Mission"
+  "src2": "https://en.wikipedia.org/wiki/La_Pur%C3%ADsima_Mission",
+  "text_es": "Esta es la Misión La Purísima Concepción, fundada el 8 de diciembre de 1787. Un terremoto e inundaciones destruyeron la primera misión en 1812, y se volvió a fundar en este sitio en 1813. Hoy es un parque histórico estatal, y el pueblo chumash todavía vive en esta región.",
+  "more_es": "El padre Fermín Lasuén fundó la misión en un lugar chumash llamado Algsacpi, cerca del actual centro de Lompoc. Para 1803, unas 1,436 personas chumash vivían bajo el control de la misión. El terremoto y las fuertes lluvias del 21 de diciembre de 1812 destruyeron los edificios. La misión se volvió a fundar el 23 de abril de 1813 en este nuevo sitio. En febrero de 1824, una revuelta que comenzó en la Misión Santa Inés se extendió hasta aquí, y personas chumash tomaron La Purísima y la mantuvieron durante aproximadamente un mes. Después de que México puso fin al sistema de misiones, los edificios fueron abandonados y quedaron en ruinas. El Civilian Conservation Corps comenzó a reconstruir la misión a partir de las ruinas en 1934. Fue dedicada el 7 de diciembre de 1941, el día del ataque a Pearl Harbor. La tribu chumash con reconocimiento federal más cercana es la Santa Ynez Band of Chumash Indians.",
+  "visit_es": "Calcule medio día. State Parks la considera la misión restaurada de forma más completa en California. Es una reconstrucción, levantada a partir de ruinas por cuadrillas del Civilian Conservation Corps de 1934 a 1941, así que los muros no son originales. La iglesia y la capilla del padre están junto a diez edificios restaurados y amueblados, entre ellos talleres, viviendas y una herrería. Hay un jardín de cinco acres, y en los corrales hay burros, caballos, ganado longhorn, borregos y cabras. El centro de visitantes tiene exhibiciones, y hay senderos y paseos a caballo por las colinas. Fácil de pasar por alto: las ruinas del primer sitio de la misión en Lompoc, en el 508 South F Street. Esto no es una iglesia, así que puede recorrerla a su propio ritmo. Es un parque estatal, así que verifique horarios y tarifas antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "La Purísima Mission State Historic Park, administrado por California State Parks; no es una iglesia parroquial",
+  "people_es": "Chumash (purisimeño)",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "08bb7e93c2",
+   "more": "bf4b58e6de",
+   "visit": "b2f5c392e4",
+   "status": "523000d673",
+   "people": "6739ac2d28",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 12,
@@ -237,7 +391,21 @@
   "more": "Father Fermín Lasuén raised the cross on August 28, 1791. Floods soon moved the mission up to Mission Hill. In 1797 Spanish officials founded a town across the river, to the priests' displeasure. On October 12, 1812, Father Andrés Quintana was killed by Native people who lived at the mission. His burial record says he was suffocated. Lorenzo Asisara, whose father took part, later told the story. Some accounts link it to Quintana's metal-tipped whip. The one surviving mission building is an adobe built from 1822 to 1824 for Native families, Yokuts and Ohlone, who lived here. State Parks says it is the only building of its kind still standing in California. The Amah Mutsun Tribal Band includes descendants of people taken to this mission.",
   "visit": "Plan about an hour, in two stops. The chapel on High Street is a replica finished in 1931. It follows an 1876 painting and is about one third the size of the original church. The Holy Cross Church from 1889 stands over part of the old church. A short walk away on School Street is the real survivor, the adobe built from 1822 to 1824 to house Native families. It is part of Santa Cruz Mission State Historic Park, and its exhibits tell the Ohlone and Yokuts story. The old church lost its front wall in the earthquake of 1857. Easy to miss: the adobe on School Street, a short walk from the chapel. The mission was nicknamed the hard-luck mission for its floods and quakes. The chapel is a parish building, so hours differ from the park. Check before you go. The official page is linked in the app.",
   "src": "https://www.parks.ca.gov/?page_id=548",
-  "src2": "https://californiamissionsfoundation.org/mission-santa-cruz/"
+  "src2": "https://californiamissionsfoundation.org/mission-santa-cruz/",
+  "text_es": "Esta es la Misión Santa Cruz, fundada el 28 de agosto de 1791, la única misión dedicada a la Santa Cruz. Esta es la tierra ancestral de los ohlone de habla awaswas, el pueblo uypi. Solo queda un edificio original, un adobe que alojaba a familias indígenas.",
+  "more_es": "El padre Fermín Lasuén levantó la cruz el 28 de agosto de 1791. Las inundaciones pronto obligaron a trasladar la misión a Mission Hill. En 1797, funcionarios españoles fundaron un pueblo al otro lado del río, para disgusto de los sacerdotes. El 12 de octubre de 1812, el padre Andrés Quintana fue asesinado por personas indígenas que vivían en la misión. Su acta de entierro dice que fue asfixiado. Lorenzo Asisara, cuyo padre participó, contó la historia después. Algunos relatos lo relacionan con el látigo con punta de metal de Quintana. El único edificio que queda de la misión es un adobe construido de 1822 a 1824 para las familias indígenas, yokuts y ohlone, que vivían aquí. State Parks dice que es el único edificio de su tipo que sigue en pie en California. La Amah Mutsun Tribal Band incluye a descendientes de personas llevadas a esta misión.",
+  "visit_es": "Calcule aproximadamente una hora, en dos paradas. La capilla de High Street es una réplica terminada en 1931. Sigue una pintura de 1876 y mide aproximadamente un tercio de la iglesia original. La Holy Cross Church, de 1889, está sobre parte de la antigua iglesia. A poca distancia a pie, en School Street, está el verdadero sobreviviente, el adobe construido de 1822 a 1824 para alojar a familias indígenas. Forma parte del Santa Cruz Mission State Historic Park, y sus exhibiciones cuentan la historia de los ohlone y los yokuts. La antigua iglesia perdió su muro frontal en el terremoto de 1857. Fácil de pasar por alto: el adobe de School Street, a poca distancia a pie de la capilla. A la misión la apodaron la misión de la mala suerte por sus inundaciones y temblores. La capilla es un edificio parroquial, así que sus horarios son distintos a los del parque. Verifíquelos antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Capilla réplica de la parroquia Holy Cross (Diócesis de Monterey); el adobe que queda es el Santa Cruz Mission State Historic Park",
+  "people_es": "Ohlone de habla awaswas (el pueblo uypi) y yokuts",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "058940e520",
+   "more": "b1b133fc7c",
+   "visit": "186d871746",
+   "status": "49717d3fb8",
+   "people": "d2fb0588ef",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 13,
@@ -257,7 +425,21 @@
   "more": "Father Fermín Lasuén founded the mission near an Esselen village. Esselen, Chalon Ohlone and Yokuts people were all baptized here. By 1803 there were 627 Native people at the mission. About 900 Esselen people in all were baptized and brought to the missions around their homeland, including Carmel, Soledad and San Antonio. The Salinas River flooded the mission in 1824, 1828 and 1832. Governor José Joaquín de Arrillaga died here on July 24, 1814 and was buried in the chapel. After Mexico ended the mission system, the mission was sold for a reported 800 dollars, stripped for building materials and left in ruins. The Native Daughters of the Golden West rebuilt the chapel, dedicated on October 9, 1955. Esselen and Ohlone descendants still live in this region.",
   "visit": "Plan 45 minutes. The mission sits about three miles off Highway 101. The small chapel you enter is a rebuild from the 1950s, so it is not original. The long adobe ruins beside it are original. They are the unrestored walls of the old quadrangle. A museum in the convento wing displays mission-era objects, including an old mission bell. The cemetery holds a marker for Governor Arrillaga. There is a gift shop, and the tour is self guided. Easy to miss: the adobe ruins behind the chapel, which show the old layout. The mission is run by a nonprofit, and donations go to archaeology and rebuilding. Hours change, and the mission closes on Mondays and some holidays, so check before you go. The official page is linked in the app.",
   "src": "https://soledadmission.com/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_Nuestra_Se%C3%B1ora_de_la_Soledad"
+  "src2": "https://en.wikipedia.org/wiki/Mission_Nuestra_Se%C3%B1ora_de_la_Soledad",
+  "text_es": "Esta es la Misión Nuestra Señora de la Soledad, fundada el 9 de octubre de 1791 en el valle de Salinas. Su nombre significa soledad. Los esselen y los chalon ohlone vivían en este valle, y más tarde trajeron aquí a personas yokuts y salinan. La capilla que usted ve fue reconstruida en 1955.",
+  "more_es": "El padre Fermín Lasuén fundó la misión cerca de una aldea esselen. Aquí bautizaron a personas esselen, chalon ohlone y yokuts. Para 1803 había 627 personas indígenas en la misión. En total, unas 900 personas esselen fueron bautizadas y llevadas a las misiones alrededor de su tierra ancestral, entre ellas Carmel, Soledad y San Antonio. El río Salinas inundó la misión en 1824, 1828 y 1832. El gobernador José Joaquín de Arrillaga murió aquí el 24 de julio de 1814 y fue sepultado en la capilla. Después de que México terminó con el sistema de misiones, la misión se vendió por unos 800 dólares, según se informó; la despojaron de sus materiales de construcción y quedó en ruinas. Las Native Daughters of the Golden West reconstruyeron la capilla, que fue dedicada el 9 de octubre de 1955. Descendientes esselen y ohlone todavía viven en esta región.",
+  "visit_es": "Calcule 45 minutos. La misión está a unas tres millas de la Highway 101. La pequeña capilla a la que usted entra es una reconstrucción de los años cincuenta, así que no es original. Las largas ruinas de adobe a su lado sí son originales. Son los muros sin restaurar del antiguo cuadrángulo. Un museo en el ala del convento muestra objetos de la época de la misión, entre ellos una antigua campana. En el cementerio hay una placa en memoria del gobernador Arrillaga. Hay una tienda de regalos, y el recorrido es por cuenta propia. Fácil de pasar por alto: las ruinas de adobe detrás de la capilla, que muestran la distribución antigua. La misión la administra una organización sin fines de lucro, y los donativos se destinan a arqueología y reconstrucción. Los horarios cambian, y la misión cierra los lunes y algunos días festivos, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Capilla y museo propiedad de la Diócesis de Monterey, administrados por una organización sin fines de lucro; los donativos se destinan a arqueología y reconstrucción",
+  "people_es": "Esselen y chalon ohlone, con personas yokuts y salinan traídas más tarde",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "d10f4685d5",
+   "more": "9c9f42730d",
+   "visit": "8f676fd023",
+   "status": "023ae92581",
+   "people": "54533383c4",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 14,
@@ -277,7 +459,21 @@
   "more": "Father Fermín Lasuén founded the mission. Native people from Mission Santa Clara did the first building. Many Ohlone had been baptized at Santa Clara and came home to form the founding community. A measles epidemic in 1806 killed about a quarter of the mission's people. Newcomers from farther away then joined, and by the 1830s Plains Miwok was the main Native language here. Father Narciso Durán trained a Native choir and a thirty-piece orchestra that became famous across California. Estanislao, a Yokuts man from the Stanislaus River, was a Native community leader here. He left with about 400 followers in 1827 and led an uprising in 1828. After secularization many Native people fled but could not return to their old way of life, and many died of disease and hunger.",
   "visit": "Plan about an hour. The church is a replica of the 1809 adobe church. The Hayward Fault earthquake of October 21, 1868 shattered the original, and the replica was built from 1982 to 1985. The museum is in a surviving original adobe wing, one of the few old buildings left. You enter the cemetery through the museum. The grounds are free to walk. Inside the church, the original hammered copper baptismal font has been returned, along with the bell wheel the Ohlone used during the sacred parts of Mass. Easy to miss: that baptismal font and the bell wheel. The mission is the church of a busy parish, so it may close for services. Tours by reservation have been offered on one weekend each month. Hours change, and the mission has closed on Mondays and Tuesdays, so check before you go. The official page is linked in the app.",
   "src": "https://www.saintjosephmsj.org/mission/",
-  "src2": "https://en.wikipedia.org/wiki/Estanislao"
+  "src2": "https://en.wikipedia.org/wiki/Estanislao",
+  "text_es": "Esta es la Misión San José en Fremont, fundada el 11 de junio de 1797 en la aldea ohlone de Oroysom. No está en la ciudad de San Jose. La iglesia que usted ve es una réplica de 1985. Esta es tierra ancestral ohlone, y hoy hay personas ohlone que viven en el Área de la Bahía.",
+  "more_es": "El padre Fermín Lasuén fundó la misión. Personas indígenas de la Misión Santa Clara hicieron las primeras construcciones. Muchos ohlone habían sido bautizados en Santa Clara y regresaron a su tierra para formar la comunidad fundadora. Una epidemia de sarampión en 1806 mató a cerca de una cuarta parte de la gente de la misión. Luego llegaron personas de lugares más lejanos, y para la década de 1830 el miwok de las llanuras era la principal lengua indígena aquí. El padre Narciso Durán formó un coro indígena y una orquesta de treinta músicos que se hizo famosa en todo California. Estanislao, un hombre yokuts del río Stanislaus, fue aquí un líder de la comunidad indígena. Se fue con unos 400 seguidores en 1827 y encabezó un levantamiento en 1828. Después de la secularización, muchas personas indígenas huyeron pero no pudieron volver a su antigua forma de vida, y muchas murieron de enfermedades y de hambre.",
+  "visit_es": "Calcule cerca de una hora. La iglesia es una réplica de la iglesia de adobe de 1809. El terremoto de la falla de Hayward del 21 de octubre de 1868 destrozó la original, y la réplica se construyó de 1982 a 1985. El museo está en un ala original de adobe que sobrevivió, uno de los pocos edificios antiguos que quedan. Al cementerio se entra por el museo. Recorrer los terrenos es gratis. Dentro de la iglesia se ha devuelto la pila bautismal original de cobre martillado, junto con la rueda de campanas que los ohlone usaban durante las partes sagradas de la misa. Fácil de pasar por alto: esa pila bautismal y la rueda de campanas. La misión es la iglesia de una parroquia muy activa, así que puede cerrar durante los servicios. Se han ofrecido recorridos con reservación un fin de semana al mes. Los horarios cambian, y la misión ha cerrado los lunes y martes, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Iglesia católica de la parroquia Saint Joseph (Diócesis de Oakland), con un museo",
+  "people_es": "Ohlone (hablantes de chochenyo), con personas bay miwok, yokuts, miwok de las llanuras y otras traídas más tarde",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "b87c2a3fdb",
+   "more": "feade90ede",
+   "visit": "59ecfa16fa",
+   "status": "7ae14eed84",
+   "people": "8c99e56ce7",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 15,
@@ -297,7 +493,21 @@
   "more": "Father Fermín Lasuén founded the mission on the feast of Saint John the Baptist. The Mutsun Ohlone, the original residents of the valley, were baptized and brought to live here, followed by Yokuts people from the Central Valley. Father Estevan Tapis taught a Native boys' choir with color-coded music notation, which earned the mission its nickname. The mission was secularized in 1835 and reconsecrated as a parish in 1859. On December 22, 2012, the Bishop of Monterey led a Mass of Reconciliation here, asking forgiveness of the Amah Mutsun, the descendants of the Mutsun. The Amah Mutsun Tribal Band is seeking federal recognition. A second group also uses the Amah Mutsun name, so ask each group how it names itself.",
   "visit": "Plan about an hour and a half. The church dates from the early 1800s and has three aisles. The side aisles were walled in after earthquake damage in 1812 and reopened in 1975, so the church is close to its old design. The San Andreas Fault runs just below the cemetery wall, and the earthquake of 1906 ruined the outer walls. Below the wall you can walk a preserved stretch of the old El Camino Real. The mission's museum, garden and cemetery are open, and the plaza buildings of the state historic park face the church. The mission appeared in Alfred Hitchcock's 1958 film Vertigo, and the studio added the bell tower you see in the movie. Easy to miss: the El Camino Real path below the cemetery. Hours and fees differ from the state park's, so check before you go. The official page is linked in the app.",
   "src": "https://www.oldmissionsjb.org/activities/tours",
-  "src2": "https://amahmutsun.org/?p=529"
+  "src2": "https://amahmutsun.org/?p=529",
+  "text_es": "Esta es la Misión San Juan Bautista, fundada el 24 de junio de 1797 y apodada la Misión de la Música. Está junto a la falla de San Andreas, en la tierra ancestral de los mutsun ohlone. Su iglesia es la única entre las misiones de California con tres naves.",
+  "more_es": "El padre Fermín Lasuén fundó la misión en la fiesta de San Juan Bautista. Los mutsun ohlone, los habitantes originales del valle, fueron bautizados y traídos a vivir aquí, y después llegaron personas yokuts del Valle Central. El padre Estevan Tapis enseñó a un coro de niños indígenas con una notación musical en colores, y por eso la misión recibió su apodo. La misión fue secularizada en 1835 y volvió a consagrarse como parroquia en 1859. El 22 de diciembre de 2012, el obispo de Monterey celebró aquí una Misa de Reconciliación para pedir perdón a los amah mutsun, los descendientes de los mutsun. La Amah Mutsun Tribal Band busca el reconocimiento federal. Otro grupo también usa el nombre Amah Mutsun, así que pregunte a cada grupo cómo se nombra a sí mismo.",
+  "visit_es": "Calcule cerca de una hora y media. La iglesia es de principios del siglo XIX y tiene tres naves. Las naves laterales se tapiaron después de los daños del terremoto de 1812 y se reabrieron en 1975, así que la iglesia está cerca de su diseño original. La falla de San Andreas pasa justo debajo del muro del cementerio, y el terremoto de 1906 arruinó los muros exteriores. Debajo del muro puede caminar por un tramo conservado del antiguo El Camino Real. El museo, el jardín y el cementerio de la misión están abiertos, y los edificios de la plaza del parque histórico estatal quedan frente a la iglesia. La misión apareció en la película Vertigo de Alfred Hitchcock, de 1958, y el estudio agregó el campanario que se ve en la película. Fácil de pasar por alto: el sendero de El Camino Real debajo del cementerio. Los horarios y las tarifas son distintos de los del parque estatal, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia católica activa de la Diócesis de Monterey, frente a la plaza del San Juan Bautista State Historic Park",
+  "people_es": "Mutsun ohlone, con personas yokuts traídas más tarde",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "b5f502c887",
+   "more": "2b603d4682",
+   "visit": "717f561f28",
+   "status": "522c06ee95",
+   "people": "da28132c6e",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 16,
@@ -317,7 +527,21 @@
   "more": "Father Fermín Lasuén founded the mission to close the gap between San Antonio and San Luis Obispo. The site was chosen because many Salinan people lived nearby, close to a village called Vahca. A fire destroyed the first church in 1806. The church you see was built from 1816 to 1818, and its bright interior was painted by Native people under the supervision of Esteban Munras, a Spanish artist. It has never been repainted. About 2,000 Native people are buried in the cemetery outside. After Mexico ended the mission system, the mission buildings were sold off, and several became shops, hotels and saloons. The Franciscans returned in 1928. The San Simeon earthquake of December 22, 2003 closed the church for six years, and it reopened in 2009.",
   "visit": "Plan about an hour. This is the place to see what a mission church really looked like inside. The church, built from 1816 to 1818, is original, and the painted walls have never been redone. The walls are six feet thick. The 2003 earthquake severely damaged the church, and it was repaired. Beside the church stand the original arcade and the old padres' quarters. A museum and gift shop sit nearby, and the cemetery lies outside. Just south of the mission is the Rios-Caledonia Adobe, a house museum from 1835. Easy to miss: the bright painted patterns on the walls, which are the work of Native artists. This is a working parish, so be quiet during Mass. The mission's own website blocks some readers, so use the link in the app and confirm hours and fees by phone before you go.",
   "src": "https://californiamissionsfoundation.org/mission-san-miguel/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_San_Miguel_Arc%C3%A1ngel"
+  "src2": "https://en.wikipedia.org/wiki/Mission_San_Miguel_Arc%C3%A1ngel",
+  "text_es": "Esta es la Misión San Miguel Arcángel, fundada el 25 de julio de 1797 en la tierra ancestral de los salinan. Su iglesia, terminada en 1818, todavía conserva sus paredes pintadas originales, que nunca se han vuelto a pintar. El pueblo salinan sigue aquí, y este lugar es parte de su historia.",
+  "more_es": "El padre Fermín Lasuén fundó la misión para cerrar la distancia entre San Antonio y San Luis Obispo. Se eligió el sitio porque muchas personas salinan vivían cerca, junto a una aldea llamada Vahca. Un incendio destruyó la primera iglesia en 1806. La iglesia que usted ve se construyó de 1816 a 1818, y su colorido interior fue pintado por personas indígenas bajo la supervisión de Esteban Munras, un artista español. Nunca se ha vuelto a pintar. Unas 2,000 personas indígenas están enterradas en el cementerio de afuera. Después de que México puso fin al sistema de misiones, los edificios de la misión se vendieron, y varios se convirtieron en tiendas, hoteles y cantinas. Los franciscanos regresaron en 1928. El terremoto de San Simeon del 22 de diciembre de 2003 cerró la iglesia durante seis años, y volvió a abrir en 2009.",
+  "visit_es": "Calcule aproximadamente una hora. Este es el lugar para ver cómo era de verdad por dentro una iglesia de misión. La iglesia, construida de 1816 a 1818, es original, y las paredes pintadas nunca se han rehecho. Los muros tienen seis pies de grosor. El terremoto de 2003 dañó gravemente la iglesia, y fue reparada. Junto a la iglesia están la arcada original y las antiguas habitaciones de los padres. Cerca hay un museo y una tienda de regalos, y el cementerio queda afuera. Justo al sur de la misión está el Rios-Caledonia Adobe, una casa museo de 1835. Fácil de pasar por alto: los diseños de colores pintados en las paredes, que son obra de artistas indígenas. Esta es una parroquia activa, así que guarde silencio durante la misa. El sitio web de la misión bloquea a algunos lectores, así que use el enlace de la app y confirme horarios y precios por teléfono antes de ir.",
+  "status_es": "Parroquia católica activa de la Diócesis de Monterey, con un museo",
+  "people_es": "salinan",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "6190ee2e96",
+   "more": "36e752082a",
+   "visit": "f869bee7f0",
+   "status": "260d147ba8",
+   "people": "9f194b9342",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 17,
@@ -337,7 +561,21 @@
   "more": "Father Fermín Lasuén founded the mission on a farming settlement called Achooykomenga, worked by Ventureño Chumash, Tongva and Tataviam laborers. The Tongva people brought here are known as Fernandeño. In the first decade of the 1800s the mission's Native population grew from 310 to 955, but the records show 1,468 baptisms and 797 deaths in those same ten years. The convento took twelve years to build and was finished in 1822. Mexico secularized the mission in 1834, and it returned to the Catholic Church in 1861. The 1971 earthquake destroyed the church, and it was rebuilt by 1974. The Fernandeño Tataviam Band of Mission Indians is working toward federal recognition.",
   "visit": "Plan about an hour. The convento is the long building you see first. It was a guesthouse for travelers on El Camino Real, finished in 1822, and it is original. It has a colonnade of nineteen arches. The church beside it is not original. The 1971 San Fernando earthquake destroyed it and it was rebuilt by 1974 and its walls carry designs inspired by Native patterns. In the courtyard stands a fountain described as original, modeled on one in Córdoba, Spain. The winery is a replica. Bob Hope and his wife Dolores are buried in the memorial garden. Easy to miss: the convento rooms, which hold relics and furniture from the old days. The mission asks you to call to confirm hours, and it closes on some holidays, so check before you go. The official page is linked in the app.",
   "src": "https://californiamissionsfoundation.org/mission-san-fernando-rey/",
-  "src2": "https://en.wikipedia.org/wiki/Mission_San_Fernando_Rey_de_Espa%C3%B1a"
+  "src2": "https://en.wikipedia.org/wiki/Mission_San_Fernando_Rey_de_Espa%C3%B1a",
+  "text_es": "Esta es la Misión San Fernando Rey de España, fundada el 8 de septiembre de 1797 en el asentamiento de Achooykomenga. El largo convento, terminado en 1822, sigue en pie. La misión le dio su nombre al valle de San Fernando. La Fernandeño Tataviam Band desciende de personas que vivieron en esta misión.",
+  "more_es": "El padre Fermín Lasuén fundó la misión en un asentamiento agrícola llamado Achooykomenga, trabajado por chumash ventureños, tongva y tataviam. Los tongva traídos aquí se conocen como fernandeños. En la primera década del siglo XIX, la población indígena de la misión creció de 310 a 955, pero los registros muestran 1,468 bautizos y 797 muertes en esos mismos diez años. El convento tardó doce años en construirse y se terminó en 1822. México secularizó la misión en 1834, y volvió a la Iglesia católica en 1861. El terremoto de 1971 destruyó la iglesia, y fue reconstruida para 1974. La Fernandeño Tataviam Band of Mission Indians trabaja para obtener el reconocimiento federal.",
+  "visit_es": "Calcule aproximadamente una hora. El convento es el edificio largo que usted ve primero. Fue una casa de huéspedes para los viajeros de El Camino Real, terminada en 1822, y es original. Tiene una columnata de diecinueve arcos. La iglesia de al lado no es original. El terremoto de San Fernando de 1971 la destruyó, fue reconstruida para 1974 y sus paredes llevan diseños inspirados en patrones indígenas. En el patio hay una fuente descrita como original, inspirada en una de Córdoba, España. La vinícola es una réplica. Bob Hope y su esposa Dolores están enterrados en el jardín conmemorativo. Fácil de pasar por alto: las salas del convento, que guardan reliquias y muebles de los viejos tiempos. La misión pide que llame para confirmar horarios, y cierra algunos días festivos, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Arquidiócesis de Los Angeles; los terrenos del convento son un museo y la iglesia es una capilla",
+  "people_es": "tataviam, tongva (fernandeños) y chumash ventureños",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "8943217492",
+   "more": "cf985ccc37",
+   "visit": "5b649097c2",
+   "status": "dbbbe11614",
+   "people": "a574789ece",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 18,
@@ -357,7 +595,21 @@
   "more": "Father Fermín Lasuén founded the mission, and it became the biggest in the chain. In 1825 it held 2,869 people, and it ran about 26,000 cattle. Pablo Tac was born here around 1822. A priest took him to Rome as a boy, and there he wrote down the Luiseño language and the story of his people. He wrote that in his home village of Quechla there had been 5,000 people, until a sickness killed 2,000 of them. He died in Rome in 1841. The church finished in 1815 is the only surviving mission church built in the shape of a cross. After Mexico ended the mission system, services stopped until 1893. Today six federally recognized Luiseño tribes have reservations in Southern California, and Luiseño language revival is under way.",
   "visit": "Plan an hour and a half. The church was finished in 1815, with a wooden dome and cupola, and it has been restored since 1893. It is the only surviving mission church built in the shape of a cross. Outside, the quadrangle holds the soldiers' barracks, the lavandería where clothes were washed, a kiln and the first pepper tree planted in California, in 1830. The museum and the Madonna Chapel are on site, and the original cemetery dates from 1798. A free phone tour is called the King of the Missions app. Easy to miss: the lavandería and the kiln, at the edge of the grounds. Farther inland stands the Pala asistencia, from 1816, on the Pala Reservation. This is a living parish and retreat center, so some areas close for services. Hours and fees change, so check before you go. The official page is linked in the app.",
   "src": "https://sanluisrey.org/plan-your-trip/",
-  "src2": "https://en.wikipedia.org/wiki/Pablo_Tac"
+  "src2": "https://en.wikipedia.org/wiki/Pablo_Tac",
+  "text_es": "Esta es la Misión San Luis Rey de Francia, apodada el Rey de las Misiones, fundada el 13 de junio de 1798. Le dio su nombre al pueblo luiseño, que se llama a sí mismo payómkawichum. En su mejor momento, fue la misión más grande de California.",
+  "more_es": "El padre Fermín Lasuén fundó la misión, y llegó a ser la más grande de la cadena. En 1825 tenía 2,869 personas, y manejaba unas 26,000 cabezas de ganado. Pablo Tac nació aquí alrededor de 1822. Un sacerdote lo llevó a Roma de niño, y allí puso por escrito el idioma luiseño y la historia de su pueblo. Escribió que en su aldea natal de Quechla había habido 5,000 personas, hasta que una enfermedad mató a 2,000 de ellas. Murió en Roma en 1841. La iglesia terminada en 1815 es la única iglesia de misión que se conserva construida en forma de cruz. Después de que México puso fin al sistema de misiones, los servicios se suspendieron hasta 1893. Hoy seis tribus luiseñas con reconocimiento federal tienen reservas en el sur de California, y está en marcha la revitalización del idioma luiseño.",
+  "visit_es": "Calcule una hora y media. La iglesia se terminó en 1815, con una cúpula y una linterna de madera, y ha sido restaurada desde 1893. Es la única iglesia de misión que se conserva construida en forma de cruz. Afuera, el cuadrángulo tiene los cuarteles de los soldados, la lavandería donde se lavaba la ropa, un horno y el primer pirul plantado en California, en 1830. El museo y la Madonna Chapel están en el lugar, y el cementerio original data de 1798. Hay un recorrido gratis por teléfono que se llama King of the Missions app. Fácil de pasar por alto: la lavandería y el horno, en la orilla del terreno. Más tierra adentro está la asistencia de Pala, de 1816, en la Pala Reservation. Esta es una parroquia viva y centro de retiros, así que algunas áreas cierran durante los servicios. Los horarios y precios cambian, así que verifique antes de ir. La página oficial está enlazada en la app.",
+  "status_es": "Parroquia, museo y centro de retiros a cargo de los frailes franciscanos (Diócesis de San Diego)",
+  "people_es": "payómkawichum (luiseños)",
+  "founder_es": "Fermín Francisco de Lasuén",
+  "es_src": {
+   "text": "5dfe69f2cb",
+   "more": "21f5acc2ae",
+   "visit": "9d8a8d6dc7",
+   "status": "131f3a48e6",
+   "people": "47979852d5",
+   "founder": "cf59d532e9"
+  }
  },
  {
   "n": 19,
@@ -377,7 +629,21 @@
   "more": "Father Estevan Tapis founded the mission. The earthquake of December 21, 1812 destroyed most of the first church, and the present church was dedicated on July 4, 1817. On February 21, 1824, a soldier beat a young Chumash man here, and people rose up. The revolt spread to La Purísima and Santa Barbara, and Chumash people burned parts of this mission. Many then left for the interior mountains, and only a few stayed. The mission was secularized in 1835. In 1844 California's first college seminary opened here. Later the Danish town of Solvang grew up around the mission. Today the Santa Ynez Band of Chumash Indians, a federally recognized tribe, has its home in the valley and runs a museum and cultural center in Santa Ynez.",
   "visit": "Plan about an hour. The church was dedicated in 1817 and its walls are original. Repairs began in 1904 and a major restoration followed from 1947, so you are seeing a church that has been carefully maintained rather than left alone. The museum holds vestments, art, old manuscripts and bells. The mission garden and the rose garden are good places to sit. A gift shop is on site, and docent tours can be reserved. Capuchin Franciscan friars have served the parish since 1924. The mission sits at the edge of Solvang, so the Danish shops of the town are close by. Easy to miss: the old bells and manuscripts in the museum. For the Chumash story, add the Santa Ynez Band's museum and cultural center in nearby Santa Ynez. Hours and fees change, so check before you go. The official page is linked in the app.",
   "src": "https://missionsantaines.org/gift-shop-and-mission-tours",
-  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_In%C3%A9s"
+  "src2": "https://en.wikipedia.org/wiki/Mission_Santa_In%C3%A9s",
+  "text_es": "Esta es la Misión Santa Inés, en Solvang, fundada el 17 de septiembre de 1804. Aquí comenzó la rebelión chumash de 1824. Esta es tierra ancestral de los chumash, y la Santa Ynez Band of Chumash Indians vive hoy en este valle.",
+  "more_es": "El padre Estevan Tapis fundó la misión. El terremoto del 21 de diciembre de 1812 destruyó la mayor parte de la primera iglesia, y la iglesia actual se dedicó el 4 de julio de 1817. El 21 de febrero de 1824, un soldado golpeó aquí a un joven chumash, y la gente se levantó. La rebelión se extendió a La Purísima y a Santa Barbara, y los chumash quemaron partes de esta misión. Después, muchos se fueron a las montañas del interior, y solo unos pocos se quedaron. La misión fue secularizada en 1835. En 1844 se abrió aquí el primer seminario universitario de California. Más tarde, el pueblo danés de Solvang creció alrededor de la misión. Hoy la Santa Ynez Band of Chumash Indians, una tribu con reconocimiento federal, tiene su hogar en el valle y administra un museo y centro cultural en Santa Ynez.",
+  "visit_es": "Calcule cerca de una hora. La iglesia se dedicó en 1817 y sus muros son originales. Las reparaciones empezaron en 1904 y a partir de 1947 vino una restauración mayor, así que lo que usted ve es una iglesia que se ha mantenido con cuidado, no una que se dejó tal cual. El museo guarda vestiduras, arte, manuscritos antiguos y campanas. El jardín de la misión y el jardín de rosas son buenos lugares para sentarse. Hay una tienda de regalos en el lugar, y se pueden reservar recorridos con guía. Frailes franciscanos capuchinos atienden la parroquia desde 1924. La misión está a la orilla de Solvang, así que las tiendas danesas del pueblo quedan cerca. Fácil de pasar por alto: las campanas antiguas y los manuscritos del museo. Para conocer la historia chumash, visite también el museo y centro cultural de la Santa Ynez Band en el cercano Santa Ynez. Los horarios y las tarifas cambian, así que verifique antes de ir. La página oficial está en la app.",
+  "status_es": "Parroquia católica activa de la Arquidiócesis de Los Angeles, atendida por frailes franciscanos capuchinos desde 1924; museo",
+  "people_es": "Chumash (inezeño, samala)",
+  "founder_es": "Estevan Tapis",
+  "es_src": {
+   "text": "bb940c6636",
+   "more": "ef24870bde",
+   "visit": "cdc9c6e132",
+   "status": "f4e85343c3",
+   "people": "312d79f554",
+   "founder": "748d10f1f5"
+  }
  },
  {
   "n": 20,
@@ -397,7 +663,21 @@
   "more": "Father Vicente Francisco de Sarría founded San Rafael as an asistencia of Mission Dolores. It was meant to heal Native people who were sick in foggy San Francisco, and it is called Alta California's first sanitarium. It was named for the archangel of healing. It became a full mission on October 19, 1822. In 1835 its population was reported at 1,027. After Mexico ended the mission system, the mission was abandoned, and the last ruins were removed by 1870. John Frémont used the site as a headquarters during the Bear Flag Revolt of 1846. On October 12, 2020, at a rally planned by Coast Miwok of Marin, some protesters pulled down a Serra statue here. The Federated Indians of Graton Rancheria, Coast Miwok and Southern Pomo, was restored by Congress in 2000.",
   "visit": "Plan 30 to 45 minutes. No original buildings survive here, since the ruins were cleared away by 1870. The chapel you visit was built in 1949 near the site of the original hospital, with help from a foundation. A small museum and gift shop sit on the grounds, and the museum shows three of the four original mission bells. Their hours change, so call the parish office. The chapel's star-shaped window is a Moorish-style detail like one at Carmel. The replica chapel is one of the smallest churches in the chain. The chapel is part of a working parish, so it may be closed during services. Easy to miss: the bell and sign put up in 1909 by the Native Sons of the Golden West to mark the original site. For Coast Miwok history, ask at the parish office or visit the Graton Rancheria's website. The official page is linked in the app.",
   "src": "https://www.saintraphael.com/landing-page",
-  "src2": "https://californiamissionsfoundation.org/mission-san-rafael/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-rafael/",
+  "text_es": "Esta es la Misión San Rafael Arcángel, fundada el 14 de diciembre de 1817 como un puesto hospital de la Misión Dolores para personas indígenas enfermas. Esta es tierra ancestral de los miwok de la costa, y los miwok de la costa siguen aquí. La capilla que usted ve es una réplica de 1949.",
+  "more_es": "El padre Vicente Francisco de Sarría fundó San Rafael como asistencia de la Misión Dolores. Su propósito era curar a las personas indígenas que enfermaban en el San Francisco de neblina, y se le llama el primer sanatorio de la Alta California. Se nombró por el arcángel de la sanación. Se convirtió en misión completa el 19 de octubre de 1822. En 1835 se reportó una población de 1,027. Cuando México terminó con el sistema de misiones, la misión fue abandonada, y las últimas ruinas se retiraron para 1870. John Frémont usó el sitio como cuartel durante la Rebelión de la Bandera del Oso de 1846. El 12 de octubre de 2020, en una manifestación organizada por los Coast Miwok of Marin, algunos manifestantes derribaron aquí una estatua de Serra. La Federated Indians of Graton Rancheria, miwok de la costa y pomo del sur, fue restablecida por el Congreso en 2000.",
+  "visit_es": "Calcule de 30 a 45 minutos. Aquí no sobrevive ningún edificio original, ya que las ruinas se retiraron para 1870. La capilla que usted visita se construyó en 1949 cerca del sitio del hospital original, con ayuda de una fundación. En el terreno hay un pequeño museo y una tienda de regalos, y el museo muestra tres de las cuatro campanas originales de la misión. Sus horarios cambian, así que llame a la oficina parroquial. La ventana en forma de estrella de la capilla es un detalle de estilo morisco como uno de Carmel. La capilla réplica es una de las iglesias más pequeñas de la cadena. La capilla es parte de una parroquia activa, así que puede estar cerrada durante los servicios. Fácil de pasar por alto: la campana y el letrero que colocaron en 1909 los Native Sons of the Golden West para marcar el sitio original. Para conocer la historia de los miwok de la costa, pregunte en la oficina parroquial o visite el sitio web de la Graton Rancheria. La página oficial está en la app.",
+  "status_es": "Capilla réplica de la parroquia Saint Raphael (Arquidiócesis de San Francisco)",
+  "people_es": "Miwok de la costa",
+  "founder_es": "Vicente Francisco de Sarría",
+  "es_src": {
+   "text": "40f5b8398e",
+   "more": "33f5f3a0fb",
+   "visit": "b8281985d9",
+   "status": "32d1ffe94d",
+   "people": "2a40ba6424",
+   "founder": "a2b7bcb416"
+  }
  },
  {
   "n": 21,
@@ -417,6 +697,20 @@
   "more": "Father José Altimira founded the mission, with soldiers and Native people moved from Mission Dolores. Its first report listed no baptisms and 482 Native people, all transferred from other missions. Governor Luis Argüello backed the mission partly to block Russian expansion from Fort Ross. In 1826 Native people who lived outside the mission were unhappy about their share of the harvest and burned some of the wooden buildings. Altimira fled. Mariano Vallejo later administered the mission, and the adobe chapel was built in 1841 on his orders. A memorial dedicated in 1999 honors more than 800 Native people, including over 200 children, who died at the mission between 1824 and 1839. Their descendants include members of the Federated Indians of Graton Rancheria.",
   "visit": "Plan an hour, or half a day with the rest of the park. This is a museum, not a church. The adobe chapel dates from 1841. The buildings were reconstructed by 1913 and remodeled later, so they are old walls with newer work. Inside, the museum shows the paintings of Chris Jorgensen, who painted the California missions. Outside stands the Sonoma Mission Indian Memorial, which honors the Native people who died here. The same state park includes the Sonoma Barracks and Vallejo's home, all around the town plaza. The Bear Flag was first raised near here in 1846. Easy to miss: the memorial to the Native people, off to one side. Hours and fees are posted by State Parks, so check before you go. The official page is linked in the app.",
   "src": "https://www.parks.ca.gov/?page_id=479",
-  "src2": "https://californiamissionsfoundation.org/mission-san-francisco-solano/"
+  "src2": "https://californiamissionsfoundation.org/mission-san-francisco-solano/",
+  "text_es": "Esta es la Misión San Francisco Solano, la última y la más al norte de las 21 misiones, fundada el 4 de julio de 1823. Es la única fundada después de que México ganó su independencia de España. Esta es tierra ancestral de los pueblos miwok de la costa, pomo del sur, wappo y patwin.",
+  "more_es": "El padre José Altimira fundó la misión, con soldados y personas indígenas trasladados desde la Misión Dolores. Su primer informe no registró bautizos y sí 482 personas indígenas, todas trasladadas de otras misiones. El gobernador Luis Argüello apoyó la misión en parte para frenar la expansión rusa desde Fort Ross. En 1826, personas indígenas que vivían fuera de la misión, inconformes con su parte de la cosecha, quemaron algunos de los edificios de madera. Altimira huyó. Más tarde Mariano Vallejo administró la misión, y la capilla de adobe se construyó en 1841 por orden suya. Un memorial dedicado en 1999 honra a más de 800 personas indígenas, entre ellas más de 200 niños, que murieron en la misión entre 1824 y 1839. Entre sus descendientes hay miembros de la Federated Indians of Graton Rancheria.",
+  "visit_es": "Calcule una hora, o medio día con el resto del parque. Esto es un museo, no una iglesia. La capilla de adobe es de 1841. Los edificios se reconstruyeron para 1913 y se remodelaron después, así que son muros antiguos con trabajo más reciente. Adentro, el museo muestra las pinturas de Chris Jorgensen, quien pintó las misiones de California. Afuera está el Sonoma Mission Indian Memorial, que honra a las personas indígenas que murieron aquí. El mismo parque estatal incluye el Sonoma Barracks y la casa de Vallejo, todo alrededor de la plaza del pueblo. La Bandera del Oso se izó por primera vez cerca de aquí en 1846. Fácil de pasar por alto: el memorial a las personas indígenas, a un costado. State Parks publica los horarios y las tarifas, así que verifique antes de ir. La página oficial está en la app.",
+  "status_es": "Museo en el Sonoma State Historic Park, administrado por California State Parks; no es una iglesia",
+  "people_es": "Miwok de la costa, pomo del sur, wappo y patwin",
+  "founder_es": "José Altimira",
+  "es_src": {
+   "text": "4b98cd957b",
+   "more": "155bcdf36a",
+   "visit": "37b15e4704",
+   "status": "4fe0492f35",
+   "people": "c00dad01fd",
+   "founder": "740920364d"
+  }
  }
 ]

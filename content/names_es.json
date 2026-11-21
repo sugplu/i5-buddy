@@ -2,34 +2,34 @@
  "_note": "Spanish names for tools/build.py (3.1.0): the two ends of the covered road (ENDS: short = the place past it, long = the line itself, as in data/i5.js) and the Where to? destinations (by their English label in tools/build.py DEST_LIST). An empty name keeps the English one.",
  "ends": {
   "S": {
-   "short": "",
-   "long": ""
+   "short": "México",
+   "long": "la frontera con México"
   },
   "N": {
-   "short": "",
-   "long": ""
+   "short": "Oregon",
+   "long": "la frontera con Oregon"
   }
  },
  "dests": {
-  "Mexico border": "",
-  "San Diego": "",
-  "Oceanside": "",
-  "San Clemente": "",
-  "Anaheim": "",
-  "Downtown Los Angeles": "",
-  "Burbank": "",
-  "Santa Clarita": "",
-  "Grapevine": "",
-  "Kettleman City": "",
-  "Coalinga": "",
-  "Los Banos": "",
-  "Stockton": "",
-  "Sacramento": "",
-  "Williams": "",
-  "Red Bluff": "",
-  "Redding": "",
-  "Mount Shasta": "",
-  "Yreka": "",
-  "Oregon border": ""
+  "Mexico border": "Frontera con México",
+  "San Diego": "San Diego",
+  "Oceanside": "Oceanside",
+  "San Clemente": "San Clemente",
+  "Anaheim": "Anaheim",
+  "Downtown Los Angeles": "Centro de Los Angeles",
+  "Burbank": "Burbank",
+  "Santa Clarita": "Santa Clarita",
+  "Grapevine": "Grapevine",
+  "Kettleman City": "Kettleman City",
+  "Coalinga": "Coalinga",
+  "Los Banos": "Los Banos",
+  "Stockton": "Stockton",
+  "Sacramento": "Sacramento",
+  "Williams": "Williams",
+  "Red Bluff": "Red Bluff",
+  "Redding": "Redding",
+  "Mount Shasta": "Mount Shasta",
+  "Yreka": "Yreka",
+  "Oregon border": "Frontera con Oregon"
  }
 }

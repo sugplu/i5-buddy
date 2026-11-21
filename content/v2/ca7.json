@@ -15,7 +15,18 @@
    "months": null,
    "wiki": "College City, California",
    "src": "https://en.wikipedia.org/wiki/College_City,_California",
-   "src2": "https://en.wikipedia.org/wiki/College_City,_California"
+   "src2": "https://en.wikipedia.org/wiki/College_City,_California",
+   "name_es": "College City, sin universidad",
+   "text_es": "Unas dos millas al este está College City, donde viven unas 290 personas y no hay ninguna universidad. El pueblo nació con una escuela, Pierce Christian College, pagada con dinero de la herencia de Andrew Pierce. El colegio abrió en 1875 y se fue del pueblo en 1896.",
+   "more_es": "Pierce murió alrededor de 1871, y la venta de sus bienes pagó la escuela. La oficina de correos de College City abrió en 1873, dos años antes de que empezaran las clases. Un artículo de periódico de enero de 1875 mencionaba dos tiendas generales, un hotel, una caballeriza de alquiler, una talabartería, dos herrerías, una panadería, una botica, una sombrerera y lavanderías chinas. El edificio del colegio medía apenas 30 por 40 pies. Cuando el colegio se fue, el distrito local de preparatorias se quedó con sus edificios, y hoy College City forma parte del Pierce Joint Unified School District.",
+   "es_src": {
+    "name": "0d69d3e6b2",
+    "text": "c1d3ad8ddf",
+    "more": "e60080f83f"
+   },
+   "kids": "About two miles east is College City. About 290 people live there, but there is no college at all. The town began with a school called Pierce Christian College. It opened in 1875 and left town in 1896. Can you think of another name that no longer fits?",
+   "kids_es": "Unas dos millas al este está College City, donde viven unas 290 personas, pero no hay ninguna universidad. El pueblo nació con una escuela llamada Pierce Christian College. Abrió en 1875 y se fue del pueblo en 1896. ¿Conocen otro nombre que ya no le queda a algo?",
+   "kids_src": "c1d3ad8ddf"
   },
   {
    "state": "CA",
@@ -31,7 +42,18 @@
    "months": null,
    "wiki": "Arbuckle, California",
    "src": "https://countyofcolusaca.gov/217",
-   "src2": "https://en.wikipedia.org/wiki/Arbuckle,_California"
+   "src2": "https://en.wikipedia.org/wiki/Arbuckle,_California",
+   "name_es": "El pueblo de Tacitus Arbuckle",
+   "text_es": "Arbuckle fue trazado en 1875 y lleva el nombre de Tacitus Arbuckle, en cuyo rancho creció. Para que el pueblo arrancara, regaló lotes a cualquiera que construyera en ellos, y se convirtió en su primer jefe de correos. El primer tren llegó el 4 de julio de 1876, apenas dos meses después de que se terminó la estación.",
+   "more_es": "Tacitus Arbuckle había empezado a criar ganado aquí en 1866, casi diez años antes que el pueblo. Según el condado, la estación del pueblo es hoy la única estación de tren que queda en el condado de Colusa. Hoy las tierras de cultivo alrededor de Arbuckle combinan cultivos de campo con huertos, sobre todo de almendros, y varias descascaradoras de almendra trabajan cerca. La agricultura también ha dejado huella bajo tierra. Un estudio estatal de más de 300 sitios en todo el valle de Sacramento encontró que esta zona se había hundido más que ninguna otra, y el pueblo bajó 2.14 pies entre 2008 y 2017. Al bombear el agua de los acuíferos de abajo, el suelo se colapsó sobre sí mismo.",
+   "es_src": {
+    "name": "594cc0586c",
+    "text": "b67bdfbf78",
+    "more": "f37ce904e0"
+   },
+   "kids": "The town of Arbuckle was named for Tacitus Arbuckle. It grew on his ranch. To get the town going, he gave land to anyone who would build on it. The first train came on July 4, 1876. What would you do to start a town?",
+   "kids_es": "El pueblo de Arbuckle lleva el nombre de Tacitus Arbuckle, y creció en su rancho. Para que el pueblo arrancara, regaló terrenos a cualquiera que construyera en ellos. El primer tren llegó el 4 de julio de 1876. ¿Qué harían ustedes para empezar un pueblo?",
+   "kids_src": "b67bdfbf78"
   },
   {
    "state": "CA",
@@ -50,7 +72,20 @@
    ],
    "wiki": "Almond",
    "src": "https://countyofcolusaca.gov/DocumentCenter/View/19595/Crop-Report-2024",
-   "src2": "https://ucanr.edu/blog/bug-squad/article/almond-pollination-season-ought-be-about-almond-pollination"
+   "src2": "https://ucanr.edu/blog/bug-squad/article/almond-pollination-season-ought-be-about-almond-pollination",
+   "name_es": "Huertos de almendros",
+   "text_es": "Las largas filas rectas de árboles por aquí son, en su mayoría, huertos de almendros. En 2024 las almendras fueron el cultivo más valioso del condado de Colusa, con un valor de unos 279 millones de dólares, de aproximadamente 63,000 acres. La temporada de polinización del almendro por lo general va de mediados de febrero a mediados de marzo, más o menos, cuando los árboles se cubren de flores fragantes, de blancas a rosa pálido, antes de que salgan sus hojas.",
+   "more_es": "Los productores buscan tener unas dos colmenas por acre, y en 2024 los productores de almendra del condado de Colusa usaron unas 126,000 colmenas. Los propios apicultores del condado produjeron unas 50,000 abejas reinas ese año. La almendra no es una verdadera nuez, sino la semilla de un fruto pariente del durazno, encerrada en una cáscara dura dentro de una cubierta correosa, y madura en otoño, de siete a ocho meses después de la floración. Hasta las cáscaras de almendra se venden, y valieron unos 5 millones de dólares en 2024.",
+   "spot_es": "Busque árboles de huerto alineados en filas largas y rectas.",
+   "es_src": {
+    "name": "09764d5984",
+    "text": "bcc4f4cf7a",
+    "more": "a612c96496",
+    "spot": "2327ddf69a"
+   },
+   "kids": "The long, straight rows of trees around here are mostly almond trees. In 2024, almonds were this county's most valuable crop. From about mid-February to mid-March, the trees bloom with fragrant white to pale pink flowers. The flowers come before the leaves. Look for orchard trees lined up in long, straight rows.",
+   "kids_es": "Las largas filas rectas de árboles por aquí son, en su mayoría, almendros. En 2024, las almendras fueron el cultivo más valioso de este condado. Más o menos de mediados de febrero a mediados de marzo, los árboles se cubren de flores fragantes, de blancas a rosa pálido, antes de que salgan las hojas. Busquen árboles alineados en filas largas y rectas.",
+   "kids_src": "bcc4f4cf7a"
   },
   {
    "state": "CA",
@@ -66,7 +101,20 @@
    "months": null,
    "wiki": "Sutter Buttes",
    "src": "https://en.wikipedia.org/wiki/Sutter_Buttes",
-   "src2": "https://en.wikipedia.org/wiki/Sutter_Buttes"
+   "src2": "https://en.wikipedia.org/wiki/Sutter_Buttes",
+   "name_es": "Sutter Buttes, la vista más cercana",
+   "text_es": "En días despejados, el grupo de picos que se levanta del valle hacia el este son las Sutter Buttes, con su centro a unas 17 millas. Son los restos desgastados de un volcán que estuvo activo hace aproximadamente un millón y medio de años, y a menudo se les llama la cordillera más pequeña del mundo. Los nombres que les dan los maidu, los nisenan y los wintun significan, más o menos, las Montañas del Medio.",
+   "more_es": "En la religión de los maidu y los nisenan, las Buttes son el lugar adonde van los moribundos para ascender al más allá. El explorador español Gabriel Moraga fue el primer europeo en verlas, en 1806. Más tarde John Sutter las reclamó como parte de su concesión de tierras mexicana, pero los tribunales estadounidenses resolvieron que su concesión no las incluía, así que todo título de propiedad allí se remonta al gobierno federal. En junio de 1846, el grupo de John Frémont se detuvo en las Buttes y, por miedo a un ataque, atacó primero y mató a muchas personas indígenas en lo que se conoce como la masacre de las Sutter Buttes. De 1962 a 1965 funcionó en su lado norte una base de misiles Titan con tres silos subterráneos. En 2003 el estado compró ahí 1,785 acres para un parque, pero todavía no está abierto al público, y casi todo el terreno alrededor de las Buttes es de propiedad privada.",
+   "spot_es": "Busque un grupo de montañas dentadas, solo en medio del fondo plano del valle.",
+   "es_src": {
+    "name": "cf98d1cdb4",
+    "text": "ae4d81a58e",
+    "more": "0a486e3490",
+    "spot": "d9e4c41ec4"
+   },
+   "kids": "On clear days, you can see the Sutter Buttes to the east. They are what is left of a very old volcano. People often call them the world's smallest mountain range. Native names for them mean the Middle Mountains. Look for a jagged clump of mountains standing alone on the flat valley floor.",
+   "kids_es": "En días despejados, hacia el este se ven las Sutter Buttes. Son los restos de un volcán muy antiguo. A menudo les llaman la cordillera más pequeña del mundo. Sus nombres indígenas significan, más o menos, las Montañas del Medio. Busquen un grupo de montañas dentadas, solo en medio del valle plano.",
+   "kids_src": "ae4d81a58e"
   },
   {
    "state": "CA",
@@ -82,7 +130,18 @@
    "months": null,
    "wiki": "Patwin",
    "src": "https://en.wikipedia.org/wiki/Patwin",
-   "src2": "https://en.wikipedia.org/wiki/Kletsel_Dehe_Wintun_Nation_of_the_Cortina_Rancheria"
+   "src2": "https://en.wikipedia.org/wiki/Kletsel_Dehe_Wintun_Nation_of_the_Cortina_Rancheria",
+   "name_es": "Tierra de los patwin",
+   "text_es": "El oeste del valle de Sacramento es la tierra ancestral de los patwin, la rama sur de los pueblos wintun. Su idioma tiene dos dialectos principales: el patwin del río, que se hablaba a lo largo del río Sacramento, y el patwin de las colinas, en las colinas y llanuras al oeste. Hoy los patwin son ciudadanos de tres tribus con reconocimiento federal, entre ellas la Kletsel Dehe Wintun Nation, con sede en Williams.",
+   "more_es": "La Kletsel Dehe Wintun Nation tiene unos 270 ciudadanos y posee la Cortina Rancheria, una reserva de 640 acres en las colinas, unas 15 millas al oeste de Arbuckle. Las otras dos tribus patwin son la Cachil DeHe Band of Wintun Indians of the Colusa Indian Community y la Yocha Dehe Wintun Nation. La fiebre del oro trajo el desastre. Los colonos se apoderaron de los bosques de bellotas y de las fuentes de agua, la viruela y el sarampión arrasaron las aldeas, y a muchos patwin los obligaron a trabajar sin paga. Para fines de la década de 1850 solo sobrevivía una fracción del pueblo. En 2021 había una persona documentada que hablaba patwin como lengua materna, y miembros de la tribu trabajan para revivir el idioma.",
+   "es_src": {
+    "name": "cab5bdcf36",
+    "text": "13bb79e64a",
+    "more": "4c30d47dac"
+   },
+   "kids": "This part of the valley is the homeland of the Patwin people. Their language has two main kinds. River Patwin was spoken along the Sacramento River. Hill Patwin was spoken in the hills and plains to the west. Patwin people still live here today. Do you know any words from another language?",
+   "kids_es": "El oeste de este valle es la tierra ancestral de los patwin. Su idioma tiene dos dialectos principales: el patwin del río, que se hablaba junto al río Sacramento, y el patwin de las colinas, en las colinas y llanuras al oeste. Hoy los patwin forman parte de tres tribus. ¿Conocen palabras de otro idioma?",
+   "kids_src": "13bb79e64a"
   },
   {
    "state": "CA",
@@ -98,7 +157,18 @@
    "months": null,
    "wiki": null,
    "src": "https://www.granzellas.com/pages/about",
-   "src2": "https://www.flavortownusa.com/locations/2460/granzellas-restaurant"
+   "src2": "https://www.flavortownusa.com/locations/2460/granzellas-restaurant",
+   "name_es": "Granzella's en Williams",
+   "text_es": "En Williams, Granzella's atiende al público desde 1976. El negocio familiar incluye un restaurante, salchichonería, panadería y bar deportivo, y vende frascos de aceitunas envasados a mano. Guy Fieri lo presentó en Food Network, incluido su sándwich muffuletta.",
+   "more_es": "La muffuletta es un pan redondo siciliano con ajonjolí, y también un sándwich hecho con él, creado por un inmigrante siciliano en Estados Unidos y popularizado en New Orleans. El Reuben a la plancha de Granzella's también salió en el programa de Guy Fieri. Del otro lado del estacionamiento, la familia administra Granzella's Inn, un motel de 42 cuartos. Williams se convirtió en ciudad en 1920, y unas 5,500 personas vivían aquí en el censo de 2020.",
+   "es_src": {
+    "name": "2dfc73e1c8",
+    "text": "d8ae2f6b86",
+    "more": "ba43299a08"
+   },
+   "kids": "In the town of Williams there is a family business called Granzella's. It has been open since 1976. It has a restaurant, a deli and a bakery. If your family had a business, what would it be?",
+   "kids_es": "En el pueblo de Williams hay un negocio familiar llamado Granzella's. Atiende al público desde 1976. Tiene un restaurante, una salchichonería y una panadería. Si su familia tuviera un negocio, ¿cuál sería?",
+   "kids_src": "d8ae2f6b86"
   },
   {
    "state": "CA",
@@ -114,7 +184,18 @@
    "months": null,
    "wiki": "Colusa, California",
    "src": "https://en.wikipedia.org/wiki/Colusa_County,_California",
-   "src2": "https://en.wikipedia.org/wiki/Colusa,_California"
+   "src2": "https://en.wikipedia.org/wiki/Colusa,_California",
+   "name_es": "Colusa y Korusi",
+   "text_es": "La Highway 20 lleva unas 8 millas al este hasta Colusa, la cabecera del condado, a orillas del río Sacramento. Su nombre viene de Korusi, una aldea patwin que estaba en la orilla oeste del río, donde hoy está la ciudad. En la ley de 1850 que creó el condado, el nombre se escribía Colusi, y los periódicos a menudo ponían Coluse.",
+   "more_es": "En 1850 Charles Semple compró el Rancho Colus, una concesión de tierras mexicana otorgada primero a John Bidwell, y fundó el pueblo, al que al principio llamó Salmon Bend. La legislatura fijó la ortografía Colusa en 1854. Surgieron paradas para viajeros a distancias fijas del pueblo por el camino, desde Five Mile House hasta Seventeen Mile House. Colusa todavía tiene un barrio chino histórico, una biblioteca Carnegie de 1905 y un juzgado construido en 1861 que es Hito Histórico de California. El río corre detrás de un dique tan alto que es difícil verlo desde el pueblo.",
+   "es_src": {
+    "name": "58a8931fba",
+    "text": "d75b5b781f",
+    "more": "86dd9a5bcc"
+   },
+   "kids": "A highway leads about 8 miles east to the city of Colusa, on the Sacramento River. Its name comes from Korusi, a Patwin village. That village stood right where the city is today. Long ago, people spelled the name Colusi or Coluse. How many ways can you spell your own name?",
+   "kids_es": "Una carretera lleva unas 8 millas al este hasta Colusa, a orillas del río Sacramento. Su nombre viene de Korusi, una aldea patwin que estaba donde hoy está la ciudad. Hace mucho tiempo, el nombre se escribía Colusi, y los periódicos a menudo ponían Coluse. ¿De cuántas maneras pueden escribir su propio nombre?",
+   "kids_src": "d75b5b781f"
   },
   {
    "state": "CA",
@@ -130,7 +211,20 @@
    "months": null,
    "wiki": "Rice",
    "src": "https://countyofcolusaca.gov/DocumentCenter/View/19595/Crop-Report-2024",
-   "src2": "https://www.ricefarming.com/current-issue/waterfowl-flock-again-to-valley-rice-fields/"
+   "src2": "https://www.ricefarming.com/current-issue/waterfowl-flock-again-to-valley-rice-fields/",
+   "name_es": "Tierra de arroz",
+   "text_es": "Muchos de los campos planos por aquí son arrozales. En 2024, el condado de Colusa cosechó arroz en unos 118,000 acres, aproximadamente 185 millas cuadradas, con una producción de más de medio millón de toneladas. El arroz fue el cultivo más valioso del condado en 2023, y en 2024 quedó segundo, solo detrás de las almendras.",
+   "more_es": "Antes los productores quemaban la paja sobrante después de la cosecha, pero desde 1992 una ley estatal limita la quema. Ahora muchos inundan sus campos en invierno y dejan que la paja se descomponga. Cerca de 300,000 acres de arrozales del valle de Sacramento se inundan cada invierno, y la California Rice Commission dice que alimentan y dan refugio a unos 7 millones de patos y gansos. Más de 200 especies de fauna silvestre los usan, entre ellas las grullas canadienses. Las aves acumulan más de la mitad de las calorías que necesitan para su vuelo de 2,000 millas hacia el norte en primavera.",
+   "spot_es": "Busque campos planos cubiertos de agua poco profunda, a veces llenos de aves.",
+   "es_src": {
+    "name": "7bb2c0ae56",
+    "text": "ed2460d4b0",
+    "more": "4b251f645a",
+    "spot": "f88a1ae5d2"
+   },
+   "kids": "Many of the flat fields here are rice fields, called paddies. In 2024, this county grew more than half a million tons of rice. Only almonds were worth more that year. Look for flat fields covered with shallow water, sometimes full of birds.",
+   "kids_es": "Muchos de los campos planos por aquí son arrozales. En 2024, este condado produjo más de medio millón de toneladas de arroz. Ese año, solo las almendras valieron más. Busquen campos planos cubiertos de agua poco profunda, a veces llenos de aves.",
+   "kids_src": "ed2460d4b0"
   },
   {
    "state": "CA",
@@ -146,7 +240,18 @@
    "months": null,
    "wiki": "Sites Reservoir",
    "src": "https://en.wikipedia.org/wiki/Sites_Reservoir",
-   "src2": "https://en.wikipedia.org/wiki/Sites_Reservoir"
+   "src2": "https://en.wikipedia.org/wiki/Sites_Reservoir",
+   "name_es": "Sites Reservoir, un lago por venir",
+   "text_es": "En un valle de las colinas al oeste de Maxwell se planea un nuevo lago: Sites Reservoir. En lugar de represar un río, se llenaría con agua tomada del río Sacramento durante las crecidas, llevada por canales y bombeada hacia el valle. Lleno, podría almacenar hasta 1.5 millones de acres-pie, suficiente para abastecer a 7.5 millones de personas durante un año.",
+   "more_es": "El embalse se propuso por primera vez en la década de 1950, y las fuertes sequías desde entonces, la más reciente de 2011 a 2017, han aumentado la preocupación por el abastecimiento de agua. Se extendería 13 millas de norte a sur y 4 millas de ancho, con unos 260 pies de profundidad en su punto más bajo, lo que lo convertiría en el octavo embalse más grande de California. Dos presas principales, Sites Dam y Golden Gate Dam, más nueve pequeñas presas de collado cerrarían los puntos bajos entre las colinas. El agua llegaría por el Tehama-Colusa Canal desde una planta de bombeo en Red Bluff, y por otro canal desde Hamilton City. Está previsto que la construcción comience en 2027 y que opere para 2034. Las desviaciones podrían a veces tomar el 60 por ciento del caudal del río, lo que podría dañar al salmón y a otros peces.",
+   "es_src": {
+    "name": "252b9906e7",
+    "text": "56e2d34257",
+    "more": "66114d1086"
+   },
+   "kids": "In a valley in the hills west of Maxwell, people plan to make a new lake. It would not use a dam on a river. Instead, water from the Sacramento River would be carried in canals and pumped up into the valley. When full, it could hold enough water to serve 7.5 million people for a year. How do you think water gets pumped uphill?",
+   "kids_es": "En un valle de las colinas al oeste de Maxwell se planea un nuevo lago: Sites Reservoir. No usaría una presa en un río. Se llenaría con agua del río Sacramento durante las crecidas, llevada por canales y bombeada hacia el valle. Lleno, podría abastecer a 7.5 millones de personas durante un año. ¿Cómo creen que se bombea el agua cuesta arriba?",
+   "kids_src": "56e2d34257"
   },
   {
    "state": "CA",
@@ -162,7 +267,18 @@
    "months": null,
    "wiki": "Delevan National Wildlife Refuge",
    "src": "https://en.wikipedia.org/wiki/Delevan_National_Wildlife_Refuge",
-   "src2": "https://en.wikipedia.org/wiki/Delevan_National_Wildlife_Refuge"
+   "src2": "https://en.wikipedia.org/wiki/Delevan_National_Wildlife_Refuge",
+   "name_es": "Refugio Delevan",
+   "text_es": "Unas 5 millas al este de la autopista se encuentra el Delevan National Wildlife Refuge, casi 5,800 acres de pantanos y tierras altas administrados. Cada invierno llegan al refugio más de 200,000 patos y 100,000 gansos. Los visitantes pueden observar la fauna desde un sencillo mirador junto a la Maxwell-Colusa Highway.",
+   "more_es": "El refugio tiene más de 4,500 acres de humedales administrados de forma intensiva. En los últimos 100 años se ha perdido cerca del 95 por ciento de los humedales del Valle Central, así que las aves acuáticas dependen cada vez más de refugios como este. Delevan también protege especies raras, como la culebra gigante de liga, el tordo tricolor que anida aquí y una gran colonia de una planta en peligro de extinción llamada palmate-bracted bird's beak. Los halcones peregrinos y las águilas calvas pasan el invierno aquí, y los castores, las ratas almizcleras y los venados de cola negra viven aquí todo el año. Cada año unas 1,000 personas se detienen en el mirador, y unas 7,000 vienen a cazar.",
+   "es_src": {
+    "name": "d025d55942",
+    "text": "cb90deb1db",
+    "more": "a8b35735cd"
+   },
+   "kids": "About 5 miles east of the freeway is the Delevan National Wildlife Refuge. It has almost 5,800 acres of marsh and land for wildlife. Each winter, more than 200,000 ducks and more than 100,000 geese come here. Would you rather watch ducks or geese?",
+   "kids_es": "Unas 5 millas al este de la autopista está el Delevan National Wildlife Refuge. Tiene casi 5,800 acres de pantanos y tierras altas. Cada invierno llegan más de 200,000 patos y 100,000 gansos. ¿Qué les gustaría observar más, patos o gansos?",
+   "kids_src": "cb90deb1db"
   },
   {
    "state": "CA",
@@ -178,7 +294,18 @@
    "months": null,
    "wiki": "Granville P. Swift",
    "src": "https://ohp.parks.ca.gov/ListedResources/Detail/238",
-   "src2": "https://en.wikipedia.org/wiki/Granville_P._Swift"
+   "src2": "https://en.wikipedia.org/wiki/Granville_P._Swift",
+   "name_es": "Swift's Stone Corral",
+   "text_es": "Unas 6 millas al oeste de Maxwell se encuentra Swift's Stone Corral, monumento histórico estatal desde 1936. En 1850, el ranchero Granville Swift y su socio Frank Sears necesitaban un corral, pero no había madera por ningún lado, así que construyeron uno con las piedras planas esparcidas por el terreno.",
+   "more_es": "Swift, originario de Kentucky y sobrino nieto de Daniel Boone, llegó a California a los 19 años. En 1846 fue uno de los 33 estadounidenses que tomaron Sonoma en la Revuelta de la Bandera del Oso, y ayudó a diseñar esa bandera. Después del descubrimiento del oro, se hizo rico en Bidwell's Bar, y más tarde, con su hermano y su primo, compró 15,000 acres del Rancho Petaluma, cerca de Sears Point. Se calcula que Swift enterró unos 100,000 dólares en oro, y se conserva su lista escrita a mano de escondites, con notas como una caja de lata y una botellita, las dos en el mismo hoyo. Después no pudo encontrar muchos de ellos, y desde entonces ha aparecido varias veces oro que se cree que era suyo.",
+   "es_src": {
+    "name": "dc87f30a07",
+    "text": "8a181e99a6",
+    "more": "4105eed8e5"
+   },
+   "kids": "West of Maxwell stands Swift's Stone Corral. In 1850, two ranchers, Granville Swift and Frank Sears, needed a corral. There were no trees for wood anywhere around. So they built it from flat stones lying all over the land. What else could you build out of flat stones?",
+   "kids_es": "Al oeste de Maxwell está Swift's Stone Corral. En 1850, los rancheros Granville Swift y Frank Sears necesitaban un corral, pero no había madera por ningún lado. Así que lo construyeron con las piedras planas esparcidas por el terreno. ¿Qué otra cosa construirían ustedes con piedras planas?",
+   "kids_src": "8a181e99a6"
   },
   {
    "state": "CA",
@@ -194,7 +321,18 @@
    "months": null,
    "wiki": "Rancho Larkin's Children",
    "src": "https://en.wikipedia.org/wiki/Rancho_Larkin%27s_Children",
-   "src2": "https://en.wikipedia.org/wiki/Princeton,_California"
+   "src2": "https://en.wikipedia.org/wiki/Princeton,_California",
+   "name_es": "Rancho Larkin's Children",
+   "text_es": "Al este de aquí, junto al río cerca de Princeton, había una concesión de tierras otorgada a unos niños. Thomas Larkin, cónsul de Estados Unidos en Monterey, no quiso hacerse ciudadano mexicano, así que no podía obtener tierras él mismo. En 1844 hizo naturalizar a tres de sus hijos, y dos días después los niños recibieron una concesión de unos 44,000 acres.",
+   "more_es": "El gobernador Manuel Micheltorena, quien aprobó la concesión, le debía mucho dinero a Larkin. Larkin mandó a un hombre de Missouri llamado John S. Williams a administrar el rancho, y en 1847 Williams construyó una casa de adobe cerca de un poblado patwin abandonado llamado Chah'de'-he, cerca de donde hoy está Princeton. El pueblo nació en 1851 como una posada de camino, la Sixteen-Mile House, y más tarde enviaba grano río abajo en barco. Durante casi 130 años un transbordador llevó gente de una orilla a otra del río en Princeton, hasta que cerró para siempre a finales de la década de 1990.",
+   "es_src": {
+    "name": "7bf222c75b",
+    "text": "e2490d7adc",
+    "more": "5a2cf35be6"
+   },
+   "kids": "East of here, along the river, was land given to children. Thomas Larkin, an American official, would not become a Mexican citizen, so he could not get land himself. So in 1844 he had three of his children become citizens. Soon after, they got about 44,000 acres. What would you do with that much land?",
+   "kids_es": "Al este de aquí, junto al río, había tierras otorgadas a unos niños. Thomas Larkin, cónsul de Estados Unidos, no quiso hacerse ciudadano mexicano, así que no podía obtener tierras. En 1844 hizo ciudadanos a tres de sus hijos, y dos días después recibieron unos 44,000 acres. ¿Qué harían ustedes con tanta tierra?",
+   "kids_src": "e2490d7adc"
   },
   {
    "state": "CA",
@@ -214,7 +352,20 @@
    ],
    "wiki": "Sacramento National Wildlife Refuge",
    "src": "https://www.fws.gov/refuge/sacramento",
-   "src2": "https://en.wikipedia.org/wiki/Sacramento_National_Wildlife_Refuge"
+   "src2": "https://en.wikipedia.org/wiki/Sacramento_National_Wildlife_Refuge",
+   "name_es": "Sacramento National Wildlife Refuge",
+   "text_es": "Los pantanos justo al este de la autopista son el Sacramento National Wildlife Refuge, fundado en 1937. El otoño es el gran espectáculo. Según el propio calendario del refugio, los conteos de aves acuáticas promedian cerca de 1.5 millones en octubre y 1.8 millones en noviembre, cuando los gansos llegan por miles. El refugio tiene un centro de visitantes y un recorrido en auto de 6 millas.",
+   "more_es": "El Civilian Conservation Corps construyó aquí los primeros humedales entre 1937 y 1942, en tierras secas y alcalinas entre Willows y Maxwell. Antes de que llegaran los colonos, gran parte del valle de Sacramento era humedal estacional y pastizal, y queda menos del 10 por ciento de esos humedales. Las aves migratorias siguieron llegando de todos modos y comían el arroz de los campos, así que los refugios se crearon en parte para resolver ese conflicto entre las aves de la ruta migratoria del Pacífico y los agricultores. Al anochecer en noviembre, las parvadas todavía salen a alimentarse en los arrozales. Más de 250 especies de aves usan el refugio, desde gansos blancos y pelícanos blancos hasta águilas calvas.",
+   "spot_es": "Busque grandes parvadas blancas de gansos descansando en el pantano.",
+   "es_src": {
+    "name": "ffd8ccca5e",
+    "text": "7b14ff5821",
+    "more": "b30a5fd257",
+    "spot": "9e1f2ec6bd"
+   },
+   "kids": "The marshes just east of the freeway are the Sacramento National Wildlife Refuge. It started in 1937. Fall is the big show here. In November, the count averages about 1.8 million water birds, and geese arrive by the thousands. Look for big white flocks of geese resting on the marsh.",
+   "kids_es": "Los pantanos justo al este de la autopista son el Sacramento National Wildlife Refuge, fundado en 1937. El otoño es el gran espectáculo. En noviembre, los conteos promedian cerca de 1.8 millones de aves acuáticas, y los gansos llegan por miles. Busquen grandes parvadas blancas de gansos descansando en el pantano.",
+   "kids_src": "7b14ff5821"
   },
   {
    "state": "CA",
@@ -230,7 +381,20 @@
    "months": null,
    "wiki": "Mendocino National Forest",
    "src": "https://en.wikipedia.org/wiki/Mendocino_National_Forest",
-   "src2": "https://en.wikipedia.org/wiki/Mendocino_National_Forest"
+   "src2": "https://en.wikipedia.org/wiki/Mendocino_National_Forest",
+   "name_es": "Mendocino National Forest",
+   "text_es": "Las montañas en el horizonte del oeste son la cordillera costera, donde está el Mendocino National Forest, que tiene su sede en Willows. El bosque abarca unos 913,000 acres en seis condados, y es el único bosque nacional de California sin una carretera pavimentada importante que entre en él.",
+   "more_es": "El presidente Theodore Roosevelt apartó estas tierras en 1907 como la Stony Creek Forest Reserve. En 1908 se le cambió el nombre a California National Forest, y en 1932 el presidente Herbert Hoover lo renombró otra vez, como Mendocino, para evitar confusiones con el nombre del estado. El bosque tiene cuatro áreas silvestres, la más grande de ellas la Yolla Bolly-Middle Eel. En 2020 el August Complex, que comenzó como 38 incendios separados causados por rayos, ardió sobre todo en este bosque y llegó a más de un millón de acres, el incendio forestal más grande de la historia de California. Los alces de tule, que alguna vez fueron cazados casi hasta la extinción, fueron reintroducidos en la cuenca del lago Pillsbury a finales de la década de 1970.",
+   "spot_es": "Busque una larga muralla de montañas a lo largo del horizonte del oeste.",
+   "es_src": {
+    "name": "bb3159d692",
+    "text": "8d4de8077d",
+    "more": "0328d1cde2",
+    "spot": "c55af8e207"
+   },
+   "kids": "The mountains to the west are the Coast Range. They are home to the Mendocino National Forest. It covers about 913,000 acres in six counties. It is the only national forest in California with no big paved road going into it. Look for a long wall of mountains along the western horizon.",
+   "kids_es": "Las montañas del oeste son la cordillera costera, donde está el Mendocino National Forest. Abarca unos 913,000 acres en seis condados. Es el único bosque nacional de California sin una carretera pavimentada importante que entre en él. Busquen una larga muralla de montañas a lo largo del horizonte del oeste.",
+   "kids_src": "8d4de8077d"
   },
   {
    "state": "CA",
@@ -246,7 +410,18 @@
    "months": null,
    "wiki": "Willows, California",
    "src": "https://cityofwillows.org/willows-history/",
-   "src2": "https://cityofwillows.org/willows-history/"
+   "src2": "https://cityofwillows.org/willows-history/",
+   "name_es": "Willows, la parada del ganado",
+   "text_es": "Willows toma su nombre de un aguaje con sombra rodeado de sauces, donde los arrieros que cruzaban el valle se detenían a descansar. La oficina de correos abrió en 1862 como Willow, en singular, y no agregó la s hasta 1916. El pueblo ha sido la cabecera del condado de Glenn desde que se creó el condado en 1891.",
+   "more_es": "Willows se constituyó como ciudad en 1886. Los incendios arrasaron el centro dos veces en la década de 1880, y cada vez el pueblo se reconstruyó, hasta que en 1887 reemplazó su brigada voluntaria de cubetas por un departamento de bomberos formal. El Glenn County Courthouse se terminó en 1894, y su cúpula central se retiró por razones de seguridad en 1951. El aeropuerto abrió en 1928 como campo de entrenamiento para los primeros pilotos, y en la Segunda Guerra Mundial recibió misiones de práctica relacionadas con los Doolittle Raiders. En 1979 el estado terminó de construir la Interestatal 5, lo que convirtió a Willows en una parada práctica entre Sacramento y Redding.",
+   "es_src": {
+    "name": "b348bf3c94",
+    "text": "b042bacb3a",
+    "more": "eaccac4002"
+   },
+   "kids": "Willows got its name from a shady watering place with willow trees all around it. Long ago, cattle drivers crossing the valley stopped there to rest. The post office opened in 1862 as Willow, with no s. The s was added in 1916. Would you rather rest under willow trees or by a river?",
+   "kids_es": "Willows toma su nombre de un aguaje con sombra rodeado de sauces. Ahí descansaban los arrieros que cruzaban el valle. La oficina de correos abrió en 1862 como Willow, sin s, y la s se agregó en 1916. ¿Dónde preferirían descansar ustedes, bajo unos sauces o junto a un río?",
+   "kids_src": "b042bacb3a"
   },
   {
    "state": "CA",
@@ -262,7 +437,18 @@
    "months": null,
    "wiki": "Hugh J. Glenn",
    "src": "https://en.wikipedia.org/wiki/Hugh_J._Glenn",
-   "src2": "https://en.wikipedia.org/wiki/Hugh_J._Glenn"
+   "src2": "https://en.wikipedia.org/wiki/Hugh_J._Glenn",
+   "name_es": "Hugh Glenn, el Rey del Trigo",
+   "text_es": "El condado de Glenn lleva el nombre de Hugh Glenn, un médico que vino al oeste durante la fiebre del oro y se convirtió en el Rey del Trigo de California. Sus tierras junto al río Sacramento llegaron a sumar 55,000 acres. En la cosecha contrataba a 150 hombres, y el 8 de agosto de 1879 sus cuadrillas levantaron 5,779 bushels de trigo en un solo día.",
+   "more_es": "Glenn estudió medicina en St. Louis y salió de Missouri rumbo a California en 1849 con una yunta de bueyes y una carreta. Se hizo ganadero, luego compró 8,000 acres del Rancho Jacinto y siguió agregando tierras hasta ser dueño de todo el rancho. Su rancho tenía su propia herrería y talleres de máquinas. En 1879 se postuló para gobernador y perdió. Un domador de caballos llamado Peter French llegó a ser su capataz, le llevó 1,200 cabezas de ganado a Oregon y más tarde se casó con su hija. El 17 de febrero de 1883, Glenn fue baleado a traición en su rancho por su contador, Huram Miller, varios días después de que Glenn lo golpeara por sus insultos de borracho.",
+   "es_src": {
+    "name": "05b583722a",
+    "text": "a41a2e3222",
+    "more": "ef12ededfa"
+   },
+   "kids": "Glenn County is named for Hugh Glenn. He was a doctor who came west during the Gold Rush. He became known as California's Wheat King. His land by the Sacramento River grew to 55,000 acres, and at harvest he hired 150 men. If you had that much land, what would you grow?",
+   "kids_es": "El condado de Glenn lleva el nombre de Hugh Glenn, un médico que vino al oeste durante la fiebre del oro. Se convirtió en el Rey del Trigo de California. Sus tierras junto al río Sacramento llegaron a 55,000 acres, y en la cosecha contrataba a 150 hombres. ¿Qué sembrarían ustedes en tanta tierra?",
+   "kids_src": "a41a2e3222"
   },
   {
    "state": "CA",
@@ -278,7 +464,18 @@
    "months": null,
    "wiki": "Artois, California",
    "src": "https://en.wikipedia.org/wiki/Artois,_California",
-   "src2": "https://en.wikipedia.org/wiki/Artois,_California"
+   "src2": "https://en.wikipedia.org/wiki/Artois,_California",
+   "name_es": "Artois, antes Germantown",
+   "text_es": "Artois se llamaba Germantown hasta 1918. Según una creencia local, durante la Primera Guerra Mundial un tren de tropas se detuvo aquí para cargar agua y a los soldados les ofendió el nombre alemán. Las peticiones para cambiar el nombre de la oficina de correos tuvieron éxito, y el 21 de mayo de 1918 Germantown pasó a llamarse Artois, por las batallas libradas en esa región de Francia.",
+   "more_es": "La oficina de correos de Germantown había abierto en 1877. Artois, la antigua provincia francesa que dio el nuevo nombre, es también el lugar donde se perforaron por primera vez pozos artesianos. El pueblito está sobre la antigua U.S. Highway 99W, y la Interestatal 5 lo rodea justo al oeste. La vía del tren que cruza el pueblo fue alguna vez parte de la ruta de la Southern Pacific por el lado oeste del valle. El 1 de junio de 2011 un tornado tocó tierra al este de Artois, arrancó cientos de almendros y dañó maquinaria agrícola. Hoy viven aquí unas 300 personas.",
+   "es_src": {
+    "name": "2aa9e0dc90",
+    "text": "90b7219b4d",
+    "more": "e02fa12f92"
+   },
+   "kids": "The town of Artois used to be called Germantown. During World War One, people did not like the German name anymore. In 1918, people sent petitions to change its name. On May 21, 1918, Germantown became Artois, named after a region in France. If you could rename your town, what would you call it?",
+   "kids_es": "El pueblo de Artois antes se llamaba Germantown. Hace mucho tiempo, a algunas personas ya no les gustó ese nombre alemán, y pidieron cambiarlo. El 21 de mayo de 1918, Germantown pasó a llamarse Artois, por una región de Francia. Si pudieran cambiarle el nombre a su pueblo, ¿cómo lo llamarían?",
+   "kids_src": "90b7219b4d"
   },
   {
    "state": "CA",
@@ -297,7 +494,18 @@
    ],
    "wiki": "Prune",
    "src": "https://cdn.agclassroom.org/ca/resources/fact/prunes.pdf",
-   "src2": "https://en.wikipedia.org/wiki/Pellier_Park"
+   "src2": "https://en.wikipedia.org/wiki/Pellier_Park",
+   "name_es": "Huertos de ciruelas pasas",
+   "text_es": "Algunos de los huertos del norte del valle de Sacramento son de ciruelas que se cultivan para secarse. Tehama y Glenn están entre los principales condados productores de ciruelas pasas de California, y California produce más del 90 por ciento de las ciruelas pasas del país y aproximadamente el 40 por ciento de las del mundo. La cosecha va de mediados de agosto a principios de septiembre y por lo general dura unos 30 días.",
+   "more_es": "Las ciruelas pasas de California son de la variedad Improved French, derivada de La Petite d'Agen, una ciruela del suroeste de Francia. Durante la fiebre del oro, un francés llamado Louis Pellier encontró poco oro y se dedicó a cultivar ciruelas, injertando la ciruela francesa en ciruelos silvestres estadounidenses. Su alto contenido de azúcar permite que la fruta se seque sin fermentarse alrededor del hueso. En la cosecha, unas máquinas sujetan cada tronco y lo sacuden para que las ciruelas caigan en unos marcos que las recogen, y en los secadores tres libras de fruta fresca se convierten en una libra de ciruelas pasas. Un árbol nuevo tarda de cuatro a seis años en dar fruto y puede producir de 150 a 300 libras de fruta al año. Durante una escasez de mano de obra en 1905, un productor incluso intentó usar 500 monos para recoger la fruta. Recogían bien, pero se comieron la cosecha.",
+   "es_src": {
+    "name": "1f28bdf313",
+    "text": "56e22e4b75",
+    "more": "14cf0d19b7"
+   },
+   "kids": "Some orchards here grow prune plums. Prunes are plums that get dried. California grows more than 90 percent of our country's prunes. Harvest starts in mid-August and usually takes about 30 days. Have you ever tasted a dried fruit? Which one is your favorite?",
+   "kids_es": "Algunos huertos por aquí son de ciruelas que se cultivan para secarse y volverse ciruelas pasas. California produce más del 90 por ciento de las ciruelas pasas del país. La cosecha empieza a mediados de agosto y por lo general dura unos 30 días. ¿Han probado alguna fruta seca? ¿Cuál es su favorita?",
+   "kids_src": "56e22e4b75"
   },
   {
    "state": "CA",
@@ -313,7 +521,18 @@
    "months": null,
    "wiki": "Orland, California",
    "src": "https://en.wikipedia.org/wiki/Orland,_California",
-   "src2": "https://www.honeybeediscoverycenter.org/about"
+   "src2": "https://www.honeybeediscoverycenter.org/about",
+   "name_es": "Orland, Capital de la Abeja Reina",
+   "text_es": "Orland se llama a sí misma la Capital de la Abeja Reina de Norteamérica. En 2017 el concejo municipal adoptó el título por la gran cantidad de abejas reinas que producen los apiarios comerciales locales. Orland tiene hasta un museo sobre abejas, el Honeybee Discovery Center, y cada junio celebra un Queen Bee Festival.",
+   "more_es": "El Honeybee Discovery Center dice que alrededor del 80 por ciento de las abejas reinas que se usan en Estados Unidos se crían en los condados de Butte, Glenn, Shasta y Tehama. Para criar reinas, el apicultor pasa larvas de menos de un día a unas celdas especiales para reinas dentro de una colmena fuerte que no tiene reina, y las abejas obreras las alimentan con jalea real. Después de unos 10 días, las celdas reales pasan a pequeñas colmenas de apareamiento. Aproximadamente una semana después de nacer, cada reina joven sale volando a aparearse con 10 a 20 zánganos. De vuelta en casa, una reina por lo general es la madre de la mayoría de las abejas de su colmena, que puede tener de 60,000 a 80,000.",
+   "es_src": {
+    "name": "392bd1f1ec",
+    "text": "5f44beefec",
+    "more": "a8e3c2a989"
+   },
+   "kids": "Orland calls itself the Queen Bee Capital of North America. The town's bee farms raise lots of queen bees. Orland even has a museum about bees called the Honeybee Discovery Center. Every June it holds a Queen Bee Festival. If you were a bee, what flower would you visit first?",
+   "kids_es": "Orland se llama a sí misma la Capital de la Abeja Reina de Norteamérica, porque aquí se crían muchísimas abejas reinas. Tiene hasta un museo sobre abejas, el Honeybee Discovery Center. Cada junio celebra un Queen Bee Festival. Si fueran abejas, ¿qué flor visitarían primero?",
+   "kids_src": "5f44beefec"
   },
   {
    "state": "CA",
@@ -329,7 +548,18 @@
    "months": null,
    "wiki": "Hamilton City, California",
    "src": "https://ohp.parks.ca.gov/ListedResources/Detail/831",
-   "src2": "https://en.wikipedia.org/wiki/Hamilton_City,_California"
+   "src2": "https://en.wikipedia.org/wiki/Hamilton_City,_California",
+   "name_es": "El aviso de agua de Will Green",
+   "text_es": "Al este de Orland, sobre el río Sacramento, está Hamilton City. Casi 4 millas al norte del pueblo, el 18 de diciembre de 1883, Will S. Green clavó un aviso en un encino de la orilla oeste del río para reclamar 500,000 pulgadas de minero de agua del río para regar el lado oeste del valle. Hoy el lugar es un sitio histórico estatal.",
+   "more_es": "Green hizo muchísimas cosas en una sola vida después de llegar a San Francisco en 1849 y al condado de Colusa en 1850. Fue capitán de transbordador, cartero, agrimensor, editor de periódico, escritor y legislador, y más tarde fue Agrimensor General de Estados Unidos y Tesorero Estatal de California. Hamilton City nació en 1905 con una gran planta de betabel azucarero, terminada al año siguiente por James Hamilton y la Alta California Sugar Beet Company. La planta, que después fue de Holly Sugar, cerró en 2006, pero sus altos silos todavía se ven desde todo el pueblo.",
+   "es_src": {
+    "name": "6c32d6c268",
+    "text": "7c62bf8240",
+    "more": "20e1a97ecf"
+   },
+   "kids": "East of Orland, on the Sacramento River, is Hamilton City. Nearly 4 miles north of town, in 1883, Will S. Green posted a notice on an oak tree. He wanted river water to help farms on the west side of the valley grow. Today that spot is a state historical landmark. Why do you think farms need so much water?",
+   "kids_es": "Al este de Orland, sobre el río Sacramento, está Hamilton City. Casi 4 millas al norte del pueblo, en 1883, Will S. Green clavó un aviso en un encino. Quería agua del río para regar el lado oeste del valle. Hoy el lugar es un sitio histórico estatal. ¿Por qué creen que los cultivos necesitan tanta agua?",
+   "kids_src": "7c62bf8240"
   },
   {
    "state": "CA",
@@ -345,7 +575,20 @@
    "months": null,
    "wiki": "Stony Creek (Sacramento River tributary)",
    "src": "https://en.wikipedia.org/wiki/Stony_Creek_(Sacramento_River_tributary)",
-   "src2": "https://en.wikipedia.org/wiki/Stony_Creek_(Sacramento_River_tributary)"
+   "src2": "https://en.wikipedia.org/wiki/Stony_Creek_(Sacramento_River_tributary)",
+   "name_es": "Stony Creek",
+   "text_es": "La autopista cruza Stony Creek justo al norte de Orland. El arroyo recibió su nombre por las cargas de roca y sedimento que antes arrastraba desde las montañas en las crecidas, y antes se llamaba Capay River. Hoy Black Butte Dam, construida en 1963 en las colinas al oeste, retiene la mayor parte de ese sedimento.",
+   "more_es": "Stony Creek mide 73.5 millas y es el segundo afluente más grande del Sacramento por el oeste, después de Cottonwood Creek. En 1845 un grupo encabezado por Peter Lassen sacó piedras de afilar de uno de sus afluentes, hoy llamado Grindstone Creek, y las llevó río abajo para venderlas en Sutter's Fort y San Francisco. En 1906 el Congreso autorizó el Orland Project para regar las granjas con el agua del arroyo, y el primer riego llegó en 1910. Sin grava nueva de río arriba, el arroyo debajo de la presa ahora se come sus propias orillas, un efecto llamado agua hambrienta.",
+   "spot_es": "Busque un lecho de arroyo con mucha grava debajo del puente, muchas veces seco en verano.",
+   "es_src": {
+    "name": "b8cc4f526e",
+    "text": "eecaaf3919",
+    "more": "ca6d064995",
+    "spot": "8ba6b42a98"
+   },
+   "kids": "The freeway crosses Stony Creek just north of Orland. Long ago, floods washed lots of rocks down from the mountains, so it got its name. It was once called the Capay River. Today a dam in the hills to the west catches most of those rocks and mud. Look for a gravelly creek bed under the bridge, often dry in summer.",
+   "kids_es": "La autopista cruza Stony Creek justo al norte de Orland. Antes, las crecidas arrastraban mucha roca desde las montañas, y por eso recibió su nombre. Antes se llamaba Capay River. Hoy una presa en las colinas al oeste retiene la mayor parte de ese sedimento. Busquen un lecho de arroyo con mucha grava debajo del puente, muchas veces seco en verano.",
+   "kids_src": "eecaaf3919"
   },
   {
    "state": "CA",
@@ -361,7 +604,18 @@
    "months": null,
    "wiki": "Paskenta Band of Nomlaki Indians",
    "src": "https://en.wikipedia.org/wiki/Paskenta_Band_of_Nomlaki_Indians",
-   "src2": "https://ohp.parks.ca.gov/ListedResources/Detail/357"
+   "src2": "https://ohp.parks.ca.gov/ListedResources/Detail/357",
+   "name_es": "Paskenta Band of Nomlaki",
+   "text_es": "El Rolling Hills Casino, junto a la autopista, pertenece a la Paskenta Band of Nomlaki Indians, el pueblo nomlaki de las colinas de esta parte del valle. En 1959 el gobierno federal disolvió la ranchería de la tribu y sus tierras se vendieron. La Paskenta Band conservó su identidad y su cultura y recuperó su pleno estatus tribal en 1994.",
+   "more_es": "En 1854 el gobierno estableció la Nomi Lackee Indian Reservation en las colinas al oeste de aquí, un puesto militar que controlaba a entre 300 y 2,500 personas indígenas. En 1866 los trasladaron a Round Valley. La Paskenta Rancheria se creó a principios del siglo XX, y para 1920 abarcaba 260 acres. Tras su restitución, la tribu firmó un convenio de juego con el estado en 1999 y abrió el casino en 2002. Hoy la tribu tiene unos 240 miembros, tiene su sede en Corning y cuenta con una ranchería de unos 2,000 acres.",
+   "es_src": {
+    "name": "a201979577",
+    "text": "7d3fbefa0d",
+    "more": "c64d3e137c"
+   },
+   "kids": "The Paskenta Band of Nomlaki Indians are the Hill Nomlaki people of this part of the valley. For a while the tribe lost its land. But the people kept their ways, and in 1994 they won back full tribal status. What family traditions would you like to keep forever?",
+   "kids_es": "Aquí vive la Paskenta Band of Nomlaki Indians, el pueblo nomlaki de las colinas de esta parte del valle. Por un tiempo, la tribu perdió sus tierras. Pero la gente conservó su identidad y su cultura, y en 1994 recuperó su pleno estatus tribal. ¿Qué costumbres de su familia les gustaría guardar siempre?",
+   "kids_src": "7d3fbefa0d"
   },
   {
    "state": "CA",
@@ -377,7 +631,18 @@
    "months": null,
    "wiki": "Juglans regia",
    "src": "https://www.tehama.gov/wp-content/uploads/2025/10/2024-crop-report.pdf",
-   "src2": "https://www.cdfa.ca.gov/is/ffldrs/frep/FertilizationGuidelines/pdf/Walnut_Production_CA.pdf"
+   "src2": "https://www.cdfa.ca.gov/is/ffldrs/frep/FertilizationGuidelines/pdf/Walnut_Production_CA.pdf",
+   "name_es": "Huertos de nogales",
+   "text_es": "Muchos de los huertos del condado de Tehama son de nogal inglés. En 2024 el condado tenía unos 31,000 acres de nogales en producción, con un valor de unos 95 millones de dólares, su segundo cultivo más valioso después de los almendros. California produce el 99 por ciento de las nueces comerciales de Estados Unidos.",
+   "more_es": "Las nueces de California representan unas tres cuartas partes del comercio mundial, y aproximadamente un tercio de la cosecha se exporta. La variedad más plantada, la Chandler, se desarrolló en UC Davis y se popularizó en los años ochenta. Al principio los nogales se cultivaban sobre todo en el sur de California, pero para 1910 los naranjos y limoneros los estaban desplazando de los condados de Los Angeles y Orange, y los huertos se extendieron al centro de California. Los rendimientos promedio han subido de alrededor de un tercio de tonelada por acre en los años veinte a unas 2 toneladas.",
+   "es_src": {
+    "name": "f4a8bbea5e",
+    "text": "a70bed64cd",
+    "more": "b43ba345e0"
+   },
+   "kids": "Many orchards in Tehama County grow English walnuts. In 2024 the county had about 31,000 acres of walnut trees with nuts. Only almonds were worth more here. California grows 99 percent of the walnuts sold in the United States. Do you like walnuts, or would you rather snack on almonds?",
+   "kids_es": "Muchos huertos del condado de Tehama son de nogal inglés. En 2024 el condado tenía unos 31,000 acres de nogales con nueces. Solo los almendros valían más aquí. California produce el 99 por ciento de las nueces que se venden en Estados Unidos. ¿Les gustan más las nueces o las almendras?",
+   "kids_src": "a70bed64cd"
   },
   {
    "state": "CA",
@@ -393,7 +658,18 @@
    "months": null,
    "wiki": "Rancho Bosquejo",
    "src": "https://en.wikipedia.org/wiki/Peter_Lassen",
-   "src2": "https://en.wikipedia.org/wiki/Rancho_Bosquejo"
+   "src2": "https://en.wikipedia.org/wiki/Rancho_Bosquejo",
+   "name_es": "El rancho de Lassen y las vides de Stanford",
+   "text_es": "Unas 8 millas al este, cerca de Vina, estaba el Rancho Bosquejo, la concesión de tierras de Peter Lassen, el herrero danés que le dio su nombre a Lassen Peak. En 1848 guió a emigrantes hasta su rancho por una ruta nueva, el Lassen Cutoff. Unos letreros que sus agentes pusieron después les prometían a los viajeros de la fiebre del oro que las minas estaban a solo 110 millas, pero el atajo resultó unas 200 millas más largo que los caminos principales.",
+   "more_es": "Lassen obtuvo su concesión en 1844 después de hacerse ciudadano mexicano, y en 1845 trazó un pueblo junto a Deer Creek llamado Benton City, pero sus colonos pronto se fueron a los campos de oro. En 1881 Leland Stanford compró las tierras y construyó el Vina Ranch, con lo que entonces era el viñedo y la vinícola más grandes del mundo. Las vides daban un vino malo, así que el brandy se volvió el producto principal. Cuando Stanford murió, el rancho pasó a la Stanford University, que lo vendió por partes. Hoy un monasterio trapense, la Abbey of New Clairvaux, ocupa parte de la antigua propiedad.",
+   "es_src": {
+    "name": "f559fd89c7",
+    "text": "4cc5ca4730",
+    "more": "dc4348bf7b"
+   },
+   "kids": "About 8 miles east, near Vina, was the ranch of Peter Lassen. He was a blacksmith from Denmark, and Lassen Peak is named for him. In 1848 he led travelers to his ranch on a new path, the Lassen Cutoff. Signs said the gold was only 110 miles away, but the path was about 200 miles longer than the main trails. Would you trust a sign like that?",
+   "kids_es": "Unas 8 millas al este, cerca de Vina, estaba el rancho de Peter Lassen. Era un herrero danés, y Lassen Peak lleva su nombre. En 1848 guió a viajeros hasta su rancho por una ruta nueva, el Lassen Cutoff. Unos letreros decían que las minas estaban a solo 110 millas, pero el atajo era unas 200 millas más largo. ¿Ustedes creerían en un letrero así?",
+   "kids_src": "4cc5ca4730"
   },
   {
    "state": "CA",
@@ -409,7 +685,18 @@
    "months": null,
    "wiki": "Corning, California",
    "src": "https://en.wikipedia.org/wiki/Corning,_California",
-   "src2": "https://californiagrown.org/blog/the-olive-pit/"
+   "src2": "https://californiagrown.org/blog/the-olive-pit/",
+   "name_es": "Corning, pueblo de las aceitunas",
+   "text_es": "Corning nació en 1882, cuando el ferrocarril se extendió hasta este punto, y recibió su nombre por John Corning, un funcionario del ferrocarril. Su mayor industria local es cultivar y preparar aceitunas de mesa. En Corning está Bell-Carter Foods, fabricante de Lindsay Olives y la mayor procesadora de aceitunas de mesa de Estados Unidos.",
+   "more_es": "Junto a la autopista, el Olive Pit comenzó como un puesto de hamburguesas y malteadas en un pequeño terreno que Pete y Ann Craig compraron en 1967. Apostaron a que la Interestatal 5, que pronto se terminaría, traería viajeros, y llenaron un estante con unos cuantos frasquitos de aceitunas del huerto de su familia. Hoy la familia Craig es el mayor vendedor de aceitunas y aceite de oliva de Corning. El Corning Olive Festival, que se celebra el segundo sábado de octubre, comenzó en 1946 como recaudación de fondos para la iglesia católica local y se considera el festival de la aceituna más antiguo del país. En 2024, las aceitunas de mesa del condado de Tehama valieron unos 25.6 millones de dólares, de unos 3,900 acres de árboles en producción, y las aceitunas para aceite cubrieron unos 3,800 acres más.",
+   "es_src": {
+    "name": "4d5033f211",
+    "text": "a389582956",
+    "more": "498540affc"
+   },
+   "kids": "Corning began in 1882, when the railroad reached this spot. It was named for John Corning, who worked for the railroad. Lots of people here grow olives and get them ready to eat. Corning is home to the biggest table olive company in the United States. Do you like green olives or black olives better?",
+   "kids_es": "Corning nació en 1882, cuando llegó el ferrocarril a este punto. Recibió su nombre por John Corning, que trabajaba para el ferrocarril. Aquí mucha gente cultiva y prepara aceitunas de mesa. En Corning está la mayor procesadora de aceitunas de mesa de Estados Unidos. ¿Qué les gustan más, las aceitunas verdes o las negras?",
+   "kids_src": "a389582956"
   },
   {
    "state": "CA",
@@ -425,7 +712,18 @@
    "months": null,
    "wiki": null,
    "src": "https://www.chp.ca.gov/about-us/memorial/badges-of-honor-1980--1989/officer-john-c.-helmick",
-   "src2": "https://www.naylornetwork.com/ctr-nwl/articles/print.asp?aid=441725"
+   "src2": "https://www.naylornetwork.com/ctr-nwl/articles/print.asp?aid=441725",
+   "name_es": "Área de descanso Helmick",
+   "text_es": "Estas áreas de descanso llevan el nombre del teniente John C. Helmick, comandante del área de Red Bluff de la Patrulla de Caminos de California. El 27 de febrero de 1989, cuando iba a dar una plática en un almuerzo del Rotary Club en Oroville, murió al chocar su auto contra un camión de Caltrans estacionado en el acotamiento de la Highway 99. Tenía 43 años.",
+   "more_es": "Helmick era un veterano de 20 años de la Patrulla de Caminos y había dirigido el área de Red Bluff durante tres años. Las áreas de descanso de aquí se construyeron por primera vez en 1965. Caltrans las reconstruyó por completo a partir de 2015, y reabrieron el 8 de mayo de 2017, con luces LED, plomería de bajo consumo, estructuras de sombra y plantas resistentes a la sequía. Como toque final, los constructores agregaron relojes de sol alrededor de cada asta de bandera.",
+   "es_src": {
+    "name": "f82727345e",
+    "text": "10d9230b2b",
+    "more": "28899623c9"
+   },
+   "kids": "These rest areas are named for John Helmick. He was a leader in the California Highway Patrol in Red Bluff. Something sad happened to him long ago, and these rest areas help people remember him. Who is someone in your town who helps keep people safe?",
+   "kids_es": "Estas áreas de descanso llevan el nombre de John C. Helmick. Él era comandante de la Patrulla de Caminos de California en el área de Red Bluff. Hace mucho tiempo le pasó algo triste, y estas áreas de descanso llevan su nombre en su honor. ¿Quién ayuda a cuidar a la gente en su pueblo?",
+   "kids_src": "10d9230b2b"
   },
   {
    "state": "CA",
@@ -441,7 +739,20 @@
    "months": null,
    "wiki": "Thomes Creek",
    "src": "https://en.wikipedia.org/wiki/Thomes_Creek",
-   "src2": "https://en.wikipedia.org/wiki/Thomes_Creek"
+   "src2": "https://en.wikipedia.org/wiki/Thomes_Creek",
+   "name_es": "Thomes Creek",
+   "text_es": "Aquí la autopista cruza Thomes Creek, que lleva el nombre de Robert Thomes, un pionero que llegó en la década de 1840. Su nombre se ha escrito mal tantas veces que los registros oficiales anotan el arroyo como Thomas Creek, Thoms Creek y Toms Creek. El arroyo corre unas 62 millas desde la cordillera costera hasta el río Sacramento, sin presas permanentes.",
+   "more_es": "Es una corriente muy de temporada. En verano su ancho lecho de grava y piedras suele estar seco, pero el 22 de diciembre de 1964, durante la inundación de Navidad de ese año, llevó 37,800 pies cúbicos de agua por segundo. El arroyo nace en un pequeño estanque llamado Kingsley Lake, a 6,460 pies de altura en el Mendocino National Forest, y sus 22 millas superiores se consideran muy difíciles para el kayak de aguas bravas. La trucha steelhead y el salmón chinook de primavera todavía lo usan.",
+   "spot_es": "Busque un ancho lecho de grava y piedras, muchas veces seco en verano.",
+   "es_src": {
+    "name": "a77b229adb",
+    "text": "5ca0f56cc0",
+    "more": "4cf6e3d55e",
+    "spot": "31bcce4972"
+   },
+   "kids": "The freeway crosses Thomes Creek here. It is named for Robert Thomes, a pioneer from the 1840s. People spelled his name wrong so often that records call it Thomas, Thoms and Toms Creek too! The creek runs about 62 miles to the Sacramento River. Look for a wide bed of gravel and boulders, often dry in summer.",
+   "kids_es": "Aquí la autopista cruza Thomes Creek. Lleva el nombre de Robert Thomes, un pionero de la década de 1840. Su nombre se escribió mal tantas veces que los registros también lo llaman Thomas, Thoms y Toms Creek. El arroyo corre unas 62 millas hasta el río Sacramento. Busquen un ancho lecho de grava y piedras, muchas veces seco en verano.",
+   "kids_src": "5ca0f56cc0"
   },
   {
    "state": "CA",
@@ -457,7 +768,18 @@
    "months": null,
    "wiki": "Tehama, California",
    "src": "https://en.wikipedia.org/wiki/Tehama,_California",
-   "src2": "https://en.wikipedia.org/wiki/Tehama,_California"
+   "src2": "https://en.wikipedia.org/wiki/Tehama,_California",
+   "name_es": "Tehama, la primera cabecera del condado",
+   "text_es": "Unas 5 millas al este, sobre el río Sacramento, está la pequeña ciudad de Tehama, donde vivían 435 personas en 2020. Cuando se formó el condado de Tehama en 1856, Tehama era su cabecera, pero una elección en todo el condado la pasó a Red Bluff justo al año siguiente. Como el pueblo se inunda con facilidad, sus casas deben estar por encima del nivel de inundación, así que la mayoría tiene escaleras altas hasta la puerta de entrada.",
+   "more_es": "Donde está el pueblo hubo alguna vez un poblado nomlaki del pueblo wintun. Por lo general se dice que el nombre Tehama viene de una palabra wintun que significa aguas altas, aunque se han propuesto otros significados. Robert Thomes, quien recibió la concesión de tierras mexicana Rancho Saucos en 1844, trazó el pueblo en 1850. Durante unos años fue la última parada de los barcos de río, y más tarde el río se llevó por completo First Street. Tehama tenía fama de pueblo desenfrenado por ser el último del condado en prohibir el alcohol antes de la Prohibición, y su población llegó a su máximo, de unas 2,000 personas, en la década de 1890.",
+   "es_src": {
+    "name": "e126f9c0ff",
+    "text": "60d3ef60aa",
+    "more": "f5cbc5fb90"
+   },
+   "kids": "About 5 miles east, on the Sacramento River, is the little city of Tehama, home to 435 people in 2020. It was the county seat when Tehama County began, but one year later a vote moved the seat to Red Bluff. Water rises here easily, so houses must sit up high. Most have tall stairways to the front door. How many steps would you like up to your door?",
+   "kids_es": "Unas 5 millas al este, sobre el río Sacramento, está la pequeña ciudad de Tehama, donde vivían 435 personas en 2020. Fue la cabecera cuando se formó el condado, pero al año siguiente una elección la pasó a Red Bluff. El pueblo se inunda con facilidad, así que la mayoría de las casas tiene escaleras altas hasta la puerta. ¿Cuántos escalones les gustaría tener en su casa?",
+   "kids_src": "60d3ef60aa"
   },
   {
    "state": "CA",
@@ -473,7 +795,18 @@
    "months": null,
    "wiki": "Gerber, California",
    "src": "https://en.wikipedia.org/wiki/Gerber,_California",
-   "src2": "https://en.wikipedia.org/wiki/Proberta,_California"
+   "src2": "https://en.wikipedia.org/wiki/Proberta,_California",
+   "name_es": "Gerber, la parada del ferrocarril",
+   "text_es": "Al este de la autopista, Gerber se trazó en 1910 y recibió el nombre de la familia Gerber, dueña del terreno del pueblo. De 1916 a 1965 fue un punto de división del ferrocarril Southern Pacific, donde las locomotoras de vapor cargaban combustible, recibían reparaciones y cambiaban de tripulación. El pueblo también tenía corrales de ganado y una planta de hielo para los vagones refrigerados.",
+   "more_es": "Gerber estaba dos millas al norte del cruce donde la línea del ferrocarril del oeste del valle, hacia Davis, se unía con la línea del este del valle, que pasaba por Chico y Marysville. Cuando las locomotoras diésel reemplazaron a las de vapor, hacia 1955, el trabajo en Gerber fue disminuyendo durante la década siguiente. Los trenes de pasajeros siguieron parando hasta 1972, cuando el Coast Starlight de Amtrak dejó la estación. En sus primeros años el pueblo atendía a rancheros y productores de alfalfa, y hoy viven ahí unas 1,000 personas. La cercana Proberta fue trazada en 1886 por Edward Proberta y lleva su nombre.",
+   "es_src": {
+    "name": "5ec8ef8ddc",
+    "text": "8843c8fdc1",
+    "more": "61aa7a3206"
+   },
+   "kids": "East of the freeway is Gerber, named for the Gerber family who owned the land. From 1916 to 1965, it was a big stop for the railroad. Steam trains got fuel and repairs here, and new crews came on board. The town also made ice to keep train cars cold. What would you like to carry in a cold train car?",
+   "kids_es": "Al este de la autopista está Gerber, que lleva el nombre de la familia Gerber, dueña del terreno. De 1916 a 1965 fue una parada importante del ferrocarril. Las locomotoras de vapor cargaban combustible y recibían reparaciones, y cambiaban de tripulación. El pueblo también hacía hielo para los vagones refrigerados. ¿Qué les gustaría llevar en un vagón frío?",
+   "kids_src": "8843c8fdc1"
   },
   {
    "state": "CA",
@@ -489,7 +822,18 @@
    "months": null,
    "wiki": "Red Bluff Diversion Dam",
    "src": "https://en.wikipedia.org/wiki/Red_Bluff_Diversion_Dam",
-   "src2": "https://en.wikipedia.org/wiki/Red_Bluff_Diversion_Dam"
+   "src2": "https://en.wikipedia.org/wiki/Red_Bluff_Diversion_Dam",
+   "name_es": "Red Bluff Diversion Dam",
+   "text_es": "Al este de la autopista, la Red Bluff Diversion Dam, una estructura de concreto de casi 6,000 pies de largo, cruza el río Sacramento. Terminada en 1964, elevaba el río para alimentar los canales Tehama-Colusa y Corning, que riegan unos 150,000 acres de cultivos. Pero también bloqueaba al salmón, así que desde 2013 sus compuertas están fijas abiertas para que el río corra libre.",
+   "more_es": "En el Sacramento, el conteo del salmón chinook de invierno bajó de 118,000 en 1969 a un mínimo récord de 191 en 1991. Las escaleras para peces y una malla para peces no resolvieron el problema, y en 2009 las autoridades federales de pesca ordenaron abrir las compuertas todo el año. Una nueva planta de bombeo con malla para peces, justo río arriba, ahora sube el agua a los canales. Fijar las compuertas abiertas fue polémico, porque vació Lake Red Bluff, un lugar de recreo muy popular. El canal Tehama-Colusa, el más grande de los dos, corre 110.9 millas por el lado oeste del valle y no se terminó sino hasta 1980.",
+   "es_src": {
+    "name": "387c1d8bc8",
+    "text": "6253cd23f4",
+    "more": "4e2dab27f9"
+   },
+   "kids": "East of the freeway, a long concrete dam crosses the Sacramento River. It was finished in 1964 and raised the river to fill canals that water about 150,000 acres of farms. But it also blocked salmon swimming in the river. So since 2013, its gates stay open to let the river run free. What do you think the salmon do when the gates are open?",
+   "kids_es": "Al este de la autopista, una larga presa de concreto cruza el río Sacramento. Se terminó en 1964 y elevaba el río para llenar canales que riegan unos 150,000 acres de cultivos. Pero también bloqueaba al salmón. Por eso, desde 2013 sus compuertas están abiertas para que el río corra libre. ¿Qué creen que hacen los salmones con las compuertas abiertas?",
+   "kids_src": "6253cd23f4"
   },
   {
    "state": "CA",
@@ -505,7 +849,18 @@
    "months": null,
    "wiki": "Home of Mrs. John Brown",
    "src": "https://en.wikipedia.org/wiki/Home_of_Mrs._John_Brown",
-   "src2": "https://en.wikipedia.org/wiki/Mary_Ann_Day_Brown"
+   "src2": "https://en.wikipedia.org/wiki/Mary_Ann_Day_Brown",
+   "name_es": "La viuda de John Brown",
+   "text_es": "En el otoño de 1864, Mary Brown, viuda del abolicionista John Brown, llegó a Red Bluff con sus hijos, pobre y sin hogar. El pueblo la ayudó, y un fondo encabezado por el gobernador Frederick Low reunió 450 dólares para un terreno y una casita en Main Street. Esa casa es hoy un Hito Histórico de California.",
+   "more_es": "John Brown había sido ejecutado en 1859 después de encabezar un asalto a Harpers Ferry, Virginia, con el que pretendía iniciar una campaña para liberar a las personas esclavizadas. Mary tuvo 13 hijos propios y crió a 5 hijastros, y la pareja había ayudado a personas a escapar de la esclavitud por el Ferrocarril Subterráneo. En el camino al oeste, simpatizantes confederados persiguieron a la familia, que llegó a un puesto del ejército de la Unión en Idaho apenas tres horas antes que ellos, y los soldados los escoltaron 200 millas. En Red Bluff, Mary trabajó como enfermera y partera. Pero la acosaban personas a favor de la esclavitud, y en 1870 la familia vendió la casa y se mudó al condado de Humboldt.",
+   "es_src": {
+    "name": "3c395c79cd",
+    "text": "72df91a90c",
+    "more": "898a2dbb77"
+   },
+   "kids": "In 1864, Mary Brown came to Red Bluff with her children. They were poor and had no home. The town helped her, and people raised 450 dollars for land and a small house on Main Street. That house is now a California Historical Landmark. How could you help someone who is new in town?",
+   "kids_es": "En 1864, Mary Brown llegó a Red Bluff con sus hijos. Eran pobres y no tenían hogar. El pueblo la ayudó, y la gente reunió 450 dólares para un terreno y una casita en Main Street. Esa casa es hoy un Hito Histórico de California. ¿Cómo podrían ayudar a alguien que acaba de llegar a su pueblo?",
+   "kids_src": "72df91a90c"
   },
   {
    "state": "CA",
@@ -521,7 +876,20 @@
    "months": null,
    "wiki": "Red Bluff, California",
    "src": "https://en.wikipedia.org/wiki/Red_Bluff,_California",
-   "src2": "https://en.wikipedia.org/wiki/Red_Bluff,_California"
+   "src2": "https://en.wikipedia.org/wiki/Red_Bluff,_California",
+   "name_es": "Red Bluff, punto final de la navegación",
+   "text_es": "Red Bluff debe su nombre a los acantilados rojos que antes destacaban en las orillas del río Sacramento, que la autopista cruza dos veces en el pueblo, a menos de dos millas de distancia. El pueblo creció en el punto final de la navegación, el lugar más lejano al que podían llegar los barcos de río, y aquí desembarcaban los mineros rumbo a los campos de oro del condado de Trinity. Primero se llamó Leodocia y luego Covertsburg.",
+   "more_es": "Red Bluff también marca el extremo norte de una franja de tierras de cultivo que corre casi sin interrupción hasta Bakersfield, unas 400 millas al sur. El ferrocarril llegó en 1872, y durante unos años el pueblo fue el final de la línea. En febrero de 1886, miles de personas blancas de una Anti-Coolie League marcharon sobre el barrio chino y ordenaron a los residentes chinos irse en 10 días. La comunidad china se negó, pidió apoyo a los comerciantes blancos que la respaldaban, y se quedó. En 2022 la ciudad estableció un Distrito Histórico del Barrio Chino. Cada abril el pueblo organiza el Red Bluff Round-Up, presentado como el rodeo de tres días más grande del país, que comenzó de manera no oficial en 1918, cuando los trabajadores de los ranchos hacían competencias en un rancho local. En 2024 atrajo a 675 competidores y unos 35,000 aficionados.",
+   "spot_es": "Busque el ancho río Sacramento pasando bajo la autopista, dos veces.",
+   "es_src": {
+    "name": "fbd0880025",
+    "text": "523d75562f",
+    "more": "0af5cda191",
+    "spot": "d26d0c90b9"
+   },
+   "kids": "Red Bluff is named for red cliffs that once stood along the Sacramento River. Riverboats could not go any farther up the river than this. Miners got off the boats here on their way to find gold. The town was first called Leodocia, then Covertsburg. Look for the wide Sacramento River passing under the freeway, twice.",
+   "kids_es": "Red Bluff debe su nombre a los acantilados rojos que antes había en las orillas del río Sacramento. Los barcos de río no podían llegar más lejos que aquí. Los mineros desembarcaban aquí rumbo a los campos de oro. Primero el pueblo se llamó Leodocia y luego Covertsburg. Busquen el ancho río Sacramento pasando bajo la autopista, dos veces.",
+   "kids_src": "523d75562f"
   },
   {
    "state": "CA",
@@ -537,7 +905,18 @@
    "months": null,
    "wiki": "William B. Ide Adobe State Historic Park",
    "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park",
-   "src2": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+   "src2": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park",
+   "name_es": "William B. Ide Adobe",
+   "text_es": "A una milla al norte de Red Bluff, en la orilla oeste del río Sacramento, un parque histórico estatal honra a William Ide, el único presidente de la República de California. Esa república, nacida en la Revuelta de la Bandera del Oso, duró del 14 de junio al 9 de julio de 1846, menos de un mes. Y aquí viene lo curioso: investigaciones posteriores mostraron que Ide nunca fue dueño de la casa de adobe que lleva su nombre ni vivió en ella.",
+   "more_es": "Un antiguo colono de Red Bluff llamado A. M. Dibble construyó la casa de adobe en 1852. Unos 20 dueños distintos tuvieron la propiedad antes de 1942, y en realidad Ide tenía tierras más abajo por el río. El estado compró el sitio en los años 1950, inauguró el parque en 1960 y conservó el nombre de Ide para honrar su papel en la historia de California. Hoy el parque tiene la casa de adobe restaurada, una recreación de una granja de los años 1850 con una herrería, y un área de picnic sobre el río. En junio se celebra ahí el Ide's Ferry Championship Horseshoe Pitchers Contest, un concurso de lanzamiento de herraduras, y en días especiales los visitantes pueden probar juegos de cartas de la fiebre del oro, como el faro y el monte.",
+   "es_src": {
+    "name": "b67c1f8af3",
+    "text": "d39f16bfa0",
+    "more": "88b4511899"
+   },
+   "kids": "North of Red Bluff, a park honors William Ide. He was the only president of the California Republic. That republic lasted less than a month in 1846. Here is a surprise: Ide never owned or lived in the old house that has his name! What would you name a house after yourself?",
+   "kids_es": "Al norte de Red Bluff, un parque honra a William Ide. Fue el único presidente de la República de California. Esa república duró menos de un mes, en 1846. Y aquí viene lo curioso: Ide nunca fue dueño de la casa de adobe que lleva su nombre ni vivió en ella. ¿Qué nombre le pondrían ustedes a una casa?",
+   "kids_src": "d39f16bfa0"
   },
   {
    "state": "CA",
@@ -553,7 +932,18 @@
    "months": null,
    "wiki": "Alvin Aaron Coffey Sr.",
    "src": "https://en.wikipedia.org/wiki/Alvin_Aaron_Coffey_Sr.",
-   "src2": "https://en.wikipedia.org/wiki/Alvin_Aaron_Coffey_Sr."
+   "src2": "https://en.wikipedia.org/wiki/Alvin_Aaron_Coffey_Sr.",
+   "name_es": "La libertad de Alvin Coffey",
+   "text_es": "Red Bluff fue el hogar de Alvin Coffey, nacido esclavizado en Kentucky en 1822. En 1849, su esclavizador lo obligó a ir a California a buscar oro, y luego lo llevó de vuelta al este y lo vendió. Coffey regresó a los campos de oro, sacó suficiente oro para comprar su libertad y la de su familia, y en 1857 la familia partió hacia California y se estableció en Red Bluff.",
+   "more_es": "En su primer viaje, su esclavizador alquiló el trabajo de Coffey como zapatero, lavandero y minero, y se quedó con el dinero. Coffey escribió después que pensó en escapar, pero temía que su situación empeorara si lo atrapaban. Sus nuevos dueños aceptaron dejarlo comprar su libertad por 1,000 dólares, y él trabajó en minas cerca de Shasta y Sutter hasta que pudo pagar. En Red Bluff, los Coffey cultivaron la tierra, criaron guajolotes y tuvieron una lavandería. En 1887 se unió a la Society of California Pioneers, como su único miembro negro, y está enterrado en el Oak Hill Cemetery de Red Bluff.",
+   "es_src": {
+    "name": "0ca57438ef",
+    "text": "0776391064",
+    "more": "575d7c299e"
+   },
+   "kids": "Alvin Coffey was born in Kentucky in 1822, and he was not free. His enslaver took him to California to dig for gold. Later, Coffey came back and mined enough gold to buy freedom for himself and his family. In 1857 the family traveled to California and made their home in Red Bluff. What does being free mean to you?",
+   "kids_es": "Alvin Coffey nació en Kentucky en 1822, y no era libre. Lo obligaron a ir a California a buscar oro. Después, Coffey regresó y sacó suficiente oro para comprar su libertad y la de su familia. En 1857 la familia viajó a California y se estableció en Red Bluff. ¿Qué significa para ustedes ser libres?",
+   "kids_src": "0776391064"
   },
   {
    "state": "CA",
@@ -569,7 +959,18 @@
    "months": null,
    "wiki": "Bend, California",
    "src": "https://en.wikipedia.org/wiki/Bend,_California",
-   "src2": "https://www.blm.gov/visit/sacramento-river-bend-area"
+   "src2": "https://www.blm.gov/visit/sacramento-river-bend-area",
+   "name_es": "Bend, antes Horsethief Bend",
+   "text_es": "Al este de la autopista está la pequeña comunidad ribereña de Bend. Primero se llamó Horsethief Bend, luego Sander's Bend y, al final, solo Bend, por una curva cercana del río Sacramento. Hoy viven ahí unas 600 personas.",
+   "more_es": "Bend tuvo su propia oficina de correos de 1897 a 1935. Cerca de ahí, el Sacramento River Bend Area de la Oficina de Administración de Tierras protege terrenos públicos a lo largo del río, con hábitat para águilas calvas, águilas pescadoras, aves cantoras, venados y salmones. Los navegantes botan sus lanchas en Bend Bridge Park. El sitio de uso diurno Jellys Ferry es el inicio del Yana Trail, un sendero que cruza a pie el Inks Creek y puede quedar intransitable cuando llueve.",
+   "es_src": {
+    "name": "5409c88294",
+    "text": "3779243fbc",
+    "more": "48e86181a5"
+   },
+   "kids": "East of the freeway is the little river town of Bend. It was first called Horsethief Bend, then Sander's Bend. Finally it was just Bend, after a loop in the Sacramento River nearby. About 600 people live there today. If you could rename your town, what would you call it?",
+   "kids_es": "Al este de la autopista está Bend, una pequeña comunidad junto al río. Primero se llamó Horsethief Bend y luego Sander's Bend. Al final quedó solo Bend, por una curva cercana del río Sacramento. Hoy viven ahí unas 600 personas. Si pudieran cambiarle el nombre a su pueblo, ¿cómo lo llamarían?",
+   "kids_src": "3779243fbc"
   },
   {
    "state": "CA",
@@ -585,7 +986,18 @@
    "months": null,
    "wiki": null,
    "src": "https://www.waymarking.com/waymarks/WMGVEX_Herbert_S_Miles_Southbound_Rest_Area_Tehama_County_CA",
-   "src2": "https://dot.ca.gov/programs/design/lap-landscape-architecture-and-community-livability/lap-liv-h-safety-roadside-rest-areas"
+   "src2": "https://dot.ca.gov/programs/design/lap-landscape-architecture-and-community-livability/lap-liv-h-safety-roadside-rest-areas",
+   "name_es": "Área de descanso Herbert S. Miles",
+   "text_es": "Estas áreas de descanso llevan el nombre de Herbert S. Miles, un ingeniero de carreteras que pasó 42 años trabajando en las carreteras estatales de California. Como ingeniero de distrito, ayudó a dirigir la creación del programa estatal Safety Roadside Rest. Una placa en su honor está en el área de descanso del lado este de la autopista.",
+   "more_es": "El sistema moderno de áreas de descanso de California data de 1963, cuando una ley estatal ordenó al estado planear, construir y mantener áreas de descanso de seguridad a lo largo de sus carreteras. El plan detrás de esa ley contemplaba 257 de ellas. Para 1970 ya se habían construido casi todas las áreas de descanso actuales, salvo unas pocas. Un plan de 1974 redujo el sistema a 162, un plan de 1985 conservó 91 de las existentes, y hoy California tiene 87. Mucho antes, en los años 1930, las cuadrillas de carreteras construyeron fuentes y áreas de picnic a la orilla del camino, pero las obras de carreteras después de la Segunda Guerra Mundial acabaron con ellas.",
+   "es_src": {
+    "name": "5a1b1c3f61",
+    "text": "460c9e5473",
+    "more": "578bd53d8b"
+   },
+   "kids": "These rest areas are named for Herbert Miles. He worked on California's highways for 42 years. He helped start the rest areas where travelers can take a break. A plaque for him stands at the rest area on the east side of the freeway. What would you put in a perfect rest area?",
+   "kids_es": "Estas áreas de descanso llevan el nombre de Herbert S. Miles. Él trabajó 42 años en las carreteras estatales de California. Ayudó a crear el programa de áreas de descanso para viajeros. Hay una placa en su honor en el área de descanso del lado este de la autopista. ¿Qué pondrían ustedes en un área de descanso perfecta?",
+   "kids_src": "460c9e5473"
   },
   {
    "state": "CA",
@@ -605,7 +1017,20 @@
    ],
    "wiki": "Mount Shasta",
    "src": "https://en.wikipedia.org/wiki/Mount_Shasta",
-   "src2": "https://en.wikipedia.org/wiki/Mount_Shasta"
+   "src2": "https://en.wikipedia.org/wiki/Mount_Shasta",
+   "name_es": "Mount Shasta a lo lejos",
+   "text_es": "En días despejados, el pico solitario que se ve a lo lejos en el horizonte del norte es Mount Shasta, a unas 80 millas. Se eleva de golpe, casi 9,800 pies por encima del terreno que lo rodea. En un día despejado de invierno, se puede ver desde el fondo del Valle Central hasta a 140 millas al sur.",
+   "more_es": "Shasta es el segundo pico más alto de la cordillera de las Cascadas y el quinto más alto de California. Junto con su cono satélite, Shastina, domina el paisaje que lo rodea. Desde los años 1820, fue un punto de referencia para los viajeros del Siskiyou Trail. La montaña tiene un significado religioso para el pueblo wintu. La autopista pasa cerca de su base, junto al pueblo de Weed.",
+   "spot_es": "Busque un pico blanco y solitario a lo lejos, en el horizonte del norte.",
+   "es_src": {
+    "name": "4e47e2d80d",
+    "text": "bbd6601c6f",
+    "more": "cdc10d6895",
+    "spot": "5303fde1e7"
+   },
+   "kids": "On clear days, the lone peak far to the north is Mount Shasta. It is about 80 miles away. It rises almost 9,800 feet above the land around it. On clear winter days, people can see it from 140 miles away! Look for a lone white peak far away on the northern skyline.",
+   "kids_es": "En días despejados, el pico solitario a lo lejos en el norte es Mount Shasta. Está a unas 80 millas. Se eleva casi 9,800 pies por encima del terreno que lo rodea. En días despejados de invierno, se puede ver hasta desde 140 millas al sur. Busquen un pico blanco y solitario a lo lejos, en el horizonte del norte.",
+   "kids_src": "bbd6601c6f"
   },
   {
    "state": "CA",
@@ -621,7 +1046,20 @@
    "months": null,
    "wiki": "Cottonwood Creek (Sacramento River tributary)",
    "src": "https://en.wikipedia.org/wiki/Cottonwood_Creek_(Sacramento_River_tributary)",
-   "src2": "https://en.wikipedia.org/wiki/Cottonwood_Creek_(Sacramento_River_tributary)"
+   "src2": "https://en.wikipedia.org/wiki/Cottonwood_Creek_(Sacramento_River_tributary)",
+   "name_es": "Cottonwood Creek",
+   "text_es": "Aquí la autopista cruza Cottonwood Creek, que marca el límite entre los condados de Tehama y Shasta a todo lo largo de su cauce. Es el afluente sin presas más grande del río Sacramento, y por eso todavía tiene corridas de salmón chinook y trucha steelhead. John C. Frémont le puso nombre en 1846, al describir los álamos que crecían a lo largo de su lecho de arena y grava.",
+   "more_es": "Cuando se creó el condado de Tehama en 1856, el límite del condado se trazó a lo largo del arroyo. En 1851, líderes wintu firmaron el Tratado de Cottonwood Creek, entregando la mayor parte de sus tierras a cambio de una reserva a lo largo del río Sacramento, pero el estado se opuso y nunca fue ratificado. En invierno y primavera el arroyo a menudo corre como un río grande, y para el verano se reduce a un hilito de agua. Desde los años 1940, el gobierno ha propuesto grandes presas en el arroyo, entre ellas una de 247 pies de altura, pero la oposición local y la preocupación por el salmón las detuvieron. En 1872, se construyó en Cottonwood la primera estación de tren del condado de Shasta.",
+   "spot_es": "Busque un arroyo ancho bordeado de árboles en el límite del condado de Shasta.",
+   "es_src": {
+    "name": "932bc21484",
+    "text": "08f2f99da7",
+    "more": "26357e9e35",
+    "spot": "97fa352798"
+   },
+   "kids": "The freeway crosses Cottonwood Creek here. It is the line between Tehama and Shasta counties. No dam blocks it, so salmon and steelhead still swim up it. John Frémont named it in 1846 for the cottonwood trees along it. Look for a wide creek lined with trees at the Shasta County line.",
+   "kids_es": "Aquí la autopista cruza Cottonwood Creek. Marca el límite entre los condados de Tehama y Shasta. No tiene presas, así que el salmón chinook y la trucha steelhead todavía suben por él. John C. Frémont le puso nombre en 1846, por los álamos que crecían en su orilla. Busquen un arroyo ancho bordeado de árboles en el límite del condado de Shasta.",
+   "kids_src": "08f2f99da7"
   },
   {
    "state": "CA",
@@ -637,7 +1075,18 @@
    "months": null,
    "wiki": "Cottonwood, California",
    "src": "https://en.wikipedia.org/wiki/Cottonwood,_California",
-   "src2": "https://en.wikipedia.org/wiki/Rancho_Buena_Ventura"
+   "src2": "https://en.wikipedia.org/wiki/Rancho_Buena_Ventura",
+   "name_es": "Cottonwood, el pueblo a medio camino",
+   "text_es": "Cottonwood fue un pueblo de diligencias, fundado en 1849, y tuvo su primera oficina de correos en 1852. Está a medio camino entre Redding y Red Bluff, a 15 millas de cada uno, en ambas orillas de Cottonwood Creek, que le dio su nombre. Hoy viven aquí unas 6,300 personas, casi el doble que en 2010.",
+   "more_es": "Cottonwood está en el extremo sur del Rancho Buena Ventura, una concesión de tierras mexicana de 26,632 acres otorgada en 1844 a Pierson B. Reading, un pionero de 1843. Fue la concesión de tierras más al norte de California, y se extendía 19 millas a lo largo del lado oeste del río Sacramento, de Cottonwood Creek a Salt Creek. La casa de adobe de Reading estaba a unas 6 millas al este de Cottonwood, cerca de lo que hoy es Reading Island Park, y él está enterrado cerca de ahí. En diciembre de 2024, un solo boleto de Mega Millions vendido en Cottonwood ganó un premio mayor de 1.22 mil millones de dólares, el quinto más grande en la historia del juego. Algunos residentes quisieran que Cottonwood se convirtiera en ciudad, pero los nuevos vecindarios de Sunset Hills y Sun City Tehama quedan del otro lado del límite del condado, y la constitución de California no permite que una ciudad cruce el límite de un condado.",
+   "es_src": {
+    "name": "5dfd1272d3",
+    "text": "570d79797b",
+    "more": "f7c9b913db"
+   },
+   "kids": "Cottonwood was a stagecoach town, settled in 1849. It sits halfway between Redding and Red Bluff, 15 miles from each. Cottonwood Creek runs right through it and gave it its name. About 6,300 people live here now. What do you think riding in a stagecoach was like?",
+   "kids_es": "Cottonwood fue un pueblo de diligencias, fundado en 1849. Está a medio camino entre Redding y Red Bluff, a 15 millas de cada uno. Cottonwood Creek pasa por el pueblo y le dio su nombre. Hoy viven aquí unas 6,300 personas. ¿Cómo creen que era viajar en diligencia?",
+   "kids_src": "570d79797b"
   },
   {
    "state": "CA",
@@ -653,7 +1102,18 @@
    "months": null,
    "wiki": "Coleman National Fish Hatchery",
    "src": "https://en.wikipedia.org/wiki/Coleman_National_Fish_Hatchery",
-   "src2": "https://en.wikipedia.org/wiki/Coleman_National_Fish_Hatchery"
+   "src2": "https://en.wikipedia.org/wiki/Coleman_National_Fish_Hatchery",
+   "name_es": "Criadero de peces de Coleman",
+   "text_es": "A unas 7 millas al este, en Battle Creek, está el Coleman National Fish Hatchery, el criadero de salmón más grande de la parte continental de Estados Unidos. Se construyó en 1942 para compensar las zonas de desove que se perdieron cuando Shasta Dam bloqueó el río. Su meta es criar unos 12 millones de salmones chinook de la corrida de otoño cada año.",
+   "more_es": "Shasta Dam cortó para siempre cerca de la mitad del hábitat clave de desove y crianza del salmón chinook y la trucha steelhead en este sistema de ríos. En Coleman, los salmones que regresan del océano suben por Battle Creek y la corriente del agua los atrae hacia el criadero. Los trabajadores recogen y fertilizan sus huevos, y los peces jóvenes crecen en estanques hasta que tienen el tamaño para irse al mar. Además de los peces de la corrida de otoño, Coleman cría chinook de finales de otoño y trucha steelhead, y un criadero hermano al pie de Shasta Dam cría salmón de la corrida de invierno. Los peces de Coleman ayudan a sostener la pesca comercial y deportiva de California.",
+   "es_src": {
+    "name": "89a12e4458",
+    "text": "a7d281d3fb",
+    "more": "1bdd2475f1"
+   },
+   "kids": "About 7 miles east, on Battle Creek, is Coleman National Fish Hatchery. It is the biggest salmon hatchery in the continental United States. It was built in 1942, after Shasta Dam blocked the river where salmon laid their eggs. Its goal is to raise about 12 million Chinook salmon each year. If you could name one baby salmon, what would you call it?",
+   "kids_es": "A unas 7 millas al este, en Battle Creek, está el Coleman National Fish Hatchery. Es el criadero de salmón más grande de la parte continental de Estados Unidos. Se construyó en 1942, porque Shasta Dam bloqueó el río donde los salmones ponían sus huevos. Su meta es criar unos 12 millones de salmones chinook cada año. Si pudieran ponerle nombre a un salmoncito, ¿cómo lo llamarían?",
+   "kids_src": "a7d281d3fb"
   },
   {
    "state": "CA",
@@ -669,7 +1129,18 @@
    "months": null,
    "wiki": "Anderson, California",
    "src": "https://en.wikipedia.org/wiki/Anderson,_California",
-   "src2": "https://en.wikipedia.org/wiki/Sierra_Pacific_Industries"
+   "src2": "https://en.wikipedia.org/wiki/Sierra_Pacific_Industries",
+   "name_es": "Anderson, un pueblo del ferrocarril",
+   "text_es": "Anderson es un pueblo del ferrocarril. En 1872, un ranchero y hotelero llamado Elias Anderson le cedió al ferrocarril Central Pacific un derecho de paso por sus tierras, y a cambio el ferrocarril le puso su nombre a la estación. Hoy Anderson es una ciudad de unos 11,000 habitantes, y es la sede de Sierra Pacific Industries.",
+   "more_es": "Sierra Pacific, el segundo productor de madera más grande de Estados Unidos, es el mayor terrateniente privado de California, con unos 1.7 millones de acres, el doble del área del Parque Nacional Yosemite. Tiene su propia planta de fabricación en Anderson para construir piezas para sus aserraderos. Elias Anderson compró el American Ranch en 1856 y construyó el American Ranch Hotel en lo que llegó a ser el centro, con la oficina de correos adentro. El Anderson River Park de la ciudad está en parte de sus antiguas tierras.",
+   "es_src": {
+    "name": "3014570277",
+    "text": "668b61c517",
+    "more": "beb17a9ec4"
+   },
+   "kids": "Anderson is a railroad town. In 1872, a rancher named Elias Anderson let the railroad build across his land. To thank him, the railroad named its station after him. Today about 11,000 people live in Anderson. If a train station were named for you, what would it be called?",
+   "kids_es": "Anderson es un pueblo del ferrocarril. En 1872, un ranchero llamado Elias Anderson dejó que el ferrocarril pasara por sus tierras. A cambio, el ferrocarril le puso su nombre a la estación. Hoy en Anderson viven unas 11,000 personas. Si una estación de tren llevara su nombre, ¿cómo se llamaría?",
+   "kids_src": "668b61c517"
   },
   {
    "state": "CA",
@@ -685,7 +1156,20 @@
    "months": null,
    "wiki": "Lassen Peak",
    "src": "https://en.wikipedia.org/wiki/Lassen_Peak",
-   "src2": "https://www.nps.gov/lavo/learn/nature/eruption_lassen_peak.htm"
+   "src2": "https://www.nps.gov/lavo/learn/nature/eruption_lassen_peak.htm",
+   "name_es": "Lassen Peak",
+   "text_es": "En días despejados, la gran montaña en el horizonte del este es Lassen Peak, a unas 40 millas, el volcán activo más al sur de la cordillera de las Cascadas. El 22 de mayo de 1915 lanzó una columna de ceniza a más de 30,000 pies de altura. Una fotografía de esa erupción se tomó desde Red Bluff, a unas 45 millas del pico.",
+   "more_es": "Lassen llevaba unos 27,000 años tranquilo cuando empezaron las explosiones de vapor el 30 de mayo de 1914, y siguieron unas 400 erupciones hasta 1921. La gran explosión de 1915 mandó una avalancha caliente de ceniza, piedra pómez y roca montaña abajo, y dejó una cicatriz de 3 millas cuadradas que hoy se llama el Devastated Area. La nube de ceniza se vio desde Eureka, 150 millas al oeste, y se detectó ceniza tan lejos como Elko, Nevada. Los maidu de la montaña llaman al pico Kom Yamani, Montaña de Nieve, y tiene la mayor nevada conocida de California, unas 660 pulgadas en un año promedio. En julio de 2024, el incendio Park, que empezó en Chico, quemó 429,603 acres de lomeríos y bosque y cerró el Lassen Volcanic National Park por tres semanas, aunque las llamas nunca entraron al parque.",
+   "spot_es": "Busque una gran montaña solitaria en el horizonte del este, a menudo con nieve en la cima.",
+   "es_src": {
+    "name": "95b905b899",
+    "text": "fe97e681a6",
+    "more": "cb2932af77",
+    "spot": "f949333ee6"
+   },
+   "kids": "On clear days, you may see Lassen Peak on the eastern skyline, about 40 miles away. It is a volcano that is still active. On May 22, 1915, it blasted ash more than 30,000 feet into the sky. A photo of it was taken from Red Bluff! Look for a big lone mountain on the eastern skyline, often with snow on top.",
+   "kids_es": "En días despejados, la gran montaña en el horizonte del este es Lassen Peak, a unas 40 millas. Es un volcán activo. El 22 de mayo de 1915 lanzó ceniza a más de 30,000 pies de altura. ¡Una foto de esa erupción se tomó desde Red Bluff! Busquen una gran montaña solitaria en el horizonte del este, a menudo con nieve en la cima.",
+   "kids_src": "fe97e681a6"
   },
   {
    "state": "CA",
@@ -701,7 +1185,18 @@
    "months": null,
    "wiki": "Clear Creek (Sacramento River tributary)",
    "src": "https://ohp.parks.ca.gov/ListedResources/Detail/78",
-   "src2": "https://en.wikipedia.org/wiki/Clear_Creek_(Sacramento_River_tributary)"
+   "src2": "https://en.wikipedia.org/wiki/Clear_Creek_(Sacramento_River_tributary)",
+   "name_es": "El oro de Reading en Clear Creek",
+   "text_es": "Clear Creek se une al río Sacramento justo al oeste de la autopista, al sur de Redding. Cinco millas arroyo arriba, en un lugar llamado Reading's Bar, Pierson B. Reading y sus trabajadores indígenas encontraron oro en 1848. Tanto el arroyo como Reading's Bar son hoy hitos históricos estatales.",
+   "more_es": "El hallazgo de Reading fue en marzo de 1848, poco después del descubrimiento de James Marshall en Sutter's Mill. Clear Creek es el primer afluente importante que se une al Sacramento debajo de Shasta Dam. Nace en las Trinity Mountains, entre el lago Shasta y el lago Trinity, y pasa por el lago Whiskeytown antes de llegar al río. Debajo de Whiskeytown Dam, el Spring Creek Tunnel desvía el agua de la parte baja del arroyo y la lleva del lago Whiskeytown directo al embalse Keswick, como parte del Proyecto del Valle Central. El sitio del descubrimiento de oro fue declarado Hito Histórico de California en 1932.",
+   "es_src": {
+    "name": "e8460697af",
+    "text": "8afdbddd20",
+    "more": "b5561f89ab"
+   },
+   "kids": "Clear Creek joins the Sacramento River just west of the freeway, south of Redding. Five miles up the creek is a spot called Reading's Bar. There, in 1848, Pierson B. Reading and his Native workers found gold. Now the creek and that spot are state historical landmarks. If you found gold in a creek, what would you do first?",
+   "kids_es": "Clear Creek se une al río Sacramento justo al oeste de la autopista, al sur de Redding. Cinco millas arroyo arriba hay un lugar llamado Reading's Bar. Ahí, en 1848, Pierson B. Reading y sus trabajadores indígenas encontraron oro. Hoy el arroyo y Reading's Bar son hitos históricos estatales. Si encontraran oro en un arroyo, ¿qué harían primero?",
+   "kids_src": "8afdbddd20"
   },
   {
    "state": "CA",
@@ -717,7 +1212,18 @@
    "months": null,
    "wiki": "Redding Rancheria",
    "src": "https://en.wikipedia.org/wiki/Redding_Rancheria",
-   "src2": "https://en.wikipedia.org/wiki/Redding_Rancheria"
+   "src2": "https://en.wikipedia.org/wiki/Redding_Rancheria",
+   "name_es": "Redding Rancheria",
+   "text_es": "Al oeste de la autopista, al sur de Redding, está la Redding Rancheria, una tribu con reconocimiento federal de los pueblos wintu, pit river y yana. Su terreno de 31 acres lo compró la Oficina de Asuntos Indígenas en 1922, como lugar para acampar y vivir para personas indígenas que los colonos habían dejado sin tierra.",
+   "more_es": "Los tres grupos se organizaron como una sola tribu y fueron reconocidos en 1979, y adoptaron una constitución en 1989. La tribu la gobiernan siete consejeros elegidos por sus miembros. Construyó el Win-River Resort and Casino junto a la Highway 273, cerca de la autopista. Los ingresos del casino han financiado pagos a cada miembro de la tribu.",
+   "es_src": {
+    "name": "d85704f012",
+    "text": "b3121f20a1",
+    "more": "727b89d44d"
+   },
+   "kids": "West of the freeway, south of Redding, is the Redding Rancheria. It is home to a tribe of Wintu, Pit River and Yana people. In 1922, its 31-acre site was bought as a place for Native people to camp and live. Settlers had left them without land. What do you think makes a place feel like home?",
+   "kids_es": "Al oeste de la autopista, al sur de Redding, está la Redding Rancheria. Es el hogar de una tribu de los pueblos wintu, pit river y yana. En 1922 se compró su terreno de 31 acres como lugar para acampar y vivir para personas indígenas, porque los colonos las habían dejado sin tierra. ¿Qué creen ustedes que hace que un lugar se sienta como un hogar?",
+   "kids_src": "b3121f20a1"
   },
   {
    "state": "CA",
@@ -733,7 +1239,18 @@
    "months": null,
    "wiki": "Sacramento River massacre",
    "src": "https://en.wikipedia.org/wiki/Sacramento_River_massacre",
-   "src2": "https://en.wikipedia.org/wiki/Redding_Rancheria"
+   "src2": "https://en.wikipedia.org/wiki/Redding_Rancheria",
+   "name_es": "La masacre del río en 1846",
+   "text_es": "El 5 de abril de 1846, una expedición armada dirigida por el capitán John C. Frémont atacó un gran campamento wintu a la orilla del río Sacramento, cerca de lo que hoy es Redding. Los wintu, en su mayoría mujeres y niños, quedaron atrapados contra el río. Los cálculos de muertos van de 125 a 900, y nunca se castigó a nadie.",
+   "more_es": "El grupo de Frémont había subido por el valle desde el rancho de Peter Lassen después de que unos colonos afirmaron que los indígenas se preparaban para atacar. Los hombres del campamento formaron una línea para proteger a las mujeres y los niños, pero sus flechas no alcanzaban a los fusileros. Kit Carson, uno de los atacantes, después lo llamó una carnicería perfecta. En la década de 1850 siguieron más masacres de wintu. Frémont llegó a ser uno de los primeros senadores de Estados Unidos por California y, en 1856, candidato a presidente. Hoy viven wintu en esta región, entre ellos miembros de la Redding Rancheria.",
+   "es_src": {
+    "name": "a74a6d0a2d",
+    "text": "8aef6b2695",
+    "more": "629f2187ab"
+   },
+   "kids": "Near what is now Redding, the Wintu people once had a large camp on the Sacramento River. Something very sad happened to them here long ago, in 1846. Many people remember the Wintu and their story. What do you think the river was like for people living beside it?",
+   "kids_es": "Cerca de lo que hoy es Redding, el pueblo wintu tenía un gran campamento a la orilla del río Sacramento. Aquí pasó algo muy triste hace mucho tiempo, en 1846. ¿Cómo creen que era el río para las personas que vivían a su lado?",
+   "kids_src": "8aef6b2695"
   },
   {
    "state": "CA",
@@ -749,7 +1266,18 @@
    "months": null,
    "wiki": "Carr Fire",
    "src": "https://en.wikipedia.org/wiki/Carr_Fire",
-   "src2": "https://en.wikipedia.org/wiki/Carr_Fire"
+   "src2": "https://en.wikipedia.org/wiki/Carr_Fire",
+   "name_es": "El incendio Carr",
+   "text_es": "El 26 de julio de 2018, el incendio Carr cruzó el río Sacramento hacia el lado oeste de Redding, y 38,000 personas tuvieron que evacuar. Esa tarde se formó un remolino de fuego, con vientos calculados en más de 143 millas por hora, tan fuertes como un tornado EF3, que subió unos 18,000 pies, según los cálculos.",
+   "more_es": "El incendio había empezado tres días antes cerca de Whiskeytown, al oeste de Redding, cuando a un remolque se le reventó una llanta y su rin de acero raspó el pavimento, lanzando chispas a la maleza seca. Quemó 229,651 acres y destruyó 1,604 edificios, entre ellos más de mil casas. Murieron ocho personas, entre ellas el inspector de bomberos de Redding Jeremy Stoke, a quien mató el remolino de fuego. El remolino se mantuvo en el suelo cerca de media hora, derribando torres de transmisión y arrancando la corteza de los árboles. Solo cerca de Lake Redding Park se quemaron casi 40 casas.",
+   "es_src": {
+    "name": "4f27da9b65",
+    "text": "83978fb8ff",
+    "more": "3685d4ac8e"
+   },
+   "kids": "Redding sits beside the Sacramento River. In 2018, something sad happened here, when a big fire came into the west side of town. Lots of people had to leave their homes for a while to stay safe. Today the town is still here by the river. What are some ways people help each other?",
+   "kids_es": "Redding está junto al río Sacramento. En 2018 pasó algo triste aquí, cuando un gran incendio llegó al lado oeste de la ciudad. Unas 38,000 personas tuvieron que salir de sus casas para estar a salvo. ¿De qué maneras pueden ayudarse las personas unas a otras?",
+   "kids_src": "83978fb8ff"
   },
   {
    "state": "CA",
@@ -765,7 +1293,18 @@
    "months": null,
    "wiki": "Redding, California",
    "src": "https://en.wikipedia.org/wiki/Redding,_California",
-   "src2": "https://en.wikipedia.org/wiki/Redding,_California"
+   "src2": "https://en.wikipedia.org/wiki/Redding,_California",
+   "name_es": "Redding, antes Poverty Flats",
+   "text_es": "Durante la fiebre del oro, los mineros encontraron poco oro en esta tierra, y al lugar le llamaron Poverty Flats. En 1868, el agente de tierras del Central Pacific Railroad, Benjamin Redding, compró terrenos aquí para una terminal del norte, y el ferrocarril construyó un pueblo y le puso su nombre. Las vías llegaron en 1872.",
+   "more_es": "En 1874, los legisladores locales le cambiaron el nombre al pueblo a Reading, en honor del pionero Pierson B. Reading, en cuya concesión de tierras mexicana se encuentra. Para 1880 el nombre volvió oficialmente a ser Redding. El pueblo creció con la minería de cobre y hierro cercana a principios del siglo XX, y casi duplicó su tamaño mientras se construía Shasta Dam. Redding es conocido por sus veranos muy calurosos: la máxima promedio de julio ronda los 100 grados, y el 6 de julio de 2024 Redding llegó a 119, su récord histórico. Pero también puede nevar. El 23 de diciembre de 1968 cayeron 16 pulgadas en un solo día.",
+   "es_src": {
+    "name": "4aaec570c6",
+    "text": "7eff7c7d49",
+    "more": "9b9c130908"
+   },
+   "kids": "During the Gold Rush, miners found little gold here. So people called this spot Poverty Flats. In 1868, a man named Benjamin Redding bought land here for the railroad. The railroad built a town and named it after him. The tracks arrived in 1872. If a town were named after you, what would it be called?",
+   "kids_es": "Durante la fiebre del oro, los mineros encontraron poco oro en esta tierra, así que al lugar le llamaron Poverty Flats. En 1868, Benjamin Redding compró terrenos aquí para el ferrocarril. El ferrocarril construyó un pueblo y le puso su nombre, y las vías llegaron en 1872. Si un pueblo llevara su nombre, ¿cómo se llamaría?",
+   "kids_src": "7eff7c7d49"
   },
   {
    "state": "CA",
@@ -781,7 +1320,18 @@
    "months": null,
    "wiki": "Sundial Bridge at Turtle Bay",
    "src": "https://en.wikipedia.org/wiki/Sundial_Bridge_at_Turtle_Bay",
-   "src2": "https://en.wikipedia.org/wiki/Sundial_Bridge_at_Turtle_Bay"
+   "src2": "https://en.wikipedia.org/wiki/Sundial_Bridge_at_Turtle_Bay",
+   "name_es": "Sundial Bridge",
+   "text_es": "Al oeste de la autopista, el Sundial Bridge, un puente peatonal de 700 pies diseñado por Santiago Calatrava, cruza el río Sacramento. Su mástil de 217 pies apunta justo al norte con un ángulo de 42 grados y proyecta su sombra sobre un cuadrante gigante. La punta de esa sombra avanza cerca de un pie por minuto, así que se puede ver girar la Tierra.",
+   "more_es": "El puente une las dos mitades del Turtle Bay Exploration Park, 300 acres junto al río con un museo, exhibiciones de animales, jardines y juegos infantiles. El museo tiene exhibiciones sobre el pueblo wintu, incluido un refugio de tamaño real. El puente cruza el río sin tocar el agua, lo que ayuda a proteger las zonas de desove del salmón que están debajo, y su pasarela de vidrio brilla de color aguamarina en la noche. Redding presupuestó primero 3 millones de dólares para un puente peatonal, y algunos vecinos querían en cambio un sencillo puente cubierto. El diseño de Calatrava se inauguró en 2004, con tres años de retraso, a un costo de 23.5 millones de dólares, pagados por la McConnell Foundation. El puente también conecta con el Sacramento River Trail, que corre unas 35 millas hasta Shasta Dam.",
+   "es_src": {
+    "name": "43d90529bb",
+    "text": "843c46775d",
+    "more": "ee5bb59f1e"
+   },
+   "kids": "West of the freeway, the Sundial Bridge crosses the Sacramento River. It is a 700-foot bridge just for people walking. Its tall pole points north and casts a shadow on a giant dial. The tip of the shadow moves about a foot a minute. That shows the Earth turning! How could you use a shadow to tell the time?",
+   "kids_es": "Al oeste de la autopista, el Sundial Bridge cruza el río Sacramento. Es un puente de 700 pies solo para personas que caminan. Su mástil apunta al norte y proyecta su sombra sobre un cuadrante gigante. La punta de la sombra avanza cerca de un pie por minuto, ¡y así se puede ver girar la Tierra! ¿Cómo podrían usar una sombra para saber la hora?",
+   "kids_src": "843c46775d"
   }
  ],
  "zones": [
@@ -793,6 +1343,16 @@
    "text": "Almond orchards ring Arbuckle and rice fields spread across the flat valley floor, while the Sutter Buttes rise from the plain to the east.",
    "seasons": {
     "fall": "Ducks and geese arrive in fall, and many rice fields are flooded to give them food and shelter through the winter."
+   },
+   "label_es": "Almendros, arroz y las Sutter Buttes",
+   "text_es": "Huertos de almendros rodean Arbuckle y los campos de arroz se extienden por el fondo plano del valle, mientras las Sutter Buttes se levantan de la llanura al este.",
+   "seasons_es": {
+    "fall": "Los patos y los gansos llegan en otoño, y muchos campos de arroz se inundan para darles comida y refugio durante el invierno."
+   },
+   "es_src": {
+    "label": "5c987b467d",
+    "text": "3d6104a497",
+    "seasons": "d510f891d2"
    }
   },
   {
@@ -805,6 +1365,18 @@
     "winter": "Waterfowl numbers at the refuge peak in late November and early December.",
     "spring": "In April, shorebirds and songbirds stop at the refuge on their way north.",
     "summer": "Most of the refuge marshes are dry in summer, with only about 15 percent of the wetlands flooded."
+   },
+   "label_es": "Arrozales y refugios de vida silvestre",
+   "text_es": "Aquí los campos de arroz se extienden por el valle, y los pantanos del Sacramento National Wildlife Refuge quedan justo al este de la autopista.",
+   "seasons_es": {
+    "winter": "El número de aves acuáticas en el refugio llega a su punto más alto a fines de noviembre y principios de diciembre.",
+    "spring": "En abril, las aves playeras y los pájaros cantores se detienen en el refugio en su camino hacia el norte.",
+    "summer": "En verano, la mayoría de los pantanos del refugio están secos, y solo unos 15 por ciento de los humedales están inundados."
+   },
+   "es_src": {
+    "label": "8049682b30",
+    "text": "bef99599fc",
+    "seasons": "6183f88ddf"
    }
   },
   {
@@ -813,7 +1385,14 @@
    "to": 619,
    "label": "Willows and Glenn County",
    "text": "North of Willows, almond orchards grow around Artois.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Willows y el condado de Glenn",
+   "text_es": "Al norte de Willows, hay huertos de almendros alrededor de Artois.",
+   "es_src": {
+    "label": "32f4f7df75",
+    "text": "a25546ad21",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -825,6 +1404,18 @@
     "winter": "Thomes Creek runs highest in February, on average.",
     "summer": "The wide gravel bed of Thomes Creek is often dry in summer.",
     "fall": "The Corning Olive Festival is held on the second Saturday in October."
+   },
+   "label_es": "Huertos de Orland y Corning",
+   "text_es": "Alrededor de Orland y Corning crecen huertos de almendros, nogales, ciruelos para ciruela pasa y olivos, y la autopista cruza Stony Creek y Thomes Creek.",
+   "seasons_es": {
+    "winter": "Thomes Creek lleva más agua en febrero, en promedio.",
+    "summer": "El ancho lecho de grava de Thomes Creek muchas veces está seco en verano.",
+    "fall": "El Corning Olive Festival se celebra el segundo sábado de octubre."
+   },
+   "es_src": {
+    "label": "6965bbc902",
+    "text": "6cfae224e0",
+    "seasons": "6ea5b68743"
    }
   },
   {
@@ -836,6 +1427,17 @@
    "seasons": {
     "spring": "The Red Bluff Round-Up rodeo comes to town in late April.",
     "summer": "Red Bluff averages about 100 days a year with highs of 90 degrees or more."
+   },
+   "label_es": "Del condado de Tehama a Red Bluff",
+   "text_es": "Este es el extremo norte de una franja de tierras de cultivo que llega casi sin interrupción hasta Bakersfield, y en los días despejados Lassen Peak se ve en el horizonte del este.",
+   "seasons_es": {
+    "spring": "El rodeo Red Bluff Round-Up llega al pueblo a fines de abril.",
+    "summer": "Red Bluff tiene en promedio unos 100 días al año con máximas de 90 grados o más."
+   },
+   "es_src": {
+    "label": "254a0050ea",
+    "text": "d785e60ca0",
+    "seasons": "16e7d97029"
    }
   },
   {
@@ -844,7 +1446,14 @@
    "to": 662,
    "label": "Red Bluff rangeland",
    "text": "Between Red Bluff and Cottonwood, mildly rugged rangeland separates the valley's crop areas.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Pastizales de Red Bluff",
+   "text_es": "Entre Red Bluff y Cottonwood, pastizales un poco accidentados separan las zonas de cultivo del valle.",
+   "es_src": {
+    "label": "29c3d68b3a",
+    "text": "452ff3c858",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -855,6 +1464,17 @@
    "seasons": {
     "winter": "Cottonwood Creek often runs like a large river in winter and spring.",
     "summer": "By summer and fall, Cottonwood Creek dwindles to a trickle."
+   },
+   "label_es": "Cottonwood y Anderson",
+   "text_es": "Cerca del extremo norte del Valle Central, la autopista pasa por Cottonwood y Anderson, con tierras de rancho a lo largo de Cottonwood Creek.",
+   "seasons_es": {
+    "winter": "En invierno y primavera, Cottonwood Creek muchas veces corre como un río grande.",
+    "summer": "Para el verano y el otoño, Cottonwood Creek se reduce a un hilito de agua."
+   },
+   "es_src": {
+    "label": "5629aa09f3",
+    "text": "1131929673",
+    "seasons": "71cab747d5"
    }
   },
   {
@@ -866,6 +1486,17 @@
    "seasons": {
     "summer": "The average July high in Redding is near 100 degrees.",
     "winter": "Winter brings most of Redding's rain, often with fog, and at times snow."
+   },
+   "label_es": "Redding",
+   "text_es": "Redding está en el extremo noroeste del Valle Central, con montañas al norte, al este y al oeste, y tierras de cultivo al sur.",
+   "seasons_es": {
+    "winter": "El invierno trae la mayor parte de la lluvia de Redding, muchas veces con niebla, y a veces nieve.",
+    "summer": "La máxima promedio de julio en Redding es de cerca de 100 grados."
+   },
+   "es_src": {
+    "label": "651617dc8e",
+    "text": "9599781725",
+    "seasons": "1d58660918"
    }
   }
  ],
@@ -882,7 +1513,20 @@
    ],
    "answer": 1,
    "why": "They are the eroded lava domes of a volcano that formed about 1.6 million years ago.",
-   "src": "https://en.wikipedia.org/wiki/Sutter_Buttes"
+   "src": "https://en.wikipedia.org/wiki/Sutter_Buttes",
+   "q_es": "¿Qué son en realidad las Sutter Buttes, los restos de qué?",
+   "choices_es": [
+    "Un glaciar",
+    "Un volcán",
+    "Un cráter de meteorito",
+    "Un arrecife de coral"
+   ],
+   "why_es": "Son los domos de lava erosionados de un volcán que se formó hace unos 1.6 millones de años.",
+   "es_src": {
+    "q": "116acfde6e",
+    "choices": "21726b0f0a",
+    "why": "891530e30b"
+   }
   },
   {
    "state": "CA",
@@ -896,7 +1540,20 @@
    ],
    "answer": 3,
    "why": "The Central post office opened in 1874, and the town was renamed for W. H. Williams, who laid out the townsite.",
-   "src": "https://en.wikipedia.org/wiki/Williams,_California"
+   "src": "https://en.wikipedia.org/wiki/Williams,_California",
+   "q_es": "Antes de que le cambiaran el nombre en 1876, ¿cómo se llamaba el pueblo de Williams?",
+   "choices_es": [
+    "Midway",
+    "Crossroads",
+    "Rice City",
+    "Central"
+   ],
+   "why_es": "La oficina de correos de Central abrió en 1874, y el pueblo recibió el nombre de W. H. Williams, quien trazó el terreno del pueblo.",
+   "es_src": {
+    "q": "44cca64b99",
+    "choices": "9ced16ea66",
+    "why": "10d09a0e82"
+   }
   },
   {
    "state": "CA",
@@ -910,7 +1567,20 @@
    ],
    "answer": 2,
    "why": "It is named after the tule grass wetlands, or tulares, of the Central Valley.",
-   "src": "https://en.wikipedia.org/wiki/Tule_fog"
+   "src": "https://en.wikipedia.org/wiki/Tule_fog",
+   "q_es": "La niebla de tule, la espesa niebla de invierno del Valle Central, ¿por qué lleva ese nombre?",
+   "choices_es": [
+    "Por un explorador español",
+    "Por un pueblo llamado Tule",
+    "Por los pantanos de tule del valle",
+    "Por una palabra wintun que significa nube"
+   ],
+   "why_es": "Lleva el nombre de los humedales de tule, o tulares, del Valle Central.",
+   "es_src": {
+    "q": "70c1a37e47",
+    "choices": "861fbdd9bc",
+    "why": "2aa7b78fcf"
+   }
   },
   {
    "state": "CA",
@@ -924,7 +1594,20 @@
    ],
    "answer": 0,
    "why": "Glenn owned about 55,000 acres and was nicknamed California's Wheat King.",
-   "src": "https://en.wikipedia.org/wiki/Hugh_J._Glenn"
+   "src": "https://en.wikipedia.org/wiki/Hugh_J._Glenn",
+   "q_es": "Hugh Glenn, de quien toma su nombre el condado de Glenn, era conocido como el rey de qué cultivo?",
+   "choices_es": [
+    "Trigo",
+    "Arroz",
+    "Almendras",
+    "Algodón"
+   ],
+   "why_es": "Glenn era dueño de unos 55,000 acres y le decían el Rey del Trigo de California.",
+   "es_src": {
+    "q": "f22d022449",
+    "choices": "2a54c6bda7",
+    "why": "0705486f67"
+   }
   },
   {
    "state": "CA",
@@ -938,7 +1621,20 @@
    ],
    "answer": 2,
    "why": "Germantown was renamed Artois in 1918, during World War One, after a region of France.",
-   "src": "https://en.wikipedia.org/wiki/Artois,_California"
+   "src": "https://en.wikipedia.org/wiki/Artois,_California",
+   "q_es": "¿Cómo se llamaba el pueblo de Artois antes de 1918?",
+   "choices_es": [
+    "Frenchtown",
+    "Glenn City",
+    "Germantown",
+    "Willow Springs"
+   ],
+   "why_es": "A Germantown le cambiaron el nombre a Artois en 1918, durante la Primera Guerra Mundial, por una región de Francia.",
+   "es_src": {
+    "q": "776a9ef4e7",
+    "choices": "3a6f3f07bc",
+    "why": "4d571ada8a"
+   }
   },
   {
    "state": "CA",
@@ -952,7 +1648,20 @@
    ],
    "answer": 3,
    "why": "In 2017 Orland declared itself the Queen Bee Capital of North America because of its many queen bee producers.",
-   "src": "https://en.wikipedia.org/wiki/Orland,_California"
+   "src": "https://en.wikipedia.org/wiki/Orland,_California",
+   "q_es": "Orland se llama a sí misma la capital norteamericana de qué?",
+   "choices_es": [
+    "Las aceitunas",
+    "Las nueces",
+    "Los rodeos",
+    "Las abejas reinas"
+   ],
+   "why_es": "En 2017, Orland se declaró la Capital de la Abeja Reina de Norteamérica por sus muchos productores de abejas reinas.",
+   "es_src": {
+    "q": "f3a91f3cd8",
+    "choices": "a03b0165a6",
+    "why": "d3b16ccc99"
+   }
   },
   {
    "state": "CA",
@@ -966,7 +1675,20 @@
    ],
    "answer": 1,
    "why": "Lassen Peak's eruptions began in 1914, and its biggest blast came on May 22, 1915.",
-   "src": "https://en.wikipedia.org/wiki/Lassen_Peak"
+   "src": "https://en.wikipedia.org/wiki/Lassen_Peak",
+   "q_es": "Además del Mount St. Helens, ¿qué volcán de los 48 estados contiguos hizo erupción en el siglo 20?",
+   "choices_es": [
+    "Mount Shasta",
+    "Lassen Peak",
+    "Mount Hood",
+    "Mount Rainier"
+   ],
+   "why_es": "Las erupciones de Lassen Peak empezaron en 1914, y su explosión más grande fue el 22 de mayo de 1915.",
+   "es_src": {
+    "q": "900abd36f7",
+    "choices": "1a71cabcb1",
+    "why": "c3e0af425a"
+   }
   },
   {
    "state": "CA",
@@ -980,7 +1702,20 @@
    ],
    "answer": 0,
    "why": "The California Republic lasted from June 14 to July 9, 1846.",
-   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park"
+   "src": "https://en.wikipedia.org/wiki/William_B._Ide_Adobe_State_Historic_Park",
+   "q_es": "¿Cuánto duró la República de California de William Ide?",
+   "choices_es": [
+    "Menos de un mes",
+    "Un año",
+    "Diez años",
+    "Nunca terminó"
+   ],
+   "why_es": "La República de California duró del 14 de junio al 9 de julio de 1846.",
+   "es_src": {
+    "q": "e4fc12a6b8",
+    "choices": "ca706328fb",
+    "why": "07ba3bccae"
+   }
   },
   {
    "state": "CA",
@@ -994,7 +1729,20 @@
    ],
    "answer": 2,
    "why": "It started as Horsethief Bend, became Sander's Bend, and was finally shortened to Bend.",
-   "src": "https://en.wikipedia.org/wiki/Bend,_California"
+   "src": "https://en.wikipedia.org/wiki/Bend,_California",
+   "q_es": "¿Cómo se llamó primero el pueblo ribereño de Bend?",
+   "choices_es": [
+    "Fisherman's Bend",
+    "Gold Bend",
+    "Horsethief Bend",
+    "Eagle Bend"
+   ],
+   "why_es": "Empezó como Horsethief Bend, luego fue Sander's Bend, y al final se acortó a Bend.",
+   "es_src": {
+    "q": "49aea7b4e5",
+    "choices": "3d11abb9a0",
+    "why": "2c7a11d15c"
+   }
   },
   {
    "state": "CA",
@@ -1008,7 +1756,20 @@
    ],
    "answer": 3,
    "why": "As the largest undammed tributary of the Sacramento, it is known for its Chinook salmon and steelhead runs.",
-   "src": "https://en.wikipedia.org/wiki/Cottonwood_Creek_(Sacramento_River_tributary)"
+   "src": "https://en.wikipedia.org/wiki/Cottonwood_Creek_(Sacramento_River_tributary)",
+   "q_es": "¿Qué hace especial a Cottonwood Creek entre los afluentes del río Sacramento?",
+   "choices_es": [
+    "Corre cuesta arriba",
+    "Es salado",
+    "Se congela cada invierno",
+    "Es el más grande sin presas"
+   ],
+   "why_es": "Como el afluente más grande del Sacramento sin presas, es conocido por sus migraciones de salmón chinook y de trucha steelhead.",
+   "es_src": {
+    "q": "8d498217fd",
+    "choices": "33f34cf9be",
+    "why": "0eb6ea949b"
+   }
   },
   {
    "state": "CA",
@@ -1022,7 +1783,20 @@
    ],
    "answer": 1,
    "why": "The ground held so little gold that the spot was called Poverty Flats.",
-   "src": "https://en.wikipedia.org/wiki/Redding,_California"
+   "src": "https://en.wikipedia.org/wiki/Redding,_California",
+   "q_es": "¿Cómo se llamaba Redding durante la fiebre del oro?",
+   "choices_es": [
+    "Gold Hill",
+    "Poverty Flats",
+    "Rich Bar",
+    "Shasta Springs"
+   ],
+   "why_es": "La tierra tenía tan poco oro que al lugar le decían Poverty Flats.",
+   "es_src": {
+    "q": "280eebe22f",
+    "choices": "84e04c1cbe",
+    "why": "aea293f50e"
+   }
   },
   {
    "state": "CA",
@@ -1036,7 +1810,20 @@
    ],
    "answer": 0,
    "why": "Staying out of the water helps protect the salmon spawning grounds beneath the bridge.",
-   "src": "https://en.wikipedia.org/wiki/Sundial_Bridge_at_Turtle_Bay"
+   "src": "https://en.wikipedia.org/wiki/Sundial_Bridge_at_Turtle_Bay",
+   "q_es": "¿Por qué el Sundial Bridge no toca el río Sacramento?",
+   "choices_es": [
+    "Para proteger las zonas de desove del salmón",
+    "El río se congela",
+    "El agua es demasiado profunda",
+    "Para dejar espacio a las carreras de lanchas"
+   ],
+   "why_es": "Al quedarse fuera del agua, ayuda a proteger las zonas de desove del salmón que están debajo del puente.",
+   "es_src": {
+    "q": "c8fbd5d0f0",
+    "choices": "0f3f3ace80",
+    "why": "b06303fc7a"
+   }
   }
  ]
 }

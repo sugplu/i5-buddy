@@ -1655,8 +1655,6 @@
  "games.higher.name_was_founded_in_v_x1_than_name2": "{name} was founded in {v}, {x1} than {name2}.",
  "games.higher.later_2": "later",
  "games.higher.earlier_2": "earlier",
- "games.higher.right": " right",
- "games.higher.wrong": " wrong",
  "games.higher.shown": "Shown",
  "games.higher.to_guess": "To guess",
  "games.higher.what_to_guess": "What to guess",

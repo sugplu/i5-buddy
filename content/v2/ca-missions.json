@@ -22,7 +22,18 @@
     "dir": "east",
     "miles": 8
    },
-   "mission": 1
+   "mission": 1,
+   "name_es": "Misión San Diego de Alcalá",
+   "text_es": "La salida 20 es la Interestatal 8 hacia el este, el camino a la Misión San Diego de Alcalá, a unas ocho millas tierra adentro. Fundada en 1769, fue la primera de las 21 misiones de California y sigue siendo una parroquia activa. Este valle es tierra ancestral de los kumeyaay, y en 1775 gente de varias aldeas kumeyaay quemó la misión.",
+   "more_es": "Desde la salida, siga la Interestatal 8 hacia el este hasta la salida de Mission Gorge Road, y luego tome Twain Avenue. La misión comenzó en una colina cerca de la bahía y se trasladó aquí en 1774. El padre Luis Jayme fue asesinado en la rebelión de 1775, y está sepultado junto al altar. Años antes, el padre Jayme había denunciado que los soldados maltrataban a los kumeyaay. Después, trece presuntos líderes de la rebelión fueron encarcelados. La iglesia que se ve hoy es una reconstrucción de 1931 de la iglesia dedicada en 1813. Hoy viven en Estados Unidos doce bandas kumeyaay con reconocimiento federal. El sitio web de la misión tiene una página sobre los kumeyaay.",
+   "es_src": {
+    "name": "7f94b9f8da",
+    "text": "8b6f837d25",
+    "more": "347569415f"
+   },
+   "kids": "Exit 20 leads to Mission San Diego de Alcalá, about eight miles away. It was founded in 1769. It was the first of California's 21 missions, and people still gather there today. This valley is the homeland of the Kumeyaay people. Why do you think the first mission was built here?",
+   "kids_es": "La salida 20 lleva a la Misión San Diego de Alcalá, a unas ocho millas tierra adentro. Se fundó en 1769 y fue la primera de las 21 misiones de California. Todavía es una parroquia activa. Este valle es tierra ancestral de los kumeyaay. ¿Por qué creen que la primera misión se construyó aquí?",
+   "kids_src": "8b6f837d25"
   },
   {
    "state": "CA",
@@ -45,7 +56,18 @@
     "dir": "east",
     "miles": 8
    },
-   "mission": 4
+   "mission": 4,
+   "name_es": "Misión San Gabriel Arcángel",
+   "text_es": "La salida 135 es la rampa hacia la Interestatal 10 este, el camino a la Misión San Gabriel, a unas ocho millas, en la ciudad de San Gabriel. Fundada en 1771, está en tierra ancestral de los tongva, y unas 6,000 personas indígenas están sepultadas en sus terrenos. En 1785, una curandera llamada Toypurina ayudó a organizar una rebelión contra la misión.",
+   "more_es": "Desde la salida, tome la Interestatal 10 hacia el este hasta New Avenue, y luego vaya al norte hasta Mission Drive. La rebelión de Toypurina empezó después de que el gobernador prohibió a los tongva bautizados realizar sus danzas. Fracasó. En su juicio, ella dijo que estaba enojada porque los misioneros se habían asentado en la tierra de su pueblo. La bautizaron bajo presión y la enviaron a una misión muy al norte. El museo de la misión nombra a 7,054 personas indígenas bautizadas aquí de 1771 a 1848. Un incendio destruyó el techo de la iglesia en 2020, y el lugar reabrió en 2023 con una exhibición sobre la historia indígena. El tráfico en este tramo puede ser pesado, así que calcule tiempo extra.",
+   "es_src": {
+    "name": "897ae915d4",
+    "text": "52b811acb1",
+    "more": "e229e9c3dd"
+   },
+   "kids": "Exit 135 leads toward Mission San Gabriel, about eight miles away. It was founded in 1771 in the homeland of the Tongva people. In 1785, a medicine woman named Toypurina helped organize a revolt against the mission. What do you think it means to stand up for your people?",
+   "kids_es": "La salida 135 lleva hacia la Misión San Gabriel, a unas ocho millas. Se fundó en 1771 en tierra ancestral de los tongva. En 1785, una curandera llamada Toypurina ayudó a organizar una rebelión contra la misión. ¿Qué creen ustedes que significa defender a su gente?",
+   "kids_src": "52b811acb1"
   },
   {
    "state": "CA",
@@ -68,7 +90,18 @@
     "dir": "west",
     "miles": 0.7
    },
-   "mission": 7
+   "mission": 7,
+   "name_es": "Misión San Juan Capistrano",
+   "text_es": "La salida 82 es Ortega Highway, y la Misión San Juan Capistrano está a menos de una milla al oeste. Fundada en 1776, es famosa por sus golondrinas y por las ruinas de la Gran Iglesia de Piedra, que se derrumbó en un terremoto en 1812. Está en tierra ancestral de los acjachemen.",
+   "more_es": "Desde la salida, maneje hacia el oeste por Ortega Highway hasta Camino Capistrano. Los acjachemen vivían en aldeas a lo largo de estos arroyos, y más de 4,000 personas indígenas fueron bautizadas en la misión entre 1776 y 1847. La Gran Iglesia de Piedra necesitó el trabajo de toda la comunidad indígena. Se derrumbó el 8 de diciembre de 1812, durante la misa, y murieron unas 40 personas. La Capilla Serra, de 1782, se considera el edificio más antiguo de California que sigue en uso. Familias acjachemen todavía viven en esta región y mantienen vivos su idioma y sus tradiciones.",
+   "es_src": {
+    "name": "c9ddc1b0a2",
+    "text": "3965f7d4fe",
+    "more": "3ee6d207fe"
+   },
+   "kids": "Mission San Juan Capistrano is less than a mile west of Exit 82. It was founded in 1776. It is famous for its swallows, a kind of bird. It also has the ruins of a big stone church that fell long ago. The mission stands on the homeland of the Acjachemen people. What other birds do you know?",
+   "kids_es": "La Misión San Juan Capistrano está a menos de una milla al oeste de la salida 82. Se fundó en 1776. Es famosa por sus golondrinas y por las ruinas de la Gran Iglesia de Piedra, que se cayó hace mucho tiempo. Está en tierra ancestral de los acjachemen. ¿Qué otras aves conocen ustedes?",
+   "kids_src": "3965f7d4fe"
   },
   {
    "state": "CA",
@@ -91,7 +124,18 @@
     "dir": "west",
     "miles": 1.1
    },
-   "mission": 17
+   "mission": 17,
+   "name_es": "Misión San Fernando Rey de España",
+   "text_es": "La salida 157 es San Fernando Mission Boulevard, y la Misión San Fernando está a una milla al oeste, aproximadamente. Fundada en 1797, la misión le dio su nombre al valle de San Fernando. Entre la gente que vivió y trabajó aquí había familias tataviam, tongva y chumash.",
+   "more_es": "Desde la salida, maneje hacia el oeste por San Fernando Mission Boulevard. La misión se construyó sobre un poblado agrícola llamado Achooykomenga. En la primera década del siglo XIX, los registros muestran 1,468 bautizos y 797 muertes. El largo convento, terminado en 1822, es original. Era una casa de huéspedes para los viajeros de El Camino Real. La iglesia fue destruida por el terremoto de 1971 y reconstruida para 1974. La Fernandeño Tataviam Band of Mission Indians, descendiente de la gente reunida en esta misión, trabaja para obtener el reconocimiento federal.",
+   "es_src": {
+    "name": "56c37c1c3e",
+    "text": "f558d2a5de",
+    "more": "9b931bb041"
+   },
+   "kids": "Exit 157 leads to Mission San Fernando, about a mile west. It was started in 1797. The whole San Fernando Valley got its name from this mission. Tataviam, Tongva and Chumash families lived and worked here. If a valley were named after you, what would it be called?",
+   "kids_es": "La salida 157 lleva a la Misión San Fernando, a una milla al oeste, más o menos. Se fundó en 1797, y el valle de San Fernando recibió su nombre de esta misión. Aquí vivieron y trabajaron familias tataviam, tongva y chumash. Si un valle llevara su nombre, ¿cómo se llamaría?",
+   "kids_src": "f558d2a5de"
   },
   {
    "state": "CA",
@@ -114,7 +158,18 @@
     "dir": "east",
     "miles": 4.5
    },
-   "mission": 18
+   "mission": 18,
+   "name_es": "Misión San Luis Rey de Francia",
+   "text_es": "La salida 54 es la Highway 76 hacia el este, el camino a la Misión San Luis Rey, a unas cuatro millas y media tierra adentro. Fundada en 1798, llegó a ser la más grande de las misiones de California y la apodan el Rey de las Misiones. Está en la tierra ancestral de los payómkawichum, el pueblo al que los españoles llamaron luiseño.",
+   "more_es": "Desde la salida, siga la Highway 76 hacia el este hasta Rancho del Oro Drive. La salida 53, Mission Avenue, también lleva ahí, con más semáforos. Pablo Tac nació en la misión alrededor de 1822. Un sacerdote lo llevó a Roma de niño, y él escribió la lengua luiseña y la historia de su pueblo. Escribió que en su aldea natal de Quechla una enfermedad mató a 2,000 de 5,000 personas. La iglesia de 1815 es la única iglesia de misión que se conserva construida en forma de cruz. Hoy, seis tribus luiseñas con reconocimiento federal tienen reservas en el sur de California.",
+   "es_src": {
+    "name": "a7c126ade2",
+    "text": "38cb21692e",
+    "more": "d17d6d431d"
+   },
+   "kids": "Exit 54 leads to Mission San Luis Rey, about four and a half miles inland. It was started in 1798. It grew to be the largest of California's missions. Its nickname is the King of the Missions. It is in the homeland of the Payómkawichum people. What nickname would you give your own house?",
+   "kids_es": "La salida 54 lleva a la Misión San Luis Rey, a unas cuatro millas y media tierra adentro. Se fundó en 1798 y llegó a ser la más grande de las misiones de California. Su apodo es el Rey de las Misiones. Está en tierra ancestral de los payómkawichum. ¿Qué apodo le pondrían ustedes a su casa?",
+   "kids_src": "38cb21692e"
   }
  ],
  "zones": [],
@@ -131,7 +186,20 @@
    ],
    "answer": 0,
    "why": "Mission San Diego de Alcalá was founded on July 16, 1769. It began on a hill by the harbor and moved to its present site in 1774.",
-   "src": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/"
+   "src": "https://californiamissionsfoundation.org/mission-san-diego-de-alcala/",
+   "q_es": "¿Qué misión fue la primera fundada en la Alta California, en 1769?",
+   "choices_es": [
+    "La Misión San Diego de Alcalá",
+    "La Misión San Gabriel",
+    "La Misión San Carlos Borromeo de Carmelo",
+    "La Misión Santa Barbara"
+   ],
+   "why_es": "La Misión San Diego de Alcalá se fundó el 16 de julio de 1769. Comenzó en una colina junto a la bahía y se mudó a su sitio actual en 1774.",
+   "es_src": {
+    "q": "f4ae5303a2",
+    "choices": "df4a49a068",
+    "why": "3acc0c60b3"
+   }
   },
   {
    "state": "CA",
@@ -145,7 +213,20 @@
    ],
    "answer": 0,
    "why": "Toypurina helped organize the 1785 revolt after baptized Tongva people were banned from holding their dances. It failed, and she was sent to a distant mission.",
-   "src": "https://en.wikipedia.org/wiki/Toypurina"
+   "src": "https://en.wikipedia.org/wiki/Toypurina",
+   "q_es": "Toypurina, una curandera tongva, ayudó a organizar ¿qué cosa en la Misión San Gabriel en 1785?",
+   "choices_es": [
+    "Una rebelión contra la misión",
+    "La primera escuela de Los Angeles",
+    "Una feria de comercio con otras misiones",
+    "La siembra del primer viñedo"
+   ],
+   "why_es": "Toypurina ayudó a organizar la rebelión de 1785, después de que a los tongva bautizados se les prohibió realizar sus danzas. La rebelión fracasó, y a ella la enviaron a una misión lejana.",
+   "es_src": {
+    "q": "85653b6d18",
+    "choices": "b546ffdad4",
+    "why": "747c833c2d"
+   }
   },
   {
    "state": "CA",
@@ -159,7 +240,20 @@
    ],
    "answer": 1,
    "why": "An earthquake on December 8, 1812 collapsed the church during Mass, and about 40 people died. Its ruins still stand.",
-   "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)"
+   "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
+   "q_es": "¿Qué derrumbó la Gran Iglesia de Piedra de la Misión San Juan Capistrano en 1812?",
+   "choices_es": [
+    "Un incendio",
+    "Un terremoto durante la misa",
+    "Una inundación",
+    "Una rebelión"
+   ],
+   "why_es": "Un terremoto el 8 de diciembre de 1812 derrumbó la iglesia durante la misa, y murieron unas 40 personas. Sus ruinas siguen en pie.",
+   "es_src": {
+    "q": "507eb65fb4",
+    "choices": "45e6be485b",
+    "why": "26aa691017"
+   }
   },
   {
    "state": "CA",
@@ -173,7 +267,20 @@
    ],
    "answer": 2,
    "why": "The 1971 San Fernando earthquake destroyed the church. It was rebuilt by 1974, while the long convento from 1822 survived.",
-   "src": "https://californiamissionsfoundation.org/mission-san-fernando-rey/"
+   "src": "https://californiamissionsfoundation.org/mission-san-fernando-rey/",
+   "q_es": "¿Qué destruyó la iglesia de la Misión San Fernando en 1971?",
+   "choices_es": [
+    "Un incendio forestal",
+    "Una inundación",
+    "Un terremoto",
+    "Un deslave"
+   ],
+   "why_es": "El terremoto de San Fernando de 1971 destruyó la iglesia. Para 1974 ya estaba reconstruida, y el largo convento de 1822 sobrevivió.",
+   "es_src": {
+    "q": "0af8903211",
+    "choices": "fe66deb2c0",
+    "why": "a068dc3b03"
+   }
   },
   {
    "state": "CA",
@@ -187,7 +294,20 @@
    ],
    "answer": 0,
    "why": "Pablo Tac was Luiseño. He studied in Rome and made a way to write the Luiseño language. His work was the only primary source in Luiseño written by a Luiseño until the twentieth century.",
-   "src": "https://en.wikipedia.org/wiki/Pablo_Tac"
+   "src": "https://en.wikipedia.org/wiki/Pablo_Tac",
+   "q_es": "Pablo Tac, nacido en la Misión San Luis Rey, creó la primera forma escrita de ¿qué idioma?",
+   "choices_es": [
+    "Luiseño",
+    "Español",
+    "Chumash",
+    "Latín"
+   ],
+   "why_es": "Pablo Tac era luiseño. Estudió en Roma y creó una manera de escribir el idioma luiseño. Su obra fue la única fuente primaria en luiseño escrita por un luiseño hasta el siglo veinte.",
+   "es_src": {
+    "q": "7625aec9ed",
+    "choices": "fe895b115d",
+    "why": "63914e7f24"
+   }
   }
  ]
 }

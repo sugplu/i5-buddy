@@ -54,9 +54,24 @@ are filled in by a later content step. Nothing changes for an English user excep
   place without kids text keeps its story; Spanish never reads an English kids text.
 - Tests: `tools/test-i18n.html?s=keys|es|kids` (64 pages in the suite now). The privacy notice names the language setting
   and the Spanish voices (2026-11-21.1).
-- Follow-ups: the Spanish words and stories (content step), the Spanish voice and its clips, Asteria clips for English
-  kids text, Spanish voice commands and Ask Buddy answers, Spanish privacy and support pages, Apple's Spanish App Store
-  badge, Geoapify turn-by-turn text in Spanish (Say street names), `get/` passing `?lang=es` on.
+- **The content step (2026-11-21, same release):** every app word in Spanish (`i18n/es.json`, 2,552 keys, so a Spanish
+  phone now starts in Spanish by itself), and in the content files the Spanish of all 380 landmarks (name, story, long
+  story and the 93 I-spy lines), 68 stretches with their seasonal notes, 101 trivia questions, the 21 missions' passport
+  texts, the ends of the road and the Where to? names (`content/names_es.json`) and the 272 postcard lines and 5 share
+  headline lists (`tools/postcards.json`); `data/i5.es.js` now carries 377 places, 68 zones, 101 trivia, 21 missions and
+  20 destinations (698 KB, loaded in Spanish only). **Stories for kids:** a `kids` and a `kids_es` story for every
+  landmark (377 in the app). Written by Claude Opus 5.5 after a glossary step, checked by back-translation (Claude Sonnet
+  5.5; Claude Haiku 5.5 for the rest when the Sonnet budget ran out) and the kids stories by a fidelity check against
+  their own story; flagged items were written again once or fixed by hand. How, and the rules: `i18n/README.md`.
+  `es_src` / `kids_src` hashes make `tools/build.py` leave out any Spanish or kids text whose English changed since
+  (`tools/build-report.txt` says which); `tools/lint_content.py` checks the Spanish and kids fields too. The English
+  `data/i5.js` is byte-identical to before apart from the new `kids` fields (data/ask.js unchanged).
+- Follow-ups: the Spanish voice clips (Estrella, Joseph's pick: about 8,700 clips, 560,000 characters, about $19 on
+  Cloudflare with a Whisper check and re-takes), Asteria clips for the English kids stories (about 1,900 clips, $3.70) and
+  Estrella clips for the Spanish ones (about 1,800 clips, $4), Spanish voice commands and Ask Buddy answers, Spanish
+  privacy and support pages, Apple's Spanish App Store badge, Geoapify turn-by-turn text in Spanish (Say street names),
+  `get/` passing `?lang=es` on, a turn-off's spoken heads-up still uses its grown-up text with Stories for kids on
+  (`narrator.turnBody`), and turn-off road names (`detour.road`, "Interstate 8") stay English in Spanish sentences.
 
 ## 3.0.1: the strength-audit fixes, chain controls from the Worker, the Grapevine page
 

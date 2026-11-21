@@ -283,6 +283,7 @@ const SCENARIOS = {
     check("Settings > Stories for kids: there, off by default", !!box && box.checked === false && api.settings.kidStories === false && txt(box.parentElement) === "Stories for kids");
     const p = api.data.placeById(P.id), r = api.data.placeById(R.id);
     p.kids = KIDS;   // the content step fills `kids`; here it is set on the loaded data
+    delete r.kids;   // every place has a kids story since the content step: take this one's off to test a place without one
     check("off: the place's own story", api.narrator.storyOf(p) === p.text && api.narrator.moreOf(p) === (p.more || ""));
     // turn it on from Settings
     doc.getElementById("openSettings").click(); await wait(150);

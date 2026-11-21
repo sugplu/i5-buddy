@@ -177,7 +177,7 @@ export function create(ctx) {
   function itemCard(it, role, revealed) {
     const val = h("output", { class: "pl-hc-v" }, h("span", { class: "pl-hc-num" }, role === "hidden" && !revealed ? "?" : fmtV(it)), h("small", null, unitOf(it)));
     const photo = it.place && it.place.img ? ctx.gamePhoto(it.place, { size: "hero", alt: "" }) : null;
-    return h("section", { class: `pl-hcard ${role}${role === "hidden" && revealed ? (g.ok ? t("games.higher.right") : t("games.higher.wrong")) : ""}${photo ? " has-photo" : ""}`,
+    return h("section", { class: `pl-hcard ${role}${role === "hidden" && revealed ? (g.ok ? " right" : " wrong") : ""}${photo ? " has-photo" : ""}`,
       "aria-label": `${role === "known" ? t("games.higher.shown") : t("games.higher.to_guess")}: ${it.name}${role === "known" || revealed ? ", " + fmtV(it) + " " + unitOf(it) : ""}` },
       photo,
       h("div", { class: "pl-hc-body" },

@@ -15,7 +15,18 @@
    "months": null,
    "wiki": "Santa Ana Zoo",
    "src": "https://en.wikipedia.org/wiki/Santa_Ana_Zoo",
-   "src2": "https://en.wikipedia.org/wiki/Santa_Ana_Zoo"
+   "src2": "https://en.wikipedia.org/wiki/Santa_Ana_Zoo",
+   "name_es": "Los 50 monos del Santa Ana Zoo",
+   "text_es": "Junto a la autopista, en Prentice Park, está el Santa Ana Zoo, que abrió el 8 de marzo de 1952. Joseph Prentice le dio el terreno a la ciudad en 1949 con la condición de que el zoológico tuviera al menos 50 monos en todo momento. Tiene más de una docena de especies de primates, y se dedica a los animales y plantas de Centroamérica y Sudamérica.",
+   "more_es": "El zoológico de 20 acres, propiedad de la ciudad, recibe más de 270,000 visitantes al año. Su aviario Colors of the Amazon Aviary, que se recorre por dentro y abrió en 1996, tiene abundante vegetación, arroyos que serpentean y aves de Sudamérica. Osos hormigueros gigantes, ñandúes y guanacos viven en Tierra de las Pampas, la Tierra de los Pastos. Una de las atracciones más populares es el Zoofari Express, un trenecito para niños. Su primera locomotora, construida en 1954, funcionó durante 44 años en Santa's Village, en Sky Forest, y cuando ese parque cerró en 1998, el grupo de amigos del zoológico compró el tren y unos voluntarios lo restauraron. En 2017, como los hábitats de los monos ya eran anticuados, la Association of Zoos and Aquariums se negó a acreditar el zoológico. Recuperó la acreditación en 2025, el mismo año en que abrió River's Edge, un hogar renovado para monos aulladores, monos araña y tamarinos.",
+   "es_src": {
+    "name": "de72105bd1",
+    "text": "edb1c7f544",
+    "more": "59ebcc9571"
+   },
+   "kids": "The Santa Ana Zoo sits right beside the freeway, in Prentice Park. It opened in 1952. A man named Joseph Prentice gave the land, on the condition that the zoo always keep at least 50 monkeys. The zoo has more than a dozen kinds of monkeys and their cousins. If you could pick a name for a zoo monkey, what would it be?",
+   "kids_es": "Junto a la autopista, en Prentice Park, está el Santa Ana Zoo. Abrió en 1952. Un señor llamado Joseph Prentice regaló el terreno, pero con una condición: el zoológico siempre debía tener al menos 50 monos. Hoy tiene más de una docena de especies de primates. Si pudieran ponerle nombre a un mono del zoológico, ¿cómo lo llamarían?",
+   "kids_src": "edb1c7f544"
   },
   {
    "state": "CA",
@@ -31,7 +42,18 @@
    "months": null,
    "wiki": "Angel Stadium",
    "src": "https://en.wikipedia.org/wiki/Angel_Stadium",
-   "src2": "https://en.wikipedia.org/wiki/Angel_Stadium"
+   "src2": "https://en.wikipedia.org/wiki/Angel_Stadium",
+   "name_es": "Angel Stadium y el Big A",
+   "text_es": "Al este de la autopista, cerca de Katella Avenue, está el Angel Stadium, casa de los Los Angeles Angels desde 1966. Entre los estadios de grandes ligas que siguen en uso, solo Fenway Park, Wrigley Field y el Dodger Stadium son más antiguos. De 1980 a 1994, los Los Angeles Rams también jugaron futbol americano aquí. En la orilla del estacionamiento, junto a la Highway 57, se levanta el Big A, un letrero de 230 pies con un halo cerca de la punta.",
+   "more_es": "Fundados en 1961, los Angels fueron el primer equipo de beisbol de grandes ligas que nació en California en vez de mudarse allí, y jugaron cuatro temporadas en el Dodger Stadium antes de llegar a Anaheim. El Big A, de 210 toneladas, sostenía al principio el marcador en el jardín izquierdo. Cuando las gradas se ampliaron y se cerraron para los Rams, lo movieron 1,300 pies hasta el estacionamiento. Durante años su halo parpadeaba de noche cuando ganaban los Angels; desde al menos 2023 se queda encendido, y brilla más después de una victoria. El terremoto de Northridge de 1994 tiró una pantalla de video gigante sobre los asientos del nivel superior antes del amanecer, y nadie salió herido. En la entrada principal hay dos gorras gigantes de los Angels, y la etiqueta de una indica que es talla 649 y media.",
+   "es_src": {
+    "name": "5ca5d0ced9",
+    "text": "e7272d9338",
+    "more": "bacb9c73fd"
+   },
+   "kids": "East of the freeway is Angel Stadium, where the Los Angeles Angels have played baseball since 1966. Only three major league ballparks still in use are older. The Los Angeles Rams played football here too. Near the parking lot stands the Big A, a 230-foot sign with a halo near the top. Would you rather watch baseball or football?",
+   "kids_es": "Al este de la autopista está el Angel Stadium, donde los Los Angeles Angels juegan béisbol desde 1966. Solo tres estadios de grandes ligas que siguen en uso son más antiguos. Los Los Angeles Rams también jugaron futbol americano aquí. Junto al estacionamiento se levanta el Big A, un letrero de 230 pies con un halo cerca de la punta. ¿Qué prefieren ver, béisbol o futbol americano?",
+   "kids_src": "e7272d9338"
   },
   {
    "state": "CA",
@@ -47,7 +69,20 @@
    "months": null,
    "wiki": "Downtown Los Angeles",
    "src": "https://en.wikipedia.org/wiki/Wilshire_Grand_Center",
-   "src2": "https://en.wikipedia.org/wiki/Olvera_Street"
+   "src2": "https://en.wikipedia.org/wiki/Olvera_Street",
+   "name_es": "El horizonte del centro de Los Angeles",
+   "text_es": "Las torres del centro de Los Angeles se levantan al oeste, al otro lado del río Los Angeles. La que tiene una aguja delgada en la punta es el Wilshire Grand Center, terminado en 2017. Contando la aguja mide 1,100 pies, el edificio más alto de Estados Unidos al oeste de Chicago, aunque el techo de la U.S. Bank Tower está más alto. Muchas torres a su alrededor tienen la azotea plana porque una regla de incendios de la ciudad de 1974 exigía helipuertos en el techo de los edificios altos.",
+   "more_es": "Entre las torres y el río, a poco más de una milla al oeste de la autopista, está El Pueblo, cerca de donde se fundó la ciudad en 1781. Según la cuenta de un historiador, solo dos de los 44 colonos fundadores eran blancos, y 26 tenían algo de ascendencia africana. Su Avila Adobe, construida en 1818 con un techo sellado con brea de los La Brea Tar Pits, es la casa más antigua que sigue en pie en la ciudad. Una campaña para salvarla dio origen a Olvera Street, que abrió el Domingo de Pascua de 1930 como un mercado mexicano. Del lado este de la autopista, cerca del cruce con la I-10, está el antiguo County General Hospital, un gigante art déco de 1933 apodado la Gran Madre de Piedra, que alguna vez tuvo 3,000 camas. Una ley de seguridad sísmica para hospitales, aprobada después del terremoto de Northridge de 1994, lo dejó fuera de norma, y el hospital que lo reemplazó cerca de ahí pasó a llamarse LA General en 2023.",
+   "spot_es": "Busque una torre alta del centro con una aguja delgada en la punta.",
+   "es_src": {
+    "name": "263f9dc76e",
+    "text": "65f6af6a52",
+    "more": "88844b3c84",
+    "spot": "970b8a0e3b"
+   },
+   "kids": "The tall towers of downtown Los Angeles rise to the west. One tower has a thin, pointy top called a spire. It is the Wilshire Grand Center, and with its spire it stands 1,100 feet tall. Many towers nearby have flat tops, so helicopters can land on them. Look for a tall downtown tower topped by a thin spire.",
+   "kids_es": "Al oeste se levantan las torres del centro de Los Angeles. Una tiene una aguja delgada en la punta: es el Wilshire Grand Center, y con su aguja mide 1,100 pies. Muchas torres cercanas tienen la azotea plana porque una regla de la ciudad pedía helipuertos en el techo de los edificios altos. Busquen una torre alta del centro con una aguja delgada en la punta.",
+   "kids_src": "65f6af6a52"
   },
   {
    "state": "CA",
@@ -63,7 +98,18 @@
    "months": null,
    "wiki": "1933 Griffith Park fire",
    "src": "https://en.wikipedia.org/wiki/1933_Griffith_Park_fire",
-   "src2": "https://en.wikipedia.org/wiki/1933_Griffith_Park_fire"
+   "src2": "https://en.wikipedia.org/wiki/1933_Griffith_Park_fire",
+   "name_es": "El incendio de Griffith Park de 1933",
+   "text_es": "El 3 de octubre de 1933, un incendio de matorrales en Griffith Park mató al menos a 29 hombres que se ofrecieron o recibieron órdenes de combatirlo. Ese día había miles de trabajadores de un proyecto financiado por el gobierno federal en el parque, limpiando maleza y haciendo senderos por 40 centavos la hora. El fuego quemó solo unos 47 acres, pero durante 85 años fue el incendio forestal más mortífero de la historia de California.",
+   "more_es": "Empezó poco después de las 2 de la tarde en un montón de escombros en Mineral Wells Canyon, en los cerros al oeste de la autopista. Sin agua entubada cerca, los hombres golpeaban las llamas con palas. Unos capataces que no sabían nada de combatir incendios prendieron contrafuegos mal pensados y mandaron a cientos de trabajadores a un cañón empinado. Los bomberos llegaron a las 2:26, pero batallaron para trabajar entre miles de personas sin entrenamiento. Cerca de las 3, el viento cambió, y el fuego subió con fuerza por Dam Canyon, brincó una brecha cortafuegos cavada a toda prisa y alcanzó a los trabajadores, e hirió a más de 100. Los registros eran tan malos que tardaron semanas en contar a los muertos. Los tribunales dictaron que las víctimas no podían ser indemnizadas porque las habían contratado de manera informal, y la placa conmemorativa que se puso en la entrada del parque ya no se encuentra.",
+   "es_src": {
+    "name": "60216fc12e",
+    "text": "5751347751",
+    "more": "26d565e124"
+   },
+   "kids": "Griffith Park is a park. Long ago, thousands of workers there cleared brush and built trails. They earned 40 cents an hour. One day, a brush fire burned part of the park. If you could build a new trail, where would it lead?",
+   "kids_es": "Griffith Park es un parque. Hace mucho tiempo, miles de trabajadores limpiaban maleza y hacían senderos ahí. Ganaban 40 centavos la hora. Un día hubo un incendio de matorrales en el parque y se quemó una parte. Si ustedes pudieran hacer un sendero nuevo, ¿a dónde los llevaría?",
+   "kids_src": "5751347751"
   },
   {
    "state": "CA",
@@ -79,7 +125,18 @@
    "months": null,
    "wiki": "Burbank, California",
    "src": "https://en.wikipedia.org/wiki/Burbank,_California",
-   "src2": "https://en.wikipedia.org/wiki/Burbank,_California"
+   "src2": "https://en.wikipedia.org/wiki/Burbank,_California",
+   "name_es": "Burbank, la capital de los medios",
+   "text_es": "A Burbank, por donde pasa la autopista, se le conoce comúnmente como la Capital Mundial de los Medios. Warner Bros. y la Walt Disney Company tienen aquí sus oficinas centrales, en el Media District, a un par de millas al oeste de la autopista. Warner Bros. se quedó con los estudios de First National en 1928, y Disney, después del éxito de Blanca Nieves y los siete enanos, terminó su estudio de Burbank en Buena Vista Street en 1939.",
+   "more_es": "La mayoría de las escenas principales de Casablanca se filmaron en el Stage 1 de Warner Bros. en 1942. Como las reglas de tiempos de guerra prohibían filmar cerca de los aeropuertos, hasta su escena del aeropuerto con neblina se hizo en el foro. Walt Disney primero quiso construir un Mickey Mouse Park junto a su estudio, pero sus colaboradores le dijeron que el terreno era muy chico, y un miembro del concejo municipal le dijo: No queremos ambiente de feria en Burbank. En su lugar construyó Disneyland en Anaheim. Los antiguos estudios de NBC aquí grababan The Tonight Show Starring Johnny Carson, y el programa de comedia Laugh-In hizo un chiste recurrente del bello centro de Burbank. Warner Bros. ofrece recorridos públicos por sus estudios, mientras que Disney es el único gran estudio que no los ofrece.",
+   "es_src": {
+    "name": "a25d112716",
+    "text": "8ff56df315",
+    "more": "957bf2a7f4"
+   },
+   "kids": "The freeway passes through Burbank, often called the Media Capital of the World. Warner Bros. and the Walt Disney Company both have their main offices here, a couple of miles west of the freeway. Disney finished its Burbank studio after the success of Snow White and the Seven Dwarfs. If you could make a movie, what would it be about?",
+   "kids_es": "La autopista pasa por Burbank, a la que muchos llaman la Capital Mundial de los Medios. Warner Bros. y la Walt Disney Company tienen aquí sus oficinas centrales, a un par de millas al oeste de la autopista. Disney terminó su estudio de Burbank después del éxito de Blanca Nieves y los siete enanos. Si ustedes hicieran una película, ¿de qué se trataría?",
+   "kids_src": "8ff56df315"
   },
   {
    "state": "CA",
@@ -95,7 +152,18 @@
    "months": null,
    "wiki": "2022 Brink's theft",
    "src": "https://en.wikipedia.org/wiki/2022_Brink%27s_theft",
-   "src2": "https://en.wikipedia.org/wiki/2022_Brink%27s_theft"
+   "src2": "https://en.wikipedia.org/wiki/2022_Brink%27s_theft",
+   "name_es": "El robo de joyas de Brink's",
+   "text_es": "A las 2 de la mañana del 11 de julio de 2022, un tráiler de Brink's que llevaba joyas de una exposición en San Mateo a otra en Pasadena se detuvo en una parada de camiones en la salida de Frazier Mountain Park Road. Un guardia entró a comer mientras el otro dormía en la cabina. En 27 minutos, unos ladrones cortaron el candado del remolque y se llevaron unas dos docenas de sus 73 bolsas de joyas.",
+   "more_es": "Brink's calculó la pérdida en 8.7 millones de dólares, con base en los valores que declararon los joyeros. Pero algunos joyeros admitieron en declaraciones juradas que por costumbre declaraban menos del valor real para bajar el costo del seguro, y algunas estimaciones llegan a 100 millones de dólares, lo que lo convertiría en uno de los mayores robos de joyas de la historia moderna de Estados Unidos. Cada bolsa pesaba de 70 a 100 libras, así que mover tantas tan rápido hace pensar en varios ladrones, y como la mayoría de las bolsas que faltaban estaban en la parte delantera del remolque, parecían saber cuáles querían. El remolque estaba asegurado solo con un candado y un sello de plástico. Brink's y los joyeros se demandaron mutuamente, y algunos joyeros perdieron sus negocios. En 2025, fiscales federales acusaron formalmente a siete hombres del área de Los Angeles de seguir camiones de reparto y robarles en paradas de camiones, y se recuperó parte de las joyas.",
+   "es_src": {
+    "name": "978efaeab4",
+    "text": "8531849777",
+    "more": "d0e2bb972a"
+   },
+   "kids": "Near the Frazier Mountain Park Road exit there is a truck stop. In 2022, a big truck carrying jewelry stopped here in the middle of the night. It was going from a jewelry show in San Mateo to another one in Pasadena. If you could design a piece of jewelry, what would it look like?",
+   "kids_es": "Cerca de la salida de Frazier Mountain Park Road hay una parada de camiones. En 2022, un tráiler que llevaba joyas se detuvo aquí a media noche. Iba de una exposición de joyas en San Mateo a otra en Pasadena. Si ustedes pudieran diseñar una joya, ¿cómo sería?",
+   "kids_src": "8531849777"
   },
   {
    "state": "CA",
@@ -111,7 +179,18 @@
    "months": null,
    "wiki": "Coccidioidomycosis",
    "src": "https://en.wikipedia.org/wiki/Coccidioidomycosis",
-   "src2": "https://www.cdc.gov/valley-fever/prevention/index.html"
+   "src2": "https://www.cdc.gov/valley-fever/prevention/index.html",
+   "name_es": "La fiebre del valle en el polvo",
+   "text_es": "Los suelos del valle de San Joaquin, sobre todo en su extremo sur, pueden contener Coccidioides, un hongo que causa la fiebre del valle, también llamada fiebre del valle de San Joaquin. Sus esporas se levantan en el aire cuando el viento, el trabajo agrícola o la construcción remueven la tierra polvorienta, y la gente se contagia al respirarlas. No es contagiosa, y unas 60 por ciento de las personas infectadas tienen pocos síntomas o ninguno.",
+   "more_es": "Sigue un patrón llamado crecer y soplar: el hongo crece en el suelo después de la lluvia, y luego el clima seco y con viento levanta sus esporas. Los casos han ido en aumento. El condado de Kern registró unos 1,000 en 2014 y 3,000 en 2021, y California reportó casi 12,500 casos en 2024, la cifra más alta que ha documentado el estado. La mayoría de quienes se enferman tienen síntomas parecidos a la bronquitis o la neumonía que desaparecen en unas semanas, y la enfermedad grave se presenta en menos del 5 por ciento de los infectados, sobre todo en personas con el sistema inmunitario debilitado. Los trabajadores del campo y de la construcción corren más riesgo, y también los perros, que escarban y olfatean el suelo. En 2005, dos prisiones estatales en el West Side, cerca de Coalinga y Avenal, tuvieron tasas de al menos 3,000 casos por cada 100,000 personas. Los CDC recomiendan evitar los lugares con polvo y, durante las tormentas de polvo, quedarse adentro con las ventanas cerradas.",
+   "es_src": {
+    "name": "89b011c756",
+    "text": "841831e665",
+    "more": "0707b2a9d8"
+   },
+   "kids": "This is the San Joaquin Valley, a land of fields and soil. When wind, farming or building work stirs up dusty ground, tiny bits from the soil can rise into the air. That is why dust can float above the fields here. What do you think makes the wind blow dust around?",
+   "kids_es": "Este es el valle de San Joaquin, una tierra de campos y suelo. Cuando el viento, el trabajo agrícola o la construcción remueven la tierra polvorienta, cositas muy pequeñas del suelo se levantan en el aire. Por eso aquí a veces flota polvo sobre los campos. ¿Qué creen ustedes que hace que el viento levante el polvo?",
+   "kids_src": "841831e665"
   },
   {
    "state": "CA",
@@ -127,7 +206,18 @@
    "months": null,
    "wiki": null,
    "src": "https://www.kqed.org/bayareabites/96228/who-is-behind-those-water-signs-on-the-i-5",
-   "src2": "https://www.nbcnews.com/id/wbna43521258"
+   "src2": "https://www.nbcnews.com/id/wbna43521258",
+   "name_es": "Los letreros del agua agrícola",
+   "text_es": "A partir de alrededor de 2008, aparecieron letreros grandes en los campos a lo largo de la I-5, con lemas como Congress Created Dust Bowl y No Water Equals No Jobs. Muchos venían de Families Protecting the Valley, un grupo poco organizado de agricultores y otros residentes del valle de San Joaquin. Russ Waymire, corredor de bienes raíces de Hanford y antiguo agricultor, puso el primer letrero del grupo con la ayuda de un amigo, y pronto los agricultores ofrecieron sus tierras para poner más.",
+   "more_es": "Los agricultores dicen que las reglas federales para proteger al eperlano y al salmón les han recortado el agua. En junio de 2011, la Associated Press informó de varios cientos de letreros nuevos a lo largo de la I-5 y la Highway 99, con frases como Man-made drought y Food grows where water flows. El reportaje señaló que los agricultores con los contratos federales de agua más recientes son los primeros en sufrir recortes, y por eso los agricultores del West Side recibieron la menor cantidad de agua durante esa sequía. También citó un informe del Congressional Research Service que encontró que menos de una cuarta parte de los recortes en el suministro se debió a la protección de especies en peligro, y que la mayoría se debió a la sequía misma. Los ambientalistas dijeron que los letreros daban una imagen falsa de la sequía y de sus causas. El grupo fue fundado en 2000 por Denis Prosperi, productor de almendras y de uva para vino en Madera, y en 2015 funcionaba solo con donativos.",
+   "es_src": {
+    "name": "1b9860a3ac",
+    "text": "e5f62362f5",
+    "more": "df433d08f6"
+   },
+   "kids": "Starting around 2008, big signs went up in fields along the freeway. They had slogans like No Water Equals No Jobs. Many came from a group of valley farmers and other locals. A man named Russ Waymire put up the first sign with a friend's help. Then farmers offered their land for more. Why do you think farmers care so much about water?",
+   "kids_es": "Desde alrededor de 2008, aparecieron letreros grandes en los campos junto a la autopista, con lemas como No Water Equals No Jobs. Muchos venían de un grupo de agricultores y otros vecinos del valle. Russ Waymire puso el primero con la ayuda de un amigo, y luego los agricultores ofrecieron sus tierras para poner más. ¿Por qué creen que el agua les importa tanto a los agricultores?",
+   "kids_src": "e5f62362f5"
   },
   {
    "state": "CA",
@@ -143,7 +233,18 @@
    "months": null,
    "wiki": "California State Capitol",
    "src": "https://en.wikipedia.org/wiki/Sacramento,_California",
-   "src2": "https://en.wikipedia.org/wiki/Pony_Express_Terminal"
+   "src2": "https://en.wikipedia.org/wiki/Pony_Express_Terminal",
+   "name_es": "Sacramento, la capital del estado",
+   "text_es": "Sacramento es la capital de California desde 1854. Los legisladores del nuevo estado se reunieron primero en San Jose, se mudaron a Vallejo en 1852 y a Benicia en 1853, y luego se establecieron aquí. El Capitolio estatal, en el centro, a menos de una milla al este de la autopista, se diseñó siguiendo el modelo del Capitolio de Estados Unidos. Se comenzó en 1860 y se terminó en 1874, y los legisladores se pasaron a sus salas en 1869 mientras las obras continuaban a su alrededor.",
+   "more_es": "Alrededor del Capitolio, el Capitol Park se extiende por 40 acres, con más de 200 tipos de árboles y 155 monumentos conmemorativos. Justo junto a la autopista, en las calles Second y J de Old Sacramento, se encuentra el B. F. Hastings Building, un sencillo edificio de ladrillo de dos pisos de 1852. En 1860 y 1861 fue el extremo oeste del Pony Express, cuyos relevos de jinetes llevaban el correo de ida y vuelta a St. Joseph, Missouri, a más de 1,800 millas de distancia. El servicio duró solo 18 meses antes de que el telégrafo lo reemplazara. El edificio fue también la primera sede de la Corte Suprema de California, y hoy alberga un museo de historia de Wells Fargo. Sacramento es la ciudad incorporada más antigua de California, desde el 27 de febrero de 1850.",
+   "es_src": {
+    "name": "ce70315688",
+    "text": "d20fe19874",
+    "more": "e4d3e934a8"
+   },
+   "kids": "Sacramento has been California's capital city since 1854. Before that, lawmakers met in San Jose, Vallejo and Benicia. The State Capitol building is less than a mile east of the freeway. It was built to look like the U.S. Capitol in Washington. If you were a lawmaker, what new rule would you make?",
+   "kids_es": "Sacramento es la capital de California desde 1854. Antes, los legisladores se reunieron en San Jose, Vallejo y Benicia. El Capitolio estatal está a menos de una milla al este de la autopista, y se diseñó siguiendo el modelo del Capitolio de Estados Unidos. Si ustedes fueran legisladores, ¿qué regla nueva harían?",
+   "kids_src": "d20fe19874"
   },
   {
    "state": "CA",
@@ -159,7 +260,20 @@
    "months": null,
    "wiki": "Yellow-billed magpie",
    "src": "https://en.wikipedia.org/wiki/Yellow-billed_magpie",
-   "src2": null
+   "src2": null,
+   "name_es": "Urraca de pico amarillo",
+   "text_es": "Fíjese en los campos y los árboles altos por aquí para ver la urraca de pico amarillo, un ave blanca y negra con un pico amarillo brillante y una pequeña mancha de piel amarilla alrededor de cada ojo. Vive solo en California, en el Valle Central y en las colinas y montañas que lo rodean. Con buena luz, sus plumas negras brillan verdes, azules o moradas.",
+   "more_es": "Las urracas pertenecen a la familia de los cuervos, y estas son aves sociables que duermen juntas. Cuando una muere, las demás se reúnen a su alrededor y llaman fuerte durante 10 a 15 minutos, una especie de funeral. Las parejas construyen nidos en forma de cúpula con ramitas y lodo en lo alto de árboles altos, a veces muy afuera en ramas largas para mantener lejos a los depredadores. Comen sobre todo insectos, en especial chapulines, además de bellotas, fruta y carroña. El virus del Nilo Occidental las afectó mucho: se cree que entre 2004 y 2006 murió por su causa aproximadamente la mitad de todas las urracas de pico amarillo. La UICN clasifica ahora la especie como vulnerable, aunque todavía es común en muchos lugares.",
+   "spot_es": "Busque un ave blanca y negra con pico amarillo.",
+   "es_src": {
+    "name": "46c5225662",
+    "text": "0a7808c962",
+    "more": "505f9ba3cf",
+    "spot": "c818c1040a"
+   },
+   "kids": "The yellow-billed magpie lives only in California. It is a black-and-white bird with a bright yellow bill. It even has a little patch of yellow skin around each eye. In good light, its black feathers shine green, blue or purple. Look for a black-and-white bird with a yellow beak in the fields and tall trees.",
+   "kids_es": "La urraca de pico amarillo vive solo en California. Es un ave blanca y negra con un pico amarillo brillante, y tiene una pequeña mancha de piel amarilla alrededor de cada ojo. Con buena luz, sus plumas negras brillan verdes, azules o moradas. Busquen un ave blanca y negra con pico amarillo en los campos y los árboles altos.",
+   "kids_src": "0a7808c962"
   },
   {
    "state": "CA",
@@ -175,7 +289,18 @@
    "months": null,
    "wiki": "Ishi",
    "src": "https://en.wikipedia.org/wiki/Ishi",
-   "src2": "https://en.wikipedia.org/wiki/Ishi_Wilderness"
+   "src2": "https://en.wikipedia.org/wiki/Ishi_Wilderness",
+   "name_es": "Ishi y los yahi",
+   "text_es": "Los cañones de las colinas al este de aquí, a lo largo de Mill Creek y Deer Creek, son la tierra ancestral de los yahi, el grupo más al sur del pueblo yana. Después de la fiebre del oro, los colonos mataron a casi todos los yahi; en 1865, unos 40 fueron asesinados en la masacre de Three Knolls, en Mill Creek. Unos pocos sobrevivientes se escondieron en los cañones durante décadas. El último yahi conocido, un hombre al que el mundo llegó a llamar Ishi, salió cerca de Oroville en 1911, hambriento y solo.",
+   "more_es": "Ishi significa hombre en la lengua yana. El antropólogo Alfred Kroeber le dio ese nombre, porque la costumbre yahi impedía que una persona dijera su propio nombre hasta que otro yahi la presentara, y ya no quedaba ninguno. Antropólogos de la Universidad de California lo llevaron a su museo en San Francisco, donde trabajó como conserje, mostró cómo hacía arcos y puntas de flecha de piedra, y fue grabado cantando y contando historias en 148 cilindros de cera. Murió de tuberculosis en 1916. Su cerebro fue enviado al Smithsonian, que lo devolvió en 2000 a descendientes yana de la Redding Rancheria y de la Pit River Tribe. La Ishi Wilderness, de 41,339 acres, a unas 20 millas al este de Red Bluff, protege cañones que se cree fueron las tierras ancestrales de su pueblo, y el incendio Park de 2024 quemó casi toda su extensión.",
+   "es_src": {
+    "name": "e0951d187a",
+    "text": "0e7f2497cf",
+    "more": "b88f0a3ef0"
+   },
+   "kids": "The foothill canyons east of here, along Mill and Deer creeks, are the old homeland of the Yahi people. The Yahi were part of the Yana people. They lived in these canyons for a very long time. What do you think it was like to live near a creek in the canyons?",
+   "kids_es": "Los cañones de las colinas al este de aquí, a lo largo de Mill Creek y Deer Creek, son la tierra ancestral de los yahi. Los yahi eran el grupo más al sur del pueblo yana. ¿Cómo creen que era vivir junto a un arroyo en los cañones?",
+   "kids_src": "0e7f2497cf"
   },
   {
    "state": "CA",
@@ -191,7 +316,20 @@
    "months": null,
    "wiki": "Weigh station",
    "src": "https://www.chp.ca.gov/find-an-office/northern-division/131-cottonwood",
-   "src2": "https://en.wikipedia.org/wiki/Speed_limits_in_the_United_States_by_jurisdiction"
+   "src2": "https://en.wikipedia.org/wiki/Speed_limits_in_the_United_States_by_jurisdiction",
+   "name_es": "Básculas para camiones de Cottonwood",
+   "text_es": "Las básculas para camiones de aquí son el Cottonwood Commercial Vehicle Enforcement Facility, a cargo de la Patrulla de Caminos de California. Agentes e inspectores revisan que los camiones y sus choferes cumplan las normas de seguridad de Norteamérica y la ley estatal. La primera estación, en un lado de la autopista, abrió en 2000, y una segunda, para los camiones que van en sentido contrario, abrió en 2025.",
+   "more_es": "Por ley, los tráileres también circulan más despacio que los carros. California limita a 55 millas por hora a los camiones de tres o más ejes y a todo vehículo que jale un remolque, incluso donde los carros pueden ir a 70, como en partes rurales de la I-5. En las estaciones de pesaje, algunas básculas pesan los camiones mientras siguen en movimiento, mientras que las más antiguas los obligan a detenerse, y unas luces de señal le indican a cada chofer si debe entrar para una revisión más a fondo o regresar a la carretera. El personal de aquí también está capacitado para detectar a choferes bajo los efectos de alguna sustancia, vehículos robados y trata de personas. La estación está en las colinas onduladas de pasto y encinos del condado de Tehama, a unas 2 millas al sur de Cottonwood Creek, el límite con el condado de Shasta.",
+   "spot_es": "Busque la estación de básculas para camiones junto a la autopista.",
+   "es_src": {
+    "name": "9b021d9c21",
+    "text": "006ca8a500",
+    "more": "ae998d26af",
+    "spot": "149543054b"
+   },
+   "kids": "This is a truck scale station run by the California Highway Patrol. Officers and inspectors check trucks and their drivers to help keep everyone safe. The first station opened in 2000. A second one, for trucks going the other way, opened in 2025. Look for the truck scale station beside the freeway.",
+   "kids_es": "Aquí hay básculas para camiones a cargo de la Patrulla de Caminos de California. Agentes e inspectores revisan que los camiones y sus choferes cumplan las normas de seguridad. La primera estación abrió en 2000, y una segunda, para los camiones que van en sentido contrario, abrió en 2025. Busquen la estación de básculas para camiones junto a la autopista.",
+   "kids_src": "006ca8a500"
   },
   {
    "state": "CA",
@@ -207,7 +345,18 @@
    "months": null,
    "wiki": "Repopulation of wolves in California",
    "src": "https://en.wikipedia.org/wiki/Repopulation_of_wolves_in_California",
-   "src2": "https://wildlife.ca.gov/Conservation/Mammals/Gray-Wolf"
+   "src2": "https://wildlife.ca.gov/Conservation/Mammals/Gray-Wolf",
+   "name_es": "El regreso de los lobos grises",
+   "text_es": "Los lobos grises han regresado al condado de Siskiyou. A fines de diciembre de 2011, un lobo con collar procedente de Oregon, conocido como OR-7, cruzó la línea estatal, el primer lobo salvaje confirmado en California desde 1924. En 2015, una cámara de sendero en el condado de Siskiyou confirmó la Manada Shasta, dos adultos y cinco cachorros, la primera manada de lobos residente del estado en más de un siglo.",
+   "more_es": "OR-7, apodado Journey, había recorrido más de 1,000 millas desde las montañas Wallowa, en el noreste de Oregon, y en 2012 anduvo por siete condados del noreste de California. La hembra reproductora de la Manada Shasta era su hermana, y la manada después desapareció, por razones que nadie ha explicado. En 2021, otro lobo de Oregon, OR-85, y una hembra formaron la Manada Whaleback en el condado de Siskiyou, y en septiembre de ese año se confirmaron siete cachorros. Para diciembre de 2025, el estado contaba 55 lobos en nueve manadas. Los lobos están catalogados como especie en peligro de extinción en California, y el estado ha apartado dinero para pagar a los rancheros por el ganado que pierden por su causa. En 2025, después de casi 100 intentos de ahuyentarlos, las autoridades estatales de vida silvestre mataron a cuatro lobos de una manada del condado de Plumas que seguía atacando al ganado, la primera vez que el estado lo hacía.",
+   "es_src": {
+    "name": "75229a9948",
+    "text": "f190e15ee4",
+    "more": "e30e95f55e"
+   },
+   "kids": "Gray wolves have come back to Siskiyou County. In 2011, a wolf called OR-7 walked over from Oregon. It was the first wild wolf seen in California since 1924. In 2015, a hidden camera spotted the Shasta Pack: two grown-up wolves and five pups. What would you name a wolf pup?",
+   "kids_es": "Los lobos grises han regresado al condado de Siskiyou. En 2011, un lobo llamado OR-7 llegó desde Oregon. Fue el primer lobo salvaje confirmado en California desde 1924. En 2015, una cámara de sendero vio a la Manada Shasta: dos adultos y cinco cachorros. ¿Qué nombre le pondrían ustedes a un cachorro de lobo?",
+   "kids_src": "f190e15ee4"
   },
   {
    "state": "CA",
@@ -223,7 +372,20 @@
    "months": null,
    "wiki": "California Border Protection Stations",
    "src": "https://en.wikipedia.org/wiki/California_Border_Protection_Stations",
-   "src2": "https://www.cdfa.ca.gov/plant/pe/ExteriorExclusion/borders.html"
+   "src2": "https://www.cdfa.ca.gov/plant/pe/ExteriorExclusion/borders.html",
+   "name_es": "Inspección agrícola en Hornbrook",
+   "text_es": "El tráfico que entra a California por la I-5 se detiene aquí, cerca de Hornbrook, en una de las 16 estaciones de inspección agrícola que el California Department of Food and Agriculture opera donde las carreteras principales entran al estado. Los inspectores buscan plagas en plantas o en la carga que podrían dañar las granjas de California. Los autos de pasajeros con placas de California o de estados vecinos, por lo general, solo reciben unas cuantas preguntas sobre lo que llevan.",
+   "more_es": "Las casas rodantes, los camiones comerciales y los vehículos que remolcan lanchas o transportan animales se consideran de mayor riesgo, y su carga puede ser revisada. Las cargas de colmenas se registran, y el conductor debe decir a qué parte de California van las abejas, para que la oficina agrícola de ese condado las inspeccione al llegar. Las primeras estaciones se instalaron a principios de la década de 1920 en carreteras que venían de Nevada cerca de Reno, después de que aparecieran destructivos gorgojos de la alfalfa en los campamentos a lo largo de ellas, y en el primer año los inspectores encontraron gorgojos vivos dentro del equipo de campamento. En conjunto, las estaciones detienen a unos 27 millones de vehículos al año, y el estado dice que cada dólar invertido en ellas ahorra 14 dólares en pérdidas por plagas. Los inspectores no pueden hacer arrestos, pero sí pueden detener a alguien hasta que llegue la Patrulla de Caminos.",
+   "spot_es": "Busque la estación de inspección donde se detiene el tráfico que entra a California.",
+   "es_src": {
+    "name": "e1a29d75d3",
+    "text": "e9abe3703d",
+    "more": "9941f3dcc1",
+    "spot": "60bc752f45"
+   },
+   "kids": "Cars and trucks coming into California stop here, near Hornbrook. Inspectors look for bugs in plants or cargo that could hurt California's farms. Most families in cars just answer a few questions about what they carry. This is one of 16 stations like it. Look for the inspection station where traffic entering California stops.",
+   "kids_es": "Los autos y camiones que entran a California se detienen aquí, cerca de Hornbrook. Los inspectores buscan plagas en plantas o en la carga que podrían dañar las granjas de California. Casi siempre, las familias en auto solo responden unas cuantas preguntas sobre lo que llevan. Es una de 16 estaciones así. Busquen la estación de inspección donde se detiene el tráfico que entra a California.",
+   "kids_src": "e9abe3703d"
   }
  ],
  "zones": [],

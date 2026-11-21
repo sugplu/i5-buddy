@@ -15,7 +15,20 @@
    "months": null,
    "wiki": "San Onofre Nuclear Generating Station",
    "src": "https://en.wikipedia.org/wiki/San_Onofre_Nuclear_Generating_Station",
-   "src2": "https://www.songscommunity.com/news/releases/latest-demolition-progress-key-topic-at-songs-community-engagement-panel-meeting"
+   "src2": "https://www.songscommunity.com/news/releases/latest-demolition-progress-key-topic-at-songs-community-engagement-panel-meeting",
+   "name_es": "La planta nuclear de San Onofre",
+   "text_es": "La planta de energía nuclear de San Onofre, aquí en la playa, fue conocida por mucho tiempo por sus dos enormes domos redondos, los edificios de contención que rodean sus reactores. Sus dos últimos reactores se apagaron en enero de 2012, después de que apareció un desgaste prematuro en más de 3,000 tubos de unos generadores de vapor nuevos, y en 2013 Southern California Edison retiró la planta para siempre. Hay cuadrillas desmantelándola, y estaba previsto que el retiro de los domos comenzara en 2027, así que puede que ya no estén, en parte o por completo.",
+   "more_es": "El primer reactor de aquí funcionó de 1968 a 1992, y dos más grandes arrancaron en 1983 y 1984. Hasta 2012, la planta suministraba aproximadamente una quinta parte de la electricidad de grandes zonas del sur de California. Está dentro de Camp Pendleton, de la Infantería de Marina, y la protegía un muro de 25 pies contra tsunamis. Para finales de 2026, se habían demolido 54 de las 66 estructuras del sitio, y más de 750 millones de libras de concreto triturado, acero y escombros habían salido en 3,219 vagones de tren. El combustible nuclear usado se queda aquí, sellado en 123 contenedores de acero dentro de concreto, hasta que el gobierno federal se lo lleve, una obligación que según Edison lleva décadas de retraso.",
+   "spot_es": "Busque dos enormes domos redondos junto al mar. ¿Siguen en pie?",
+   "es_src": {
+    "name": "270c2938f0",
+    "text": "7d47dc937b",
+    "more": "6bcbff8261",
+    "spot": "e50109937f"
+   },
+   "kids": "On the beach here is the San Onofre power plant. It was known for its two giant round domes. The plant stopped making power long ago. Now crews are taking it apart, so the domes may be partly or all gone. Look for two giant round domes by the ocean. Are they still standing?",
+   "kids_es": "Aquí en la playa está la planta de energía de San Onofre. Por mucho tiempo fue conocida por sus dos enormes domos redondos. La planta dejó de funcionar hace tiempo. Ahora hay cuadrillas desarmándola, así que puede que los domos ya no estén, en parte o por completo. Busquen dos enormes domos redondos junto al mar. ¿Siguen en pie?",
+   "kids_src": "7d47dc937b"
   },
   {
    "state": "CA",
@@ -31,7 +44,18 @@
    "months": null,
    "wiki": "San Onofre State Beach",
    "src": "https://en.wikipedia.org/wiki/San_Onofre_State_Beach",
-   "src2": "https://en.wikipedia.org/wiki/Trestles_(surfing)"
+   "src2": "https://en.wikipedia.org/wiki/Trestles_(surfing)",
+   "name_es": "San Onofre y Trestles",
+   "text_es": "San Onofre, nombre en español de san Onofre, un ermitaño del Egipto del siglo cuarto, es una playa estatal de 3,000 acres en terrenos de la Infantería de Marina arrendados a California, con más de 2.5 millones de visitantes al año. Ya para la década de 1940 llegaban aquí surfistas con tablas de secuoya. Sus rompientes del norte, llamadas Trestles, deben su nombre a un caballete de madera del ferrocarril por debajo del cual pasaban los surfistas para llegar a la playa. Lower Trestles fue sede del circuito mundial de surf profesional durante muchos años, y está previsto que Trestles sea sede de las competencias de surf de los Juegos Olímpicos de 2028.",
+   "more_es": "A principios del siglo veinte, las tierras alrededor de la antigua estación de tren de San Onofre eran Haven's Ranch, donde unos 150 residentes, en su mayoría trabajadores hispanos o japonés-estadounidenses, cultivaban frijol, melón y lechuga. Durante la Segunda Guerra Mundial, la mayoría de los trabajadores japonés-estadounidenses se fueron o fueron expulsados por la Orden Ejecutiva 9066 del presidente Roosevelt. Dos residentes, Fred y Kajiro Oyama, formaron parte de Oyama v. California, un caso de la Corte Suprema de 1948 que comenzó a anular las leyes de California que prohibían a las personas de ascendencia japonesa ser dueñas de tierras. El poblado junto a San Onofre Creek fue derribado en 1960 para abrirle paso a esta autopista, y el gobernador Ronald Reagan creó la playa estatal en 1971. En Trestles, un puente de concreto reemplazó al caballete de madera en 2012. El arroyo que pasa por debajo, San Mateo Creek, fue noticia en 1999, cuando se encontraron en él truchas steelhead del sur, una especie en peligro de extinción, las únicas que entonces se conocían al sur de Malibu Creek.",
+   "es_src": {
+    "name": "2bad280e5d",
+    "text": "730eb5e0c1",
+    "more": "42ad13fbe2"
+   },
+   "kids": "San Onofre is a big state beach with more than 2.5 million visitors a year. Surfers rode redwood boards here by the 1940s. Some waves are called Trestles, named for a wooden railroad bridge surfers walked under. Trestles is set to host Olympic surfing in 2028. Would you rather surf the waves or watch from the sand?",
+   "kids_es": "San Onofre es una playa estatal grande con más de 2.5 millones de visitantes al año. Ya en la década de 1940 llegaban surfistas con tablas de secuoya. Algunas olas se llaman Trestles, por un puente de madera del tren por debajo del cual pasaban los surfistas. Está previsto que Trestles tenga el surf de los Juegos Olímpicos de 2028. ¿Ustedes preferirían surfear las olas o mirar desde la arena?",
+   "kids_src": "730eb5e0c1"
   },
   {
    "state": "CA",
@@ -47,7 +71,18 @@
    "months": null,
    "wiki": "Panhe",
    "src": "https://en.wikipedia.org/wiki/Panhe",
-   "src2": "https://en.wikipedia.org/wiki/San_Mateo_Creek_(Southern_California)"
+   "src2": "https://en.wikipedia.org/wiki/San_Mateo_Creek_(Southern_California)",
+   "name_es": "Panhe y Los Cristianitos",
+   "text_es": "Tierra adentro de la autopista, en la zona del campamento San Mateo de San Onofre State Beach, está Panhe, el lugar junto al agua. Fue una de las aldeas acjachemen más grandes, con más de 8,000 años de antigüedad y quizá 300 personas cuando llegaron los españoles. Sigue siendo un sitio sagrado, ceremonial y de entierro para el pueblo acjachemen, que celebra ahí un festival cada año para honrar a sus antepasados.",
+   "more_es": "El 22 de julio de 1769, la expedición de Portolá acampó cerca de San Mateo Creek. El padre Juan Crespí escribió que dos niñas de una aldea cercana estaban muriendo, y a los misioneros se les permitió bautizarlas. Una placa estatal dice que el padre Francisco Gómez realizó el primer bautismo cristiano de la Alta California cerca de un manantial, subiendo por Cristianitos Canyon. Crespí llamó al lugar Los Cristianos, y el nombre después se volvió Cristianitos, los pequeños cristianos, el nombre del arroyo, del cañón y de la salida Cristianitos Road. En la década de 2000, una autopista de cuota planeada de seis carriles habría pasado a unos 20 pies del sitio de la aldea. El pueblo acjachemen, grupos ambientalistas y surfistas se opusieron, y en 2016 la agencia de la autopista de cuota renunció a esa ruta.",
+   "es_src": {
+    "name": "ca821c89ae",
+    "text": "b90b115438",
+    "more": "68f68a9af2"
+   },
+   "kids": "Inland from the freeway is Panhe, which means the place at the water. It was one of the largest villages of the Acjachemen people. It is more than 8,000 years old. Each year, the Acjachemen people hold a festival there to honor their ancestors. How does your family remember the people who came before you?",
+   "kids_es": "Tierra adentro de la autopista está Panhe, que quiere decir el lugar junto al agua. Fue una de las aldeas más grandes del pueblo acjachemen. Tiene más de 8,000 años de antigüedad. Cada año, el pueblo acjachemen celebra ahí un festival para honrar a sus antepasados. ¿Cómo recuerdan sus familias a las personas que vinieron antes que ustedes?",
+   "kids_src": "b90b115438"
   },
   {
    "state": "CA",
@@ -63,7 +98,18 @@
    "months": null,
    "wiki": "La Casa Pacifica",
    "src": "https://en.wikipedia.org/wiki/La_Casa_Pacifica",
-   "src2": null
+   "src2": null,
+   "name_es": "La Western White House de Nixon",
+   "text_es": "Sobre el acantilado de Cotton's Point está La Casa Pacifica, la casa de la paz, que el presidente Richard Nixon compró en 1969. La prensa la apodó la Western White House, la Casa Blanca del Oeste. La visitaron el líder soviético Leonid Brezhnev y el presidente de México, y después de renunciar, Nixon se retiró aquí a escribir sus memorias. El camino junto a la autopista, aquí cerca, se llama Avenida del Presidente.",
+   "more_es": "La mansión de estilo español se construyó en 1926 para Hamilton Cotton, uno de los financieros fundadores de San Clemente, quien recibió ahí al presidente Franklin Roosevelt. Entre los cambios de Nixon, algunos hechos para el Servicio Secreto, hubo un muro de 1,500 pies que rodeaba buena parte de la finca de casi seis acres, y Pat Nixon trajo un retoño de magnolia del árbol que Andrew Jackson plantó en la Casa Blanca. Las famosas entrevistas Frost/Nixon se planearon primero para la casa, pero las señales de radio de una estación de navegación vecina de la Guardia Costera interferían con el equipo de televisión, así que se trasladaron a la casa de un simpatizante cercano. Los Nixon vendieron la finca en 1980, y sigue siendo una casa privada.",
+   "es_src": {
+    "name": "b2c74cf8c7",
+    "text": "516b56e6ef",
+    "more": "e039ce3160"
+   },
+   "kids": "On a bluff near here stands La Casa Pacifica, which means the house of peace. President Richard Nixon bought it in 1969. Newspapers called it the Western White House. Leaders from the Soviet Union and Mexico came to visit. If you had a house by the sea, what would you name it?",
+   "kids_es": "Sobre un acantilado cerca de aquí está La Casa Pacifica, que quiere decir la casa de la paz. El presidente Richard Nixon la compró en 1969. La prensa la llamó la Casa Blanca del Oeste. La visitaron un líder soviético y el presidente de México. Si ustedes tuvieran una casa junto al mar, ¿qué nombre le pondrían?",
+   "kids_src": "516b56e6ef"
   },
   {
    "state": "CA",
@@ -79,7 +125,20 @@
    "months": null,
    "wiki": "San Clemente, California",
    "src": "https://en.wikipedia.org/wiki/San_Clemente,_California",
-   "src2": "https://sanclementehistoricalsociety.org/the-legend-of-ole-hanson/"
+   "src2": "https://sanclementehistoricalsociety.org/the-legend-of-ole-hanson/",
+   "name_es": "Spanish Village by the Sea",
+   "text_es": "En 1925, Ole Hanson, exalcalde de Seattle, trazó un pueblo de 2,000 acres en antiguas tierras de rancho junto al mar y le puso el nombre de San Clemente Island. Agregó a las escrituras una cláusula que mandaba todo plano de construcción a una junta de revisión arquitectónica, para mantener los techos de teja roja y las paredes blancas. La regla no duró, pero la ciudad todavía se llama a sí misma el Spanish Village by the Sea, el pueblo español junto al mar.",
+   "more_es": "Hanson imaginaba su pueblo como un lienzo en blanco de cinco millas de largo y una milla y media de ancho. Construyó el club de playa, el centro comunitario y el muelle, construido por primera vez en 1928, y vivía en una mansión sobre el acantilado que hoy se llama Casa Romantica. Cuando llegó la Gran Depresión, perdió la casa y todas sus demás propiedades, y la población del pueblo cayó 70 por ciento, a unas 250 personas. Casa Romantica es hoy un centro cultural de la ciudad, arriba del muelle. En 1994 abrió aquí Clarence Lobo Elementary, nombrada en honor de Clarence Lobo, jefe del pueblo acjachemen de 1946 a 1985. Fue la primera escuela de California con el nombre de un líder indígena.",
+   "spot_es": "Busque techos de teja roja en las casas de la ladera.",
+   "es_src": {
+    "name": "f7a604c12a",
+    "text": "9982503eba",
+    "more": "7b33cefbe0",
+    "spot": "58df44bb19"
+   },
+   "kids": "In 1925, a man named Ole Hanson planned the town of San Clemente by the ocean. He wanted houses with red tile roofs and white walls. That rule did not last. But the town still calls itself the Spanish Village by the Sea. Look for red tile roofs on the hillside houses.",
+   "kids_es": "En 1925, un señor llamado Ole Hanson trazó el pueblo de San Clemente junto al mar. Quería casas con techos de teja roja y paredes blancas. Esa regla no duró. Pero el pueblo todavía se llama a sí mismo el pueblo español junto al mar. Busquen techos de teja roja en las casas de la ladera.",
+   "kids_src": "9982503eba"
   },
   {
    "state": "CA",
@@ -95,7 +154,18 @@
    "months": null,
    "wiki": "Dana Point, California",
    "src": "https://en.wikipedia.org/wiki/Dana_Point,_California",
-   "src2": "https://en.wikipedia.org/wiki/Two_Years_Before_the_Mast"
+   "src2": "https://en.wikipedia.org/wiki/Two_Years_Before_the_Mast",
+   "name_es": "Dana Point y los cueros",
+   "text_es": "Al oeste de la autopista, sobre Pacific Coast Highway, Dana Point lleva el nombre de Richard Henry Dana Jr., quien navegó hasta aquí en 1835 en el bergantín Pilgrim y lo contó en Two Years Before the Mast. Los cueros de res de la Misión San Juan Capistrano se traían a los acantilados, y los marineros los lanzaban a la playa de abajo, una tarea que Dana comparó con volar un papalote sin hilo.",
+   "more_es": "Dana llamó a este tramo el único lugar romántico de la costa. La aldea acjachemen de Toovannga estaba cerca de la desembocadura de San Juan Creek, junto al puerto de hoy. En 1818, el corsario Hipólito Bouchard ancló aquí durante su ataque a la misión. Hobie Alter abrió en Dana Point en 1954 la que se considera la primera tienda de surf del mundo. El pueblo celebra un Festival of Whales desde principios de la década de 1970, durante dos fines de semana cada marzo, y en 2019 registró como marca el título de Capital Mundial del Avistamiento de Delfines y Ballenas.",
+   "es_src": {
+    "name": "a97a3a08ed",
+    "text": "50c6035d7f",
+    "more": "84d1210d47"
+   },
+   "kids": "West of the freeway is Dana Point. It is named for Richard Henry Dana Jr., who sailed here in 1835 and wrote a book about it. Cowhides from Mission San Juan Capistrano were brought to the cliffs. Sailors flung the cowhides from the cliffs to the beach below. Dana said it was like flying a kite without a string. Have you ever flown a kite?",
+   "kids_es": "Al oeste de la autopista está Dana Point. Lleva el nombre de Richard Henry Dana Jr., quien navegó hasta aquí en 1835 y escribió un libro sobre eso. Los cueros de res de la Misión San Juan Capistrano se traían a los acantilados, y los marineros los lanzaban a la playa de abajo. Dana dijo que era como volar un papalote sin hilo. ¿Alguna vez han volado un papalote?",
+   "kids_src": "50c6035d7f"
   },
   {
    "state": "CA",
@@ -113,7 +183,18 @@
    ],
    "wiki": "Mission San Juan Capistrano (California)",
    "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
-   "src2": "https://en.wikipedia.org/wiki/San_Juan_Capistrano,_California"
+   "src2": "https://en.wikipedia.org/wiki/San_Juan_Capistrano,_California",
+   "name_es": "Misión San Juan Capistrano",
+   "text_es": "Justo al oeste de la autopista, la Misión San Juan Capistrano fue fundada en 1776. Su Gran Iglesia de Piedra tardó nueve años en construirse y, según todos los relatos, era la más grandiosa de California, hasta que un terremoto la derrumbó durante la misa del 8 de diciembre de 1812 y mató a unos 40 fieles acjachemen. Sus ruinas siguen en pie. La misión es quizá más conocida por sus golondrinas, que según la tradición regresan cada año el 19 de marzo, día de San José.",
+   "more_es": "Antes de la misión, unas 550 personas acjachemen vivían en esta zona. Para el final del periodo de las misiones, en 1833, la misión había bautizado a 4,317 personas indígenas, y 3,158 de ellas habían muerto. Su Capilla Serra, de 1782, se considera el edificio más antiguo de California que sigue en uso. Las golondrinas pasan el invierno cerca de Goya, Argentina, vuelan unas 6,000 millas al norte y anidan bajo los aleros y arcos de la misión de la primavera al otoño. Una transmisión de radio de su llegada en 1939 inspiró la exitosa canción de Leon René When the Swallows Come Back to Capistrano. En las décadas de 1990 y 2000 regresaron pocas aves, una disminución relacionada con nuevas construcciones, y de 2009 a 2017 no llegaron a la misión, hasta que esta las atrajo de nuevo con grabaciones de cantos de golondrina y nidos artificiales.",
+   "es_src": {
+    "name": "c9ddc1b0a2",
+    "text": "d7a7b3cc02",
+    "more": "59cc2ddcd9"
+   },
+   "kids": "Just west of the freeway is Mission San Juan Capistrano, started in 1776. It once had a grand stone church. Something sad happened there long ago, but its ruins still stand. The mission is famous for its cliff swallows, birds said to come back each year on March 19. If you were a bird, where would you fly each spring?",
+   "kids_es": "Justo al oeste de la autopista está la Misión San Juan Capistrano, fundada en 1776. Tuvo una gran iglesia de piedra. Algo triste pasó ahí hace mucho tiempo, pero sus ruinas siguen en pie. La misión es conocida por sus golondrinas, que según la tradición regresan cada año el 19 de marzo. Si ustedes fueran pájaros, ¿a dónde volarían cada primavera?",
+   "kids_src": "d7a7b3cc02"
   },
   {
    "state": "CA",
@@ -129,7 +210,18 @@
    "months": null,
    "wiki": "Putuidem",
    "src": "https://en.wikipedia.org/wiki/Putuidem",
-   "src2": null
+   "src2": null,
+   "name_es": "La aldea de Putuidem",
+   "text_es": "Junto a la autopista, a cerca de una milla al norte de la misión, estaba Putuidem, una aldea madre del pueblo acjachemen que dio origen a otras aldeas. Su nombre significa vientre u ombligo. En un relato de la aldea, Coronne, la hija del jefe, murió de repente y su cuerpo se convirtió en un montículo de tierra, y la gente, de luto, dormía en una forma de pirámide llamada acjachema, que dio su nombre a los acjachemen.",
+   "more_es": "Cuando se construyó la misión junto a ella en 1776, la aldea se fue quedando sin gente, que pasó a servir a la misión. Gran parte del sitio está hoy bajo los campos deportivos y el centro de artes escénicas de JSerra Catholic High School. La construcción empezó en 2003 a pesar de las protestas y demandas de los acjachemen y de otras personas, que señalaron que la escuela llevaba el nombre del fundador de la misión que desplazó a la aldea. Alrededor del antiguo sitio de la aldea se habían encontrado entierros y objetos sagrados, entre ellos fragmentos de huesos de águila real y de cóndor. A finales de 2021, tras muchos retrasos, abrió al norte de la escuela un parque que conmemora la aldea, un proyecto de los acjachemen y de la ciudad.",
+   "es_src": {
+    "name": "4185a76813",
+    "text": "f597047708",
+    "more": "c575563d13"
+   },
+   "kids": "Near here stood Putuidem, a village of the Acjachemen people. It was called a mother village, because other villages grew from it. Its name means belly or navel. What do you think a mother village might be like?",
+   "kids_es": "Cerca de aquí estaba Putuidem, una aldea del pueblo acjachemen. Era una aldea madre, porque de ella nacieron otras aldeas. Su nombre significa vientre u ombligo. ¿Cómo se imaginan ustedes que era una aldea madre?",
+   "kids_src": "f597047708"
   },
   {
    "state": "CA",
@@ -145,7 +237,18 @@
    "months": null,
    "wiki": "Arroyo Trabuco",
    "src": "https://en.wikipedia.org/wiki/Arroyo_Trabuco",
-   "src2": null
+   "src2": null,
+   "name_es": "El arma perdida de Trabuco Creek",
+   "text_es": "Aquí la autopista cruza Arroyo Trabuco, un arroyo de 22 millas que baja de las Santa Ana Mountains para unirse a San Juan Creek junto a la misión. Trabuco es la palabra en español para un tipo de escopeta antigua. Según la historia, en julio de 1769 un soldado de la expedición de Portolá, acampado en un acantilado sobre el arroyo, descubrió que le faltaba su trabuco. Nunca apareció, y el arroyo recibió su nombre.",
+   "more_es": "Los acjachemen y los payómkawichum vivieron a lo largo del arroyo unos 8,000 años antes de que llegaran los españoles. En su estado natural tenía una de las migraciones de trucha steelhead más importantes del condado de Orange, y se volvieron a ver truchas steelhead en él en 2003 y 2005. El último oso grizzly de California en las Santa Ana Mountains fue abatido a tiros cerca de Trabuco Canyon. La parte alta del cañón se convirtió en el Rancho Trabuco, y gran parte de esas tierras es hoy O'Neill Regional Park. Bajo la autopista, el arroyo pasa apretado por dos alcantarillas gemelas y luego baja a un pequeño cañón rumbo a San Juan Capistrano.",
+   "es_src": {
+    "name": "f24337a929",
+    "text": "8896b05cbb",
+    "more": "35cbe11612"
+   },
+   "kids": "The freeway crosses Arroyo Trabuco, a 22-mile creek from the Santa Ana Mountains. Trabuco is Spanish for blunderbuss, a kind of old gun. The story goes that long ago, a soldier camped above the creek lost his blunderbuss. It was never found, and the creek was named for it. Where do you think it went?",
+   "kids_es": "La autopista cruza Arroyo Trabuco, un arroyo de 22 millas que baja de las Santa Ana Mountains. Un trabuco es un tipo de escopeta antigua. Según la historia, hace mucho tiempo un soldado acampado sobre el arroyo descubrió que le faltaba su trabuco. Nunca apareció, y el arroyo recibió su nombre. ¿A dónde creen ustedes que fue a parar?",
+   "kids_src": "8896b05cbb"
   },
   {
    "state": "CA",
@@ -161,7 +264,18 @@
    "months": null,
    "wiki": "Rancho Mission Viejo, California",
    "src": "https://en.wikipedia.org/wiki/Rancho_Mission_Viejo,_California",
-   "src2": "https://www.ranchomissionviejo.com/land/historic-cattle-ranch"
+   "src2": "https://www.ranchomissionviejo.com/land/historic-cattle-ranch",
+   "name_es": "Rancho Mission Viejo",
+   "text_es": "Al este de San Juan Capistrano, entre Ladera Ranch y San Clemente, está Rancho Mission Viejo, el antiguo rancho de la misión, que todavía tiene unos 23,000 acres. Los inmigrantes irlandeses Richard O'Neill y James Flood lo compraron después de que su dueño murió en 1882, y bajo O'Neill se convirtió en el mayor productor de trigo del condado de Orange. Sus descendientes todavía lo manejan como un rancho en funcionamiento, con ganado, huertos y una reserva natural.",
+   "more_es": "Antes del rancho, en estas tierras estaba la aldea acjachemen de Piwiva. Don Juan Forster, cuñado del gobernador Pío Pico, formó el rancho en la década de 1840 y en algún momento llegó a tener unos 200,000 acres, lo que lo hizo uno de los mayores terratenientes del estado. A principios de la década de 1940, la parte del condado de San Diego, de 123,620 acres, pasó a manos del ejército para ampliar Camp Pendleton. En 1963 la familia y sus socios fundaron la Mission Viejo Company y construyeron en tierras del rancho la comunidad planificada de Mission Viejo, de 11,000 acres. Un plan de 2004 apartó una reserva de casi 17,000 acres, mientras en el resto se construían nuevas comunidades. Los naranjales del rancho dieron paso a limones y aguacates, y se cosechan todo el año más de 9,000 aguacates y 63,000 limoneros.",
+   "es_src": {
+    "name": "b4fbd8d76f",
+    "text": "f2bfa91d3f",
+    "more": "e6f0e5c7cf"
+   },
+   "kids": "East of San Juan Capistrano lies Rancho Mission Viejo, an old ranch of about 23,000 acres. Long ago, Richard O'Neill and James Flood bought it. Under O'Neill, it grew more wheat than any other place in Orange County. Today the family of Richard O'Neill still runs it, with cattle, orchards and a nature reserve. Would you rather take care of cattle or pick fruit in an orchard?",
+   "kids_es": "Al este de San Juan Capistrano está Rancho Mission Viejo, un antiguo rancho de unos 23,000 acres. Hace mucho tiempo lo compraron Richard O'Neill y James Flood. Con O'Neill llegó a producir más trigo que nadie en el condado de Orange. Hoy sus descendientes todavía lo manejan, con ganado, huertos y una reserva natural. ¿Ustedes preferirían cuidar ganado o recoger fruta en un huerto?",
+   "kids_src": "f2bfa91d3f"
   },
   {
    "state": "CA",
@@ -177,7 +291,20 @@
    "months": null,
    "wiki": "Santiago Peak",
    "src": "https://en.wikipedia.org/wiki/Santiago_Peak",
-   "src2": "https://en.wikipedia.org/wiki/Helena_Modjeska"
+   "src2": "https://en.wikipedia.org/wiki/Helena_Modjeska",
+   "name_es": "Saddleback",
+   "text_es": "En días despejados, la montaña de dos jorobas al este de la autopista es Saddleback. Su cumbre más alta, Santiago Peak, se eleva a 5,689 pies, el punto más alto del condado de Orange, y su corona de antenas envía señales de radio a buena parte de cinco condados. La cumbre más baja, Modjeska Peak, a menos de una milla, lleva el nombre de Helena Modjeska, una estrella polaca del teatro que vivió en un cañón al pie de la montaña en sus últimos años.",
+   "more_es": "Los acjachemen llaman a Santiago Peak Kalawpa. En la mayoría de los inviernos le cae nieve al menos una vez. Helena Modjeska es considerada la actriz más grande de la historia del teatro polaco. En 1876, ella, su esposo y un grupo de amigos dejaron Polonia rumbo a California y compraron un rancho cerca de Anaheim, pero ninguno de los colonos sabía cultivar la tierra, así que ella volvió a los escenarios y llegó a ser conocida como la principal actriz de Shakespeare en Estados Unidos. En septiembre de 2024, el incendio Airport, llamado así por un club de aviones a escala cerca de donde empezó en Trabuco Canyon, quemó unos 24,000 acres y cruzó la cresta de Santiago Peak, dañando parte de su equipo de radio.",
+   "spot_es": "Busque una montaña con dos jorobas y una hondonada entre ellas, como una silla de montar.",
+   "es_src": {
+    "name": "f132bba864",
+    "text": "498a094f56",
+    "more": "90a89c8125",
+    "spot": "88277c9004"
+   },
+   "kids": "On clear days, the mountain with two humps east of the freeway is Saddleback. Its higher top, Santiago Peak, is 5,689 feet tall, the highest point in Orange County. Antennas on top send radio signals far away. Look for a mountain with two humps and a dip between them, like a saddle.",
+   "kids_es": "En días despejados, la montaña de dos jorobas al este de la autopista es Saddleback. Su cumbre más alta, Santiago Peak, mide 5,689 pies, el punto más alto del condado de Orange. Las antenas de arriba envían señales de radio muy lejos. Busquen una montaña con dos jorobas y una hondonada entre ellas, como una silla de montar.",
+   "kids_src": "498a094f56"
   },
   {
    "state": "CA",
@@ -193,7 +320,18 @@
    "months": null,
    "wiki": "El Toro Y",
    "src": "https://en.wikipedia.org/wiki/El_Toro_Y",
-   "src2": "https://en.wikipedia.org/wiki/Lake_Forest,_California"
+   "src2": "https://en.wikipedia.org/wiki/Lake_Forest,_California",
+   "name_es": "El Toro Y",
+   "text_es": "Este es El Toro Y, donde se juntan la Interestatal 5 y la Interestatal 405. Lleva el nombre del antiguo pueblo de El Toro, que en 1991 cambió su nombre a Lake Forest, y de la base aérea de la Infantería de Marina que estaba al lado. De 1975 a 2002, el tráfico aquí se multiplicó más de tres veces, hasta 356,000 vehículos al día, y después de una ampliación terminada en 1997 la carretera aquí tenía 26 carriles de ancho.",
+   "more_es": "A principios de la década de 1990, el Y era uno de los intercambios más congestionados del mundo, alimentado por un auge de la vivienda en el sur del condado de Orange. En 1990 los votantes aprobaron un impuesto de medio centavo sobre las ventas para el transporte, y Caltrans gastó 166 millones de dólares en ampliarlo de 1993 a 1997. Los embotellamientos también llevaron a construir las autopistas de cuota paralelas San Joaquin Hills y Foothill. Cuando El Toro se hizo ciudad, los residentes pelearon durante meses por el nuevo nombre. A la gente de los vecindarios más nuevos le gustaba Lake Forest, mientras que los residentes de toda la vida decían que borraba la historia del pueblo por un nombre sobre lagos artificiales. El bosque también es artificial: 400 acres de eucaliptos plantados a principios del siglo XX.",
+   "es_src": {
+    "name": "cb82dba42c",
+    "text": "10bf5301aa",
+    "more": "cafcadb2a1"
+   },
+   "kids": "This is the El Toro Y, where two big freeways meet. El Toro is Spanish for the bull, and it was the old name of a town now called Lake Forest. By 2002, about 356,000 cars and trucks a day went through here. After it was made wider, the road here was 26 lanes wide! Look for the place where the two freeways come together.",
+   "kids_es": "Este es El Toro Y, donde se juntan dos grandes autopistas. El Toro era el nombre del antiguo pueblo que ahora se llama Lake Forest. Para 2002 pasaban por aquí unos 356,000 vehículos al día. Después de una ampliación, la carretera aquí llegó a tener 26 carriles de ancho. ¿Pueden imaginar cuántos coches caben en 26 carriles?",
+   "kids_src": "10bf5301aa"
   },
   {
    "state": "CA",
@@ -209,7 +347,18 @@
    "months": null,
    "wiki": "Marine Corps Air Station El Toro",
    "src": "https://en.wikipedia.org/wiki/Marine_Corps_Air_Station_El_Toro",
-   "src2": "https://cityofirvine.gov/great-park/amenities-attractions"
+   "src2": "https://cityofirvine.gov/great-park/amenities-attractions",
+   "name_es": "La base aérea de los Marines en El Toro",
+   "text_es": "Al este de la autopista, los Marines volaron desde la base aérea de El Toro desde 1942 hasta que cerró en 1999. La Infantería de Marina le pagó a James Irvine 100,000 dólares por 4,000 acres de su rancho, tierras que entonces tenían el campo de frijol lima más grande de Norteamérica. Sus pistas podían recibir los aviones más grandes del ejército, y mientras la base estuvo abierta, todos los presidentes desde la Segunda Guerra Mundial aterrizaron aquí en el Air Force One.",
+   "more_es": "El emblema de la base, un toro volador, fue diseñado por Walt Disney Studios en 1944. Durante la década de 1960, muchos Marines partieron a la guerra de Vietnam desde El Toro y regresaron por aquí. El día que renunció, en 1974, Richard Nixon voló de Andrews Air Force Base a El Toro. El cierre de la base desató una larga pelea sobre convertirla en un gran aeropuerto comercial. De 1994 a 2001 se gastaron 80 millones de dólares del condado y de las ciudades en campañas de ambos lados, y los opositores del aeropuerto ganaron en 2002. Unos 1,300 acres se convirtieron en el Orange County Great Park, donde el Great Park Balloon se eleva 400 pies sobre los terrenos de alrededor.",
+   "es_src": {
+    "name": "2abfbaeee3",
+    "text": "e422483ab9",
+    "more": "166864acf6"
+   },
+   "kids": "East of the freeway, Marines once flew planes from the El Toro air station. Before that, the land held the biggest lima bean field in North America. Its runways could take the biggest planes in the military. While the base was open, every president since World War II landed here in Air Force One. What would you like to see if you could fly in a big plane?",
+   "kids_es": "Al este de la autopista, los Marines volaban aviones desde la base aérea de El Toro. Antes, esas tierras tenían el campo de frijol lima más grande de Norteamérica. Sus pistas podían recibir los aviones más grandes del ejército. Mientras la base estuvo abierta, muchos presidentes aterrizaron aquí en el Air Force One. ¿Qué les gustaría ver si pudieran volar en un avión grande?",
+   "kids_src": "e422483ab9"
   },
   {
    "state": "CA",
@@ -225,7 +374,18 @@
    "months": null,
    "wiki": "Irvine Company",
    "src": "https://en.wikipedia.org/wiki/Irvine_Company",
-   "src2": "https://en.wikipedia.org/wiki/Irvine,_California"
+   "src2": "https://en.wikipedia.org/wiki/Irvine,_California",
+   "name_es": "El Irvine Ranch",
+   "text_es": "Las tierras de por aquí eran parte del Irvine Ranch, que antes se extendía 23 millas desde el océano hasta el río Santa Ana. James Irvine y sus socios lo iniciaron en 1864 a partir de antiguas concesiones de tierras mexicanas, después de que una sequía mató el ganado de un ranchero y lo obligó a vender. Para 1918 el rancho cultivaba 60,000 acres de frijol lima, y en la década de 1960 sus campos empezaron a convertirse en la ciudad planificada de Irvine.",
+   "more_es": "Cuando cuadrillas de la Southern Pacific tendieron vías por el rancho sin permiso, los peones de Irvine los recibieron con escopetas, y él dejó que el ferrocarril rival, el Santa Fe, construyera por ahí en su lugar. En 1961 la Irvine Company le vendió 990 acres a la Universidad de California por un dólar, y el arquitecto William Pereira planeó una ciudad de 50,000 habitantes alrededor del nuevo campus, trazada como un collar con la universidad como su dije. Irvine se convirtió en ciudad en 1971 y hoy tiene más de 300,000 habitantes. La nueva ciudad tomó el apellido de la familia, y el viejo pueblo agrícola de Irvine junto a la estación del ferrocarril pasó a llamarse East Irvine.",
+   "es_src": {
+    "name": "c9e2a1f90f",
+    "text": "211db30bf0",
+    "more": "4638fba733"
+   },
+   "kids": "The land around here was once part of the Irvine Ranch. It stretched 23 miles from the ocean to the Santa Ana River. By 1918 it grew 60,000 acres of lima beans. Later its fields turned into the city of Irvine. What do you think a field of beans looks like?",
+   "kids_es": "Las tierras de por aquí eran parte del Irvine Ranch. Se extendía 23 millas desde el océano hasta el río Santa Ana. Para 1918 cultivaba 60,000 acres de frijol lima. Después, sus campos se convirtieron en la ciudad de Irvine. ¿Cómo se imaginan ustedes un campo lleno de frijoles?",
+   "kids_src": "211db30bf0"
   },
   {
    "state": "CA",
@@ -241,7 +401,20 @@
    "months": null,
    "wiki": "Jamboree Road",
    "src": "https://en.wikipedia.org/wiki/Jamboree_Road",
-   "src2": "https://en.wikipedia.org/wiki/National_Scout_jamboree_(Scouting_America)"
+   "src2": "https://en.wikipedia.org/wiki/National_Scout_jamboree_(Scouting_America)",
+   "name_es": "Jamboree Road",
+   "text_es": "Jamboree Road debe su nombre a un campamento de los Boy Scouts. En 1953, la Irvine Company dejó que el National Scout Jamboree usara terrenos del rancho donde hoy está Fashion Island, en Newport Beach, el primer jamboree nacional celebrado al oeste del Mississippi. Se levantaron miles de tiendas de campaña en un terreno al que solo se llegaba por un camino lodoso de dos carriles, que pronto fue pavimentado y más tarde rebautizado como Jamboree Road.",
+   "more_es": "Llegaron entre 45,000 y 50,000 scouts, según distintos conteos, y el maestro de ceremonias, Bob Hope, bromeó que, con muchachos de tantos otros países, parecían las Naciones Unidas en pantalones cortos. La Irvine Company también ayudó a construir un camino desde una parada del tren del Santa Fe entre Los Angeles y San Diego, el San Diegan, para que los scouts pudieran llegar por ferrocarril. Uno de los jóvenes scouts que estuvo ahí, David Sills, de Peoria, Illinois, después se mudó a Irvine y fue su alcalde durante cuatro periodos. Hoy Jamboree Road recorre 15.8 millas, desde la orilla de Balboa Island hasta las colinas de Orange.",
+   "spot_es": "Busque el letrero verde de la salida Jamboree Road.",
+   "es_src": {
+    "name": "27335f1d38",
+    "text": "2a35bb47e6",
+    "more": "307ef851b3",
+    "spot": "c324201371"
+   },
+   "kids": "Jamboree Road is named for a Boy Scout campout. In 1953, thousands of Scout tents went up on ranch land here. The only way in was a muddy little trail. Later it was paved and named Jamboree Road. Look for the green Jamboree Road exit sign.",
+   "kids_es": "Jamboree Road debe su nombre a un campamento de los Boy Scouts. En 1953 se levantaron miles de tiendas de campaña en terrenos del rancho. Solo se llegaba por un camino lodoso de dos carriles. Después lo pavimentaron y lo llamaron Jamboree Road. Busquen el letrero verde de la salida Jamboree Road.",
+   "kids_src": "2a35bb47e6"
   },
   {
    "state": "CA",
@@ -257,7 +430,20 @@
    "months": null,
    "wiki": "Marine Corps Air Station Tustin",
    "src": "https://en.wikipedia.org/wiki/Marine_Corps_Air_Station_Tustin",
-   "src2": "https://www.tustinca.org/170/Tustin-Legacy"
+   "src2": "https://www.tustinca.org/170/Tustin-Legacy",
+   "name_es": "El enorme hangar de dirigibles de Tustin",
+   "text_es": "Al sur de la autopista se levanta uno de los dos enormes hangares de madera que la Marina construyó durante la Segunda Guerra Mundial para los dirigibles que patrullaban la costa. El hangar sur, el que sobrevive, mide más de 1,000 pies de largo y tiene la altura de 17 pisos, una de las estructuras de madera más grandes jamás construidas. Su gemelo, el hangar norte, se quemó en un incendio el 7 de noviembre de 2023.",
+   "more_es": "Los hangares se construyeron con abeto Douglas de Oregon, y en 1993 la American Society of Civil Engineers los nombró un hito histórico de la ingeniería civil. En 1951 la base reabrió como la primera instalación aérea del país construida solo para helicópteros, y los marines volaron desde ahí hasta 1999. Los hangares aparecieron en películas y series como The Hindenburg, The X-Files, Pearl Harbor y Star Trek. Los bomberos dejaron que el hangar norte ardiera porque su techo podía derrumbarse, y en diciembre de ese año las cuadrillas empezaron a demoler lo que quedaba. El hangar sur todavía se usa para guardar y dar servicio a los dirigibles de Goodyear, que regresan cada año para mantenimiento e inspecciones.",
+   "spot_es": "Busque entre los edificios un enorme techo curvo de hangar a lo lejos.",
+   "es_src": {
+    "name": "b3059c8edf",
+    "text": "c45ae9d37d",
+    "more": "765f0ffc96",
+    "spot": "788b0249d5"
+   },
+   "kids": "South of the freeway stands a giant wooden hangar built for blimps by the Navy. It is more than 1,000 feet long and 17 stories tall. It is one of the largest wooden buildings ever made. Look between buildings for a huge curved hangar roof in the distance.",
+   "kids_es": "Al sur de la autopista hay un enorme hangar de madera que la Marina construyó para dirigibles. Mide más de 1,000 pies de largo y tiene la altura de 17 pisos. Es una de las estructuras de madera más grandes jamás construidas. Busquen entre los edificios un enorme techo curvo de hangar a lo lejos.",
+   "kids_src": "c45ae9d37d"
   },
   {
    "state": "CA",
@@ -273,7 +459,18 @@
    "months": null,
    "wiki": "Valencia orange",
    "src": "https://www.orangecountyhistory.org/wp/?p=231",
-   "src2": null
+   "src2": null,
+   "name_es": "Los naranjales del condado de Orange",
+   "text_es": "En 1936, el condado de Orange producía una sexta parte de las naranjas Valencia del país, y para 1948 tenía 67,263 acres de ellas, más de cinco millones de árboles. Luego llegó el auge de la posguerra. Tan solo en 1949 desaparecieron casi 7,000 acres de naranjos, y cada año caían más a medida que se extendían los fraccionamientos. Para 1985 quedaban menos de 4,000 acres de Valencias, sobre todo en el Irvine Ranch, y veinte años después, menos de 100.",
+   "more_es": "El primer huerto comercial de Valencias, que maduran en primavera, lo plantó en 1875 R. H. Gilman, en un terreno que hoy es el campus de Cal State Fullerton. Un árbol tardaba unos siete años en dar fruto. Para 1936 los cítricos aportaban dos terceras partes de los ingresos agrícolas del condado, y en 1919 quizá un tercio de los trabajadores de la ciudad de Orange tenía algún empleo ligado a los cítricos. En su mejor momento, a principios de los años cuarenta, funcionaban 45 empacadoras, y de 1943 a 1964 el Programa Bracero trajo trabajadores agrícolas migrantes al norte. La última empacadora, Villa Park Orchards, se mudó al condado de Ventura en 2006.",
+   "es_src": {
+    "name": "83735fc607",
+    "text": "a2b6dc11c6",
+    "more": "b9d875b150"
+   },
+   "kids": "Long ago, Orange County was full of orange trees. By 1948 it had more than five million of them. Then many new houses were built, and each year more orange trees were cut down to make room. Later, fewer than 100 acres of these oranges were left. If you could plant one tree near your home, what kind would you pick?",
+   "kids_es": "Hace mucho tiempo, el condado de Orange estaba lleno de naranjos. Para 1948 tenía más de cinco millones de árboles. Luego se construyeron muchas casas nuevas, y cada año desaparecían más naranjos. Con el tiempo quedaron menos de 100 acres de esas naranjas. Si pudieran plantar un árbol cerca de su casa, ¿cuál escogerían?",
+   "kids_src": "a2b6dc11c6"
   },
   {
    "state": "CA",
@@ -289,7 +486,18 @@
    "months": null,
    "wiki": "Santa Ana, California",
    "src": "https://en.wikipedia.org/wiki/Santa_Ana,_California",
-   "src2": "https://en.wikipedia.org/wiki/Santa_Ana_winds"
+   "src2": "https://en.wikipedia.org/wiki/Santa_Ana_winds",
+   "name_es": "Santa Ana, la cabecera del condado",
+   "text_es": "Al oeste de la autopista, Santa Ana creció sobre el Rancho Santiago de Santa Ana, otorgado en 1810 a José Antonio Yorba, sargento del ejército español. Su rancho abarcaba las tierras de lo que hoy son Santa Ana, Orange, Tustin, Irvine y Costa Mesa. El pueblo moderno se fundó en 1869 y en 1889 se convirtió en la cabecera del nuevo condado de Orange. En 1877 le ofreció a la Southern Pacific 10,000 dólares y terreno gratis para que su nueva línea de tren terminara aquí en lugar de en Tustin, y ganó.",
+   "more_es": "El nombre tongva de esta zona es Hotuuk, y el poblado de Pajbenga estaba junto al río. Los vientos calientes y secos de otoño llamados Santa Ana deben su nombre al cañón de Santa Ana, del que parecen soplar. A los promotores de la ciudad les disgustaba tanto el nombre que difundieron una historia falsa de que venía de una frase indígena que significaba viento del diablo, convertida en Satanás, que en español quiere decir Satan. Glenn L. Martin fundó aquí su primera compañía de aviones en 1912, antecesora de Lockheed Martin. En 1935 se abrió Firestone Boulevard como el primer camino directo para autos desde Los Angeles, y más tarde se amplió hasta convertirse en esta vía, la Santa Ana Freeway.",
+   "es_src": {
+    "name": "9942f75cef",
+    "text": "1553a100bf",
+    "more": "2f835eaa83"
+   },
+   "kids": "West of the freeway is Santa Ana. Long ago, its land was part of a big ranch. The town began in 1869. In 1889 it became the main town of the new Orange County. If you started a new town, what would you call it?",
+   "kids_es": "Al oeste de la autopista está Santa Ana. Hace mucho tiempo, sus tierras eran parte de un gran rancho. El pueblo se fundó en 1869. En 1889 se convirtió en la cabecera del nuevo condado de Orange. Si ustedes fundaran un pueblo nuevo, ¿cómo lo llamarían?",
+   "kids_src": "1553a100bf"
   },
   {
    "state": "CA",
@@ -305,7 +513,20 @@
    "months": null,
    "wiki": "Santa Ana River",
    "src": "https://en.wikipedia.org/wiki/Santa_Ana_River",
-   "src2": null
+   "src2": null,
+   "name_es": "Río Santa Ana",
+   "text_es": "El ancho cauce que pasa bajo la autopista aquí es el río Santa Ana, el río más grande que corre por completo dentro del sur de California, con 96 millas desde las San Bernardino Mountains hasta el mar. Los soldados de la expedición de Portolá lo llamaron Río de Santa Ana en julio de 1769, probablemente porque acababan de celebrar el día de Santa Ana. La ciudad y las montañas tomaron su nombre del río.",
+   "more_es": "El nombre tongva y acjachemen del río es Wanaawna. En la Gran Inundación de 1862 se desbordó y mató a entre 20 y 40 personas, y en 1938 inundó Anaheim y Orange con hasta 4 pies de agua, matando a casi 60 personas y destruyendo muchos huertos de cítricos. La presa Prado Dam se construyó río arriba en 1941, y debajo de Anaheim el río corre casi todo en un canal de concreto. Río arriba, en Anaheim, casi todo su caudal de temporada seca se desvía a zonas de infiltración, donde se filtra por arena y grava para recargar el acuífero que abastece aproximadamente la mitad del agua de la llave del condado.",
+   "spot_es": "Busque un cauce de río ancho, por lo general seco, que pasa bajo la autopista.",
+   "es_src": {
+    "name": "ef365ed853",
+    "text": "7ba270ddfc",
+    "more": "b0e9ca762f",
+    "spot": "e65d2b47e3"
+   },
+   "kids": "The wide channel under the freeway here is the Santa Ana River. It runs 96 miles from the mountains to the sea. Long ago, soldiers named it Santa Ana, probably after Saint Anne's Day. A city and mountains got their names from the river. Look for a wide river channel passing under the freeway. It is usually dry.",
+   "kids_es": "El cauce ancho que pasa bajo la autopista es el río Santa Ana. Corre 96 millas desde las montañas hasta el mar. Hace mucho tiempo, unos soldados lo llamaron Río de Santa Ana, probablemente porque acababan de celebrar el día de Santa Ana. Una ciudad y unas montañas tomaron su nombre del río. Busquen un cauce de río ancho que pasa bajo la autopista; casi siempre está seco.",
+   "kids_src": "7ba270ddfc"
   },
   {
    "state": "CA",
@@ -321,7 +542,20 @@
    "months": null,
    "wiki": "Christ Cathedral (Garden Grove, California)",
    "src": "https://en.wikipedia.org/wiki/Christ_Cathedral_(Garden_Grove,_California)",
-   "src2": null
+   "src2": null,
+   "name_es": "La Crystal Cathedral",
+   "text_es": "El enorme edificio de vidrio al oeste de la autopista es la Christ Cathedral, construida como la Crystal Cathedral y terminada en 1980. Sus 10,000 paneles rectangulares son de espejo por fuera y transparentes por dentro, y cuando abrió se describió como el edificio de vidrio más grande del mundo. A pesar del nombre, no se usó vidrio de cristal. Desde 2019 es la catedral de la Diócesis Católica de Orange.",
+   "more_es": "Robert y Arvella Schuller fundaron la congregación en 1955 en el Orange Drive-In Theatre, con Robert predicando desde el techo del puesto de comida mientras la gente escuchaba en sus autos. El vidrio está sujeto con pegamento de silicón para resistir los terremotos, y el edificio se diseñó para soportar un sismo de magnitud 8.0. Las transmisiones de Hour of Power de Schuller desde aquí llegaban con regularidad a unos 20 millones de televidentes. Después de que su ministerio se declaró en bancarrota, la diócesis católica compró el campus en 2012 y le cambió el nombre a la iglesia. Adentro está el Hazel Wright Organ, uno de los instrumentos musicales más grandes del mundo.",
+   "spot_es": "Busque un edificio gigante de vidrio como espejo, con una alta aguja plateada.",
+   "es_src": {
+    "name": "7bb7cd9e76",
+    "text": "8edd517a73",
+    "more": "abfe5449af",
+    "spot": "8f39789fb7"
+   },
+   "kids": "The huge glass building west of the freeway is Christ Cathedral. It used to be called the Crystal Cathedral, and it was finished in 1980. It has 10,000 glass panes that look like mirrors from outside. Inside, you can see right through them. Look for a giant building made of mirror-like glass with a tall silver spire.",
+   "kids_es": "El enorme edificio de vidrio al oeste de la autopista es la Christ Cathedral. Antes se llamaba Crystal Cathedral y se terminó en 1980. Tiene 10,000 paneles que por fuera parecen espejos, y por dentro son transparentes. Busquen un edificio gigante de vidrio como espejo, con una alta aguja plateada.",
+   "kids_src": "8edd517a73"
   },
   {
    "state": "CA",
@@ -337,7 +571,18 @@
    "months": null,
    "wiki": "Disneyland",
    "src": "https://en.wikipedia.org/wiki/Disneyland",
-   "src2": "https://www.history.com/news/disneylands-disastrous-opening-day-60-years-ago"
+   "src2": "https://www.history.com/news/disneylands-disastrous-opening-day-60-years-ago",
+   "name_es": "Disneyland",
+   "text_es": "Justo al suroeste de la autopista está Disneyland, construido sobre 160 acres de naranjales y nogales, un sitio elegido por investigadores que Disney contrató para pronosticar hacia dónde crecería la población de la región. La construcción empezó en julio de 1954, mientras esta autopista, entonces la U.S. 101, se construía justo al norte del sitio, y se agregaron dos carriles extra para las multitudes esperadas. El parque abrió un año y un día después, el 17 de julio de 1955.",
+   "more_es": "El día de la inauguración era solo con invitación, pero llegaron unas 28,000 personas, aproximadamente la mitad con boletos falsificados o brincándose la cerca. El embotellamiento en la Santa Ana Freeway se extendió unas siete millas. La temperatura llegó a 100 grados, el asfalto fresco de Main Street se ablandó tanto que atrapaba los tacones, y una huelga de plomeros dejó pocos bebederos. El día se conoció como el Domingo Negro. Se calcula que 70 millones de personas vieron la inauguración en vivo por televisión, en un país de 165 millones.",
+   "es_src": {
+    "name": "0606147bcc",
+    "text": "1601c30e4c",
+    "more": "116adcfc24"
+   },
+   "kids": "Just southwest of the freeway is Disneyland. It was built where orange groves and walnut trees once grew. Workers started building it in July 1954, while this freeway was being built too. The park opened one year and one day later, on July 17, 1955. What ride would you build if you made your own park?",
+   "kids_es": "Justo al suroeste de la autopista está Disneyland. Lo construyeron donde antes había naranjales y nogales. La construcción empezó en julio de 1954, mientras también se construía esta autopista. El parque abrió un año y un día después, el 17 de julio de 1955. ¿Qué juego construirían ustedes si hicieran su propio parque?",
+   "kids_src": "1601c30e4c"
   },
   {
    "state": "CA",
@@ -353,7 +598,18 @@
    "months": null,
    "wiki": "Anaheim, California",
    "src": "https://en.wikipedia.org/wiki/Anaheim,_California",
-   "src2": "https://en.wikipedia.org/wiki/Xylella_fastidiosa"
+   "src2": "https://en.wikipedia.org/wiki/Xylella_fastidiosa",
+   "name_es": "Los viñedos alemanes de Anaheim",
+   "text_es": "Anaheim fue fundada en 1857 por 50 familias alemanas de San Francisco, que compraron unos 1,160 acres cerca del río Santa Ana a 2 dólares el acre para cultivar uvas. La llamaron Annaheim, hogar junto al río Santa Ana. La mayoría eran carpinteros y artesanos que nunca habían hecho vino, y aun así, durante unos 25 años, la zona fue el mayor productor de vino de California.",
+   "more_es": "Los vecinos de habla hispana llamaban al asentamiento Campo Alemán. Los colonos reclutaron a 30 trabajadores chinos en San Francisco, y los trabajadores chinos plantaron cientos de miles de vides y cavaron un canal de 16 millas. Después de la Ley de Exclusión China de 1882, la violencia y los boicots contra los chinos redujeron su comunidad, y para 1935 solo quedaba un residente chino. En 1884 una enfermedad atacó las vides, y en menos de un año la industria del vino había desaparecido. Cuando el científico Newton Pierce la estudió en 1892 se le conocía como la enfermedad de Anaheim, y hoy se llama enfermedad de Pierce. Las nueces, los limones y las naranjas ocuparon el lugar de los viñedos.",
+   "es_src": {
+    "name": "fdd5856e0d",
+    "text": "f4ca06a2bd",
+    "more": "a3fc72e5d3"
+   },
+   "kids": "Anaheim was started in 1857 by 50 German families from San Francisco. They bought land near the Santa Ana River to grow grapes. Most of them were carpenters and had never made wine before. Yet for about 25 years, this area made more wine than anywhere else in California. What new thing would you like to learn to make?",
+   "kids_es": "Anaheim fue fundada en 1857 por 50 familias alemanas de San Francisco. Compraron tierra cerca del río Santa Ana para cultivar uvas. La mayoría eran carpinteros y nunca habían hecho vino. Aun así, durante unos 25 años, esta zona hizo más vino que ninguna otra en California. ¿Qué cosa nueva les gustaría aprender a hacer?",
+   "kids_src": "f4ca06a2bd"
   },
   {
    "state": "CA",
@@ -369,7 +625,18 @@
    "months": null,
    "wiki": "Knott's Berry Farm",
    "src": "https://en.wikipedia.org/wiki/Boysenberry",
-   "src2": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm"
+   "src2": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm",
+   "name_es": "El pollo de Knott y las boysenberries",
+   "text_es": "A cerca de una milla y media al sur por Beach Boulevard, Knott's Berry Farm comenzó en 1923 como un puesto de moras a la orilla del camino. A finales de los años veinte, Walter Knott ayudó a un experto federal en moras a buscar una mora grande cultivada por Rudolph Boysen, y en la antigua granja de Boysen encontraron unas cuantas vides débiles en un campo lleno de maleza. Knott las cuidó hasta recuperarlas, vendió las moras grandes en su puesto a partir de 1932 y las llamó boysenberries en honor a su creador.",
+   "more_es": "En junio de 1934, Cordelia Knott sirvió ocho cenas de pollo frito, a 65 centavos cada una, en el salón de té de 20 asientos de la familia. Las cenas atrajeron tanta gente que los Knott construyeron tiendas y atracciones para entretener a quienes esperaban mesa, y en 1940 Walter comenzó una réplica de un pueblo fantasma en honor a pioneros como sus propios abuelos, que llegaron a California en carreta cubierta en 1868. Rudolph Boysen fue el primer superintendente de parques de Anaheim. Hoy el parque recibe más de 4 millones de visitantes al año, y el restaurante sirve más de 1.5 millones de cenas de pollo cada año.",
+   "es_src": {
+    "name": "f3c8489a37",
+    "text": "50d5b401cc",
+    "more": "1dcd535782"
+   },
+   "kids": "Knott's Berry Farm began in 1923 as a little berry stand by the road. Walter Knott helped search for a big berry grown by a man named Rudolph Boysen. They found a few weak vines in a weedy field. Knott helped them grow strong and named the berries boysenberries. What would you name a fruit you discovered?",
+   "kids_es": "Knott's Berry Farm empezó en 1923 como un puesto de moras a la orilla del camino. Walter Knott ayudó a buscar una mora grande cultivada por Rudolph Boysen. Encontraron unas cuantas vides débiles en un campo lleno de maleza. Knott las cuidó hasta recuperarlas y llamó a las moras boysenberries. ¿Qué nombre le pondrían ustedes a una fruta que descubrieran?",
+   "kids_src": "50d5b401cc"
   },
   {
    "state": "CA",
@@ -385,7 +652,18 @@
    "months": null,
    "wiki": "La Mirada, California",
    "src": "https://en.wikipedia.org/wiki/La_Mirada,_California",
-   "src2": null
+   "src2": null,
+   "name_es": "El rancho de olivos de La Mirada",
+   "text_es": "La Mirada, que quiere decir la mirada, comenzó como el rancho de Andrew McNally, el impresor y cartógrafo de Chicago de Rand McNally. En 1888 compró más de 2,200 acres por $200,000 y rodeó su casa, Windermere Ranch, de huertos de olivos, naranjos y limoneros. Construyó una planta para prensar aceite de oliva fino y una estación de ferrocarril para enviar su aceite y su fruta a todo el país.",
+   "more_es": "McNally y su yerno, Edwin Neff, vendían terrenos con un folleto llamado The Country Gentleman in California. Todavía en 1946, una guía del ferrocarril Santa Fe daba a La Mirada una población de 213, entre huertos de naranjos, limoneros, nogales y olivos, pozos petroleros y empacadoras. Luego la tierra pasó a manos de desarrolladores, y a principios de los años cincuenta La Mirada se promovía como la ciudad completamente planificada del país. Las casas se construyeron tan rápido que para 1960 el pueblo había pasado de unas 100 viviendas a más de 8,000. El sitio de la casa de McNally es hoy Neff Park.",
+   "es_src": {
+    "name": "4c07a21fc6",
+    "text": "98e90c2366",
+    "more": "688014dc77"
+   },
+   "kids": "La Mirada means the look in Spanish. It began as the ranch of Andrew McNally, a mapmaker from Chicago. He planted olive, orange and lemon trees all around his home. He even built a train station to send his olive oil and fruit across the country. Which tree would you plant: olive, orange or lemon?",
+   "kids_es": "La Mirada empezó como el rancho de Andrew McNally, un cartógrafo de Chicago, es decir, alguien que hacía mapas. Alrededor de su casa plantó olivos, naranjos y limoneros. Hasta construyó una estación de ferrocarril para enviar su aceite de oliva y su fruta a todo el país. ¿Qué árbol plantarían ustedes: olivo, naranjo o limonero?",
+   "kids_src": "98e90c2366"
   },
   {
    "state": "CA",
@@ -401,7 +679,18 @@
    "months": null,
    "wiki": "Rancho Los Nietos",
    "src": "https://en.wikipedia.org/wiki/Rancho_Los_Nietos",
-   "src2": "https://en.wikipedia.org/wiki/Norwalk,_California"
+   "src2": "https://en.wikipedia.org/wiki/Norwalk,_California",
+   "name_es": "Norwalk y Rancho Los Nietos",
+   "text_es": "En 1784 el gobernador español le concedió a un antiguo soldado, Manuel Nieto, el uso de toda la tierra entre los ríos Santa Ana y Los Angeles, desde la Misión San Gabriel hasta el mar. Rancho Los Nietos comenzó con unos 300,000 acres, una de las primeras y más grandes concesiones de tierra españolas en California. Norwalk, Downey, Buena Park, Anaheim, Whittier y Long Beach están hoy sobre partes de él.",
+   "more_es": "Los padres de la misión protestaron, y la concesión se redujo casi a la mitad, pero Nieto aún conservó unos 167,000 acres. En 1834 se dividió en seis ranchos más pequeños. En 1869 los hermanos Sproul, de Oregon, compraron aquí 463 acres, y cuando llegó el ferrocarril en 1873 le cedieron 23 acres con la condición de que construyera una parada de pasajeros. Tres días después de que el Anaheim Branch Railroad cruzara por primera vez lo que se llamaba North-walk, Gilbert Sproul trazó un sitio para el pueblo, y en 1874 el nombre se registró como Norwalk. Para 1900 era un centro lechero con algunas de las granjas de betabel azucarero más grandes del sur de California, y muchos de los lecheros que llegaron a principios del siglo veinte eran holandeses.",
+   "es_src": {
+    "name": "910bd1729c",
+    "text": "0ec77e80f0",
+    "more": "ccefae028f"
+   },
+   "kids": "In 1784, a man named Manuel Nieto was given a giant piece of land. It reached from Mission San Gabriel down to the sea. It started at about 300,000 acres. Today, towns like Norwalk, Anaheim and Long Beach sit on parts of it. What would you do with that much land?",
+   "kids_es": "En 1784, a un hombre llamado Manuel Nieto le dieron el uso de una tierra gigante. Iba desde la Misión San Gabriel hasta el mar. Empezó con unos 300,000 acres. Hoy, ciudades como Norwalk, Anaheim y Long Beach están sobre partes de ella. ¿Qué harían ustedes con tanta tierra?",
+   "kids_src": "0ec77e80f0"
   },
   {
    "state": "CA",
@@ -417,7 +706,18 @@
    "months": null,
    "wiki": "Santa Fe Springs, California",
    "src": "https://en.wikipedia.org/wiki/Santa_Fe_Springs,_California",
-   "src2": null
+   "src2": null,
+   "name_es": "El pozo surgente de Santa Fe Springs",
+   "text_es": "Santa Fe Springs toma su nombre de unos manantiales minerales que el Dr. James Fulton convirtió en un balneario de azufre en la década de 1870, y que el ferrocarril Santa Fe compró en 1886. En 1921 un pozo llamado Union-Bell brotó como un chorro de 2,500 barriles y desató una fiebre del petróleo. En menos de un año, el campo se consideraba uno de los más ricos en la historia del petróleo, y en los años veinte llegó a producir hasta 345,000 barriles al día.",
+   "more_es": "Los promotores llevaban en autobús a posibles inversionistas al campo petrolero, les servían un almuerzo gratis en carpas de circo y les contaban historias de fortunas hechas con el petróleo. En 1923 el estado limitó cuántas acciones se podían vender de un pozo. Para 1938 el campo había producido más de 440 millones de barriles. En 1962 Carroll Shelby se instaló aquí en el taller de velocidad de Dean Moon. Hizo que AC Cars de Inglaterra le enviara roadsters ligeros sin motor, les puso un V8 de 260 pulgadas cúbicas, y así nació el Shelby Cobra.",
+   "es_src": {
+    "name": "e6936f06e9",
+    "text": "364c868010",
+    "more": "e02f93a152"
+   },
+   "kids": "Santa Fe Springs is named for springs of mineral water that were here long ago. In 1921, a well called Union-Bell shot up oil like a fountain. That started an oil rush. Soon it was considered one of the richest oil fields in history. If you found something special under the ground, what would you hope it was?",
+   "kids_es": "Santa Fe Springs lleva el nombre de unos manantiales de agua mineral. En 1921, un pozo llamado Union-Bell lanzó petróleo como un chorro. Eso empezó una fiebre del petróleo. En menos de un año, el campo se consideraba uno de los más ricos en la historia del petróleo. Si encontraran algo especial bajo la tierra, ¿qué les gustaría que fuera?",
+   "kids_src": "364c868010"
   },
   {
    "state": "CA",
@@ -433,7 +733,20 @@
    "months": null,
    "wiki": "San Gabriel River (California)",
    "src": "https://en.wikipedia.org/wiki/San_Gabriel_River_(California)",
-   "src2": "https://en.wikipedia.org/wiki/Rio_Hondo_(California)"
+   "src2": "https://en.wikipedia.org/wiki/Rio_Hondo_(California)",
+   "name_es": "El río San Gabriel y el Rio Hondo",
+   "text_es": "La autopista cruza aquí el río San Gabriel, junto al cruce con la 605, y el Rio Hondo, que en español significa río profundo, a unas dos millas y media al noroeste. Los dos corren a unas dos millas uno del otro y antes formaban un solo sistema inquieto. Antes de los diques, el San Gabriel cambiaba de desembocadura con las tormentas de invierno, y después de una inundación a finales de la década de 1860 abrió un nuevo cauce y dejó su antiguo lecho, que se convirtió en el Rio Hondo.",
+   "more_es": "El 8 de enero de 1847, durante la guerra entre México y Estados Unidos, las tropas estadounidenses ganaron la Batalla del Río San Gabriel en la orilla oeste de lo que hoy es el Rio Hondo, cerca de Washington Boulevard, porque en ese entonces el San Gabriel corría por ahí. El río lleva el nombre de la Misión San Gabriel, fundada a su lado en 1771, y al menos 26 aldeas tongva estaban a lo largo de él. Alguna vez tuvo las mayores corridas de trucha steelhead del sur de California. Después de grandes inundaciones en 1914, 1934 y 1938, los ríos fueron represados y revestidos, y hoy unas zonas de infiltración hacen que el agua de lluvia se absorba en la tierra. Aproximadamente un tercio del agua que se usa en el sureste del condado de Los Angeles viene del San Gabriel.",
+   "spot_es": "Busque un canal de río ancho que pasa bajo la autopista junto al cruce con la 605.",
+   "es_src": {
+    "name": "d41a596797",
+    "text": "eb2d703a9f",
+    "more": "d0556c688a",
+    "spot": "1ddfa1c922"
+   },
+   "kids": "Here the freeway crosses the San Gabriel River. Nearby is the Rio Hondo, which means deep river in Spanish. Long ago, these two were one river that kept changing its path. One time the river cut a new way, and its old bed became the Rio Hondo. Look for a wide river channel passing under the freeway beside the 605 junction.",
+   "kids_es": "Aquí la autopista cruza el río San Gabriel. Cerca está el Rio Hondo, que quiere decir río profundo. Hace mucho tiempo, los dos formaban un solo sistema que cambiaba de camino. Una vez el río abrió un cauce nuevo, y su lecho viejo se convirtió en el Rio Hondo. Busquen un canal de río ancho que pasa bajo la autopista junto al cruce con la 605.",
+   "kids_src": "eb2d703a9f"
   },
   {
    "state": "CA",
@@ -449,7 +762,18 @@
    "months": null,
    "wiki": "Downey, California",
    "src": "https://en.wikipedia.org/wiki/Downey,_California",
-   "src2": "https://en.wikipedia.org/wiki/Oldest_McDonald%27s_restaurant"
+   "src2": "https://en.wikipedia.org/wiki/Oldest_McDonald%27s_restaurant",
+   "name_es": "Downey, Apollo y McDonald's",
+   "text_es": "Downey, al suroeste de la autopista, lleva el nombre de John Gately Downey, el gobernador más joven que ha tenido California. Su gran planta de aviones, operada por North American Aviation, construyó todos los módulos de mando y servicio Apollo, nueve de los cuales llevaron astronautas a la Luna. A menos de una milla por Lakewood Boulevard está el McDonald's más antiguo, un puesto de servicio en ventanilla de 1953 que todavía conserva sus arcos dorados originales, dos arcos altos de lámina.",
+   "more_es": "Para 1941 la planta, entonces operada por Vultee, construía el 15 por ciento de los aviones militares de Estados Unidos, y Vultee fue la primera compañía aeronáutica en construir aviones en una línea de ensamblaje motorizada. Allí también se concibió el Transbordador Espacial, y la planta cerró en 1999 después de 70 años. Parte del sitio es hoy el Columbia Memorial Space Center, con BP-12, la primera cápsula Apollo que voló, al frente. Ese McDonald's fue apenas el segundo restaurante franquiciado por Richard y Maurice McDonald, antes de que llegara Ray Kroc, así que nunca tuvo que modernizarse. En 1959 recibió un letrero hecho a la medida de Speedee, un chef con cabeza de hamburguesa que fue la mascota de McDonald's antes de Ronald McDonald. Después del terremoto de Northridge de 1994, la compañía lo cerró y planeaba demolerlo, pero el Concejo Municipal de Downey detuvo la demolición, y reabrió en 1996.",
+   "es_src": {
+    "name": "e472dd00f4",
+    "text": "76ca4861ec",
+    "more": "5a82112cdf"
+   },
+   "kids": "Downey is southwest of the freeway. It is named for John Gately Downey, the youngest governor California ever had. A big plant here built all the Apollo command and service modules. Nine of them carried astronauts to the Moon! If you could ride to the Moon, what would you want to see first?",
+   "kids_es": "Downey está al suroeste de la autopista. Lleva el nombre de John Gately Downey, el gobernador más joven que ha tenido California. Una gran planta de aquí construyó todos los módulos de mando y servicio Apollo. ¡Nueve de ellos llevaron astronautas a la Luna! Si pudieran viajar a la Luna, ¿qué les gustaría ver primero?",
+   "kids_src": "76ca4861ec"
   },
   {
    "state": "CA",
@@ -465,7 +789,20 @@
    "months": null,
    "wiki": "Citadel Outlets",
    "src": "https://en.wikipedia.org/wiki/Citadel_Outlets",
-   "src2": "https://en.wikipedia.org/wiki/Commerce,_California"
+   "src2": "https://en.wikipedia.org/wiki/Commerce,_California",
+   "name_es": "The Citadel",
+   "text_es": "Ese largo muro decorado como un palacio antiguo se construyó en 1929 como la fábrica de la Samson Tire and Rubber Company. Sus arquitectos lo inspiraron en el castillo del rey asirio Sargón II, en un estilo llamado Exotic Revival, y la misma firma diseñó el Mayan Theater en Los Angeles. Aquí se fabricaron llantas hasta 1978, y la antigua fachada de la fábrica es hoy el frente de Citadel Outlets.",
+   "more_es": "Esto era tierra de ranchos, y su paso a la industria empezó en 1887, cuando el ferrocarril Santa Fe tendió por aquí su línea principal. Después de que cerró la planta de llantas, la ciudad de Commerce compró el terreno en 1983 y lo hizo remodelar como un centro outlet con un hotel al lado. Commerce misma se convirtió en ciudad en 1960, para evitar que sus vecinos se anexaran sus terrenos industriales. Los impuestos del Citadel y del Commerce Casino, un club de cartas, ayudan a pagar bibliotecas y otros servicios de la ciudad, y Commerce es una de las pocas ciudades de California con autobuses municipales gratis. Aquí se planea una estación de tren ligero, que abriría en 2035.",
+   "spot_es": "Busque un largo muro que parece un palacio antiguo, junto a la autopista.",
+   "es_src": {
+    "name": "13190a6eeb",
+    "text": "d08fded22e",
+    "more": "27ba0d439f",
+    "spot": "57cbb83441"
+   },
+   "kids": "That long wall that looks like an ancient palace was built in 1929 as a tire factory. Its builders modeled it on the castle of an old king named Sargon II. Tires were made here until 1978. Look for a long wall that looks like an ancient palace, beside the freeway.",
+   "kids_es": "Ese largo muro que parece un palacio antiguo se construyó en 1929 como una fábrica de llantas. Sus arquitectos se inspiraron en el castillo de un rey antiguo llamado Sargón II. Aquí se hicieron llantas hasta 1978. Busquen un largo muro que parece un palacio antiguo, junto a la autopista.",
+   "kids_src": "d08fded22e"
   },
   {
    "state": "CA",
@@ -481,7 +818,20 @@
    "months": null,
    "wiki": "Sears, Roebuck & Company Mail Order Building (Los Angeles, California)",
    "src": "https://en.wikipedia.org/wiki/Sears,_Roebuck_%26_Company_Mail_Order_Building_(Los_Angeles,_California)",
-   "src2": null
+   "src2": null,
+   "name_es": "La torre de Sears",
+   "text_es": "La alta torre art déco cerca del intercambio pertenece al antiguo edificio de ventas por catálogo de Sears, Roebuck, terminado en 1927 en solo 171 días. Sus nueve pisos tenían unos 11 acres de superficie, y desde ahí se enviaban pedidos por catálogo a los estados de las Montañas Rocosas y de la costa del Pacífico. Con los años, su torre de 226 pies y su letrero de Sears fueron llamados un faro para la gente del Eastside que volvía a casa por las autopistas.",
+   "more_es": "Adentro, los trabajadores surtían pedidos en patines, deslizándose por los pasillos y dejando caer los artículos en toboganes en espiral que los bajaban hasta los camiones y trenes que esperaban. Más de 100,000 personas vinieron a verlo en su primer mes. El centro de ventas por catálogo cerró en 1992, y se perdieron los empleos de 585 trabajadores de tiempo completo y 775 de medio tiempo, y la tienda de la planta baja cerró en 2021 después de casi 94 años. El boxeador Oscar De La Hoya, nacido en Boyle Heights, que de niño compraba ahí con su mamá, intentó dos veces comprar el edificio y revivirlo. Desde los años noventa, los planes para su futuro han ido y venido.",
+   "spot_es": "Busque una alta torre art déco que se eleva sobre un enorme edificio antiguo.",
+   "es_src": {
+    "name": "6428c0f72d",
+    "text": "89350163c3",
+    "more": "cd9ec7257b",
+    "spot": "cf5e011a12"
+   },
+   "kids": "This tall tower belongs to an old Sears building, finished in 1927 in just 171 days. Inside, workers sent out things people ordered from catalogs to many states. For years, people called the tower a beacon for drivers coming home. Look for a tall tower rising above a huge old building.",
+   "kids_es": "Esta alta torre es parte de un antiguo edificio de Sears, terminado en 1927 en solo 171 días. Desde ahí se enviaban a muchos estados las cosas que la gente pedía por catálogo. Con los años, la gente llamó a la torre un faro para quienes volvían a casa por las autopistas. Busquen una alta torre que se eleva sobre un enorme edificio antiguo.",
+   "kids_src": "89350163c3"
   },
   {
    "state": "CA",
@@ -497,7 +847,20 @@
    "months": null,
    "wiki": "East Los Angeles Interchange",
    "src": "https://en.wikipedia.org/wiki/East_Los_Angeles_Interchange",
-   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California"
+   "src2": "https://en.wikipedia.org/wiki/Interstate_5_in_California",
+   "name_es": "El East Los Angeles Interchange",
+   "text_es": "Esta maraña de rampas es el East Los Angeles Interchange, donde la Interestatal 5, la Interestatal 10, la U.S. 101 y la State Route 60 se juntan sobre 135 acres de Boyle Heights. Un conteo de 2008 registró más de 550,000 vehículos al día en su parte sur, y a menudo se le llama el intercambio de autopistas más transitado del mundo. El reportero de tráfico de radio Bill Keene lo apodó Malfunction Junction.",
+   "more_es": "La construcción empezó en 1961, con 32 puentes, 20 muros y una maqueta de 17,000 dólares para planear las rampas. Su nombre oficial es Eugene A. Obregon Memorial Interchange, en honor a un miembro de la Infantería de Marina que recibió la Medalla de Honor. Este tramo de la Interestatal 5, la Golden State Freeway, se propuso en 1953, y los residentes del Eastside lucharon en su contra porque atravesaría y borraría grandes partes de Boyle Heights. El concejal Edward Roybal presidió un comité para bloquearla o cambiar su ruta, pero se construyó de todos modos. Boyle Heights lleva el nombre de Andrew Boyle, un irlandés que compró 22 acres en los riscos sobre el río y cultivó uvas ahí en la década de 1860.",
+   "spot_es": "Cuente cuántas rampas y puentes puede ver encimados a la vez.",
+   "es_src": {
+    "name": "c5b36eee3d",
+    "text": "783ee5a4ad",
+    "more": "a3f82a4903",
+    "spot": "bdd43220f0"
+   },
+   "kids": "This tangle of ramps is the East Los Angeles Interchange. Four big roads meet here. More than 550,000 cars and trucks a day went through one part of it. A radio traffic reporter called it Malfunction Junction. Count how many ramps and bridges you can see stacked up at once.",
+   "kids_es": "Esta maraña de rampas es el East Los Angeles Interchange. Aquí se juntan cuatro autopistas. Un conteo encontró más de 550,000 vehículos al día en una parte de él. Un reportero de tráfico de radio lo apodó Malfunction Junction. Cuenten cuántas rampas y puentes pueden ver encimados a la vez.",
+   "kids_src": "783ee5a4ad"
   },
   {
    "state": "CA",
@@ -513,7 +876,18 @@
    "months": null,
    "wiki": "Yaanga",
    "src": "https://en.wikipedia.org/wiki/Yaanga",
-   "src2": "https://en.wikipedia.org/wiki/Tongva"
+   "src2": "https://en.wikipedia.org/wiki/Tongva",
+   "name_es": "Yaanga y los tongva",
+   "text_es": "Al otro lado del río, donde hoy está el centro de Los Angeles, estaba Yaanga, registrada como la aldea tongva más grande e influyente de la región. En su centro crecía un gran sicomoro que luego se llamó El Aliso, un punto de referencia conocido por comerciantes de lugares tan lejanos como lo que hoy es Yuma. La expedición de Portolá llegó a Yaanga en 1769, y en 1781 colonos españoles fundaron junto a ella el pueblo de Los Angeles.",
+   "more_es": "La tierra ancestral de los tongva, Tovaangar, abarca unas 4,000 millas cuadradas de la cuenca de Los Angeles y de las islas Channel del sur. A la gente de Yaanga la obligaron a trabajar para las misiones y a construir el nuevo pueblo, y los colonos movieron su aldea una y otra vez. En 1845, la última tierra reservada para ellos se vendió por 200 dólares y los empujaron al otro lado del río, a lo que hoy es Boyle Heights, y en 1847 ese lugar fue arrasado, según se dice, con la aprobación del concejo municipal. Se han encontrado rastros de Yaanga alrededor de Union Station y de la antigua Plaza. En 1994, California reconoció a los gabrieleño, o tongva, como la tribu aborigen de la cuenca de Los Angeles, aunque ningún grupo tongva tiene reconocimiento federal.",
+   "es_src": {
+    "name": "8dd290cb28",
+    "text": "57b467fd84",
+    "more": "86947aa535"
+   },
+   "kids": "Across the river, where downtown Los Angeles now stands, was a village called Yaanga. It was the biggest Tongva village around here. A great sycamore tree grew in its middle, and traders from far away knew it. In 1781, Spanish settlers started Los Angeles right next to it. What would you use as a landmark to find your way home?",
+   "kids_es": "Al otro lado del río, donde hoy está el centro de Los Angeles, había una aldea llamada Yaanga. Era la aldea tongva más grande de la región. En medio crecía un gran sicomoro que conocían comerciantes de lugares lejanos. En 1781, colonos españoles fundaron Los Angeles junto a ella. ¿Qué usarían ustedes como señal para encontrar el camino a casa?",
+   "kids_src": "57b467fd84"
   },
   {
    "state": "CA",
@@ -529,7 +903,20 @@
    "months": null,
    "wiki": "Arroyo Seco Parkway",
    "src": "https://en.wikipedia.org/wiki/Arroyo_Seco_Parkway",
-   "src2": null
+   "src2": null,
+   "name_es": "Arroyo Seco Parkway",
+   "text_es": "Aquí la autopista cruza el río Los Angeles, donde desemboca el Arroyo Seco, y se encuentra con la Arroyo Seco Parkway, una de las autopistas más antiguas de Estados Unidos. Se inauguró el 30 de diciembre de 1940 y se abrió al día siguiente, a tiempo para las multitudes que iban al Rose Parade y al Rose Bowl en Pasadena. Fue la primera vía construida bajo una ley de California de 1939 que permitía al estado limitar el acceso a unos cuantos puntos fijos.",
+   "more_es": "Arroyo Seco es español para un arroyo de temporada, que corre desde las montañas San Gabriel a través de Pasadena, y la parkway lo sigue. Como el terreno facilitaba los pasos a desnivel, toda la parkway costó 5.75 millones de dólares, menos de 1 millón por milla. Sus curvas cerradas y sus rampas cortas, sin espacio para acelerar, casi no han cambiado, y su índice de choques es aproximadamente el doble que el de otras autopistas. Un lado de la parkway pasa por cuatro túneles art déco en Elysian Park, construidos para Figueroa Street entre 1931 y 1936. La parkway es una National Scenic Byway y un National Historic Civil Engineering Landmark.",
+   "spot_es": "Busque letreros verdes que indican Pasadena y la Arroyo Seco Parkway.",
+   "es_src": {
+    "name": "8a227317b3",
+    "text": "6f60a22185",
+    "more": "c27f653b11",
+    "spot": "a0bc50eae3"
+   },
+   "kids": "Here the freeway crosses the Los Angeles River and meets the Arroyo Seco Parkway. It is one of the oldest freeways in the United States. It opened in 1940, just in time for crowds going to the Rose Parade in Pasadena. Look for green signs pointing to Pasadena and the Arroyo Seco Parkway.",
+   "kids_es": "Aquí la autopista cruza el río Los Angeles y se encuentra con la Arroyo Seco Parkway. Es una de las autopistas más antiguas de Estados Unidos. Se abrió en 1940, a tiempo para las multitudes que iban al Rose Parade en Pasadena. Busquen letreros verdes que indican Pasadena y la Arroyo Seco Parkway.",
+   "kids_src": "6f60a22185"
   },
   {
    "state": "CA",
@@ -545,7 +932,20 @@
    "months": null,
    "wiki": "Chavez Ravine",
    "src": "https://en.wikipedia.org/wiki/Chavez_Ravine",
-   "src2": "https://en.wikipedia.org/wiki/Zanja_Madre"
+   "src2": "https://en.wikipedia.org/wiki/Zanja_Madre",
+   "name_es": "Elysian Park y Chavez Ravine",
+   "text_es": "Las colinas boscosas junto a la autopista son Elysian Park, creado en 1886 y, con 600 acres, uno de los parques más grandes de Los Angeles. Escondido entre ellas está Chavez Ravine, donde se encuentra el Dodger Stadium. Para los años cuarenta, la cañada albergaba tres barrios muy unidos, en su mayoría mexicoamericanos, La Loma, Palo Verde y Bishop, donde muchas familias vivían por la discriminación en la vivienda en otras partes de la ciudad.",
+   "more_es": "A principios de los años cincuenta, la ciudad compró o expropió sus casas para un proyecto de vivienda pública llamado Elysian Park Heights, con dos docenas de torres de 13 pisos. Luego un nuevo alcalde calificó la vivienda pública de antiestadounidense, y el proyecto se abandonó. En 1958, los votantes aprobaron un acuerdo para entregar 352 acres de la cañada a los Dodgers, y los últimos residentes que resistían perdieron una lucha de diez años conocida como la Batalla de Chavez Ravine. El Dodger Stadium abrió en 1962. Al pie de estas colinas, junto al río, los fundadores de Los Angeles excavaron su primer sistema de agua en 1781, una zanja de tierra llamada la Zanja Madre. Un tramo de ladrillo sobrevive junto a las vías del tren ligero en Los Angeles State Historic Park, un antiguo patio ferroviario apodado el Cornfield, donde tantos recién llegados bajaron por primera vez del tren que le llaman la Ellis Island de Los Angeles.",
+   "spot_es": "Busque colinas cubiertas de árboles que se elevan muy cerca de la autopista.",
+   "es_src": {
+    "name": "e8646dd44d",
+    "text": "6b9dc64ace",
+    "more": "67eabbb92c",
+    "spot": "763e8d2a94"
+   },
+   "kids": "The wooded hills beside the freeway are Elysian Park. It was made in 1886, and it is 600 acres big. Tucked into the hills is Chavez Ravine, home of Dodger Stadium. Long ago, three close-knit neighborhoods with many families were there. Look for hills covered with trees rising close beside the freeway.",
+   "kids_es": "Las colinas con bosque junto a la autopista son Elysian Park. Se creó en 1886 y tiene 600 acres. Escondido entre las colinas está Chavez Ravine, donde se encuentra el Dodger Stadium. Hace mucho tiempo, ahí había tres barrios muy unidos con muchas familias. Busquen colinas cubiertas de árboles que se elevan muy cerca de la autopista.",
+   "kids_src": "6b9dc64ace"
   }
  ],
  "zones": [
@@ -558,6 +958,17 @@
    "seasons": {
     "winter": "Winter storms can push San Mateo Creek through the sandbar at its mouth, letting steelhead trout swim upstream to spawn.",
     "spring": "After heavy rains, a small seasonal stream usually runs through Trestles in winter and spring."
+   },
+   "label_es": "San Onofre y San Clemente",
+   "text_es": "La autopista pasa por encima de las playas de San Onofre y de las olas de Trestles, en el borde norte de Camp Pendleton. El límite del condado de Orange está en Cristianitos Road, junto a las calles en las lomas de San Clemente, de estilo español.",
+   "seasons_es": {
+    "winter": "Las tormentas de invierno pueden hacer que San Mateo Creek rompa la barra de arena de su desembocadura, y así la trucha steelhead puede nadar río arriba para desovar.",
+    "spring": "Después de lluvias fuertes, un pequeño arroyo de temporada por lo general corre por Trestles en invierno y primavera."
+   },
+   "es_src": {
+    "label": "527bc04833",
+    "text": "28d4b3c082",
+    "seasons": "05fba9e296"
    }
   },
   {
@@ -569,6 +980,17 @@
    "seasons": {
     "winter": "Almost all of the area's roughly 12 inches of yearly rain falls between November and March.",
     "fall": "Tradition says the swallows leave around October 23, the old feast day of Saint John of Capistrano."
+   },
+   "label_es": "Dana Point y el valle de Capistrano",
+   "text_es": "Entre Dana Point y Mission Viejo, la autopista va tierra adentro por el valle de los arroyos San Juan y Trabuco, tierra ancestral de los acjachemen. Pasa por San Juan Capistrano, pueblo de la misión, con las tierras de rancho de Rancho Mission Viejo al este.",
+   "seasons_es": {
+    "winter": "Casi toda la lluvia anual de la zona, unas 12 pulgadas, cae entre noviembre y marzo.",
+    "fall": "Según la tradición, las golondrinas se van alrededor del 23 de octubre, la antigua fiesta de San Juan de Capistrano."
+   },
+   "es_src": {
+    "label": "6f0007b768",
+    "text": "62dc77a3fc",
+    "seasons": "807481149c"
    }
   },
   {
@@ -580,6 +1002,17 @@
    "seasons": {
     "winter": "During most winters, snow dusts Santiago Peak, the higher summit of Saddleback, at least once.",
     "fall": "Autumn is the season known for hot, dry Santa Ana winds, which create critical fire weather in the hills."
+   },
+   "label_es": "Valle de Saddleback",
+   "text_es": "Los suburbios de Mission Viejo, Laguna Hills y Lake Forest llenan el valle de Saddleback, al pie de los dos picos de la montaña, y la Interestatal 405 se une con esta autopista en El Toro Y.",
+   "seasons_es": {
+    "winter": "En la mayoría de los inviernos, la nieve cubre ligeramente al menos una vez Santiago Peak, la cumbre más alta de Saddleback.",
+    "fall": "El otoño es la temporada de los vientos Santa Ana, calientes y secos, que crean condiciones críticas de incendio en las lomas."
+   },
+   "es_src": {
+    "label": "9c9cb0be56",
+    "text": "85c4a4dcc5",
+    "seasons": "c24d4e896c"
    }
   },
   {
@@ -590,6 +1023,16 @@
    "text": "The freeway crosses the flat land of the old Irvine Ranch and passes Tustin's old Marine base.",
    "seasons": {
     "summer": "Late spring and early summer bring June Gloom, with overcast mornings and occasional drizzle."
+   },
+   "label_es": "Irvine Ranch y Tustin",
+   "text_es": "La autopista cruza las tierras planas del antiguo Irvine Ranch y pasa por la antigua base de la Infantería de Marina de Tustin.",
+   "seasons_es": {
+    "summer": "Al final de la primavera y principios del verano llega el June Gloom, con mañanas nubladas y llovizna de vez en cuando."
+   },
+   "es_src": {
+    "label": "f8889ad62f",
+    "text": "1cbb1aa42b",
+    "seasons": "d784b933aa"
    }
   },
   {
@@ -601,6 +1044,17 @@
    "seasons": {
     "winter": "The Santa Ana River carries only a small flow except in the brief winter rainy season, when it is prone to flash floods.",
     "fall": "Santa Ana winds bring hot, dry autumn weather, and their wind damage is most common along the Santa Ana River basin."
+   },
+   "label_es": "Santa Ana y Anaheim",
+   "text_es": "La autopista cruza el río Santa Ana y el intercambio Orange Crush, y pasa por Christ Cathedral y Disneyland, en una llanura que tenía viñedos en el siglo diecinueve y huertas de naranjos hasta la década de 1950.",
+   "seasons_es": {
+    "winter": "El río Santa Ana lleva muy poca agua, salvo en la breve temporada de lluvias del invierno, cuando es propenso a inundaciones repentinas.",
+    "fall": "Los vientos Santa Ana traen un clima de otoño caliente y seco, y sus daños son más comunes a lo largo de la cuenca del río Santa Ana."
+   },
+   "es_src": {
+    "label": "e660e71b85",
+    "text": "89a02ddc73",
+    "seasons": "32bf5d23ce"
    }
   },
   {
@@ -609,7 +1063,14 @@
    "to": 124,
    "label": "Buena Park to Norwalk",
    "text": "Between Buena Park and Downey the freeway crosses the line between Orange and Los Angeles counties and runs through the Gateway Cities of La Mirada, Santa Fe Springs and Norwalk, on Rancho Los Nietos land that later held olive groves, dairies and oil fields.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "De Buena Park a Norwalk",
+   "text_es": "Entre Buena Park y Downey, la autopista cruza el límite entre los condados de Orange y Los Angeles, y pasa por las Gateway Cities de La Mirada, Santa Fe Springs y Norwalk, en tierras del Rancho Los Nietos que después tuvieron huertas de olivos, lecherías y campos petroleros.",
+   "es_src": {
+    "label": "acd48be0fd",
+    "text": "abdb64ddf6",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -617,7 +1078,14 @@
    "to": 134,
    "label": "Downey, Commerce and East LA",
    "text": "The freeway crosses the San Gabriel River and the Rio Hondo and runs through aerospace Downey, the rail-side factories of Commerce, and East Los Angeles.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "Downey, Commerce y el Este de LA",
+   "text_es": "La autopista cruza el río San Gabriel y el Rio Hondo, y pasa por Downey, ciudad aeroespacial, por las fábricas junto a las vías del tren de Commerce y por East Los Angeles.",
+   "es_src": {
+    "label": "6f8d33948b",
+    "text": "981b8745a7",
+    "seasons": "bf21a9e8fb"
+   }
   },
   {
    "state": "CA",
@@ -625,7 +1093,14 @@
    "to": 140,
    "label": "Boyle Heights to Elysian Park",
    "text": "The freeway threads the East Los Angeles Interchange in Boyle Heights, runs through Lincoln Heights, the city's first suburb, and crosses the Los Angeles River where the Arroyo Seco joins it, beside the wooded hills of Elysian Park.",
-   "seasons": null
+   "seasons": null,
+   "label_es": "De Boyle Heights a Elysian Park",
+   "text_es": "La autopista atraviesa el East Los Angeles Interchange en Boyle Heights, pasa por Lincoln Heights, el primer suburbio de la ciudad, y cruza el río Los Angeles donde se le une el Arroyo Seco, junto a las lomas arboladas de Elysian Park.",
+   "es_src": {
+    "label": "9ce51cceb6",
+    "text": "93da3c88a3",
+    "seasons": "bf21a9e8fb"
+   }
   }
  ],
  "trivia": [
@@ -641,7 +1116,20 @@
    ],
    "answer": 0,
    "why": "The area was named for Saint Onuphrius, a hermit from fourth-century Egypt.",
-   "src": "https://en.wikipedia.org/wiki/San_Onofre_State_Beach"
+   "src": "https://en.wikipedia.org/wiki/San_Onofre_State_Beach",
+   "q_es": "San Onofre es el nombre en español de Saint Onuphrius. ¿Quién fue?",
+   "choices_es": [
+    "Un ermitaño de Egipto",
+    "Un rey de España",
+    "Un capitán de barco",
+    "Un general romano"
+   ],
+   "why_es": "La zona recibió su nombre por san Onofre, un ermitaño del Egipto del siglo cuarto.",
+   "es_src": {
+    "q": "9b71eda45b",
+    "choices": "069cd8a07c",
+    "why": "2f6a39095b"
+   }
   },
   {
    "state": "CA",
@@ -655,7 +1143,20 @@
    ],
    "answer": 2,
    "why": "Surfers named it for the wooden railroad trestle over San Mateo Creek that they walked under to reach the beach.",
-   "src": "https://en.wikipedia.org/wiki/Trestles_(surfing)"
+   "src": "https://en.wikipedia.org/wiki/Trestles_(surfing)",
+   "q_es": "¿Por qué se llama así el famoso lugar de surf Trestles?",
+   "choices_es": [
+    "Por un muelle de pesca",
+    "Por una torre de salvavidas",
+    "Por un puente de ferrocarril de madera",
+    "Por un naufragio"
+   ],
+   "why_es": "Los surfistas lo nombraron por el puente de madera del ferrocarril sobre San Mateo Creek, por debajo del cual caminaban para llegar a la playa.",
+   "es_src": {
+    "q": "6ad2562b78",
+    "choices": "a7aff4c074",
+    "why": "d16893eb1b"
+   }
   },
   {
    "state": "CA",
@@ -669,7 +1170,20 @@
    ],
    "answer": 1,
    "why": "The cliff swallows winter around Goya, Argentina, and fly about 6,000 miles north each spring.",
-   "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)"
+   "src": "https://en.wikipedia.org/wiki/Mission_San_Juan_Capistrano_(California)",
+   "q_es": "¿Dónde pasan el invierno las golondrinas de Capistrano?",
+   "choices_es": [
+    "Alaska",
+    "Goya, Argentina",
+    "Hawái",
+    "Florida"
+   ],
+   "why_es": "Las golondrinas risqueras pasan el invierno cerca de Goya, Argentina, y vuelan unas 6,000 millas al norte cada primavera.",
+   "es_src": {
+    "q": "6b92b0fbe0",
+    "choices": "1b46b15d8d",
+    "why": "6a69ce8915"
+   }
   },
   {
    "state": "CA",
@@ -683,7 +1197,20 @@
    ],
    "answer": 3,
    "why": "Trabuco is Spanish for blunderbuss, a kind of old shotgun, and the gun was never found.",
-   "src": "https://en.wikipedia.org/wiki/Arroyo_Trabuco"
+   "src": "https://en.wikipedia.org/wiki/Arroyo_Trabuco",
+   "q_es": "Trabuco Creek lleva el nombre de algo que perdió un soldado de la expedición de Portolá en 1769. ¿Qué fue?",
+   "choices_es": [
+    "Su caballo",
+    "Su mapa",
+    "Sus botas",
+    "Su trabuco"
+   ],
+   "why_es": "Trabuco es una especie de escopeta antigua, y el arma nunca se encontró.",
+   "es_src": {
+    "q": "ab7f73b94e",
+    "choices": "4fa340e904",
+    "why": "0aca107ab1"
+   }
   },
   {
    "state": "CA",
@@ -697,7 +1224,20 @@
    ],
    "answer": 1,
    "why": "El Toro means the bull; the town became the city of Lake Forest in 1991.",
-   "src": "https://en.wikipedia.org/wiki/Lake_Forest,_California"
+   "src": "https://en.wikipedia.org/wiki/Lake_Forest,_California",
+   "q_es": "El Toro, el antiguo nombre de Lake Forest, ¿qué significa en español?",
+   "choices_es": [
+    "La torre",
+    "El toro",
+    "La tormenta",
+    "El camino"
+   ],
+   "why_es": "El Toro significa el toro; el pueblo se convirtió en la ciudad de Lake Forest en 1991.",
+   "es_src": {
+    "q": "126987f82b",
+    "choices": "a70c131f20",
+    "why": "8af6f2635a"
+   }
   },
   {
    "state": "CA",
@@ -711,7 +1251,20 @@
    ],
    "answer": 3,
    "why": "The 1953 National Scout Jamboree was held on Irvine Ranch land, and the road that served it was renamed Jamboree Road.",
-   "src": "https://en.wikipedia.org/wiki/Jamboree_Road"
+   "src": "https://en.wikipedia.org/wiki/Jamboree_Road",
+   "q_es": "¿Por qué evento de 1953 se llama así Jamboree Road?",
+   "choices_es": [
+    "Un rodeo",
+    "Un festival de música",
+    "Una feria del condado",
+    "Un campamento nacional de los Boy Scouts"
+   ],
+   "why_es": "El National Scout Jamboree de 1953 se hizo en tierras del Irvine Ranch, y el camino que le daba servicio se renombró Jamboree Road.",
+   "es_src": {
+    "q": "b6aba93407",
+    "choices": "d13baff455",
+    "why": "0eefb69615"
+   }
   },
   {
    "state": "CA",
@@ -725,7 +1278,20 @@
    ],
    "answer": 2,
    "why": "The Navy built them for blimps that patrolled the coast in World War II.",
-   "src": "https://en.wikipedia.org/wiki/Marine_Corps_Air_Station_Tustin"
+   "src": "https://en.wikipedia.org/wiki/Marine_Corps_Air_Station_Tustin",
+   "q_es": "¿Para guardar qué se construyeron los enormes hangares de madera de Tustin durante la Segunda Guerra Mundial?",
+   "choices_es": [
+    "Aviones de combate a reacción",
+    "Submarinos",
+    "Dirigibles de la Marina",
+    "Cohetes"
+   ],
+   "why_es": "La Marina los construyó para los dirigibles que patrullaban la costa en la Segunda Guerra Mundial.",
+   "es_src": {
+    "q": "3cd685f71c",
+    "choices": "811c884095",
+    "why": "d652c39380"
+   }
   },
   {
    "state": "CA",
@@ -739,7 +1305,20 @@
    ],
    "answer": 0,
    "why": "The building has 10,000 rectangular panes, mirrored outside and see-through inside.",
-   "src": "https://en.wikipedia.org/wiki/Christ_Cathedral_(Garden_Grove,_California)"
+   "src": "https://en.wikipedia.org/wiki/Christ_Cathedral_(Garden_Grove,_California)",
+   "q_es": "¿Aproximadamente cuántos paneles de vidrio cubren la Crystal Cathedral, hoy Christ Cathedral?",
+   "choices_es": [
+    "10,000",
+    "100",
+    "1 millón",
+    "1,000"
+   ],
+   "why_es": "El edificio tiene 10,000 paneles rectangulares, de espejo por fuera y transparentes por dentro.",
+   "es_src": {
+    "q": "7ef482b0dd",
+    "choices": "d00dfd79ee",
+    "why": "e12a0523fe"
+   }
   },
   {
    "state": "CA",
@@ -753,7 +1332,20 @@
    ],
    "answer": 3,
    "why": "The German founders named it Annaheim, home by the Santa Ana River.",
-   "src": "https://en.wikipedia.org/wiki/Anaheim,_California"
+   "src": "https://en.wikipedia.org/wiki/Anaheim,_California",
+   "q_es": "El nombre Anaheim une Ana, por el río Santa Ana, con una palabra alemana. ¿Qué significa?",
+   "choices_es": [
+    "Río",
+    "Uva",
+    "Valle",
+    "Hogar"
+   ],
+   "why_es": "Los fundadores alemanes lo llamaron Annaheim, el hogar junto al río Santa Ana.",
+   "es_src": {
+    "q": "7bf582665b",
+    "choices": "f3a423f638",
+    "why": "e074364477"
+   }
   },
   {
    "state": "CA",
@@ -767,7 +1359,20 @@
    ],
    "answer": 0,
    "why": "She served eight fried chicken dinners at 65 cents each; today the restaurant serves more than 1.5 million a year.",
-   "src": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm"
+   "src": "https://www.nps.gov/home/learn/historyculture/walter-knott.htm",
+   "q_es": "Cuando Cordelia Knott empezó a servir pollo frito en junio de 1934, ¿cuántas cenas sirvió?",
+   "choices_es": [
+    "Ocho",
+    "Cincuenta",
+    "Cien",
+    "Quinientas"
+   ],
+   "why_es": "Sirvió ocho cenas de pollo frito a 65 centavos cada una; hoy el restaurante sirve más de 1.5 millones al año.",
+   "es_src": {
+    "q": "f3291c036c",
+    "choices": "cc4ae0f7a0",
+    "why": "bccdd0fe83"
+   }
   },
   {
    "state": "CA",
@@ -781,7 +1386,20 @@
    ],
    "answer": 2,
    "why": "Speedee, a little hamburger-headed chef, was McDonald's mascot before Ronald McDonald.",
-   "src": "https://www.laconservancy.org/learn/historic-places/mcdonalds/"
+   "src": "https://www.laconservancy.org/learn/historic-places/mcdonalds/",
+   "q_es": "¿Quién es la mascota del letrero de 1959 en el McDonald's más antiguo, en Downey?",
+   "choices_es": [
+    "Ronald McDonald",
+    "Grimace",
+    "Speedee",
+    "The Hamburglar"
+   ],
+   "why_es": "Speedee, un pequeño cocinero con cabeza de hamburguesa, fue la mascota de McDonald's antes de Ronald McDonald.",
+   "es_src": {
+    "q": "b370968924",
+    "choices": "8b5dfbb664",
+    "why": "f1b03afe85"
+   }
   },
   {
    "state": "CA",
@@ -795,7 +1413,20 @@
    ],
    "answer": 2,
    "why": "Workers roller-skated around the building and sent items down corkscrew slides to trucks and trains.",
-   "src": "https://en.wikipedia.org/wiki/Sears,_Roebuck_%26_Company_Mail_Order_Building_(Los_Angeles,_California)"
+   "src": "https://en.wikipedia.org/wiki/Sears,_Roebuck_%26_Company_Mail_Order_Building_(Los_Angeles,_California)",
+   "q_es": "¿Cómo surtían los pedidos los trabajadores en el enorme edificio de ventas por catálogo de Sears en Boyle Heights?",
+   "choices_es": [
+    "En bicicleta",
+    "A caballo",
+    "En patines",
+    "En carritos de golf"
+   ],
+   "why_es": "Los trabajadores recorrían el edificio en patines y mandaban los artículos por toboganes en espiral hasta los camiones y trenes.",
+   "es_src": {
+    "q": "cb1a7fda93",
+    "choices": "c47a51d833",
+    "why": "7f64769ce2"
+   }
   }
  ]
 }

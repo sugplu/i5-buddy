@@ -26,6 +26,10 @@ Inputs
     tools/postcards.json     lines_es (per place id, at most 60 characters) and templates_es (same placeholders)
   Kids text (3.1.0, Settings > Stories for kids): places' kids (English) and kids_es (Spanish), a story told to children
   in place of the place's text, where there is one.
+  Stale text guard: an entry's es_src ({English field: src_hash of the English its Spanish was written from}) and a place's
+  kids_src (src_hash of the text its kids stories were written from) leave out a Spanish or kids field whose English has
+  changed since (build-report.txt names it), so a fact fixed in English never ships next to the old Spanish or kids story.
+  Written by claude-power/jobs/i5_es_kids.py (Claude Opus 5.5 writes, Claude Sonnet 5.5 checks by back-translation).
 Output
   data/i5.js                 window.I5DATA = {...}
   data/i5.es.js              window.I5DATA_ES = {version, lang: "es", ends, places: {id: {...}}, zones: {index: {...}},
@@ -36,7 +40,7 @@ Output
 
 Run: python3 tools/build.py
 """
-import difflib, glob, json, math, os, re, sys
+import difflib, glob, hashlib, json, math, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HERE = os.path.join(ROOT, "tools")
@@ -117,17 +121,54 @@ MISSION_KEYS = ("n", "id", "name", "name_es", "lat", "lon", "founded", "founder"
                 "wiki", "text", "more", "visit", "src", "src2")
 
 
+def is_translation_field(k):
+    """The fields this repo adds to the content agent's entries (3.1.0): the Spanish (*_es, es_src) and the kids stories."""
+    return k.endswith("_es") or k in ("es_src", "kids", "kids_src")
+
+
+def carry_translations(new, old):
+    """The content agent's mission files have no Spanish or kids text (3.1.0): keep this repo's on every entry that is still
+    there (missions by n; places by exit and name, trivia by question, zones by their exits). An English text that changed
+    is caught later by its es_src / kids_src hash, so carrying the old Spanish along never ships it."""
+    def carry(a, b):
+        for k, v in b.items():
+            if is_translation_field(k) and k not in a:
+                a[k] = v
+    if isinstance(new, list) and isinstance(old, list):
+        by_n = {m.get("n"): m for m in old if isinstance(m, dict)}
+        for m in new:
+            if isinstance(m, dict) and m.get("n") in by_n:
+                carry(m, by_n[m["n"]])
+    elif isinstance(new, dict) and isinstance(old, dict):
+        for sec, key in (("places", lambda x: (x.get("exit"), x.get("name"))), ("trivia", lambda x: x.get("q")),
+                         ("zones", lambda x: (x.get("from"), x.get("to")))):
+            by_key = {key(x): x for x in old.get(sec) or [] if isinstance(x, dict)}
+            for x in new.get(sec) or []:
+                if isinstance(x, dict) and key(x) in by_key:
+                    carry(x, by_key[key(x)])
+    return new
+
+
 def copy_missions():
-    """Bring in the content agent's mission files (missions.json -> content/, ca-missions.json -> content/v2/)."""
-    import shutil
+    """Bring in the content agent's mission files (missions.json -> content/, ca-missions.json -> content/v2/), keeping the
+    Spanish and kids text this repo added to them (carry_translations)."""
     for name, dest in (("missions.json", os.path.join(ROOT, "content", "missions.json")),
                        ("ca-missions.json", os.path.join(ROOT, "content", "v2", "ca-missions.json"))):
         src = os.path.join(MISSIONS_SRC, name)
         try:
             if os.path.isfile(src):
-                json.load(open(src))  # only a file that parses
-                if not os.path.exists(dest) or open(src, "rb").read() != open(dest, "rb").read():
-                    shutil.copyfile(src, dest)
+                raw = open(src, encoding="utf-8").read()
+                new = json.loads(raw)  # only a file that parses
+                old_raw = open(dest, encoding="utf-8").read() if os.path.exists(dest) else None
+                text = raw
+                if old_raw is not None:
+                    try:
+                        new = carry_translations(new, json.loads(old_raw))
+                        text = json.dumps(new, ensure_ascii=False, indent=1) + ("\n" if raw.endswith("\n") else "")
+                    except ValueError:
+                        text = raw
+                if text != old_raw:
+                    write_safely(dest, text)
                     print(f"copied {name} from {MISSIONS_SRC}", file=sys.stderr)
         except (OSError, ValueError) as e:
             warn.append(f"could not copy {src}: {e}")
@@ -185,14 +226,49 @@ def detour_of(p):
     return {k: v for k, v in q.items() if v not in ("", None)}
 
 
+def src_hash(v):
+    """The hash of the English a Spanish or kids field was written from (claude-power/jobs/i5_es_kids.py has the same one)."""
+    if not isinstance(v, str):
+        v = json.dumps(v, ensure_ascii=False, sort_keys=True)
+    return hashlib.sha1(v.strip().encode("utf-8")).hexdigest()[:10]
+
+
+def clean_seasons(s):
+    """A zone's seasonal notes as the Spanish was written from them: the filled ones, trimmed."""
+    return {k: v.strip() for k, v in (s or {}).items() if k in ("winter", "spring", "summer", "fall") and isinstance(v, str) and v.strip()}
+
+
+def es_current(src, en_field, en_value, what):
+    """False (and a warning) when the entry's es_src says its Spanish of en_field was written from other English."""
+    srcs = src.get("es_src")
+    if isinstance(srcs, dict) and en_field in srcs and srcs[en_field] != src_hash(en_value):
+        warn.append(f"Spanish {en_field} left out, its English changed since it was written: {what} (run claude-power/jobs/i5_es_kids.py again)")
+        return False
+    return True
+
+
 def spanish(src, fields):
-    """{app key: text} from a content entry's Spanish fields ({"text": "text_es", ...}); only filled ones."""
+    """{app key: text} from a content entry's Spanish fields ({"text": "text_es", ...}); only filled ones, and only those
+    whose English is still the English they were written from (es_src)."""
     out = {}
+    what = src.get("name") or src.get("label") or src.get("q") or "?"
     for k, f in fields.items():
         v = src.get(f)
         if isinstance(v, str) and v.strip():
+            en_f = f[:-3]
+            if en_f != "kids" and not es_current(src, en_f, src.get(en_f) or "", what):
+                continue
             out[k] = v.strip()
     return out
+
+
+def kids_current(p):
+    """A place's kids stories (kids, kids_es) are used only while its text is the one they were written from (kids_src)."""
+    ks = p.get("kids_src")
+    if ks and ks != src_hash(p.get("text") or ""):
+        warn.append(f"kids stories left out, the story changed since they were written: {p.get('name')} (run claude-power/jobs/i5_es_kids.py again)")
+        return False
+    return True
 
 
 def spanish_overlay(version, places, zones, trivia, dests, images, postcards):
@@ -454,11 +530,14 @@ def main():
         }
         if dist is not None:
             q["off"] = round(dist, 1)
+        kids_ok = kids_current(p)
         for k_in, k_out in (("more", "more"), ("spot", "spot"), ("months", "months"), ("src", "src"), ("src2", "src2"), ("wiki", "wiki"),
                             ("kids", "kids")):
-            if p.get(k_in):
+            if p.get(k_in) and (k_in != "kids" or kids_ok):
                 q[k_out] = p[k_in]
         es = spanish(p, {"name": "name_es", "text": "text_es", "more": "more_es", "spot": "spot_es", "kids": "kids_es"})
+        if not kids_ok:
+            es.pop("kids", None)
         if es:
             q["_es"] = es
         if isinstance(lat, (int, float)):
@@ -561,7 +640,7 @@ def main():
         if z.get("seasons"):
             zz["seasons"] = {k: v for k, v in z["seasons"].items() if v}
         es = spanish(z, {"label": "label_es", "text": "text_es"})
-        if isinstance(z.get("seasons_es"), dict):
+        if isinstance(z.get("seasons_es"), dict) and es_current(z, "seasons", clean_seasons(z.get("seasons")), z.get("label") or "?"):
             se = {k: v.strip() for k, v in z["seasons_es"].items() if k in ("winter", "spring", "summer", "fall") and isinstance(v, str) and v.strip()}
             if se:
                 es["seasons"] = se
@@ -594,6 +673,8 @@ def main():
         tq = {"m": round(m, 1), "q": t["q"], "choices": t["choices"], "answer": t["answer"], "why": t.get("why", ""), "src": t.get("src")}
         es = spanish(t, {"q": "q_es", "why": "why_es"})
         ch = t.get("choices_es")
+        if not es_current(t, "choices", [c.strip() for c in t["choices"]], t.get("q") or "?"):
+            ch = None
         if isinstance(ch, list) and len(ch) == len(t["choices"]) and all(isinstance(c, str) and c.strip() for c in ch):
             es["choices"] = [c.strip() for c in ch]
         elif ch:

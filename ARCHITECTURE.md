@@ -153,6 +153,11 @@ driving back onto the road more than 3 miles from that end lets it be said again
   `voice.list()` lists this language's voices. Clips (the natural voice) exist for English only.
 - Stories for kids: `settings.kidStories`; `narrator.storyOf(p)` (the kids text or the text) and `narrator.moreOf(p)` (the
   long story, none with kids text) are what modules show and say for a place.
+- The Spanish and kids content (3.1.0 content step, `claude-power/jobs/i5_es_kids.py`; how it was written: i18n/README.md)
+  lives beside the English in the content files (`*_es`, `kids`, `kids_es`). Each entry carries `es_src` / `kids_src`, the
+  `src_hash` of the English it was written from; `tools/build.py` leaves a field out when its English changed since
+  (build-report.txt names it), and `tools/lint_content.py` warns about it. `copy_missions()` keeps these fields when it
+  brings in the content agent's mission files, which do not have them (`carry_translations`).
 
 ## The module contract
 
