@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>I-5 Buddy: the narrated California I-5 road-trip guide, by Dominares</title>
+<title data-i18n="html.i_5_buddy_the_narrated_california">I-5 Buddy: the narrated California I-5 road-trip guide, by Dominares</title>
 <meta name="description" content="A road-trip buddy for all 797 miles of Interstate 5 in California, from the Mexico border to the Oregon line. It follows you by GPS and tells you about the orchards, history and landmarks you pass.">
 <meta name="theme-color" content="#0b6e3f">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -54,13 +54,13 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 
 <header class="top">
   <img class="logo" src="icons/icon-180.png" alt="" width="34" height="34">
-  <div class="brand"><b>I-5 Buddy</b><span id="statusText">Mexico to Oregon</span></div>
-  <span class="pill" id="statusPill" data-s="off">OFF</span>
-  <button class="icon-btn" id="micBtn" hidden aria-label="Talk to I-5 Buddy">
+  <div class="brand"><b>I-5 Buddy</b><span id="statusText" data-i18n="html.mexico_to_oregon">Mexico to Oregon</span></div>
+  <span class="pill" id="statusPill" data-s="off" data-i18n="html.off">OFF</span>
+  <button class="icon-btn" id="micBtn" hidden aria-label="Talk to I-5 Buddy" data-i18n-attr="aria-label:html.talk_to_i_5_buddy">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z" fill="currentColor"/></svg>
   </button>
-  <button class="icon-btn" id="shareBtn" type="button" hidden aria-label="Share I-5 Buddy"></button>
-  <button class="icon-btn" id="openSettings" aria-label="Settings">
+  <button class="icon-btn" id="shareBtn" type="button" hidden aria-label="Share I-5 Buddy" data-i18n-attr="aria-label:html.share_i_5_buddy"></button>
+  <button class="icon-btn" id="openSettings" aria-label="Settings" data-i18n-attr="aria-label:html.settings">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm7.4-2.5.1-1-.1-1 2.1-1.6-2-3.4-2.5 1a7.7 7.7 0 0 0-1.7-1L15 3h-4l-.4 2.6c-.6.3-1.2.6-1.7 1l-2.5-1-2 3.4L6.5 11l-.1 1 .1 1-2.1 1.6 2 3.4 2.5-1c.5.4 1.1.7 1.7 1L11 21h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.5 1 2-3.4-2.2-1.6Z" fill="currentColor"/></svg>
   </button>
 </header>
@@ -71,17 +71,17 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <section class="view" id="view-drive" data-view="drive">
   <div class="sign-board" id="signBoard">
     <div class="sign-row">
-      <div class="dir-badge" id="dirBadge">NORTH</div>
+      <div class="dir-badge" id="dirBadge" data-i18n="html.north">NORTH</div>
       <div class="state-badge" id="stateBadge" hidden></div>
-      <div class="speed"><span id="speed">--</span><small>mph</small></div>
-      <button class="glance-btn" id="glanceBtn" aria-pressed="false" aria-label="Glance mode">
+      <div class="speed"><span id="speed">--</span><small data-i18n="html.mph">mph</small></div>
+      <button class="glance-btn" id="glanceBtn" aria-pressed="false" aria-label="Glance mode" data-i18n-attr="aria-label:html.glance_mode">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5v2H6v3H4Zm10-5h6v5h-2V6h-4V4ZM4 15h2v3h3v2H4v-5Zm14 3v-3h2v5h-6v-2h4Z" fill="currentColor"/></svg>
       </button>
     </div>
     <div class="mile-row">
-      <div class="mile"><small id="mileLabel">MILE</small><span class="mile-n" id="mile">--</span></div>
+      <div class="mile"><small id="mileLabel" data-i18n="html.mile">MILE</small><span class="mile-n" id="mile">--</span></div>
       <span class="ride-slot" id="rideSlot" hidden></span>
-      <div class="near"><small>PASSING</small><span id="nearText">Ready when you are</span></div>
+      <div class="near"><small data-i18n="html.passing">PASSING</small><span id="nearText" data-i18n="html.ready_when_you_are">Ready when you are</span></div>
     </div>
     <div class="sign-foot">
       <span id="elevText"></span>
@@ -103,12 +103,12 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
        whatever the card below holds (the welcome card, or a landmark with its photo). While a drive or a demo runs,
        End trip and Narration take the same place (3.0.1: they used to be two screens down). -->
   <div class="controls" id="startControls">
-    <button class="primary" id="startGps">Start GPS</button>
-    <button class="secondary" id="startDemo">Demo drive</button>
+    <button class="primary" id="startGps" data-i18n="html.start_gps">Start GPS</button>
+    <button class="secondary" id="startDemo" data-i18n="html.demo_drive">Demo drive</button>
   </div>
   <div class="controls" id="runControls" hidden>
-    <button class="secondary" id="toggleNarr" aria-pressed="true">Narration on</button>
-    <button class="secondary" id="stopTrip">End trip</button>
+    <button class="secondary" id="toggleNarr" aria-pressed="true" data-i18n="html.narration_on">Narration on</button>
+    <button class="secondary" id="stopTrip" data-i18n="html.end_trip">End trip</button>
   </div>
 
   <!-- "New in I-5 Buddy" (once, for people who used the app before) sits above the next card, so it is on the first screen. -->
@@ -118,50 +118,50 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
   <div id="spotCard"></div>
 
   <div class="look">
-    <button class="big-btn" id="lookLeft"><span class="arrow" aria-hidden="true">◀</span>What's on my left?</button>
-    <button class="big-btn" id="lookRight">What's on my right?<span class="arrow" aria-hidden="true">▶</span></button>
+    <button class="big-btn" id="lookLeft"><span class="arrow" aria-hidden="true">◀</span><span data-i18n="html.whats_on_my_left">What's on my left?</span></button>
+    <button class="big-btn" id="lookRight"><span data-i18n="html.whats_on_my_right">What's on my right?</span><span class="arrow" aria-hidden="true">▶</span></button>
   </div>
 
   <div class="demo-bar" id="demoBar" hidden>
-    <span>Demo speed</span>
-    <div class="seg" role="group" aria-label="Demo speed">
+    <span data-i18n="html.demo_speed">Demo speed</span>
+    <div class="seg" role="group" aria-label="Demo speed" data-i18n-attr="aria-label:html.demo_speed">
       <button data-x="1">1×</button><button data-x="10" aria-pressed="true">10×</button><button data-x="40">40×</button>
     </div>
-    <button class="link" id="demoFlip">Turn around</button>
+    <button class="link" id="demoFlip" data-i18n="html.turn_around">Turn around</button>
   </div>
 
   <!-- 3.0.2 (design pass B): Drive keeps only what matters now. The hills chart and the next gas/food/lodging moved to the
        Ahead tab, and Up next stays hidden here (the Ahead list has the same places with their stories); it is still built,
        for the detour notes and the tests that read it. "See what's ahead" opens that tab. -->
-  <button type="button" class="ahead-link" id="aheadLink" hidden>Hills, gas &amp; food and what's next: <b>see Ahead</b> <span aria-hidden="true">›</span></button>
+  <button type="button" class="ahead-link" id="aheadLink" hidden><span data-i18n="html.hills_gas_food_and_whats_next">Hills, gas &amp; food and what's next:</span> <b data-i18n="html.see_ahead">see Ahead</b> <span aria-hidden="true">›</span></button>
 
   <section class="upnext" id="upNext" hidden>
-    <h3 class="sub">Up next</h3>
+    <h3 class="sub" data-i18n="html.up_next">Up next</h3>
     <ol id="upNextList"></ol>
   </section>
 
   <div id="liveBlock"></div>
 
-  <p class="safety">Set it up before you drive. Narration is hands-free; leave the screen to passengers. Keep I-5 Buddy open on screen while you drive: it goes quiet when you switch apps or lock the phone.<br><a class="safety-pv" href="privacy.html" target="_blank" rel="noopener">Privacy</a> · <a class="safety-pv" id="helpLink" href="support.html" target="_blank" rel="noopener">Help</a> · <button type="button" class="link safety-fb" id="driveFeedback">Send feedback</button></p>
+  <p class="safety"><span data-i18n="html.set_it_up_before_you_drive">Set it up before you drive. Narration is hands-free; leave the screen to passengers. Keep I-5 Buddy open on screen while you drive: it goes quiet when you switch apps or lock the phone.</span><br><a class="safety-pv" href="privacy.html" target="_blank" rel="noopener" data-i18n="html.privacy">Privacy</a> · <a class="safety-pv" id="helpLink" href="support.html" target="_blank" rel="noopener" data-i18n="html.help">Help</a> · <button type="button" class="link safety-fb" id="driveFeedback" data-i18n="html.send_feedback">Send feedback</button></p>
 </section>
 
 <!-- AHEAD -->
 <section class="view" id="view-ahead" data-view="ahead" hidden>
   <!-- 3.0.2: the hills chart (roadahead.js) and the next stops, moved here from Drive; then the list with its own title -->
-  <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden></section>
+  <section class="road-ahead" id="roadAhead" aria-label="Road ahead" hidden data-i18n-attr="aria-label:html.road_ahead"></section>
   <section class="svc" id="svcRow" hidden>
-    <h3 class="sub">Next stops</h3>
+    <h3 class="sub" data-i18n="html.next_stops">Next stops</h3>
     <div class="svc-grid" id="svcGrid"></div>
   </section>
   <div class="view-head">
-    <h2 class="view-title" id="aheadTitle">Coming up</h2>
-    <div class="seg" role="group" aria-label="Show">
-      <button id="aheadModePlaces" aria-pressed="true">Landmarks</button><button id="aheadModeStops" aria-pressed="false">Gas &amp; food</button>
+    <h2 class="view-title" id="aheadTitle" data-i18n="html.coming_up">Coming up</h2>
+    <div class="seg" role="group" aria-label="Show" data-i18n-attr="aria-label:html.show">
+      <button id="aheadModePlaces" aria-pressed="true" data-i18n="html.landmarks">Landmarks</button><button id="aheadModeStops" aria-pressed="false" data-i18n="html.gas_food">Gas &amp; food</button>
     </div>
   </div>
   <div class="chips" id="chips"></div>
   <ol class="ahead" id="aheadList"></ol>
-  <button class="secondary more-btn" id="aheadMore" hidden>Show more</button>
+  <button class="secondary more-btn" id="aheadMore" hidden data-i18n="html.show_more">Show more</button>
 </section>
 
 <!-- MAP -->
@@ -174,117 +174,128 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <section class="view" id="view-play" data-view="play" hidden></section>
 </main>
 
-<nav class="tabs" aria-label="Sections">
-  <button data-go="drive" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 22l8-4 8 4L12 2Z" fill="currentColor"/></svg>Drive</button>
-  <button data-go="ahead"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z" fill="currentColor"/></svg>Ahead</button>
-  <button data-go="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2Zm0 2.2 6 2v13.6l-6-2V5.2Z" fill="currentColor"/></svg>Map</button>
-  <button data-go="passport"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>Passport</button>
-  <button data-go="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg>Play</button>
+<nav class="tabs" aria-label="Sections" data-i18n-attr="aria-label:html.sections">
+  <button data-go="drive" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 22l8-4 8 4L12 2Z" fill="currentColor"/></svg><span data-i18n="html.drive">Drive</span></button>
+  <button data-go="ahead"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4zm0 6h16v2H4zm0 6h10v2H4z" fill="currentColor"/></svg><span data-i18n="html.ahead">Ahead</span></button>
+  <button data-go="map"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3 3 5v16l6-2 6 2 6-2V3l-6 2-6-2Zm0 2.2 6 2v13.6l-6-2V5.2Z" fill="currentColor"/></svg><span data-i18n="html.map">Map</span></button>
+  <button data-go="passport"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg><span data-i18n="html.passport">Passport</span></button>
+  <button data-go="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z" fill="currentColor"/></svg><span data-i18n="html.play">Play</span></button>
 </nav>
 
 <!-- SETTINGS -->
 <div class="sheet-back" id="sheetBack" hidden></div>
-<aside class="sheet" id="settings" hidden aria-label="Settings" role="dialog" aria-modal="true">
-  <div class="sheet-head"><b>Settings</b><button class="link" id="closeSettings">Done</button></div>
+<aside class="sheet" id="settings" hidden aria-label="Settings" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.settings">
+  <div class="sheet-head"><b data-i18n="html.settings">Settings</b><button class="link" id="closeSettings" data-i18n="html.done">Done</button></div>
 
-  <h3 class="sub">Narration</h3>
-  <label class="field" for="voice">Voice<select id="voice"></select></label>
-  <label class="field" for="rate">Speaking speed <output id="rateOut">1.0×</output><input type="range" id="rate" min="0.7" max="1.4" step="0.05" value="1"></label>
-  <div class="field">How chatty
-    <div class="seg wide" role="group" aria-label="How chatty">
-      <button data-chat="low">Big stuff</button><button data-chat="normal">Normal</button><button data-chat="high">Story time</button>
+  <!-- 3.1.0: the app's language. Switching saves it and restarts the app in it (js/i18n.js); each name is in its own language. -->
+  <h3 class="sub" data-i18n="html.language">Language</h3>
+  <div class="field" id="langRow">
+    <div class="seg wide" role="group" aria-label="Language" data-i18n-attr="aria-label:html.language">
+      <button data-lang-set="en" lang="en" aria-pressed="false">English</button><button data-lang-set="es" lang="es" aria-pressed="false">Español</button>
+    </div>
+    <small class="hint" id="langHint" data-i18n="html.ask_buddy_the_microphone_listens">Ask Buddy (the microphone) listens and answers in English for now.</small>
+  </div>
+
+  <h3 class="sub" data-i18n="html.narration">Narration</h3>
+  <label class="field" for="voice"><span data-i18n="html.voice">Voice</span><select id="voice"></select></label>
+  <label class="field" for="rate"><span data-i18n="html.speaking_speed">Speaking speed</span> <output id="rateOut">1.0×</output><input type="range" id="rate" min="0.7" max="1.4" step="0.05" value="1"></label>
+  <div class="field"><span data-i18n="html.how_chatty">How chatty</span>
+    <div class="seg wide" role="group" aria-label="How chatty" data-i18n-attr="aria-label:html.how_chatty">
+      <button data-chat="low" data-i18n="html.big_stuff">Big stuff</button><button data-chat="normal" data-i18n="html.normal">Normal</button><button data-chat="high" data-i18n="html.story_time">Story time</button>
     </div>
     <small class="hint" id="chatHint"></small>
   </div>
-  <label class="field" for="lead">Heads-up distance <output id="leadOut">2 mi</output><input type="range" id="lead" min="0.5" max="5" step="0.5" value="2"></label>
-  <div class="field">Talk about
+  <label class="field" for="lead"><span data-i18n="html.heads_up_distance">Heads-up distance</span> <output id="leadOut">2 mi</output><input type="range" id="lead" min="0.5" max="5" step="0.5" value="2"></label>
+  <div class="field"><span data-i18n="html.talk_about">Talk about</span>
     <div class="chips" id="narrChips"></div>
   </div>
-  <label class="toggle"><input type="checkbox" id="autoStories"> Play full landmark stories automatically</label>
-  <label class="toggle"><input type="checkbox" id="zoneNarr"> Describe the landscape as it changes</label>
-  <label class="toggle"><input type="checkbox" id="chimeOn"> Chime before each landmark</label>
-  <label class="toggle"><input type="checkbox" id="kidMode"> Kid mode: I-spy challenges</label>
+  <label class="toggle"><input type="checkbox" id="autoStories"> <span data-i18n="html.play_full_landmark_stories">Play full landmark stories automatically</span></label>
+  <label class="toggle"><input type="checkbox" id="zoneNarr"> <span data-i18n="html.describe_the_landscape_as_it">Describe the landscape as it changes</span></label>
+  <label class="toggle"><input type="checkbox" id="chimeOn"> <span data-i18n="html.chime_before_each_landmark">Chime before each landmark</span></label>
+  <label class="toggle"><input type="checkbox" id="kidMode"> <span data-i18n="html.kid_mode_i_spy_challenges">Kid mode: I-spy challenges</span></label>
+  <label class="toggle"><input type="checkbox" id="kidStories"> <span data-i18n="html.stories_for_kids">Stories for kids</span></label>
+  <small class="hint" data-i18n="html.simpler_landmark_stories_for_young">Simpler landmark stories for young riders, where we have them.</small>
 
-  <h3 class="sub">Live road info</h3>
-  <label class="toggle"><input type="checkbox" id="liveOn"> Traffic, weather, chain controls, freeway signs and cameras ahead</label>
-  <small class="hint">When on, the app asks the National Weather Service for forecasts and alerts at points ahead of you and loads Caltrans road data and camera images. Traffic (California Highway Patrol incidents and Caltrans lane closures) comes as one list for all of I-5 from i5.dominares.org, so that request never says where you are. Live road info sends nothing else (see Privacy, under About).</small>
-  <p class="hint pass-link">Mountain passes: <a href="https://i5.dominares.org/grapevine/" target="_blank" rel="noopener">Is the Grapevine open?</a> Live closures and chain controls over Tejon Pass and through the Siskiyous.</p>
+  <h3 class="sub" data-i18n="html.live_road_info">Live road info</h3>
+  <label class="toggle"><input type="checkbox" id="liveOn"> <span data-i18n="html.traffic_weather_chain_controls">Traffic, weather, chain controls, freeway signs and cameras ahead</span></label>
+  <small class="hint" data-i18n="html.when_on_the_app_asks_the_national">When on, the app asks the National Weather Service for forecasts and alerts at points ahead of you and loads Caltrans road data and camera images. Traffic (California Highway Patrol incidents and Caltrans lane closures) comes as one list for all of I-5 from i5.dominares.org, so that request never says where you are. Live road info sends nothing else (see Privacy, under About).</small>
+  <p class="hint pass-link"><span data-i18n="html.mountain_passes">Mountain passes:</span> <a href="https://i5.dominares.org/grapevine/" target="_blank" rel="noopener" data-i18n="html.is_the_grapevine_open">Is the Grapevine open?</a> <span data-i18n="html.live_closures_and_chain_controls">Live closures and chain controls over Tejon Pass and through the Siskiyous.</span></p>
 
-  <h3 class="sub">Display</h3>
-  <div class="field">Theme
-    <div class="seg wide" role="group" aria-label="Theme">
-      <button data-theme-set="auto">Day/night</button><button data-theme-set="dark">Dark</button><button data-theme-set="light">Light</button>
+  <h3 class="sub" data-i18n="html.display">Display</h3>
+  <div class="field"><span data-i18n="html.theme">Theme</span>
+    <div class="seg wide" role="group" aria-label="Theme" data-i18n-attr="aria-label:html.theme">
+      <button data-theme-set="auto" data-i18n="html.day_night">Day/night</button><button data-theme-set="dark" data-i18n="html.dark">Dark</button><button data-theme-set="light" data-i18n="html.light">Light</button>
     </div>
   </div>
   <div class="field" id="rideRow"></div>
 
-  <h3 class="sub">Position by hand</h3>
-  <label class="field" for="manual">Milepost <output id="manualOut">--</output><input type="range" id="manual" min="0" max="797" step="1" value="300"></label>
-  <div class="field">Direction
-    <div class="seg"><button id="manN">North</button><button id="manS">South</button></div>
+  <h3 class="sub" data-i18n="html.position_by_hand">Position by hand</h3>
+  <label class="field" for="manual"><span data-i18n="html.milepost">Milepost</span> <output id="manualOut">--</output><input type="range" id="manual" min="0" max="797" step="1" value="300"></label>
+  <div class="field"><span data-i18n="html.direction">Direction</span>
+    <div class="seg"><button id="manN" data-i18n="html.north_2">North</button><button id="manS" data-i18n="html.south">South</button></div>
   </div>
 
-  <h3 class="sub">Offline</h3>
+  <h3 class="sub" data-i18n="html.offline">Offline</h3>
   <div class="field" id="offlineRow">
-    <span id="offlineText">The app and all stories work offline once installed.</span>
-    <button class="secondary" id="savePhotos">Save photos for offline</button>
-    <button class="secondary" id="saveVoice" hidden>Save the voice for offline</button>
+    <span id="offlineText" data-i18n="html.the_app_and_all_stories_work">The app and all stories work offline once installed.</span>
+    <button class="secondary" id="savePhotos" data-i18n="html.save_photos_for_offline">Save photos for offline</button>
+    <button class="secondary" id="saveVoice" hidden data-i18n="html.save_the_voice_for_offline">Save the voice for offline</button>
   </div>
   <div class="field" id="installRow">
     <span id="installHint" tabindex="-1"></span>
-    <button class="secondary install-btn" id="installApp" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg>Install app</button>
+    <button class="secondary install-btn" id="installApp" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v7.2l3.3-3.3 1.4 1.4L12 15l-5.7-5.7 1.4-1.4 3.3 3.3V4ZM5 17h2v2h10v-2h2v4H5v-4Z" fill="currentColor"/></svg><span data-i18n="html.install_app">Install app</span></button>
   </div>
 
   <div id="settingsExtra"></div>
 
-  <h3 class="sub">Reset</h3>
+  <h3 class="sub" data-i18n="html.reset">Reset</h3>
   <div class="field danger">
-    <button class="secondary" id="resetPassport">Clear passport</button>
-    <span id="resetConfirm" hidden>Clear all stamps, trips and badges? <button class="link" id="resetYes">Yes, clear</button> <button class="link" id="resetNo">Keep</button></span>
+    <button class="secondary" id="resetPassport" data-i18n="html.clear_passport">Clear passport</button>
+    <span id="resetConfirm" hidden><span data-i18n="html.clear_all_stamps_trips_and_badges">Clear all stamps, trips and badges?</span> <button class="link" id="resetYes" data-i18n="html.yes_clear">Yes, clear</button> <button class="link" id="resetNo" data-i18n="html.keep">Keep</button></span>
   </div>
 
-  <h3 class="sub">About</h3>
+  <h3 class="sub" data-i18n="html.about">About</h3>
   <div class="field get-app-row" id="appRow" hidden></div>
   <p class="fine app-version" id="appVersion"></p>
   <div class="field" id="rateRow" hidden></div>
   <div class="field" id="feedbackRow"></div>
   <div class="field" id="shareRow"></div>
   <div class="field privacy-row" id="privacyRow">
-    <a class="secondary privacy-open" href="privacy.html" target="_blank" rel="noopener">Privacy</a>
-    <small class="hint">What leaves your phone, and what stays on it.</small>
+    <a class="secondary privacy-open" href="privacy.html" target="_blank" rel="noopener" data-i18n="html.privacy">Privacy</a>
+    <small class="hint" data-i18n="html.what_leaves_your_phone_and_what">What leaves your phone, and what stays on it.</small>
   </div>
   <div class="field help-row" id="helpRow">
-    <a class="secondary help-open" href="support.html" target="_blank" rel="noopener">Help</a>
-    <small class="hint">If you don't hear anything, how GPS works, and how to reach us.</small>
+    <a class="secondary help-open" href="support.html" target="_blank" rel="noopener" data-i18n="html.help">Help</a>
+    <small class="hint" data-i18n="html.if_you_dont_hear_anything_how_gps">If you don't hear anything, how GPS works, and how to reach us.</small>
   </div>
   <div class="family">
-    <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b>Made by Dominares</b><small>More from us at dominares.org</small></span></a>
-    <a class="also-from" href="https://linasystems.org/" target="_blank" rel="noopener"><span>Also from Dominares: <b>Lina</b>, the AI front desk for businesses</span></a>
+    <a class="made-by" href="https://dominares.org/" target="_blank" rel="noopener"><svg class="dom-mark" viewBox="0 0 113 100" aria-hidden="true"><g transform="translate(24.93 0) skewX(-14)" fill="currentColor"><path d="M0 0H20V80H60V100H0Z"/><path d="M28 0H64L88 24V76L68 96V20H28Z"/><path d="M35 41H53V59H35Z"/></g></svg><span><b data-i18n="html.made_by_dominares">Made by Dominares</b><small data-i18n="html.more_from_us_at_dominares_org">More from us at dominares.org</small></span></a>
+    <a class="also-from" href="https://linasystems.org/" target="_blank" rel="noopener"><span data-i18n-html="html.also_from_dominares_b_lina_b_the">Also from Dominares: <b>Lina</b>, the AI front desk for businesses</span></a>
   </div>
-  <p class="fine">Share I-5 Buddy with anyone driving I-5: <b>i5.dominares.org</b></p>
-  <p class="fine">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans, California Highway Patrol. 3D map: terrain from Mapzen/AWS Terrain Tiles, map from OpenFreeMap and OpenStreetMap contributors; it loads map pictures from those services only while it is open. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData. <span id="dataVersion"></span></p>
+  <p class="fine" data-i18n-html="html.share_i_5_buddy_with_anyone">Share I-5 Buddy with anyone driving I-5: <b>i5.dominares.org</b></p>
+  <p class="fine"><span data-i18n="html.mileposts_follow_californias_exit">Mileposts follow California's exit numbers, which count up from the Mexico border. Every landmark lists its source on the Ahead tab. Road geometry, exits and services come from OpenStreetMap contributors (ODbL). Live data: National Weather Service, Caltrans, California Highway Patrol. 3D map: terrain from Mapzen/AWS Terrain Tiles, map from OpenFreeMap and OpenStreetMap contributors; it loads map pictures from those services only while it is open. Photos from Wikimedia Commons, credited on each photo. Elevation: SRTM via OpenTopoData.</span> <span id="dataVersion"></span></p>
 </aside>
 
-<aside class="sheet" id="moreSheet" hidden aria-label="Details" role="dialog" aria-modal="true"></aside>
-<aside class="sheet" id="feedbackSheet" hidden aria-label="Send feedback" role="dialog" aria-modal="true"></aside>
-<aside class="sheet" id="shareSheet" hidden aria-label="Share" role="dialog" aria-modal="true"></aside>
-<aside class="sheet" id="rideSheet" hidden aria-label="Pick your ride" role="dialog" aria-modal="true"></aside>
-<aside class="sheet" id="missionSheet" hidden aria-label="Mission" role="dialog" aria-modal="true"></aside>
+<aside class="sheet" id="moreSheet" hidden aria-label="Details" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.details"></aside>
+<aside class="sheet" id="feedbackSheet" hidden aria-label="Send feedback" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.send_feedback"></aside>
+<aside class="sheet" id="shareSheet" hidden aria-label="Share" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.share"></aside>
+<aside class="sheet" id="rideSheet" hidden aria-label="Pick your ride" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.pick_your_ride"></aside>
+<aside class="sheet" id="missionSheet" hidden aria-label="Mission" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.mission"></aside>
 
-<aside class="nav-sheet" id="navSheet" hidden aria-label="Where to?" role="dialog" aria-modal="true"></aside>
-<div class="nav-view" id="navView" hidden role="dialog" aria-modal="true" aria-label="Navigation"></div>
+<aside class="nav-sheet" id="navSheet" hidden aria-label="Where to?" role="dialog" aria-modal="true" data-i18n-attr="aria-label:html.where_to"></aside>
+<div class="nav-view" id="navView" hidden role="dialog" aria-modal="true" aria-label="Navigation" data-i18n-attr="aria-label:html.navigation"></div>
 <div class="nav-consent" id="navConsent" hidden></div>
 
 <!-- What I-5 Buddy is saying, on every tab, with Stop and Repeat (3.0.1): for passengers who can't hear it, cars with
      the windows down, and a Stop that is always one tap away. -->
 <div class="caption" id="caption" hidden>
   <p id="captionText"></p>
-  <button type="button" class="icon-btn" id="captionRepeat" aria-label="Say it again" title="Say it again"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z" fill="currentColor"/></svg></button>
-  <button type="button" class="icon-btn" id="captionStop" aria-label="Stop talking" title="Stop talking"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg></button>
+  <button type="button" class="icon-btn" id="captionRepeat" aria-label="Say it again" title="Say it again" data-i18n-attr="aria-label:html.say_it_again;title:html.say_it_again"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z" fill="currentColor"/></svg></button>
+  <button type="button" class="icon-btn" id="captionStop" aria-label="Stop talking" title="Stop talking" data-i18n-attr="aria-label:html.stop_talking;title:html.stop_talking"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg></button>
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
-<div class="moved" id="movedBar" hidden>I-5 Buddy has a new home at <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/">Open it there</a> and add it to your Home Screen again.</div>
-<div class="update" id="updateBar" hidden><span>A new version of I-5 Buddy is ready. Reload to get it.</span> <button class="link" id="updateBtn">Reload</button></div>
+<div class="moved" id="movedBar" hidden><span data-i18n="html.i_5_buddy_has_a_new_home_at">I-5 Buddy has a new home at</span> <b>i5.dominares.org</b>. <a id="movedLink" href="https://i5.dominares.org/" data-i18n="html.open_it_there">Open it there</a> <span data-i18n="html.and_add_it_to_your_home_screen">and add it to your Home Screen again.</span></div>
+<div class="update" id="updateBar" hidden><span data-i18n="html.a_new_version_of_i_5_buddy_is">A new version of I-5 Buddy is ready. Reload to get it.</span> <button class="link" id="updateBtn" data-i18n="html.reload">Reload</button></div>
 </div>
 
 

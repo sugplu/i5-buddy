@@ -43,8 +43,10 @@ const defaults = {
   lead: 2,               // minimum heads-up distance in miles
   rate: 1,               // speech rate
   voice: "",             // voiceURI
+  voiceEs: "",           // voiceURI of the device voice picked in Spanish (3.1.0; the language itself is store "lang")
   cats: ALL_CATS,        // categories to narrate
   kid: false,            // kid mode: I-spy prompts and simpler extras
+  kidStories: false,     // Stories for kids (3.1.0): a place's kids text instead of its story, where it has one
   chime: true,           // soft chime before each announcement
   live: null,            // live road info: null = not asked yet, true/false
   theme: "auto",         // "auto" (day/night by the sun) | "dark" | "light"

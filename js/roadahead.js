@@ -12,6 +12,8 @@
 // It redraws when you move half a mile, and when the settings, the traffic, the weather, the ride or the destination change.
 // Nothing here uses the network. Colors come from the app.css tokens, so both themes work.
 
+import { t, loc } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const W = 360, H = 200;               // chart coordinates (the svg scales to the screen; text and markers are HTML on top)
 const XL = 18, XR = 342;              // left and right edge of the plot
 const AHEAD = 50;                     // miles in the short view
@@ -55,9 +57,9 @@ function warnIcon() {
 }
 function warn(e) { try { console.warn("[roadahead]", (e && e.message) || e); } catch {} }
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
-const ft = n => `${Math.round(n).toLocaleString("en-US")} ft`;
-const mi = d => (d < 0.5 ? "right here" : d < 1.5 ? "1 mi" : `${Math.round(d)} mi`);
-const miWords = d => (d < 0.5 ? "right here" : d < 1.5 ? "about a mile" : `about ${Math.round(d)} miles`);
+const ft = n => t("roadahead.n_ft", { n: Math.round(n).toLocaleString(loc("en-US")) });
+const mi = d => (d < 0.5 ? t("roadahead.right_here") : d < 1.5 ? t("roadahead.1_mi") : t("roadahead.d_mi", { d: Math.round(d) }));
+const miWords = d => (d < 0.5 ? t("roadahead.right_here") : d < 1.5 ? t("roadahead.about_a_mile") : t("roadahead.about_d_miles", { d: Math.round(d) }));
 
 /* ---------- the road's shape ---------- */
 const elevAt = m => (data.elevAt ? data.elevAt(m) : null);
@@ -152,26 +154,26 @@ function summits(pr, m0, sign, n = 3) {
   return out.sort((a, b) => b.prom - a.prom).slice(0, n).sort((a, b) => a.d - b.d).map(p => ({ ...p, name: nameNear(p.m) }));
 }
 const stepClass = pct => (pct < 2 ? 0 : pct < 4 ? 1 : pct < 6 ? 2 : 3);
-const STEP_WORD = ["easy", "moderate", "steep", "very steep"];
+const STEP_WORD = [t("roadahead.easy"), t("roadahead.moderate"), t("roadahead.steep"), t("roadahead.very_steep")];
 
 /* ---------- what is shown ---------- */
 function destAhead() {
   const d = S && S.dest;
   if (!d || S.m == null || !Number.isFinite(d.m)) return null;
   const x = dirAhead(d.m);
-  return x > 2 ? { name: String(d.name || "your destination"), d: x } : null;
+  return x > 2 ? { name: String(d.name || t("roadahead.your_destination")), d: x } : null;
 }
 const dirAhead = x => (S.dir === "N" ? x - S.m : S.m - x);
 function endAhead() { return S.dir === "N" ? maxM() - S.m : S.m; }
 const endName = () => {
   const E = data.ENDS && data.ENDS[S.dir === "N" ? "N" : "S"];
-  return E ? E.short : "the end of the road";
+  return E ? E.short : t("roadahead.the_end_of_the_road");
 };
 
 /** What to draw right now: {pre, m0, sign, L, ...}. */
 function plan() {
   if (!data.ELEV || !data.ELEV.length) return null;
-  if (S.m == null) return { pre: true, m0: 0, sign: 1, L: maxM(), label: "The whole road" };
+  if (S.m == null) return { pre: true, m0: 0, sign: 1, L: maxM(), label: t("roadahead.the_whole_road") };
   const sign = S.dir === "N" ? 1 : -1;
   const rest = Math.max(1, endAhead());
   const dest = destAhead();
@@ -180,7 +182,7 @@ function plan() {
   const useTrip = canToggle && mode === "trip";
   const L = useTrip ? tripL : Math.min(AHEAD, rest);
   return { pre: false, m0: S.m, sign, L, trip: useTrip, canToggle, tripName: dest ? dest.name : endName(), tripL, rest,
-    label: useTrip ? `To ${dest ? dest.name : endName()}` : `Next ${Math.round(L)} miles` };
+    label: useTrip ? t("roadahead.to_x1", { x1: dest ? dest.name : endName() }) : t("roadahead.next_l_miles", { L: Math.round(L) }) };
 }
 
 function rideNode() {
@@ -215,9 +217,9 @@ function trafficInfo() {
 /** "20 min ago", "1 h 5 min ago". */
 function agoWords(t) {
   const m = Math.max(1, Math.round((Date.now() - t) / 60e3));
-  if (m < 60) return `${m} min ago`;
+  if (m < 60) return i18n.t("roadahead.m_min_ago", { m });
   const h = Math.floor(m / 60), r = m % 60;
-  return r ? `${h} h ${r} min ago` : `${h} h ago`;
+  return r ? i18n.t("roadahead.h_h_r_min_ago", { h, r }) : i18n.t("roadahead.h_h_ago", { h });
 }
 /** Incidents ahead in the driver's direction. Each says whether it is old (the whole traffic list is, or live.js kept it
     from an earlier answer while its source was not answering) and, then, when it was last confirmed. */
@@ -240,7 +242,7 @@ function clusters(list, L) {
   return out;
 }
 function trWords(it) {
-  return `${it.old ? `As of ${it.asOf ? agoWords(it.asOf) : "a while ago"}: ` : ""}${it.title || "Traffic"}, ${mi(Math.max(0, it.x))}${it.x < 0.5 ? "" : " ahead"}${it.detail ? `. ${it.detail}` : ""}${it.until ? `. Until ${it.until}` : ""}`;
+  return `${it.old ? t("roadahead.as_of_x1", { x1: it.asOf ? agoWords(it.asOf) : t("roadahead.a_while_ago") }) : ""}${it.title || t("roadahead.traffic")}, ${mi(Math.max(0, it.x))}${it.x < 0.5 ? "" : t("roadahead.ahead")}${it.detail ? `. ${it.detail}` : ""}${it.until ? t("roadahead.until_until", { until: it.until }) : ""}`;
 }
 
 /* ---------- drawing ---------- */
@@ -264,12 +266,12 @@ function niceStep(range) {
 function xTicks(L, pre, endLabel) {
   if (pre) {
     const ends = data.ENDS || {};
-    return [[0, (ends.S && ends.S.short) || "Start"], ...[200, 400, 600].filter(v => v < L - 60).map(v => [v, `${v}`]), [L, (ends.N && ends.N.short) || "End"]];
+    return [[0, (ends.S && ends.S.short) || t("roadahead.start")], ...[200, 400, 600].filter(v => v < L - 60).map(v => [v, `${v}`]), [L, (ends.N && ends.N.short) || t("roadahead.end")]];
   }
   const step = L <= 60 ? 10 : L <= 150 ? 25 : L <= 320 ? 50 : 100;
-  const out = [[0, "Now"]];
-  for (let v = step; v < L - Math.max(step * 0.45, L * 0.12); v += step) out.push([v, `${v} mi`]);
-  out.push([L, endLabel || `${Math.round(L)} mi`]);
+  const out = [[0, t("roadahead.now")]];
+  for (let v = step; v < L - Math.max(step * 0.45, L * 0.12); v += step) out.push([v, t("roadahead.v_mi", { v })]);
+  out.push([L, endLabel || t("roadahead.l_mi", { L: Math.round(L) })]);
   return out;
 }
 /** The label's width in chart units, roughly (a monospace pill is about 7.7 units a character). */
@@ -399,7 +401,7 @@ function render(force) {
     return false;
   };
   for (const [v, y] of gridLabels) {
-    const text = `${v.toLocaleString("en-US")} ft`, tw = text.length * 5.5 + 2;
+    const text = i18n.t("roadahead.v_ft", { v: v.toLocaleString(loc("en-US")) }), tw = text.length * 5.5 + 2;
     const left = crosses(XR - tw, XR, y - 12, y + 1) && !crosses(XL, XL + tw, y - 12, y + 1);
     const t = sv("text", { x: left ? XL + 2 : XR, y: (y - 3).toFixed(1), "text-anchor": left ? "start" : "end" }, "ra-gl");
     t.textContent = text;
@@ -416,7 +418,7 @@ function render(force) {
   if (long && !p.pre) { /* long views: still label the two steepest */ }
   let rowY = plotBot - 24, lastGx = -999;
   for (const r of grades.sort((a, b) => a.d - b.d)) {
-    const text = `${Math.round(r.pct)}% grade, ${Math.round(r.len)} mi`;
+    const text = i18n.t("roadahead.pct_grade_len_mi", { pct: Math.round(r.pct), len: Math.round(r.len) });
     const w = lw(text, 5.4), cx = clamp(xOf((r.a + r.b) / 2), XL + 22 + w / 2, XR - w / 2);
     const y = Math.abs(cx - lastGx) < w + 6 ? rowY - 26 : rowY;
     lastGx = cx;
@@ -447,7 +449,7 @@ function render(force) {
       const b = el("button", "ra-pt ra-wx");
       b.type = "button";
       b.setAttribute("aria-pressed", String(sel === id));
-      b.setAttribute("aria-label", `Forecast ${w.city ? "near " + w.city + ", " : ""}${miWords(Math.max(0, w.x))} ahead: ${Math.round(w.tempF)} degrees, ${w.short || "no description"}`);
+      b.setAttribute("aria-label", i18n.t("roadahead.forecast_x1_miwords_ahead_tempf", { x1: w.city ? i18n.t("roadahead.near_city", { city: w.city }) : "", miWords: miWords(Math.max(0, w.x)), tempF: Math.round(w.tempF), x2: w.short || i18n.t("roadahead.no_description") }));
       const v = el("span", "vis");
       v.append(el("i", null, w.emoji || w.icon || ""), el("b", null, `${Math.round(w.tempF)}°`));
       v.firstChild.setAttribute("aria-hidden", "true");
@@ -464,7 +466,7 @@ function render(force) {
     const b = el("button", "ra-pt ra-tr" + (c.severe ? " severe" : "") + (c.old ? " old" : ""));
     b.type = "button";
     b.setAttribute("aria-pressed", String(sel === id));
-    b.setAttribute("aria-label", c.items.length > 1 ? `${c.items.length} traffic incidents, first ${trWords(first)}` : trWords(first));
+    b.setAttribute("aria-label", c.items.length > 1 ? i18n.t("roadahead.length_traffic_incidents_first_first", { length: c.items.length, first: trWords(first) }) : trWords(first));
     const v = el("span", "vis");
     if (c.items.length > 1) v.textContent = String(c.items.length); else v.append(warnIcon());
     b.append(v);
@@ -502,20 +504,20 @@ function render(force) {
     t.append(el("small", null, label), b, el("span", null, sub || ""));
     return t;
   };
-  const num = n => Math.round(n).toLocaleString("en-US");
-  const scope = p.pre ? "the whole road" : p.trip ? `to ${p.tripName}` : `next ${Math.round(L)} mi`;
+  const num = n => Math.round(n).toLocaleString(loc("en-US"));
+  const scope = p.pre ? i18n.t("roadahead.the_whole_road_2") : p.trip ? i18n.t("roadahead.to_tripname", { tripName: p.tripName }) : i18n.t("roadahead.next_l_mi", { L: Math.round(L) });
   // a name only for a real high point (a flag is drawn); on a gentle stretch the nearest landscape name would mislead
   const named = long || flags.length > 0;
-  const topSub = p.pre ? (an.top.name || `mile ${Math.round(an.top.m)}`) : an.top.d < 0.5 ? "right here" : `in ${mi(an.top.d)}${named && an.top.name && an.top.d >= 1.5 ? " · " + shortName(an.top.name) : ""}`;
+  const topSub = p.pre ? (an.top.name || i18n.t("roadahead.mile_m", { m: Math.round(an.top.m) })) : an.top.d < 0.5 ? i18n.t("roadahead.right_here") : i18n.t("roadahead.in_d_x1", { d: mi(an.top.d), x1: named && an.top.name && an.top.d >= 1.5 ? " · " + shortName(an.top.name) : "" });
   stats.append(
-    an.up < 60 ? tile("CLIMB", "Flat", scope) : tile("CLIMB", num(an.up), an.down >= 60 ? `${ft(an.down)} down` : scope, "", " ft"),
-    tile("TOP", num(an.top.ft), topSub, "", " ft"),
-    an.steep ? tile("STEEPEST", `${Math.round(an.steep.pct)}%`, p.pre ? `${an.steep.kind === "climb" ? "climb" : "descent"}, ${Math.round(an.steep.len)} mi` : steepWhere(an.steep), an.steep.kind) : tile("STEEPEST", "Gentle", "no hard hills"),
+    an.up < 60 ? tile(i18n.t("roadahead.climb"), i18n.t("roadahead.flat"), scope) : tile(i18n.t("roadahead.climb"), num(an.up), an.down >= 60 ? i18n.t("roadahead.down_down", { down: ft(an.down) }) : scope, "", i18n.t("roadahead.ft")),
+    tile("TOP", num(an.top.ft), topSub, "", i18n.t("roadahead.ft")),
+    an.steep ? tile(i18n.t("roadahead.steepest"), `${Math.round(an.steep.pct)}%`, p.pre ? i18n.t("roadahead.x1_len_mi", { x1: an.steep.kind === "climb" ? i18n.t("roadahead.climb_2") : i18n.t("roadahead.descent"), len: Math.round(an.steep.len) }) : steepWhere(an.steep), an.steep.kind) : tile(i18n.t("roadahead.steepest"), i18n.t("roadahead.gentle"), i18n.t("roadahead.no_hard_hills")),
   );
   // legend
   const leg = el("ul", "ra-legend");
-  leg.setAttribute("aria-label", "Steepness colors");
-  ["Easy", "Moderate", "Steep", "Very steep"].forEach((w, i) => { const li = el("li", null, w); li.prepend(el("i", "ra-sw ra-b" + i)); leg.append(li); });
+  leg.setAttribute("aria-label", i18n.t("roadahead.steepness_colors"));
+  [i18n.t("roadahead.easy_2"), i18n.t("roadahead.moderate_2"), i18n.t("roadahead.steep_2"), i18n.t("roadahead.very_steep_2")].forEach((w, i) => { const li = el("li", null, w); li.prepend(el("i", "ra-sw ra-b" + i)); leg.append(li); });
   // readout
   const read = el("p", "ra-read");
   read.setAttribute("aria-live", "off"); // 3.0.1: rewritten every half mile while driving; a screen reader reads it when visited
@@ -531,11 +533,11 @@ function render(force) {
   last.flags = flagItems.filter(it => it.placed).map(it => ({ ft: it.f.ft, d: it.f.d, name: it.f.name }));
   last.flagsDropped = flagItems.filter(it => !it.placed).length;
   // header bits
-  head.querySelector(".ra-title").textContent = p.pre ? "The whole road" : "Road ahead";
+  head.querySelector(".ra-title").textContent = p.pre ? i18n.t("roadahead.the_whole_road") : i18n.t("roadahead.road_ahead");
   group.hidden = !p.canToggle;
   if (p.canToggle) {
-    btnNear.textContent = `Next ${AHEAD} mi`;
-    btnTrip.textContent = `To ${shortName(p.tripName, 14)}`;
+    btnNear.textContent = i18n.t("roadahead.next_ahead_mi", { AHEAD });
+    btnTrip.textContent = i18n.t("roadahead.to_tripname_2", { tripName: shortName(p.tripName, 14) });
     btnNear.setAttribute("aria-pressed", String(!p.trip));
     btnTrip.setAttribute("aria-pressed", String(!!p.trip));
   }
@@ -545,26 +547,26 @@ const shortName = (s, n = 18) => (String(s).length > n ? String(s).slice(0, n - 
 
 /** "climb in 7 mi" / "descent right here": where the steepest run STARTS (the same distance the screen-reader text gives), not its steepest point. */
 function steepWhere(st) {
-  const word = st.kind === "climb" ? "climb" : "descent";
-  return st.a < 0.5 ? `${word} right here` : `${word} in ${mi(st.a)}`;
+  const word = st.kind === "climb" ? t("roadahead.climb_2") : t("roadahead.descent");
+  return st.a < 0.5 ? t("roadahead.word_right_here", { word }) : t("roadahead.word_in_a", { word, a: mi(st.a) });
 }
 function summaryLine(p, an) {
-  if (p.pre) return "Tap Start GPS or a demo drive to see the road in front of you.";
+  if (p.pre) return t("roadahead.tap_start_gps_or_a_demo_drive_to_see");
   const bits = [];
-  bits.push(an.up < 60 && an.down < 60 ? "Flat road ahead." : `Up ${ft(an.up)}, down ${ft(an.down)} over ${p.trip ? "the way to " + p.tripName : p.L === Math.round(p.L) ? Math.round(p.L) + " miles" : "the next miles"}.`);
-  if (an.steep) bits.push(`Steepest: ${Math.round(an.steep.pct)}% ${steepWhere(an.steep)}.`);
+  bits.push(an.up < 60 && an.down < 60 ? t("roadahead.flat_road_ahead") : t("roadahead.up_up_down_down_over_x1", { up: ft(an.up), down: ft(an.down), x1: p.trip ? t("roadahead.the_way_to_tripname", { tripName: p.tripName }) : p.L === Math.round(p.L) ? t("roadahead.l_miles", { L: Math.round(p.L) }) : t("roadahead.the_next_miles") }));
+  if (an.steep) bits.push(t("roadahead.steepest_pct_steep", { pct: Math.round(an.steep.pct), steep: steepWhere(an.steep) }));
   return bits.join(" ");
 }
 function selectedText(wx, trf) {
   if (!sel) return "";
   if (sel.startsWith("wx:")) {
     const w = wx.find(x => "wx:" + Math.round(x.m) === sel);
-    return w ? `${w.city ? "Near " + w.city + ", " : ""}${miWords(Math.max(0, w.x))} ahead: ${Math.round(w.tempF)}°, ${String(w.short || "").toLowerCase()}.`.replace(/, \./, ".") : "";
+    return w ? t("roadahead.x1_miwords_ahead_tempf_string", { x1: w.city ? t("roadahead.near_city_2", { city: w.city }) : "", miWords: miWords(Math.max(0, w.x)), tempF: Math.round(w.tempF), String: String(w.short || "").toLowerCase() }).replace(/, \./, ".") : "";
   }
   const c = trf.find(x => "tr:" + x.items[0].id === sel);
   if (!c) return "";
   const lines = c.items.slice(0, 3).map(trWords);
-  return lines.join(". ") + (c.items.length > 3 ? `. And ${c.items.length - 3} more.` : ".");
+  return lines.join(". ") + (c.items.length > 3 ? t("roadahead.and_x1_more", { x1: c.items.length - 3 }) : ".");
 }
 function select(id) {
   sel = sel === id ? null : id;
@@ -572,18 +574,18 @@ function select(id) {
   const b = [...root.querySelectorAll(".ra-pt")].find(x => x.getAttribute("aria-pressed") === "true");
   if (b) { try { b.focus({ preventScroll: true }); } catch {} }
 }
-const startsWords = a => (a < 0.5 ? "starting right here" : `starting ${miWords(a)} ahead`);
+const startsWords = a => (a < 0.5 ? t("roadahead.starting_right_here") : t("roadahead.starting_a_ahead", { a: miWords(a) }));
 function srText(p, an, wx, trf, named) {
   const s = [];
-  if (p.pre) s.push(`The whole road, from ${(data.ENDS && data.ENDS.S.long) || "the start"} to ${(data.ENDS && data.ENDS.N.long) || "the end"}.`);
-  else s.push(`Road ahead, ${p.trip ? "to " + p.tripName : "the next " + Math.round(p.L) + " miles"}, ${S.dir === "N" ? "northbound" : "southbound"}.`);
-  s.push(an.up < 60 ? "The road is flat." : `You climb ${Math.round(an.up).toLocaleString("en-US")} feet and descend ${Math.round(an.down).toLocaleString("en-US")} feet.`);
-  s.push(`The highest point is ${Math.round(an.top.ft).toLocaleString("en-US")} feet${p.pre ? "" : an.top.d < 0.5 ? ", right here" : ", " + miWords(an.top.d) + " ahead"}${named && an.top.name ? ", at " + an.top.name : ""}.`);
-  if (an.climb) s.push(`The steepest climb is a ${Math.round(an.climb.pct)} percent grade for ${Math.round(an.climb.len)} miles${p.pre ? ", near mile " + Math.round(an.climb.m) : ", " + startsWords(an.climb.a)}.`);
-  if (an.desc) s.push(`The steepest descent is a ${Math.round(an.desc.pct)} percent grade for ${Math.round(an.desc.len)} miles${p.pre ? ", near mile " + Math.round(an.desc.m) : ", " + startsWords(an.desc.a)}.`);
-  if (!an.climb && !an.desc) s.push("There are no hard hills.");
-  for (const w of wx) s.push(`Forecast ${w.city ? "near " + w.city + ", " : ""}${miWords(Math.max(0, w.x))} ahead: ${Math.round(w.tempF)} degrees, ${String(w.short || "").toLowerCase()}.`);
-  if (trf.length) s.push(`Traffic: ${trf.flatMap(c => c.items).slice(0, 4).map(trWords).join(". ")}.`);
+  if (p.pre) s.push(t("roadahead.the_whole_road_from_x1_to_x2", { x1: (data.ENDS && data.ENDS.S.long) || t("roadahead.the_start"), x2: (data.ENDS && data.ENDS.N.long) || t("roadahead.the_end") }));
+  else s.push(t("roadahead.road_ahead_x1_x2", { x1: p.trip ? t("roadahead.to_tripname", { tripName: p.tripName }) : t("roadahead.the_next_l_miles", { L: Math.round(p.L) }), x2: S.dir === "N" ? t("roadahead.northbound") : t("roadahead.southbound") }));
+  s.push(an.up < 60 ? t("roadahead.the_road_is_flat") : t("roadahead.you_climb_up_feet_and_descend_down", { up: Math.round(an.up).toLocaleString(loc("en-US")), down: Math.round(an.down).toLocaleString(loc("en-US")) }));
+  s.push(t("roadahead.the_highest_point_is_ft_feet_x1_x2", { ft: Math.round(an.top.ft).toLocaleString(loc("en-US")), x1: p.pre ? "" : an.top.d < 0.5 ? t("roadahead.right_here_2") : t("roadahead.d_ahead", { d: miWords(an.top.d) }), x2: named && an.top.name ? t("roadahead.at_name", { name: an.top.name }) : "" }));
+  if (an.climb) s.push(t("roadahead.the_steepest_climb_is_a_pct_percent", { pct: Math.round(an.climb.pct), len: Math.round(an.climb.len), x1: p.pre ? t("roadahead.near_mile_m", { m: Math.round(an.climb.m) }) : ", " + startsWords(an.climb.a) }));
+  if (an.desc) s.push(t("roadahead.the_steepest_descent_is_a_pct_percent", { pct: Math.round(an.desc.pct), len: Math.round(an.desc.len), x1: p.pre ? t("roadahead.near_mile_m", { m: Math.round(an.desc.m) }) : ", " + startsWords(an.desc.a) }));
+  if (!an.climb && !an.desc) s.push(t("roadahead.there_are_no_hard_hills"));
+  for (const w of wx) s.push(t("roadahead.forecast_x1_miwords_ahead_tempf_2", { x1: w.city ? t("roadahead.near_city", { city: w.city }) : "", miWords: miWords(Math.max(0, w.x)), tempF: Math.round(w.tempF), String: String(w.short || "").toLowerCase() }));
+  if (trf.length) s.push(t("roadahead.traffic_join", { join: trf.flatMap(c => c.items).slice(0, 4).map(trWords).join(". ") }));
   return s.join(" ");
 }
 
@@ -630,12 +632,12 @@ export function init(a) {
     mode = store.get("roadahead:mode", "near") === "trip" ? "trip" : "near";
     root.classList.add("ra");
     head = el("div", "ra-head");
-    const title = el("h2", "ra-title", "Road ahead");
+    const title = el("h2", "ra-title", t("roadahead.road_ahead"));
     group = el("div", "ra-seg");
     group.setAttribute("role", "group");
-    group.setAttribute("aria-label", "How far to show");
-    btnNear = el("button", null, `Next ${AHEAD} mi`); btnNear.type = "button";
-    btnTrip = el("button", null, "To the end"); btnTrip.type = "button";
+    group.setAttribute("aria-label", t("roadahead.how_far_to_show"));
+    btnNear = el("button", null, t("roadahead.next_ahead_mi", { AHEAD })); btnNear.type = "button";
+    btnTrip = el("button", null, t("roadahead.to_the_end")); btnTrip.type = "button";
     btnNear.addEventListener("click", () => setMode("near"));
     btnTrip.addEventListener("click", () => setMode("trip"));
     group.append(btnNear, btnTrip);

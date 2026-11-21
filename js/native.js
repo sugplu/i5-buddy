@@ -28,13 +28,15 @@
 //                         person has not tapped Not now for that version), else null. storeUpdateLater(v): Not now.
 // Nothing here sends anything about the person: the App Store lookup asks only for the app's own public listing.
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const cap = typeof window !== "undefined" ? window.Capacitor : undefined;
 export const NATIVE = !!(cap && typeof cap.isNativePlatform === "function" && cap.isNativePlatform());
 export const VOICE = true;
 
 const SITE = "https://i5.dominares.org/";
-export const SAFETY = "Set it up before you drive. Narration is hands-free; leave the screen to passengers.";
-export const INDEPENDENT = "I-5 Buddy is independent and not affiliated with Caltrans, the California Highway Patrol or the National Weather Service.";
+export const SAFETY = t("native.set_it_up_before_you_drive_narration");
+export const INDEPENDENT = t("native.i_5_buddy_is_independent_and_not");
 
 /** The native plugin `name` (its methods return promises), or null: in a browser, or in an app built without it. */
 function plugin(name) {
@@ -179,7 +181,7 @@ function buildDoc() {
   docEl.setAttribute("role", "dialog"); docEl.setAttribute("aria-modal", "true"); docEl.setAttribute("aria-labelledby", "nvDocTitle");
   const head = el("div", "nv-doc-head");
   docTitle = el("b"); docTitle.id = "nvDocTitle";
-  const done = el("button", "link nv-doc-done", "Done"); done.type = "button"; done.addEventListener("click", () => closeDoc());
+  const done = el("button", "link nv-doc-done", t("native.done")); done.type = "button"; done.addEventListener("click", () => closeDoc());
   head.append(docTitle, done);
   docBody = el("div", "nv-doc-body");
   docEl.append(head, docBody);
@@ -209,7 +211,7 @@ export async function openDoc(file, from, hash = "") {
   const seq = ++docSeq;
   if (from && !docEl.contains(from)) docFrom = from;   // the focus goes back there on Done
   docTitle.textContent = "I-5 Buddy";
-  docBody.replaceChildren(el("p", "nv-doc-wait", "Opening…"));
+  docBody.replaceChildren(el("p", "nv-doc-wait", i18n.t("native.opening")));
   docEl.hidden = false;
   let doc = null;
   try {
@@ -270,16 +272,16 @@ export function safetyFirst(go) {
     safeSheet.hidden = true;
     safeSheet.setAttribute("role", "dialog"); safeSheet.setAttribute("aria-modal", "true"); safeSheet.setAttribute("aria-labelledby", "nvSafetyTitle");
     const head = el("div", "sheet-head");
-    const t = el("b", null, "Before you drive"); t.id = "nvSafetyTitle";
+    const t = el("b", null, i18n.t("native.before_you_drive")); t.id = "nvSafetyTitle";
     head.append(t);
     // one button that goes on to iOS's location question (3.0.1: a "Not now" before the system prompt is the kind of
     // pre-permission screen App Review questions)
     const row = el("div", "controls");
-    const yes = el("button", "primary", "Start GPS"); yes.type = "button";
+    const yes = el("button", "primary", i18n.t("native.start_gps")); yes.type = "button";
     row.append(yes);
     safeSheet.append(head, el("p", "nv-safety-line", SAFETY),
-      el("p", "hint", "I-5 Buddy speaks up before each landmark, so the driver never needs the screen. Choose your settings now, while you're parked."),
-      el("p", "hint", "Keep I-5 Buddy open on screen while you drive. If you switch apps or lock the phone, it goes quiet until you come back."), row);
+      el("p", "hint", i18n.t("native.i_5_buddy_speaks_up_before_each")),
+      el("p", "hint", i18n.t("native.keep_i_5_buddy_open_on_screen_while")), row);
     (document.querySelector(".app") || document.body).append(safeSheet);
     yes.addEventListener("click", () => { markSeen(); closeSafety(); safeSheet.__go && safeSheet.__go(); });
   }
@@ -366,7 +368,7 @@ export function geolocation() {
     if (!st || st.location === "prompt" || st.location === "prompt-with-rationale") {
       try { st = await call(G, "requestPermissions", { permissions: ["location"] }); } catch (e) { throw fromPluginError(e); }
     }
-    if (!st || st.location !== "granted") throw geoError(DENIED, "Location permission was denied.", "denied");
+    if (!st || st.location !== "granted") throw geoError(DENIED, t("native.location_permission_was_denied"), "denied");
   }
   function report(w, e) {
     if (w.alive && typeof w.fail === "function") { try { w.fail(e); } catch (err) { console.error(err); } }
@@ -374,7 +376,7 @@ export function geolocation() {
   function tick(w) {
     clearTimeout(w.timer);
     const t = +w.o.timeout;
-    if (w.alive && t > 0 && isFinite(t)) w.timer = setTimeout(() => { report(w, geoError(TIMEOUT, "No position yet.", "timeout")); tick(w); }, t);
+    if (w.alive && t > 0 && isFinite(t)) w.timer = setTimeout(() => { report(w, geoError(TIMEOUT, i18n.t("native.no_position_yet"), "timeout")); tick(w); }, t);
   }
   function arm(w) {
     if (!w.alive) return;
@@ -419,7 +421,7 @@ export function geolocation() {
         .then(() => call(G, "getCurrentPosition", { enableHighAccuracy: !!(o && o.enableHighAccuracy), timeout: t > 0 ? t : 30000 }))
         .then(pos => {
           const p = fromPluginPosition(pos);
-          if (!p) throw geoError(UNAVAILABLE, "No position.", "unavailable");
+          if (!p) throw geoError(UNAVAILABLE, i18n.t("native.no_position"), "unavailable");
           ok(p);
         })
         .catch(e => { if (typeof fail === "function") fail(fromPluginError(e)); });
@@ -431,17 +433,17 @@ export function geolocation() {
 /** Words for a location error inside the app (err from geolocation() above). */
 export function locationOffText(err) {
   const r = err && err.reason;
-  if (r === "services-off") return "Location Services are off on this iPhone. Turn them on in Settings, Privacy & Security, Location Services.";
-  if (r === "restricted") return "Location is restricted on this iPhone (Screen Time). You can still take a demo drive.";
-  return "Location is off for I-5 Buddy. In the Settings app, open I-5 Buddy (under Apps), tap Location and choose While Using the App.";
+  if (r === "services-off") return t("native.location_services_are_off_on_this");
+  if (r === "restricted") return t("native.location_is_restricted_on_this_iphone");
+  return t("native.location_is_off_for_i_5_buddy_in_the");
 }
 
 /** Words for a blocked microphone or speech recognition inside the app (listen.js error codes). */
 export function micOffText(code) {
   if (code === "service-not-allowed") {
-    return "Voice commands need Speech Recognition. In the Settings app, open I-5 Buddy (under Apps) and turn on Speech Recognition, and check that Dictation is on (General, Keyboard). Then close and reopen the app.";
+    return t("native.voice_commands_need_speech_recognition");
   }
-  return "To use voice commands, open the Settings app, open I-5 Buddy (under Apps) and turn on Microphone. Then close and reopen the app.";
+  return t("native.to_use_voice_commands_open_the");
 }
 
 /* ---------- Settings, the App Store rating prompt, music ducking (3.0.1) ---------- */

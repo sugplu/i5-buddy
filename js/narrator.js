@@ -6,6 +6,8 @@ import {
 } from "./data.js";
 import { miles } from "./geo.js";
 import { voice } from "./voice.js";
+import { t, loc } from "./i18n.js";
+import { sideSaid } from "./data.js";
 
 // Announced places are remembered per direction (3.0.1): "id|N", "id|S". Before, a place heard northbound stayed
 // "heard" after turning around, so the whole drive back was silent unless End trip was tapped in between.
@@ -36,6 +38,14 @@ export function upcoming(m = S.m, dir = S.dir, cats = settings.cats, range = 1e9
   return list.sort((a, b) => a.d - b.d);
 }
 
+/** A place's story as narrated: its kids text with Stories for kids on (3.1.0; `kids`, the Spanish one in Spanish), else
+    its text. */
+export function storyOf(p) { return settings.kidStories && p && p.kids ? p.kids : p ? p.text : ""; }
+/** The long story played after the introduction: none for a place told with its kids text (that is its whole story). */
+export function moreOf(p) { return settings.kidStories && p && p.kids ? "" : p ? p.more || "" : ""; }
+/** "a mile" / "12 miles" in the heads-up lines. */
+const aboutDist = d => (d < 1.5 ? t("nar.a_mile") : t("nar.n_miles", { n: Math.round(d) }));
+
 function chatty(p) {
   if (settings.chat === "low") return p.vis || p.cat === "hist" && !!p.more;
   return true;
@@ -43,8 +53,8 @@ function chatty(p) {
 
 export function whereWords(p, dir = S.dir) {
   const side = sideWord(p, dir);
-  if (side) return p.vis ? `on your ${side}` : `off to your ${side}`;
-  return p.vis ? "" : "nearby";
+  if (side) return p.vis ? t("nar.on_your_side", { side: sideSaid(side) }) : t("nar.off_to_your_side", { side: sideSaid(side) });
+  return p.vis ? "" : t("nar.nearby");
 }
 
 /** A turn-off's own text opens with its exit ("Exit 54 is Highway 76 east, the way to Mission San Luis Rey, about four
@@ -53,7 +63,7 @@ export function whereWords(p, dir = S.dir) {
     the natural voice still has a clip for each; the place sheet keeps the whole text. */
 function turnBody(p) {
   const d = detourOf(p), u = voice.speechUnits(p.text);
-  const m = u.length > 1 && /^Exit (\d+[A-Z]?)\b/.exec(u[0]);
+  const m = u.length > 1 && /^(?:Exit|La salida|Salida) (\d+[A-Z]?)\b/.exec(u[0]);
   return d && m && m[1] === d.exit ? u.slice(1).join(" ") : p.text;
 }
 
@@ -62,15 +72,15 @@ export function announceText(p, d, dir = S.dir) {
   if (turn) {
     // a turn-off (a mission a few miles off I-5): said at its exit, never "on your left/right"
     const body = turnBody(p);
-    const s = d < 0.4 ? `${turn} ${body}` : `In about ${d < 1.5 ? "a mile" : `${Math.round(d)} miles`}, ${turn[0].toLowerCase()}${turn.slice(1)} ${body}`;
-    return settings.kid && p.spot && p.vis ? `${s} I spy challenge: ${p.spot}` : s;
+    const s = d < 0.4 ? `${turn} ${body}` : t("nar.in_about_dist_turn", { dist: aboutDist(d), turn: turn[0].toLowerCase() + turn.slice(1), body });
+    return settings.kid && p.spot && p.vis ? `${s} ${t("nar.i_spy_challenge", { spot: p.spot })}` : s;
   }
   const where = whereWords(p, dir);
   let lead;
-  if (d < 0.4) lead = where ? `Right now, ${where}` : "Right about here";
-  else lead = `In about ${d < 1.5 ? "a mile" : `${Math.round(d)} miles`}${where ? `, ${where}` : ""}`;
-  let s = `${lead}: ${p.name}. ${p.text}`;
-  if (settings.kid && p.spot && p.vis) s += ` I spy challenge: ${p.spot}`;
+  if (d < 0.4) lead = where ? t("nar.right_now_where", { where }) : t("nar.right_about_here");
+  else lead = where ? t("nar.in_about_dist_where", { dist: aboutDist(d), where }) : t("nar.in_about_dist", { dist: aboutDist(d) });
+  let s = t("nar.lead_name_text", { lead, name: p.name, text: storyOf(p) });
+  if (settings.kid && p.spot && p.vis) s += " " + t("nar.i_spy_challenge", { spot: p.spot });
   return s;
 }
 
@@ -78,7 +88,8 @@ export function announceText(p, d, dir = S.dir) {
 // starts, so turning autoplay off also shortens introductions still waiting to play.
 function landmarkText(p, d, dir) {
   const intro = announceText(p, d, dir);
-  return settings.autoStories && p.more ? `${intro} ${p.more}` : intro;
+  const more = moreOf(p);
+  return settings.autoStories && more ? `${intro} ${more}` : intro;
 }
 
 function stillAhead(p) { return () => S.m != null && aheadOf(S.m, S.dir, p.m) > -0.6; }
@@ -126,13 +137,13 @@ export function stampSelf(p) {
 
 function zoneLine(z) {
   const season = z.seasons && z.seasons[seasonOf()];
-  return `Now passing: ${z.label}. ${z.text}${season ? " " + season : ""}`;
+  return t("nar.now_passing", { label: z.label, text: z.text }) + (season ? " " + season : "");
 }
 
 const STATE_WELCOME = {
-  CA: "Welcome to California.",
-  OR: "Welcome to Oregon. Exit numbers start over here, counting up from the California line.",
-  WA: "Welcome to Washington. Exit numbers start over again, counting up from the Columbia River.",
+  CA: t("nar.welcome_ca"),
+  OR: t("nar.welcome_or"),
+  WA: t("nar.welcome_wa"),
 };
 
 function onPos(e) {
@@ -157,7 +168,8 @@ function onPos(e) {
   const half = MAX_M / 2;
   if (!halfwayDone && prevM != null && !jumped && (prevM - half) * (m - half) <= 0 && prevM !== m) {
     halfwayDone = true;
-    voice.say(`You just crossed the halfway point of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}, about ${Math.round(half)} miles from both ${ENDS.S.short} and ${ENDS.N.short}.`, { id: "halfway", prio: 1, chime: "success" });
+    const hv = { state: STATES[0].name, miles: Math.round(half), south: ENDS.S.short, north: ENDS.N.short };
+    voice.say(SCOPE.length === 1 ? t("nar.halfway_in_state", hv) : t("nar.halfway", hv), { id: "halfway", prio: 1, chime: "success" });
   }
 
   // a big climb ahead. 3.0.7 (road test): queued behind a long story, this line played 4 to 6 miles late, with most of the
@@ -169,7 +181,8 @@ function onPos(e) {
     const top = sum.m, ft = sum.ft;
     const climbLine = at => {
       const n = Math.max(1, Math.round(Math.abs(top - at)));
-      return `The road climbs about ${Math.round((ft - elevAt(at)) / 100) * 100} feet over the next ${n} ${n === 1 ? "mile" : "miles"}, to roughly ${ft.toLocaleString()} feet.`;
+      const cv = { feet: Math.round((ft - elevAt(at)) / 100) * 100, n, top: ft.toLocaleString(loc(undefined)) };
+      return n === 1 ? t("nar.climb_one_mile", cv) : t("nar.climb_n_miles", cv);
     };
     voice.say(climbLine(m), { id: "summit:" + top, prio: 0,
       check: () => S.m != null && S.mode !== "off" && S.dir === dir && aheadOf(S.m, dir, top) >= 2 && ft - elevAt(S.m) >= 300,
@@ -204,7 +217,7 @@ function onPos(e) {
     lastSpokeAtM = m; lastSpokeAt = Date.now();
     voice.say(landmarkText(p, Math.max(0, d), dir), { id: p.id, prio: 1, chime: true, check: () => settings.narr && S.mode !== "off" && !S.offRoute && S.dir === dir && stillAhead(p)(),
       interruptible: true, // turns and urgent road information take priority over a long landmark story
-      onstart: () => { if (settings.autoStories && p.more) told.add(p.id); },
+      onstart: () => { if (settings.autoStories && moreOf(p)) told.add(p.id); },
       fresh: () => (S.m != null && S.dir === dir ? landmarkText(p, Math.max(0, aheadOf(S.m, dir, p.m)), dir) : null) });
     bus.emit("place:announce", { place: p, d });
   }
@@ -213,12 +226,12 @@ function onPos(e) {
   // miles without a landmark, and no gap on the whole road is that long, so High never told a story.)
   const quiet = lastSpokeAtM != null && (Math.abs(m - lastSpokeAtM) > STORY_MI || (lastSpokeAt && Date.now() - lastSpokeAt > STORY_MS));
   if (settings.autoStories && settings.chat === "high" && !voice.isSpeaking() && !voice.queued().length && quiet) {
-    const recent = PLACES.filter(p => p.more && (heard.has(hk(p.id, "N")) || heard.has(hk(p.id, "S"))) && !told.has(p.id)).sort((a, b) => Math.abs(a.m - m) - Math.abs(b.m - m))[0];
+    const recent = PLACES.filter(p => moreOf(p) && (heard.has(hk(p.id, "N")) || heard.has(hk(p.id, "S"))) && !told.has(p.id)).sort((a, b) => Math.abs(a.m - m) - Math.abs(b.m - m))[0];
     if (recent) {
       told.add(recent.id);
       lastSpokeAtM = m; lastSpokeAt = Date.now();
       // interruptible: a turn, a chain control or a road alert never waits minutes behind a story (code review 2026-11-20)
-      voice.say(`Here's a story while we drive, about ${recent.name}. ${recent.more}`, { id: "story:" + recent.id, prio: 0, interruptible: true });
+      voice.say(t("nar.story_time", { name: recent.name, more: moreOf(recent) }), { id: "story:" + recent.id, prio: 0, interruptible: true });
     }
   }
 }
@@ -229,9 +242,9 @@ bus.on("mode", mode => { if (mode === "off") resetTrip(); });
 export function tellMore(p) {
   if (!p) return;
   told.add(p.id);
-  voice.say(p.more ? `${p.name}. ${p.more}` : `That's everything I have on ${p.name}. ${p.text}`, { now: true, id: "more:" + p.id, interruptible: true });
+  voice.say(p.more ? t("nar.name_more", { name: p.name, more: p.more }) : t("nar.thats_everything", { name: p.name, text: storyOf(p) }), { now: true, id: "more:" + p.id, interruptible: true });
 }
-export function hear(p) { if (p) voice.say(`${p.name}. ${p.text}`, { now: true, id: "hear:" + p.id }); }
+export function hear(p) { if (p) voice.say(t("nar.name_text", { name: p.name, text: storyOf(p) }), { now: true, id: "hear:" + p.id }); }
 
 /** The words for a question asked through Siri in the iPhone app (I5Native.swift): "left", "right", "where", or a
     service ("fuel", "food", "ev", "sleep", "rest"). The same answers the buttons speak; Siri says them, so nothing is
@@ -243,7 +256,7 @@ export function answer(kind, text) {
   if (kind === "ask") {
     let a = null;
     try { a = asker ? asker(String(text || "")) : null; } catch (e) { a = null; }
-    return a || "I don't have an answer for that yet.";
+    return a || t("nar.no_answer_yet");
   }
   const said = [];
   const real = voice.say;
@@ -253,77 +266,78 @@ export function answer(kind, text) {
     else if (kind === "where") whereAreWe();
     else tellServices(kind);
   } finally { voice.say = real; }
-  return said.join(" ") || "I don't have an answer for that yet.";
+  return said.join(" ") || t("nar.no_answer_yet");
 }
 
 export function look(side) {
-  if (S.m == null) return voice.say("Start GPS or a demo drive first, then I can tell you what's out there.", { now: true });
+  if (S.m == null) return voice.say(t("nar.look_start_first"), { now: true });
   const cands = PLACES.filter(p => sideWord(p, S.dir) === side)
     .map(p => ({ p, d: aheadOf(S.m, S.dir, p.m) }))
     .filter(x => x.d > -3 && x.d < 8)
     .sort((a, b) => (Math.abs(a.d) - (a.p.vis ? 2 : 0)) - (Math.abs(b.d) - (b.p.vis ? 2 : 0)));
   const z = zoneAt(S.m);
   if (!cands.length) {
-    return voice.say(z ? `On your ${side} right now: ${z.label}. ${z.text}` : `Nothing I know about on your ${side} for the next few miles.`, { now: true });
+    return voice.say(z ? t("nar.look_zone", { side: sideSaid(side), label: z.label, text: z.text }) : t("nar.look_nothing", { side: sideSaid(side) }), { now: true });
   }
   const { p, d } = cands[0];
-  const where = d < -0.3 ? `Just behind us on your ${side}` : d < 0.5 ? `Right there on your ${side}` : `About ${Math.max(1, Math.round(d))} mile${Math.round(d) > 1 ? "s" : ""} up on your ${side}`;
-  voice.say(`${where}: ${p.name}. ${p.text}`, { now: true, id: "look:" + p.id });
+  const sv = { side: sideSaid(side), n: Math.max(1, Math.round(d)) };
+  const where = d < -0.3 ? t("nar.look_behind", sv) : d < 0.5 ? t("nar.look_right_there", sv) : Math.round(d) > 1 ? t("nar.look_n_miles_up", sv) : t("nar.look_1_mile_up", sv);
+  voice.say(t("nar.lead_name_text", { lead: where, name: p.name, text: storyOf(p) }), { now: true, id: "look:" + p.id });
   bus.emit("place:look", { place: p });
 }
 
 export function whereAreWe() {
-  if (S.m == null) return voice.say("I don't know where we are yet. Tap Start GPS.", { now: true });
+  if (S.m == null) return voice.say(t("nar.where_unknown"), { now: true });
   const st = stateAt(S.m), lm = localMile(S.m), z = zoneAt(S.m), r = regionAt(S.m), ft = elevAt(S.m);
-  const parts = [`We're on I-5 in ${st.name}, near mile ${Math.round(lm.mi)}, heading ${S.dir === "N" ? "north" : "south"}.`];
-  if (z) parts.push(`This stretch is ${z.label}.`); else parts.push(`This is ${r.name}.`);
-  if (ft != null) parts.push(`Elevation about ${ft.toLocaleString()} feet.`);
+  const parts = [t("nar.where_on_i5", { state: st.name, mile: Math.round(lm.mi), heading: S.dir === "N" ? t("nar.north") : t("nar.south") })];
+  if (z) parts.push(t("nar.where_stretch", { label: z.label })); else parts.push(t("nar.where_region", { name: r.name }));
+  if (ft != null) parts.push(t("nar.where_elevation", { ft: ft.toLocaleString(loc(undefined)) }));
   const toEnd = S.dir === "N" ? MAX_M - S.m : S.m;
-  parts.push(`${Math.round(toEnd)} miles to ${(S.dir === "N" ? ENDS.N : ENDS.S).long}.`);
+  parts.push(t("nar.where_to_end", { miles: Math.round(toEnd), end: (S.dir === "N" ? ENDS.N : ENDS.S).long }));
   voice.say(parts.join(" "), { now: true, id: "where" });
 }
 
 export function howFar(dest = S.dest) {
-  if (!dest) return voice.say("Pick a destination first, on the Drive screen.", { now: true });
-  const name = /border$/i.test(dest.name) ? "the " + dest.name : dest.name;  // "the Mexico border"
+  if (!dest) return voice.say(t("nar.howfar_pick"), { now: true });
+  const name = /border$/i.test(dest.name) ? t("nar.the_border", { name: dest.name }) : dest.name;  // "the Mexico border"
   const Name = name[0].toUpperCase() + name.slice(1);
-  if (S.m == null) return voice.say(`${Name} is at mile ${Math.round(dest.m)} of I-5. Start GPS and I'll count down.`, { now: true });
+  if (S.m == null) return voice.say(t("nar.howfar_at_mile", { name: Name, mile: Math.round(dest.m) }), { now: true });
   const d = Math.abs(dest.m - S.m);
   const mph = S.cruise && S.cruise > 25 ? S.cruise : S.speed && S.speed > 25 ? S.speed : 62;
   const n = upcoming(S.m, dest.m >= S.m ? "N" : "S", settings.cats, d).length;
   // the time in words (3.0.7 road test: "around 9 h 30 min" was read as letters or clipped)
-  voice.say(d < 1 ? `We're there. This is ${name}.` : `${Name} is about ${Math.round(d)} miles away. That's around ${fmtDurationSpoken(d / mph)}, with ${n} landmarks to go.`, { now: true, id: "howfar" });
+  voice.say(d < 1 ? t("nar.howfar_there", { name }) : t("nar.howfar_away", { name: Name, miles: Math.round(d), time: fmtDurationSpoken(d / mph), n }), { now: true, id: "howfar" });
 }
 
 /** How far a stop is, for the voice: "just ahead", "in about a mile", "in about 12 miles" (3.0.7 road test: "Next gas: Exit
     120, in about 1 miles. After that, Exit 121 in 1 miles."). */
-const inMiles = d => (d < 0.5 ? "just ahead" : d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`);
+const inMiles = d => (d < 0.5 ? t("nar.just_ahead") : d < 1.5 ? t("nar.in_about_a_mile") : t("nar.in_about_n_miles", { n: Math.round(d) }));
 
 export function tellServices(kind = "fuel") {
-  if (S.m == null) return voice.say("Start GPS first and I'll find the next stop.", { now: true });
-  const word = { fuel: "gas", ev: "EV charging", food: "food", sleep: "a place to sleep" }[kind];
+  if (S.m == null) return voice.say(t("nar.services_start_first"), { now: true });
+  const word = { fuel: t("nar.word_gas"), ev: t("nar.word_ev"), food: t("nar.word_food"), sleep: t("nar.word_sleep") }[kind];
   if (kind === "rest") {
     const list = restAhead(S.m, S.dir, 1), r = list[0];
     const nm = x => restName(x.name); // no " - Southbound" / "(Southbound)" / " - NB": "on this side" says it (3.0.8)
-    if (!r) return voice.say("I don't know of a rest area ahead on this side.", { now: true });
+    if (!r) return voice.say(t("nar.rest_none"), { now: true });
     // a Caltrans closure (tools/rest-status.json): say it, then the next open one on this side
     if (r.status === "closed") {
       const nx = list.find(x => x.status !== "closed");
-      return voice.say(`${nm(r)}, ${inMiles(r.d)}, is closed, Caltrans says.${nx ? ` The next rest area on this side is ${nm(nx)}, ${inMiles(nx.d)}.` : ""}`, { now: true });
+      return voice.say(t("nar.rest_closed", { name: nm(r), dist: inMiles(r.d) }) + (nx ? " " + t("nar.rest_next", { name: nm(nx), dist: inMiles(nx.d) }) : ""), { now: true });
     }
-    const note = r.status === "partial" ? " Caltrans says it is partly closed." : r.status === "truck_only" ? " Caltrans says it is open to trucks only." : "";
-    return voice.say(`The next rest area on this side is ${nm(r)}, ${inMiles(r.d)}.${note}`, { now: true });
+    const note = r.status === "partial" ? " " + t("nar.rest_partly_closed") : r.status === "truck_only" ? " " + t("nar.rest_trucks_only") : "";
+    return voice.say(t("nar.rest_next", { name: nm(r), dist: inMiles(r.d) }) + note, { now: true });
   }
   const s = servicesAhead(S.m, S.dir, kind, 2);
   if (!s.length) {
     // near an end of the covered road the data stops at the line, so don't promise "the next 120 miles"
     const left = S.dir === "N" ? MAX_M - S.m : S.m;
-    return voice.say(left < 120 ? `I don't see ${word} between here and ${(S.dir === "N" ? ENDS.N : ENDS.S).long} in my data.`
-      : `I don't see ${word} in the next 120 miles in my data. Plan ahead.`, { now: true });
+    return voice.say(left < 120 ? t("nar.services_none_to_end", { word, end: (S.dir === "N" ? ENDS.N : ENDS.S).long })
+      : t("nar.services_none_120", { word }), { now: true });
   }
   const a = s[0];
   const names = (a[kind] || []).slice(0, 3).join(", ");
-  voice.say(`Next ${word}: ${exitName(a.st, a.ref)}, ${inMiles(a.d)}${names ? `: ${names}` : ""}.${s[1] ? ` After that, ${exitName(s[1].st, s[1].ref)}, ${inMiles(s[1].d)}.` : ""}`, { now: true });
+  voice.say(t("nar.services_next", { word, exit: exitName(a.st, a.ref), dist: inMiles(a.d) }) + (names ? `: ${names}` : "") + "." + (s[1] ? " " + t("nar.services_after_that", { exit: exitName(s[1].st, s[1].ref), dist: inMiles(s[1].d) }) : ""), { now: true });
 }
 
 export function nextOne() {
@@ -333,4 +347,4 @@ export function nextOne() {
 }
 
 export function markHeard(id) { heard.add(hk(id)); }
-export const narrator = { upcoming, announceText, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, answer, setAsker, placeById, CATS, STATES };
+export const narrator = { upcoming, announceText, storyOf, moreOf, whereWords, stampNear, stampSelf, tellMore, hear, look, whereAreWe, howFar, tellServices, nextOne, resetTrip, markHeard, answer, setAsker, placeById, CATS, STATES };

@@ -6,8 +6,10 @@
 // Store key "higher": {best, bests: {mode: n}, mode, games}.
 // A pair is never a tie and never so close that the answer is a coin flip (see OK below).
 
-const MODES = [["mix", "Mix"], ["elev", "Elevation"], ["north", "Road order"], ["dist", "Distance"], ["mission", "Missions"]];
-const CAT_LABEL = { elev: "I-5 near", north: "On I-5", dist: "Between", mission: "Founded" };
+import { t } from "../i18n.js";
+import * as i18n from "../i18n.js";
+const MODES = [["mix", t("games.higher.mix")], ["elev", t("games.higher.elevation")], ["north", t("games.higher.road_order")], ["dist", t("games.higher.distance")], ["mission", t("games.higher.missions")]];
+const CAT_LABEL = { elev: t("games.higher.i_5_near"), north: t("games.higher.on_i_5"), dist: t("games.higher.between"), mission: t("games.higher.founded") };
 const OK = {   // the smallest difference that makes a fair question
   elev: (a, b) => Math.abs(a.v - b.v) >= 60 && Math.abs(a.m - b.m) >= 6,
   north: (a, b) => Math.abs(a.v - b.v) >= 8,
@@ -65,35 +67,35 @@ export function create(ctx) {
       const a = pick(d), b = pick(d);
       if (a.name === b.name || Math.abs(a.m - b.m) < 10) continue;
       const lo = a.m < b.m ? a : b, hi = a.m < b.m ? b : a;
-      return { cat: "dist", id: `${lo.name}|${hi.name}`, key: `${lo.name}|${hi.name}`, name: `${lo.name} to ${hi.name}`, m: Math.round(hi.m - lo.m), v: Math.round(hi.m - lo.m), sub: "Along I-5", pair: [lo.name, hi.name] };
+      return { cat: "dist", id: `${lo.name}|${hi.name}`, key: `${lo.name}|${hi.name}`, name: i18n.t("games.higher.name_to_name2", { name: lo.name, name2: hi.name }), m: Math.round(hi.m - lo.m), v: Math.round(hi.m - lo.m), sub: i18n.t("games.higher.along_i_5"), pair: [lo.name, hi.name] };
     }
     return null;
   }
   function missionItem() {
     const list = missions(), x = pick(list);
     const place = (Array.isArray(D().PLACES) ? D().PLACES : []).find(p => p && p.mission === x.n && p.img && p.img.f) || null;
-    return { cat: "mission", id: x.id || String(x.n), key: String(x.n), name: x.name, place, m: 0, v: parseInt(String(x.founded).slice(0, 4), 10), sub: `Mission number ${x.n} of ${list.length}` };
+    return { cat: "mission", id: x.id || String(x.n), key: String(x.n), name: x.name, place, m: 0, v: parseInt(String(x.founded).slice(0, 4), 10), sub: t("games.higher.mission_number_n_of_length", { n: x.n, length: list.length }) };
   }
   const makeItem = cat => (cat === "dist" ? distItem() : cat === "mission" ? missionItem() : placeItem(cat));
 
   /* ---------- how a number reads ---------- */
-  const fmtV = it => (it.cat === "elev" ? thousands(it.v) : it.cat === "north" ? `Mile ${thousands(it.v)}` : it.cat === "dist" ? thousands(it.v) : String(it.v));
-  const unitOf = it => (it.cat === "elev" ? "feet, about" : it.cat === "north" ? "from the Mexico border" : it.cat === "dist" ? "miles apart" : "year founded");
-  const andName = it => (it.pair ? it.pair.join(" and ") : it.name);
+  const fmtV = it => (it.cat === "elev" ? thousands(it.v) : it.cat === "north" ? t("games.higher.mile_v", { v: thousands(it.v) }) : it.cat === "dist" ? thousands(it.v) : String(it.v));
+  const unitOf = it => (it.cat === "elev" ? t("games.higher.feet_about") : it.cat === "north" ? t("games.higher.from_the_mexico_border") : it.cat === "dist" ? t("games.higher.miles_apart") : t("games.higher.year_founded"));
+  const andName = it => (it.pair ? it.pair.join(t("games.higher.and")) : it.name);
   const askOf = (a, b) => ({
-    elev: [`Is I-5 higher or lower near ${b.name} than near ${a.name}?`, "Higher", "Lower"],
-    north: [`Is ${b.name} farther north or farther south than ${a.name}?`, "Farther north", "Farther south"],
-    dist: [`Are ${andName(b)} farther apart or closer together than ${andName(a)}?`, "Farther apart", "Closer together"],
-    mission: [`Was ${b.name} founded later or earlier than ${a.name}?`, "Later", "Earlier"],
+    elev: [t("games.higher.is_i_5_higher_or_lower_near_name_than", { name: b.name, name2: a.name }), t("games.higher.higher"), t("games.higher.lower")],
+    north: [t("games.higher.is_name_farther_north_or_farther_south", { name: b.name, name2: a.name }), t("games.higher.farther_north"), t("games.higher.farther_south")],
+    dist: [t("games.higher.are_b_farther_apart_or_closer_together", { b: andName(b), a: andName(a) }), t("games.higher.farther_apart"), t("games.higher.closer_together")],
+    mission: [t("games.higher.was_name_founded_later_or_earlier_than", { name: b.name, name2: a.name }), t("games.higher.later"), t("games.higher.earlier")],
   })[a.cat];
   /** The answer in a full sentence, with the number. */
   const fullSentence = (c, b) => {
     const up = b.v > c.v;
     switch (b.cat) {
-      case "elev": return `Near ${b.name}, I-5 is about ${thousands(b.v)} feet up, ${up ? "higher" : "lower"} than near ${c.name}.`;
-      case "north": return `${b.name} is at mile ${thousands(b.v)}, ${up ? "farther north" : "farther south"} than ${c.name}.`;
-      case "dist": return `${b.name} is ${thousands(b.v)} miles on I-5, ${up ? "longer" : "shorter"} than ${c.name}.`;
-      default: return `${b.name} was founded in ${b.v}, ${up ? "later" : "earlier"} than ${c.name}.`;
+      case "elev": return t("games.higher.near_name_i_5_is_about_v_feet_up_x1", { name: b.name, v: thousands(b.v), x1: up ? t("games.higher.higher_2") : t("games.higher.lower_2"), name2: c.name });
+      case "north": return t("games.higher.name_is_at_mile_v_x1_than_name2", { name: b.name, v: thousands(b.v), x1: up ? t("games.higher.farther_north_2") : t("games.higher.farther_south_2"), name2: c.name });
+      case "dist": return t("games.higher.name_is_v_miles_on_i_5_x1_than_name2", { name: b.name, v: thousands(b.v), x1: up ? t("games.higher.longer") : t("games.higher.shorter"), name2: c.name });
+      default: return t("games.higher.name_was_founded_in_v_x1_than_name2", { name: b.name, v: b.v, x1: up ? t("games.higher.later_2") : t("games.higher.earlier_2"), name2: c.name });
     }
   };
 
@@ -175,8 +177,8 @@ export function create(ctx) {
   function itemCard(it, role, revealed) {
     const val = h("output", { class: "pl-hc-v" }, h("span", { class: "pl-hc-num" }, role === "hidden" && !revealed ? "?" : fmtV(it)), h("small", null, unitOf(it)));
     const photo = it.place && it.place.img ? ctx.gamePhoto(it.place, { size: "hero", alt: "" }) : null;
-    return h("section", { class: `pl-hcard ${role}${role === "hidden" && revealed ? (g.ok ? " right" : " wrong") : ""}${photo ? " has-photo" : ""}`,
-      "aria-label": `${role === "known" ? "Shown" : "To guess"}: ${it.name}${role === "known" || revealed ? ", " + fmtV(it) + " " + unitOf(it) : ""}` },
+    return h("section", { class: `pl-hcard ${role}${role === "hidden" && revealed ? (g.ok ? t("games.higher.right") : t("games.higher.wrong")) : ""}${photo ? " has-photo" : ""}`,
+      "aria-label": `${role === "known" ? t("games.higher.shown") : t("games.higher.to_guess")}: ${it.name}${role === "known" || revealed ? ", " + fmtV(it) + " " + unitOf(it) : ""}` },
       photo,
       h("div", { class: "pl-hc-body" },
         h("small", { class: "pl-hc-k" }, CAT_LABEL[it.cat]),
@@ -190,31 +192,31 @@ export function create(ctx) {
     const partyOn = !!ctx.party && ctx.party.active();
     // mode chips
     const avail = cats();
-    const modes = h("div", { class: "pl-hmodes", role: "group", "aria-label": "What to guess" },
+    const modes = h("div", { class: "pl-hmodes", role: "group", "aria-label": t("games.higher.what_to_guess") },
       MODES.filter(m => m[0] === "mix" ? avail.length > 1 : avail.includes(m[0])).map(([id, name]) => h("button", { class: "pl-hmode", type: "button", "data-mode": id, "aria-pressed": String(g.mode === id),
         onclick: safe(() => setMode(id), "mode") }, name)));
     host.append(modes);
     if (partyOn) {
       strip = ctx.party.strip();
-      host.append(strip, h("p", { class: "pl-turn", role: "status" }, h("b", null, `${ctx.party.current().n}'s turn`), g.phase === "ask" ? " Higher or lower?" : ""));
+      host.append(strip, h("p", { class: "pl-turn", role: "status" }, h("b", null, t("games.higher.n_s_turn", { n: ctx.party.current().n })), g.phase === "ask" ? t("games.higher.higher_or_lower") : ""));
     } else {
       const best = rec.bests[g.mode] || 0;
       host.append(h("div", { class: "pl-pl-stats pl-h-stats" },
-        h("div", { class: "pl-stat" + (g.streak >= 3 ? " hot" : "") }, h("b", null, g.streak), h("span", null, g.streak === 1 ? "in a row" : "in a row")),
-        h("div", { class: "pl-stat" }, h("b", null, best), h("span", null, "best streak")),
-        h("div", { class: "pl-stat" }, h("b", null, rec.games), h("span", null, "games over"))));
+        h("div", { class: "pl-stat" + (g.streak >= 3 ? " hot" : "") }, h("b", null, g.streak), h("span", null, g.streak === 1 ? t("games.higher.in_a_row") : t("games.higher.in_a_row"))),
+        h("div", { class: "pl-stat" }, h("b", null, best), h("span", null, t("games.higher.best_streak"))),
+        h("div", { class: "pl-stat" }, h("b", null, rec.games), h("span", null, t("games.higher.games_over")))));
     }
     if (g.phase === "none" || !g.known || !g.hidden) {
-      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, "This game needs the road's numbers."), h("p", { class: "pl-why" }, "Elevations, miles and mission dates show up here once the road data loads.")));
+      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, t("games.higher.this_game_needs_the_roads_numbers")), h("p", { class: "pl-why" }, t("games.higher.elevations_miles_and_mission_dates"))));
       host.append(live);
       return;
     }
     const revealed = g.phase !== "ask";
-    const table = h("div", { class: "pl-htable" + (entering ? " entering" : "") }, itemCard(g.known, "known", true), h("div", { class: "pl-h-vs", "aria-hidden": "true" }, "VS"), itemCard(g.hidden, "hidden", revealed));
+    const table = h("div", { class: "pl-htable" + (entering ? " entering" : "") }, itemCard(g.known, "known", true), h("div", { class: "pl-h-vs", "aria-hidden": "true" }, t("games.higher.vs")), itemCard(g.hidden, "hidden", revealed));
     host.append(table);
     const [question, up, down] = askOf(g.known, g.hidden);
     host.append(h("h3", { class: "pl-qt pl-h-q", tabindex: "-1" }, question));
-    const btns = h("div", { class: "pl-h-btns", role: "group", "aria-label": "Your guess" },
+    const btns = h("div", { class: "pl-h-btns", role: "group", "aria-label": t("games.higher.your_guess") },
       h("button", { class: "pl-hbtn up" + (revealed && g.correct === "up" ? " right" : "") + (revealed && g.ok === false && g.correct !== "up" ? " wrong" : ""), type: "button", "data-d": "up", disabled: revealed,
         onclick: safe(() => answer("up"), "guess up") }, icon("up"), up),
       h("button", { class: "pl-hbtn down" + (revealed && g.correct === "down" ? " right" : "") + (revealed && g.ok === false && g.correct !== "down" ? " wrong" : ""), type: "button", "data-d": "down", disabled: revealed,
@@ -224,14 +226,14 @@ export function create(ctx) {
       const cp = partyOn ? ctx.party.current() : null;
       const fb = h("div", { class: "pl-fb " + (g.ok ? "ok" : "no"), role: "status" },
         h("div", { class: "pl-verdict", tabindex: "-1" }, icon(g.ok ? "check" : "cross", "pl-ic pl-vic"),
-          h("b", null, g.ok ? (!partyOn && g.streak >= 3 ? `That's right. ${g.streak} in a row.` : "That's right.") : "Not quite.")),
+          h("b", null, g.ok ? (!partyOn && g.streak >= 3 ? t("games.higher.thats_right_streak_in_a_row", { streak: g.streak }) : t("games.higher.thats_right")) : t("games.higher.not_quite"))),
         h("p", { class: "pl-ans" }, fullSentence(g.known, g.hidden)),
-        g.ok && g.newBest && !partyOn ? h("p", { class: "pl-why" }, "A new best streak.") : null,
-        !g.ok && !partyOn ? h("p", { class: "pl-why" }, `Your streak ended at ${g.streak}. Best in this mode: ${rec.bests[g.mode] || 0}.`) : null);
-      const link = g.hidden.place ? h("button", { class: "link pl-hmore", type: "button", onclick: safe(() => ctx.openPlace(g.hidden.place), "about") }, `About ${g.hidden.name}`) : null;
+        g.ok && g.newBest && !partyOn ? h("p", { class: "pl-why" }, t("games.higher.a_new_best_streak")) : null,
+        !g.ok && !partyOn ? h("p", { class: "pl-why" }, t("games.higher.your_streak_ended_at_streak_best_in", { streak: g.streak, x1: rec.bests[g.mode] || 0 })) : null);
+      const link = g.hidden.place ? h("button", { class: "link pl-hmore", type: "button", onclick: safe(() => ctx.openPlace(g.hidden.place), "about") }, t("games.higher.about_name", { name: g.hidden.name })) : null;
       if (link) fb.append(h("p", { class: "pl-src" }, link));
       fb.append(h("button", { class: "primary pl-next", type: "button", "data-k": "next", onclick: safe(next, "next") },
-        g.phase === "over" ? "Play again" : partyOn ? "Next, pass the phone" : "Keep going", icon("next")));
+        g.phase === "over" ? t("games.higher.play_again") : partyOn ? t("games.higher.next_pass_the_phone") : t("games.higher.keep_going"), icon("next")));
       host.append(fb);
       // the number counts up into the hidden card
       const numEl = host.querySelector(".pl-hcard.hidden .pl-hc-num");

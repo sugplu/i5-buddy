@@ -23,6 +23,8 @@
 // A spoken item counts as said once it starts playing: if a later "now" utterance or Stop drops it from the
 // queue first, it is queued again (a few seconds later, or 30 s after Stop).
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const WX_AHEAD = [25, 90];            // forecast points, corridor miles ahead
 const ALERT_AHEAD = [10, 50, 120];    // alert query points
 const WX_SNAP = 5;                    // weather points are counted from the nearest mark this many miles apart
@@ -59,9 +61,9 @@ const CALTRANS = "https://cwwp2.dot.ca.gov/data";
 const TRIPCHECK = "https://tripcheck.com";
 const QUICKMAP = "https://quickmap.dot.ca.gov/";
 const R_LEVELS = {
-  1: "R-1: chains or traction devices on the drive axle, unless you have four-wheel or all-wheel drive or snow tires.",
-  2: "R-2: chains or traction devices on all vehicles, except four-wheel or all-wheel drive with snow tires on all four wheels.",
-  3: "R-3: chains or traction devices on all vehicles, no exceptions.",
+  1: t("live.r_1_chains_or_traction_devices_on_the"),
+  2: t("live.r_2_chains_or_traction_devices_on_all"),
+  3: t("live.r_3_chains_or_traction_devices_on_all"),
 };
 
 /* ---------- module state ---------- */
@@ -144,26 +146,32 @@ function icon(kind) {
   return s;
 }
 function fmtMi(d) { return d < 10 ? d.toFixed(1) : String(Math.round(d)); }
-function aboutMi(d) { return d < 3 ? "right around here" : `in about ${Math.round(d)} mi`; }
+function aboutMi(d) { return d < 3 ? t("live.right_around_here") : t("live.in_about_d_mi", { d: Math.round(d) }); }
 function ago(t) {
   const s = (now() - t) / 1000;
-  if (s < 90) return "just now";
+  if (s < 90) return i18n.t("live.just_now");
   const m = Math.round(s / 60);
-  if (m < 60) return `${m} min ago`;
+  if (m < 60) return i18n.t("live.m_min_ago", { m });
   const h = Math.floor(m / 60);
-  return m % 60 ? `${h} h ${m % 60} min ago` : `${h} h ago`;
+  return m % 60 ? i18n.t("live.h_h_x1_min_ago", { h, x1: m % 60 }) : i18n.t("live.h_h_ago", { h });
 }
 /** The same, for speech: "25 minutes", "an hour and 5 minutes". */
 function agoSaid(t) {
   const m = Math.max(1, Math.round((now() - t) / 60e3)), h = Math.floor(m / 60), r = m % 60;
-  const mins = n => `${n} minute${n === 1 ? "" : "s"}`;
+  const mins = n => (n === 1 ? i18n.t("live.one_minute", { n }) : i18n.t("live.n_minutes", { n }));
   if (!h) return mins(m);
-  return `${h === 1 ? "an hour" : h + " hours"}${r ? " and " + mins(r) : ""}`;
+  const hrs = h === 1 ? i18n.t("live.an_hour") : i18n.t("live.n_hours", { n: h });
+  return r ? i18n.t("live.hours_and_minutes", { hours: hrs, minutes: mins(r) }) : hrs;
 }
-const DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const DAY_LONG = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DAY = [t("live.sun"), t("live.mon"), t("live.tue"), t("live.wed"), t("live.thu"), t("live.fri"), t("live.sat")];
+const DAY_LONG = [t("live.sunday"), t("live.monday"), t("live.tuesday"), t("live.wednesday"), t("live.thursday"), t("live.friday"), t("live.saturday")];
+const MONTH = [t("live.january"), t("live.february"), t("live.march"), t("live.april"), t("live.may"), t("live.june"), t("live.july"), t("live.august"), t("live.september"), t("live.october"), t("live.november"), t("live.december")];
+const DAY_LONG_EN = ["live.sunday", "live.monday", "live.tuesday", "live.wednesday", "live.thursday", "live.friday", "live.saturday"].map(k => i18n.en(k));
+const MONTH_EN = ["live.january", "live.february", "live.march", "live.april", "live.may", "live.june", "live.july", "live.august", "live.september",
+  "live.october", "live.november", "live.december"].map(k => i18n.en(k));
 function clock(d) {
+  // Spanish (3.1.0): the phone's own way of writing a time in Spanish ("7 p.m."); English keeps "7 PM"
+  if (i18n.IS_ES) { try { return d.toLocaleTimeString(i18n.loc(), d.getMinutes() ? { hour: "numeric", minute: "2-digit" } : { hour: "numeric" }); } catch {} }
   let h = d.getHours();
   const mi = d.getMinutes(), ap = h < 12 ? "AM" : "PM";
   h = h % 12 || 12;
@@ -181,6 +189,7 @@ function when(iso) {
   const dd = dayDiff(d);
   if (dd === 0) return clock(d);
   if (dd > 0 && dd < 7) return `${DAY[d.getDay()]} ${clock(d)}`;
+  if (i18n.IS_ES) { try { return `${d.toLocaleDateString(i18n.loc(), { day: "numeric", month: "numeric" })} ${clock(d)}`; } catch {} }
   return `${d.getMonth() + 1}/${d.getDate()} ${clock(d)}`;
 }
 /** "7 PM today", "4 AM tomorrow", "4 AM Wednesday" */
@@ -188,10 +197,10 @@ function whenSaid(iso) {
   const d = new Date(iso);
   if (!iso || isNaN(d)) return "";
   const dd = dayDiff(d);
-  if (dd === 0) return `${clock(d)} today`;
-  if (dd === 1) return `${clock(d)} tomorrow`;
+  if (dd === 0) return t("live.d_today", { d: clock(d) });
+  if (dd === 1) return t("live.d_tomorrow", { d: clock(d) });
   if (dd > 1 && dd < 7) return `${clock(d)} ${DAY_LONG[d.getDay()]}`;
-  return `${clock(d)} on ${MONTH[d.getMonth()]} ${d.getDate()}`;
+  return t("live.d_on_x1_getdate", { d: clock(d), x1: MONTH[d.getMonth()], getDate: d.getDate() });
 }
 
 /* ---------- network ---------- */
@@ -332,7 +341,7 @@ function windText(p) {
 }
 const lower = s => String(s || "").toLowerCase();
 function periodSaid(p, first) {
-  return `${lower(p.name)}, ${p.temp}${first ? " degrees" : ""} and ${lower(p.short)}`;
+  return t("live.name_temp_x1_and_short", { name: lower(p.name), temp: p.temp, x1: first ? t("live.degrees") : "", short: lower(p.short) });
 }
 
 /* ---------- weather alerts ---------- */
@@ -354,7 +363,7 @@ function parseAlert(f) {
     event, sev, kind: /warning/i.test(event) || sev === "Extreme" ? "warn" : "adv",
     area: String(p.areaDesc || ""), onset: p.onset || p.effective || null, until,
     headline: String(nh || p.headline || ""), desc: String(p.description || ""), instr: String(p.instruction || ""),
-    sender: String(p.senderName || "National Weather Service"), refs, ms: [], t: now(),
+    sender: String(p.senderName || t("live.national_weather_service")), refs, ms: [], t: now(),
   };
 }
 async function loadAlerts(m, dir, g) {
@@ -394,37 +403,38 @@ function alertsVisible() {
 function areaList(area) { return String(area || "").split(/;\s*/).map(s => s.trim()).filter(Boolean); }
 function areaSaid(area) {
   const a = areaList(area);
-  if (a.length <= 1) return a[0] || "the road ahead";
-  if (a.length === 2) return `${a[0]} and ${a[1]}`;
-  return `${a[0]}, ${a[1]} and nearby areas`;
+  if (a.length <= 1) return a[0] || t("live.the_road_ahead");
+  if (a.length === 2) return t("live.x1_and_x2", { x1: a[0], x2: a[1] });
+  return t("live.x1_x2_and_nearby_areas", { x1: a[0], x2: a[1] });
 }
 const sameDay = (x, y) => { const a = new Date(x), b = new Date(y); return a.toDateString() === b.toDateString(); };
 function alertWhen(a) {
   const start = a.onset && Date.parse(a.onset) > now() + 15 * 60e3 ? when(a.onset) : "";
   const end = a.until ? (start && sameDay(a.onset, a.until) ? clock(new Date(a.until)) : when(a.until)) : "";
-  if (start && end) return `${start} to ${end}`;
-  if (start) return `from ${start}`;
-  return end ? `until ${end}` : "";
+  if (start && end) return t("live.start_to_end", { start, end });
+  if (start) return t("live.from_start", { start });
+  return end ? t("live.until_end", { end }) : "";
 }
 function alertWhenSaid(a) {
   const start = a.onset && Date.parse(a.onset) > now() + 15 * 60e3 ? whenSaid(a.onset) : "";
   const end = a.until ? (start && sameDay(a.onset, a.until) ? clock(new Date(a.until)) : whenSaid(a.until)) : "";
-  if (start && end) return `from ${start} until ${end}`;
-  if (start) return `starting ${start}`;
-  return end ? `until ${end}` : "";
+  if (start && end) return t("live.from_start_until_end", { start, end });
+  if (start) return t("live.starting_start", { start });
+  return end ? t("live.until_end", { end }) : "";
 }
 /** NWS headlines often come in capitals: "WINTER STORM WARNING IN EFFECT UNTIL 10 AM PST WEDNESDAY". */
 function sentence(s) {
   s = clean(s);
   if (/[a-z]/.test(s)) return s;
-  const names = new Set([...DAY_LONG, ...MONTH].map(x => x.toLowerCase()));
+  // the weather service writes English: its day and month names are the English ones whatever the app's language
+  const names = new Set([...DAY_LONG_EN, ...MONTH_EN].map(x => x.toLowerCase()));
   s = s.toLowerCase().replace(/\b[a-z]+\b/g, w => (names.has(w) ? w[0].toUpperCase() + w.slice(1) : /^(am|pm|pst|pdt|nws)$/.test(w) ? w.toUpperCase() : w));
   s = s.replace(/\bi-(\d)/g, "I-$1");
   return s.charAt(0).toUpperCase() + s.slice(1) + (/[.!?]$/.test(s) ? "" : ".");
 }
 function alertLine(a) {
   const w = alertWhenSaid(a);
-  return `Weather alert ahead. ${a.event} for ${areaSaid(a.area)}${w ? ", " + w : ""}.`;
+  return t("live.weather_alert_ahead_event_for_area_x1", { event: a.event, area: areaSaid(a.area), x1: w ? ", " + w : "" });
 }
 /** NWS descriptions come as "* WHAT...text" blocks; turn them into labeled paragraphs. */
 function alertSections(desc) {
@@ -601,16 +611,16 @@ function chainsAhead(by = "level") {
   }
   return groups;
 }
-function chainWhere(g) { return g.place || cleanLoc(g.name, "") || "the road ahead"; }
+function chainWhere(g) { return g.place || cleanLoc(g.name, "") || t("live.the_road_ahead"); }
 function chainTitle(g) {
-  return `Chain controls ${g.status} near ${chainWhere(g)}, ${g.d < 0.3 ? "starting here" : fmtMi(g.d) + " mi ahead"}`;
+  return t("live.chain_controls_status_near_g_x1", { status: g.status, g: chainWhere(g), x1: g.d < 0.3 ? t("live.starting_here") : t("live.d_mi_ahead", { d: fmtMi(g.d) }) });
 }
 /** Spoken chain controls: the nearest level first, then any other level further on, then what it means. */
-const inAbout = d => (d < 1.5 ? "in about a mile" : `in about ${Math.round(d)} miles`);   // never "in about 1 miles" (3.0.7)
+const inAbout = d => (d < 1.5 ? t("live.in_about_a_mile") : t("live.in_about_d_miles", { d: Math.round(d) }));   // never "in about 1 miles" (3.0.7)
 function chainLine(g, rest = []) {
   const where = chainWhere(g);
-  const lead = g.d < 1 ? `Chain controls, ${g.status}, start right about here, near ${where}.` : `Chain controls ahead. ${g.status} near ${where}, ${inAbout(g.d)}.`;
-  const then = rest.map(x => `Then ${x.status} near ${chainWhere(x)}, ${inAbout(x.d)}.`).join(" ");
+  const lead = g.d < 1 ? t("live.chain_controls_status_start_right", { status: g.status, where }) : t("live.chain_controls_ahead_status_near_where", { status: g.status, where, d: inAbout(g.d) });
+  const then = rest.map(x => t("live.then_status_near_x1_d", { status: x.status, x1: chainWhere(x), d: inAbout(x.d) })).join(" ");
   // "R-2" can come out as "R minus 2" in some voices
   return [lead, then, g.desc || R_LEVELS[g.level] || ""].filter(Boolean).join(" ").replace(/\bR-([0-3])\b/g, "R $1");
 }
@@ -669,7 +679,7 @@ function signWhere(s) {
   const loc = cleanLoc(s.name, s.place);
   const near = clean(s.place);
   const both = near && !loc.toLowerCase().includes(near.toLowerCase()) ? `${loc}, ${near}` : loc;
-  return /^(just |north |south |east |west )/i.test(both) ? both : `at ${both}`;
+  return /^(just |north |south |east |west )/i.test(both) ? both : t("live.at_both", { both });
 }
 /** Read a sign the way a person would ("SR-78 2 MIN" -> "state route 78, 2 minutes"). */
 const SAY = [
@@ -714,11 +724,11 @@ function signSpeech(s) {
 /** A sign read aloud: "The freeway sign ahead says: ...", or for an old copy (no signal for a while)
     "As of 40 minutes ago, the freeway sign ahead said: ..." (what: the words after "the"). */
 function signLine(s, what) {
-  if (s.t && now() - s.t > STALE) return `As of ${agoSaid(s.t)} ago, the ${what} said: ${signSpeech(s)}`;
+  if (s.t && now() - s.t > STALE) return t("live.as_of_t_ago_the_what_said_s", { t: agoSaid(s.t), what, s: signSpeech(s) });
   return `The ${what} says: ${signSpeech(s)}`;
 }
 /** "right here", "about a mile ahead", "about 12 miles ahead" */
-function aheadSaid(d) { return d < 0.3 ? "right here" : d < 1.5 ? "about a mile ahead" : `about ${Math.round(d)} miles ahead`; }
+function aheadSaid(d) { return d < 0.3 ? t("live.right_here") : d < 1.5 ? t("live.about_a_mile_ahead") : t("live.about_d_miles_ahead", { d: Math.round(d) }); }
 
 /* ---------- cameras ---------- */
 function camsNow(n = CAM_N, range = CAM_RANGE) {
@@ -731,7 +741,7 @@ function camSrc(url, t = now()) {
 /** Camera names from the feeds can be raw ("59 - Sb I-5 S/O Peltier Road"): tidy them like sign locations. */
 function camName(c) {
   const raw = clean(c.name).replace(/([\s_]+[TB]|\s+(Top|Bottom))$/i, ""); // top or bottom camera of a pair
-  const n = (cleanLoc(raw, "", true) || raw || "Camera").replace(/(\d)(St|Nd|Rd|Th)\b/g, (_, d, x) => d + x.toLowerCase());
+  const n = (cleanLoc(raw, "", true) || raw || t("live.camera")).replace(/(\d)(St|Nd|Rd|Th)\b/g, (_, d, x) => d + x.toLowerCase());
   return n.charAt(0).toUpperCase() + n.slice(1);
 }
 /** Oregon's stretch of the road, when the data covers it (not in a California-only build). */
@@ -796,8 +806,8 @@ const TR_SPEAK = 10;             // a crash or closure is announced once it is t
 const TR_STRIP = 2;              // cards in the alerts strip
 const TR_ROWS = 6;               // rows in the list before "Show more"
 const TR_KINDS = ["crash", "closure", "hazard", "lane", "other"];
-const TR_SRC = { chp: "CHP", caltrans: "Caltrans" };
-const TR_SRC_LONG = { chp: "California Highway Patrol", caltrans: "Caltrans" };
+const TR_SRC = { chp: "CHP", caltrans: t("live.caltrans") };
+const TR_SRC_LONG = { chp: t("live.california_highway_patrol"), caltrans: t("live.caltrans") };
 let tr = { items: [], updated: 0, fetched: 0, sources: { chp: false, caltrans: false }, chpT: 0, err: false, tried: false };
 let trBusy = false, trAt = 0, trExpanded = false;
 
@@ -819,7 +829,7 @@ function parseTraffic(j) {
     const kind = TR_KINDS.includes(r.kind) ? r.kind : "other";
     const src = r.source === "chp" || r.source === "caltrans" ? r.source : /^caltrans:/.test(id) ? "caltrans" : "chp";
     const st = r.started ? Date.parse(r.started) : NaN;
-    items.push({ id, source: src, kind, title: clip(r.title, 80) || ({ crash: "Crash", closure: "Road closed", lane: "Lane closed", hazard: "Hazard" }[kind] || "Traffic incident"),
+    items.push({ id, source: src, kind, title: clip(r.title, 80) || ({ crash: t("live.crash"), closure: t("live.road_closed"), lane: t("live.lane_closed"), hazard: t("live.hazard") }[kind] || t("live.traffic_incident")),
       detail: clip(r.detail, 220), lat, lon, started: isFinite(st) ? st : null, dir: r.dir === "N" || r.dir === "S" ? r.dir : null, until: clip(r.until, 60) });
   }
   const up = j.updated ? Date.parse(j.updated) : NaN;
@@ -854,22 +864,22 @@ const itT = it => (chpKept(it) && tr.chpT ? tr.chpT : trT());
 const trOffline = () => navigator.onLine === false;
 const isRamp = it => /ramp/i.test(it.title);
 const isSevere = it => it.kind === "crash" || (it.kind === "closure" && !isRamp(it));
-const dirWords = dir => (dir === "N" ? "Northbound lanes" : dir === "S" ? "Southbound lanes" : "Both directions");
+const dirWords = dir => (dir === "N" ? t("live.northbound_lanes") : dir === "S" ? t("live.southbound_lanes") : t("live.both_directions"));
 /** Incidents on the road for the driver: ahead (from just behind to TR_RANGE miles), in their direction, nearest first. */
 function trAhead(range = TR_RANGE) {
   if (S.m == null) return [];
   return tr.items.map(it => ({ ...it, d: ahead(S.m, S.dir, it.m) }))
     .filter(it => it.d >= -TR_BACK && it.d <= range && (!it.dir || it.dir === S.dir)).sort((a, b) => a.d - b.d);
 }
-function trWords(d) { return d < 0.5 ? "right here" : d < 1.5 ? "1 mi ahead" : `${Math.round(d)} mi ahead`; }
+function trWords(d) { return d < 0.5 ? t("live.right_here") : d < 1.5 ? t("live.1_mi_ahead") : t("live.d_mi_ahead", { d: Math.round(d) }); }
 
 /* ---------- the mountain passes (3.0.1) ---------- */
 // I-5 closes over the Grapevine and through the Siskiyous in storms. A closure there shows in the strip from 150 miles
 // away (other traffic from 60), so a driver in Los Angeles or Redding sees it before reaching the mountains; its row
 // opens the live page for the pass on i5.dominares.org.
 const PASSES = [
-  { id: "grapevine", name: "the Grapevine", from: 176, to: 217, page: "https://i5.dominares.org/grapevine/" },
-  { id: "siskiyous", name: "Mount Shasta and the Siskiyous", from: 700, to: 797, page: "https://i5.dominares.org/grapevine/#siskiyous" },
+  { id: "grapevine", name: t("live.the_grapevine"), from: 176, to: 217, page: "https://i5.dominares.org/grapevine/" },
+  { id: "siskiyous", name: t("live.mount_shasta_and_the_siskiyous"), from: 700, to: 797, page: "https://i5.dominares.org/grapevine/#siskiyous" },
 ];
 const PASS_RANGE = 150;
 /** The nearest full closure at a mountain pass ahead, beyond the regular traffic range: [] or [item with d and pass]. */
@@ -891,14 +901,14 @@ function openPage(url) {
 function trKindIcon(it) { return it.kind === "crash" ? "crash" : it.kind === "closure" ? "closure" : it.kind === "lane" ? "cone" : it.kind === "hazard" ? "warn" : "info"; }
 function trStripList(list) { return list.filter(it => it.kind !== "other" && !(it.kind === "closure" && isRamp(it))).slice(0, TR_STRIP); }
 function trSub(it) {
-  return [itOld(it) && `As of ${ago(itT(it))}`, it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+  return [itOld(it) && t("live.as_of_ago", { ago: ago(itT(it)) }), it.detail, it.until && t("live.until_until", { until: it.until })].filter(Boolean).join(" · ");
 }
 /** What to say once a crash or closure is close: the nearest one that has not been announced, and the ones right
     behind it (a work zone often has half a dozen ramp and lane closures within a mile or two: one sentence). */
 function trSpeech(first, more) {
-  const what = first.kind === "crash" ? "crash" : clip(first.title, 40).toLowerCase();
-  const where = first.d < 0.5 ? "just ahead" : `ahead, ${first.d < 1.5 ? "in about a mile" : `in about ${Math.round(first.d)} miles`}`;
-  return `Heads up: ${what} ${where}${more > 0 ? `, and ${more} more incident${more === 1 ? "" : "s"} close by` : ""}.`;
+  const what = first.kind === "crash" ? t("live.word_crash") : clip(first.title, 40).toLocaleLowerCase(i18n.loc());
+  const where = first.d < 0.5 ? t("live.just_ahead") : t("live.ahead_x1", { x1: first.d < 1.5 ? t("live.in_about_a_mile") : t("live.in_about_d_miles", { d: Math.round(first.d) }) });
+  return t("live.heads_up_what_where_x1", { what, where, x1: more > 0 ? ", " + (more === 1 ? t("live.and_1_more_incident", { more }) : t("live.and_n_more_incidents", { more })) : "" });
 }
 function talkTraffic(list) {
   if (!trHave() || trOld()) return;
@@ -1000,8 +1010,8 @@ function trUpdate(n, it) {
   if (ic.dataset.ic !== k) { ic.dataset.ic = k; ic.replaceChildren(icon(k)); }
   const set = (node, t) => { if (node.textContent !== t) node.textContent = t; };
   set(tx.firstChild.firstChild, it.title);
-  set(tx.firstChild.lastChild, it.d < 0.5 ? "here" : fmtMi(it.d) + " mi");
-  const sub = [chpKept(it) && `As of ${ago(itT(it))}`, dirWords(it.dir), it.detail, it.until && `until ${it.until}`].filter(Boolean).join(" · ");
+  set(tx.firstChild.lastChild, it.d < 0.5 ? t("live.here") : t("live.d_mi", { d: fmtMi(it.d) }));
+  const sub = [chpKept(it) && t("live.as_of_ago", { ago: ago(itT(it)) }), dirWords(it.dir), it.detail, it.until && t("live.until_until", { until: it.until })].filter(Boolean).join(" · ");
   set(tx.lastChild, sub);
   n.setAttribute("aria-label", `${it.title}, ${trWords(it.d)}. ${sub}`);
 }
@@ -1014,7 +1024,7 @@ function renderTraffic(list) {
   let msg = "", src = "";
   if (!have) {
     // never answered: say nothing while the first request is out, a plain note when it failed or there is no signal
-    msg = off ? "Traffic needs a connection." : tr.err ? "Traffic isn't available right now. I'll try again in a couple of minutes." : "";
+    msg = off ? t("live.traffic_needs_a_connection") : tr.err ? t("live.traffic_isnt_available_right_now_ill") : "";
     sec.hidden = !msg;
     dom.trList.replaceChildren(); dom.trMore.hidden = true; dom.trSrc.hidden = true;
     if (dom.trMsg.textContent !== msg) dom.trMsg.textContent = msg;
@@ -1023,25 +1033,25 @@ function renderTraffic(list) {
   }
   sec.hidden = false;
   const names = trSources().map(k => TR_SRC[k]);
-  if (!good) msg = "The traffic sources aren't answering right now.";
+  if (!good) msg = t("live.the_traffic_sources_arent_answering");
   else if (chpDown) {
     // never "no crashes": without CHP nothing is known about crashes
-    msg = list.some(it => it.source === "chp") ? `Crash reports (CHP) aren't answering right now, so anything from CHP here is older.${old ? "" : " Caltrans closures are current."}`
-      : `Crash reports (CHP) aren't answering right now. Only Caltrans closures are shown${list.length ? "." : `, and none are reported ahead for ${TR_RANGE} miles.`}`;
-  } else if (!list.length) msg = old ? `Traffic hasn't updated for ${ago(trT()).replace(" ago", "")}, so this may be out of date.`
-    : ctDown ? `No crashes reported ahead for ${TR_RANGE} miles. Lane closures (Caltrans) aren't answering right now.`
-    : `No crashes or closures reported ahead for ${TR_RANGE} miles.`;
+    msg = list.some(it => it.source === "chp") ? t("live.crash_reports_chp_arent_answering", { x1: old ? "" : t("live.caltrans_closures_are_current") })
+      : t("live.crash_reports_chp_arent_answering_2", { x1: list.length ? "." : t("live.and_none_are_reported_ahead_for_tr", { TR_RANGE }) });
+  } else if (!list.length) msg = old ? t("live.traffic_hasnt_updated_for_replace_so", { replace: ago(trT()).replace(" ago", "") })
+    : ctDown ? t("live.no_crashes_reported_ahead_for_tr_range", { TR_RANGE })
+    : t("live.no_crashes_or_closures_reported_ahead", { TR_RANGE });
   if (off && list.length && !chpDown) msg = "";
-  src = good ? `Traffic: ${names.join(" · ")} · updated ${ago(trT())}${old ? " (old)" : ""}` : "";
-  if (off) src = `Traffic needs a connection. ${good ? `Showing the list from ${ago(trT())}.` : ""}`.trim();
-  if (old && list.length && !off) src += " · this list may be out of date";
+  src = good ? t("live.traffic_join_updated_ago_x1", { join: names.join(" · "), ago: ago(trT()), x1: old ? t("live.old") : "" }) : "";
+  if (off) src = t("live.traffic_needs_a_connection_x1", { x1: good ? t("live.showing_the_list_from_ago", { ago: ago(trT()) }) : "" }).trim();
+  if (old && list.length && !off) src += t("live.this_list_may_be_out_of_date");
   const shown = list.length > TR_ROWS && !trExpanded ? list.slice(0, TR_ROWS - 1) : list;
   sync(dom.trList, shown.map(it => ({ ...it, k: it.id })), trRow, trUpdate);
   dom.trList.hidden = !shown.length;
   dom.trList.classList.toggle("old", old);
   dom.trMore.hidden = list.length <= TR_ROWS;
   if (!dom.trMore.hidden) {
-    dom.trMore.textContent = trExpanded ? "Show fewer" : `Show ${list.length - shown.length} more`;
+    dom.trMore.textContent = trExpanded ? t("live.show_fewer") : t("live.show_x1_more", { x1: list.length - shown.length });
     dom.trMore.setAttribute("aria-expanded", String(trExpanded));
   }
   if (dom.trMsg.textContent !== msg) dom.trMsg.textContent = msg;
@@ -1055,12 +1065,12 @@ function trafficSheet(id) {
   if (!it) return;
   showSheet(it.title, (sh) => {
     sh.append(...[
-      el("p", "lv-sh-title", it.d < 0.5 ? "Right here" : it.d < 1.5 ? "About a mile ahead" : `About ${Math.round(it.d)} miles ahead`),
+      el("p", "lv-sh-title", it.d < 0.5 ? t("live.right_here_2") : it.d < 1.5 ? t("live.about_a_mile_ahead_2") : t("live.about_d_miles_ahead_2", { d: Math.round(it.d) })),
       el("p", "lv-sh-meta", dirWords(it.dir)),
       it.detail && el("p", "lv-sh-lead", it.detail),
-      it.until && el("p", "lv-sh-lead", `Expected until ${it.until}.`),
-      it.started && el("p", "lv-sh-meta", `Reported ${when(new Date(it.started).toISOString())}.`),
-      el("p", "lv-sh-meta", chpKept(it) ? `Source: ${TR_SRC_LONG.chp}, which isn't answering right now. This report is from ${ago(itT(it))}.` : `Source: ${TR_SRC_LONG[it.source] || "California Highway Patrol"}. Traffic updated ${ago(trT())}.`),
+      it.until && el("p", "lv-sh-lead", t("live.expected_until_until", { until: it.until })),
+      it.started && el("p", "lv-sh-meta", t("live.reported_when", { when: when(new Date(it.started).toISOString()) })),
+      el("p", "lv-sh-meta", chpKept(it) ? t("live.source_chp_which_isnt_answering_right", { chp: TR_SRC_LONG.chp, ago: ago(itT(it)) }) : t("live.source_x1_traffic_updated_ago", { x1: TR_SRC_LONG[it.source] || t("live.california_highway_patrol"), ago: ago(trT()) })),
     ].filter(Boolean));
   });
 }
@@ -1212,7 +1222,7 @@ function talkSign(jumped, sign) {
   if (isTravelTime(sign) && settings.chat !== "high") return;
   const k = "cms:" + signKey(sign), m = sign.m;
   if (wasSaid(k)) return;
-  speak(k, signLine(sign, "freeway sign ahead"), {
+  speak(k, signLine(sign, t("live.freeway_sign_ahead")), {
     id: k, prio: 1, chime: true, check: () => on && S.m != null && ahead(S.m, S.dir, m) > -0.3,
   }, () => { said[k] = now(); saveSaid(); });
 }
@@ -1285,7 +1295,7 @@ function refresh() {
 /** "a few seconds", "about a minute", "about 2 minutes" */
 function soonText(ms) {
   const s = Math.max(0, Math.round(ms / 1000));
-  return s < 20 ? "a few seconds" : s < 90 ? "about a minute" : `about ${Math.round(s / 60)} minutes`;
+  return s < 20 ? t("live.a_few_seconds") : s < 90 ? t("live.about_a_minute") : t("live.about_x1_minutes", { x1: Math.round(s / 60) });
 }
 
 /* ---------- last good copy (survives reloads in dead zones) ---------- */
@@ -1353,37 +1363,37 @@ function renderAsk() {
   dom = null;
   const card = el("section", "lv-ask");
   card.setAttribute("aria-labelledby", "lvAskTitle");
-  const h = el("h3", null, "Live road info");
+  const h = el("h3", null, i18n.t("live.live_road_info"));
   h.id = "lvAskTitle";
   const feats = el("ul", "lv-feats");
-  feats.setAttribute("aria-label", "Includes");
-  for (const [ic, t] of [["🚧", "Crashes and closures"], ["🌦️", "Weather ahead"], ["⛓️", "Chain controls"], ["🛣️", "Freeway signs"], ["📷", "Live cameras"]]) {
+  feats.setAttribute("aria-label", i18n.t("live.includes"));
+  for (const [ic, t] of [["🚧", i18n.t("live.crashes_and_closures")], ["🌦️", i18n.t("live.weather_ahead")], ["⛓️", i18n.t("live.chain_controls")], ["🛣️", i18n.t("live.freeway_signs")], ["📷", i18n.t("live.live_cameras")]]) {
     const li = el("li"); li.append(deco("span", "lv-feat-ic", ic), document.createTextNode(t)); feats.append(li);
   }
   const acts = el("div", "lv-ask-acts");
   acts.append(
-    btn("primary", "Turn on", () => {
+    btn("primary", i18n.t("live.turn_on"), () => {
       voice && voice.unlock && voice.unlock(); // iOS: lets a warning found by the first check be spoken
       settings.live = true;
       if (api.saveSettings) api.saveSettings(); else onSettings();
       // the card (and this button) is gone: put focus on the new block and say what happened
-      ui.toast && ui.toast("Live road info is on. Checking the road ahead.");
+      ui.toast && ui.toast(i18n.t("live.live_road_info_is_on_checking_the_road"));
       focusBlock();
     }),
-    btn("secondary", "Not now", () => {
+    btn("secondary", i18n.t("live.not_now"), () => {
       const back = focusableBefore($block);
       settings.live = false;
       if (api.saveSettings) api.saveSettings(); else onSettings();
-      ui.toast && ui.toast("Okay. You can turn it on later in Settings.");
+      ui.toast && ui.toast(i18n.t("live.okay_you_can_turn_it_on_later_in"));
       if (back) { try { back.focus({ preventScroll: true }); } catch {} }
     }),
   );
   // the fine print names every server the module talks to, from the road data (no WSDOT without Washington)
   const ag = agencies();
-  card.append(el("div", "lv-ask-top", "OPTIONAL · USES A LITTLE DATA"), h,
-    el("p", null, "Crashes and closures from the California Highway Patrol and Caltrans, weather forecasts from the National Weather Service, chain controls and freeway signs, and live cameras on the road ahead."),
+  card.append(el("div", "lv-ask-top", i18n.t("live.optional_uses_a_little_data")), h,
+    el("p", null, i18n.t("live.crashes_and_closures_from_the")),
     feats, acts,
-    el("p", "lv-fine", ["Points on the road ahead go to weather.gov.", ag.length && `Road data and camera images load from ${andList(ag)} servers.`, "Crashes and closures come as one list for all of I-5 from i5.dominares.org, so that request never says where you are.", "Change it any time in Settings."].filter(Boolean).join(" ")));
+    el("p", "lv-fine", [i18n.t("live.points_on_the_road_ahead_go_to_weather"), ag.length && i18n.t("live.road_data_and_camera_images_load_from", { ag: andList(ag) }), i18n.t("live.crashes_and_closures_come_as_one_list"), i18n.t("live.change_it_any_time_in_settings")].filter(Boolean).join(" ")));
   $block.replaceChildren(card);
   $block.hidden = false;
   asked = card;
@@ -1414,18 +1424,18 @@ function renderAlerts(groups, list, tlist = [], plist = []) {
   const rows = [];                   // order: chain controls, warnings, crashes and closures, advisories, other traffic
   const tail = [];                   // advisories and calmer traffic go after the red items
   // a closure at a mountain pass far ahead (passClosures) leads the red rows
-  for (const it of plist) rows.push({ k: "pass:" + it.id, kind: "warn", ic: "closure", title: `I-5 closed at ${it.pass.name}, ${trWords(it.d)}`, sub: trSub(it) || "Check before you go.", open: () => openPage(it.pass.page) });
+  for (const it of plist) rows.push({ k: "pass:" + it.id, kind: "warn", ic: "closure", title: t("live.i_5_closed_at_name_d", { name: it.pass.name, d: trWords(it.d) }), sub: trSub(it) || t("live.check_before_you_go"), open: () => openPage(it.pass.page) });
   if (groups.length) {
     // one row for chain controls: the nearest level, then any other level further on
     const g = groups[0], rest = groups.slice(1);
     rows.push({
       k: "cc", kind: groups.some(x => x.level >= 2) ? "warn" : "adv", ic: "chain", title: chainTitle(g), open: chainSheet,
-      sub: [now() - g.t > STALE && `As of ${ago(g.t)}`, ...rest.map(x => `Then ${x.status} near ${chainWhere(x)}, ${fmtMi(x.d)} mi`), g.desc || R_LEVELS[g.level]].filter(Boolean).join(". "),
+      sub: [now() - g.t > STALE && t("live.as_of_t", { t: ago(g.t) }), ...rest.map(x => t("live.then_status_near_x1_d_mi", { status: x.status, x1: chainWhere(x), d: fmtMi(x.d) })), g.desc || R_LEVELS[g.level]].filter(Boolean).join(". "),
     });
   }
   const trRows = trStripList(tlist).map(it => ({ k: "tr:" + it.id, kind: isSevere(it) ? "warn" : "adv", ic: trKindIcon(it), title: `${it.title}, ${trWords(it.d)}`, sub: trSub(it), open: () => trafficSheet(it.id) }));
   const wxRows = list.map(a => {
-    const sub = [now() - a.t > STALE && `As of ${ago(a.t)}`, alertWhen(a), areaList(a.area).join("; ")];
+    const sub = [now() - a.t > STALE && t("live.as_of_t", { t: ago(a.t) }), alertWhen(a), areaList(a.area).join("; ")];
     return { k: "wx:" + a.id, kind: a.kind, ic: a.kind === "warn" ? "warn" : "info", title: a.event, sub: sub.filter(Boolean).join(" · "), open: () => alertSheet(a.id) };
   });
   rows.push(...wxRows.filter(r => r.kind === "warn"), ...trRows.filter(r => r.kind === "warn"));
@@ -1437,7 +1447,7 @@ function renderAlerts(groups, list, tlist = [], plist = []) {
   if (!box || !box.classList.contains("lv-alerts")) {
     box = el("div", "lv-alerts");
     box.setAttribute("role", "region");
-    box.setAttribute("aria-label", "Road and weather alerts ahead");
+    box.setAttribute("aria-label", t("live.road_and_weather_alerts_ahead"));
     $alerts.replaceChildren(box);
   }
   // more than three rows: show two, but never hide a red one (a warning, a crash, a closure, a chain control level 2)
@@ -1469,7 +1479,7 @@ function makeRow(it) {
 }
 function updateRow(n, it) {
   if (it.more) {
-    n.textContent = expanded ? "Show fewer" : `Show ${it.n} more`;
+    n.textContent = expanded ? t("live.show_fewer") : t("live.show_n_more", { n: it.n });
     n.setAttribute("aria-expanded", String(expanded));
     return;
   }
@@ -1496,11 +1506,11 @@ function buildBlock() {
   dom = {};
   const root = el("div", "lv");
   // traffic: CHP incidents and Caltrans closures ahead
-  dom.trSec = section("lv-trsec", "Traffic ahead");
+  dom.trSec = section("lv-trsec", t("live.traffic_ahead"));
   dom.trSec.hidden = true;
   dom.trList = el("div", "lv-tr");
   dom.trList.setAttribute("role", "group");          // the children are plain buttons, so not a "list" (it would promise listitems)
-  dom.trList.setAttribute("aria-label", "Traffic ahead");
+  dom.trList.setAttribute("aria-label", t("live.traffic_ahead"));
   dom.trMore = btn("lv-more", "", () => { trExpanded = !trExpanded; render(); });
   dom.trMore.hidden = true;
   dom.trMsg = el("p", "lv-trmsg");
@@ -1509,15 +1519,15 @@ function buildBlock() {
   dom.trSrc.hidden = true;
   dom.trSec.append(dom.trList, dom.trMore, dom.trMsg, dom.trSrc);
   // freeway sign
-  dom.signSec = section("lv-signsec", "Freeway sign ahead", btn("lv-link", "Hear it", () => {
+  dom.signSec = section("lv-signsec", t("live.freeway_sign_ahead_2"), btn("lv-link", t("live.hear_it"), () => {
     const s = nextSign(); if (!s || !voice) return;
     voice.unlock && voice.unlock();
-    voice.say(signLine(s, `freeway sign ${signWhere(s)}`), { now: true, id: "live:sign" });
+    voice.say(signLine(s, t("live.freeway_sign_s", { s: signWhere(s) })), { now: true, id: "live:sign" });
   }));
   dom.signBody = el("div", "lv-signbody");
   dom.signSec.append(dom.signBody);
   // weather
-  dom.wxSec = section("lv-wxsec", "Weather ahead", btn("lv-link", "Hear it", () => {
+  dom.wxSec = section("lv-wxsec", t("live.weather_ahead"), btn("lv-link", t("live.hear_it"), () => {
     if (!voice) return;
     voice.unlock && voice.unlock();
     voice.say(weatherText(), { now: true, id: "live:wx" });
@@ -1525,30 +1535,30 @@ function buildBlock() {
   dom.wxBody = el("div", "lv-wx");
   dom.wxSec.append(dom.wxBody);
   // cameras
-  dom.camSec = section("lv-camsec", "Cameras ahead");
+  dom.camSec = section("lv-camsec", t("live.cameras_ahead"));
   dom.camList = el("ul", "lv-cams");
-  dom.camList.setAttribute("aria-label", "Live cameras ahead");
+  dom.camList.setAttribute("aria-label", t("live.live_cameras_ahead"));
   dom.camSec.append(dom.camList);
   dom.tc = null;               // Oregon has no cameras in the data: a link to TripCheck, only when Oregon is covered
-  if (oregon()) { dom.tc = link("lv-link lv-tc", "Oregon road cameras on TripCheck", TRIPCHECK); dom.tc.hidden = true; dom.camSec.append(dom.tc); }
+  if (oregon()) { dom.tc = link("lv-link lv-tc", t("live.oregon_road_cameras_on_tripcheck"), TRIPCHECK); dom.tc.hidden = true; dom.camSec.append(dom.tc); }
   // footer
   dom.foot = el("div", "lv-foot");
   dom.footText = el("span", "lv-foot-tx");
   dom.footState = el("b");
   dom.footAge = el("small");
   dom.footText.append(dom.footState, dom.footAge);
-  dom.footBtn = btn("lv-link", "Refresh", () => {
+  dom.footBtn = btn("lv-link", t("live.refresh"), () => {
     if (busy) return;
     const say = t => ui.toast && ui.toast(t);
-    if (navigator.onLine === false) { say("You're offline. I'll check as soon as there's a signal."); refresh(); return; }
+    if (navigator.onLine === false) { say(t("live.youre_offline_ill_check_as_soon_as")); refresh(); return; }
     force = true;                                  // asked for: only the 2-minute rule, no backoff
     const wait = waitLeft();
-    if (wait > 0) say(fails ? `Tried a moment ago. I'll try again in ${soonText(wait)}.` : `Just checked. I'll look again in ${soonText(wait)}.`);
+    if (wait > 0) say(fails ? t("live.tried_a_moment_ago_ill_try_again_in", { wait: soonText(wait) }) : t("live.just_checked_ill_look_again_in_wait", { wait: soonText(wait) }));
     refresh();
     render();
   });
   dom.foot.append(dom.footText, dom.footBtn);
-  dom.src = el("p", "lv-src", `Sources: ${["National Weather Service", ...agencies()].join(", ")}.`);
+  dom.src = el("p", "lv-src", t("live.sources_join", { join: [t("live.national_weather_service"), ...agencies()].join(", ") }));
   root.append(dom.trSec, dom.signSec, dom.wxSec, dom.camSec, dom.foot, dom.src);
   $block.replaceChildren(root);
   if ("IntersectionObserver" in window) {
@@ -1589,7 +1599,7 @@ function renderSign(s) {
     const face = el("div", "lv-cms-face");
     face.dataset.pages = String(pages.length);
     face.setAttribute("role", "img");
-    face.setAttribute("aria-label", "Sign reads: " + pages.map(p => p.filter(Boolean).join(" ")).join(". Then: "));
+    face.setAttribute("aria-label", i18n.t("live.sign_reads_join", { join: pages.map(p => p.filter(Boolean).join(" ")).join(i18n.t("live.then")) }));
     pages.forEach((p, i) => {
       const pg = el("div", "lv-cms-pg");
       pg.setAttribute("aria-hidden", "true");
@@ -1605,15 +1615,15 @@ function renderSign(s) {
     dom.signBody.replaceChildren(fig);
   }
   const w = signWhere(s);
-  const t = `${w.charAt(0).toUpperCase() + w.slice(1)} · ${s.d < 0.3 ? "now" : fmtMi(s.d) + " mi"}${now() - s.t > STALE ? ` · as of ${ago(s.t)}` : ""}`;
+  const t = `${w.charAt(0).toUpperCase() + w.slice(1)} · ${s.d < 0.3 ? i18n.t("live.now") : i18n.t("live.d_mi", { d: fmtMi(s.d) })}${now() - s.t > STALE ? i18n.t("live.as_of_t_2", { t: ago(s.t) }) : ""}`;
   if (dom.signWhere.textContent !== t) dom.signWhere.textContent = t;
 }
 function renderWx() {
   const pts = wxVisible();
   if (!pts.length) {
     // nothing to show: say why while checking, or when weather.gov failed at every point (a quiet note, no alarm)
-    const msg = busy && !wx.length ? "Checking the weather ahead…"
-      : src.wx.err && tried ? "The weather service isn't answering right now. I'll try again in a few minutes." : "";
+    const msg = busy && !wx.length ? i18n.t("live.checking_the_weather_ahead")
+      : src.wx.err && tried ? i18n.t("live.the_weather_service_isnt_answering") : "";
     dom.wxSec.hidden = !msg;
     if (!msg) dom.wxKey = "";
     else if (dom.wxKey !== msg) { dom.wxKey = msg; dom.wxBody.replaceChildren(el("p", "lv-wait", msg)); }
@@ -1628,14 +1638,14 @@ function renderWx() {
       const b = btn("lv-wxpt", "", () => wxSheet(w.url));
       b.dataset.k = w.url;
       const where = el("span", "lv-wx-d");
-      const city = el("b", "lv-wx-city", w.city ? `Near ${w.city}${w.st ? ", " + w.st : ""}` : "On the road ahead");
+      const city = el("b", "lv-wx-city", w.city ? i18n.t("live.near_city_x1", { city: w.city, x1: w.st ? ", " + w.st : "" }) : i18n.t("live.on_the_road_ahead"));
       b.append(where, city);
       for (const p of periodsNow(w)) {
         const row = el("span", "lv-per");
         const top = el("span", "lv-per-top");
         top.append(deco("span", "lv-per-ic", wxIcon(p.short, p.day)), el("span", "lv-per-t", p.temp != null ? `${p.temp}°${p.unit}` : "--"));
         row.append(el("span", "lv-per-n", p.name), top, el("span", "lv-per-s", p.short));
-        const bits = [windText(p) && "Wind " + windText(p), p.pop >= 20 && `💧\u00a0${p.pop}%`].filter(Boolean);
+        const bits = [windText(p) && i18n.t("live.wind_p", { p: windText(p) }), p.pop >= 20 && `💧\u00a0${p.pop}%`].filter(Boolean);
         if (bits.length) {
           const x = el("span", "lv-per-x"); // pieces wrap between, never inside
           bits.forEach((t, i) => { if (i) x.append(" · "); x.append(el("span", null, t)); });
@@ -1650,9 +1660,9 @@ function renderWx() {
   for (const b of dom.wxBody.children) {
     const w = pts.find(x => x.url === b.dataset.k);
     const d = b.querySelector(".lv-wx-d"), ag = b.querySelector(".lv-wx-age");
-    if (w && d) { const t = aboutMi(w.d).replace(/^in about/, "In about").replace(/^right/, "Right"); if (d.textContent !== t) d.textContent = t; }
+    if (w && d) { const t = i18n.cap(aboutMi(w.d)); if (d.textContent !== t) d.textContent = t; }
     if (w && ag) {
-      const t = now() - w.t > WX_STALE ? `As of ${ago(w.t)}` : "";
+      const t = now() - w.t > WX_STALE ? i18n.t("live.as_of_t", { t: ago(w.t) }) : "";
       if (ag.textContent !== t) ag.textContent = t;
       ag.hidden = !t;
     }
@@ -1688,12 +1698,12 @@ function makeCam(c) {
   const b = btn("lv-cam", "", () => camSheet(c.img));
   const box = el("span", "lv-cam-img");
   const img = el("img");
-  img.alt = `Live camera: ${camName(c)}`;
+  img.alt = t("live.live_camera_c", { c: camName(c) });
   img.loading = "lazy"; img.decoding = "async"; img.width = 320; img.height = 240;
   img.onerror = () => b.classList.add("off");
   img.onload = () => { b.classList.remove("off"); li._t = now(); };
   img.src = camSrc(c.img);
-  box.append(img, el("span", "lv-cam-off", "Camera offline"));
+  box.append(img, el("span", "lv-cam-off", t("live.camera_offline")));
   const tx = el("span", "lv-cam-tx");
   const sm = el("small");
   sm.append(deco("i", "lv-dot"), el("span"));
@@ -1705,7 +1715,7 @@ function makeCam(c) {
 }
 function updateCam(li, c) {
   const sm = li.querySelector("small > span");
-  const t = `${c.d < 0.3 ? "Here" : fmtMi(c.d) + " mi"}${c.near ? " · " + c.near : ""} · ${c.by || "Live"}`;
+  const t = `${c.d < 0.3 ? i18n.t("live.here_2") : i18n.t("live.d_mi", { d: fmtMi(c.d) })}${c.near ? " · " + c.near : ""} · ${c.by || i18n.t("live.live")}`;
   if (sm && sm.textContent !== t) sm.textContent = t;
 }
 /** The oldest forecast on screen, if it is old enough to mention (the rest of the block carries its own ages). */
@@ -1717,10 +1727,10 @@ function renderFoot() {
   // "Updated" is the last refresh that brought anything; a part that did not come with it is named
   const ow = oldWx();
   // a source that did not answer and has nothing on screen: "no chain controls" must not look like a fact
-  const silent = fails ? [] : [src.al.err && !alertsVisible().length && "NWS alerts", src.ct.err && !chainItems().length && !nextSign() && "Caltrans"].filter(Boolean);
-  const parts = [okT && `Updated ${ago(okT)}`, ow && `Weather from ${ago(ow)}`, silent.length && `No answer from ${silent.join(" or ")}`].filter(Boolean);
+  const silent = fails ? [] : [src.al.err && !alertsVisible().length && i18n.t("live.nws_alerts"), src.ct.err && !chainItems().length && !nextSign() && i18n.t("live.caltrans")].filter(Boolean);
+  const parts = [okT && i18n.t("live.updated_okt", { okT: ago(okT) }), ow && i18n.t("live.weather_from_ow", { ow: ago(ow) }), silent.length && i18n.t("live.no_answer_from_join", { join: silent.join(i18n.t("live.or")) })].filter(Boolean);
   const bad = !!fails || (tried && !okT && !busy && !T.sched);
-  const t = bad ? "Live info unavailable right now" : !okT && (busy || T.sched) ? "Checking the road ahead…" : "Live road info";
+  const t = bad ? i18n.t("live.live_info_unavailable_right_now") : !okT && (busy || T.sched) ? i18n.t("live.checking_the_road_ahead") : i18n.t("live.live_road_info");
   if (dom.footState.textContent !== t) dom.footState.textContent = t;
   if (dom.footAge.textContent !== parts.join(" · ")) {           // pieces wrap between, never inside
     dom.footAge.replaceChildren();
@@ -1729,7 +1739,7 @@ function renderFoot() {
   dom.footAge.hidden = !parts.length;
   dom.foot.classList.toggle("bad", bad);
   dom.foot.classList.toggle("part", !bad && !!(ow || silent.length));     // amber dot: some of it is not current
-  dom.footBtn.textContent = busy ? "Checking…" : fails ? "Try again" : "Refresh";
+  dom.footBtn.textContent = busy ? i18n.t("live.checking") : fails ? i18n.t("live.try_again") : i18n.t("live.refresh");
   dom.footBtn.disabled = busy;
 }
 
@@ -1740,7 +1750,7 @@ function ensureSheet() {
   sheet.hidden = true;
   sheet.setAttribute("role", "dialog");
   sheet.setAttribute("aria-modal", "true");
-  sheet.setAttribute("aria-label", "Live road info");
+  sheet.setAttribute("aria-label", t("live.live_road_info"));
   (document.querySelector(".app") || document.body).append(sheet);
   return sheet;
 }
@@ -1752,7 +1762,7 @@ function showSheet(title, fill) {
   sh.setAttribute("aria-label", title);
   const head = el("div", "sheet-head");
   const hb = el("b", null, title);
-  head.append(hb, btn("link lv-close", "Close", () => (ui.closeSheet ? ui.closeSheet() : (sh.hidden = true))));
+  head.append(hb, btn("link lv-close", t("live.close"), () => (ui.closeSheet ? ui.closeSheet() : (sh.hidden = true))));
   sh.append(head);
   fill(sh, hb);
   if (ui.openSheet) ui.openSheet(sh); else sh.hidden = false;
@@ -1775,36 +1785,36 @@ function camSheet(imgUrl) {
   }
   if (!list.length) return;
   let i = Math.max(0, list.findIndex(c => c.img === imgUrl));
-  showSheet("Live camera", (sh, hb) => {
+  showSheet(t("live.live_camera"), (sh, hb) => {
     const fig = el("figure", "lv-big");
     const img = el("img");
     img.decoding = "async";
-    const off = el("span", "lv-cam-off", "Camera offline");
+    const off = el("span", "lv-cam-off", t("live.camera_offline"));
     fig.append(img, off);
     const name = el("h2", "lv-sh-title");
     const meta = el("p", "lv-sh-meta lv-cam-meta");
     const metaText = el("span");
     meta.append(deco("i", "lv-dot"), metaText);
     const nav = el("div", "lv-nav");
-    const prev = btn("secondary", "◀ Closer", () => { if (i > 0) { i--; show(); } });
+    const prev = btn("secondary", t("live.closer"), () => { if (i > 0) { i--; show(); } });
     const count = el("span", "lv-count");
-    const next = btn("secondary", "Farther ▶", () => { if (i < list.length - 1) { i++; show(); } });
+    const next = btn("secondary", t("live.farther"), () => { if (i < list.length - 1) { i++; show(); } });
     nav.append(prev, count, next);
-    const note = el("p", "lv-fine", "The image refreshes every minute while this is open.");
+    const note = el("p", "lv-fine", t("live.the_image_refreshes_every_minute_while"));
     sh.append(name, fig, meta, nav, note);
     img.onerror = () => fig.classList.add("off");
     img.onload = () => fig.classList.remove("off");
     function show() {
       const c = list[i];
-      hb.textContent = c.by ? `${clean(c.by)} camera` : "Live camera";
+      hb.textContent = c.by ? t("live.by_camera", { by: clean(c.by) }) : t("live.live_camera");
       name.textContent = camName(c);
       fig.classList.remove("off");
-      img.alt = `Live camera: ${camName(c)}`;
+      img.alt = t("live.live_camera_c", { c: camName(c) });
       img.src = camSrc(c.img);
       sheetCam = { img, fig, url: c.img };
       const d = S.m != null ? ahead(S.m, S.dir, c.m) : null;
-      metaText.textContent = [`Live image from ${c.by || "the state DOT"}`, c.near, d != null && (d < 0.3 ? (d < -0.3 ? `${fmtMi(-d)} mi behind` : "right here") : `${fmtMi(d)} mi ahead`)].filter(Boolean).join(" · ");
-      count.textContent = `${i + 1} of ${list.length}`;
+      metaText.textContent = [t("live.live_image_from_x1", { x1: c.by || t("live.the_state_dot") }), c.near, d != null && (d < 0.3 ? (d < -0.3 ? t("live.fmtmi_mi_behind", { fmtMi: fmtMi(-d) }) : t("live.right_here")) : t("live.d_mi_ahead", { d: fmtMi(d) }))].filter(Boolean).join(" · ");
+      count.textContent = t("live.x1_of_length", { x1: i + 1, length: list.length });
       prev.disabled = i === 0; next.disabled = i === list.length - 1;
     }
     show();
@@ -1814,7 +1824,7 @@ function camSheet(imgUrl) {
 function alertSheet(id) {
   const a = alerts.find(x => x.id === id);
   if (!a) return;
-  showSheet("Weather alert", sh => {
+  showSheet(t("live.weather_alert"), sh => {
     const box = el("div", "lv-sh-alert " + a.kind);
     box.append(el("h2", "lv-sh-title", a.event));
     const meta = el("p", "lv-sh-meta", [alertWhen(a), a.sender].filter(Boolean).join(" · "));
@@ -1823,32 +1833,32 @@ function alertSheet(id) {
     if (a.headline) sh.append(el("p", "lv-sh-lead", sentence(a.headline)));
     const dl = el("dl", "lv-dl");
     const add = (k, v) => { if (!v) return; dl.append(el("dt", null, k), el("dd", null, v)); };
-    add("Where", areaList(a.area).join("; "));
-    for (const [k, v] of alertSections(a.desc)) { if (/^where$/i.test(k)) continue; add(k || "Details", v); }
-    add("What to do", a.instr.replace(/\s*\n\s*/g, " ").trim());
+    add(t("live.where"), areaList(a.area).join("; "));
+    for (const [k, v] of alertSections(a.desc)) { if (/^where$/i.test(k)) continue; add(k || t("live.details"), v); }
+    add(t("live.what_to_do"), a.instr.replace(/\s*\n\s*/g, " ").trim());
     sh.append(dl);
     const acts = el("div", "lv-acts");
-    acts.append(btn("primary", "Hear it", () => {
+    acts.append(btn("primary", t("live.hear_it"), () => {
       if (!voice) return;
       voice.unlock && voice.unlock();
       const what = (alertSections(a.desc).find(([k]) => /^what$/i.test(k)) || [])[1];
       voice.say(`${alertLine(a)}${what ? " " + what : ""}`, { now: true, id: "live:alert" });
     }));
     const [lat, lon] = geo.coordAt ? geo.coordAt(a.ms[0]) : [null, null];
-    if (lat != null) acts.append(link("lv-link", "Details at weather.gov", `https://forecast.weather.gov/MapClick.php?lat=${ll(lat)}&lon=${ll(lon)}`));
+    if (lat != null) acts.append(link("lv-link", t("live.details_at_weather_gov"), `https://forecast.weather.gov/MapClick.php?lat=${ll(lat)}&lon=${ll(lon)}`));
     sh.append(acts);
   });
 }
 function chainSheet() {
   const groups = chainsAhead("place");
-  showSheet("Chain controls", sh => {
-    if (!groups.length) { sh.append(el("p", "lv-sh-lead", "No chain controls ahead right now.")); return; }
-    sh.append(el("p", "lv-sh-lead", "Caltrans has chain controls in effect on I-5 ahead of you. Have chains or traction devices ready before the checkpoint."));
+  showSheet(t("live.chain_controls"), sh => {
+    if (!groups.length) { sh.append(el("p", "lv-sh-lead", t("live.no_chain_controls_ahead_right_now"))); return; }
+    sh.append(el("p", "lv-sh-lead", t("live.caltrans_has_chain_controls_in_effect")));
     const ol = el("ol", "lv-chains");
     for (const g of groups) {
       const li = el("li", g.level >= 2 ? "warn" : "adv");
       const top = el("div", "lv-ch-top");
-      top.append(el("span", "lv-ch-lv", g.status), el("b", null, `Near ${chainWhere(g)}`), el("span", "lv-ch-d", g.d < 0.3 ? "here" : `${fmtMi(g.d)} mi`));
+      top.append(el("span", "lv-ch-lv", g.status), el("b", null, t("live.near_g", { g: chainWhere(g) })), el("span", "lv-ch-d", g.d < 0.3 ? t("live.here") : t("live.d_mi", { d: fmtMi(g.d) })));
       li.append(top);
       if (g.name && g.name !== g.place) li.append(el("small", null, g.name));
       if (g.desc) li.append(el("p", null, g.desc));
@@ -1856,26 +1866,26 @@ function chainSheet() {
     }
     sh.append(ol);
     const lv = el("div", "lv-levels");
-    lv.append(el("h3", "sub", "What the levels mean"));
+    lv.append(el("h3", "sub", t("live.what_the_levels_mean")));
     for (const k of [1, 2, 3]) lv.append(el("p", null, R_LEVELS[k]));
     sh.append(lv);
     const acts = el("div", "lv-acts");
-    acts.append(btn("primary", "Hear it", () => {
+    acts.append(btn("primary", t("live.hear_it"), () => {
       if (!voice) return;
       voice.unlock && voice.unlock();
       const lv = chainsAhead("level");
       if (lv.length) voice.say(chainLine(lv[0], lv.slice(1)), { now: true, id: "live:chains" });
-    }), link("lv-link", "Caltrans QuickMap", QUICKMAP));
+    }), link("lv-link", t("live.caltrans_quickmap"), QUICKMAP));
     sh.append(acts);
-    sh.append(el("p", "lv-fine", `From Caltrans, updated ${ago(Math.min(...groups.map(g => g.t || now())))}.`));
+    sh.append(el("p", "lv-fine", t("live.from_caltrans_updated_ago", { ago: ago(Math.min(...groups.map(g => g.t || now()))) })));
   });
 }
 function wxSheet(url) {
   const w = wx.find(x => x.url === url);
   if (!w) return;
-  showSheet(w.city ? `Weather near ${w.city}` : "Weather ahead", sh => {
+  showSheet(w.city ? t("live.weather_near_city", { city: w.city }) : t("live.weather_ahead"), sh => {
     const d = S.m != null ? ahead(S.m, S.dir, w.m) : null;
-    sh.append(el("p", "lv-sh-meta", [w.city && `${w.city}${w.st ? ", " + w.st : ""}`, d != null && aboutMi(Math.max(0, d)), `National Weather Service · updated ${ago(w.t)}`].filter(Boolean).join(" · ")));
+    sh.append(el("p", "lv-sh-meta", [w.city && `${w.city}${w.st ? ", " + w.st : ""}`, d != null && aboutMi(Math.max(0, d)), t("live.national_weather_service_updated_t", { t: ago(w.t) })].filter(Boolean).join(" · ")));
     const ol = el("ol", "lv-fc");
     for (const p of periodsNow(w, 6)) {
       const li = el("li");
@@ -1886,7 +1896,7 @@ function wxSheet(url) {
     }
     sh.append(ol);
     const acts = el("div", "lv-acts");
-    acts.append(link("lv-link", "Full forecast at weather.gov", `https://forecast.weather.gov/MapClick.php?lat=${ll(w.lat)}&lon=${ll(w.lon)}`));
+    acts.append(link("lv-link", t("live.full_forecast_at_weather_gov"), `https://forecast.weather.gov/MapClick.php?lat=${ll(w.lat)}&lon=${ll(w.lon)}`));
     sh.append(acts);
   });
 }
@@ -1894,24 +1904,24 @@ function wxSheet(url) {
 /* ---------- speakable summaries (voice commands) ---------- */
 function weatherText() {
   try {
-    if (settings.live !== true) return "Live road info is off. You can turn it on in Settings, under Live road info.";
-    if (S.m == null) return "Start GPS or a demo drive first, then I can check the weather ahead.";
+    if (settings.live !== true) return t("live.live_road_info_is_off_you_can_turn_it");
+    if (S.m == null) return t("live.start_gps_or_a_demo_drive_first_then_i");
     const pts = wxVisible();
     if (!pts.length) {
       refresh();
-      return fails || (src.wx.err && !busy) ? "I can't reach the weather service right now. I'll keep trying." : "I'm still checking the weather ahead. Ask me again in a minute.";
+      return fails || (src.wx.err && !busy) ? t("live.i_cant_reach_the_weather_service_right") : t("live.im_still_checking_the_weather_ahead");
     }
     const parts = pts.map(w => {
       const per = periodsNow(w);
-      const where = `${w.city ? "Near " + w.city : "On the road"}, ${w.d < 3 ? "right around here" : `in about ${Math.round(w.d)} miles`}`;
+      const where = `${w.city ? t("live.near_city", { city: w.city }) : t("live.on_the_road")}, ${w.d < 3 ? t("live.right_around_here") : t("live.in_about_d_miles", { d: Math.round(w.d) })}`;
       return `${where}: ${per.map((p, i) => periodSaid(p, i === 0)).join("; ")}.`;
     });
     const warnings = alertsVisible().filter(a => a.kind === "warn");
-    if (warnings.length) parts.push(`Heads up: ${warnings.length === 1 ? `a ${warnings[0].event} covers` : `${warnings.length} weather warnings cover`} part of the road ahead.`);
+    if (warnings.length) parts.push(t("live.heads_up_x1_part_of_the_road_ahead", { x1: warnings.length === 1 ? t("live.a_event_covers", { event: warnings[0].event }) : t("live.length_weather_warnings_cover", { length: warnings.length }) }));
     const oldest = Math.min(...pts.map(w => w.t));
-    if (now() - oldest > WX_STALE) parts.push(`That forecast is from ${agoSaid(oldest)} ago.`);
-    return "Weather ahead. " + parts.join(" ");
-  } catch (e) { warn(e); return "I don't have the weather ahead right now."; }
+    if (now() - oldest > WX_STALE) parts.push(t("live.that_forecast_is_from_oldest_ago", { oldest: agoSaid(oldest) }));
+    return t("live.weather_ahead_join", { join: parts.join(" ") });
+  } catch (e) { warn(e); return t("live.i_dont_have_the_weather_ahead_right"); }
 }
 function alertsText() {
   try {
@@ -1921,29 +1931,29 @@ function alertsText() {
     // come from Caltrans only (nothing outside California, when the data covers more than California)
     const caNear = districtsNear(S.m, S.dir, CC_RANGE).length > 0;
     const ccKnown = caNear && !src.ct.err, alKnown = !src.al.err;
-    if (!list.length && !groups.length && ccKnown && alKnown) return "No chain controls or weather warnings on the road ahead right now.";
+    if (!list.length && !groups.length && ccKnown && alKnown) return t("live.no_chain_controls_or_weather_warnings");
     const out = [];
-    if (groups.length) out.push((now() - groups[0].t > STALE ? `As of ${agoSaid(groups[0].t)} ago: ` : "") + chainLine(groups[0], groups.slice(1)));
+    if (groups.length) out.push((now() - groups[0].t > STALE ? t("live.as_of_t_ago", { t: agoSaid(groups[0].t) }) : "") + chainLine(groups[0], groups.slice(1)));
     out.push(...list.slice(0, 3).map(alertLine));
-    if (!list.length) out.push(alKnown ? "No weather warnings on the road ahead right now." : "I can't reach the weather service right now, so I can't check for warnings.");
-    if (!groups.length) out.push(ccKnown ? "No chain controls on the road ahead right now." : caNear ? "I can't reach Caltrans right now, so I can't check chain controls." : "I only get chain controls for California roads.");
+    if (!list.length) out.push(alKnown ? t("live.no_weather_warnings_on_the_road_ahead") : t("live.i_cant_reach_the_weather_service_right_2"));
+    if (!groups.length) out.push(ccKnown ? t("live.no_chain_controls_on_the_road_ahead") : caNear ? t("live.i_cant_reach_caltrans_right_now_so_i") : t("live.i_only_get_chain_controls_for"));
     return out.join(" ");
-  } catch (e) { warn(e); return "I don't have road alerts right now."; }
+  } catch (e) { warn(e); return t("live.i_dont_have_road_alerts_right_now"); }
 }
 function roadText() {
   try {
     if (settings.live !== true || S.m == null) return weatherText();
     const out = [alertsText()];
     const s = nextSign();
-    if (s) out.push(signLine(s, `next freeway sign, ${aheadSaid(s.d)},`));
+    if (s) out.push(signLine(s, t("live.next_freeway_sign_d", { d: aheadSaid(s.d) })));
     return out.join(" ");
-  } catch (e) { warn(e); return "I don't have road info right now."; }
+  } catch (e) { warn(e); return t("live.i_dont_have_road_info_right_now"); }
 }
 function signTextSaid() {
   try {
     const s = settings.live === true ? nextSign() : null;
-    return s ? signLine(s, `next freeway sign, ${aheadSaid(s.d)},`) : "No freeway signs with a message on the road ahead.";
-  } catch (e) { warn(e); return "I don't have the freeway signs right now."; }
+    return s ? signLine(s, t("live.next_freeway_sign_d", { d: aheadSaid(s.d) })) : t("live.no_freeway_signs_with_a_message_on_the");
+  } catch (e) { warn(e); return t("live.i_dont_have_the_freeway_signs_right"); }
 }
 /** Plain data for other modules (a map could plot chain controls and the next sign). */
 function snapshot() {

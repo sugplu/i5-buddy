@@ -10,6 +10,8 @@
 // - While you drive, nothing animates on its own: at road speeds a GPS fix moves the marker a fraction of a pixel,
 //   so each fix costs at most one small redraw (none when the move is too small to see). Only a fast demo glides.
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const NS = "http://www.w3.org/2000/svg";
 const U = 100;                    // world units per degree of latitude
 const ZMIN = 1, ZMAX = 60;
@@ -17,7 +19,7 @@ const ZMIN = 1, ZMAX = 60;
 // every other outline (Oregon, Nevada, Arizona...) is a neighbour, drawn plainly as context.
 let MAIN = [];
 const CAT_KEYS = ["farm", "hist", "nature", "town", "stop", "odd"];
-const DEFAULT_CATS = { farm: "Orchards & farms", hist: "History", nature: "Land & water", town: "Towns", stop: "Good stops", odd: "Oddities" };
+const DEFAULT_CATS = { farm: t("map.orchards_farms"), hist: t("map.history"), nature: t("map.land_water"), town: t("map.towns"), stop: t("map.good_stops"), odd: t("map.oddities") };
 // Spots for the state names, inland and clear of the road: [lat, lon, rotation]. The first one that does not
 // collide with the road or a big city label wins; rotation "nv" follows California's diagonal border with Nevada.
 // Oregon and Washington are only named when the data covers them.
@@ -282,11 +284,14 @@ function loadData() {
 
   CITIES = [];
   for (const c of arr(d.DESTS)) {
-    if (!c || !num(c.m) || /border/i.test(c.name || "") || c.m < 0.5 || c.m > MAXM - 0.5) continue;
+    // the English name decides (Spanish data keeps it in c.en): borders left out, label sizes from BIG and MID
+    const en = String((c && c.en && c.en.name) || (c && c.name) || "");
+    if (!c || !num(c.m) || /border/i.test(en) || c.m < 0.5 || c.m > MAXM - 0.5) continue;
     const ll = coordAt(c.m);
     if (!ll) continue;
-    const name = String(c.name || "").replace(/^Downtown\s+/i, "");
-    const rank = BIG.has(name) ? 0 : MID.has(name) ? 1 : 2;
+    const key = en.replace(/^Downtown\s+/i, "");
+    const name = c.en && c.en.name ? String(c.name || "") : key;
+    const rank = BIG.has(key) ? 0 : MID.has(key) ? 1 : 2;
     CITIES.push({ name, m: c.m, x: X(ll[1]), y: Y(ll[0]), rank, fs: rank === 0 ? 12.5 : 11.5, wt: rank === 2 ? 700 : 800, w: 0, side: null });
   }
   CITIES.sort((a, b) => a.rank - b.rank || a.m - b.m);
@@ -300,9 +305,9 @@ function mapLabel() {
   const d = (api && api.data) || {};
   const states = Array.isArray(d.STATES) ? d.STATES.filter(s => s && s.name) : [];
   const ends = d.ENDS && d.ENDS.S && d.ENDS.N && d.ENDS.S.long && d.ENDS.N.long ? d.ENDS : null;
-  const span = ends ? `from ${ends.S.long} to ${ends.N.long}` : "";
-  if (states.length === 1) return `Map of I-5 in ${states[0].name}${span ? ", " + span : ""}`;
-  return `Map of I-5${span ? " " + span : ""}`;
+  const span = ends ? t("map.from_long_to_long2", { long: ends.S.long, long2: ends.N.long }) : "";
+  if (states.length === 1) return t("map.map_of_i_5_in_name_x1", { name: states[0].name, x1: span ? ", " + span : "" });
+  return t("map.map_of_i_5_x1", { x1: span ? " " + span : "" });
 }
 const listFor = type => (type === "place" ? PTS : type === "cam" ? CAMS : type === "rest" ? RESTS : []);
 
@@ -352,15 +357,15 @@ function build() {
 
   const head = headEl = el("div", "view-head mp-head");
   // rounded like the Drive tab's "all 797 miles of I-5 in California"
-  head.append(el("h2", "view-title", MAXM > 0 ? `${Math.round(MAXM).toLocaleString("en-US")} miles of I-5` : "I-5"), sumEl = el("p", "mp-sum"));
+  head.append(el("h2", "view-title", MAXM > 0 ? t("map.maxm_miles_of_i_5", { MAXM: Math.round(MAXM).toLocaleString(i18n.loc("en-US")) }) : "I-5"), sumEl = el("p", "mp-sum"));
 
   chipsEl = el("div", "mp-layers");
   chipsEl.setAttribute("role", "group");
-  chipsEl.setAttribute("aria-label", "Show on the map");
+  chipsEl.setAttribute("aria-label", t("map.show_on_the_map"));
   const chipDefs = [
-    ["places", "Landmarks", ICON.dots, true],
-    ["cams", "Cameras", glyphIcon(CAM_SVG), CAMS.length > 0],
-    ["rest", "Rest areas", glyphIcon(REST_SVG), RESTS.length > 0],
+    ["places", t("map.landmarks"), ICON.dots, true],
+    ["cams", t("map.cameras"), glyphIcon(CAM_SVG), CAMS.length > 0],
+    ["rest", t("map.rest_areas"), glyphIcon(REST_SVG), RESTS.length > 0],
   ];
   for (const [key, text, icon, has] of chipDefs) {
     if (!has) continue;
@@ -373,10 +378,10 @@ function build() {
   mapEl = el("div", "mp-map");
   mapEl.tabIndex = 0;
   mapEl.setAttribute("role", "group");
-  mapEl.setAttribute("aria-roledescription", "map");
+  mapEl.setAttribute("aria-roledescription", t("map.map"));
   mapEl.setAttribute("aria-label", mapLabel());
   mapEl.setAttribute("aria-describedby", "mpHelp");
-  const help = el("p", "mp-sr", "Drag to move and pinch to zoom. With a keyboard, use the arrow keys to move, plus and minus to zoom, and 0 for the whole road. The card below the map steps through landmarks one by one.");
+  const help = el("p", "mp-sr", t("map.drag_to_move_and_pinch_to_zoom_with_a"));
   help.id = "mpHelp";
   buildSvg();
   measureLabels();
@@ -456,7 +461,7 @@ function buildSvg() {
   }
   if (byState.size || ROUTE.length) {
     const gEl = sv("g", { class: "mp-seaname", display: "none" });
-    const lines = ["PACIFIC", "OCEAN"];
+    const lines = [i18n.t("map.pacific"), i18n.t("map.ocean")];
     const t1 = sv("text", { "text-anchor": "middle", y: "-3" }), t2 = sv("text", { "text-anchor": "middle", y: "12" });
     t1.textContent = lines[0]; t2.textContent = lines[1];
     gEl.append(t1, t2);
@@ -545,17 +550,17 @@ function buildDots() {
 function buildControls() {
   const box = el("div", "mp-ctls");
   const zoom = el("div", "mp-zoom");
-  zInBtn = button("mp-zb", { html: ICON.plus, label: "Zoom in", title: "Zoom in", onClick: () => zoomBy(2) });
-  zOutBtn = button("mp-zb", { html: ICON.minus, label: "Zoom out", title: "Zoom out", onClick: () => zoomBy(0.5) });
-  const fit = button("mp-zb", { html: ICON.fit, label: "Whole road", title: "Whole road", onClick: () => wholeRoad() });
+  zInBtn = button("mp-zb", { html: ICON.plus, label: t("map.zoom_in"), title: t("map.zoom_in"), onClick: () => zoomBy(2) });
+  zOutBtn = button("mp-zb", { html: ICON.minus, label: t("map.zoom_out"), title: t("map.zoom_out"), onClick: () => zoomBy(0.5) });
+  const fit = button("mp-zb", { html: ICON.fit, label: t("map.whole_road"), title: t("map.whole_road"), onClick: () => wholeRoad() });
   zoom.append(zInBtn, zOutBtn, fit);
-  three.btn = button("mp-zb mp-3dbtn", { text: "3D", label: "3D terrain map", title: "3D terrain map", onClick: () => toggle3d() });
+  three.btn = button("mp-zb mp-3dbtn", { text: "3D", label: t("map.3d_terrain_map"), title: t("map.3d_terrain_map"), onClick: () => toggle3d() });
   three.btn.setAttribute("aria-pressed", "false");
   zoom.append(three.btn);
 
   const loc = el("div", "mp-loc");
-  const near = button("mp-pill", { html: ICON.locate, text: "Near me", onClick: () => nearMe() });
-  followBtn = button("mp-pill", { html: ICON.follow, text: "Follow me", onClick: () => setFollow(!prefs.follow) });
+  const near = button("mp-pill", { html: ICON.locate, text: t("map.near_me"), onClick: () => nearMe() });
+  followBtn = button("mp-pill", { html: ICON.follow, text: t("map.follow_me"), onClick: () => setFollow(!prefs.follow) });
   followBtn.setAttribute("aria-pressed", String(prefs.follow));
   loc.append(near, followBtn);
 
@@ -570,19 +575,19 @@ function buildControls() {
 
 function buildLegend() {
   const ul = el("ul", "mp-legend");
-  ul.setAttribute("aria-label", "Map key");
+  ul.setAttribute("aria-label", t("map.map_key"));
   const keys = Object.keys(CATS).filter(k => CAT_KEYS.includes(k));
   for (const k of keys) { const li = el("li", k); li.append(el("i", "mp-k-dot"), String(CATS[k])); ul.append(li); }
   if (PTS.length) {
     const faded = el("li", "mp-k-faded");
-    faded.append(el("i", "mp-k-dot"), "Faded: not stamped yet");
+    faded.append(el("i", "mp-k-dot"), t("map.faded_not_stamped_yet"));
     ul.append(faded);
   }
-  if (CAMS.length) { const li = el("li"); li.innerHTML = glyphIcon(CAM_SVG); li.append("Live camera"); ul.append(li); }
-  if (RESTS.length) { const li = el("li"); li.innerHTML = glyphIcon(REST_SVG); li.append("Rest area"); ul.append(li); }
+  if (CAMS.length) { const li = el("li"); li.innerHTML = glyphIcon(CAM_SVG); li.append(t("map.live_camera")); ul.append(li); }
+  if (RESTS.length) { const li = el("li"); li.innerHTML = glyphIcon(REST_SVG); li.append(t("map.rest_area")); ul.append(li); }
   const me = el("li");
   me.innerHTML = '<svg class="mp-glyph" viewBox="-10 -10 20 20" aria-hidden="true"><circle class="mp-you-core" r="6.5"/></svg>';
-  me.append("You");
+  me.append(t("map.you"));
   L.legendYou = me;
   ul.append(me);
   setTimeout(safe(updateLegendYou), 0);
@@ -952,7 +957,7 @@ function updateScale(k) {
   if (key === scaleKey) return;
   scaleKey = key;
   scaleBar.style.width = w + "px";
-  scaleTxt.textContent = `${mi} mi`;
+  scaleTxt.textContent = t("map.mi_mi", { mi });
 }
 function updateZoomButtons() {
   if (!zInBtn) return;
@@ -1394,7 +1399,7 @@ function wholeRoad() {
 }
 function nearMe() {
   updateYou();
-  if (!you) { toast("No position yet. Start GPS or a demo drive on the Drive tab."); return; }
+  if (!you) { toast(t("map.no_position_yet_start_gps_or_a_demo")); return; }
   flyTo(you.x, you.y, Math.max(V.z, 12));
   pingYou();
 }
@@ -1405,7 +1410,7 @@ function setFollow(on, quiet) {
   if (!prefs.follow || quiet) return;
   updateYou();
   if (you) { flyTo(you.x, you.y, Math.max(V.z, 10)); pingYou(); }
-  else toast("The map will follow you once GPS or a demo drive is running.");
+  else toast(t("map.the_map_will_follow_you_once_gps_or_a"));
 }
 function ensureVisible(x, y, z) {
   const [sx, sy] = toScreen(x, y);
@@ -1419,8 +1424,8 @@ function ensureVisible(x, y, z) {
 /* ---------- the 3D terrain view ---------- */
 /** The 3D button: open the 3D map (MapLibre, loaded only now) or go back to 2D. */
 function toggle3d() { if (three.on) close3d(); else open3d(); }
-const NOTE_3D = "The 3D map needs a connection and 3D graphics. Here\u2019s the regular map.";
-const NOTE_3D_OLD = "The 3D map needs a newer browser (on iPhone, iOS 15.4 or later). Here\u2019s the regular map.";
+const NOTE_3D = t("map.the_3d_map_needs_a_connection_and_3d");
+const NOTE_3D_OLD = t("map.the_3d_map_needs_a_newer_browser_on");
 async function open3d() {
   if (three.on || !built || !mapEl) return false;
   three.on = true; three.busy = true;
@@ -1562,7 +1567,8 @@ function updateSummary() {
   const n = PLACES.length;
   let got = 0;
   for (const p of PLACES) if (stamps[p.id]) got++;
-  sumEl.textContent = n ? `${n.toLocaleString("en-US")} landmark${n === 1 ? "" : "s"} · ${got.toLocaleString("en-US")} stamped` : "Landmarks are on their way";
+  const sv = { n: n.toLocaleString(i18n.loc("en-US")), got: got.toLocaleString(i18n.loc("en-US")) };
+  sumEl.textContent = n ? (n === 1 ? t("map.one_landmark_got_stamped", sv) : t("map.n_landmarks_got_stamped", sv)) : t("map.landmarks_are_on_their_way");
 }
 
 /* ---------- selection and the card under the map ---------- */
@@ -1609,7 +1615,7 @@ function cardTop(card, icon, meta, name) {
   whereEl = el("div", "mp-where");
   head.append(whereEl);
   const close = button("mp-x", {
-    html: ICON.close, label: "Close",
+    html: ICON.close, label: t("map.close"),
     onClick: () => {
       select(null);
       // the button just vanished with its card: keep keyboard and switch users where they were
@@ -1636,9 +1642,11 @@ function placeCard(p) {
     }));
   } else thumb = icon();
   let exit = "";
-  if (p.ex != null && p.ex !== "") exit = dfn("exitName", (st, ref) => `Exit ${ref}`)(p.st, p.ex);
-  cardTop(card, thumb, [CATS[p.cat] || "Landmark", exit].filter(Boolean).join(" · "), p.name || "Landmark");
-  if (p.text) card.append(el("p", "mp-text", p.text));
+  if (p.ex != null && p.ex !== "") exit = dfn("exitName", (st, ref) => t("map.exit_ref", { ref }))(p.st, p.ex);
+  cardTop(card, thumb, [CATS[p.cat] || t("map.landmark"), exit].filter(Boolean).join(" · "), p.name || t("map.landmark"));
+  // Stories for kids (3.1.0): the kids text where there is one (narrator.storyOf)
+  const story = api && api.narrator && typeof api.narrator.storyOf === "function" ? api.narrator.storyOf(p) : p.text;
+  if (story) card.append(el("p", "mp-text", story));
   const acts = el("div", "mp-acts");
   hearBtn = button("mp-btn mp-go", {
     onClick: () => {
@@ -1649,7 +1657,7 @@ function placeCard(p) {
   });
   hearBtn.dataset.pid = p.id;
   if (api.narrator && typeof api.narrator.hear === "function") acts.append(hearBtn);
-  if (api.ui && api.ui.placeSheet) acts.append(button("mp-btn", { text: "More", onClick: () => api.ui.placeSheet(p) }));
+  if (api.ui && api.ui.placeSheet) acts.append(button("mp-btn", { text: t("map.more"), onClick: () => api.ui.placeSheet(p) }));
   acts.append(stepButtons("place", "landmark"));
   card.append(acts);
   refreshHearButton();
@@ -1660,20 +1668,20 @@ function camCard(c) {
   const card = el("article", "mp-card mp-camcard");
   const icon = el("div", "mp-ph mp-ph-cam");
   icon.innerHTML = glyphIcon(CAM_SVG);
-  const by = c.by ? String(c.by) : "Live camera";
-  const meta = ["Live camera", c.d ? `${by} district ${String(c.d).replace(/^0/, "")}` : by].join(" · ");
-  cardTop(card, icon, meta, c.name || "Camera");
+  const by = c.by ? String(c.by) : t("map.live_camera");
+  const meta = [t("map.live_camera"), c.d ? t("map.by_district_replace", { by, replace: String(c.d).replace(/^0/, "") }) : by].join(" · ");
+  cardTop(card, icon, meta, c.name || t("map.camera"));
   const fig = el("figure", "mp-live");
   card.append(fig);
   if (!c.img) {
     fig.classList.add("none");
-    fig.append(el("p", "mp-note", "No picture for this camera."));
+    fig.append(el("p", "mp-note", t("map.no_picture_for_this_camera")));
   } else if ((api.settings || {}).live === true) {
     loadCam(fig, c, false);
   } else {
     fig.classList.add("consent");
-    const p = el("p", "mp-note", `The picture comes straight from ${by}. Live road info is off, so nothing loads until you ask.`);
-    const b = button("mp-btn mp-go", { text: "Show live picture", onClick: () => loadCam(fig, c, false) });
+    const p = el("p", "mp-note", t("map.the_picture_comes_straight_from_by", { by }));
+    const b = button("mp-btn mp-go", { text: t("map.show_live_picture"), onClick: () => loadCam(fig, c, false) });
     fig.append(p, b);
   }
   const acts = el("div", "mp-acts");
@@ -1701,10 +1709,10 @@ function loadCam(fig, c, fresh) {
   fig.className = "mp-live loading";
   fig.textContent = "";
   const img = el("img");
-  img.alt = `Live view from the ${c.name || "road"} camera`;
+  img.alt = t("map.live_view_from_the_x1_camera", { x1: c.name || t("map.road") });
   img.decoding = "async";
   img.referrerPolicy = "no-referrer";
-  const cap = el("figcaption", "mp-cap", "Loading the camera…");
+  const cap = el("figcaption", "mp-cap", t("map.loading_the_camera"));
   fig.append(img, cap);
   const ld = { img, fig, c, fresh, timer: 0 };
   const fail = safe(() => {
@@ -1712,7 +1720,7 @@ function loadCam(fig, c, fresh) {
     cancelCam(false);
     fig.className = "mp-live none";
     fig.textContent = "";
-    fig.append(el("p", "mp-note", "This camera isn't sending a picture right now."), button("mp-btn", { html: ICON.refresh, text: "Try again", onClick: () => loadCam(fig, c, true) }));
+    fig.append(el("p", "mp-note", t("map.this_camera_isnt_sending_a_picture")), button("mp-btn", { html: ICON.refresh, text: t("map.try_again"), onClick: () => loadCam(fig, c, true) }));
   });
   img.onload = safe(() => {
     if (camLoad !== ld) return;
@@ -1720,10 +1728,10 @@ function loadCam(fig, c, fresh) {
     camLoad = null; // done: nothing left to cancel, and the picture stays
     fig.className = "mp-live";
     let t = "";
-    try { t = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch {}
+    try { t = new Date().toLocaleTimeString(i18n.loc([]), { hour: "numeric", minute: "2-digit" }); } catch {}
     cap.textContent = "";
-    cap.append(`${c.by || "Camera"} · loaded ${t}`.trim());
-    cap.append(button("mp-btn mp-refresh", { html: ICON.refresh, text: "Refresh", onClick: () => loadCam(fig, c, true) }));
+    cap.append(i18n.t("map.x1_loaded_t", { x1: c.by || i18n.t("map.camera"), t }).trim());
+    cap.append(button("mp-btn mp-refresh", { html: ICON.refresh, text: i18n.t("map.refresh"), onClick: () => loadCam(fig, c, true) }));
   });
   img.onerror = fail;
   ld.timer = setTimeout(fail, 12000);
@@ -1738,17 +1746,17 @@ function restCard(r) {
   const icon = el("div", "mp-ph mp-ph-rest");
   icon.innerHTML = glyphIcon(REST_SVG);
   const both = !r.side || /both|NB.*SB|north.*south/i.test(r.name || "");
-  const side = both ? "Both directions" : r.side === 1 ? "Northbound side" : "Southbound side";
+  const side = both ? t("map.both_directions") : r.side === 1 ? t("map.northbound_side") : t("map.southbound_side");
   const city = nearestCity(r.m);
-  const name = cleanRest(r.name) || (city ? `Rest area near ${city}` : "Rest area");
-  cardTop(card, icon, ["Rest area", side].join(" · "), name);
+  const name = cleanRest(r.name) || (city ? t("map.rest_area_near_city", { city }) : t("map.rest_area"));
+  cardTop(card, icon, [t("map.rest_area"), side].join(" · "), name);
   const facts = [];
-  if (r.toilets) facts.push("Restrooms");
-  if (/closed/i.test(r.name || "")) facts.push("Listed as closed");
-  if (city && !name.includes(city)) facts.push(`Near ${city}`);
+  if (r.toilets) facts.push(t("map.restrooms"));
+  if (/closed/i.test(r.name || "")) facts.push(t("map.listed_as_closed"));
+  if (city && !name.includes(city)) facts.push(t("map.near_city", { city }));
   if (facts.length) card.append(el("p", "mp-text mp-facts", facts.join(" · ")));
   const acts = el("div", "mp-acts");
-  acts.append(stepButtons("rest", "rest area"));
+  acts.append(stepButtons("rest", t("map.rest_area_2")));
   card.append(acts);
   return card;
 }
@@ -1765,13 +1773,13 @@ function roadCard(s) {
   try { ft = d.elevAt ? d.elevAt(m) : null; } catch {}
   const icon = el("div", "mp-ph mp-ph-road");
   icon.innerHTML = '<img src="icons/icon.svg" alt="" draggable="false">';
-  const meta = [st && st.name ? st.name : "", lm ? `Mile ${Math.round(lm.mi)}` : `Mile ${Math.round(m)}`, num(ft) ? `${ft.toLocaleString("en-US")} ft` : ""].filter(Boolean).join(" · ");
-  cardTop(card, icon, meta, (zone && zone.label) || (region && region.name) || "Interstate 5");
+  const meta = [st && st.name ? st.name : "", lm ? t("map.mile_mi", { mi: Math.round(lm.mi) }) : t("map.mile_m", { m: Math.round(m) }), num(ft) ? t("map.ft_ft", { ft: ft.toLocaleString(i18n.loc("en-US")) }) : ""].filter(Boolean).join(" · ");
+  cardTop(card, icon, meta, (zone && zone.label) || (region && region.name) || t("map.interstate_5"));
   if (zone && zone.text) card.append(el("p", "mp-text", zone.text));
   const acts = el("div", "mp-acts");
   if (PTS.length) {
     acts.append(button("mp-btn", {
-      text: "Nearest landmark",
+      text: t("map.nearest_landmark"),
       onClick: () => {
         let bi = 0, bd = Infinity;
         PTS.forEach((P, i) => { const dd = Math.abs(P.m - m); if (dd < bd) { bd = dd; bi = i; } });
@@ -1787,7 +1795,7 @@ function roadCard(s) {
 
 function hintCard() {
   const box = el("div", "mp-hint");
-  box.append(el("p", null, "Tap a dot for its story, or tap the road to see that stretch. Drag to move. Pinch, scroll or double-tap to zoom."));
+  box.append(el("p", null, t("map.tap_a_dot_for_its_story_or_tap_the")));
   const nx = nextUp();
   hintKey = nx ? nx.i + ":" + Math.round(nx.d) : "";
   if (nx) {
@@ -1795,7 +1803,7 @@ function hintCard() {
     const b = button("mp-btn mp-next " + catClass(P.p.cat), {
       onClick: () => { if (!prefs.places) setLayer("places", true); selectIdx("place", nx.i, { fly: Math.max(V.z, 9) }); focusInCard(".mp-go"); },
     });
-    b.append(el("i", "mp-k-dot"), el("span", "mp-next-l", "Next up"), el("b", null, P.p.name || "Landmark"), el("span", "mp-next-d", nx.d < 0.3 ? "now" : `${fmtMiles(nx.d)} mi`));
+    b.append(el("i", "mp-k-dot"), el("span", "mp-next-l", t("map.next_up")), el("b", null, P.p.name || t("map.landmark")), el("span", "mp-next-d", nx.d < 0.3 ? t("map.now") : t("map.d_mi", { d: fmtMiles(nx.d) })));
     box.append(b);
   }
   return box;
@@ -1815,8 +1823,8 @@ function stepButtons(type, noun) {
   const list = listFor(type);
   const wrap = el("div", "mp-step");
   const i = sel ? sel.idx : -1;
-  const south = button("mp-icon", { html: ICON.south, label: `Next ${noun} to the south`, title: `Next ${noun} south`, onClick: () => stepSel(-1) });
-  const north = button("mp-icon", { html: ICON.north, label: `Next ${noun} to the north`, title: `Next ${noun} north`, onClick: () => stepSel(1) });
+  const south = button("mp-icon", { html: ICON.south, label: t("map.next_noun_to_the_south", { noun }), title: t("map.next_noun_south", { noun }), onClick: () => stepSel(-1) });
+  const north = button("mp-icon", { html: ICON.north, label: t("map.next_noun_to_the_north", { noun }), title: t("map.next_noun_north", { noun }), onClick: () => stepSel(1) });
   south.dataset.step = "-1"; north.dataset.step = "1";
   south.disabled = !(i > 0);
   north.disabled = !(i >= 0 && i < list.length - 1);
@@ -1858,20 +1866,20 @@ function refreshCardBits() {
   let stamped = false;
   if (st.m != null && num(sel.m)) {
     const d = aheadOf(st.m, st.dir, sel.m);
-    parts.push(Math.abs(d) < 0.3 ? "Right here" : d > 0 ? `${fmtMiles(d)} mi ahead` : `${fmtMiles(-d)} mi behind`);
+    parts.push(Math.abs(d) < 0.3 ? t("map.right_here") : d > 0 ? t("map.d_mi_ahead", { d: fmtMiles(d) }) : t("map.fmtmiles_mi_behind", { fmtMiles: fmtMiles(-d) }));
     if (sel.type === "place" && d > -0.3) {
       const sw = dfn("sideWord", () => "")(sel.item, st.dir);
-      if (sw) parts.push(`on your ${sw}`);
+      if (sw) parts.push(t("map.on_your_sw", { sw: dfn("sideSaid", w => w)(sw) }));
     }
   }
-  if (sel.type === "cam" && sel.item && sel.item.near) parts.unshift(`Near ${sel.item.near}`);
-  if (sel.type === "rest" && sel.item && st.m != null) parts.push(restServes(sel.item, st.dir) ? "on your side" : "across the freeway");
+  if (sel.type === "cam" && sel.item && sel.item.near) parts.unshift(t("map.near_near", { near: sel.item.near }));
+  if (sel.type === "rest" && sel.item && st.m != null) parts.push(restServes(sel.item, st.dir) ? t("map.on_your_side") : t("map.across_the_freeway"));
   if (sel.type === "place" && sel.item && (st.stamps || {})[sel.item.id]) stamped = true;
   const text = parts.join(" · ");
   if (whereEl._t !== text + stamped) {
     whereEl._t = text + stamped;
     whereEl.textContent = text;
-    if (stamped) { if (text) whereEl.append(" · "); whereEl.append(el("span", "mp-got", "Stamped ✓")); }
+    if (stamped) { if (text) whereEl.append(" · "); whereEl.append(el("span", "mp-got", t("map.stamped"))); }
     whereEl.hidden = !text && !stamped;
   }
 }
@@ -1882,7 +1890,7 @@ function refreshHearButton() {
   if (hearBtn._on === on) return;
   hearBtn._on = on;
   hearBtn.innerHTML = on ? ICON.stop : ICON.speaker;
-  hearBtn.append(on ? "Stop" : "Hear it");
+  hearBtn.append(on ? t("map.stop") : t("map.hear_it"));
   // Everything spoken is on screen too: the whole story opens while it is read, and stays open to finish reading.
   const card = hearBtn.closest ? hearBtn.closest(".mp-card") : null;
   if (on && card && !card.classList.contains("is-open")) { card.classList.add("is-open"); revealBottom(card); }

@@ -10,7 +10,8 @@
 //               is sent. All through api.store (this phone only).
 // The app version comes from the service worker's VERSION line (read from sw.js, normally from its cache), else a constant.
 
-const FALLBACK_VERSION = "3.0.9";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+import { t, loc } from "./i18n.js";
+const FALLBACK_VERSION = "3.1.0";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
 const PRIVACY_URL = "privacy.html"; // the privacy notice, beside index.html (cached with the app shell)
 const MAX_NAME = 80, MAX_EMAIL = 120, MAX_MSG = 2000;
 const SEND_TIMEOUT = 15e3;
@@ -57,13 +58,13 @@ async function readVersion() {
 /** What to tell the person about a field: "" when it is fine. Pure. */
 function validate({ name, email, message }) {
   const out = {};
-  if (String(name || "").trim().length > MAX_NAME) out.name = `Please keep your name under ${MAX_NAME} characters.`;
+  if (String(name || "").trim().length > MAX_NAME) out.name = t("feedback.please_keep_your_name_under_max_name", { MAX_NAME });
   // the email is optional (3.0.1): only for people who want a reply
   const e = String(email || "").trim();
-  if (e && (e.length > MAX_EMAIL || !EMAIL_RX.test(e))) out.email = "That email doesn't look right. Check it and try again.";
+  if (e && (e.length > MAX_EMAIL || !EMAIL_RX.test(e))) out.email = t("feedback.that_email_doesnt_look_right_check_it");
   const m = String(message || "").trim();
-  if (!m) out.message = "Please write a message.";
-  else if (m.length > MAX_MSG) out.message = `Please keep your message under ${MAX_MSG.toLocaleString("en-US")} characters.`;
+  if (!m) out.message = t("feedback.please_write_a_message");
+  else if (m.length > MAX_MSG) out.message = t("feedback.please_keep_your_message_under_max_msg", { MAX_MSG: MAX_MSG.toLocaleString(loc("en-US")) });
   return out;
 }
 /** Where this copy runs (3.0.1), so the owner can tell the apps apart in HQ: "ios" (the iPhone app), "android" (the Google
@@ -90,9 +91,9 @@ function buildRow() {
   if (!row) return;
   row.replaceChildren();
   row.classList.add("fb-row");
-  const b = btn("secondary fb-open", "Send feedback", () => openSheet(b));
+  const b = btn("secondary fb-open", t("feedback.send_feedback"), () => openSheet(b));
   b.setAttribute("aria-haspopup", "dialog");
-  row.append(b, el("small", "hint", "Tell us what you think. We read every message."));
+  row.append(b, el("small", "hint", t("feedback.tell_us_what_you_think_we_read_every")));
 }
 
 /* ---------- the sheet ---------- */
@@ -102,7 +103,7 @@ function ensureSheet() {
   if (!sheet) {
     sheet = el("aside", "sheet");
     sheet.hidden = true;
-    sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", "Send feedback");
+    sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", t("feedback.send_feedback"));
     (document.querySelector(".app") || document.body).append(sheet);
   }
   return sheet;
@@ -130,34 +131,34 @@ function openSheet(from) {
   sh.replaceChildren();
   sh.classList.add("fb-sheet");
   const head = el("div", "sheet-head");
-  head.append(el("b", null, "Send feedback"), btn("link", "Close", close));
+  head.append(el("b", null, t("feedback.send_feedback")), btn("link", t("feedback.close"), close));
   sh.append(head);
 
   const f = el("form", "fb-form");
   f.noValidate = true;
-  f.setAttribute("aria-label", "Send feedback");
-  f.append(el("p", "fb-lead", "Tell us what you think. We read every message."));
+  f.setAttribute("aria-label", t("feedback.send_feedback"));
+  f.append(el("p", "fb-lead", t("feedback.tell_us_what_you_think_we_read_every")));
 
-  const n = field("fbName", "Name", "(optional)");
+  const n = field("fbName", t("feedback.name"), t("feedback.optional"));
   const name = el("input"); name.id = "fbName"; name.name = "name"; name.type = "text"; name.maxLength = MAX_NAME; name.autocomplete = "name";
   name.value = str(draft.name) || str(who.name);
   n.wrap.append(n.l, name, n.err);
 
-  const e = field("fbEmail", "Email", "(optional)");
+  const e = field("fbEmail", t("feedback.email"), t("feedback.optional"));
   const email = el("input"); email.id = "fbEmail"; email.name = "email"; email.type = "email"; email.maxLength = MAX_EMAIL;
   email.autocomplete = "email"; email.inputMode = "email"; email.setAttribute("autocapitalize", "none"); email.setAttribute("spellcheck", "false");
   email.setAttribute("aria-describedby", "fbEmailHint fbEmailErr");
   email.value = str(draft.email) || str(who.email);
-  const eh = el("p", "fb-hint", "Only if you want a reply. We use it for nothing else.");
+  const eh = el("p", "fb-hint", t("feedback.only_if_you_want_a_reply_we_use_it_for"));
   eh.id = "fbEmailHint";
   // the whole notice, beside the promise: a new tab, so the form (and a drive in progress) stay as they are
-  const pv = el("a", "fb-privacy", "Privacy");
+  const pv = el("a", "fb-privacy", t("feedback.privacy"));
   pv.href = PRIVACY_URL; pv.target = "_blank"; pv.rel = "noopener";
   const ehRow = el("div", "fb-hint-row");
   ehRow.append(eh, pv);
   e.wrap.append(e.l, email, ehRow, e.err);
 
-  const m = field("fbMsg", "Message");
+  const m = field("fbMsg", t("feedback.message"));
   const msg = el("textarea"); msg.id = "fbMsg"; msg.name = "message"; msg.required = true; msg.rows = 6; msg.maxLength = MAX_MSG;
   msg.setAttribute("aria-describedby", "fbCount fbMsgErr");
   msg.value = str(draft.message).slice(0, MAX_MSG);
@@ -168,18 +169,18 @@ function openSheet(from) {
   // the honeypot: people never see it, tab to it or hear it; a bot that fills every field gives itself away
   const hp = el("div", "fb-hp");
   hp.setAttribute("aria-hidden", "true");
-  const hpl = el("label", null, "Leave this field empty");
+  const hpl = el("label", null, t("feedback.leave_this_field_empty"));
   hpl.htmlFor = "fbWebsite";
   const site = el("input"); site.id = "fbWebsite"; site.name = "website"; site.type = "text"; site.tabIndex = -1; site.autocomplete = "off"; site.value = "";
   hp.append(hpl, site);
 
   const status = el("p", "fb-status");
   status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
-  const send = el("button", "primary fb-send", "Send");
+  const send = el("button", "primary fb-send", t("feedback.send"));
   send.type = "submit";
   f.append(n.wrap, e.wrap, m.wrap, hp, status, send, el("p", "fine fb-ver", api && api.native && api.native.NATIVE
-    ? "Your message includes the app version and your iPhone's iOS version, so we know what you're using."
-    : `Your message includes the app version and your browser type, so we know what you're using.`));
+    ? t("feedback.your_message_includes_the_app_version")
+    : t("feedback.your_message_includes_the_app_version_2")));
   sh.append(f);
 
   form = { f, name, email, msg, site, count, status, send, errs: { name: n.err, email: e.err, message: m.err }, state: "idle" };
@@ -212,14 +213,14 @@ function showErrs(errs) {
 function paint() {
   if (!form) return;
   const len = form.msg.value.length;
-  form.count.textContent = `${len.toLocaleString("en-US")} / ${MAX_MSG.toLocaleString("en-US")}`;
+  form.count.textContent = `${len.toLocaleString(loc("en-US"))} / ${MAX_MSG.toLocaleString(loc("en-US"))}`;
   form.count.classList.toggle("near", len > MAX_MSG - 100);
   const off = offline();
   form.send.disabled = off || sending;
-  form.send.textContent = sending ? "Sending…" : "Send";
+  form.send.textContent = sending ? t("feedback.sending") : t("feedback.send");
   form.f.setAttribute("aria-busy", String(sending));
-  if (sending) setStatus("Sending…", "");
-  else if (off) setStatus("You're offline. Connect to send.", "off");
+  if (sending) setStatus(t("feedback.sending"), "");
+  else if (off) setStatus(t("feedback.youre_offline_connect_to_send"), "off");
   else if (form.state === "error") { /* the error words stay until the next try */ }
   else setStatus("", "");
 }
@@ -257,10 +258,10 @@ async function submit() {
     if (r.ok && j && j.ok === true) result = { ok: true };
     else {
       const words = j && typeof j.error === "string" ? j.error.replace(/\s+/g, " ").trim().slice(0, 240) : "";
-      result = { ok: false, text: words || (r.status === 429 ? "Too many messages right now. Please try again in a little while." : "That didn't go through. Please try again.") };
+      result = { ok: false, text: words || (r.status === 429 ? t("feedback.too_many_messages_right_now_please_try") : t("feedback.that_didnt_go_through_please_try_again")) };
     }
   } catch (e) {
-    result = { ok: false, text: e && e.name === "AbortError" ? "That took too long. Check your connection and try again." : "That didn't go through. Check your connection and try again." };
+    result = { ok: false, text: e && e.name === "AbortError" ? t("feedback.that_took_too_long_check_your") : t("feedback.that_didnt_go_through_check_your") };
   } finally { clearTimeout(timer); }
   sending = false;
   // The message is gone whichever form is showing: the sheet may have been closed and reopened while it was on its way,
@@ -287,10 +288,10 @@ function done() {
   form = null;
   const box = el("div", "fb-done");
   box.setAttribute("role", "status");
-  box.append(el("b", null, "Thanks."), el("p", null, "Your message is on its way to the Dominares team."));
+  box.append(el("b", null, t("feedback.thanks")), el("p", null, t("feedback.your_message_is_on_its_way_to_the")));
   const old = sh.querySelector(".fb-form");
   if (old) old.replaceWith(box); else sh.append(box);
-  const b = btn("primary", "Done", close);
+  const b = btn("primary", t("feedback.done"), close);
   box.append(b);
   try { b.focus({ preventScroll: true }); } catch {}
 }

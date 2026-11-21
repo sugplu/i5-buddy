@@ -1,6 +1,7 @@
 // Shared helpers for the Play tab and its games (js/play.js and js/games/*.js). Pure: no api, no storage, no state.
 
 /** Wrap fn so an error is logged and never thrown into the app. */
+import { t, loc } from "../i18n.js";
 export function safe(fn, label) {
   return (...args) => {
     try { return fn(...args); } catch (e) { console.error(`[play] ${label || "error"}`, e); }
@@ -122,9 +123,9 @@ export function shortName(p) {
 }
 /** "Nov 16" in the phone's language. */
 export function fmtDate(ms) {
-  try { return new Date(ms).toLocaleDateString(undefined, { month: "short", day: "numeric" }); } catch { return ""; }
+  try { return new Date(ms).toLocaleDateString(loc(undefined), { month: "short", day: "numeric" }); } catch { return ""; }
 }
-export const thousands = n => { try { return Math.round(n).toLocaleString("en-US"); } catch { return String(Math.round(n)); } };
+export const thousands = n => { try { return Math.round(n).toLocaleString(loc("en-US")); } catch { return String(Math.round(n)); } };
 const GENERIC = new Set("the and for with from that this near old new big little mount river lake creek valley park county city town road rest area north south east west bridge hills hill canyon springs station field fields country".split(" "));
 /** Words that make a name recognizable (for keeping look-alike answers out of one question). */
 export function sigWords(name) {
@@ -137,14 +138,14 @@ export function sameish(a, b) {
 }
 /** The token colors a player or a game can wear: [id, name, css variable, text color variable]. All from app.css. */
 export const COLORS = [
-  ["gold", "Yellow", "--accent", "--accent-fg"],
-  ["green", "Green", "--ok", "--on-cat"],
-  ["blue", "Blue", "--st-wa", "--on-cat"],
-  ["orange", "Orange", "--hist", "--on-cat"],
-  ["pink", "Pink", "--odd", "--on-cat"],
-  ["purple", "Purple", "--stop", "--on-cat"],
-  ["lime", "Lime", "--farm", "--on-cat"],
-  ["red", "Red", "--danger", "--on-cat"],
+  ["gold", t("games.kit.yellow"), "--accent", "--accent-fg"],
+  ["green", t("games.kit.green"), "--ok", "--on-cat"],
+  ["blue", t("games.kit.blue"), "--st-wa", "--on-cat"],
+  ["orange", t("games.kit.orange"), "--hist", "--on-cat"],
+  ["pink", t("games.kit.pink"), "--odd", "--on-cat"],
+  ["purple", t("games.kit.purple"), "--stop", "--on-cat"],
+  ["lime", t("games.kit.lime"), "--farm", "--on-cat"],
+  ["red", t("games.kit.red"), "--danger", "--on-cat"],
 ];
 export const colorStyle = id => {
   const c = COLORS.find(x => x[0] === id) || COLORS[0];

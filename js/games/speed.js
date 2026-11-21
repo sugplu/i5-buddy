@@ -1,6 +1,7 @@
 // Speed trivia: 10 questions from the same pool as classic trivia, a short clock on each one, a score at the end.
 // Store key "triviaSpeed": {best, rounds}. The classic score ("trivia") is not touched.
 
+import { t } from "../i18n.js";
 const ROUND = 10;     // questions in a round
 const SECS = 15;      // seconds for each question
 const RIGHT_HOLD = 1100, WRONG_HOLD = 1800;   // how long the answer stays up before the next question (ms)
@@ -32,7 +33,7 @@ export function create(ctx) {
     sp.deadline = sp.t0 + SECS * 1000;
     sp.timer = setInterval(tick, 200);
     render();
-    say(`Question ${sp.i + 1} of ${sp.qs.length}.`);
+    say(t("games.speed.question_x1_of_length", { x1: sp.i + 1, length: sp.qs.length }));
   }
   function tick() {
     if (sp.phase !== "play" || sp.picked != null) return;
@@ -48,7 +49,7 @@ export function create(ctx) {
     sp.picked = -1;
     ctx.buzz(60);
     render();
-    say("Time is up.");
+    say(t("games.speed.time_is_up"));
     sp.advance = setTimeout(safe(next, "speed next"), WRONG_HOLD);
   }
   function answer(i) {
@@ -66,7 +67,7 @@ export function create(ctx) {
       ctx.buzz(30);
     } else ctx.buzz(60);
     render();
-    say(ok ? "Right." : `Not quite. The answer is ${LET[q.answer]}: ${ct(q.choices[q.answer])}.`);
+    say(ok ? t("games.speed.right") : t("games.speed.not_quite_the_answer_is_x1_x2", { x1: LET[q.answer], x2: ct(q.choices[q.answer]) }));
     sp.advance = setTimeout(safe(next, "speed next"), ok ? RIGHT_HOLD : WRONG_HOLD);
     return ok;
   }
@@ -83,8 +84,8 @@ export function create(ctx) {
     ctx.save("triviaSpeed", { best: Math.max(r.best, sp.right), rounds: r.rounds + 1 });
     sp.phase = "done";
     render();
-    say(`That is ${sp.right} of ${n}.`);
-    if (n >= 5 && sp.right / n >= 0.8) ctx.cheer({ top: "SPEED TRIVIA", title: `${sp.right} OF ${n}`, sub: sp.newBest ? "A new best" : "Quick thinking" });
+    say(t("games.speed.that_is_right_of_n", { right: sp.right, n }));
+    if (n >= 5 && sp.right / n >= 0.8) ctx.cheer({ top: t("games.speed.speed_trivia"), title: t("games.speed.right_of_n", { right: sp.right, n }), sub: sp.newBest ? t("games.speed.a_new_best") : t("games.speed.quick_thinking") });
   }
 
   function render() {
@@ -92,56 +93,56 @@ export function create(ctx) {
     clockEl = numEl = null;
     host.append(live);
     if (sp.phase === "none") {
-      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, "No trivia questions yet."),
-        h("button", { class: "secondary", type: "button", onclick: safe(ctx.trivia.backToClassic, "back") }, "Back to classic")));
+      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, t("games.speed.no_trivia_questions_yet")),
+        h("button", { class: "secondary", type: "button", onclick: safe(ctx.trivia.backToClassic, "back") }, t("games.speed.back_to_classic"))));
       return;
     }
     if (sp.phase === "ready") return renderReady();
     if (sp.phase === "done") return renderDone();
     const q = sp.qs[sp.i], answered = sp.picked != null;
     const top = h("div", { class: "pl-sp-top" },
-      h("span", { class: "pl-sp-q" }, `Question ${sp.i + 1} of ${sp.qs.length}`),
-      h("span", { class: "pl-sp-score" }, h("b", null, sp.right), " right"));
+      h("span", { class: "pl-sp-q" }, t("games.speed.question_x1_of_length_2", { x1: sp.i + 1, length: sp.qs.length })),
+      h("span", { class: "pl-sp-score" }, h("b", null, sp.right), t("games.speed.right_2")));
     const left = Math.max(0, (sp.deadline - Date.now()) / 1000);
     numEl = h("b", { class: "pl-sp-n", "aria-hidden": "true" }, String(answered ? Math.ceil(sp.left || 0) : Math.ceil(left)));
     clockEl = h("div", { class: "pl-sp-clock" + (answered ? " stopped" : "") + (left <= 5 && !answered ? " low" : ""), "aria-hidden": "true" },
       h("div", { class: "pl-sp-bar" }, h("i", { style: answered ? `--left:${Math.max(0, Math.min(1, (sp.left || 0) / SECS))}` : `--dur:${left.toFixed(2)}s;--start:${Math.max(0, Math.min(1, left / SECS)).toFixed(3)}` })),
       numEl);
-    const opts = h("div", { class: "pl-opts", role: "group", "aria-label": "Answers" });
+    const opts = h("div", { class: "pl-opts", role: "group", "aria-label": t("games.speed.answers") });
     q.choices.forEach((c, i) => {
       let state = "";
       if (answered) state = i === q.answer ? "right" : i === sp.picked ? "wrong" : "dim";
-      const label = `${LET[i]}. ${ct(c)}` + (state === "right" ? ", correct answer" : state === "wrong" ? ", your answer, wrong" : "");
+      const label = `${LET[i]}. ${ct(c)}` + (state === "right" ? t("games.speed.correct_answer") : state === "wrong" ? t("games.speed.your_answer_wrong") : "");
       opts.append(h("button", { class: `pl-opt ${state}`, type: "button", "data-i": i, disabled: answered, "aria-label": label },
         h("span", { class: "pl-let", "aria-hidden": "true" }, LET[i]),
         h("span", { class: "pl-opt-t", "aria-hidden": "true" }, ct(c)),
         state === "right" ? icon("check", "pl-ic pl-mark") : state === "wrong" ? icon("cross", "pl-ic pl-mark") : null));
     });
     host.append(h("div", { class: "pl-q pl-sp-card" }, top, clockEl, h("h3", { class: "pl-qt" }, q.q), opts,
-      answered && sp.picked === -1 ? h("p", { class: "pl-note", role: "status" }, "Time is up. The answer is highlighted.") : null));
+      answered && sp.picked === -1 ? h("p", { class: "pl-note", role: "status" }, t("games.speed.time_is_up_the_answer_is_highlighted")) : null));
   }
   function renderReady() {
     const r = rec();
     host.append(h("div", { class: "pl-sp-ready" },
       h("div", { class: "pl-sp-sign" },
-        h("span", { class: "pl-sp-kicker" }, "Speed round"),
-        h("b", null, `${Math.min(ROUND, ctx.trivia.questions().length || ROUND)} questions`),
-        h("span", null, `${SECS} seconds each`)),
-      h("p", { class: "pl-why" }, "Same questions as classic trivia, but the clock is running. A right answer scores one point."),
-      r.rounds ? h("p", { class: "pl-sp-best" }, `Best round ${r.best} of ${ROUND} · ${r.rounds} ${r.rounds === 1 ? "round" : "rounds"} played`) : null,
-      h("button", { class: "primary pl-sp-go", type: "button", "data-k": "start", onclick: safe(start, "speed start") }, "Start the round")));
+        h("span", { class: "pl-sp-kicker" }, t("games.speed.speed_round")),
+        h("b", null, t("games.speed.round_questions", { ROUND: Math.min(ROUND, ctx.trivia.questions().length || ROUND) })),
+        h("span", null, t("games.speed.secs_seconds_each", { SECS }))),
+      h("p", { class: "pl-why" }, t("games.speed.same_questions_as_classic_trivia_but")),
+      r.rounds ? h("p", { class: "pl-sp-best" }, t("games.speed.best_round_best_of_round_rounds_x1", { best: r.best, ROUND, rounds: r.rounds, x1: r.rounds === 1 ? t("games.speed.round") : t("games.speed.rounds") })) : null,
+      h("button", { class: "primary pl-sp-go", type: "button", "data-k": "start", onclick: safe(start, "speed start") }, t("games.speed.start_the_round"))));
   }
   function renderDone() {
     const n = sp.qs.length, r = rec();
     host.append(h("div", { class: "pl-sp-done" },
       h("div", { class: "pl-sp-sign" },
-        h("span", { class: "pl-sp-kicker" }, sp.newBest ? "A new best" : "Round complete"),
-        h("b", { class: "pl-sp-big" }, `${sp.right} of ${n}`),
-        h("span", null, sp.right === n ? "Every one right" : sp.right >= n * 0.7 ? "Quick thinking" : sp.right >= n * 0.4 ? "Not bad for a clock" : "The road has more to teach you")),
-      h("p", { class: "pl-why" }, [sp.fastest != null ? `Fastest right answer: ${(sp.fastest / 1000).toFixed(1)} seconds.` : "No right answers this time.", ` Best round: ${r.best} of ${ROUND}.`].join("")),
+        h("span", { class: "pl-sp-kicker" }, sp.newBest ? t("games.speed.a_new_best") : t("games.speed.round_complete")),
+        h("b", { class: "pl-sp-big" }, t("games.speed.right_of_n_2", { right: sp.right, n })),
+        h("span", null, sp.right === n ? t("games.speed.every_one_right") : sp.right >= n * 0.7 ? t("games.speed.quick_thinking") : sp.right >= n * 0.4 ? t("games.speed.not_bad_for_a_clock") : t("games.speed.the_road_has_more_to_teach_you"))),
+      h("p", { class: "pl-why" }, [sp.fastest != null ? t("games.speed.fastest_right_answer_x1_seconds", { x1: (sp.fastest / 1000).toFixed(1) }) : t("games.speed.no_right_answers_this_time"), t("games.speed.best_round_best_of_round", { best: r.best, ROUND })].join("")),
       h("div", { class: "pl-row pl-sp-acts" },
-        h("button", { class: "primary", type: "button", "data-k": "again", onclick: safe(start, "speed again") }, icon("shuffle"), "Play again"),
-        h("button", { class: "secondary", type: "button", onclick: safe(ctx.trivia.backToClassic, "back") }, "Back to classic"))));
+        h("button", { class: "primary", type: "button", "data-k": "again", onclick: safe(start, "speed again") }, icon("shuffle"), t("games.speed.play_again")),
+        h("button", { class: "secondary", type: "button", onclick: safe(ctx.trivia.backToClassic, "back") }, t("games.speed.back_to_classic")))));
   }
   host.addEventListener("click", safe(e => {
     const b = e.target.closest("button[data-i]");

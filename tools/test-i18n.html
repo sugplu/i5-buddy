@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>I-5 Buddy language layer test</title>
+<!--
+  The language layer (3.1.0, js/i18n.js). Results: bottom bar + console "[test-i18n] ...".
+  ?s=keys   key coverage: every t("key") / data-i18n key the app uses is in i18n/en.json, i18n/es.json has the same keys,
+            a filled Spanish value keeps the English {placeholders}, no unused English keys, the files in sw.js SHELL
+            (data/i5.es.js not: it loads on demand), data/i5.es.js from the same build as data/i5.js, and in English every
+            marked element of index.html shows exactly its en.json words (the English page is unchanged)
+  ?s=es     Spanish end to end: English first; Settings > Language > Español restarts the app in Spanish (html lang,
+            saved); the tabs, Settings, Drive's next card, the Ahead list, the Missions passport and the Play tab show
+            the Spanish words; a drive tick speaks the Spanish words and story through the stubbed speech, in a Spanish
+            voice and never the English recordings; a key Spanish leaves empty shows its English; Ask Buddy's button
+            says it answers in English; Spanish times come from Intl
+  ?s=kids   Stories for kids: off by default; on, a place's kids text replaces its story (Drive card, Ahead, the place
+            sheet, the spoken heads-up, Hear it) and the long story is not played after it; a place without kids text
+            keeps its story; Tell me more still tells the long story; in Spanish the Spanish kids text, never the English
+  The Spanish words here are test fixtures (window.__BUDDY_I18N__), laid over i18n/es.json: the test does not depend
+  on what the content step wrote. Nothing is heard: speech goes to the silent engine (js/voice.js).
+-->
+<style>
+  html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
+  #f{display:block;width:390px;height:844px;border:0;background:#000}
+  #bar{position:fixed;left:0;right:0;bottom:0;height:26px;padding:6px 8px;box-sizing:border-box;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#111}
+  #bar.pass{background:#0b6e3f}
+  #bar.fail{background:#9b1d16}
+</style>
+<script src="../data/i5.js"></script>
+</head>
+<body>
+<iframe id="f" title="I-5 Buddy under test"></iframe>
+<div id="bar">starting…</div>
+<script type="module">
+const Q = new URLSearchParams(location.search), SCEN = Q.get("s") || "keys";
+const f = document.getElementById("f");
+const wait = ms => new Promise(r => setTimeout(r, ms));
+async function until(fn, ms = 8000, step = 40) {
+  const t0 = performance.now();
+  for (;;) { let v; try { v = fn(); } catch {} if (v) return v; if (performance.now() - t0 > ms) return null; await wait(step); }
+}
+const checks = [];
+function log(...a) { console.log("[test-i18n] " + a.map(x => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); }
+function check(name, ok, extra = "") { checks.push([name, !!ok]); log(`${ok ? "PASS" : "FAIL"} ${name}${extra ? " · " + String(extra).slice(0, 300) : ""}`); }
+function finish(err) {
+  if (err) check("no error: " + (err && err.message || err), false, err && err.stack);
+  const bad = checks.filter(c => !c[1]).length, bar = document.getElementById("bar");
+  bar.className = bad || !checks.length ? "fail" : "pass";
+  bar.textContent = `${SCEN} · ${checks.length - bad}/${checks.length} pass${bad ? " · FAIL: " + checks.filter(c => !c[1]).map(c => c[0]).join(", ") : ""}`;
+  log(bad || !checks.length ? `RESULT FAILED ${bad}` : `RESULT ALL PASS (${checks.length})`);
+}
+const txt = n => (n ? n.textContent.replace(/\s+/g, " ").trim() : "");
+const norm = s => String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+const getText = async p => { const r = await fetch(p, { cache: "no-store" }); return r.ok ? r.text() : null; };
+const getJSON = async p => { try { const t = await getText(p); return t == null ? null : JSON.parse(t); } catch { return null; } };
+const holes = s => [...String(s).matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort().join(",");
+
+/** Boot the app in the iframe (a real address, so a language switch can reload it) and wait for its api. */
+async function boot(settings, lang) {
+  localStorage.clear();
+  localStorage.setItem("i5b:settings", JSON.stringify({ live: false, theme: "dark", chime: false, ...settings }));
+  if (lang) localStorage.setItem("i5b:lang", JSON.stringify(lang));
+  f.src = "../index.html?silent=1&t=" + Math.random();
+  const ok = await until(() => f.contentWindow && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api && f.contentWindow.I5BUDDY.api.missions && f.contentWindow.I5BUDDY.api.play !== undefined, 30000);
+  await wait(300);
+  return ok ? { win: f.contentWindow, doc: f.contentDocument, api: f.contentWindow.I5BUDDY.api } : null;
+}
+/** The spoken lines since `from` (silent engine: window.__BUDDY_SPOKEN_META__, here in the top window). */
+const spokenSince = from => (window.__BUDDY_SPOKEN_META__ || []).slice(from);
+
+/* A place on I-5 to talk about: visible, on one side, not a turn-off, with a story to tell, mid-road. */
+const PL = (window.I5DATA && window.I5DATA.places) || [];
+function pickPlace(minM, maxM, needMore) {
+  // alone on its stretch: nothing else in the 3 miles before it, so it is the next card and the only heads-up at 1 mile
+  return PL.find(p => p.m > minM && p.m < maxM && p.vis && p.side && !p.detour && (!needMore || p.more)
+    && !PL.some(q => q !== p && q.m > p.m - 3 && q.m <= p.m + 0.05));
+}
+
+const SCENARIOS = {
+  /* ---------------------------------------------------------------- keys */
+  async keys() {
+    const en = await getJSON("../i18n/en.json"), es = await getJSON("../i18n/es.json");
+    check("i18n/en.json and i18n/es.json load as dictionaries", en && es && typeof en === "object" && typeof es === "object" && Object.keys(en).length > 1000,
+      `${en ? Object.keys(en).length : "no"} English, ${es ? Object.keys(es).length : "no"} Spanish keys`);
+    if (!en || !es) return;
+    const sw = await getText("../sw.js");
+    const shell = JSON.parse("[" + /const SHELL = \[([\s\S]*?)\];/.exec(sw)[1].replace(/\/\/.*$/gm, "").replace(/,\s*$/, "") + "]");
+    const jsFiles = shell.filter(u => /^js\/.*\.js$/.test(u));
+    check("sw.js SHELL saves js/i18n.js and both dictionaries; data/i5.es.js loads on demand (not in SHELL)",
+      ["js/i18n.js", "i18n/en.json", "i18n/es.json"].every(u => shell.includes(u)) && !shell.includes("data/i5.es.js") && jsFiles.length > 25, jsFiles.length + " js files");
+    // every key the code asks for (t("ns.key"), i18n.t("ns.key"), en("ns.key")) and every key index.html marks
+    const used = new Map();
+    for (const u of jsFiles) {
+      const src = await getText("../" + u);
+      if (src == null) { check("app file loads: " + u, false); continue; }
+      for (const m of src.matchAll(/(?<![\w$.])(?:i18n\.)?(?:t|en)\(\s*"([a-z0-9_]+(?:\.[a-z0-9_]+)+)"/g)) if (!used.has(m[1])) used.set(m[1], u);
+    }
+    const html = await getText("../index.html");
+    for (const m of html.matchAll(/data-i18n(?:-html)?="([^"]+)"/g)) if (!used.has(m[1])) used.set(m[1], "index.html");
+    for (const m of html.matchAll(/data-i18n-attr="([^"]+)"/g)) for (const pair of m[1].split(";")) { const k = pair.split(":").slice(1).join(":").trim(); if (k && !used.has(k)) used.set(k, "index.html"); }
+    const missing = [...used.keys()].filter(k => typeof en[k] !== "string" || !en[k].trim());
+    check("every key the app uses is in i18n/en.json with English words", used.size > 2000 && !missing.length, `${used.size} keys used; missing: ${missing.map(k => k + " (" + used.get(k) + ")").join(", ")}`);
+    const unused = Object.keys(en).filter(k => !used.has(k));
+    check("i18n/en.json has no key the app does not use", !unused.length, unused.slice(0, 20).join(", "));
+    const enK = Object.keys(en), esK = Object.keys(es);
+    const noEs = enK.filter(k => !(k in es)), extra = esK.filter(k => !(k in en));
+    check("i18n/es.json has exactly the keys of i18n/en.json", !noEs.length && !extra.length, `missing in es: ${noEs.slice(0, 10).join(", ")} · extra: ${extra.slice(0, 10).join(", ")}`);
+    check("every i18n/es.json value is a string (empty = not translated yet, English shows)", esK.every(k => typeof es[k] === "string"));
+    const badHoles = esK.filter(k => typeof es[k] === "string" && es[k].trim() && typeof en[k] === "string" && holes(es[k]) !== holes(en[k]));
+    check("a filled Spanish value keeps the English {placeholders}", !badHoles.length, badHoles.slice(0, 10).map(k => `${k}: ${holes(en[k])} vs ${holes(es[k])}`).join("; "));
+    const filled = esK.filter(k => typeof es[k] === "string" && es[k].trim()).length;
+    log(`Spanish words filled: ${filled} of ${esK.length}`);
+    // the Spanish road data: same build as data/i5.js
+    const esData = await getText("../data/i5.es.js");
+    let X = null;
+    try { X = JSON.parse(esData.slice(esData.indexOf("=") + 1).trim().replace(/;$/, "")); } catch {}
+    check("data/i5.es.js is window.I5DATA_ES from the same build as data/i5.js", !!X && /window\.I5DATA_ES=/.test(esData) && X.lang === "es" && X.version === (window.I5DATA && window.I5DATA.version)
+      && X.places && X.zones && X.trivia && X.missions && X.dests, X ? `${X.version} / ${window.I5DATA && window.I5DATA.version}` : "no data");
+    if (X) {
+      const ids = new Set(PL.map(p => p.id));
+      const stray = Object.keys(X.places).filter(id => !ids.has(id));
+      check("data/i5.es.js names only places that are in data/i5.js", !stray.length, stray.slice(0, 5).join(", "));
+    }
+    // the English app: index.html's marked words are exactly en.json's, and no key shows as text
+    const B = await boot({ narr: false });
+    check("the app starts in English on an English phone (html lang en, saved)", B && B.doc.documentElement.lang === "en" && localStorage.getItem("i5b:lang") === '"en"', B && B.doc.documentElement.lang);
+    if (!B) return;
+    const { doc, api } = B;
+    const wrongText = [], wrongAttr = [], wrongHtml = [];
+    const src = new DOMParser().parseFromString(html, "text/html"); // index.html as written (the app changes some of it at once)
+    for (const el of src.querySelectorAll("[data-i18n]")) if (norm(el.textContent) !== en[el.dataset.i18n]) wrongText.push(`${el.dataset.i18n}: "${norm(el.textContent)}"`);
+    for (const el of src.querySelectorAll("[data-i18n-html]")) if (norm(el.innerHTML) !== en[el.dataset.i18nHtml]) wrongHtml.push(el.dataset.i18nHtml);
+    for (const el of src.querySelectorAll("[data-i18n-attr]")) for (const pair of el.dataset.i18nAttr.split(";")) {
+      const [a, k] = pair.split(":").map(x => x.trim());
+      if (el.getAttribute(a) !== en[k]) wrongAttr.push(`${a}=${k}`);
+    }
+    check("index.html: every marked text, markup and attribute is its en.json words (the English page is unchanged)",
+      src.querySelectorAll("[data-i18n]").length > 80 && !wrongText.length && !wrongAttr.length && !wrongHtml.length,
+      [...wrongText, ...wrongAttr, ...wrongHtml].slice(0, 8).join(" | "));
+    const tabs = [...doc.querySelectorAll(".tabs button")].map(txt).join(",");
+    check("English tabs as before", tabs === "Drive,Ahead,Map,Passport,Play", tabs);
+    // no raw key anywhere the app has drawn (Drive, Ahead, Map, Passport, Play, Settings)
+    const keyRx = /\b(?:main|nar|data|live|map|map3d|missions|nav|play|trip|ride|roadahead|share|feedback|native|voice|listen|html|games)\.[a-z0-9_]+\b/;
+    const seen = [];
+    for (const tab of ["drive", "ahead", "map", "passport", "play"]) {
+      api.ui.go(tab); await wait(400);
+      const v = doc.querySelector(`[data-view="${tab}"]`);
+      const m = keyRx.exec(v ? v.textContent : "");
+      if (m) seen.push(`${tab}: ${m[0]}`);
+    }
+    api.ui.go("drive");
+    doc.getElementById("openSettings").click(); await wait(200);
+    const ms = keyRx.exec(doc.getElementById("settings").textContent);
+    if (ms) seen.push("settings: " + ms[0]);
+    check("no tab or Settings shows a raw key", !seen.length, seen.join(", "));
+    check("Settings > Language offers English and Español, each in its own language, English pressed",
+      [...doc.querySelectorAll("[data-lang-set]")].map(b => `${b.textContent}/${b.lang}/${b.getAttribute("aria-pressed")}`).join(",") === "English/en/true,Español/es/false");
+    check("the Ask Buddy note under Language is for Spanish only", doc.getElementById("langHint").hidden === true);
+  },
+
+  /* ---------------------------------------------------------------- es */
+  async es() {
+    const P = pickPlace(300, 420);
+    check("a test place on I-5", !!P, P && P.id);
+    if (!P) return;
+    const FIX = {
+      "html.drive": "Manejar", "html.ahead": "Adelante", "html.map": "Mapa", "html.passport": "Pasaporte", "html.play": "Juegos",
+      "html.settings": "Ajustes", "html.language": "Idioma", "html.narration": "Narración", "html.start_gps": "Iniciar GPS",
+      "html.ask_buddy_the_microphone_listens": "Ask Buddy (el micrófono) escucha y responde en inglés por ahora.",
+      "html.done": "",   // a key Spanish leaves empty: its English shows
+      "html.stories_for_kids": "Historias para niños",
+      "nar.in_about_dist_where": "En aproximadamente {dist}, {where}", "nar.a_mile": "una milla", "nar.n_miles": "{n} millas",
+      "nar.on_your_side": "a su {side}", "nar.off_to_your_side": "a lo lejos, a su {side}", "nar.nearby": "cerca",
+      "data.left": "izquierda", "data.right": "derecha",
+      "data.history": "Historia", "data.orchards_farms": "Huertos y granjas", "data.land_water": "Tierra y agua", "data.towns": "Pueblos",
+      "data.good_stops": "Buenas paradas", "data.oddities": "Curiosidades",
+      "missions.mission_passport": "Pasaporte de misiones",
+      "play.road_bingo": "Lotería del camino", "play.trivia": "Preguntas", "play.car_party": "Fiesta en el auto",
+      "listen.button_english": "Hablar con I-5 Buddy (escucha y responde en inglés)",
+      "main.every_stop_south_to_north": "Cada parada, de sur a norte",
+    };
+    const NAME = "Lugar de prueba", TEXT = "Texto de prueba en español para este lugar.";
+    window.__BUDDY_I18N__ = { es: FIX, data: { places: { [P.id]: { name: NAME, text: TEXT } } } };
+    let B = await boot({ narr: true, autoStories: false, lead: 2 });
+    check("the app starts in English", B && B.doc.documentElement.lang === "en" && txt(B.doc.querySelector('.tabs [data-go="drive"]')) === "Drive");
+    if (!B) return;
+    // Settings > Language > Español: saved, and the app starts again in Spanish
+    B.doc.getElementById("openSettings").click();
+    await wait(200);
+    const old = B.win;
+    B.doc.querySelector('[data-lang-set="es"]').click();
+    const back = await until(() => f.contentWindow !== old || f.contentDocument.documentElement.lang === "es" ? (f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api && f.contentWindow.I5BUDDY.api.missions && f.contentDocument.documentElement.lang === "es") : false, 30000);
+    await wait(400);
+    const win = f.contentWindow, doc = f.contentDocument, api = back ? win.I5BUDDY.api : null;
+    check("Español restarts the app in Spanish: html lang es, saved in the store", !!api && doc.documentElement.lang === "es" && localStorage.getItem("i5b:lang") === '"es"', doc.documentElement.lang);
+    if (!api) return;
+    const tabs = [...doc.querySelectorAll(".tabs button")].map(txt).join(",");
+    check("the tabs in Spanish", tabs === "Manejar,Adelante,Mapa,Pasaporte,Juegos", tabs);
+    check("Drive: Start GPS in Spanish", txt(doc.getElementById("startGps")) === "Iniciar GPS", txt(doc.getElementById("startGps")));
+    // Settings
+    doc.getElementById("openSettings").click(); await wait(200);
+    const st = doc.getElementById("settings");
+    const heads = [...st.querySelectorAll("h3.sub")].map(txt);
+    check("Settings in Spanish: its title, Language and Narration", txt(st.querySelector(".sheet-head b")) === "Ajustes" && heads[0] === "Idioma" && heads[1] === "Narración", heads.slice(0, 3).join(","));
+    check("Settings > Language: Español pressed, the Ask Buddy note shows", st.querySelector('[data-lang-set="es"]').getAttribute("aria-pressed") === "true"
+      && st.querySelector('[data-lang-set="en"]').getAttribute("aria-pressed") === "false" && !doc.getElementById("langHint").hidden
+      && txt(doc.getElementById("langHint")) === FIX["html.ask_buddy_the_microphone_listens"]);
+    check("a key Spanish leaves empty shows its English (Done)", txt(doc.getElementById("closeSettings")) === "Done", txt(doc.getElementById("closeSettings")));
+    check("Stories for kids in Spanish", txt(doc.getElementById("kidStories").parentElement) === "Historias para niños");
+    const vl = api.voice.list();
+    check("Spanish voices only, no English recording voice (the device's Spanish voice reads)", api.voice.settingKey === "voiceEs" && !vl.some(v => v.natural) && vl.every(v => /^es/i.test(v.lang)) && !api.voice.natural(),
+      vl.map(v => v.name + " " + v.lang).join(", "));
+    doc.getElementById("closeSettings").click();
+    // the Spanish data is laid over the road data, the English kept in en
+    const p = api.data.placeById(P.id);
+    check("the Spanish story is laid over the place, the English kept", p && p.name === NAME && p.text === TEXT && p.en && p.en.text === P.text && p.en.name === P.name);
+    const ms = api.data.MISSIONS.find(m => m.n === 1);
+    check("missions get their Spanish names from data/i5.es.js", ms && ms.name === "Misión San Diego de Alcalá" && ms.en && /^Mission /.test(ms.en.name), ms && ms.name);
+    // a drive tick: the heads-up is said in Spanish, with the Spanish story, in a Spanish voice
+    const from = (window.__BUDDY_SPOKEN_META__ || []).length;
+    api.setMode("manual");
+    api.setPosition(P.m - 3, { dir: "N", speed: 60, jumped: true });
+    await wait(300);
+    api.setPosition(P.m - 1, { dir: "N", speed: 60 });
+    const side = P.side === 1 ? "derecha" : "izquierda";
+    const want = `En aproximadamente una milla, a su ${side}: ${NAME}. ${TEXT}`;
+    const hit = await until(() => spokenSince(from).find(x => x.text.includes(TEXT)), 20000);
+    check("a drive tick speaks the Spanish heads-up and story", hit && hit.text === want, hit ? hit.text : spokenSince(from).map(x => x.text).join(" | "));
+    check("it is read in Spanish (the utterance's language)", hit && /^es/i.test(hit.lang), hit && hit.lang + " " + hit.voice);
+    check("Drive's next card shows the Spanish name and story", (await until(() => txt(doc.getElementById("nextCard")).includes(TEXT), 4000)) && txt(doc.getElementById("nextCard")).includes(NAME),
+      txt(doc.getElementById("nextCard")).slice(0, 160));
+    // Places: the Ahead list
+    api.ui.go("ahead"); await wait(500);
+    const row = doc.querySelector(`#aheadList li[data-id="${CSS.escape(P.id)}"]`);
+    const catEs = { hist: "Historia", farm: "Huertos y granjas", nature: "Tierra y agua", town: "Pueblos", stop: "Buenas paradas", odd: "Curiosidades" }[P.cat];
+    check("Ahead: the place in Spanish, with its Spanish category and side", row && txt(row).includes(TEXT) && txt(row).includes(NAME) && txt(row.querySelector(".m")).startsWith(catEs), row ? txt(row).slice(0, 160) : "no row");
+    // the place sheet
+    api.ui.placeSheet(p); await wait(200);
+    check("the place sheet: the Spanish story, and the side in Spanish", txt(doc.querySelector("#moreSheet .lead")) === TEXT && /derecha|izquierda/.test(txt(doc.querySelector("#moreSheet .meta"))), txt(doc.querySelector("#moreSheet .meta")));
+    api.ui.closeSheet();
+    // Missions
+    api.ui.go("passport"); await wait(500);
+    check("Missions: the passport in Spanish, with Spanish mission names", txt(doc.getElementById("missionsPassport")).includes("Pasaporte de misiones") && txt(doc.getElementById("missionsPassport")).includes("San Diego de Alcalá"),
+      txt(doc.getElementById("missionsPassport")).slice(0, 120));
+    // Games
+    api.ui.go("play"); await wait(800);
+    const play = txt(doc.getElementById("view-play"));
+    check("Play: the games in Spanish", play.includes("Lotería del camino") && play.includes("Preguntas") && play.includes("Fiesta en el auto"), play.slice(0, 160));
+    api.ui.go("drive");
+    // Ask Buddy stays English and says so
+    const mic = doc.getElementById("micBtn");
+    check("Ask Buddy's button says it listens and answers in English", mic.hidden || (mic.getAttribute("aria-label") === FIX["listen.button_english"] && mic.title === FIX["listen.button_english"]), mic.hidden ? "no speech recognition here" : mic.getAttribute("aria-label"));
+    // numbers and times through Intl in Spanish (the same module, in this page)
+    const i18n = await import("../js/i18n.js");
+    const at = new Date(2026, 10, 21, 15, 5);
+    const es = at.toLocaleTimeString(i18n.loc([]), { hour: "numeric", minute: "2-digit" }), en = at.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+    check("times through Intl in Spanish (not the English 3:05 PM)", i18n.LANG === "es" && /3:05|15:05/.test(es) && es !== en && (1234.5).toLocaleString(i18n.loc("en-US")) === (1234.5).toLocaleString(i18n.ES_LOCALES), `${es} / ${en}`);
+    check("t(): a key with blanks fills them, a key Spanish lacks shows English", i18n.t("nar.on_your_side", { side: "derecha" }) === "a su derecha" && i18n.t("html.done") === "Done" && i18n.en("html.drive") === "Drive");
+    // back to English: the choice is saved and the app restarts in it
+    doc.getElementById("openSettings").click(); await wait(200);
+    const w2 = f.contentWindow;
+    doc.querySelector('[data-lang-set="en"]').click();
+    const enBack = await until(() => (f.contentWindow !== w2 || f.contentDocument.documentElement.lang === "en") && f.contentWindow.I5BUDDY && f.contentDocument.documentElement.lang === "en" && f.contentWindow.I5BUDDY.api.missions, 30000);
+    await wait(300);
+    const tabsEn = [...f.contentDocument.querySelectorAll(".tabs button")].map(txt).join(",");
+    check("English again: saved, tabs in English, the English story back", !!enBack && localStorage.getItem("i5b:lang") === '"en"' && tabsEn === "Drive,Ahead,Map,Passport,Play"
+      && f.contentWindow.I5BUDDY.api.data.placeById(P.id).text === P.text, tabsEn);
+  },
+
+  /* ---------------------------------------------------------------- kids */
+  async kids() {
+    const P = pickPlace(420, 560, true), R = PL.find(x => x !== P && x.m > 560 && x.vis && x.side && !x.detour);
+    check("two test places", !!P && !!R, `${P && P.id} / ${R && R.id}`);
+    if (!P || !R) return;
+    const KIDS = "Kids story: a short, friendly version of this place for young riders.";
+    const B = await boot({ narr: true, autoStories: true, lead: 2 });
+    if (!B) { check("the app starts", false); return; }
+    const { doc, api } = B;
+    const box = doc.getElementById("kidStories");
+    check("Settings > Stories for kids: there, off by default", !!box && box.checked === false && api.settings.kidStories === false && txt(box.parentElement) === "Stories for kids");
+    const p = api.data.placeById(P.id), r = api.data.placeById(R.id);
+    p.kids = KIDS;   // the content step fills `kids`; here it is set on the loaded data
+    check("off: the place's own story", api.narrator.storyOf(p) === p.text && api.narrator.moreOf(p) === (p.more || ""));
+    // turn it on from Settings
+    doc.getElementById("openSettings").click(); await wait(150);
+    box.click(); await wait(100);
+    doc.getElementById("closeSettings").click();
+    const saved = JSON.parse(localStorage.getItem("i5b:settings") || "{}");
+    check("on: saved in the settings", api.settings.kidStories === true && saved.kidStories === true);
+    check("on: the kids text replaces the story; no long story after it", api.narrator.storyOf(p) === KIDS && api.narrator.moreOf(p) === "");
+    check("a place without kids text keeps its story and its long story", api.narrator.storyOf(r) === r.text && api.narrator.moreOf(r) === (r.more || ""));
+    const intro = api.narrator.announceText(p, 1, "N");
+    check("the heads-up tells the kids text", intro.includes(KIDS) && !intro.includes(p.text), intro);
+    // a drive tick: kids text spoken, the long story not played after it
+    const from = (window.__BUDDY_SPOKEN_META__ || []).length;
+    api.setMode("manual");
+    api.setPosition(P.m - 3, { dir: "N", speed: 60, jumped: true });
+    await wait(300);
+    api.setPosition(P.m - 1, { dir: "N", speed: 60 });
+    const hit = await until(() => spokenSince(from).find(x => x.text.includes(KIDS)), 20000);
+    await wait(1500);
+    const moreHead = p.more ? p.more.slice(0, 40) : null;   // long lines are spoken in chunks: look for its start
+    check("a drive tick speaks the kids text, without the long story", hit && hit.text.endsWith(KIDS) && (!moreHead || !spokenSince(from).some(x => x.text.includes(moreHead))),
+      hit ? hit.text.slice(-160) : spokenSince(from).map(x => x.text.slice(0, 60)).join(" | "));
+    await until(() => txt(doc.getElementById("nextCard")).includes(KIDS), 3000);
+    check("Drive's next card shows the kids text", txt(doc.getElementById("nextCard")).includes(KIDS));
+    api.ui.go("ahead"); await wait(400);
+    const row = doc.querySelector(`#aheadList li[data-id="${CSS.escape(P.id)}"]`);
+    check("Ahead shows the kids text", row && txt(row).includes(KIDS), row ? txt(row).slice(0, 120) : "no row");
+    api.ui.go("drive");
+    api.ui.placeSheet(p); await wait(150);
+    check("the place sheet leads with the kids text", txt(doc.querySelector("#moreSheet .lead")) === KIDS);
+    api.ui.closeSheet();
+    const h0 = (window.__BUDDY_SPOKEN_META__ || []).length;
+    api.narrator.hear(p);
+    const heard = await until(() => spokenSince(h0).find(x => x.text.startsWith(p.name)), 6000);
+    check("Hear it says the kids text", heard && heard.text === `${p.name}. ${KIDS}`, heard && heard.text);
+    if (p.more) {
+      const m0 = (window.__BUDDY_SPOKEN_META__ || []).length;
+      api.narrator.tellMore(p);
+      const more = await until(() => spokenSince(m0).find(x => x.text.includes(p.more.slice(0, 40))), 6000);
+      check("Tell me more still tells the long story (asked for)", !!more);
+    }
+    // off again: the story is back
+    doc.getElementById("openSettings").click(); await wait(150);
+    box.click(); await wait(100);
+    doc.getElementById("closeSettings").click();
+    check("off again: the story is back", api.settings.kidStories === false && api.narrator.storyOf(p) === p.text && !api.narrator.announceText(p, 1, "N").includes(KIDS));
+    // Spanish: the Spanish kids text, never the English one (js/i18n.js localizeData, in this page's own copy of the module)
+    localStorage.setItem("i5b:lang", JSON.stringify("es"));
+    window.__BUDDY_I18N__ = { data: { places: { k1: { text: "T1 es", kids: "K1 es" }, k2: { text: "T2 es" } } } };
+    const i18n = await import("../js/i18n.js");
+    const D = { version: "test", places: [{ id: "k1", text: "T1", kids: "K1" }, { id: "k2", text: "T2", kids: "K2" }, { id: "k3", text: "T3", kids: "K3" }] };
+    i18n.localizeData(D);
+    const [k1, k2, k3] = D.places;
+    check("Spanish: the Spanish kids text replaces the English one", i18n.LANG === "es" && k1.kids === "K1 es" && k1.text === "T1 es" && k1.en.kids === "K1");
+    check("Spanish: a place with no Spanish kids text has none (never the English), and its Spanish story", !("kids" in k2) && k2.text === "T2 es" && k2.en.kids === "K2" && !("kids" in k3) && k3.text === "T3");
+  },
+};
+
+(async () => {
+  try {
+    await (SCENARIOS[SCEN] || (async () => check("unknown scenario " + SCEN, false)))();
+  } catch (e) { finish(e); return; }
+  finish();
+})();
+</script>
+</body>
+</html>

@@ -121,6 +121,10 @@ SUITE = [
     ("road findings", "test-roadfindings.html", 90000, "900,960", True),
     # 2026-11-20 code review (claude-power/runs/review-code-i5-command-2026-11-20.md): one check per fix (I01-I17)
     ("review fixes", "test-review.html", 180000, "900,960", True),
+    # 3.1.0: the language layer (js/i18n.js): key coverage, Spanish end to end, Stories for kids (silent; Spanish words are fixtures)
+    ("i18n keys", "test-i18n.html?s=keys", 90000, "500,900", True),
+    ("i18n spanish", "test-i18n.html?s=es", 180000, "500,900", True),
+    ("i18n kids", "test-i18n.html?s=kids", 120000, "500,900", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
     ("live traffic", "test-live.html?s=traffic", 800000, "900,960", False),

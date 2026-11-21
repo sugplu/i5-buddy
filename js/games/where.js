@@ -2,6 +2,7 @@
 // stretch of road when there are any), then the place's first sentence and a button to open its page.
 // A round is 10 photos. Store key "where": {best, rounds, right}. The photo's credit stays on screen, as everywhere else.
 
+import { t } from "../i18n.js";
 const ROUND = 10;
 
 export function create(ctx) {
@@ -113,12 +114,12 @@ export function create(ctx) {
     saveRec();
     w.phase = "done";
     render();
-    ctx.announce(partyOn ? "That is the round." : `That is ${w.score} of ${w.qs.length}.`);
+    ctx.announce(partyOn ? t("games.where.that_is_the_round") : t("games.where.that_is_score_of_length", { score: w.score, length: w.qs.length }));
     if (partyOn) {
       const lead = ctx.party.leaders();
-      if (lead.length === 1) ctx.cheer({ top: "WHERE IS THIS?", title: `${lead[0].n.toUpperCase().slice(0, 9)} WINS`, sub: `${lead[0].s} ${lead[0].s === 1 ? "point" : "points"}`, speak: [ctx.LINES.where.round, "play:where:round"] });
+      if (lead.length === 1) ctx.cheer({ top: t("games.where.where_is_this"), title: t("games.where.n_wins", { n: lead[0].n.toUpperCase().slice(0, 9) }), sub: `${lead[0].s} ${lead[0].s === 1 ? t("games.where.point") : t("games.where.points")}`, speak: [ctx.LINES.where.round, "play:where:round"] });
     } else if (w.qs.length >= 5 && w.score / w.qs.length >= 0.8) {
-      ctx.cheer({ top: "WHERE IS THIS?", title: `${w.score} OF ${w.qs.length}`, sub: w.newBest ? "A new best round" : "Sharp eyes", speak: [ctx.LINES.where.round, "play:where:round"] });
+      ctx.cheer({ top: t("games.where.where_is_this"), title: t("games.where.score_of_length", { score: w.score, length: w.qs.length }), sub: w.newBest ? t("games.where.a_new_best_round") : t("games.where.sharp_eyes"), speak: [ctx.LINES.where.round, "play:where:round"] });
     }
   }
   function hear() {
@@ -133,18 +134,18 @@ export function create(ctx) {
     host.textContent = "";
     host.append(live);
     if (w.phase === "none") {
-      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, "No photos yet."), h("p", { class: "pl-why" }, "This game needs the landmark photos. They come with the app.")));
+      host.append(h("div", { class: "pl-q pl-empty" }, h("p", { class: "pl-qt" }, t("games.where.no_photos_yet")), h("p", { class: "pl-why" }, t("games.where.this_game_needs_the_landmark_photos"))));
       return;
     }
     if (w.phase === "ready") return renderReady();
     if (w.phase === "done") return renderDone();
     const q = w.qs[w.i], answered = w.phase === "reveal";
     const partyOn = !!ctx.party && ctx.party.active();
-    if (partyOn) host.append(ctx.party.strip(), h("p", { class: "pl-turn", role: "status" }, h("b", null, `${ctx.party.current().n}'s turn`)));
+    if (partyOn) host.append(ctx.party.strip(), h("p", { class: "pl-turn", role: "status" }, h("b", null, t("games.where.n_s_turn", { n: ctx.party.current().n }))));
     host.append(h("div", { class: "pl-w-top" },
-      h("span", { class: "pl-sp-q" }, `Photo ${w.i + 1} of ${w.qs.length}`),
-      h("span", { class: "pl-sp-score" }, h("b", null, w.score), " right")));
-    const alt = answered ? `${shortName(q.p)}. ${q.p.img.alt_en || q.p.img.alt || ""}`.trim() : "A photo from along I-5. Which place is it?";
+      h("span", { class: "pl-sp-q" }, t("games.where.photo_x1_of_length", { x1: w.i + 1, length: w.qs.length })),
+      h("span", { class: "pl-sp-score" }, h("b", null, w.score), t("games.where.right"))));
+    const alt = answered ? `${shortName(q.p)}. ${q.p.img.alt_en || q.p.img.alt || ""}`.trim() : t("games.where.a_photo_from_along_i_5_which_place_is");
     let fig;
     if (figFor && figFor.id === q.p.id) { fig = figFor.el; const im = fig.querySelector("img"); if (im) im.alt = alt; }   // the same photo: keep it (no flicker when the answer shows)
     else {
@@ -156,12 +157,12 @@ export function create(ctx) {
       figFor = { id: q.p.id, el: fig };
     }
     host.append(h("div", { class: "pl-w-photo" + (entering ? " entering" : "") }, fig));
-    host.append(h("h3", { class: "pl-qt pl-w-q", tabindex: "-1" }, "Where is this?"));
-    const opts = h("div", { class: "pl-opts", role: "group", "aria-label": "Answers" });
+    host.append(h("h3", { class: "pl-qt pl-w-q", tabindex: "-1" }, t("games.where.where_is_this_2")));
+    const opts = h("div", { class: "pl-opts", role: "group", "aria-label": t("games.where.answers") });
     q.names.forEach((n, i) => {
       let state = "";
       if (answered) state = i === q.answer ? "right" : i === w.picked ? "wrong" : "dim";
-      const label = `${LET[i]}. ${n}` + (state === "right" ? ", correct answer" : state === "wrong" ? ", your answer, wrong" : "");
+      const label = `${LET[i]}. ${n}` + (state === "right" ? t("games.where.correct_answer") : state === "wrong" ? t("games.where.your_answer_wrong") : "");
       opts.append(h("button", { class: `pl-opt ${state}`, type: "button", "data-i": i, disabled: answered, "aria-label": label, onclick: safe(() => pickAnswer(i), "pick " + i) },
         h("span", { class: "pl-let", "aria-hidden": "true" }, LET[i]),
         h("span", { class: "pl-opt-t", "aria-hidden": "true" }, n),
@@ -171,20 +172,20 @@ export function create(ctx) {
     if (!answered) {
       const rn = ctx.regionName(q.p.m);
       host.append(h("div", { class: "pl-tools" },
-        !w.hint && rn ? h("button", { class: "secondary pl-tool", type: "button", "data-k": "hint", onclick: safe(() => { w.hint = true; render(); const b = host.querySelector(".pl-w-hint"); b && b.focus && b.focus({ preventScroll: true }); }, "hint") }, icon("info"), "Give me a hint") : null,
-        w.hint ? h("p", { class: "pl-w-hint", tabindex: "-1" }, `Hint: look in ${rn}.`) : null));
+        !w.hint && rn ? h("button", { class: "secondary pl-tool", type: "button", "data-k": "hint", onclick: safe(() => { w.hint = true; render(); const b = host.querySelector(".pl-w-hint"); b && b.focus && b.focus({ preventScroll: true }); }, "hint") }, icon("info"), t("games.where.give_me_a_hint")) : null,
+        w.hint ? h("p", { class: "pl-w-hint", tabindex: "-1" }, t("games.where.hint_look_in_rn", { rn })) : null));
       return;
     }
     const ok = w.picked === q.answer;
     const last = w.i + 1 >= w.qs.length;
     const fb = h("div", { class: "pl-fb " + (ok ? "ok" : "no"), role: "status" },
-      h("div", { class: "pl-verdict", tabindex: "-1" }, icon(ok ? "check" : "cross", "pl-ic pl-vic"), h("b", null, ok ? "That's right." : "Not quite.")),
-      ok ? null : h("p", { class: "pl-ans" }, `It is ${shortName(q.p)}.`),
+      h("div", { class: "pl-verdict", tabindex: "-1" }, icon(ok ? "check" : "cross", "pl-ic pl-vic"), h("b", null, ok ? t("games.where.thats_right") : t("games.where.not_quite"))),
+      ok ? null : h("p", { class: "pl-ans" }, t("games.where.it_is_p", { p: shortName(q.p) })),
       h("p", { class: "pl-why" }, firstSentence(q.p.text)));
     const acts = h("div", { class: "pl-row pl-w-acts" },
-      ctx.canSpeak() ? h("button", { class: "secondary pl-tool", type: "button", "data-k": "hear", onclick: safe(hear, "hear") }, icon("speaker"), "Hear it") : null,
-      h("button", { class: "secondary pl-tool", type: "button", "data-k": "more", onclick: safe(() => ctx.openPlace(q.p), "more") }, "Tell me more"));
-    fb.append(acts, h("button", { class: "primary pl-next", type: "button", "data-k": "next", onclick: safe(next, "next") }, last ? "See the score" : "Next photo", icon("next")));
+      ctx.canSpeak() ? h("button", { class: "secondary pl-tool", type: "button", "data-k": "hear", onclick: safe(hear, "hear") }, icon("speaker"), t("games.where.hear_it")) : null,
+      h("button", { class: "secondary pl-tool", type: "button", "data-k": "more", onclick: safe(() => ctx.openPlace(q.p), "more") }, t("games.where.tell_me_more")));
+    fb.append(acts, h("button", { class: "primary pl-next", type: "button", "data-k": "next", onclick: safe(next, "next") }, last ? t("games.where.see_the_score") : t("games.where.next_photo"), icon("next")));
     host.append(fb);
     if (justAnswered) {
       const v = fb.querySelector(".pl-verdict"); v && v.focus({ preventScroll: true });
@@ -195,24 +196,24 @@ export function create(ctx) {
     const partyOn = !!ctx.party && ctx.party.active();
     if (partyOn) host.append(ctx.party.strip({ turns: false }));
     host.append(h("div", { class: "pl-sp-ready" },
-      h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, "Photo quiz"), h("b", null, `${ROUND} photos`), h("span", null, "Pick the right name")),
-      h("p", { class: "pl-why" }, partyOn ? "Everyone takes a turn. A right answer scores a point for the player whose turn it is." : "Each photo is a place on the road. Wrong answers come from the same stretch, so look closely."),
-      !partyOn && rec.rounds ? h("p", { class: "pl-sp-best" }, `Best round ${rec.best} of ${ROUND} · ${rec.rounds} ${rec.rounds === 1 ? "round" : "rounds"} played`) : null,
-      h("button", { class: "primary pl-sp-go", type: "button", "data-k": "start", onclick: safe(start, "start") }, "Start a round")));
+      h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, t("games.where.photo_quiz")), h("b", null, t("games.where.round_photos", { ROUND })), h("span", null, t("games.where.pick_the_right_name"))),
+      h("p", { class: "pl-why" }, partyOn ? t("games.where.everyone_takes_a_turn_a_right_answer") : t("games.where.each_photo_is_a_place_on_the_road")),
+      !partyOn && rec.rounds ? h("p", { class: "pl-sp-best" }, t("games.where.best_round_best_of_round_rounds_x1", { best: rec.best, ROUND, rounds: rec.rounds, x1: rec.rounds === 1 ? t("games.where.round") : t("games.where.rounds") })) : null,
+      h("button", { class: "primary pl-sp-go", type: "button", "data-k": "start", onclick: safe(start, "start") }, t("games.where.start_a_round"))));
   }
   function renderDone() {
     const n = w.qs.length, partyOn = !!ctx.party && ctx.party.active();
     const sign = partyOn
-      ? h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, "Round complete"), h("b", { class: "pl-sp-big" }, (() => { const l = ctx.party.leaders(); return l.length === 1 ? `${l[0].n} leads` : l.length ? "A tie" : "No points yet"; })()),
-        h("span", null, `${w.score} of ${n} right as a group`))
-      : h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, w.newBest ? "A new best" : "Round complete"), h("b", { class: "pl-sp-big" }, `${w.score} of ${n}`),
-        h("span", null, w.score === n ? "Every photo right" : w.score >= n * 0.7 ? "Sharp eyes" : w.score >= n * 0.4 ? "Not bad" : "The road has more to show you"));
+      ? h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, t("games.where.round_complete")), h("b", { class: "pl-sp-big" }, (() => { const l = ctx.party.leaders(); return l.length === 1 ? t("games.where.n_leads", { n: l[0].n }) : l.length ? t("games.where.a_tie") : t("games.where.no_points_yet"); })()),
+        h("span", null, t("games.where.score_of_n_right_as_a_group", { score: w.score, n })))
+      : h("div", { class: "pl-sp-sign" }, h("span", { class: "pl-sp-kicker" }, w.newBest ? t("games.where.a_new_best") : t("games.where.round_complete")), h("b", { class: "pl-sp-big" }, t("games.where.score_of_n", { score: w.score, n })),
+        h("span", null, w.score === n ? t("games.where.every_photo_right") : w.score >= n * 0.7 ? t("games.where.sharp_eyes") : w.score >= n * 0.4 ? t("games.where.not_bad") : t("games.where.the_road_has_more_to_show_you")));
     host.append(partyOn ? ctx.party.strip({ turns: false }) : null, h("div", { class: "pl-sp-done" }, sign,
-      h("ul", { class: "pl-w-dots", "aria-label": "Your answers" }, w.qs.map((q, i) => h("li", { class: w.mine[i] ? "ok" : "no", "aria-label": `Photo ${i + 1}: ${w.mine[i] ? "right" : "missed"}, ${shortName(q.p)}` }, h("span", { "aria-hidden": "true" }, i + 1)))),
-      partyOn ? null : h("p", { class: "pl-why" }, `Best round: ${rec.best} of ${ROUND}.`),
+      h("ul", { class: "pl-w-dots", "aria-label": t("games.where.your_answers") }, w.qs.map((q, i) => h("li", { class: w.mine[i] ? "ok" : "no", "aria-label": t("games.where.photo_x1_x2_p", { x1: i + 1, x2: w.mine[i] ? t("games.where.right_2") : t("games.where.missed"), p: shortName(q.p) }) }, h("span", { "aria-hidden": "true" }, i + 1)))),
+      partyOn ? null : h("p", { class: "pl-why" }, t("games.where.best_round_best_of_round", { best: rec.best, ROUND })),
       h("div", { class: "pl-row pl-sp-acts" },
-        h("button", { class: "primary", type: "button", "data-k": "again", onclick: safe(start, "again") }, icon("shuffle"), "Play again"),
-        h("button", { class: "secondary", type: "button", onclick: safe(() => ctx.api.play.open("home"), "home") }, "All games"))));
+        h("button", { class: "primary", type: "button", "data-k": "again", onclick: safe(start, "again") }, icon("shuffle"), t("games.where.play_again")),
+        h("button", { class: "secondary", type: "button", onclick: safe(() => ctx.api.play.open("home"), "home") }, t("games.where.all_games")))));
   }
 
   render();

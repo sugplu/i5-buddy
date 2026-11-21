@@ -9,30 +9,31 @@
 // The art is plain SVG with literal fills (a data: URL draws it on the passport share card, where CSS variables do not
 // reach). Every vehicle faces right in a 120 x 80 box; facing "left" mirrors the body but never the badge.
 
+import { t } from "./i18n.js";
 const NS = "http://www.w3.org/2000/svg";
 const KEY = "ride", SEEN_KEY = "rideInvited";
 const OUT = "#2b2420";           // outline for every vehicle
 const GLASS = "#d3ecf6", LAMP = "#fff4c2", TAIL = "#ff5a4a", METAL = "#bcc2c6", TIRE = "#2f2926", SKIN = "#ffe6bf";
 
 export const COLORS = [
-  { id: "sunny", name: "Sunny", hex: "#f5c332" },
-  { id: "tomato", name: "Tomato", hex: "#e5483f" },
-  { id: "tangerine", name: "Tangerine", hex: "#f08a3c" },
-  { id: "mint", name: "Mint", hex: "#4cc79a" },
-  { id: "sky", name: "Sky", hex: "#3fa7e0" },
-  { id: "grape", name: "Grape", hex: "#8a63d2" },
-  { id: "bubblegum", name: "Bubblegum", hex: "#f58bb5" },
-  { id: "snow", name: "Snow", hex: "#f4f1e8" },
+  { id: "sunny", name: t("ride.sunny"), hex: "#f5c332" },
+  { id: "tomato", name: t("ride.tomato"), hex: "#e5483f" },
+  { id: "tangerine", name: t("ride.tangerine"), hex: "#f08a3c" },
+  { id: "mint", name: t("ride.mint"), hex: "#4cc79a" },
+  { id: "sky", name: t("ride.sky"), hex: "#3fa7e0" },
+  { id: "grape", name: t("ride.grape"), hex: "#8a63d2" },
+  { id: "bubblegum", name: t("ride.bubblegum"), hex: "#f58bb5" },
+  { id: "snow", name: t("ride.snow"), hex: "#f4f1e8" },
 ];
 export const KINDS = [
-  { id: "compact", name: "Compact car" },
-  { id: "camper", name: "Camper van" },
-  { id: "pickup", name: "Pickup truck" },
-  { id: "convertible", name: "Convertible" },
-  { id: "rv", name: "Motorhome" },
+  { id: "compact", name: t("ride.compact_car") },
+  { id: "camper", name: t("ride.camper_van") },
+  { id: "pickup", name: t("ride.pickup_truck") },
+  { id: "convertible", name: t("ride.convertible") },
+  { id: "rv", name: t("ride.motorhome") },
   { id: "suv", name: "SUV" },
-  { id: "ev", name: "EV hatchback" },
-  { id: "bus", name: "Family bus" },
+  { id: "ev", name: t("ride.ev_hatchback") },
+  { id: "bus", name: t("ride.family_bus") },
 ];
 // 3.0.2 (Joseph: the rides other than the default looked "freaky"): the motorcycle and its rider became an SUV, the
 // convertible's driver sits in the car, the motorhome's driver fits its window, every headlight is the same round eye.
@@ -309,7 +310,7 @@ function renderSlot() {
   slotEl.textContent = "";
   const b = el("button", "ride-slot-btn");
   b.type = "button";
-  b.setAttribute("aria-label", `Your ride: ${describe(ride)}${ride.name ? `, ${ride.name}` : ""}. Tap to change it`);
+  b.setAttribute("aria-label", t("ride.your_ride_ride_x1_tap_to_change_it", { ride: describe(ride), x1: ride.name ? `, ${ride.name}` : "" }));
   if (ride.name) b.title = ride.name;
   b.append(svgEl({ size: 46 }));
   b.addEventListener("click", () => { dismissInvite(); open(b); });
@@ -321,14 +322,14 @@ function renderRow() {
   if (!rowEl) return;
   rowEl.textContent = "";
   rowEl.classList.add("ride-row");
-  const lab = el("span", "ride-row-lab", "Your ride");
+  const lab = el("span", "ride-row-lab", t("ride.your_ride"));
   const line = el("div", "ride-row-line");
   const art = el("span", "ride-row-art");
   art.append(svgEl({ size: 56 }));
   const txt = el("span", "ride-row-txt");
   txt.append(el("b", null, ride.name || describe(ride)));
   if (ride.name) txt.append(el("small", null, describe(ride)));
-  const go = el("button", "secondary ride-row-go", "Change");
+  const go = el("button", "secondary ride-row-go", t("ride.change"));
   go.type = "button";
   go.addEventListener("click", () => open(go));
   line.append(art, txt, go);
@@ -351,8 +352,8 @@ function buildSheet() {
   if (sheetBuilt || !sheetEl) return;
   sheetEl.textContent = "";
   const head = el("div", "sheet-head");
-  head.append(el("b", null, "Pick your ride"));
-  const done0 = btn("link", "Done", close);
+  head.append(el("b", null, t("ride.pick_your_ride")));
+  const done0 = btn("link", t("ride.done"), close);
   head.append(done0);
 
   const stage = el("div", "ride-stage");
@@ -363,7 +364,7 @@ function buildSheet() {
   stage.append(picker.big, el("div", "ride-road"), picker.cap);
 
   const grid = el("div", "ride-grid");
-  grid.setAttribute("role", "group"); grid.setAttribute("aria-label", "Vehicle");
+  grid.setAttribute("role", "group"); grid.setAttribute("aria-label", t("ride.vehicle"));
   picker.opts = [];
   for (const k of KINDS) {
     const b = btn("ride-opt", null, () => setRide({ kind: k.id }));
@@ -374,7 +375,7 @@ function buildSheet() {
   }
 
   const swatches = el("div", "ride-colors");
-  swatches.setAttribute("role", "group"); swatches.setAttribute("aria-label", "Colour");
+  swatches.setAttribute("role", "group"); swatches.setAttribute("aria-label", t("ride.colour"));
   picker.sw = [];
   for (const c of COLORS) {
     const b = btn("ride-sw", null, () => setRide({ color: c.id }));
@@ -387,38 +388,38 @@ function buildSheet() {
   }
 
   const badgeBox = el("div", "field ride-field");
-  const bl = el("label", null, "Driver badge");
+  const bl = el("label", null, t("ride.driver_badge"));
   bl.htmlFor = "rideBadge";
-  const hint1 = el("small", "hint", "One emoji or up to 2 letters, shown as the driver.");
+  const hint1 = el("small", "hint", t("ride.one_emoji_or_up_to_2_letters_shown_as"));
   const input = document.createElement("input");
   input.id = "rideBadge"; input.type = "text"; input.className = "ride-input"; input.autocomplete = "off"; input.autocapitalize = "characters";
-  input.spellcheck = false; input.maxLength = 12; input.placeholder = "None";
+  input.spellcheck = false; input.maxLength = 12; input.placeholder = t("ride.none");
   input.addEventListener("input", () => setRide({ badge: input.value }, false));
   input.addEventListener("change", () => { input.value = ride.badge; });
   picker.badge = input;
   const chips = el("div", "ride-emoji");
-  chips.setAttribute("role", "group"); chips.setAttribute("aria-label", "Badge ideas");
+  chips.setAttribute("role", "group"); chips.setAttribute("aria-label", t("ride.badge_ideas"));
   picker.chips = [];
   for (const e of EMOJI_CHOICES) {
     const b = btn("ride-chip", e, () => setRide({ badge: ride.badge === e ? "" : e }));
-    b.setAttribute("aria-label", `Badge ${e}`);
+    b.setAttribute("aria-label", t("ride.badge_e", { e }));
     b.dataset.badge = e;
     chips.append(b); picker.chips.push(b);
   }
   badgeBox.append(bl, input, chips, hint1);
 
   const nameBox = el("div", "field ride-field");
-  const nl = el("label", null, "Nickname");
+  const nl = el("label", null, t("ride.nickname"));
   nl.htmlFor = "rideName";
   const nin = document.createElement("input");
   nin.id = "rideName"; nin.type = "text"; nin.className = "ride-input"; nin.maxLength = NAME_MAX; nin.autocomplete = "off";
-  nin.placeholder = "Optional, up to 20 characters";
+  nin.placeholder = t("ride.optional_up_to_20_characters");
   nin.addEventListener("input", () => setRide({ name: nin.value }));
   nin.addEventListener("change", () => { nin.value = ride.name; });
   picker.name = nin;
   nameBox.append(nl, nin);
 
-  const done = btn("primary ride-done", "Done", close);
+  const done = btn("primary ride-done", t("ride.done"), close);
   sheetEl.append(head, stage, grid, swatches, badgeBox, nameBox, done);
   sheetBuilt = true;
   syncPicker();
@@ -479,10 +480,10 @@ function maybeInvite() {
     api.store.set(SEEN_KEY, true);                       // once only, even if it is ignored
     inviteEl = el("div", "ride-invite");
     inviteEl.setAttribute("role", "group");
-    inviteEl.setAttribute("aria-label", "Pick your ride");
-    inviteEl.append(el("p", null, "Pick your ride? It rides along on the map."));
+    inviteEl.setAttribute("aria-label", t("ride.pick_your_ride"));
+    inviteEl.append(el("p", null, t("ride.pick_your_ride_it_rides_along_on_the")));
     const acts = el("div", "ride-invite-acts");
-    acts.append(btn("primary", "Pick", () => { dismissInvite(); open(); }), btn("secondary", "Not now", dismissInvite));
+    acts.append(btn("primary", t("ride.pick"), () => { dismissInvite(); open(); }), btn("secondary", t("ride.not_now"), dismissInvite));
     inviteEl.append(acts);
     // In the page's flow just under the sign (#rideInvite), never floating over the alerts below it; the little arrow
     // points up at the ride on the sign.

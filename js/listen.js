@@ -6,6 +6,11 @@
 //
 // parseCommand(), chooseCommand() and parseAnswer() are pure (no DOM, no api) and are tested in
 // tools/test-listen.html. Everything that touches the page runs only after init(api).
+//
+// Spanish (3.1.0): voice commands and Ask Buddy stay English in this build: the recognizer listens for English, the
+// answers are data/ask.js's English ones, and names are matched in English (p.en.name when the Spanish data renamed a
+// place). In Spanish the mic button and the panel say so (t("listen.*")). Spanish voice commands are a follow-up.
+import { t, IS_ES } from "./i18n.js";
 
 /* =========================================================================================
    Text helpers (pure)
@@ -1156,12 +1161,14 @@ const D = () => (A && A.data) || {};
 const S = () => (A && A.S) || {};
 const N = () => (A && A.narrator) || null;
 let destNamesMemo = null, placeNamesMemo = null;
+/** A place's or destination's English name (the Spanish data keeps it in `en`): commands are matched in English. */
+const enName = x => (x && x.en && x.en.name) || (x && x.name) || "";
 function destNames() {
-  if (!destNamesMemo) destNamesMemo = (Array.isArray(D().DESTS) ? D().DESTS : []).map(d => d && d.name).filter(Boolean);
+  if (!destNamesMemo) destNamesMemo = (Array.isArray(D().DESTS) ? D().DESTS : []).map(enName).filter(Boolean);
   return destNamesMemo;
 }
 function placeNames() {
-  if (!placeNamesMemo) placeNamesMemo = (Array.isArray(D().PLACES) ? D().PLACES : []).map(p => p && p.name).filter(Boolean);
+  if (!placeNamesMemo) placeNamesMemo = (Array.isArray(D().PLACES) ? D().PLACES : []).map(enName).filter(Boolean);
   return placeNamesMemo;
 }
 const places = () => (Array.isArray(D().PLACES) ? D().PLACES : []);
@@ -1174,7 +1181,7 @@ function nearPlaces() {
   for (const p of places()) {
     if (!p || !p.name || !isFinite(p.m)) continue;
     const d = ahead(p.m);
-    if (d > -NEAR_BACK && d < NEAR_AHEAD) out.push({ name: p.name, side: sideOf(p), d });
+    if (d > -NEAR_BACK && d < NEAR_AHEAD) out.push({ name: enName(p), side: sideOf(p), d });
   }
   return out;
 }
@@ -1226,7 +1233,7 @@ function placeFromSpeechId(id) {
 /** A place by (one of) its names, nearest to us when several share a name. */
 function resolvePlace(name, cands) {
   const want = new Set([name, ...(cands || [])].filter(Boolean).map(normText));
-  const list = places().filter(p => want.has(normText(p.name)));
+  const list = places().filter(p => want.has(normText(enName(p))));
   if (list.length < 2 || S().m == null) return list[0] || null;
   const rank = p => { const d = ahead(p.m); return d >= -0.5 ? d : 1000 - d; };
   return list.sort((a, b) => rank(a) - rank(b))[0];
@@ -1298,6 +1305,8 @@ function buildOverlay() {
   // upright; side by side on a phone on its side (css/listen.css).
   const head = h("div", "lsn-head");
   head.append(orb, title, said, hint, question);
+  // Spanish (3.1.0): this panel listens for English and answers in English for now
+  if (IS_ES) head.append(h("p", "lsn-hint lsn-lang", t("listen.english_only")));
   const body = h("div", "lsn-body");
   body.append(choices, help, tryBox);
   panel.append(head, body, acts);
@@ -2110,7 +2119,7 @@ function runInner(c, meta) {
       if (c.past) { reply(pastText(c.past), head); break; } // past the road the app covers: the destination stays
       if (c.st) { reply(stateLineText(c.st, c), head); break; }
       let dest = null;
-      if (c.arg) dest = (Array.isArray(D().DESTS) ? D().DESTS : []).find(x => x && normText(x.name) === normText(c.arg)) || null;
+      if (c.arg) dest = (Array.isArray(D().DESTS) ? D().DESTS : []).find(x => x && normText(enName(x)) === normText(c.arg)) || null;
       else if (c.q) {
         const ex = exampleDest();
         reply(`I don't know where ${c.q} is on I-5.${ex ? ` Try a city, like ${shortDest(ex.name)}.` : ""}`, head);
@@ -2600,6 +2609,7 @@ export function init(api) {
     }, base);
     if (btn) {
       btn.hidden = false;
+      if (IS_ES) { const l = t("listen.button_english"); btn.setAttribute("aria-label", l); btn.title = l; }
       btn.setAttribute("aria-haspopup", "dialog");
       btn.setAttribute("aria-expanded", "false");
       btn.addEventListener("click", () => {

@@ -1,15 +1,19 @@
 // I-5 Buddy: boot, GPS/demo/manual position, Drive and Ahead screens, settings, offline.
+import { t, loc, LANG, IS_ES, applyDom, setLang } from "./i18n.js";
+import * as i18n from "./i18n.js";
 import { S, settings, saveSettings, bus, store, saveStamps, RETURNING } from "./store.js";
 import * as data from "./data.js";
 import * as geo from "./geo.js";
 import { voice } from "./voice.js";
-import { narrator, upcoming, announceText, tellMore, hear, look, resetTrip, markHeard, stampNear, stampSelf } from "./narrator.js";
+import { narrator, upcoming, announceText, tellMore, hear, look, resetTrip, markHeard, stampNear, stampSelf, storyOf } from "./narrator.js";
 import * as native from "./native.js";
 
 const {
   PLACES, CATS, MAX_M, STATES, DESTS, ENDS, SCOPE, zoneAt, stateAt, localMile, regionAt, sideWord, aheadOf, elevAt,
-  servicesAhead, restAhead, restName, exitName, fmtMiles, fmtDuration, placeById, detourShort, MISSIONS,
+  servicesAhead, restAhead, restName, exitName, fmtMiles, fmtDuration, placeById, detourShort, MISSIONS, sideSaid,
 } = data;
+// Spanish (3.1.0): index.html's own words (data-i18n) in Spanish; in English the page stays exactly as written.
+applyDom(document);
 // A mile saved by a version that covered more road (Oregon, Washington) is past the end now: forget it.
 if (S.m != null && !(S.m >= 0 && S.m <= MAX_M + 1)) { S.m = null; store.del("m"); }
 
@@ -83,7 +87,7 @@ $("sheetBack").addEventListener("click", closeSheet);
 native.init({ store, toast, openSheet, closeSheet });
 
 // a Caltrans rest-area status from tools/rest-status.json (data.REST[].status)
-const REST_NOTE = { closed: "Closed, Caltrans says", partial: "Partly closed, Caltrans says", truck_only: "Trucks only, Caltrans says" };
+const REST_NOTE = { closed: t("main.closed_caltrans_says"), partial: t("main.partly_closed_caltrans_says"), truck_only: t("main.trucks_only_caltrans_says") };
 
 /** A place photo with its credit. size: "hero" | "thumb" | "full". */
 function photo(p, size = "hero") {
@@ -92,13 +96,13 @@ function photo(p, size = "hero") {
   const img = el("img");
   // alt (3.0.7): what the photo shows (alt_en from the 2026-11-20 photo check, tools/images.json); without it alt="",
   // because the Wikimedia titles used before read like file names ("Angelstadiummarch2019")
-  img.src = p.img.f; img.alt = p.img.alt_en || ""; img.loading = "lazy"; img.decoding = "async";
+  img.src = p.img.f; img.alt = p.img.alt_local || p.img.alt_en || ""; img.loading = "lazy"; img.decoding = "async";
   if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
   img.onerror = () => fig.remove();
   fig.append(img);
   if (size !== "thumb") {
     const cap = el("figcaption");
-    const a = el("a", null, `Photo: ${p.img.by || "Wikimedia Commons"}${p.img.lic ? " · " + p.img.lic : ""}`);
+    const a = el("a", null, t("main.photo_x1_x2", { x1: p.img.by || t("main.wikimedia_commons"), x2: p.img.lic ? " · " + p.img.lic : "" }));
     a.href = p.img.url || "https://commons.wikimedia.org"; a.target = "_blank"; a.rel = "noopener";
     cap.append(a); fig.append(cap);
   }
@@ -156,7 +160,7 @@ function setMode(mode) {
   const on = mode !== "off";
   $("startControls").hidden = on;
   $("runControls").hidden = !on;
-  $("stopTrip").textContent = mode === "demo" ? "End demo" : "End trip";
+  $("stopTrip").textContent = mode === "demo" ? t("main.end_demo") : t("main.end_trip");
   $("demoBar").hidden = mode !== "demo";
   // the screen stays on only while something moves: GPS or the demo (3.0.1; moving the milepost by hand used to hold it
   // on with nothing going on)
@@ -203,15 +207,15 @@ function startGps() {
   if (native.safetyFirst(startGps)) return; // the iPhone app's first Start GPS: the safety line in a sheet first
   voice.unlock();
   const G = geoSource();
-  if (!G) { toast("This browser can't share your location."); return; }
+  if (!G) { toast(t("main.this_browser_cant_share_your_location")); return; }
   const resuming = S.resumable;
   stopAll(true);
   S.resumable = false;
   hideNotice("resume");
-  $("startGps").textContent = "Start GPS";
+  $("startGps").textContent = t("main.start_gps");
   setMode("gps");
-  setPill("wait", "GPS");
-  $("statusText").textContent = "Finding you…";
+  setPill("wait", t("main.gps"));
+  $("statusText").textContent = t("main.finding_you");
   // the direction is unknown until the car moves (3.0.1): the one saved is from the last trip
   S.dirSure = false;
   gpsStartT = lastGoodT = Date.now(); fuzzyN = 0; stillSince = 0; S.gpsStale = false; driveSavedT = 0;
@@ -236,7 +240,7 @@ function watchGps() {
       showDenied(err);
       return;
     }
-    $("statusText").textContent = "Waiting for a GPS signal…";
+    $("statusText").textContent = t("main.waiting_for_a_gps_signal");
     if (err.code === 1) {
       if (!deniedSince) deniedSince = Date.now();
       else if (Date.now() - deniedSince > 120e3) showDenied(err);
@@ -249,12 +253,12 @@ function watchGps() {
 function showDenied(err) {
   bus.emit("trouble", { why: "location" });
   const acts = [];
-  if (native.NATIVE) acts.push(["Open Settings", () => native.openSettings()]);
-  acts.push(["Take a demo drive", () => { hideNotice("denied"); startDemo(); }]);
-  if (api.feedback && api.feedback.open) acts.push(["Send feedback", () => api.feedback.open()]);
+  if (native.NATIVE) acts.push([t("main.open_settings"), () => native.openSettings()]);
+  acts.push([t("main.take_a_demo_drive"), () => { hideNotice("denied"); startDemo(); }]);
+  if (api.feedback && api.feedback.open) acts.push([t("main.send_feedback"), () => api.feedback.open()]);
   showNotice("denied", {
-    title: native.NATIVE ? "Location is off for I-5 Buddy" : "Location is blocked",
-    text: native.NATIVE ? native.locationOffText(err) : "Allow location for this site in your browser's settings, then tap Start GPS again. Or take a demo drive to hear how it works.",
+    title: native.NATIVE ? t("main.location_is_off_for_i_5_buddy") : t("main.location_is_blocked"),
+    text: native.NATIVE ? native.locationOffText(err) : t("main.allow_location_for_this_site_in_your"),
     acts,
   });
 }
@@ -312,7 +316,7 @@ function onFix(pos) {
       // Say goodbye once, and only after driving there (not when GPS starts up already past the end).
       if (offEnd && drove && endSaid !== offEnd && settings.narr) {
         endSaid = offEnd;
-        voice.say(`That's ${offEnd.long}, the end of the road for I-5 Buddy. Thanks for riding along.`, { id: "end-of-road", prio: 2, chime: "success" });
+        voice.say(t("main.thats_long_the_end_of_the_road_for_i_5", { long: offEnd.long }), { id: "end-of-road", prio: 2, chime: "success" });
       }
     } else if (S.offRoute && !drove && !pastLine && hit.m != null && (S.m == null || Math.abs(hit.m - S.m) > 1)) {
       // off I-5 and not on a detour: the closest point follows you (it was set once and then stood still)
@@ -380,9 +384,9 @@ function tripSaved() {
   try {
     const t = api.trip && api.trip.trips && api.trip.trips()[0];
     if (!t || t.demo || !(Date.now() - (t.end || 0) < 10e3) || !(t.miles >= 10) || !((t.stamps || []).length >= 3)) return;
-    const acts = [["Share my trip", () => api.trip.share("trip")]];
-    if (api.share && api.share.shareApp) acts.push(["Tell a friend", () => api.share.shareApp()]);
-    showNotice("trip-saved", { title: "Trip saved", text: `${Math.round(t.miles)} miles and ${t.stamps.length} landmark stamps. It's in your passport.`, acts });
+    const acts = [[i18n.t("main.share_my_trip"), () => api.trip.share("trip")]];
+    if (api.share && api.share.shareApp) acts.push([i18n.t("main.tell_a_friend"), () => api.share.shareApp()]);
+    showNotice("trip-saved", { title: i18n.t("main.trip_saved"), text: i18n.t("main.miles_miles_and_length_landmark_stamps", { miles: Math.round(t.miles), length: t.stamps.length }), acts });
   } catch {}
 }
 /** Precise Location is off (fixes of several kilometres): what to do about it, until a good fix arrives. */
@@ -390,11 +394,11 @@ function showPrecise(accuracy) {
   bus.emit("trouble", { why: "precise" });
   const km = Math.max(1, Math.round((accuracy || 0) / 1000));
   showNotice("precise", {
-    title: "Turn on Precise Location",
+    title: t("main.turn_on_precise_location"),
     text: native.NATIVE
-      ? `Your location is only accurate to about ${km} km, too rough to find you on I-5. In the Settings app, open I-5 Buddy (under Apps), tap Location and turn on Precise Location.`
-      : `Your location is only accurate to about ${km} km, too rough to find you on I-5. Turn on precise location for this browser in your phone's settings.`,
-    acts: native.NATIVE ? [["Open Settings", () => native.openSettings()]] : [],
+      ? t("main.your_location_is_only_accurate_to", { km })
+      : t("main.your_location_is_only_accurate_to_2", { km }),
+    acts: native.NATIVE ? [[t("main.open_settings"), () => native.openSettings()]] : [],
   });
 }
 
@@ -407,10 +411,10 @@ let demoTimer = null, demoX = 10, demoStartT = 0, demoHeard = new Set();
 function startDemo() {
   voice.unlock();
   stopAll(true);
-  S.resumable = false; hideNotice("resume"); $("startGps").textContent = "Start GPS";
+  S.resumable = false; hideNotice("resume"); $("startGps").textContent = t("main.start_gps");
   if (S.m == null || S.m < 1 || S.m > MAX_M - 1) S.m = S.dir === "N" ? 205 : Math.min(815, MAX_M - 7);
   setMode("demo");
-  greet("This is a demo drive. I'll pretend we're driving so you can hear how it works.");
+  greet(t("main.this_is_a_demo_drive_ill_pretend_were"));
   let m = S.m;
   demoStartT = Date.now(); demoHeard = new Set();
   setPosition(m, { speed: 65, jumped: true, save: false });
@@ -428,9 +432,9 @@ bus.on("speaking", s => { if (s && S.mode === "demo" && s.id && placeById(s.id))
 function endDemo() {
   if (S.mode !== "demo") return;
   stopAll();
-  const acts = [["Start GPS", () => { hideNotice("demo-done"); startGps(); }]];
-  if (api.share && api.share.shareApp) acts.push(["Tell a friend", () => api.share.shareApp()]);
-  showNotice("demo-done", { title: "That's the demo", text: "That's how it sounds on the road. Tap Start GPS before you pull out on I-5, and I'll do this for real.", acts });
+  const acts = [[t("main.start_gps"), () => { hideNotice("demo-done"); startGps(); }]];
+  if (api.share && api.share.shareApp) acts.push([t("main.tell_a_friend"), () => api.share.shareApp()]);
+  showNotice("demo-done", { title: t("main.thats_the_demo"), text: t("main.thats_how_it_sounds_on_the_road_tap"), acts });
   bus.emit("demo:end", { ms: Date.now() - demoStartT, places: demoHeard.size });
 }
 
@@ -447,7 +451,7 @@ function nearMission(lat, lon) {
 }
 
 function greet(extra = "") {
-  voice.say(`Hi, I'm your I-5 buddy. I'll tell you about what's coming up as we drive. ${extra}`, { now: true, id: "greet", prio: 3 });
+  voice.say(t("main.hi_im_your_i_5_buddy_ill_tell_you", { extra }), { now: true, id: "greet", prio: 3 });
 }
 
 function stopAll(silent = false) {
@@ -496,7 +500,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") { hiddenAt = Date.now(); return; }
   if (wakeWanted && (S.mode === "gps" || S.mode === "demo")) requestWake();
   // back after a minute or more away during a drive: say why it went quiet (it can't talk in the background)
-  if (S.mode === "gps" && hiddenAt && Date.now() - hiddenAt > 60e3) toast("I was quiet while I-5 Buddy wasn't on screen. Keep it open while you drive.", 6000);
+  if (S.mode === "gps" && hiddenAt && Date.now() - hiddenAt > 60e3) toast(t("main.i_was_quiet_while_i_5_buddy_wasnt_on"), 6000);
   hiddenAt = 0;
 });
 // GPS on, but no usable fix for 15 s: the sign stops showing a speed and an ETA that look live (3.0.1)
@@ -511,46 +515,46 @@ let tab = "drive";
 function render() {
   const has = S.m != null;
   const st = has ? stateAt(S.m) : null;
-  $("dirBadge").textContent = S.dir === "N" ? "NORTH" : "SOUTH";
+  $("dirBadge").textContent = S.dir === "N" ? t("main.north") : t("main.south");
   $("stateBadge").hidden = !has;
   if (has) $("stateBadge").textContent = st.id;
   if (has) {
     const lm = localMile(S.m);
     $("mile").textContent = Math.round(lm.mi);
-    $("mileLabel").textContent = st.id === "CA" ? "MILE" : `${st.id} MILE`;
+    $("mileLabel").textContent = st.id === "CA" ? t("main.mile") : t("main.id_mile", { id: st.id });
     const z = zoneAt(S.m);
     $("nearText").textContent = z ? z.label : regionAt(S.m).name;
     const ft = elevAt(S.m);
-    $("elevText").textContent = ft != null ? `${ft.toLocaleString()} ft` : "";
+    $("elevText").textContent = ft != null ? t("main.ft_ft", { ft: ft.toLocaleString(loc(undefined)) }) : "";
     const toEnd = S.dir === "N" ? MAX_M - S.m : S.m;
     const sun = sunInfo();
-    $("toEndText").textContent = (sun ? sun + " · " : "") + `${Math.round(toEnd).toLocaleString()} mi to ${S.dir === "N" ? ENDS.N.short : ENDS.S.short}`;
+    $("toEndText").textContent = t("main.x1_toend_mi_to_x2", { x1: sun ? sun + " · " : "", toEnd: Math.round(toEnd).toLocaleString(loc(undefined)), x2: S.dir === "N" ? ENDS.N.short : ENDS.S.short });
   } else {
     $("mile").textContent = "--";
   }
   $("speed").textContent = S.speed != null && S.mode !== "manual" && S.mode !== "off" && !S.gpsStale ? Math.round(S.speed) : "--";
 
   if (S.mode === "gps") {
-    if (S.offRoute && S.nearMission) { setPill("gps", "GPS"); $("statusText").textContent = `Near ${S.nearMission.place.name}`; }
+    if (S.offRoute && S.nearMission) { setPill("gps", t("main.gps")); $("statusText").textContent = t("main.near_name", { name: S.nearMission.place.name }); }
     else if (S.offRoute) {
       const end = atEnd();
-      setPill("off-route", end ? "THE END" : "OFF I-5");
+      setPill("off-route", end ? t("main.the_end") : t("main.off_i_5"));
       // short enough for the header on a small phone (3.0.1: the longer line was cut to "Not on I-5 ri…")
-      $("statusText").textContent = end ? `Past ${end.long}`
-        : S.offDist != null && S.offDist >= 2 ? `Not on I-5 · ${Math.round(S.offDist)} mi away` : "Not on I-5 right now";
+      $("statusText").textContent = end ? t("main.past_long", { long: end.long })
+        : S.offDist != null && S.offDist >= 2 ? t("main.not_on_i_5_offdist_mi_away", { offDist: Math.round(S.offDist) }) : t("main.not_on_i_5_right_now");
     }
-    else if (has) { setPill("gps", "GPS"); $("statusText").textContent = regionAt(S.m).name; }
-    if (S.gpsStale && !S.offRoute) { setPill("wait", "GPS?"); $("statusText").textContent = "Waiting for a GPS signal…"; }
-  } else if (S.mode === "demo") { setPill("demo", "DEMO"); $("statusText").textContent = has ? regionAt(S.m).name : "Demo drive"; } // the DEMO pill says it (3.0.2)
-  else if (S.mode === "manual") { setPill("manual", "MANUAL"); $("statusText").textContent = "Milepost set by hand"; }
-  else { setPill("off", "OFF"); $("statusText").textContent = has ? "Paused · " + regionAt(S.m).name : `${ENDS.S.short} to ${ENDS.N.short}`; }
+    else if (has) { setPill("gps", t("main.gps")); $("statusText").textContent = regionAt(S.m).name; }
+    if (S.gpsStale && !S.offRoute) { setPill("wait", t("main.gps_2")); $("statusText").textContent = t("main.waiting_for_a_gps_signal"); }
+  } else if (S.mode === "demo") { setPill("demo", t("main.demo")); $("statusText").textContent = has ? regionAt(S.m).name : t("main.demo_drive"); } // the DEMO pill says it (3.0.2)
+  else if (S.mode === "manual") { setPill("manual", t("main.manual")); $("statusText").textContent = t("main.milepost_set_by_hand"); }
+  else { setPill("off", t("main.off")); $("statusText").textContent = has ? t("main.paused_name", { name: regionAt(S.m).name }) : t("main.short_to_short2", { short: ENDS.S.short, short2: ENDS.N.short }); }
   // js/nav.js: while it guides, the status line says where to and the next turn (also off I-5, where narration is paused)
   const navLine = S.mode !== "off" && api.nav && api.nav.statusText ? api.nav.statusText() : "";
-  if (navLine) { setPill("gps", "NAV"); $("statusText").textContent = navLine; }
+  if (navLine) { setPill("gps", t("main.nav")); $("statusText").textContent = navLine; }
 
   $("toggleNarr").setAttribute("aria-pressed", settings.narr);
-  $("toggleNarr").setAttribute("aria-label", "Narration"); // one name; aria-pressed carries on and off
-  $("toggleNarr").textContent = settings.narr ? "Narration on" : "Narration off";
+  $("toggleNarr").setAttribute("aria-label", t("main.narration")); // one name; aria-pressed carries on and off
+  $("toggleNarr").textContent = settings.narr ? t("main.narration_on") : t("main.narration_off");
   renderRibbon(); renderNext(); renderUpNext(); renderServices();
   // 3.0.2: with no position yet, "What's on my left/right?" has nothing to answer, so Drive leaves it out; the link to
   // the Ahead tab (hills, gas and food, what's next) shows once there is a road ahead to show
@@ -572,12 +576,12 @@ function sunInfo() {
   if (!ev) return "";
   const mins = Math.round((ev.at - now) / 60000);
   if (mins < 0 || mins > 120) return "";
-  const time = ev.at.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  const time = ev.at.toLocaleTimeString(loc([]), { hour: "numeric", minute: "2-digit" });
   if (ev.type === "sunset" && mins <= 20 && S.mode === "gps" && !S.offRoute && settings.narr && sunSpoken !== ev.at.toDateString()) {
     sunSpoken = ev.at.toDateString();
-    voice.say(`The sun sets in about ${Math.max(5, Math.round(mins / 5) * 5)} minutes, at ${time}. Headlights on soon.`, { id: "sunset", prio: 0 });
+    voice.say(t("main.the_sun_sets_in_about_x1_minutes_at", { x1: Math.max(5, Math.round(mins / 5) * 5), time }), { id: "sunset", prio: 0 });
   }
-  return `${ev.type === "sunset" ? "Sunset" : "Sunrise"} ${time}`;
+  return `${ev.type === "sunset" ? t("main.sunset") : t("main.sunrise")} ${time}`;
 }
 
 /* glance mode: big type, fewer extras, for a phone mounted on the dash */
@@ -585,7 +589,7 @@ function setGlance(on) {
   document.body.classList.toggle("glance", on);
   store.set("glance", on);
   $("glanceBtn").setAttribute("aria-pressed", on);
-  $("glanceBtn").title = on ? "Show everything" : "Glance mode: big text only";
+  $("glanceBtn").title = on ? t("main.show_everything") : t("main.glance_mode_big_text_only");
 }
 
 let ribbonBuilt = false;
@@ -629,11 +633,11 @@ function notOnI5Card(card) {
   shownNext = key;
   card.className = "next not-on-i5"; card.innerHTML = "";
   const body = el("div", "next-body");
-  body.append(el("div", "meta", "NOT ON I-5 YET"), el("h2", null, "I'll start talking on I-5"),
-    el("p", null, `${mi == null ? "You're far from I-5 in California." : mi >= 2 ? `You're about ${mi} miles from I-5.` : "You're close to I-5."} Once you're on it, between ${ENDS.S.long} and ${ENDS.N.long}, I'll tell you about the places you pass.`));
+  body.append(el("div", "meta", t("main.not_on_i_5_yet")), el("h2", null, t("main.ill_start_talking_on_i_5")),
+    el("p", null, t("main.x1_once_youre_on_it_between_long_and", { x1: mi == null ? t("main.youre_far_from_i_5_in_california") : mi >= 2 ? t("main.youre_about_mi_miles_from_i_5", { mi }) : t("main.youre_close_to_i_5"), long: ENDS.S.long, long2: ENDS.N.long })));
   const acts = el("div", "acts");
-  const demo = el("button", "secondary", "Take a demo drive"); demo.type = "button"; demo.onclick = startDemo;
-  const stop = el("button", "secondary", "Stop GPS"); stop.type = "button"; stop.onclick = () => stopAll(false);
+  const demo = el("button", "secondary", t("main.take_a_demo_drive")); demo.type = "button"; demo.onclick = startDemo;
+  const stop = el("button", "secondary", t("main.stop_gps")); stop.type = "button"; stop.onclick = () => stopAll(false);
   acts.append(demo, stop);
   body.append(acts);
   card.append(body);
@@ -646,11 +650,11 @@ function offI5Card(card) {
   shownNext = key;
   card.className = "next not-on-i5"; card.innerHTML = "";
   const body = el("div", "next-body");
-  const where = left != null ? `You left I-5 near ${regionAt(S.m).name}, around mile ${left}.` : "You left I-5.";
-  body.append(el("div", "meta", "OFF I-5 FOR NOW"), el("h2", null, "Paused until you're back on I-5"),
-    el("p", null, `${where} When you're back on it, I'll pick up where we left off.`));
+  const where = left != null ? t("main.you_left_i_5_near_name_around_mile", { name: regionAt(S.m).name, left }) : t("main.you_left_i_5");
+  body.append(el("div", "meta", t("main.off_i_5_for_now")), el("h2", null, t("main.paused_until_youre_back_on_i_5")),
+    el("p", null, t("main.where_when_youre_back_on_it_ill_pick", { where })));
   const acts = el("div", "acts");
-  const stop = el("button", "secondary", "End trip"); stop.type = "button"; stop.onclick = () => stopAll(false);
+  const stop = el("button", "secondary", t("main.end_trip")); stop.type = "button"; stop.onclick = () => stopAll(false);
   acts.append(stop);
   body.append(acts);
   card.append(body);
@@ -665,21 +669,21 @@ function renderNext() {
     shownNext = "welcome";
     card.className = "next welcome"; card.innerHTML = "";
     const names = STATES.map(s => s.name);
-    const states = names.length > 1 ? names.slice(0, -1).join(", ") + " and " + names[names.length - 1] : names[0];
-    const h2 = el("h2", null, `Your guide to all ${Math.round(MAX_M).toLocaleString()} miles of I-5${SCOPE.length === 1 ? " in " + STATES[0].name : ""}`);
+    const states = names.length > 1 ? t("main.join_and_x1", { join: names.slice(0, -1).join(", "), x1: names[names.length - 1] }) : names[0];
+    const h2 = el("h2", null, t("main.your_guide_to_all_max_m_miles_of_i_5", { MAX_M: Math.round(MAX_M).toLocaleString(loc(undefined)), x1: SCOPE.length === 1 ? t("main.in_name", { name: STATES[0].name }) : "" }));
     h2.tabIndex = -1; // takes the focus when the Install app button under it goes away (updateInstall)
     // Install app, or on an iPhone or iPad "Get the iPhone app" (updateInstall), right under the headline: in a phone's
     // browser tab, which is shorter than the screen, that keeps it above the tab bar.
     const inst = el("div", "welcome-install"); inst.hidden = true;
-    card.append(el("div", "meta", `${ENDS.S.short} to ${ENDS.N.short}`.toUpperCase()), h2, inst,
-      el("p", null, `${PLACES.length} landmarks, orchards and stories through ${states}. ${native.NATIVE ? "Tap Start GPS before you pull out" : "Tap Start GPS on the road"}, or take a demo drive from the couch.`));
+    card.append(el("div", "meta", t("main.short_to_short2", { short: ENDS.S.short, short2: ENDS.N.short }).toLocaleUpperCase(loc(undefined))), h2, inst,
+      el("p", null, t("main.length_landmarks_orchards_and_stories", { length: PLACES.length, states, x1: native.NATIVE ? t("main.tap_start_gps_before_you_pull_out") : t("main.tap_start_gps_on_the_road") })));
     // (3.0.2: the three number boxes under the text are gone; the line above already says how many landmarks)
     // the byline, and beside it a link that says Privacy on the first screen (privacy.html in a new tab, as in About);
     // short enough that both stay on one line on a 360 px phone
     // in the iPhone app the byline is plain words: dominares.org sells developer tools, nothing to do with the app
-    const by = native.NATIVE ? el("span", "byline", "Made by Dominares") : el("a", "byline", "Made by Dominares · i5.dominares.org");
+    const by = native.NATIVE ? el("span", "byline", t("main.made_by_dominares")) : el("a", "byline", t("main.made_by_dominares_i5_dominares_org"));
     if (!native.NATIVE) { by.href = "https://dominares.org/"; by.target = "_blank"; by.rel = "noopener"; }
-    const pv = el("a", "byline", "Privacy");
+    const pv = el("a", "byline", t("main.privacy"));
     pv.href = "privacy.html"; pv.target = "_blank"; pv.rel = "noopener";
     const dot = el("span", null, "·"); dot.setAttribute("aria-hidden", "true");
     const row = el("div", "byline-row"); row.append(by, dot, pv);
@@ -697,7 +701,7 @@ function renderNext() {
     shownNext = "end:" + e.short;
     card.className = "next end-of-road"; card.innerHTML = "";
     const body = el("div", "next-body"); // padded like every other card (3.0.1: the text touched the card's edge)
-    body.append(el("div", "meta", "END OF THE ROAD"), el("h2", null, `You made it to ${e.long}`), el("p", null, "That's every stop in this direction. Turn around for the other side of the story."));
+    body.append(el("div", "meta", t("main.end_of_the_road")), el("h2", null, t("main.you_made_it_to_long", { long: e.long })), el("p", null, t("main.thats_every_stop_in_this_direction")));
     card.append(body);
     return;
   }
@@ -710,32 +714,32 @@ function renderNext() {
     const meta = el("div", "meta");
     meta.append(el("span", null, CATS[p.cat]), el("span", null, detourShort(p) || exitName(p.st, p.ex)));
     const count = el("div", "count");
-    count.append(el("span", "n"), el("small", "unit", "mi"), el("small", "eta"), el("span", "side"));
+    count.append(el("span", "n"), el("small", "unit", t("main.mi")), el("small", "eta"), el("span", "side"));
     const acts = el("div", "acts");
-    const b1 = el("button"); b1.innerHTML = '<span aria-hidden="true">▶</span> Play'; b1.onclick = () => { voice.unlock(); markHeard(p.id); voice.say(announceText(p, Math.max(0, aheadOf(S.m, S.dir, p.m))), { now: true, id: p.id, chime: true }); };
-    const b2 = el("button", null, "Tell me more"); b2.onclick = () => { voice.unlock(); tellMore(p); };
-    const b3 = el("button", "ico"); b3.setAttribute("aria-label", "Next landmark"); b3.title = "Next landmark";
+    const b1 = el("button"); b1.innerHTML = t("main.span_aria_hidden_true_span_play"); b1.onclick = () => { voice.unlock(); markHeard(p.id); voice.say(announceText(p, Math.max(0, aheadOf(S.m, S.dir, p.m))), { now: true, id: p.id, chime: true }); };
+    const b2 = el("button", null, t("main.tell_me_more")); b2.onclick = () => { voice.unlock(); tellMore(p); };
+    const b3 = el("button", "ico"); b3.setAttribute("aria-label", t("main.next_landmark")); b3.title = t("main.next_landmark");
     b3.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14l9-7-9-7Zm10 0h3v14h-3V5Z" fill="currentColor"/></svg>';
     b3.onclick = () => { voice.unlock(); narrator.nextOne(); };
-    const b4 = el("button", "ico"); b4.setAttribute("aria-label", "Stop talking"); b4.title = "Stop talking";
+    const b4 = el("button", "ico"); b4.setAttribute("aria-label", t("main.stop_talking")); b4.title = t("main.stop_talking");
     b4.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>';
     b4.onclick = () => voice.stop();
     acts.append(b1, b2, b3, b4);
     const h = el("h2", null, p.name);
     h.tabIndex = 0; h.onclick = () => placeSheet(p);
     h.setAttribute("role", "button"); h.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); placeSheet(p); } };
-    body.append(meta, count, h, el("p", null, p.text), acts);
+    body.append(meta, count, h, el("p", null, storyOf(p)), acts);
     card.append(body);
   }
-  card.querySelector(".n").textContent = d < 0.3 ? "NOW" : fmtMiles(d);
+  card.querySelector(".n").textContent = d < 0.3 ? t("main.now") : fmtMiles(d);
   card.querySelector(".unit").hidden = d < 0.3;
   const eta = card.querySelector(".eta");
   const mins = S.speed && S.speed > 15 && S.mode !== "manual" && !S.gpsStale ? d / S.speed * 60 : null;
-  eta.textContent = mins != null && d >= 0.3 ? (mins < 1 ? "· under a min" : `· ${Math.round(mins)} min`) : "";
+  eta.textContent = mins != null && d >= 0.3 ? (mins < 1 ? t("main.under_a_min") : t("main.mins_min", { mins: Math.round(mins) })) : "";
   const sw = sideWord(p, S.dir);
   const side = card.querySelector(".side");
-  side.textContent = sw ? (sw === "left" ? "◀ LEFT" : "RIGHT ▶") : "";
-  side.setAttribute("aria-label", sw ? `on the ${sw}` : "");
+  side.textContent = sw ? (sw === "left" ? t("main.left") : t("main.right")) : "";
+  side.setAttribute("aria-label", sw ? t("main.on_the_sw", { sw: sideSaid(sw) }) : "");
 }
 bus.on("speaking", s => {
   document.body.classList.toggle("talking", !!s);
@@ -758,7 +762,7 @@ function renderUpNext() {
     const b = el("span", "nm", p.name);
     const sw = sideWord(p, S.dir);
     const sd = el("span", "sd", sw === "left" ? "◀" : sw === "right" ? "▶" : "");
-    if (sw) { sd.setAttribute("aria-label", `on the ${sw}`); sd.setAttribute("role", "img"); }
+    if (sw) { sd.setAttribute("aria-label", t("main.on_the_sw", { sw: sideSaid(sw) })); sd.setAttribute("role", "img"); }
     li.append(b, sd);
     const det = detourShort(p);
     if (det) { li.classList.add("detour"); li.append(el("small", "det", det)); }
@@ -777,11 +781,11 @@ function renderServices() {
   row.dataset.key = key;
   const g = $("svcGrid"); g.innerHTML = "";
   const items = [
-    ["⛽", "Gas", servicesAhead(S.m, S.dir, "fuel", 1)[0], "fuel"],
-    ["⚡", "EV charging", servicesAhead(S.m, S.dir, "ev", 1)[0], "ev"],
-    ["🍴", "Food", servicesAhead(S.m, S.dir, "food", 1)[0], "food"],
-    ["🛏", "Lodging", servicesAhead(S.m, S.dir, "sleep", 1)[0], "sleep"],
-    ["🚻", "Rest area", restAhead(S.m, S.dir, 1)[0], "rest"],
+    ["⛽", i18n.t("main.gas"), servicesAhead(S.m, S.dir, "fuel", 1)[0], "fuel"],
+    ["⚡", i18n.t("main.ev_charging"), servicesAhead(S.m, S.dir, "ev", 1)[0], "ev"],
+    ["🍴", i18n.t("main.food"), servicesAhead(S.m, S.dir, "food", 1)[0], "food"],
+    ["🛏", i18n.t("main.lodging"), servicesAhead(S.m, S.dir, "sleep", 1)[0], "sleep"],
+    ["🚻", i18n.t("main.rest_area"), restAhead(S.m, S.dir, 1)[0], "rest"],
   ];
   let any = false;
   for (const [icon, label, s, kind] of items) {
@@ -790,10 +794,10 @@ function renderServices() {
     const t = el("span", "tx");
     if (s) {
       any = true;
-      t.append(el("b", null, `${Math.max(1, Math.round(s.d))} mi`), el("small", null, kind === "rest" ? (s.status === "closed" ? "Closed · " : "") + restName(s.name) : `${label} · ${exitName(s.st, s.ref)}`));
+      t.append(el("b", null, i18n.t("main.x1_mi", { x1: Math.max(1, Math.round(s.d)) })), el("small", null, kind === "rest" ? (s.status === "closed" ? i18n.t("main.closed") : "") + restName(s.name) : `${label} · ${exitName(s.st, s.ref)}`));
       if (kind !== "rest" && s[kind]?.length) t.append(el("small", "brands", s[kind].slice(0, 3).join(", ")));
     } else {
-      t.append(el("b", null, "—"), el("small", null, `No ${label.toLowerCase()} listed nearby`));
+      t.append(el("b", null, "—"), el("small", null, i18n.t("main.no_label_listed_nearby", { label: label.toLowerCase() })));
     }
     b.append(t);
     b.onclick = () => { voice.unlock(); narrator.tellServices(kind); };
@@ -809,27 +813,27 @@ function placeSheet(p) {
   sh.className = "sheet place-sheet " + p.cat;
   const head = el("div", "sheet-head");
   head.append(el("b", null, p.name));
-  const close = el("button", "link", "Close"); close.onclick = closeSheet; head.append(close);
+  const close = el("button", "link", t("main.close")); close.onclick = closeSheet; head.append(close);
   sh.append(head);
   const ph = photo(p, "full"); if (ph) sh.append(ph);
   const sw = S.m != null ? sideWord(p, S.dir) : "";
   const d = S.m != null ? aheadOf(S.m, S.dir, p.m) : null;
   const det = detourShort(p);
-  sh.append(el("div", "meta", [CATS[p.cat], det || exitName(p.st, p.ex), sw && `on the ${sw}`, d != null && (d >= 0 ? `${fmtMiles(d)} mi ahead` : `${fmtMiles(-d)} mi behind`), S.stamps[p.id] && "stamped ✓"].filter(Boolean).join(" · ")));
-  sh.append(el("p", "lead", p.text));
+  sh.append(el("div", "meta", [CATS[p.cat], det || exitName(p.st, p.ex), sw && t("main.on_the_sw", { sw: sideSaid(sw) }), d != null && (d >= 0 ? t("main.d_mi_ahead", { d: fmtMiles(d) }) : t("main.fmtmiles_mi_behind", { fmtMiles: fmtMiles(-d) })), S.stamps[p.id] && t("main.stamped")].filter(Boolean).join(" · ")));
+  sh.append(el("p", "lead", storyOf(p)));
   if (p.more) sh.append(el("p", null, p.more));
-  if (p.spot) sh.append(el("p", "spot", "I spy: " + p.spot));
+  if (p.spot) sh.append(el("p", "spot", t("main.i_spy_spot", { spot: p.spot })));
   const acts = el("div", "acts");
-  const h1 = el("button", "primary", "Hear it"); h1.onclick = () => { voice.unlock(); hear(p); };
+  const h1 = el("button", "primary", t("main.hear_it")); h1.onclick = () => { voice.unlock(); hear(p); };
   acts.append(h1);
-  if (p.more) { const h2 = el("button", "secondary", "Tell me more"); h2.onclick = () => { voice.unlock(); tellMore(p); }; acts.append(h2); }
+  if (p.more) { const h2 = el("button", "secondary", t("main.tell_me_more")); h2.onclick = () => { voice.unlock(); tellMore(p); }; acts.append(h2); }
   // A turn-off place is stamped only when GPS gets within about half a mile of it, or with this button.
   if (det) {
-    const went = el("button", "secondary went", S.stamps[p.id] ? "You went there ✓" : "I went there");
+    const went = el("button", "secondary went", S.stamps[p.id] ? t("main.you_went_there") : t("main.i_went_there"));
     went.type = "button"; went.disabled = !!S.stamps[p.id];
     went.onclick = () => {
-      if (stampSelf(p)) toast(`${p.name} is in your passport.`);
-      went.textContent = "You went there ✓"; went.disabled = true;
+      if (stampSelf(p)) toast(t("main.name_is_in_your_passport", { name: p.name }));
+      went.textContent = t("main.you_went_there"); went.disabled = true;
     };
     acts.append(went);
   }
@@ -839,10 +843,10 @@ function placeSheet(p) {
   for (const u of [p.src, p.src2].filter(Boolean)) {
     const a = el("a", null, (() => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return "source"; } })());
     a.href = u; a.target = "_blank"; a.rel = "noopener";
-    src.append("Source: ", a, " ");
+    src.append(t("main.source"), a, " ");
   }
   if (p.lat != null) {
-    const a = el("a", null, "Open in Maps");
+    const a = el("a", null, t("main.open_in_maps"));
     a.href = `https://maps.apple.com/?ll=${p.lat},${p.lon}&q=${encodeURIComponent(p.name)}`; a.target = "_blank"; a.rel = "noopener";
     src.append(" · ", a);
   }
@@ -869,7 +873,7 @@ function renderAhead() {
   $("chips").hidden = aheadMode !== "places";
   $("view-ahead").dataset.mode = aheadMode; // the Next stops boxes hide while the list itself is Gas & food (css)
   if (aheadMode === "stops") return renderStops(ol, m);
-  $("aheadTitle").textContent = S.m == null ? "Every stop, south to north" : `Coming up ${S.dir === "N" ? "northbound" : "southbound"}`;
+  $("aheadTitle").textContent = S.m == null ? t("main.every_stop_south_to_north") : t("main.coming_up_x1", { x1: S.dir === "N" ? t("main.northbound") : t("main.southbound") });
   const items = upcoming(m, S.m == null ? "N" : S.dir, listCats);
   const key = items.length + ":" + (items[0]?.p.id || "") + ":" + aheadLimit + ":" + Math.round(m) + [...listCats].join();
   if (ol.dataset.key === key) return;
@@ -878,7 +882,7 @@ function renderAhead() {
   let anchor = null;
   if (tab === "ahead" && window.scrollY > 0) for (const li of ol.querySelectorAll("li.row[data-id]")) { const r = li.getBoundingClientRect(); if (r.bottom > 80) { anchor = { id: li.dataset.id, top: r.top }; break; } }
   ol.dataset.key = key; ol.innerHTML = "";
-  if (!items.length) { ol.append(el("li", "empty", "Nothing ahead with these filters.")); $("aheadMore").hidden = true; return; }
+  if (!items.length) { ol.append(el("li", "empty", t("main.nothing_ahead_with_these_filters"))); $("aheadMore").hidden = true; return; }
   let lastState = null;
   for (const { p, d } of items.slice(0, aheadLimit)) {
     if (p.st !== lastState && STATES.length > 1) { // state headings only when the road covers more than one state
@@ -888,16 +892,16 @@ function renderAhead() {
     }
     const li = el("li", "row " + p.cat);
     li.dataset.id = p.id;
-    const dd = el("div", "d", d < 0.3 ? "now" : Math.round(d)); if (d >= 0.3) dd.append(el("small", null, "mi"));
+    const dd = el("div", "d", d < 0.3 ? t("main.now_2") : Math.round(d)); if (d >= 0.3) dd.append(el("small", null, t("main.mi")));
     const body = el("div", "body");
     const sw = sideWord(p, S.dir);
-    body.append(el("div", "m", [CATS[p.cat], detourShort(p) || exitName(p.st, p.ex), sw && (sw === "left" ? "◀ left" : "right ▶")].filter(Boolean).join(" · ")),
-      el("b", null, p.name), el("p", null, p.text));
+    body.append(el("div", "m", [CATS[p.cat], detourShort(p) || exitName(p.st, p.ex), sw && (sw === "left" ? t("main.left_small") : t("main.right_small"))].filter(Boolean).join(" · ")),
+      el("b", null, p.name), el("p", null, storyOf(p)));
     const row = el("div", "rowacts");
-    const hb = el("button", "link", "Hear it"); hb.onclick = e => { e.stopPropagation(); voice.unlock(); hear(p); };
+    const hb = el("button", "link", t("main.hear_it")); hb.onclick = e => { e.stopPropagation(); voice.unlock(); hear(p); };
     row.append(hb);
-    if (p.more) { const mb = el("button", "link", "More"); mb.onclick = e => { e.stopPropagation(); placeSheet(p); }; row.append(mb); }
-    if (S.stamps[p.id]) row.append(el("span", "got", "Stamped ✓"));
+    if (p.more) { const mb = el("button", "link", t("main.more")); mb.onclick = e => { e.stopPropagation(); placeSheet(p); }; row.append(mb); }
+    if (S.stamps[p.id]) row.append(el("span", "got", t("main.stamped_2")));
     body.append(row);
     li.append(dd, body);
     const th = photo(p, "thumb"); if (th) li.append(th);
@@ -908,7 +912,7 @@ function renderAhead() {
   if (anchor) { const li = ol.querySelector(`li[data-id="${CSS.escape(anchor.id)}"]`); if (li) window.scrollBy(0, li.getBoundingClientRect().top - anchor.top); }
 }
 function renderStops(ol, m) {
-  $("aheadTitle").textContent = "Gas, food and rest ahead";
+  $("aheadTitle").textContent = t("main.gas_food_and_rest_ahead");
   const key = "stops:" + Math.round(m) + S.dir;
   if (ol.dataset.key === key) return;
   ol.dataset.key = key; ol.innerHTML = "";
@@ -920,7 +924,7 @@ function renderStops(ol, m) {
     const li = el("li", "row stop-row");
     const body = el("div", "body");
     if (x.kind === "rest") {
-      body.append(el("div", "m", "Rest area"), el("b", null, restName(x.s.name)));
+      body.append(el("div", "m", t("main.rest_area")), el("b", null, restName(x.s.name)));
       if (REST_NOTE[x.s.status]) body.append(el("p", "rest-status", REST_NOTE[x.s.status]));
     } else {
       body.append(el("div", "m", exitName(x.s.st, x.s.ref)));
@@ -935,10 +939,10 @@ function renderStops(ol, m) {
   }
   if (!all.length) {
     const left = dir === "N" ? MAX_M - m : m; // the data stops at the end of the road
-    ol.append(el("li", "empty", left < 200 ? `No services listed between here and ${(dir === "N" ? ENDS.N : ENDS.S).long}.` : "No services listed in the next 200 miles."));
+    ol.append(el("li", "empty", left < 200 ? t("main.no_services_listed_between_here_and", { long: (dir === "N" ? ENDS.N : ENDS.S).long }) : t("main.no_services_listed_in_the_next_200")));
   }
   $("aheadMore").hidden = true;
-  function dd(d) { const e = el("div", "d", Math.max(1, Math.round(d))); e.append(el("small", null, "mi")); return e; }
+  function dd(d) { const e = el("div", "d", Math.max(1, Math.round(d))); e.append(el("small", null, t("main.mi"))); return e; }
 }
 $("aheadMore").onclick = () => { aheadLimit += 60; renderAhead(); };
 $("aheadModePlaces").onclick = () => { aheadMode = "places"; $("aheadModePlaces").setAttribute("aria-pressed", true); $("aheadModeStops").setAttribute("aria-pressed", false); $("aheadList").dataset.key = ""; renderAhead(); };
@@ -978,16 +982,19 @@ function syncSettingsUI() {
   const sel = $("voice");
   sel.innerHTML = "";
   const vs = voice.list();
-  if (!vs.length) { const o = el("option", null, "Default voice"); o.value = ""; sel.append(o); }
+  if (!vs.length) { const o = el("option", null, t("main.default_voice")); o.value = ""; sel.append(o); }
   // an online voice says so: its words go to Google or Microsoft (privacy.html, Spoken narration)
-  for (const v of vs) { const o = el("option", null, v.natural ? "I-5 Buddy (natural voice)" : `${v.name} (${v.lang})${voice.online(v) ? " (online)" : ""}`); o.value = v.voiceURI; sel.append(o); }
-  sel.value = settings.voice || (vs[0]?.voiceURI ?? "");
+  for (const v of vs) { const o = el("option", null, v.natural ? t("main.i_5_buddy_natural_voice") : `${v.name} (${v.lang})${voice.online(v) ? " " + t("main.online_tag") : ""}`); o.value = v.voiceURI; sel.append(o); }
+  sel.value = settings[voice.settingKey] || (vs[0]?.voiceURI ?? "");
   $("rate").value = settings.rate; $("rateOut").textContent = (+settings.rate).toFixed(2).replace(/0$/, "") + "×";
-  $("lead").value = settings.lead; $("leadOut").textContent = settings.lead + " mi";
+  $("lead").value = settings.lead; $("leadOut").textContent = t("main.lead_mi", { lead: settings.lead });
   document.querySelectorAll("[data-chat]").forEach(b => b.setAttribute("aria-pressed", b.dataset.chat === settings.chat));
-  $("chatHint").textContent = { low: "Only things you can see and the big history.", normal: "Every landmark in the categories you pick.", high: "Everything, plus longer stories on quiet stretches." }[settings.chat];
+  $("chatHint").textContent = { low: t("main.only_things_you_can_see_and_the_big"), normal: t("main.every_landmark_in_the_categories_you"), high: t("main.everything_plus_longer_stories_on") }[settings.chat];
   $("autoStories").checked = settings.autoStories;
   $("zoneNarr").checked = settings.zoneNarr; $("chimeOn").checked = settings.chime; $("kidMode").checked = settings.kid;
+  $("kidStories").checked = !!settings.kidStories;
+  document.querySelectorAll("[data-lang-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.langSet === LANG));
+  $("langHint").hidden = !IS_ES;
   $("liveOn").checked = !!settings.live;
   document.querySelectorAll("[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", b.dataset.themeSet === settings.theme));
   $("manual").max = Math.round(MAX_M);
@@ -997,14 +1004,22 @@ function syncSettingsUI() {
 bus.on("voices", () => { if (!$("settings").hidden) syncSettingsUI(); });
 $("openSettings").onclick = () => { syncSettingsUI(); updateInstall(); openSheet($("settings")); };
 $("closeSettings").onclick = closeSheet;
-$("voice").onchange = e => { settings.voice = e.target.value; saveSettings(); voice.unlock(); voice.say("This is how I'll sound on the road.", { now: true }); };
+$("voice").onchange = e => { settings[voice.settingKey] = e.target.value; saveSettings(); voice.unlock(); voice.say(t("main.this_is_how_ill_sound_on_the_road"), { now: true }); };
 $("rate").oninput = e => { settings.rate = +e.target.value; $("rateOut").textContent = settings.rate.toFixed(2).replace(/0$/, "") + "×"; saveSettings(); };
-$("lead").oninput = e => { settings.lead = +e.target.value; $("leadOut").textContent = settings.lead + " mi"; saveSettings(); };
+$("lead").oninput = e => { settings.lead = +e.target.value; $("leadOut").textContent = t("main.lead_mi", { lead: settings.lead }); saveSettings(); };
 document.querySelectorAll("[data-chat]").forEach(b => b.onclick = () => { settings.chat = b.dataset.chat; saveSettings(); syncSettingsUI(); });
 $("autoStories").onchange = e => { settings.autoStories = e.target.checked; saveSettings(); };
 $("zoneNarr").onchange = e => { settings.zoneNarr = e.target.checked; saveSettings(); };
 $("chimeOn").onchange = e => { settings.chime = e.target.checked; saveSettings(); if (settings.chime) voice.chime(); };
 $("kidMode").onchange = e => { settings.kid = e.target.checked; saveSettings(); };
+// Stories for kids (3.1.0): a place's kids text instead of its story, where it has one (narrator.storyOf)
+$("kidStories").onchange = e => { settings.kidStories = e.target.checked; saveSettings(); shownNext = null; queueRender(); };
+// Language (3.1.0): saved, then the app starts again in it; a drive that was running is picked back up after the restart
+document.querySelectorAll("[data-lang-set]").forEach(b => b.onclick = () => {
+  if (b.dataset.langSet === LANG) return;
+  voice.stop();
+  setLang(b.dataset.langSet);
+});
 $("liveOn").onchange = e => { settings.live = e.target.checked; saveSettings(); };
 document.querySelectorAll("[data-theme-set]").forEach(b => b.onclick = () => { settings.theme = b.dataset.themeSet; saveSettings(); applyTheme(); syncSettingsUI(); });
 chipRow($("narrChips"), settings.cats, saveSettings);
@@ -1021,17 +1036,17 @@ $("resetPassport").onclick = () => { $("resetConfirm").hidden = false; };
 $("resetNo").onclick = () => { $("resetConfirm").hidden = true; };
 $("resetYes").onclick = () => {
   S.stamps = {}; saveStamps(); bus.emit("passport:reset", {});
-  $("resetConfirm").hidden = true; toast("Passport cleared"); ribbonBuilt = false; queueRender();
+  $("resetConfirm").hidden = true; toast(t("main.passport_cleared")); ribbonBuilt = false; queueRender();
 };
-$("dataVersion").textContent = `Data version ${data.D.version}.`;
+$("dataVersion").textContent = t("main.data_version_version", { version: data.D.version });
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.0.9";
-$("appVersion").textContent = `I-5 Buddy ${APP_VERSION}${native.NATIVE ? " for iPhone" : ""}`;
+export const APP_VERSION = "3.1.0";
+$("appVersion").textContent = t("main.i_5_buddy_app_version_x1", { APP_VERSION, x1: native.NATIVE ? t("main.for_iphone") : "" });
 if (native.NATIVE) {
-  const a = el("a", "secondary rate-open", "Rate I-5 Buddy");
+  const a = el("a", "secondary rate-open", t("main.rate_i_5_buddy"));
   a.href = "https://apps.apple.com/app/id6834991531?action=write-review"; a.target = "_blank"; a.rel = "noopener";
-  $("rateRow").append(a, el("small", "hint", "A rating in the App Store helps other drivers find it."));
+  $("rateRow").append(a, el("small", "hint", t("main.a_rating_in_the_app_store_helps_other")));
   $("rateRow").hidden = false;
 }
 
@@ -1050,7 +1065,7 @@ if (native.NATIVE) {
 // cached with the app), never under 40 px tall, with a quarter of its height clear around it (app.css). Never inside
 // the iPhone app itself.
 const APP_STORE = "https://apps.apple.com/us/app/i-5-buddy/id6834991531";
-const APPLE_TM = "Apple, the Apple logo and iPhone are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.";
+const APPLE_TM = t("main.apple_the_apple_logo_and_iphone_are");
 const APP_MODES = ["standalone", "fullscreen", "minimal-ui", "window-controls-overlay"];
 let installedHere = false; // the browser said "appinstalled" in this tab, or the person accepted its install dialog
 let asking = false;        // the browser's install dialog is open
@@ -1066,9 +1081,9 @@ function appStoreLink() {
   const a = el("a", "get-app");
   a.href = APP_STORE; a.target = "_blank"; a.rel = "noopener";
   const img = el("img", "get-app-badge");
-  img.src = "icons/app-store-badge.svg"; img.alt = "Download on the App Store"; img.width = 132; img.height = 44;
+  img.src = "icons/app-store-badge.svg"; img.alt = i18n.t("main.download_on_the_app_store"); img.width = 132; img.height = 44;
   const t = el("span", "get-app-text");
-  t.append(el("b", null, "Get the iPhone app"), " ", el("small", null, "Free, with every story and photo built in."));
+  t.append(el("b", null, i18n.t("main.get_the_iphone_app")), " ", el("small", null, i18n.t("main.free_with_every_story_and_photo_built")));
   a.append(img, t);
   return a;
 }
@@ -1097,9 +1112,9 @@ function updateInstall() {
   const btn = $("installApp");
   btn.hidden = !offer && !busy; markBusy(btn, busy);
   const hint = $("installHint");
-  hint.textContent = installed ? "Installed on this device." : offer || busy ? "" :
-    inApp ? "To install: open this page in Safari, tap Share, then Add to Home Screen." :
-    ios ? "To install: tap Share, then Add to Home Screen." : "To install: open the browser menu and choose Install app or Add to Home screen.";
+  hint.textContent = installed ? t("main.installed_on_this_device") : offer || busy ? "" :
+    inApp ? t("main.to_install_open_this_page_in_safari") :
+    ios ? t("main.to_install_tap_share_then_add_to_home") : t("main.to_install_open_the_browser_menu_and");
   hint.hidden = !hint.textContent;
   const slot = document.querySelector("#nextCard .welcome-install");
   if (slot) {
@@ -1109,7 +1124,7 @@ function updateInstall() {
       slot.dataset.show = want; slot.innerHTML = "";
       if (want === "offer") {
         const b = el("button", "secondary install-btn"); b.type = "button";
-        b.innerHTML = ICON_INSTALL; b.append("Install app"); b.onclick = installApp;
+        b.innerHTML = ICON_INSTALL; b.append(t("main.install_app")); b.onclick = installApp;
         slot.append(b);
       } else if (want === "store") slot.append(appStoreLink());
       slot.hidden = !want;
@@ -1138,21 +1153,21 @@ async function installApp() {
 }
 $("installApp").onclick = installApp;
 addEventListener("i5:install", updateInstall);
-addEventListener("appinstalled", () => { installedHere = true; window.__i5Install = null; updateInstall(); toast("I-5 Buddy is installed."); });
+addEventListener("appinstalled", () => { installedHere = true; window.__i5Install = null; updateInstall(); toast(t("main.i_5_buddy_is_installed")); });
 for (const m of APP_MODES) { try { matchMedia(`(display-mode: ${m})`).addEventListener("change", updateInstall); } catch {} }
 updateInstall();
 
 /* ---------- offline photos ---------- */
 $("savePhotos").onclick = async () => {
   const urls = [...new Set(PLACES.filter(p => p.img).map(p => p.img.f))];
-  if (!urls.length) { toast("No photos to save yet."); return; }
-  if (!("caches" in window)) { toast("This browser can't save files for offline use."); return; }
+  if (!urls.length) { toast(t("main.no_photos_to_save_yet")); return; }
+  if (!("caches" in window)) { toast(t("main.this_browser_cant_save_files_for")); return; }
   const btn = $("savePhotos"); btn.disabled = true;
-  const r = await savePhotos(urls, (done, total) => { $("offlineText").textContent = `Saving photos… ${done} of ${total}`; });
+  const r = await savePhotos(urls, (done, total) => { $("offlineText").textContent = t("main.saving_photos_done_of_total", { done, total }); });
   // only what was really saved counts (3.0.1: it used to say "All 273 photos saved" with none saved)
-  $("offlineText").textContent = r.error ? "Couldn't save photos. Try again with a better connection."
-    : r.ok === urls.length ? `All ${urls.length} photos saved for offline use.`
-    : `Saved ${r.ok} of ${urls.length} photos. Try again with a better connection for the rest.`;
+  $("offlineText").textContent = r.error ? t("main.couldnt_save_photos_try_again_with_a")
+    : r.ok === urls.length ? t("main.all_length_photos_saved_for_offline", { length: urls.length })
+    : t("main.saved_ok_of_length_photos_try_again", { ok: r.ok, length: urls.length });
   btn.disabled = false;
 };
 /** Save photos in the photo cache, 8 at a time, each within 15 s. Resolves {ok, failed} ({error} without a cache). */
@@ -1203,24 +1218,24 @@ function updateSaveVoice() {
   if (!b || native.NATIVE) return;
   const info = voice.offline ? voice.offline.info() : { ready: false };
   b.hidden = !info.ready || !voice.natural() || !("caches" in window);
-  if (!info.saving) b.textContent = info.mb ? `Save the voice for offline (${info.mb} MB)` : "Save the voice for offline";
+  if (!info.saving) b.textContent = info.mb ? t("main.save_the_voice_for_offline_mb_mb", { mb: info.mb }) : t("main.save_the_voice_for_offline");
 }
 bus.on("voices", updateSaveVoice);
 bus.on("settings", updateSaveVoice);
 $("saveVoice").onclick = async () => {
   const b = $("saveVoice");
   b.disabled = true;
-  const r = await voice.offline.save((done, total) => { $("offlineText").textContent = `Saving the voice… ${done} of ${total} clips`; });
-  $("offlineText").textContent = r.none ? "This browser can't save the voice for offline use."
-    : r.failed ? `Saved ${r.ok} of ${r.ok + r.failed} voice clips. Try again with a better connection for the rest.`
-    : "The voice is saved. Narration sounds the same in dead zones.";
+  const r = await voice.offline.save((done, total) => { $("offlineText").textContent = t("main.saving_the_voice_done_of_total_clips", { done, total }); });
+  $("offlineText").textContent = r.none ? t("main.this_browser_cant_save_the_voice_for")
+    : r.failed ? t("main.saved_ok_of_x1_voice_clips_try_again", { ok: r.ok, x1: r.ok + r.failed })
+    : t("main.the_voice_is_saved_narration_sounds");
   b.disabled = false;
 };
 updateSaveVoice();
 if (native.NATIVE) { // the iPhone app carries every file, photos and the voice included
   $("savePhotos").hidden = true;
   $("saveVoice").hidden = true;
-  $("offlineText").textContent = `Everything is on this phone, photos and the voice included. Live road info${native.VOICE ? ", voice commands" : ""}, routes and the 3D map need a connection.`;
+  $("offlineText").textContent = t("main.everything_is_on_this_phone_photos_and", { x1: native.VOICE ? t("main.voice_commands") : "" });
 }
 
 /* ---------- what's new in 3.0.7: once, for people who used the app before (also in the iPhone app after its update) ---------- */
@@ -1228,14 +1243,14 @@ if (native.NATIVE) { // the iPhone app carries every file, photos and the voice 
 // need voice commands (speech recognition, and not turned off in the iPhone app: the same test as listen.js init).
 const NEW_ID = "3.0.7-ask-buddy";
 export const WHATS_NEW = {
-  title: "New in I-5 Buddy 3.0.7: ask about the places you pass",
-  titleNoMic: "New in I-5 Buddy 3.0.7: calmer directions and clearer words",
-  ask: "Ask about the places you pass: tap the mic and say “how tall is Mount Shasta?” The answers are saved on your phone.",
+  title: t("main.new_in_i_5_buddy_3_0_7_ask_about_the"),
+  titleNoMic: t("main.new_in_i_5_buddy_3_0_7_calmer"),
+  ask: t("main.ask_about_the_places_you_pass_tap_the"),
   items: [
-    "Calmer turn-by-turn directions: “Rerouting” once when you leave the route, and the arrival only when you get there.",
-    "Stories step aside for turns, chain controls and road alerts.",
-    "Rest areas that Caltrans lists as closed are called out, with the next open one on your side.",
-    "Better photos, and clearer spoken distances, times and numbers.",
+    t("main.calmer_turn_by_turn_directions"),
+    t("main.stories_step_aside_for_turns_chain"),
+    t("main.rest_areas_that_caltrans_lists_as"),
+    t("main.better_photos_and_clearer_spoken"),
   ],
 };
 function whatsNew() {
@@ -1253,10 +1268,10 @@ function whatsNew() {
   const list = el("ul", "wn-list");
   for (const t of mic ? [WHATS_NEW.ask, ...WHATS_NEW.items] : WHATS_NEW.items) list.append(el("li", null, t));
   const acts = el("div", "acts");
-  const ok = el("button", "primary", "Got it"); ok.type = "button";
+  const ok = el("button", "primary", i18n.t("main.got_it")); ok.type = "button";
   ok.onclick = () => { done(); ($("nextCard").querySelector("h2") || $("startGps")).focus?.({ preventScroll: true }); };
   acts.append(ok);
-  card.append(el("div", "meta", "WHAT'S NEW"), h, list, acts);
+  card.append(el("div", "meta", i18n.t("main.whats_new")), h, list, acts);
   box.textContent = ""; box.append(card); box.hidden = false;
   place(S.mode);
 }
@@ -1277,11 +1292,11 @@ if (native.NATIVE) {
     const row = $("storeUpdate");
     if (!u || !row) return;
     row.textContent = "";
-    const a = el("a", null, "Open the App Store");
+    const a = el("a", null, t("main.open_the_app_store"));
     a.href = u.url; a.target = "_blank"; a.rel = "noopener";
-    const later = el("button", "link", "Not now"); later.type = "button";
+    const later = el("button", "link", t("main.not_now")); later.type = "button";
     later.onclick = () => { native.storeUpdateLater(u.version); row.hidden = true; };
-    row.append(el("span", null, "An update is ready in the App Store."), a, later);
+    row.append(el("span", null, t("main.an_update_is_ready_in_the_app_store")), a, later);
     row.hidden = false;
   }).catch(() => {});
 }
@@ -1337,8 +1352,8 @@ window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools
   if (!d) return;
   if (!(Date.now() - d.t < RESUME_MS) || S.m == null) { store.del("drive"); return; }
   S.resumable = true;
-  $("startGps").textContent = "Resume drive";
-  showNotice("resume", { title: "Pick up where you left off?", text: "Your drive stopped when I-5 Buddy restarted. Tap Resume drive and I'll carry on.", acts: [] });
+  $("startGps").textContent = t("main.resume_drive");
+  showNotice("resume", { title: t("main.pick_up_where_you_left_off"), text: t("main.your_drive_stopped_when_i_5_buddy"), acts: [] });
   autoResume();
 })();
 // 3.0.6: when location is already allowed, GPS picks the drive back up by itself after a restart instead of sitting at
@@ -1349,7 +1364,7 @@ async function autoResume() {
   try { if (!ok && navigator.permissions) ok = (await navigator.permissions.query({ name: "geolocation" })).state === "granted"; } catch {}
   if (!ok || !S.resumable || S.mode !== "off") return;
   startGps();
-  toast("Back on GPS. Tap anywhere so I can talk again.", 6000);
+  toast(t("main.back_on_gps_tap_anywhere_so_i_can_talk"), 6000);
   document.addEventListener("pointerdown", () => voice.unlock(), { once: true, capture: true });
 }
 

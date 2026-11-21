@@ -8,6 +8,8 @@
 // "playGame" (last game picked on the Play tab), "playTripAt" (when this trip began, ms), "party" (Car Party),
 // "triviaSpeed", "plates", "higher", "where", "wyr", "hunt", "alpha", "cows" (see each game's file).
 
+import { t, loc } from "./i18n.js";
+import * as i18n from "./i18n.js";
 import { h, add, svg, safe, shuffle, num, icon, ICON, countUp, reduced, firstSentence, shortName, fmtDate, thousands, sameish, colorStyle, pick, clamp } from "./games/kit.js";
 import { createParty } from "./games/party.js";
 import { LINES as WORDS, WYR, wyrSpeech, alphaSpeech, ALPHA_TIPS } from "./games/lines.js";
@@ -132,59 +134,62 @@ function announce(msg) {
    gets two of them. A general square carries the tags of the specific ones it covers ("Snow-capped peak" vs
    "Mount Hood"). Labels stay short so they fit a 60px square on a 360px phone; "~" marks where a long word may
    break (a soft hyphen). Emoji are Unicode 9 or older so Android 8 and up draws all of them. */
+/** A square for the pools: its spec ("emoji|label|seasons|tags"; the seasons and tags stay as written, the code reads them)
+    with the label in this language (3.1.0; "~" in a label marks where a long word may break). */
+const sq = (spec, label) => { const p = String(spec).split("|"); if (label) p[1] = String(label).replace(/\|/g, "/"); return p.join("|"); };
 const POOLS = {
   general: [
-    "🚐|RV", "🚘|Out-of-state plate", "🚓|Highway patrol", "🚻|Rest area", "🌉|Bridge over a river||bridge", "🐴|Horse",
-    "🏍️|Motor~cycle", "🚛|Big rig, 3 trailers", "🚌|School bus", "🐕|Dog in a car", "🚒|Fire truck", "🚲|Bikes on a car",
-    "🚤|Boat on a trailer", "🦅|Hawk on a post", "🚂|Freight train||freight", "🏚️|Old barn", "💧|Water tower",
-    "🌲|Fake-tree cell tower", "🇺🇸|Giant flag", "📦|Roof box on a car", "🚧|Orange cones", "🚕|Yellow car",
-    "💜|Purple car", "🚗|Car towing a car", "⚡|EV charger sign", "🔟|Milepost ending in 0", "🌈|Rainbow",
-    "🦌|Deer crossing sign", "⛽|Gas price sign", "🍔|Burger sign", "🚁|Heli~copter", "🏞️|Lake||lake", "🏎️|Sports car",
-    "🚚|Moving truck", "✈️|Airplane||plane", "🐦|Birds on a wire", "🚙|Pickup with hay", "🚨|Car pulled over",
+    sq("🚐|RV", t("play.sq_rv")), sq("🚘|Out-of-state plate", t("play.sq_out_of_state_plate")), sq("🚓|Highway patrol", t("play.sq_highway_patrol")), sq("🚻|Rest area", t("play.sq_rest_area")), sq("🌉|Bridge over a river||bridge", t("play.sq_bridge_over_a_river")), sq("🐴|Horse", t("play.sq_horse")),
+    sq("🏍️|Motor~cycle", t("play.sq_motorcycle")), sq("🚛|Big rig, 3 trailers", t("play.sq_big_rig_3_trailers")), sq("🚌|School bus", t("play.sq_school_bus")), sq("🐕|Dog in a car", t("play.sq_dog_in_a_car")), sq("🚒|Fire truck", t("play.sq_fire_truck")), sq("🚲|Bikes on a car", t("play.sq_bikes_on_a_car")),
+    sq("🚤|Boat on a trailer", t("play.sq_boat_on_a_trailer")), sq("🦅|Hawk on a post", t("play.sq_hawk_on_a_post")), sq("🚂|Freight train||freight", t("play.sq_freight_train")), sq("🏚️|Old barn", t("play.sq_old_barn")), sq("💧|Water tower", t("play.sq_water_tower")),
+    sq("🌲|Fake-tree cell tower", t("play.sq_fake_tree_cell_tower")), sq("🇺🇸|Giant flag", t("play.sq_giant_flag")), sq("📦|Roof box on a car", t("play.sq_roof_box_on_a_car")), sq("🚧|Orange cones", t("play.sq_orange_cones")), sq("🚕|Yellow car", t("play.sq_yellow_car")),
+    sq("💜|Purple car", t("play.sq_purple_car")), sq("🚗|Car towing a car", t("play.sq_car_towing_a_car")), sq("⚡|EV charger sign", t("play.sq_ev_charger_sign")), sq("🔟|Milepost ending in 0", t("play.sq_milepost_ending_in_0")), sq("🌈|Rainbow", t("play.sq_rainbow")),
+    sq("🦌|Deer crossing sign", t("play.sq_deer_crossing_sign")), sq("⛽|Gas price sign", t("play.sq_gas_price_sign")), sq("🍔|Burger sign", t("play.sq_burger_sign")), sq("🚁|Heli~copter", t("play.sq_helicopter")), sq("🏞️|Lake||lake", t("play.sq_lake")), sq("🏎️|Sports car", t("play.sq_sports_car")),
+    sq("🚚|Moving truck", t("play.sq_moving_truck")), sq("✈️|Airplane||plane", t("play.sq_airplane")), sq("🐦|Birds on a wire", t("play.sq_birds_on_a_wire")), sq("🚙|Pickup with hay", t("play.sq_pickup_with_hay")), sq("🚨|Car pulled over", t("play.sq_car_pulled_over")),
   ],
   socal: [
-    "🌴|Palm trees", "🏄|Surf~board on a car", "🛣️|Sign with 4+ exits", "🔷|Carpool lane", "🌊|Ocean view",
-    "🚆|Commuter train", "🛬|Plane landing||plane", "🌮|Taco shop", "🎢|Roller coaster", "🏟️|Stadium",
-    "🏗️|Con~struction crane", "🎨|Mural", "😎|Con~vertible", "🚦|Stop-and-go traffic", "🛍️|Outlet mall",
-    "🌺|Flower~ing vines", "🚢|Big ship||ship", "🌵|Cactus", "🍊|Orange tree", "🍃|Ivy on a sound wall", "🚗|Lowrider",
+    sq("🌴|Palm trees", t("play.sq_palm_trees")), sq("🏄|Surf~board on a car", t("play.sq_surfboard_on_a_car")), sq("🛣️|Sign with 4+ exits", t("play.sq_sign_with_4_exits")), sq("🔷|Carpool lane", t("play.sq_carpool_lane")), sq("🌊|Ocean view", t("play.sq_ocean_view")),
+    sq("🚆|Commuter train", t("play.sq_commuter_train")), sq("🛬|Plane landing||plane", t("play.sq_plane_landing")), sq("🌮|Taco shop", t("play.sq_taco_shop")), sq("🎢|Roller coaster", t("play.sq_roller_coaster")), sq("🏟️|Stadium", t("play.sq_stadium")),
+    sq("🏗️|Con~struction crane", t("play.sq_construction_crane")), sq("🎨|Mural", t("play.sq_mural")), sq("😎|Con~vertible", t("play.sq_convertible")), sq("🚦|Stop-and-go traffic", t("play.sq_stop_and_go_traffic")), sq("🛍️|Outlet mall", t("play.sq_outlet_mall")),
+    sq("🌺|Flower~ing vines", t("play.sq_flowering_vines")), sq("🚢|Big ship||ship", t("play.sq_big_ship")), sq("🌵|Cactus", t("play.sq_cactus")), sq("🍊|Orange tree", t("play.sq_orange_tree")), sq("🍃|Ivy on a sound wall", t("play.sq_ivy_on_a_sound_wall")), sq("🚗|Lowrider", t("play.sq_lowrider")),
   ],
   westside: [
-    "🛢️|Oil pumpjack", "🌳|Almond orchard", "🐂|Cattle||cattle", "🌊|Aqueduct", "🍅|Tomato truck",
-    "🛩️|Crop duster||plane", "🌪️|Dust devil", "🌾|Hay bales", "🐝|Bee boxes", "🥜|Pista~chio trees", "☁️|Cotton field",
-    "🍇|Vineyard", "💦|Sprin~klers on", "🚰|Farm water sign", "🚜|Tractor", "🍑|Fruit stand", "🌬️|Wind turbines",
-    "🐑|Sheep", "🌿|Tumble~weed", "👃|Smelly feedlot||cattle", "🚚|Garlic truck", "🏜️|Bare brown hills", "☀️|Road mirage",
+    sq("🛢️|Oil pumpjack", t("play.sq_oil_pumpjack")), sq("🌳|Almond orchard", t("play.sq_almond_orchard")), sq("🐂|Cattle||cattle", t("play.sq_cattle")), sq("🌊|Aqueduct", t("play.sq_aqueduct")), sq("🍅|Tomato truck", t("play.sq_tomato_truck")),
+    sq("🛩️|Crop duster||plane", t("play.sq_crop_duster")), sq("🌪️|Dust devil", t("play.sq_dust_devil")), sq("🌾|Hay bales", t("play.sq_hay_bales")), sq("🐝|Bee boxes", t("play.sq_bee_boxes")), sq("🥜|Pista~chio trees", t("play.sq_pistachio_trees")), sq("☁️|Cotton field", t("play.sq_cotton_field")),
+    sq("🍇|Vineyard", t("play.sq_vineyard")), sq("💦|Sprin~klers on", t("play.sq_sprinklers_on")), sq("🚰|Farm water sign", t("play.sq_farm_water_sign")), sq("🚜|Tractor", t("play.sq_tractor")), sq("🍑|Fruit stand", t("play.sq_fruit_stand")), sq("🌬️|Wind turbines", t("play.sq_wind_turbines")),
+    sq("🐑|Sheep", t("play.sq_sheep")), sq("🌿|Tumble~weed", t("play.sq_tumbleweed")), sq("👃|Smelly feedlot||cattle", t("play.sq_smelly_feedlot")), sq("🚚|Garlic truck", t("play.sq_garlic_truck")), sq("🏜️|Bare brown hills", t("play.sq_bare_brown_hills")), sq("☀️|Road mirage", t("play.sq_road_mirage")),
   ],
   delta: [
-    "⛵|Sailboat", "🌉|Draw~bridge||bridge", "🏛️|Capitol dome", "🌽|Corn field", "🍐|Pear orchard", "🍇|Vineyard",
-    "🦆|Ducks on water||duck", "🛶|Kayak", "🚢|Cargo ship||ship", "🌾|Levee road", "🌻|Sun~flowers|summer",
-    "🐄|Dairy cows||cattle", "🍒|Cherry orchard", "🛫|Jet taking off||plane", "🌳|Giant oak tree", "🎣|Someone fishing",
-    "🚂|Train bridge||bridge", "🕊️|Swan",
+    sq("⛵|Sailboat", t("play.sq_sailboat")), sq("🌉|Draw~bridge||bridge", t("play.sq_drawbridge")), sq("🏛️|Capitol dome", t("play.sq_capitol_dome")), sq("🌽|Corn field", t("play.sq_corn_field")), sq("🍐|Pear orchard", t("play.sq_pear_orchard")), sq("🍇|Vineyard", t("play.sq_vineyard")),
+    sq("🦆|Ducks on water||duck", t("play.sq_ducks_on_water")), sq("🛶|Kayak", t("play.sq_kayak")), sq("🚢|Cargo ship||ship", t("play.sq_cargo_ship")), sq("🌾|Levee road", t("play.sq_levee_road")), sq("🌻|Sun~flowers|summer", t("play.sq_sunflowers")),
+    sq("🐄|Dairy cows||cattle", t("play.sq_dairy_cows")), sq("🍒|Cherry orchard", t("play.sq_cherry_orchard")), sq("🛫|Jet taking off||plane", t("play.sq_jet_taking_off")), sq("🌳|Giant oak tree", t("play.sq_giant_oak_tree")), sq("🎣|Someone fishing", t("play.sq_someone_fishing")),
+    sq("🚂|Train bridge||bridge", t("play.sq_train_bridge")), sq("🕊️|Swan", t("play.sq_swan")),
   ],
   valley: [
-    "🌾|Rice field||rice", "🌻|Sun~flowers|summer", "🌰|Walnut orchard", "🕊️|White egret", "🌿|Olive trees", "🦆|Ducks||duck",
-    "🍑|Peach orchard", "🌸|Prune orchard", "⛰️|Sutter Buttes", "💧|Flooded field||rice", "🛩️|Crop duster||plane",
-    "🏔️|Snowy peak far off||peak,hood,rainier,baker", "🐄|Dairy cows||cattle", "🍯|Honey sign", "🌳|Almond orchard",
-    "🍉|Melon stand", "🦅|Bald eagle", "🐐|Goats", "🚜|Tractor",
+    sq("🌾|Rice field||rice", t("play.sq_rice_field")), sq("🌻|Sun~flowers|summer", t("play.sq_sunflowers")), sq("🌰|Walnut orchard", t("play.sq_walnut_orchard")), sq("🕊️|White egret", t("play.sq_white_egret")), sq("🌿|Olive trees", t("play.sq_olive_trees")), sq("🦆|Ducks||duck", t("play.sq_ducks")),
+    sq("🍑|Peach orchard", t("play.sq_peach_orchard")), sq("🌸|Prune orchard", t("play.sq_prune_orchard")), sq("⛰️|Sutter Buttes", t("play.sq_sutter_buttes")), sq("💧|Flooded field||rice", t("play.sq_flooded_field")), sq("🛩️|Crop duster||plane", t("play.sq_crop_duster")),
+    sq("🏔️|Snowy peak far off||peak,hood,rainier,baker", t("play.sq_snowy_peak_far_off")), sq("🐄|Dairy cows||cattle", t("play.sq_dairy_cows")), sq("🍯|Honey sign", t("play.sq_honey_sign")), sq("🌳|Almond orchard", t("play.sq_almond_orchard")),
+    sq("🍉|Melon stand", t("play.sq_melon_stand")), sq("🦅|Bald eagle", t("play.sq_bald_eagle")), sq("🐐|Goats", t("play.sq_goats")), sq("🚜|Tractor", t("play.sq_tractor")),
   ],
   shasta: [
-    "🏔️|Snow-capped peak||peak,hood,rainier,baker", "🚛|Log truck", "🚂|Train in the canyon||freight", "⛓️|Chain-up area",
-    "🌲|Pine forest||conifer", "🌉|Tall bridge||bridge", "🛥️|House~boat||lake", "💦|Water~fall", "🦌|Deer",
-    "🚧|Runaway truck ramp", "🛑|Brake check area", "🌊|River rapids", "⛰️|Rocky spires", "🔥|Burned trees",
-    "❄️|Snow on the ground|winter,spring", "⛺|Camp~ground sign", "📈|Ele~vation sign", "🦅|Osprey nest", "🌫️|Fog in the trees",
+    sq("🏔️|Snow-capped peak||peak,hood,rainier,baker", t("play.sq_snow_capped_peak")), sq("🚛|Log truck", t("play.sq_log_truck")), sq("🚂|Train in the canyon||freight", t("play.sq_train_in_the_canyon")), sq("⛓️|Chain-up area", t("play.sq_chain_up_area")),
+    sq("🌲|Pine forest||conifer", t("play.sq_pine_forest")), sq("🌉|Tall bridge||bridge", t("play.sq_tall_bridge")), sq("🛥️|House~boat||lake", t("play.sq_houseboat")), sq("💦|Water~fall", t("play.sq_waterfall")), sq("🦌|Deer", t("play.sq_deer")),
+    sq("🚧|Runaway truck ramp", t("play.sq_runaway_truck_ramp")), sq("🛑|Brake check area", t("play.sq_brake_check_area")), sq("🌊|River rapids", t("play.sq_river_rapids")), sq("⛰️|Rocky spires", t("play.sq_rocky_spires")), sq("🔥|Burned trees", t("play.sq_burned_trees")),
+    sq("❄️|Snow on the ground|winter,spring", t("play.sq_snow_on_the_ground")), sq("⛺|Camp~ground sign", t("play.sq_campground_sign")), sq("📈|Ele~vation sign", t("play.sq_elevation_sign")), sq("🦅|Osprey nest", t("play.sq_osprey_nest")), sq("🌫️|Fog in the trees", t("play.sq_fog_in_the_trees")),
   ],
   oregon: [
-    "🌲|Douglas fir||conifer", "🌉|Covered bridge sign", "🌰|Hazelnut orchard", "🌾|Grass seed field",
-    "🎄|Christ~mas tree farm", "🛶|River rafters", "🍇|Vineyard", "🐑|Sheep", "🌧️|Rain", "🏈|Beaver logo",
-    "🦆|Duck logo", "⛽|Gas at~tendant", "🚛|Log truck", "🏔️|Mount Hood||hood", "🍓|Marion~berry sign",
-    "🔵|Blue~berry farm", "🏭|Lumber mill", "🐄|Dairy cows||cattle", "🍺|Brewery sign", "🌿|Hops on poles",
-    "🦌|Elk crossing sign", "🐟|Salmon sign",
+    sq("🌲|Douglas fir||conifer", t("play.sq_douglas_fir")), sq("🌉|Covered bridge sign", t("play.sq_covered_bridge_sign")), sq("🌰|Hazelnut orchard", t("play.sq_hazelnut_orchard")), sq("🌾|Grass seed field", t("play.sq_grass_seed_field")),
+    sq("🎄|Christ~mas tree farm", t("play.sq_christmas_tree_farm")), sq("🛶|River rafters", t("play.sq_river_rafters")), sq("🍇|Vineyard", t("play.sq_vineyard")), sq("🐑|Sheep", t("play.sq_sheep")), sq("🌧️|Rain", t("play.sq_rain")), sq("🏈|Beaver logo", t("play.sq_beaver_logo")),
+    sq("🦆|Duck logo", t("play.sq_duck_logo")), sq("⛽|Gas at~tendant", t("play.sq_gas_attendant")), sq("🚛|Log truck", t("play.sq_log_truck")), sq("🏔️|Mount Hood||hood", t("play.sq_mount_hood")), sq("🍓|Marion~berry sign", t("play.sq_marionberry_sign")),
+    sq("🔵|Blue~berry farm", t("play.sq_blueberry_farm")), sq("🏭|Lumber mill", t("play.sq_lumber_mill")), sq("🐄|Dairy cows||cattle", t("play.sq_dairy_cows")), sq("🍺|Brewery sign", t("play.sq_brewery_sign")), sq("🌿|Hops on poles", t("play.sq_hops_on_poles")),
+    sq("🦌|Elk crossing sign", t("play.sq_elk_crossing_sign")), sq("🐟|Salmon sign", t("play.sq_salmon_sign")),
   ],
   washington: [
-    "⛴️|Ferry sign", "🏔️|Mount Rainier||rainier", "🌲|Ever~green trees||conifer", "🌷|Tulip field|spring", "🌧️|Rain",
-    "☕|Coffee stand", "🦅|Bald eagle", "🏙️|Space Needle", "🏗️|Port cranes", "🚇|Light rail train",
-    "🌉|Double-deck bridge||bridge", "🍁|BC license plate", "🕊️|Snow geese|fall,winter", "✈️|Big jet overhead||plane",
-    "🔵|Blue~berry farm", "🐄|Dairy cows||cattle", "🍎|Apple stand", "🌿|Mossy trees", "🐟|Salmon sign",
-    "🌊|Puget Sound view", "🏔️|Mount Baker||baker", "🏟️|Stadium",
+    sq("⛴️|Ferry sign", t("play.sq_ferry_sign")), sq("🏔️|Mount Rainier||rainier", t("play.sq_mount_rainier")), sq("🌲|Ever~green trees||conifer", t("play.sq_evergreen_trees")), sq("🌷|Tulip field|spring", t("play.sq_tulip_field")), sq("🌧️|Rain", t("play.sq_rain")),
+    sq("☕|Coffee stand", t("play.sq_coffee_stand")), sq("🦅|Bald eagle", t("play.sq_bald_eagle")), sq("🏙️|Space Needle", t("play.sq_space_needle")), sq("🏗️|Port cranes", t("play.sq_port_cranes")), sq("🚇|Light rail train", t("play.sq_light_rail_train")),
+    sq("🌉|Double-deck bridge||bridge", t("play.sq_double_deck_bridge")), sq("🍁|BC license plate", t("play.sq_bc_license_plate")), sq("🕊️|Snow geese|fall,winter", t("play.sq_snow_geese")), sq("✈️|Big jet overhead||plane", t("play.sq_big_jet_overhead")),
+    sq("🔵|Blue~berry farm", t("play.sq_blueberry_farm")), sq("🐄|Dairy cows||cattle", t("play.sq_dairy_cows")), sq("🍎|Apple stand", t("play.sq_apple_stand")), sq("🌿|Mossy trees", t("play.sq_mossy_trees")), sq("🐟|Salmon sign", t("play.sq_salmon_sign")),
+    sq("🌊|Puget Sound view", t("play.sq_puget_sound_view")), sq("🏔️|Mount Baker||baker", t("play.sq_mount_baker")), sq("🏟️|Stadium", t("play.sq_stadium")),
   ],
 };
 const AREA_OF_REGION = {
@@ -192,12 +197,12 @@ const AREA_OF_REGION = {
   rv: "oregon", um: "oregon", wv: "oregon", sw: "washington", ps: "washington", ns: "washington",
 };
 const AREA_NAME = {
-  socal: "SoCal city", westside: "Westside farm country", delta: "Delta & Capital", valley: "Sacramento Valley",
-  shasta: "Shasta mountains", oregon: "Oregon", washington: "Washington", mix: "Whole road mix",
+  socal: t("play.socal_city"), westside: t("play.westside_farm_country"), delta: t("play.delta_capital"), valley: t("play.sacramento_valley"),
+  shasta: t("play.shasta_mountains"), oregon: t("play.oregon"), washington: t("play.washington"), mix: t("play.whole_road_mix"),
 };
 const AREA_IN = {
-  socal: "Southern California", westside: "Westside farm country", delta: "the Delta", valley: "the Sacramento Valley",
-  shasta: "the Shasta mountains", oregon: "Oregon", washington: "Washington",
+  socal: t("play.southern_california"), westside: t("play.westside_farm_country"), delta: t("play.the_delta"), valley: t("play.the_sacramento_valley"),
+  shasta: t("play.the_shasta_mountains"), oregon: t("play.oregon"), washington: t("play.washington"),
 };
 const AREA_ORDER = ["socal", "westside", "delta", "valley", "shasta", "oregon", "washington"];
 const AREA_STATE = { socal: "CA", westside: "CA", delta: "CA", valley: "CA", shasta: "CA", oregon: "OR", washington: "WA" };
@@ -252,7 +257,7 @@ const LINES = (() => {
   L.push([0, 6, 12, 18, 24], [4, 8, 12, 16, 20]);
   return L;
 })();
-const lineName = i => (i < 5 ? `Row ${i + 1}` : i < 10 ? `${"BINGO"[i - 5]} column` : "Diagonal");
+const lineName = i => (i < 5 ? t("play.row_x1", { x1: i + 1 }) : i < 10 ? t("play.x1_column", { x1: "BINGO"[i - 5] }) : t("play.diagonal"));
 
 let card = null;
 let B = null;          // bingo DOM refs
@@ -291,7 +296,7 @@ function dealCard() {
   take(pool("general"), 24 - picks.length);
   for (const a of areas()) if (picks.length < 24) take(pool(a), 24 - picks.length);
   const cells = shuffle(picks.slice(0, 24)).map(sq => ({ e: sq.e, t: sq.t }));
-  cells.splice(CENTER, 0, { free: true, e: "", t: "Free" });
+  cells.splice(CENTER, 0, { free: true, e: "", t: t("play.free") });
   return {
     v: 2, area: area || "mix", m: m != null ? Math.round(m * 10) / 10 : null, at: Date.now(),
     cells, on: cells.map((_, i) => i === CENTER), won: [], full: false,
@@ -347,7 +352,7 @@ function toggleSquare(i) {
   if (blackout) card.full = true;
   save("bingo", card);
   renderBingo(fresh);
-  if (B) B.live.textContent = `${card.cells[i].t.replace(/\u00AD/g, "")} ${card.on[i] ? "marked" : "cleared"}. ${marked()} of 24.`;
+  if (B) B.live.textContent = t("play.replace_x1_marked_of_24", { replace: card.cells[i].t.replace(/\u00AD/g, ""), x1: card.on[i] ? t("play.marked") : t("play.cleared"), marked: marked() });
   if (blackout) celebrate("full", fresh);
   else if (fresh.length) celebrate("bingo", fresh);
 }
@@ -372,20 +377,20 @@ function askNewCard() {
 function buildBingo(pane) {
   const meta = h("div", { class: "pl-bmeta" });
   const banner = h("div", { class: "pl-banner", hidden: true });
-  const grid = h("div", { class: "pl-grid", role: "group", "aria-label": "Bingo card" });
+  const grid = h("div", { class: "pl-grid", role: "group", "aria-label": t("play.bingo_card") });
   grid.addEventListener("click", safe(e => {
     const b = e.target.closest("button[data-i]");
     if (b) toggleSquare(+b.dataset.i);
   }, "bingo tap"));
   const head = h("div", { class: "pl-bhead", "aria-hidden": "true" }, [..."BINGO"].map(ch => h("span", null, ch)));
-  const confirm = h("div", { class: "pl-confirm", hidden: true, role: "group", "aria-label": "Start a new card?" },
-    h("p", null, "Start over with a new card? This one goes away."),
+  const confirm = h("div", { class: "pl-confirm", hidden: true, role: "group", "aria-label": t("play.start_a_new_card") },
+    h("p", null, t("play.start_over_with_a_new_card_this_one")),
     h("div", { class: "pl-row" },
-      h("button", { class: "primary", type: "button", onclick: safe(newCard, "new card") }, "New card"),
-      h("button", { class: "secondary", type: "button", onclick: () => { confirm.hidden = true; B.newBtn.focus({ preventScroll: true }); } }, "Keep this one")));
-  const newBtn = h("button", { class: "secondary pl-new", type: "button", onclick: safe(askNewCard, "new card") }, icon("shuffle"), "New card");
+      h("button", { class: "primary", type: "button", onclick: safe(newCard, "new card") }, t("play.new_card")),
+      h("button", { class: "secondary", type: "button", onclick: () => { confirm.hidden = true; B.newBtn.focus({ preventScroll: true }); } }, t("play.keep_this_one"))));
+  const newBtn = h("button", { class: "secondary pl-new", type: "button", onclick: safe(askNewCard, "new card") }, icon("shuffle"), t("play.new_card"));
   pane.append(meta, banner, h("div", { class: "pl-card" }, head, grid), confirm,
-    h("div", { class: "pl-bfoot" }, h("p", { class: "pl-how" }, "Tap a square when someone in the car spots it. Five in a row, down a column or corner to corner is a bingo."), newBtn));
+    h("div", { class: "pl-bfoot" }, h("p", { class: "pl-how" }, t("play.tap_a_square_when_someone_in_the_car")), newBtn));
   const live = h("p", { class: "pl-sr", role: "status" });
   pane.append(live);
   B = { pane, meta, banner, grid, newBtn, confirm, live };
@@ -400,8 +405,8 @@ function renderBingo(fresh = []) {
     grid.textContent = "";
     card.cells.forEach((c, i) => {
       if (c.free) {
-        grid.append(h("div", { class: "pl-sq pl-free", role: "img", "aria-label": "Free space" },
-          logo("pl-free-logo"), h("span", { class: "pl-sq-t" }, "FREE")));
+        grid.append(h("div", { class: "pl-sq pl-free", role: "img", "aria-label": t("play.free_space") },
+          logo("pl-free-logo"), h("span", { class: "pl-sq-t" }, t("play.free_2"))));
       } else {
         grid.append(h("button", { class: "pl-sq", type: "button", "data-i": i, "aria-pressed": "false" },
           h("span", { class: "pl-sq-e", "aria-hidden": "true" }, c.e), h("span", { class: "pl-sq-t" }, c.t)));
@@ -423,11 +428,11 @@ function renderBingo(fresh = []) {
   const n = marked(), bingos = lines.length;
   B.meta.textContent = "";
   B.meta.append(
-    h("div", { class: "pl-area" }, h("b", null, AREA_NAME[card.area] || "Road bingo"),
-      h("small", null, card.m != null ? `Dealt near ${mileLabel(card.m)}` : "Dealt before the trip")),
+    h("div", { class: "pl-area" }, h("b", null, AREA_NAME[card.area] || t("play.road_bingo")),
+      h("small", null, card.m != null ? t("play.dealt_near_m", { m: mileLabel(card.m) }) : t("play.dealt_before_the_trip"))),
     h("div", { class: "pl-prog" },
       h("span", null, h("b", null, n), "/24"),
-      h("span", { class: bingos ? "pl-hot" : "" }, h("b", null, bingos), bingos === 1 ? " bingo" : " bingos")));
+      h("span", { class: bingos ? "pl-hot" : "" }, h("b", null, bingos), bingos === 1 ? t("play.bingo") : t("play.bingos"))));
   renderBanner();
 }
 
@@ -442,8 +447,8 @@ function renderBanner() {
   B.banner.hidden = !show;
   B.banner.textContent = "";
   if (!show) return;
-  B.banner.append(h("span", null, `You're in ${AREA_IN[here] || AREA_NAME[here]} now.`),
-    h("button", { class: "link", type: "button", onclick: safe(askNewCard, "new card") }, "Deal a card for it"));
+  B.banner.append(h("span", null, t("play.youre_in_x1_now", { x1: AREA_IN[here] || AREA_NAME[here] })),
+    h("button", { class: "link", type: "button", onclick: safe(askNewCard, "new card") }, t("play.deal_a_card_for_it")));
 }
 
 function closeWin() {
@@ -456,8 +461,8 @@ function celebrate(kind, fresh) {
   const host = document.getElementById("view-play");
   if (!host) return;
   const full = kind === "full";
-  const title = full ? "FULL CARD!" : "BINGO!";
-  const sub = full ? "Every square on the card" : (fresh.length ? fresh.map(lineName).join(" and ") : "Five in a row");
+  const title = full ? t("play.full_card") : t("play.bingo_2");
+  const sub = full ? t("play.every_square_on_the_card") : (fresh.length ? fresh.map(lineName).join(t("play.and")) : t("play.five_in_a_row"));
   const conf = h("div", { class: "pl-confetti", "aria-hidden": "true" });
   const colors = ["accent", "farm", "hist", "nature", "stop", "odd", "ok", "st-wa"];
   for (let i = 0; i < 44; i++) {
@@ -469,7 +474,7 @@ function celebrate(kind, fresh) {
     conf,
     h("div", { class: "pl-win-sign" },
       h("div", { class: "pl-win-top" }, logo("pl-win-logo"),
-        h("span", null, full ? "ROAD BINGO" : `ROAD BINGO · ${card.won.length === 1 ? "FIRST LINE" : `LINE ${card.won.length}`}`)),
+        h("span", null, full ? t("play.road_bingo_2") : t("play.road_bingo_x1", { x1: card.won.length === 1 ? t("play.first_line") : t("play.line_length", { length: card.won.length }) }))),
       h("b", { class: "pl-win-t" }, title),
       h("span", { class: "pl-win-s" }, sub)));
   host.append(winEl);
@@ -480,7 +485,7 @@ function celebrate(kind, fresh) {
   if (settings().narr) {
     // After the chime. If the guide is talking it waits its turn, and gives up if that takes more than a few seconds.
     const t0 = Date.now();
-    setTimeout(safe(() => gameSay(full ? "Full card!" : "Bingo!", "play:bingo", { check: () => Date.now() - t0 < 5000 }), "bingo say"), 600);
+    setTimeout(safe(() => gameSay(full ? t("play.full_card_2") : t("play.bingo_3"), "play:bingo", { check: () => Date.now() - t0 < 5000 }), "bingo say"), 600);
   }
 }
 
@@ -582,7 +587,7 @@ function questionSpeech(t) {
   return `${t.q} ${t.choices.map((c, i) => `${LETTERS[i]}: ${choiceText(c)}.`).join(" ")}`;
 }
 function verdict(ok, t) {
-  return ok ? "That's right." : `Not quite. The answer is ${LETTERS[t.answer]}: ${choiceText(t.choices[t.answer])}.`;
+  return ok ? i18n.t("play.thats_right") : i18n.t("play.not_quite_the_answer_is_x1_x2", { x1: LETTERS[t.answer], x2: choiceText(t.choices[t.answer]) });
 }
 /** Read the question on screen. tap = the passenger pressed the button (say so if it has to wait for the guide). */
 function readQuestion(tap = false) {
@@ -593,7 +598,7 @@ function readQuestion(tap = false) {
   if (hasPos()) q.at = S().m;   // heard here: it stays the question for the next 15 miles
   const wait = voiceBusy();
   gameSay(questionSpeech(q.t), "play:trivia:q:" + q.id, { check: () => cur === q && q.picked == null });
-  if (wait && tap) toast("I'll read it right after this.");
+  if (wait && tap) toast(t("play.ill_read_it_right_after_this"));
 }
 
 function answerTrivia(i, how = "tap") {
@@ -665,7 +670,7 @@ function parseAnswer(r, choices) {
   for (let k = toks.length - 1; k >= 0; k--) { const i = letterAt(toks[k]); if (i != null) return i; }
   return null;
 }
-const BLOCKED = "The microphone is blocked. Tap an answer instead.";
+const BLOCKED = t("play.the_microphone_is_blocked_tap_an");
 async function voiceAnswer() {
   if (!cur || cur.picked != null || cur.listening) return;
   if (!canListen()) {   // the microphone was refused after this button was drawn
@@ -693,23 +698,23 @@ async function voiceAnswer() {
     renderTrivia();   // hides the voice button if the microphone is blocked now
     if (res == null && api?.listen?.blocked) toast(BLOCKED);
     // null = cancelled or not understood, and the listen module already said so; anything else we couldn't read
-    else if (res != null) toast(`I didn't catch that. Say ${LETTERS.slice(0, q.t.choices.length).join(", ").replace(/, ([^,]*)$/, " or $1")}, or tap an answer.`);
+    else if (res != null) toast(t("play.i_didnt_catch_that_say_replace_or_tap", { replace: LETTERS.slice(0, q.t.choices.length).join(", ").replace(/, ([^,]*)$/, " or $1") }));
     return;
   }
   answerTrivia(i, "voice");
 }
 
 function buildTrivia(pane) {
-  const stats = h("div", { class: "pl-stats", "aria-label": "Trivia score" });
+  const stats = h("div", { class: "pl-stats", "aria-label": t("play.trivia_score") });
   const box = h("div", { class: "pl-q" });
   box.addEventListener("click", safe(e => {
     const b = e.target.closest("button[data-i]");
     if (b && !b.disabled) answerTrivia(+b.dataset.i);
   }, "trivia tap"));
   // Classic (one question at a time, no clock) or the speed round (10 questions on a clock, js/games/speed.js)
-  const modes = h("div", { class: "seg wide pl-tmodes", role: "group", "aria-label": "Trivia mode" },
-    h("button", { type: "button", "data-tm": "classic", "aria-pressed": "true", onclick: safe(() => setTriviaMode("classic"), "classic") }, "Classic"),
-    h("button", { type: "button", "data-tm": "speed", "aria-pressed": "false", onclick: safe(() => setTriviaMode("speed"), "speed") }, "Speed round"));
+  const modes = h("div", { class: "seg wide pl-tmodes", role: "group", "aria-label": t("play.trivia_mode") },
+    h("button", { type: "button", "data-tm": "classic", "aria-pressed": "true", onclick: safe(() => setTriviaMode("classic"), "classic") }, t("play.classic")),
+    h("button", { type: "button", "data-tm": "speed", "aria-pressed": "false", onclick: safe(() => setTriviaMode("speed"), "speed") }, t("play.speed_round")));
   const speedHost = h("div", { class: "pl-speed", hidden: true });
   pane.append(modes, stats, box, speedHost);
   T = { pane, stats, box, modes, speedHost, mode: "classic", speedCtrl: null, speedLoading: false };
@@ -720,9 +725,9 @@ function renderTriviaStats() {
   const pct = tscore.asked ? Math.round(tscore.right / tscore.asked * 100) : null;
   T.stats.textContent = "";
   T.stats.append(
-    tile(tscore.right, pct == null ? "right so far" : `right · ${pct}%`),
+    tile(tscore.right, pct == null ? t("play.right_so_far") : t("play.right_pct", { pct })),
     tile(tscore.asked, "answered"),
-    tile(streak, tscore.best > streak ? `in a row · best ${tscore.best}` : "in a row", streak >= 3));
+    tile(streak, tscore.best > streak ? t("play.in_a_row_best_best", { best: tscore.best }) : t("play.in_a_row"), streak >= 3));
 }
 
 function renderTrivia(justAnswered = false) {
@@ -734,8 +739,8 @@ function renderTrivia(justAnswered = false) {
   T.stats.hidden = T.mode === "speed" || (!cur && !tscore.asked);
   if (!cur) {
     box.classList.add("pl-empty");
-    box.append(h("p", { class: "pl-qt" }, "No trivia questions yet."),
-      h("p", { class: "pl-why" }, "Questions about the road show up here as the guide grows. Bingo and I spy work anywhere."));
+    box.append(h("p", { class: "pl-qt" }, i18n.t("play.no_trivia_questions_yet")),
+      h("p", { class: "pl-why" }, i18n.t("play.questions_about_the_road_show_up_here")));
     return;
   }
   box.classList.remove("pl-empty");
@@ -745,20 +750,20 @@ function renderTrivia(justAnswered = false) {
   if (isFinite(t.m)) {
     if (hasPos()) {
       const d = aheadOf(S().m, S().dir, t.m);
-      dist = Math.abs(d) < 1 ? "Right around here" : d > 0 ? `${Math.round(d)} mi ahead` : `${Math.round(-d)} mi back`;
+      dist = Math.abs(d) < 1 ? i18n.t("play.right_around_here") : d > 0 ? i18n.t("play.d_mi_ahead", { d: Math.round(d) }) : i18n.t("play.x1_mi_back", { x1: Math.round(-d) });
     } else dist = mileLabel(t.m);
   }
   const rn = isFinite(t.m) ? regionName(t.m) : "";
   box.append(h("div", { class: "pl-qmeta" },
-    h("span", null, `Question ${askedThisSession.size} of ${allQs().length}`),
+    h("span", null, i18n.t("play.question_size_of_length", { size: askedThisSession.size, length: allQs().length })),
     h("span", { class: "pl-qwhere" }, [rn, dist].filter(Boolean).join(" · "))));
-  if (cur.lap && !answered) box.append(h("p", { class: "pl-note" }, "You've seen every question this trip. Here they come again."));
+  if (cur.lap && !answered) box.append(h("p", { class: "pl-note" }, i18n.t("play.youve_seen_every_question_this_trip")));
   box.append(h("h3", { class: "pl-qt", tabindex: "-1" }, t.q));
-  const opts = h("div", { class: "pl-opts", role: "group", "aria-label": "Answers" });
+  const opts = h("div", { class: "pl-opts", role: "group", "aria-label": i18n.t("play.answers") });
   t.choices.forEach((c, i) => {
     let state = "";
     if (answered) state = i === t.answer ? "right" : i === cur.picked ? "wrong" : "dim";
-    const label = `${LETTERS[i]}. ${choiceText(c)}` + (state === "right" ? ", correct answer" : state === "wrong" ? ", your answer, wrong" : "");
+    const label = `${LETTERS[i]}. ${choiceText(c)}` + (state === "right" ? i18n.t("play.correct_answer") : state === "wrong" ? i18n.t("play.your_answer_wrong") : "");
     opts.append(h("button", { class: `pl-opt ${state}`, type: "button", "data-i": i, disabled: answered, "aria-label": label },
       h("span", { class: "pl-let", "aria-hidden": "true" }, LETTERS[i]),
       h("span", { class: "pl-opt-t", "aria-hidden": "true" }, choiceText(c)),
@@ -767,30 +772,30 @@ function renderTrivia(justAnswered = false) {
   box.append(opts);
   if (!answered) {
     const tools = h("div", { class: "pl-tools" },
-      canSpeak() ? h("button", { class: "secondary pl-tool", type: "button", onclick: safe(() => readQuestion(true), "read") }, icon("speaker"), "Read it out loud") : null);
+      canSpeak() ? h("button", { class: "secondary pl-tool", type: "button", onclick: safe(() => readQuestion(true), "read") }, icon("speaker"), i18n.t("play.read_it_out_loud")) : null);
     if (canListen()) {
       tools.append(h("button", { class: "secondary pl-tool" + (cur.listening ? " pl-listening" : ""), type: "button", disabled: cur.listening,
-        onclick: safe(voiceAnswer, "voice answer") }, icon("mic"), cur.listening ? "Listening…" : "Answer by voice"));
+        onclick: safe(voiceAnswer, "voice answer") }, icon("mic"), cur.listening ? i18n.t("play.listening") : i18n.t("play.answer_by_voice")));
     }
-    tools.append(h("button", { class: "link pl-skip", type: "button", onclick: safe(nextTrivia, "skip") }, "Skip"));
+    tools.append(h("button", { class: "link pl-skip", type: "button", onclick: safe(nextTrivia, "skip") }, i18n.t("play.skip")));
     box.append(tools);
     return;
   }
   const ok = cur.picked === t.answer;
   const fb = h("div", { class: "pl-fb " + (ok ? "ok" : "no"), role: "status" },
     h("div", { class: "pl-verdict", tabindex: "-1" }, icon(ok ? "check" : "cross", "pl-ic pl-vic"),
-      h("b", null, ok ? (streak >= 3 ? `That's right. ${streak} in a row.` : "That's right.") : "Not quite.")),
-    ok ? null : h("p", { class: "pl-ans" }, `The answer is ${LETTERS[t.answer]}: ${choiceText(t.choices[t.answer])}.`),
+      h("b", null, ok ? (streak >= 3 ? i18n.t("play.thats_right_streak_in_a_row", { streak }) : i18n.t("play.thats_right")) : i18n.t("play.not_quite"))),
+    ok ? null : h("p", { class: "pl-ans" }, i18n.t("play.the_answer_is_x1_x2", { x1: LETTERS[t.answer], x2: choiceText(t.choices[t.answer]) })),
     t.why ? h("p", { class: "pl-why" }, t.why) : null);
   const src = isUrl(t.src) ? t.src : isUrl(cur.related?.src) ? cur.related.src : null;
   const links = h("p", { class: "pl-src" });
-  if (src) links.append(h("span", null, "Source: ", h("a", { href: src, target: "_blank", rel: "noopener" }, hostOf(src))));
+  if (src) links.append(h("span", null, i18n.t("play.source"), h("a", { href: src, target: "_blank", rel: "noopener" }, hostOf(src))));
   if (cur.related) {
     const p = cur.related;
-    links.append(h("button", { class: "link", type: "button", onclick: () => openPlace(p) }, `About ${p.name}`));
+    links.append(h("button", { class: "link", type: "button", onclick: () => openPlace(p) }, i18n.t("play.about_name", { name: p.name })));
   }
   if (links.childNodes.length) fb.append(links);
-  fb.append(h("button", { class: "primary pl-next", type: "button", onclick: safe(nextTrivia, "next") }, "Next question", icon("next")));
+  fb.append(h("button", { class: "primary pl-next", type: "button", onclick: safe(nextTrivia, "next") }, i18n.t("play.next_question"), icon("next")));
   box.append(fb);
   if (justAnswered) {
     const v = fb.querySelector(".pl-verdict");
@@ -810,7 +815,7 @@ function askTrivia() {
   renderTrivia();
   if (cur) { readQuestion(); return true; }
   unlock();
-  gameSay("I don't have any trivia questions yet.", "play:trivia:none");
+  gameSay(t("play.i_dont_have_any_trivia_questions_yet"), "play:trivia:none");
   return false;
 }
 
@@ -848,8 +853,8 @@ function spotWhere(p) {
   if (!hasPos() || !isFinite(p.m)) return "";
   const d = aheadOf(S().m, S().dir, p.m);
   const side = sideOf(p);
-  const dist = d >= 0.3 ? `${fmtMi(d)} mi` : d > -0.3 ? "Now" : "Just passed";
-  return [dist, side && (side === "left" ? "◀ left" : "right ▶")].filter(Boolean).join(" · ");
+  const dist = d >= 0.3 ? t("play.d_mi", { d: fmtMi(d) }) : d > -0.3 ? t("play.now") : t("play.just_passed");
+  return [dist, side && (side === "left" ? t("play.left") : t("play.right"))].filter(Boolean).join(" · ");
 }
 
 /** Put a card up for p (on top). Already up: nothing to do. */
@@ -865,7 +870,7 @@ function showSpot(p) {
   }
   renderSpots();
   const side = sideOf(p);
-  announce(`I spy${side ? ` on your ${side}` : ""}: ${p.spot}`);
+  announce(t("play.i_spy_x1_spot", { x1: side ? t("play.on_your_side", { side: D().sideSaid ? D().sideSaid(side) : side }) : "", spot: p.spot }));
   return true;
 }
 /** The guide queued a landmark announcement (narrator.js adds the challenge to it in Kid mode). */
@@ -946,28 +951,28 @@ function answerSpot(id, found) {
   s.state = found ? "found" : "missed";
   renderSpots();
   renderSpy();
-  announce(found ? (s.pts ? `Found it. Plus ${s.pts}. ${spy.points} points.` : `Found it again. ${spy.points} points.`) : "Missed it. Next time.");
+  announce(found ? (s.pts ? t("play.found_it_plus_pts_points_points", { pts: s.pts, points: spy.points }) : t("play.found_it_again_points_points", { points: spy.points })) : t("play.missed_it_next_time"));
   clearTimeout(s.timer);
   s.timer = setTimeout(safe(() => removeSpot(p.id), "spot done"), found ? 2200 : 1300);
 }
 
 function spotCardEl(s, main) {
   const p = s.p, st = s.state;
-  const name = String(p.name || "this place");
+  const name = String(p.name || t("play.this_place"));
   // A tap that lands within a moment of the cards moving was aimed at something else (keyboard clicks have detail 0).
   const act = found => e => { if (e && e.detail > 0 && Date.now() - movedAt < 450) return; answerSpot(p.id, found); };
   const body = st === "ask"
     ? h("div", { class: "pl-spot-acts" },
-      h("button", { class: "pl-found", type: "button", "aria-label": `Found it: ${name}`, onclick: safe(act(true), "found") }, icon("check"), "Found it"),
-      h("button", { class: "pl-missed", type: "button", "aria-label": `Missed it: ${name}`, onclick: safe(act(false), "missed") }, "Missed it"))
+      h("button", { class: "pl-found", type: "button", "aria-label": t("play.found_it_name", { name }), onclick: safe(act(true), "found") }, icon("check"), t("play.found_it")),
+      h("button", { class: "pl-missed", type: "button", "aria-label": t("play.missed_it_name", { name }), onclick: safe(act(false), "missed") }, t("play.missed_it")))
     : h("div", { class: "pl-spot-done", tabindex: "-1" }, st === "found"
       ? [s.pts ? h("b", { class: "pl-plus" }, `+${s.pts}`) : icon("check", "pl-ic pl-again"),
-        h("span", null, s.pts ? `Nice spotting. ${spy.points} points.` : `Found again. ${spy.points} points.`)]
-      : h("span", null, "Next time. Keep your eyes peeled."));
-  return h("section", { class: `pl-spot${main ? "" : " pl-mini"} ${p.cat || ""} ${st}`, "aria-label": `I spy: ${name}`, "data-id": p.id },
+        h("span", null, s.pts ? t("play.nice_spotting_points_points", { points: spy.points }) : t("play.found_again_points_points", { points: spy.points }))]
+      : h("span", null, t("play.next_time_keep_your_eyes_peeled")));
+  return h("section", { class: `pl-spot${main ? "" : " pl-mini"} ${p.cat || ""} ${st}`, "aria-label": t("play.i_spy_name", { name }), "data-id": p.id },
     main ? h("div", { class: "pl-spot-eye" }, icon("eye", "pl-eye")) : null,
     h("div", { class: "pl-spot-body" },
-      h("div", { class: "pl-spot-k" }, h("span", null, "I spy"), h("span", { class: "pl-spot-d", "aria-hidden": "true" }, spotWhere(p))),
+      h("div", { class: "pl-spot-k" }, h("span", null, t("play.i_spy")), h("span", { class: "pl-spot-d", "aria-hidden": "true" }, spotWhere(p))),
       h("p", { class: "pl-spot-q" }, p.spot),
       main ? h("button", { class: "pl-spot-name", type: "button", onclick: () => openPlace(p) }, name) : null),
     body);
@@ -1051,7 +1056,7 @@ function quickFound() {
   buzz(30);
   quick.state = "found";
   renderSpy();
-  announce(`Got it. Plus 5. ${spy.points} points.`);
+  announce(t("play.got_it_plus_5_points_points", { points: spy.points }));
   const q = quick;
   setTimeout(safe(() => { if (quick === q) { dealQuick(); renderSpy(); } }, "quick"), 1600);
 }
@@ -1060,15 +1065,15 @@ function sayQuick() {
   if (!q) return;
   unlock();
   const wait = voiceBusy();
-  gameSay(`I spy with my little eye: ${q.t.replace(/\u00AD/g, "").toLowerCase()}.`, "play:spy:quick:" + q.n,
+  gameSay(t("play.i_spy_with_my_little_eye_replace", { replace: q.t.replace(/\u00AD/g, "").toLowerCase() }), "play:spy:quick:" + q.n,
     { check: () => quick === q && q.state === "ask" });
-  if (wait) toast("I'll say it right after this.");
+  if (wait) toast(t("play.ill_say_it_right_after_this"));
 }
 function turnOnKid() {
   const s = settings();
   s.kid = true;
   try { api?.saveSettings?.(); } catch (e) { console.error("[play] saveSettings", e); }
-  toast("Kid mode is on. I spy challenges will pop up on the Drive screen.");
+  toast(t("play.kid_mode_is_on_i_spy_challenges_will"));
   renderSpy();
 }
 
@@ -1090,42 +1095,42 @@ function renderSpy() {
   SP.hint.textContent = "";
   if (!kid) {
     SP.hint.append(h("div", { class: "pl-hint-eye" }, icon("eye", "pl-eye")),
-      h("div", { class: "pl-hint-tx" }, h("b", null, "I spy needs Kid mode"),
-        h("p", null, "With Kid mode on, I'll point out things you can see from the car as we pass them. Spot one and tap Found it for 10 points.")),
-      h("button", { class: "primary", type: "button", onclick: safe(turnOnKid, "kid mode") }, "Turn on Kid mode"));
+      h("div", { class: "pl-hint-tx" }, h("b", null, t("play.i_spy_needs_kid_mode")),
+        h("p", null, t("play.with_kid_mode_on_ill_point_out_things"))),
+      h("button", { class: "primary", type: "button", onclick: safe(turnOnKid, "kid mode") }, t("play.turn_on_kid_mode")));
   }
   // points (finds and misses count places on this road: one saved when the app covered Oregon isn't listed, so it isn't counted)
   const found = spy.found.map(placeById).filter(Boolean).reverse();
   SP.hero.textContent = "";
   SP.hero.append(h("div", { class: "pl-hero-eye" }, icon("eye", "pl-eye")),
-    h("div", { class: "pl-hero-n" }, h("b", null, spy.points.toLocaleString()), h("span", null, spy.points === 1 ? "point" : "points")),
+    h("div", { class: "pl-hero-n" }, h("b", null, spy.points.toLocaleString(loc(undefined))), h("span", null, spy.points === 1 ? t("play.point") : t("play.points"))),
     h("div", { class: "pl-hero-c" },
-      h("span", null, h("b", null, found.length), " found"),
-      h("span", null, h("b", null, spy.missed.filter(placeById).length), " missed")));
+      h("span", null, h("b", null, found.length), t("play.found")),
+      h("span", null, h("b", null, spy.missed.filter(placeById).length), t("play.missed"))));
   // quick challenge
   if (!quick) dealQuick();
   SP.quick.textContent = "";
   const done = quick.state === "found";
   SP.quick.className = "pl-quick" + (done ? " found" : "");
   SP.quick.append(
-    h("div", { class: "pl-quick-k" }, h("span", null, "Quick challenge"), h("span", { class: "pl-quick-pts" }, "+5")),
+    h("div", { class: "pl-quick-k" }, h("span", null, t("play.quick_challenge")), h("span", { class: "pl-quick-pts" }, "+5")),
     h("div", { class: "pl-quick-main" },
       h("span", { class: "pl-quick-e", "aria-hidden": "true" }, quick.e),
-      h("div", null, h("small", null, "I spy with my little eye…"), h("b", null, quick.t))),
+      h("div", null, h("small", null, t("play.i_spy_with_my_little_eye")), h("b", null, quick.t))),
     done
-      ? h("div", { class: "pl-spot-done" }, h("b", { class: "pl-plus" }, "+5"), h("span", null, "Got it. Here comes another one."))
+      ? h("div", { class: "pl-spot-done" }, h("b", { class: "pl-plus" }, "+5"), h("span", null, t("play.got_it_here_comes_another_one")))
       : h("div", { class: "pl-row" },
-        h("button", { class: "pl-found", type: "button", onclick: safe(quickFound, "quick found") }, icon("check"), "Found it"),
-        canSpeak() ? h("button", { class: "secondary pl-icon-btn", type: "button", "aria-label": "Say it out loud", onclick: safe(sayQuick, "say quick") }, icon("speaker")) : null,
-        h("button", { class: "secondary", type: "button", onclick: safe(() => { dealQuick(); renderSpy(); }, "quick new") }, "New one")));
+        h("button", { class: "pl-found", type: "button", onclick: safe(quickFound, "quick found") }, icon("check"), t("play.found_it")),
+        canSpeak() ? h("button", { class: "secondary pl-icon-btn", type: "button", "aria-label": t("play.say_it_out_loud"), onclick: safe(sayQuick, "say quick") }, icon("speaker")) : null,
+        h("button", { class: "secondary", type: "button", onclick: safe(() => { dealQuick(); renderSpy(); }, "quick new") }, t("play.new_one"))));
   // found places
   SP.list.textContent = "";
-  SP.list.append(h("h3", { class: "sub" }, found.length ? `Found on the road · ${found.length}` : "Found on the road"));
+  SP.list.append(h("h3", { class: "sub" }, found.length ? t("play.found_on_the_road_length", { length: found.length }) : t("play.found_on_the_road")));
   if (!found.length) {
     const any = (Array.isArray(D().PLACES) ? D().PLACES : []).some(isSpot);
     SP.list.append(h("p", { class: "pl-none" }, any
-      ? "Nothing yet. When I spy something along I-5, it shows up on the Drive screen. Your finds land here."
-      : "Landmark I spy challenges are on their way. Until then, try the quick challenge above."));
+      ? t("play.nothing_yet_when_i_spy_something_along")
+      : t("play.landmark_i_spy_challenges_are_on_their")));
     return;
   }
   const ul = h("ul", { class: "pl-flist" });
@@ -1166,7 +1171,7 @@ function cheer(o = {}) {
   winEl = h("div", { class: "pl-win" + size, role: "alert", onclick: closeWin },
     confettiEl(o.pieces || 44),
     h("div", { class: "pl-win-sign" },
-      h("div", { class: "pl-win-top" }, logo("pl-win-logo"), h("span", null, o.top || "I-5 BUDDY")),
+      h("div", { class: "pl-win-top" }, logo("pl-win-logo"), h("span", null, o.top || t("play.i_5_buddy"))),
       h("b", { class: "pl-win-t" }, title),
       o.sub ? h("span", { class: "pl-win-s" }, o.sub) : null));
   host.append(winEl);
@@ -1190,7 +1195,7 @@ function gamePhoto(p, o = {}) {
   fig.append(img);
   if (size !== "thumb") {
     fig.append(h("figcaption", null, h("a", { href: p.img.url || "https://commons.wikimedia.org", target: "_blank", rel: "noopener" },
-      `Photo: ${p.img.by || "Wikimedia Commons"}${p.img.lic ? " · " + p.img.lic : ""}`)));
+      t("play.photo_x1_x2", { x1: p.img.by || t("play.wikimedia_commons"), x2: p.img.lic ? " · " + p.img.lic : "" }))));
   }
   return fig;
 }
@@ -1200,14 +1205,14 @@ const PLACE_IMG = () => (Array.isArray(D().PLACES) ? D().PLACES : []).filter(p =
 function phraseGroups() {
   const g = {};
   const put = (k, t) => { const s = String(t == null ? "" : t).replace(/\s+/g, " ").trim(); if (s) (g[k] = g[k] || new Set()).add(s); };
-  put("bingo", "Bingo!"); put("bingo", "Full card!");
-  put("trivia", "I don't have any trivia questions yet.");
+  put("bingo", i18n.t("play.bingo_3")); put("bingo", i18n.t("play.full_card_2"));
+  put("trivia", i18n.t("play.i_dont_have_any_trivia_questions_yet"));
   for (const t of allQs()) {
     put("trivia", questionSpeech(t));
     put("trivia", `${verdict(true, t)} ${t.why || ""}`);
     put("trivia", `${verdict(false, t)} ${t.why || ""}`);
   }
-  for (const pool of Object.values(POOLS)) for (const sq of pool) put("spy", `I spy with my little eye: ${parseSquare(sq).t.replace(/­/g, "").toLowerCase()}.`);
+  for (const pool of Object.values(POOLS)) for (const sq of pool) put("spy", i18n.t("play.i_spy_with_my_little_eye_replace", { replace: parseSquare(sq).t.replace(/­/g, "").toLowerCase() }));
   put("plates", WORDS.plates.all); for (const t of Object.values(WORDS.plates.rare)) put("plates", t);
   put("higher", WORDS.hol.right); put("higher", WORDS.hol.wrong); put("higher", WORDS.hol.best);
   put("where", WORDS.where.good); put("where", WORDS.where.miss); put("where", WORDS.where.round);
@@ -1226,16 +1231,16 @@ function phrases() {
 
 /* ---------- the Play view: a picker of game cards, then the game ---------- */
 const GAME_DEFS = [
-  { id: "bingo", name: "Road bingo", line: "Five in a row wins", emoji: "\u{1F3AF}", color: "--accent", core: true },
-  { id: "trivia", name: "Trivia", line: "Questions about the road, or race the clock", emoji: "\u{1F914}", color: "--shield", core: true },
-  { id: "spy", name: "I spy", line: "Spot things as you pass them", emoji: "\u{1F440}", color: "--odd", core: true },
-  { id: "plates", name: "Plate Hunt", line: "Find a plate from every state", emoji: "\u{1F5FA}️", color: "--nature", file: "plates" },
-  { id: "higher", name: "Higher or Lower", line: "Guess the number, keep the streak", emoji: "\u{1F4C8}", color: "--ok", file: "higher" },
-  { id: "where", name: "Where Is This?", line: "Name the place from its photo", emoji: "\u{1F4F8}", color: "--hist", file: "where" },
-  { id: "wyr", name: "Would You Rather", line: "Road trip questions, no wrong answers", emoji: "\u{1F937}", color: "--stop", file: "wyr" },
-  { id: "hunt", name: "Scavenger Hunt", line: "Spot what this stretch of road has", emoji: "\u{1F50D}", color: "--farm", file: "hunt" },
-  { id: "alpha", name: "Alphabet Game", line: "Find signs from A to Z", emoji: "\u{1F524}", color: "--danger", file: "alpha" },
-  { id: "cows", name: "Cow Count", line: "Each side of the car counts cows", emoji: "\u{1F404}", color: "--town", file: "cows" },
+  { id: "bingo", name: t("play.road_bingo"), line: t("play.five_in_a_row_wins"), emoji: "\u{1F3AF}", color: "--accent", core: true },
+  { id: "trivia", name: t("play.trivia"), line: t("play.questions_about_the_road_or_race_the"), emoji: "\u{1F914}", color: "--shield", core: true },
+  { id: "spy", name: t("play.i_spy"), line: t("play.spot_things_as_you_pass_them"), emoji: "\u{1F440}", color: "--odd", core: true },
+  { id: "plates", name: t("play.plate_hunt"), line: t("play.find_a_plate_from_every_state"), emoji: "\u{1F5FA}️", color: "--nature", file: "plates" },
+  { id: "higher", name: t("play.higher_or_lower"), line: t("play.guess_the_number_keep_the_streak"), emoji: "\u{1F4C8}", color: "--ok", file: "higher" },
+  { id: "where", name: t("play.where_is_this"), line: t("play.name_the_place_from_its_photo"), emoji: "\u{1F4F8}", color: "--hist", file: "where" },
+  { id: "wyr", name: t("play.would_you_rather"), line: t("play.road_trip_questions_no_wrong_answers"), emoji: "\u{1F937}", color: "--stop", file: "wyr" },
+  { id: "hunt", name: t("play.scavenger_hunt"), line: t("play.spot_what_this_stretch_of_road_has"), emoji: "\u{1F50D}", color: "--farm", file: "hunt" },
+  { id: "alpha", name: t("play.alphabet_game"), line: t("play.find_signs_from_a_to_z"), emoji: "\u{1F524}", color: "--danger", file: "alpha" },
+  { id: "cows", name: t("play.cow_count"), line: t("play.each_side_of_the_car_counts_cows"), emoji: "\u{1F404}", color: "--town", file: "cows" },
 ];
 const defOf = id => GAME_DEFS.find(g => g.id === id) || null;
 let V = null;
@@ -1250,16 +1255,16 @@ const viewVisible = () => { const v = document.getElementById("view-play"); retu
 function statusOf(id) {
   try {
     const o = key => { const v = store(key, null); return v && typeof v === "object" ? v : {}; };
-    if (id === "bingo") return card ? `${marked()} of 24 marked` : "";
-    if (id === "trivia") return tscore.asked ? `${tscore.right} right` : "";
-    if (id === "spy") return spy.points ? `${spy.points} ${spy.points === 1 ? "point" : "points"}` : "";
-    if (id === "plates") { const f = o("plates").found || {}; const n = Object.keys(f).filter(k => /^[A-Z]{2}$/.test(k) && Array.isArray(f[k]) && f[k].length).length; return n ? `${Math.min(n, 51)} of 51 found` : ""; }
-    if (id === "higher") { const b = num(o("higher").best); return b ? `Best streak ${b}` : ""; }
-    if (id === "where") { const b = num(o("where").best); return b ? `Best ${b} of 10` : ""; }
-    if (id === "wyr") { const n = num(o("wyr").n); return n ? `${n} answered` : ""; }
-    if (id === "hunt") { const n = Object.keys(o("hunt").stamps || {}).length; return n ? `${n} ${n === 1 ? "stamp" : "stamps"}` : ""; }
-    if (id === "alpha") { const b = num(o("alpha").best); return b ? `Best ${Math.floor(b / 60)}:${String(Math.round(b % 60)).padStart(2, "0")}` : ""; }
-    if (id === "cows") { const b = num(o("cows").best); return b ? `Best count ${b}` : ""; }
+    if (id === "bingo") return card ? t("play.marked_of_24_marked", { marked: marked() }) : "";
+    if (id === "trivia") return tscore.asked ? t("play.right_right", { right: tscore.right }) : "";
+    if (id === "spy") return spy.points ? `${spy.points} ${spy.points === 1 ? t("play.point") : t("play.points")}` : "";
+    if (id === "plates") { const f = o("plates").found || {}; const n = Object.keys(f).filter(k => /^[A-Z]{2}$/.test(k) && Array.isArray(f[k]) && f[k].length).length; return n ? t("play.n_of_51_found", { n: Math.min(n, 51) }) : ""; }
+    if (id === "higher") { const b = num(o("higher").best); return b ? t("play.best_streak_b", { b }) : ""; }
+    if (id === "where") { const b = num(o("where").best); return b ? t("play.best_b_of_10", { b }) : ""; }
+    if (id === "wyr") { const n = num(o("wyr").n); return n ? t("play.n_answered", { n }) : ""; }
+    if (id === "hunt") { const n = Object.keys(o("hunt").stamps || {}).length; return n ? `${n} ${n === 1 ? t("play.stamp") : t("play.stamps")}` : ""; }
+    if (id === "alpha") { const b = num(o("alpha").best); return b ? t("play.best_x1_padstart", { x1: Math.floor(b / 60), padStart: String(Math.round(b % 60)).padStart(2, "0") }) : ""; }
+    if (id === "cows") { const b = num(o("cows").best); return b ? t("play.best_count_b", { b }) : ""; }
   } catch { /* no status */ }
   return "";
 }
@@ -1275,17 +1280,17 @@ function renderHome() {
   const bar = h("div", { class: "pl-partybar" + (on ? " on" : "") },
     h("span", { class: "pl-partybar-ic", "aria-hidden": "true" }, "\u{1F389}"),
     h("div", { class: "pl-partybar-tx" },
-      h("b", null, "Car Party"),
-      on ? party.strip() : h("small", null, "Keep score for 2 to 6 players. The games share it.")),
-    h("button", { class: "secondary pl-partybar-go", type: "button", "data-k": "party", onclick: safe(() => showScreen("party"), "party") }, on ? "Scores" : "Set up"));
-  const grid = h("div", { class: "pl-gridpick", role: "group", "aria-label": "Choose a game" });
+      h("b", null, t("play.car_party")),
+      on ? party.strip() : h("small", null, t("play.keep_score_for_2_to_6_players_the"))),
+    h("button", { class: "secondary pl-partybar-go", type: "button", "data-k": "party", onclick: safe(() => showScreen("party"), "party") }, on ? t("play.scores") : t("play.set_up")));
+  const grid = h("div", { class: "pl-gridpick", role: "group", "aria-label": t("play.choose_a_game") });
   GAME_DEFS.forEach((d, i) => {
     const st = statusOf(d.id);
     const isLast = !!last && last.id === d.id;
     grid.append(h("button", { class: "pl-gcard" + (isLast ? " last" : ""), type: "button", "data-g": d.id, style: `--c:var(${d.color});--i:${i}`,
-      "aria-label": `${d.name}. ${d.line}.${st ? " " + st + "." : ""}${isLast ? " Last played." : ""}`,
+      "aria-label": `${d.name}. ${d.line}.${st ? " " + st + "." : ""}${isLast ? t("play.last_played") : ""}`,
       onclick: safe(() => setGame(d.id), "pick " + d.id) },
-      isLast ? h("span", { class: "pl-gcard-last", "aria-hidden": "true" }, "Last played") : null,
+      isLast ? h("span", { class: "pl-gcard-last", "aria-hidden": "true" }, t("play.last_played_2")) : null,
       h("span", { class: "pl-gcard-ic", "aria-hidden": "true" }, d.emoji),
       h("span", { class: "pl-gcard-t", "aria-hidden": "true" }, h("b", null, d.name), h("small", null, d.line)),
       st ? h("span", { class: "pl-gcard-s", "aria-hidden": "true" }, st) : null));
@@ -1297,7 +1302,7 @@ function renderHome() {
 /** The bar at the top of a game: the way back to the picker, and the game's name. */
 function paneBar(d) {
   return h("div", { class: "pl-bar", style: d.color ? `--c:var(${d.color})` : "" },
-    h("button", { class: "pl-back", type: "button", "data-k": "back", "aria-label": "Back to all games", onclick: safe(() => showScreen("home"), "back") }, icon("back"), h("span", null, "All games")),
+    h("button", { class: "pl-back", type: "button", "data-k": "back", "aria-label": t("play.back_to_all_games"), onclick: safe(() => showScreen("home"), "back") }, icon("back"), h("span", null, t("play.all_games"))),
     h("b", { class: "pl-bar-t" }, d.emoji ? h("span", { class: "pl-bar-e", "aria-hidden": "true" }, d.emoji) : null, d.name));
 }
 
@@ -1316,12 +1321,12 @@ function buildView() {
     panes[d.id] = h("section", { class: "pl-pane", id: "pl-" + d.id, "aria-label": d.name, hidden: true, style: `--c:var(${d.color})` }, paneBar(d));
     if (!d.core) { bodies[d.id] = h("div", { class: "pl-gbody" }); panes[d.id].append(bodies[d.id]); }
   }
-  const partyPane = h("section", { class: "pl-pane", id: "pl-party", "aria-label": "Car Party", hidden: true },
-    paneBar({ name: "Car Party", emoji: "\u{1F389}", color: "--accent" }));
+  const partyPane = h("section", { class: "pl-pane", id: "pl-party", "aria-label": t("play.car_party"), hidden: true },
+    paneBar({ name: t("play.car_party"), emoji: "\u{1F389}", color: "--accent" }));
   const home = h("div", { class: "pl-home", id: "pl-home" });
   sr.view = h("p", { class: "pl-sr", role: "status" });
-  const pass = h("p", { class: "pl-pass", role: "note", hidden: true }, icon("info"), h("span", null, "For passengers. The driver keeps eyes on the road."));
-  view.append(h("div", { class: "pl-head" }, h("h2", { class: "view-title" }, "Play"), h("p", { class: "pl-lede" }, "Games for everyone but the driver."), pass),
+  const pass = h("p", { class: "pl-pass", role: "note", hidden: true }, icon("info"), h("span", null, t("play.for_passengers_the_driver_keeps_eyes")));
+  view.append(h("div", { class: "pl-head" }, h("h2", { class: "view-title" }, t("play.play")), h("p", { class: "pl-lede" }, t("play.games_for_everyone_but_the_driver")), pass),
     home, ...GAME_DEFS.map(d => panes[d.id]), partyPane, sr.view);
   V = { view, home, panes, bodies, partyPane, pass };
   buildBingo(panes.bingo);
@@ -1416,7 +1421,7 @@ function openMod(id) {
   if (m && m.state === "loading") return m.promise;
   m = mods[id] = { state: "loading", ctrl: null, promise: null };
   body.textContent = "";
-  body.append(h("p", { class: "pl-loading", role: "status" }, "Getting the game ready…"));
+  body.append(h("p", { class: "pl-loading", role: "status" }, t("play.getting_the_game_ready")));
   m.promise = import(`./games/${d.file}.js`).then(mod => {
     body.textContent = "";
     m.ctrl = mod.create(makeCtx(d, body)) || {};
@@ -1429,8 +1434,8 @@ function openMod(id) {
     mods[id] = null;
     body.textContent = "";
     body.append(h("div", { class: "pl-failed", role: "status" },
-      h("p", null, "This game could not load. It needs to download once. Try again when you have a connection."),
-      h("button", { class: "primary", type: "button", onclick: safe(() => openMod(id), "retry") }, "Try again")));
+      h("p", null, t("play.this_game_could_not_load_it_needs_to")),
+      h("button", { class: "primary", type: "button", onclick: safe(() => openMod(id), "retry") }, t("play.try_again"))));
     return false;
   });
   return m.promise;
@@ -1456,18 +1461,18 @@ function setTriviaMode(mode) {
     if (T.speedLoading) return;
     T.speedLoading = true;
     T.speedHost.textContent = "";
-    T.speedHost.append(h("p", { class: "pl-loading", role: "status" }, "Getting the speed round ready…"));
+    T.speedHost.append(h("p", { class: "pl-loading", role: "status" }, t("play.getting_the_speed_round_ready")));
     import("./games/speed.js").then(mod => {
       T.speedHost.textContent = "";
-      T.speedCtrl = mod.create(makeCtx({ id: "trivia", name: "Speed trivia" }, T.speedHost)) || {};
+      T.speedCtrl = mod.create(makeCtx({ id: "trivia", name: t("play.speed_trivia") }, T.speedHost)) || {};
       T.speedLoading = false;
       if (T.mode === "speed") T.speedCtrl.show?.();
     }).catch(e => {
       console.error("[play] speed trivia did not load", e);
       T.speedLoading = false;
       T.speedHost.textContent = "";
-      T.speedHost.append(h("div", { class: "pl-failed", role: "status" }, h("p", null, "The speed round could not load. Try again when you have a connection."),
-        h("button", { class: "primary", type: "button", onclick: safe(() => setTriviaMode("speed"), "retry speed") }, "Try again")));
+      T.speedHost.append(h("div", { class: "pl-failed", role: "status" }, h("p", null, t("play.the_speed_round_could_not_load_try")),
+        h("button", { class: "primary", type: "button", onclick: safe(() => setTriviaMode("speed"), "retry speed") }, t("play.try_again"))));
     });
   } else {
     try { T.speedCtrl?.hide?.(); } catch { /* not loaded */ }

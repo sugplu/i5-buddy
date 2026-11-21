@@ -12,15 +12,17 @@
 //                     then the hash is removed so a reload or a share of the page address does not open it again.
 // Nothing is sent anywhere by this module: sharing hands text to the phone's own share or message apps.
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const SITE = "https://i5.dominares.org/";
 // Sharing the app itself: the /get link takes an iPhone or iPad straight to the App Store (the iPhone app, in one tap
 // from the message), and shows anyone else the web app. Place links stay on the web app (#place=<id>).
 const GET = "https://i5.dominares.org/get";
 const TITLE = "I-5 Buddy";
-const TEXT = "I-5 Buddy: a free narrated guide to I-5 in California.";
-const INVITE = `I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: ${GET}`;
+const TEXT = t("share.i_5_buddy_a_free_narrated_guide_to_i_5");
+const INVITE = t("share.im_using_i_5_buddy_on_my_drive_it", { GET });
 // the iPhone app talks to passengers: "on our road trip", not "on my drive"
-const INVITE_APP = `I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: ${GET}`;
+const INVITE_APP = t("share.im_using_i_5_buddy_on_our_road_trip_it", { GET });
 const inviteText = () => (api && api.native && api.native.NATIVE ? INVITE_APP : INVITE);
 const ICON = "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .24.04.47.09.7L8.04 9.81A3 3 0 1 0 6 15c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08Z";
 
@@ -77,7 +79,7 @@ function firstSentence(t) {
 /** One short line about a place: its first sentence, at most about 140 characters. */
 function placeLine(p) {
   const t = String(p.text || "").replace(/\s+/g, " ").trim();
-  if (!t) return "A stop on I-5 in California.";
+  if (!t) return i18n.t("share.a_stop_on_i_5_in_california");
   let s = firstSentence(t);
   if (s.length > 140) { s = s.slice(0, 140).replace(/\s+\S*$/, "").replace(/[,;:\s]+$/, "") + "…"; }
   return s;
@@ -138,18 +140,18 @@ async function copyText(text) {
 }
 async function copyWithToast(text, done) {
   const ok = await copyText(text);
-  toast(ok ? done : "Couldn't copy. Press and hold the text to copy it.");
+  toast(ok ? done : t("share.couldnt_copy_press_and_hold_the_text"));
   return ok;
 }
 
 /* ---------- the fallback sheet ---------- */
 function appSheet() {
-  return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: GET, linkShown: "i5.dominares.org/get", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a free guide for your drive on I-5" };
+  return { heading: t("share.share_i_5_buddy"), linkLabel: t("share.link_to_i_5_buddy"), link: GET, linkShown: "i5.dominares.org/get", invite: t("share.invite_a_friend"), message: inviteText(), subject: t("share.i_5_buddy_a_free_guide_for_your_drive") };
 }
 function placeSheet(p) {
   const line = shareLine(p), url = placeLink(p);
-  return { heading: `Share ${p.name}`, linkLabel: `Link to ${p.name}`, link: url, linkShown: url.replace(/^https:\/\//, ""), invite: "Send it to a friend",
-    message: `${p.name}, on I-5 in California. ${line} ${url}`, subject: `${p.name} on I-5` };
+  return { heading: t("share.share_name", { name: p.name }), linkLabel: t("share.link_to_name", { name: p.name }), link: url, linkShown: url.replace(/^https:\/\//, ""), invite: t("share.send_it_to_a_friend"),
+    message: t("share.name_on_i_5_in_california_line_url", { name: p.name, line, url }), subject: t("share.name_on_i_5", { name: p.name }) };
 }
 function ensureSheet() {
   if (sheet && sheet.isConnected) return sheet;
@@ -157,7 +159,7 @@ function ensureSheet() {
   if (!sheet) {
     sheet = el("aside", "sheet");
     sheet.hidden = true;
-    sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", "Share");
+    sheet.setAttribute("role", "dialog"); sheet.setAttribute("aria-modal", "true"); sheet.setAttribute("aria-label", t("share.share"));
     (document.querySelector(".app") || document.body).append(sheet);
   }
   return sheet;
@@ -170,15 +172,15 @@ function openSheet(o) {
   sh.classList.add("share-sheet");
   sh.setAttribute("aria-label", o.heading);
   const head = el("div", "sheet-head");
-  head.append(el("b", null, o.heading), btn("link", "Close", () => close()));
+  head.append(el("b", null, o.heading), btn("link", t("share.close"), () => close()));
   sh.append(head);
 
   const linkSec = el("section", "sh-sec");
-  linkSec.append(el("h3", "sub", "Link"));
+  linkSec.append(el("h3", "sub", t("share.link")));
   const box = el("div", "sh-link");
   const shown = el("span", "sh-url", o.linkShown);
   shown.setAttribute("aria-label", o.linkLabel);
-  box.append(shown, btn("primary sh-copy", "Copy link", () => copyWithToast(o.link, "Link copied")));
+  box.append(shown, btn("primary sh-copy", t("share.copy_link"), () => copyWithToast(o.link, t("share.link_copied"))));
   linkSec.append(box);
   sh.append(linkSec);
 
@@ -188,14 +190,14 @@ function openSheet(o) {
   q.id = "shareMsg";
   inv.append(q);
   const acts = el("div", "sh-acts");
-  const sms = el("a", "secondary sh-btn", "Text message");
+  const sms = el("a", "secondary sh-btn", t("share.text_message"));
   sms.href = `sms:?&body=${encodeURIComponent(o.message)}`;
-  const mail = el("a", "secondary sh-btn", "Email");
+  const mail = el("a", "secondary sh-btn", t("share.email"));
   mail.href = `mailto:?subject=${encodeURIComponent(o.subject)}&body=${encodeURIComponent(o.message)}`;
-  acts.append(sms, mail, btn("secondary sh-btn", "Copy message", () => copyWithToast(o.message, "Message copied")));
+  acts.append(sms, mail, btn("secondary sh-btn", t("share.copy_message"), () => copyWithToast(o.message, t("share.message_copied"))));
   inv.append(acts);
   sh.append(inv);
-  sh.append(el("p", "fine", "This hands the words to your own messages or email app. Nothing is sent from I-5 Buddy."));
+  sh.append(el("p", "fine", t("share.this_hands_the_words_to_your_own")));
   if (ui.openSheet) ui.openSheet(sh); else sh.hidden = false;
 }
 function close() {
@@ -210,7 +212,7 @@ function buildRow() {
   row.replaceChildren();
   row.classList.add("sh-row");
   const b = btn("secondary share-act sh-open", "", () => { shareApp(); });
-  b.append(icon("share-ic"), document.createTextNode("Share I-5 Buddy"));
+  b.append(icon("share-ic"), document.createTextNode(t("share.share_i_5_buddy")));
   row.append(b);
 }
 
@@ -219,8 +221,8 @@ function onPlaceSheet(e) {
   try {
     if (!e || !e.place || !e.acts) return;
     const b = btn("secondary share-act", "", () => { sharePlace(e.place); });
-    b.append(icon("share-ic"), document.createTextNode("Share"));
-    b.setAttribute("aria-label", `Share ${e.place.name}`);
+    b.append(icon("share-ic"), document.createTextNode(t("share.share")));
+    b.setAttribute("aria-label", t("share.share_name", { name: e.place.name }));
     e.acts.append(b);
   } catch (err) { warn(err); }
 }

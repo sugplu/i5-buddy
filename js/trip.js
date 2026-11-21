@@ -15,6 +15,8 @@
 //   destDone   {name, m, t, miles, start, stamps} once we arrived
 //   tripPrefs  {sayBadges}
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const APP_URL = "https://i5.dominares.org/";
 // shared trip text links to /get (3.0.1): iPhone people go to the App Store, Android people to the app, others to the site
 const SHARE_URL = "https://i5.dominares.org/get";
@@ -100,9 +102,10 @@ let clock = () => Date.now();
 const now = () => clock();
 const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 const num = (x, f = 0) => (typeof x === "number" && isFinite(x) ? x : f);
-const fmtInt = n => Math.round(num(n)).toLocaleString("en-US");
+const fmtInt = n => Math.round(num(n)).toLocaleString(i18n.loc("en-US"));
 const fmtMi = d => (d < 9.95 ? (Math.round(d * 10) / 10).toFixed(1) : fmtInt(d));
-const plural = (n, one, many) => `${fmtInt(n)} ${Math.round(n) === 1 ? one : many || one + "s"}`;
+/** "1 stamp", "12 stamps": both words come from the dictionary (3.1.0: no English "+ s"). */
+const plural = (n, one, many) => `${fmtInt(n)} ${Math.round(n) === 1 ? one : many}`;
 /** "6 h 20 min". Rounds to whole minutes first so it never says "3 h 60 min". */
 function dur(hours) {
   const mins = Math.round(num(hours) * 60);
@@ -111,12 +114,12 @@ function dur(hours) {
   try { s = D.fmtDuration ? D.fmtDuration(mins / 60) : ""; } catch {}
   if (s) return s;
   const h = Math.floor(mins / 60), mn = mins % 60;
-  return h ? `${h} h ${String(mn).padStart(2, "0")} min` : `${mn} min`;
+  return h ? t("trip.h_h_padstart_min", { h, padStart: String(mn).padStart(2, "0") }) : t("trip.mn_min", { mn });
 }
-const fmtDay = (t, year) => new Date(t).toLocaleDateString("en-US", year ? { month: "short", day: "numeric", year: "numeric" } : { month: "short", day: "numeric" });
-const fmtLong = t => new Date(t).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+const fmtDay = (t, year) => new Date(t).toLocaleDateString(i18n.loc("en-US"), year ? { month: "short", day: "numeric", year: "numeric" } : { month: "short", day: "numeric" });
+const fmtLong = t => new Date(t).toLocaleDateString(i18n.loc("en-US"), { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 /** "California", "California and Oregon", "California, Oregon and Washington". */
-const andList = xs => (xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1]);
+const andList = xs => (xs.length < 2 ? xs.join("") : t("trip.join_and_x1", { join: xs.slice(0, -1).join(", "), x1: xs[xs.length - 1] }));
 
 /* ---------- road data, with fallbacks so missing pieces never throw ---------- */
 /** On the road this version covers? Miles saved by a version that covered more of I-5 (a trip in Washington) are not. */
@@ -125,9 +128,9 @@ const onRoad = m => typeof m === "number" && isFinite(m) && m >= -1 && m <= MAX_
 const posM = () => (onRoad(S.m) ? S.m : null);
 const stName = st => String(st.name || st.id);
 /** "I-5 in California" on a one-state road, "I-5" on the whole road. */
-const roadName = () => (STATES.length === 1 ? `I-5 in ${stName(STATES[0])}` : "I-5");
+const roadName = () => (STATES.length === 1 ? t("trip.i_5_in_x1", { x1: stName(STATES[0]) }) : "I-5");
 /** "Mexico to Oregon": end to end. */
-const endToEnd = () => `${ENDS.S.short} to ${ENDS.N.short}`;
+const endToEnd = () => t("trip.short_to_short2", { short: ENDS.S.short, short2: ENDS.N.short });
 /** Does state st cover corridor miles a to b? (A badge for a stretch of road only shows when the road has it.) */
 const reaches = (st, a, b) => STATES.some(s => s.id === st && s.from <= a && s.to >= b);
 function stateOf(m) {
@@ -159,8 +162,8 @@ function placeById(id) {
 function mileWords(m) {
   let lm = null;
   try { lm = D.localMile ? D.localMile(m) : null; } catch {}
-  if (!lm) return `mile ${Math.round(m)}`;
-  return lm.st === "CA" ? `mile ${Math.round(lm.mi)}` : `${lm.st} mile ${Math.round(lm.mi)}`;
+  if (!lm) return t("trip.mile_m", { m: Math.round(m) });
+  return lm.st === "CA" ? t("trip.mile_mi", { mi: Math.round(lm.mi) }) : t("trip.st_mile_mi", { st: lm.st, mi: Math.round(lm.mi) });
 }
 const stLow = id => String(id || "").toLowerCase();
 /** A destination we can count down to: {name, m} on this road (not, say, Seattle saved when the app covered Washington). */
@@ -220,10 +223,10 @@ const COLLECT = [1, 10, 50, 100, 250, 500];
 const SUMMIT = [800, 804];   // Siskiyou Summit, corridor miles (OR miles 3 to 7)
 const REGION_ICON = { sd: "🌊", la: "🎬", ws: "🐄", dc: "🏛️", sv: "🌾", sh: "🏔️", rv: "🍐", um: "🌲", wv: "🌰", sw: "🌋", ps: "⛴️", ns: "🌷" };
 const GROUPS = [
-  ["collect", "Stamp collector", ""],
-  ["road", "On the road", "Road badges count real GPS drives, not demo drives."],
-  ["region", "Regions", "Collect every stamp in a region."],
-  ["games", "Games", ""],
+  ["collect", t("trip.stamp_collector"), ""],
+  ["road", t("trip.on_the_road"), t("trip.road_badges_count_real_gps_drives_not")],
+  ["region", t("trip.regions"), t("trip.collect_every_stamp_in_a_region")],
+  ["games", t("trip.games"), ""],
 ];
 
 function buildDefs() {
@@ -232,34 +235,34 @@ function buildDefs() {
   for (const n of COLLECT) {
     list.push({
       id: n === 1 ? "first" : "stamps-" + n, group: "collect", glyph: String(n),
-      name: n === 1 ? "First stamp" : `${n} stamps`,
-      hint: n === 1 ? "Drive past any landmark" : total >= n ? `Collect ${n} stamps` : `Collect ${n} stamps. The road has ${total} so far.`,
+      name: n === 1 ? t("trip.first_stamp") : t("trip.n_stamps", { n }),
+      hint: n === 1 ? t("trip.drive_past_any_landmark") : total >= n ? t("trip.collect_n_stamps", { n }) : t("trip.collect_n_stamps_the_road_has_total_so", { n, total }),
       prog: () => ({ v: stampCount(), max: n }),
     });
   }
   // Road badges follow the road in the data: one that needs a stretch, or a number of states, this road doesn't have
   // is left out (not shown, not counted). Set tools/build.py back to the whole road and they all come back.
   const half = MAX_M / 2, road = [];
-  if (reaches("CA", 205, 215)) road.push({ id: "grapevine", group: "road", icon: "🍇", name: "Over the Grapevine", hint: "Drive the Grapevine, CA miles 205 to 215" });
+  if (reaches("CA", 205, 215)) road.push({ id: "grapevine", group: "road", icon: "🍇", name: t("trip.over_the_grapevine"), hint: t("trip.drive_the_grapevine_ca_miles_205_to") });
   if (reaches("OR", SUMMIT[0], SUMMIT[1])) {
     let ft = null;
     try { const E = D.ELEV || []; ft = Math.max(...E.slice(SUMMIT[0], SUMMIT[1] + 1).filter(x => typeof x === "number")); if (!isFinite(ft)) ft = null; } catch {}
-    road.push({ id: "summit", group: "road", icon: "⛰️", name: "Highest point on I-5", hint: `Cross Siskiyou Summit${ft ? `, ${ft.toLocaleString("en-US")} ft` : ""}, OR miles 3 to 7` });
+    road.push({ id: "summit", group: "road", icon: "⛰️", name: t("trip.highest_point_on_i_5"), hint: t("trip.cross_siskiyou_summit_x1_or_miles_3_to", { x1: ft ? t("trip.ft_ft", { ft: ft.toLocaleString(i18n.loc("en-US")) }) : "" }) });
   }
-  if (STATES.length >= 2) road.push({ id: "state-line", group: "road", icon: "🪧", name: "State line", hint: "Drive across a state line" });
-  road.push({ id: "halfway", group: "road", glyph: "½", name: "Halfway there", hint: `Cross the middle of ${roadName()}, ${mileWords(half)}` });
+  if (STATES.length >= 2) road.push({ id: "state-line", group: "road", icon: "🪧", name: t("trip.state_line"), hint: t("trip.drive_across_a_state_line") });
+  road.push({ id: "halfway", group: "road", glyph: "½", name: t("trip.halfway_there"), hint: t("trip.cross_the_middle_of_roadname_half", { roadName: roadName(), half: mileWords(half) }) });
   if (STATES.length >= 3) {
-    road.push({ id: "three-states", group: "road", icon: "🗺️", name: STATES.length === 3 ? "Three-state run" : `${STATES.length}-state run`,
-      hint: `Drive in ${andList(STATES.map(stName))}`,
+    road.push({ id: "three-states", group: "road", icon: "🗺️", name: STATES.length === 3 ? t("trip.three_state_run") : t("trip.length_state_run", { length: STATES.length }),
+      hint: t("trip.drive_in_andlist", { andList: andList(STATES.map(stName)) }),
       prog: () => ({ v: stats.states.filter(s => STATES.some(x => x.id === s)).length, max: STATES.length, unit: "states" }) });
   }
   road.push(
-    { id: "century", group: "road", icon: "💯", name: "Century", hint: "Drive 100 miles in one trip", prog: () => ({ v: Math.min(100, bestTrip()), max: 100, text: `Best: ${fmtInt(bestTrip())} mi` }) },
-    { id: "long-haul", group: "road", icon: "🚚", name: "Long haul", hint: "Drive 500 miles in one trip", prog: () => ({ v: Math.min(500, bestTrip()), max: 500, text: `Best: ${fmtInt(bestTrip())} mi` }) },
-    { id: "border-to-border", group: "road", icon: "🏁", name: "Border to border", hint: `Drive 95% of ${roadName()}, ${endToEnd()}`,
-      prog: () => ({ v: covCount, max: Math.ceil(NBITS * 0.95), text: `${pct(covCount / NBITS)} driven` }) },
-    { id: "night-owl", group: "road", icon: "🦉", name: "Night owl", hint: "Drive 30 minutes between 10 pm and 4 am" },
-    { id: "early-bird", group: "road", icon: "🌅", name: "Early bird", hint: "Drive 10 minutes between 5 and 7 am" },
+    { id: "century", group: "road", icon: "💯", name: t("trip.century"), hint: t("trip.drive_100_miles_in_one_trip"), prog: () => ({ v: Math.min(100, bestTrip()), max: 100, text: t("trip.best_fmtint_mi", { fmtInt: fmtInt(bestTrip()) }) }) },
+    { id: "long-haul", group: "road", icon: "🚚", name: t("trip.long_haul"), hint: t("trip.drive_500_miles_in_one_trip"), prog: () => ({ v: Math.min(500, bestTrip()), max: 500, text: t("trip.best_fmtint_mi", { fmtInt: fmtInt(bestTrip()) }) }) },
+    { id: "border-to-border", group: "road", icon: "🏁", name: t("trip.border_to_border"), hint: t("trip.drive_95_of_roadname_endtoend", { roadName: roadName(), endToEnd: endToEnd() }),
+      prog: () => ({ v: covCount, max: Math.ceil(NBITS * 0.95), text: t("trip.pct_driven", { pct: pct(covCount / NBITS) }) }) },
+    { id: "night-owl", group: "road", icon: "🦉", name: t("trip.night_owl"), hint: t("trip.drive_30_minutes_between_10_pm_and_4") },
+    { id: "early-bird", group: "road", icon: "🌅", name: t("trip.early_bird"), hint: t("trip.drive_10_minutes_between_5_and_7_am") },
   );
   // The iPhone app leaves out the two badges that reward driving habits: late at night, and 500 miles in one go.
   const appSkip = A && A.native && A.native.NATIVE ? ["long-haul", "night-owl"] : [];
@@ -268,9 +271,9 @@ function buildDefs() {
     const n = regionRoad(r.id).length;
     if (!n) continue; // no landmarks there yet: nothing to complete
     list.push({ id: "region-" + r.id, group: "region", icon: REGION_ICON[r.id] || "📍", st: r.st, name: r.name,
-      hint: `Collect all ${n} stamps here`, prog: () => ({ v: regionGot(r.id), max: n }) });
+      hint: t("trip.collect_all_n_stamps_here", { n }), prog: () => ({ v: regionGot(r.id), max: n }) });
   }
-  list.push({ id: "trivia-whiz", group: "games", icon: "🧠", name: "Trivia whiz", hint: "Get 10 trivia questions right", prog: () => ({ v: Math.min(10, triviaRight()), max: 10 }) });
+  list.push({ id: "trivia-whiz", group: "games", icon: "🧠", name: t("trip.trivia_whiz"), hint: t("trip.get_10_trivia_questions_right"), prog: () => ({ v: Math.min(10, triviaRight()), max: 10 }) });
   DEFS = list;
   DEF.clear();
   for (const d of list) DEF.set(d.id, d);
@@ -313,10 +316,10 @@ function unlock(ids, mode = "full") {
 function celebrate(ids, toastOnly) {
   const names = ids.map(id => DEF.get(id).name);
   const list = andList(names);
-  toast(ids.length === 1 ? `New badge: ${names[0]}!` : `${ids.length} new badges: ${list}!`, 4200);
+  toast(ids.length === 1 ? t("trip.new_badge_x1", { x1: names[0] }) : t("trip.length_new_badges_list", { length: ids.length, list }), 4200);
   if (toastOnly) return;
   const talk = settings.narr && prefs.sayBadges !== false && voice.available !== false;
-  const text = ids.length === 1 ? `New badge: ${list}.` : `${ids.length} new badges: ${list}.`;
+  const text = ids.length === 1 ? t("trip.new_badge_list", { list }) : t("trip.length_new_badges_list_2", { length: ids.length, list });
   const t0 = now();
   const opts = { id: "badge:" + ids.join(","), prio: 0, check: () => now() - t0 < 180e3 };
   if (!busy()) chime("success").then(() => { if (talk) say(text, opts); });
@@ -630,8 +633,8 @@ function arrive(dest, key) {
   store.set("destDone", destDone);
   celebrating = true;
   persist(true);
-  toast(`We made it to ${dest.name}!`, 5000);
-  if (settings.narr && voice.available !== false) say(`We made it to ${dest.name}.`, { id: "arrive:" + key, prio: 2, chime: "success" });
+  toast(t("trip.we_made_it_to_name", { name: dest.name }), 5000);
+  if (settings.narr && voice.available !== false) say(t("trip.we_made_it_to_name_2", { name: dest.name }), { id: "arrive:" + key, prio: 2, chime: "success" });
   else chime("success");
   bus.emit("trip:arrive", { dest: { name: dest.name, m: dest.m } });
   renderStrip();
@@ -680,7 +683,7 @@ function buildWhere() {
   const b = btn("trip-where", null, e => openDest(e.currentTarget));
   const ic = el("span", "trip-where-ic"); ic.append(ICON.pin());
   const tx = el("span", "trip-where-tx");
-  tx.append(el("b", null, "Where to?"), el("small", null, "Miles, time and landmarks to go"));
+  tx.append(el("b", null, t("trip.where_to")), el("small", null, t("trip.miles_time_and_landmarks_to_go")));
   b.append(ic, tx, el("span", "trip-chev", "›"));
   b.lastChild.setAttribute("aria-hidden", "true");
   return b;
@@ -688,7 +691,7 @@ function buildWhere() {
 
 function signRow(small, name, onName, right) {
   const row = el("div", "trip-sign");
-  const nm = onName ? btn("trip-sign-name", null, onName, `${small} ${name}. Change destination`) : el("div", "trip-sign-name");
+  const nm = onName ? btn("trip-sign-name", null, onName, t("trip.small_name_change_destination", { small, name })) : el("div", "trip-sign-name");
   nm.append(el("small", null, small), el("b", null, name));
   row.append(nm);
   if (right) row.append(right);
@@ -697,11 +700,11 @@ function signRow(small, name, onName, right) {
 
 function buildGo(dest) {
   const sec = el("section", "trip-dest");
-  sec.setAttribute("aria-label", "Destination");
+  sec.setAttribute("aria-label", t("trip.destination"));
   const mi = el("div", "trip-sign-mi");
-  mi.append(el("b", "n", "--"), el("small", null, "mi"));
-  const row = signRow("To", dest.name, e => openDest(e.currentTarget), mi);
-  row.append(btn("trip-x", null, clearDest, "Clear destination"));
+  mi.append(el("b", "n", "--"), el("small", null, t("trip.mi")));
+  const row = signRow(t("trip.to"), dest.name, e => openDest(e.currentTarget), mi);
+  row.append(btn("trip-x", null, clearDest, t("trip.clear_destination")));
   row.lastChild.append(ICON.x());
   const body = el("div", "trip-dest-body");
   const line = el("p", "trip-line");
@@ -712,11 +715,11 @@ function buildGo(dest) {
   const prog = el("div", "trip-prog");
   const bar = el("div", "trip-bar");
   bar.setAttribute("role", "progressbar"); bar.setAttribute("aria-valuemin", "0"); bar.setAttribute("aria-valuemax", "100");
-  bar.setAttribute("aria-label", `Progress to ${dest.name}`);
+  bar.setAttribute("aria-label", t("trip.progress_to_name", { name: dest.name }));
   bar.append(el("i"));
   prog.append(bar, el("span", "trip-pct"));
   const yet = btn("trip-yet", null, onYet);
-  yet.append(el("span", null, "Are we"), el("span", null, " there yet?"));
+  yet.append(el("span", null, t("trip.are_we")), el("span", null, t("trip.there_yet")));
   body.append(line, warnRow, prog, yet);
   sec.append(row, body);
   return sec;
@@ -730,8 +733,8 @@ function updateGo(box, dest) {
   const sec = q(".trip-dest");
   if (m == null) {
     n.textContent = "--";
-    eta.textContent = `${mileWords(dest.m)} of I-5`;
-    lm.textContent = "Start GPS or a demo drive to count down";
+    eta.textContent = t("trip.m_of_i_5", { m: mileWords(dest.m) });
+    lm.textContent = t("trip.start_gps_or_a_demo_drive_to_count");
     warnRow.hidden = true; prog.hidden = true;
     sec.classList.remove("behind");
     return;
@@ -744,17 +747,17 @@ function updateGo(box, dest) {
   const mph = typeof S.cruise === "number" && S.cruise > 25 ? S.cruise : typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
   n.textContent = d < 0.95 ? "0" : fmtMi(d);
   if (d <= 1) {
-    eta.textContent = `You're at ${dest.name}`;
+    eta.textContent = t("trip.youre_at_name", { name: dest.name });
     lm.textContent = "";
   } else {
     const time = dur(d / mph);
-    eta.textContent = time ? `about ${time}` : "";
+    eta.textContent = time ? t("trip.about_time", { time }) : "";
     const k = landmarksTo(m, dest.m);
-    lm.textContent = k ? `${plural(k, "landmark")} to go` : "No landmarks on the way";
+    lm.textContent = k ? t("trip.k_to_go", { k: plural(k, i18n.t("trip.landmark_word"), i18n.t("trip.landmarks_word")) }) : t("trip.no_landmarks_on_the_way");
   }
   sec.classList.toggle("behind", behind);
   warnRow.hidden = !behind;
-  warnRow.lastChild.textContent = behind ? `${dest.name} is behind us, ${fmtMi(d)} mi to the ${dest.m > m ? "north" : "south"}. Turn around when it's easy.` : "";
+  warnRow.lastChild.textContent = behind ? t("trip.name_is_behind_us_d_mi_to_the_x1_turn", { name: dest.name, d: fmtMi(d), x1: dest.m > m ? t("trip.north") : t("trip.south") }) : "";
   const total = destFrom == null ? 0 : Math.abs(dest.m - destFrom);
   const p = total >= 1 ? clamp((total - d) / total, 0, 1) : 0;
   prog.hidden = total < 1 || behind;
@@ -770,7 +773,7 @@ function onYet() {
   try { if (A.narrator && A.narrator.howFar) { A.narrator.howFar(); spoken = voice.available !== false && typeof voice.say === "function"; } } catch (err) { warn("howFar", err); }
   if (!spoken && dest) {
     const d = posM() == null ? null : Math.abs(dest.m - posM());
-    toast(d == null ? `${dest.name} is at ${mileWords(dest.m)} of I-5.` : d < 1 ? `We're there. This is ${dest.name}.` : `${dest.name} is about ${fmtInt(d)} miles away.`, 3500);
+    toast(d == null ? t("trip.name_is_at_m_of_i_5", { name: dest.name, m: mileWords(dest.m) }) : d < 1 ? t("trip.were_there_this_is_name", { name: dest.name }) : t("trip.name_is_about_d_miles_away", { name: dest.name, d: fmtInt(d) }), 3500);
   }
   const box = $id("destStrip");
   const card = box && box.querySelector(".trip-dest");
@@ -779,7 +782,7 @@ function onYet() {
 
 function buildParty(dest) {
   const sec = el("section", "trip-dest trip-party");
-  sec.setAttribute("aria-label", `We made it to ${dest.name}`);
+  sec.setAttribute("aria-label", t("trip.we_made_it_to_name_3", { name: dest.name }));
   const conf = el("div", "trip-confetti");
   conf.setAttribute("aria-hidden", "true");
   const colors = ["--accent", "--farm", "--hist", "--nature", "--stop", "--odd", "--st-or", "--st-wa"];
@@ -794,20 +797,20 @@ function buildParty(dest) {
   }
   const party = el("span", "trip-party-ic", "🎉");
   party.setAttribute("aria-hidden", "true");
-  const row = signRow("We made it to", dest.name, null, party);
-  row.append(btn("trip-x", null, () => { celebrating = false; renderStrip(); }, "Close the celebration"));
+  const row = signRow(t("trip.we_made_it_to"), dest.name, null, party);
+  row.append(btn("trip-x", null, () => { celebrating = false; renderStrip(); }, t("trip.close_the_celebration")));
   row.lastChild.append(ICON.x());
   const body = el("div", "trip-dest-body trip-party-body");
   const dd = destDone || {};
   const bits = [];
-  if (num(dd.miles) >= 0.1) bits.push(`${fmtMi(dd.miles)} mi ${dd.demo ? "on this demo drive" : "this trip"}`);
+  if (num(dd.miles) >= 0.1) bits.push(t("trip.miles_mi_x1", { miles: fmtMi(dd.miles), x1: dd.demo ? t("trip.on_this_demo_drive") : t("trip.this_trip") }));
   if (dd.start) { const time = dur((num(dd.t, now()) - dd.start) / 3.6e6); if (time) bits.push(time); }
-  if (num(dd.stamps)) bits.push(plural(dd.stamps, "stamp"));
-  body.append(bits.length ? dotted("p", "trip-line trip-party-line", bits) : el("p", "trip-line", "Nice driving."));
+  if (num(dd.stamps)) bits.push(plural(dd.stamps, i18n.t("trip.stamp_word"), i18n.t("trip.stamps_word")));
+  body.append(bits.length ? dotted("p", "trip-line trip-party-line", bits) : el("p", "trip-line", t("trip.nice_driving")));
   const acts = el("div", "trip-acts");
   const sh = btn("primary trip-share-btn", null, e => openShare("trip", e.currentTarget));
-  sh.append(ICON.share(), document.createTextNode("Share my trip"));
-  acts.append(sh, btn("secondary", "Where to next?", e => openDest(e.currentTarget)));
+  sh.append(ICON.share(), document.createTextNode(t("trip.share_my_trip")));
+  acts.append(sh, btn("secondary", t("trip.where_to_next"), e => openDest(e.currentTarget)));
   body.append(acts);
   sec.append(conf, row, body);
   return sec;
@@ -818,10 +821,10 @@ function buildDone(dest) {
   const b = btn("trip-where trip-where-done", null, e => openDest(e.currentTarget));
   const ic = el("span", "trip-where-ic"); ic.append(ICON.check());
   const tx = el("span", "trip-where-tx");
-  tx.append(el("b", null, `Made it to ${dest.name}`), el("small", null, "Where to next?"));
+  tx.append(el("b", null, t("trip.made_it_to_name", { name: dest.name })), el("small", null, t("trip.where_to_next")));
   b.append(ic, tx, el("span", "trip-chev", "›"));
   b.lastChild.setAttribute("aria-hidden", "true");
-  const x = btn("trip-x trip-done-x", null, clearDest, "Clear destination");
+  const x = btn("trip-x trip-done-x", null, clearDest, t("trip.clear_destination"));
   x.append(ICON.x());
   wrap.append(b, x);
   return wrap;
@@ -834,7 +837,7 @@ function makeSheet(id, title) {
   sh.setAttribute("role", "dialog"); sh.setAttribute("aria-modal", "true"); sh.setAttribute("aria-labelledby", id + "Title");
   const head = el("div", "sheet-head");
   const h = el("b", null, title); h.id = id + "Title";
-  head.append(h, btn("link", "Close", closeSheet));
+  head.append(h, btn("link", t("trip.close"), closeSheet));
   sh.append(head);
   (document.querySelector(".app") || document.body).append(sh);
   // give focus back to whatever opened the sheet when it closes (backdrop, Escape or Close)
@@ -869,9 +872,9 @@ function closeSheet() {
 let destSheet = null;
 function openDest(opener) {
   if (!destSheet) {
-    destSheet = makeSheet("tripDestSheet", "Where to?");
+    destSheet = makeSheet("tripDestSheet", t("trip.where_to"));
     destSheet.classList.add("trip-dsheet");
-    destSheet.append(el("p", "trip-lede", "Pick a stop. I'll count down the miles, the time and the landmarks on the way."), el("div", "trip-dlist"));
+    destSheet.append(el("p", "trip-lede", t("trip.pick_a_stop_ill_count_down_the_miles")), el("div", "trip-dlist"));
   }
   fillDestSheet();
   showSheet(destSheet, opener);
@@ -883,7 +886,7 @@ function fillDestSheet() {
   const box = destSheet.querySelector(".trip-dlist");
   box.textContent = "";
   const list = DESTS.slice().sort((a, b) => a.m - b.m);
-  if (!list.length) { box.append(el("p", "trip-empty", "No destinations in this version of the road data.")); return; }
+  if (!list.length) { box.append(el("p", "trip-empty", t("trip.no_destinations_in_this_version_of_the"))); return; }
   // Where are you? On I-5: your mile. Off I-5 with GPS on: the closest point on I-5 to where you really are (never "You're
   // here", which once told someone on I-15 near Lake Elsinore she was at the Grapevine). GPS off: only your last spot.
   let here = posM(), off = null;
@@ -891,21 +894,21 @@ function fillDestSheet() {
     const h = A.geo.locate(S.lat, S.lon);
     if (h && h.m != null && isFinite(h.dist)) { here = onRoad(h.m) ? h.m : null; off = { dist: h.dist }; } else here = null;
   }
-  const hereWord = off ? "Closest point on I-5" : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? "You're here" : "Your last spot";
+  const hereWord = off ? t("trip.closest_point_on_i_5") : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? t("trip.youre_here") : t("trip.your_last_spot");
   const lede = destSheet.querySelector(".trip-lede");
   if (lede) {
     const near = off && here != null ? DESTS.slice().sort((a, b) => Math.abs(a.m - here) - Math.abs(b.m - here))[0] : null;
     lede.textContent = off
-      ? `You're not on I-5 right now${off.dist >= 2 ? `, about ${fmtInt(off.dist)} miles from it` : ""}. Miles here count along I-5 from the closest point${near ? `, near ${near.name}` : ""}.`
-      : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? "Pick a stop. I'll count down the miles, the time and the landmarks on the way."
-      : "Pick a stop. Miles count from your last spot on I-5; start GPS to count from where you are.";
+      ? t("trip.youre_not_on_i_5_right_now_x1_miles", { x1: off.dist >= 2 ? t("trip.about_dist_miles_from_it", { dist: fmtInt(off.dist) }) : "", x2: near ? t("trip.near_name", { name: near.name }) : "" })
+      : S.mode === "gps" || S.mode === "demo" || S.mode === "manual" ? t("trip.pick_a_stop_ill_count_down_the_miles")
+      : t("trip.pick_a_stop_miles_count_from_your_last");
   }
   const mph = typeof S.cruise === "number" && S.cruise > 25 ? S.cruise : typeof S.speed === "number" && S.speed > 25 ? S.speed : 62;
   const curKey = destKey(validDest(S.dest));
   const hereSt = here == null ? null : stateOf(here).id;
   const groups = STATES.map(s => ({ s, items: list.filter(d => stateOf(d.m).id === s.id) })).filter(g => g.items.length);
   const orphans = list.filter(d => !groups.some(g => g.items.includes(d)));
-  if (orphans.length) groups.push({ s: { id: "", name: "Other" }, items: orphans });
+  if (orphans.length) groups.push({ s: { id: "", name: t("trip.other") }, items: orphans });
   for (const g of groups) {
     const sec = el("section", "trip-dgroup trip-st-" + stLow(g.s.id));
     const h = el("h3", "trip-dstate");
@@ -924,14 +927,14 @@ function fillDestSheet() {
       if (!placed && dist != null && dist <= 1) placed = true;
       const li = el("li");
       const isCur = destKey(d) === curKey;
-      const b = btn("trip-dopt" + (dist != null && dist <= 1 ? " at" : ""), null, () => { setDest(d); closeSheet(); toast(`Heading to ${d.name}`); });
+      const b = btn("trip-dopt" + (dist != null && dist <= 1 ? " at" : ""), null, () => { setDest(d); closeSheet(); toast(t("trip.heading_to_name", { name: d.name })); });
       b.setAttribute("aria-pressed", String(isCur));
       const nm = el("span", "nm", d.name);
       const meta = el("span", "meta");
       if (dist == null) meta.append(el("small", null, mileWords(d.m)));
       else if (dist <= 1) meta.append(el("b", null, hereWord));
       else {
-        meta.append(el("b", null, `${fmtInt(dist)} mi`), dotted("small", null, [d.m > here ? "north" : "south", dur(dist / mph)]));
+        meta.append(el("b", null, t("trip.dist_mi", { dist: fmtInt(dist) })), dotted("small", null, [d.m > here ? t("trip.north") : t("trip.south"), dur(dist / mph)]));
       }
       b.append(nm, meta);
       if (isCur) { const c = el("span", "trip-dcheck"); c.append(ICON.check()); b.append(c); }
@@ -943,7 +946,7 @@ function fillDestSheet() {
     box.append(sec);
   }
   if (validDest(S.dest)) {
-    box.append(btn("secondary trip-dclear", "No destination", () => { clearDest(); closeSheet(); }));
+    box.append(btn("secondary trip-dclear", t("trip.no_destination"), () => { clearDest(); closeSheet(); }));
   }
 }
 
@@ -1039,7 +1042,7 @@ function ppCover() {
   const top = el("div", "pp-cover-top");
   const tt = el("div", "pp-cover-tt");
   const since = sinceTime();
-  tt.append(el("h2", "pp-title", "I-5 Passport"), el("p", "pp-since", since ? `Collecting since ${fmtDay(since, true)}` : `${endToEnd()}, one stamp at a time`));
+  tt.append(el("h2", "pp-title", t("trip.i_5_passport")), el("p", "pp-since", since ? t("trip.collecting_since_since", { since: fmtDay(since, true) }) : t("trip.endtoend_one_stamp_at_a_time", { endToEnd: endToEnd() })));
   top.append(logoImg("pp-logo"), tt);
   try { // the ride (ride.js) and its nickname, if that module is loaded
     if (A.ride && A.ride.svg) {
@@ -1057,10 +1060,10 @@ function ppCover() {
   const dl = el("dl", "pp-dist");
   const demoN = num(stats.demo) + (cur && cur.mode === "demo" ? 1 : 0);
   const rows = [
-    ["Stamps", fmtInt(n), N ? `of ${fmtInt(N)}` : ""],
-    ["Miles driven", fmtInt(milesDriven()), ""],
-    ["Trips", fmtInt(tripCount()), demoN ? `${fmtInt(demoN)} demo` : ""],
-    ["Badges", fmtInt(earnedCount()), `of ${DEFS.length}`],
+    [t("trip.stamps"), fmtInt(n), N ? t("trip.of_n", { N: fmtInt(N) }) : ""],
+    [t("trip.miles_driven"), fmtInt(milesDriven()), ""],
+    [t("trip.trips"), fmtInt(tripCount()), demoN ? t("trip.demon_demo", { demoN: fmtInt(demoN) }) : ""],
+    [t("trip.badges"), fmtInt(earnedCount()), t("trip.of_length", { length: DEFS.length })],
   ];
   for (const [label, v, sub] of rows) {
     const r = el("div", "pp-dist-row");
@@ -1075,8 +1078,8 @@ function ppCover() {
   // the road, with what you've driven
   const cov = el("div", "pp-cov");
   cov.append(roadRibbon());
-  cov.append(covCount ? dotted("p", "pp-cov-txt", [`${pct(covCount / NBITS)} of ${roadName()} driven`, `${fmtInt(covCount)} of ${fmtInt(NBITS)} miles`])
-    : el("p", "pp-cov-txt", "Drive with GPS to fill in the road"));
+  cov.append(covCount ? dotted("p", "pp-cov-txt", [t("trip.pct_of_roadname_driven", { pct: pct(covCount / NBITS), roadName: roadName() }), t("trip.covcount_of_nbits_miles", { covCount: fmtInt(covCount), NBITS: fmtInt(NBITS) })])
+    : el("p", "pp-cov-txt", t("trip.drive_with_gps_to_fill_in_the_road")));
   sec.append(cov);
 
   const has = n || tripCount() || earnedCount();
@@ -1084,10 +1087,10 @@ function ppCover() {
     const acts = el("div", "pp-cover-acts");
     const sh = btn("pp-btn pp-btn-main", null, e => openShare(null, e.currentTarget));
     sh.dataset.k = "share";
-    sh.append(ICON.share(), document.createTextNode("Share my trip"));
+    sh.append(ICON.share(), document.createTextNode(t("trip.share_my_trip")));
     const cp = btn("pp-btn", null, () => copySummary(defaultKind()));
     cp.dataset.k = "copy";
-    cp.append(ICON.copy(), document.createTextNode("Copy summary"));
+    cp.append(ICON.copy(), document.createTextNode(t("trip.copy_summary")));
     acts.append(sh, cp);
     sec.append(acts);
   }
@@ -1137,7 +1140,7 @@ function ppRegions() {
   if (!REGIONS.length) return null;
   const sec = el("section", "pp-sec");
   const s = stamps();
-  sec.append(secHead("Regions", "Tap one to see its stamps"));
+  sec.append(secHead(t("trip.regions"), t("trip.tap_one_to_see_its_stamps")));
   for (const st of STATES) {
     const regs = REGIONS.filter(r => r.st === st.id);
     if (!regs.length) continue;
@@ -1145,7 +1148,7 @@ function ppRegions() {
     for (const r of regs) { const l = regionPlaces.get(r.id) || []; tot += l.length; got += l.filter(p => s[p.id]).length; }
     const grp = el("div", "pp-state pp-st-" + stLow(st.id));
     const h = el("h4", "pp-state-h");
-    h.append(el("i"), el("span", null, st.name), el("small", null, tot ? `${fmtInt(got)} of ${fmtInt(tot)} stamps` : "No landmarks here yet"));
+    h.append(el("i"), el("span", null, st.name), el("small", null, tot ? t("trip.got_of_tot_stamps", { got: fmtInt(got), tot: fmtInt(tot) }) : t("trip.no_landmarks_here_yet")));
     grp.append(h);
     if (!tot) {
       const ul = el("ul", "pp-soon");
@@ -1163,12 +1166,12 @@ function ppRegions() {
         ppFilter = ppFilter === r.id ? null : r.id;
         renderPassport();
         if (ppFilter) scrollUnderTopBar($id("ppStamps"), true);
-      }, list.length ? `${r.name}, ${g} of ${list.length} stamps` : `${r.name}, no landmarks yet`);
+      }, list.length ? t("trip.name_g_of_length_stamps", { name: r.name, g, length: list.length }) : t("trip.name_no_landmarks_yet", { name: r.name }));
       b.dataset.k = "region:" + r.id;
       b.setAttribute("aria-pressed", String(ppFilter === r.id));
       if (!list.length) b.disabled = true;
       const meta = el("span", "pp-region-meta");
-      meta.append(el("span", "ct", list.length ? `${g} of ${list.length}` : "No landmarks yet"));
+      meta.append(el("span", "ct", list.length ? t("trip.g_of_length", { g, length: list.length }) : t("trip.no_landmarks_yet")));
       if (done) { const m = el("span", "pp-region-medal", REGION_ICON[r.id] || "✓"); m.setAttribute("aria-hidden", "true"); meta.append(m); }
       b.append(el("b", "nm", r.name), meta, bar(list.length ? g / list.length : 0));   // the button's label carries the count
       grid.append(b);
@@ -1181,7 +1184,7 @@ function ppRegions() {
 
 function ppBadges() {
   const sec = el("section", "pp-sec");
-  sec.append(secHead("Badges", `${earnedCount()} of ${DEFS.length}`));
+  sec.append(secHead(t("trip.badges"), t("trip.earnedcount_of_length", { earnedCount: earnedCount(), length: DEFS.length })));
   for (const [gid, label, note] of GROUPS) {
     const items = DEFS.filter(d => d.group === gid);
     if (!items.length) continue;
@@ -1200,12 +1203,12 @@ function ppBadges() {
       if (at) {
         li.append(el("small", "when", fmtDay(at, true)));
       } else {
-        li.append(sr("Locked. "), el("small", "how", d.hint));
+        li.append(sr(t("trip.locked")), el("small", "how", d.hint));
         let p = null;
         try { p = d.prog ? d.prog() : null; } catch {}
         if (p && p.max && p.v > 0) {
           const pr = el("span", "pp-bprog");
-          pr.append(bar(p.v / p.max), el("small", null, p.text || `${fmtInt(p.v)} of ${fmtInt(p.max)}${p.unit ? " " + p.unit : ""}`));   // the text says it; the bar is decoration
+          pr.append(bar(p.v / p.max), el("small", null, p.text || t("trip.v_of_max_x1", { v: fmtInt(p.v), max: fmtInt(p.max), x1: p.unit ? " " + p.unit : "" })));   // the text says it; the bar is decoration
           li.append(pr);
         }
       }
@@ -1235,30 +1238,30 @@ function ppStamps() {
   const got = list.filter(p => s[p.id]).sort((a, b) => num(s[b.id]) - num(s[a.id]) || a.m - b.m);
   const todo = list.filter(p => !s[p.id]);
   const all = got.concat(todo);
-  sec.append(secHead("Stamps", list.length ? `${got.length} of ${list.length}` : ""));
+  sec.append(secHead(t("trip.stamps"), list.length ? t("trip.length_of_length2", { length: got.length, length2: list.length }) : ""));
   if (region) {
     const f = el("div", "pp-filter");
-    const chip = btn("pp-chip", null, () => { ppFilter = null; renderPassport(); }, `Showing ${region.name}. Show every region`);
+    const chip = btn("pp-chip", null, () => { ppFilter = null; renderPassport(); }, t("trip.showing_name_show_every_region", { name: region.name }));
     chip.dataset.k = "filter";
     chip.append(el("span", null, region.name), ICON.x());
     f.append(chip);
     sec.append(f);
   }
   if (!all.length) {
-    sec.append(el("p", "pp-empty", "No landmarks in the road data yet."));
+    sec.append(el("p", "pp-empty", t("trip.no_landmarks_in_the_road_data_yet")));
     return sec;
   }
-  if (!got.length && !region) sec.append(el("p", "pp-empty", "Every landmark you drive past stamps your passport. Here is what's waiting for you."));
+  if (!got.length && !region) sec.append(el("p", "pp-empty", t("trip.every_landmark_you_drive_past_stamps")));
   const limit = region || ppAllStamps ? all.length : SHOW_STAMPS;
   const ul = el("ul", "pp-stamps");
   for (const p of all.slice(0, limit)) ul.append(stampEl(p, s[p.id]));
   sec.append(ul);
   if (all.length > limit) {
-    const more = btn("secondary pp-more", `Show all ${fmtInt(all.length)} stamps`, () => { ppAllStamps = true; renderPassport(); });
+    const more = btn("secondary pp-more", t("trip.show_all_length_stamps", { length: fmtInt(all.length) }), () => { ppAllStamps = true; renderPassport(); });
     more.dataset.k = "stamps-more";
     sec.append(more);
   } else if (!region && ppAllStamps && all.length > SHOW_STAMPS) {
-    const less = btn("secondary pp-more", "Show fewer", () => {
+    const less = btn("secondary pp-more", t("trip.show_fewer"), () => {
       ppAllStamps = false; renderPassport();
       scrollUnderTopBar($id("ppStamps"), false);
     });
@@ -1275,12 +1278,12 @@ function stampEl(p, at) {
   if (at) b.style.setProperty("--rot", stampRot(p.id) + "deg");
   const ring = el("span", "ring");
   ring.setAttribute("aria-hidden", "true");
-  ring.append(el("small", "ex-l", p.st && p.st !== "CA" ? `${p.st} EXIT` : "EXIT"), el("b", "ex" + (String(p.ex || "").length > 3 ? " long" : ""), p.ex != null ? String(p.ex) : "--"));
+  ring.append(el("small", "ex-l", p.st && p.st !== "CA" ? t("trip.st_exit", { st: p.st }) : t("trip.exit")), el("b", "ex" + (String(p.ex || "").length > 3 ? " long" : ""), p.ex != null ? String(p.ex) : "--"));
   ring.append(el("small", "dt", at && typeof at === "number" && at > 1e12 ? fmtDay(at).toUpperCase() : at ? "✓" : CAT_ICON()[p.cat] || ""));
   b.append(ring, el("span", "nm", p.name));
   let exitTxt = "";
-  try { exitTxt = D.exitName ? D.exitName(p.st, p.ex) : `Exit ${p.ex}`; } catch {}
-  b.setAttribute("aria-label", `${p.name}, ${CAT_NAME()[p.cat] || ""}, ${exitTxt}. ${at ? (typeof at === "number" && at > 1e12 ? `Stamped ${fmtDay(at, true)}` : "Stamped") : "Not stamped yet"}`);
+  try { exitTxt = D.exitName ? D.exitName(p.st, p.ex) : t("trip.exit_ex", { ex: p.ex }); } catch {}
+  b.setAttribute("aria-label", `${p.name}, ${CAT_NAME()[p.cat] || ""}, ${exitTxt}. ${at ? (typeof at === "number" && at > 1e12 ? t("trip.stamped_at", { at: fmtDay(at, true) }) : t("trip.stamped")) : t("trip.not_stamped_yet")}`);
   li.append(b);
   return li;
 }
@@ -1292,11 +1295,11 @@ function ppTrips() {
   if (cur) rows.push({ ...cur, live: true });
   else { const o = leftover(); if (o) rows.push({ ...cleanTrip(o), paused: true }); }
   rows.push(...trips);
-  sec.append(secHead("Recent trips", trips.length ? `${trips.length} saved on this phone` : ""));
+  sec.append(secHead(i18n.t("trip.recent_trips"), trips.length ? i18n.t("trip.length_saved_on_this_phone", { length: trips.length }) : ""));
   if (!rows.length) {
     const box = el("div", "pp-empty-card");
-    box.append(el("p", null, "No trips yet. Tap Start GPS on the Drive screen when you hit the road, and each drive shows up here with its miles and stamps."));
-    const go = btn("secondary", "Go to Drive", () => ui && ui.go && ui.go("drive"));
+    box.append(el("p", null, i18n.t("trip.no_trips_yet_tap_start_gps_on_the")));
+    const go = btn("secondary", i18n.t("trip.go_to_drive"), () => ui && ui.go && ui.go("drive"));
     go.dataset.k = "go-drive";
     box.append(go);
     sec.append(box);
@@ -1307,7 +1310,7 @@ function ppTrips() {
   for (const t of rows.slice(0, limit)) ol.append(tripRow(t));
   sec.append(ol);
   if (rows.length > SHOW_TRIPS) {
-    const more = btn("secondary pp-more", ppAllTrips ? "Show fewer" : `Show all ${rows.length} trips`, () => { ppAllTrips = !ppAllTrips; renderPassport(); });
+    const more = btn("secondary pp-more", ppAllTrips ? i18n.t("trip.show_fewer") : i18n.t("trip.show_all_length_trips", { length: rows.length }), () => { ppAllTrips = !ppAllTrips; renderPassport(); });
     more.dataset.k = "trips-more";
     sec.append(more);
   }
@@ -1319,32 +1322,32 @@ function tripRow(t) {
   const li = el("li", "pp-trip" + (demo ? " demo" : "") + (t.live ? " live" : ""));
   const date = el("div", "pp-tdate");
   date.setAttribute("aria-hidden", "true");
-  if (t.live) date.append(el("small", null, "NOW"), el("b", "live-dot"));
+  if (t.live) date.append(el("small", null, i18n.t("trip.now")), el("b", "live-dot"));
   else {
     const d = new Date(t.start);
-    date.append(el("small", null, d.toLocaleDateString("en-US", { month: "short" }).toUpperCase()), el("b", null, String(d.getDate())));
+    date.append(el("small", null, d.toLocaleDateString(i18n.loc("en-US"), { month: "short" }).toUpperCase()), el("b", null, String(d.getDate())));
   }
   const body = el("div", "pp-tbody");
   // (a trip saved when the app covered more of I-5 can start or end past this road: it has no region there)
   const from = regionOf(t.startM), to = regionOf(t.lastM);
   const route = el("p", "pp-troute");
-  route.append(sr(t.live ? "Trip in progress. " : `${fmtLong(t.start)}. `));
+  route.append(sr(t.live ? i18n.t("trip.trip_in_progress") : `${fmtLong(t.start)}. `));
   if (from && to && from.id !== to.id) {
     route.append(el("span", null, from.name));
     const arr = el("span", "pp-arrow", " → "); arr.setAttribute("aria-hidden", "true");
-    route.append(arr, sr(" to "), el("span", null, to.name));
-  } else route.append(el("span", null, (from || to) ? (from || to).name : "On I-5"));
-  const parts = [`${fmtMi(num(t.miles))} mi`];
+    route.append(arr, sr(i18n.t("trip.to_2")), el("span", null, to.name));
+  } else route.append(el("span", null, (from || to) ? (from || to).name : i18n.t("trip.on_i_5")));
+  const parts = [i18n.t("trip.fmtmi_mi", { fmtMi: fmtMi(num(t.miles)) })];
   const end = t.live ? now() : num(t.end, t.start);
   const time = dur((end - t.start) / 3.6e6);
   if (time && end - t.start >= 60e3) parts.push(time);
   const sn = (t.stamps || []).length;
-  parts.push(plural(sn, "stamp"));
-  if (t.dest) parts.push(`made it to ${t.dest}`);
+  parts.push(plural(sn, i18n.t("trip.stamp_word"), i18n.t("trip.stamps_word")));
+  if (t.dest) parts.push(i18n.t("trip.made_it_to_dest", { dest: t.dest }));
   body.append(route, dotted("p", "pp-tmeta", parts));
   li.append(date, body);
   if (demo || t.live || t.paused) {
-    const tag = el("span", "pp-tag" + (t.live ? " live" : ""), t.live ? (demo ? "Demo now" : "Driving") : t.paused ? "Paused" : "Demo");
+    const tag = el("span", "pp-tag" + (t.live ? " live" : ""), t.live ? (demo ? i18n.t("trip.demo_now") : i18n.t("trip.driving")) : t.paused ? i18n.t("trip.paused") : i18n.t("trip.demo"));
     li.append(tag);
   }
   return li;
@@ -1373,22 +1376,22 @@ function cardData(kind) {
     const from = regionOf(t.startM), to = regionOf(t.lastM);
     const end = t.live ? now() : num(t.end, t.start);
     const fresh = earned.filter(d => badges[d.id] >= t.start && badges[d.id] <= end + 1000);
-    const title = from && to && from.id !== to.id ? [from.name, "to " + to.name] : [(from || to) ? (from || to).name : "Interstate 5"];
+    const title = from && to && from.id !== to.id ? [from.name, i18n.t("trip.to_name", { name: to.name })] : [(from || to) ? (from || to).name : i18n.t("trip.interstate_5")];
     const dest = t.dest || (t.arrived && t.arrivedName) || null;
     const demo = t.mode === "demo" || !!t.demo;
     const showNew = fresh.length > 0;   // no new badges on this trip: show the collection instead of a zero
-    return { kind: "trip", demo, kicker: demo ? "MY I-5 DEMO DRIVE" : dest ? `MY I-5 TRIP TO ${dest.toUpperCase()}` : "MY I-5 TRIP",
+    return { kind: "trip", demo, kicker: demo ? i18n.t("trip.my_i_5_demo_drive") : dest ? i18n.t("trip.my_i_5_trip_to_dest", { dest: dest.toUpperCase() }) : i18n.t("trip.my_i_5_trip"),
       title, date: t.start, miles: num(t.miles), stamps: (t.stamps || []).length, dest, arrived: !!t.arrived,
       badges: showNew ? fresh.length : earned.length, newBadges: fresh.length,
-      labels: ["MILES", "STAMPS", showNew ? (fresh.length === 1 ? "NEW BADGE" : "NEW BADGES") : earned.length === 1 ? "BADGE" : "BADGES"],
-      subs: [demo ? "demo drive" : "this trip", "this trip", showNew ? "this trip" : `of ${DEFS.length}`],
+      labels: [i18n.t("trip.miles"), i18n.t("trip.stamps_2"), showNew ? (fresh.length === 1 ? i18n.t("trip.new_badge") : i18n.t("trip.new_badges")) : earned.length === 1 ? i18n.t("trip.badge") : i18n.t("trip.badges_2")],
+      subs: [demo ? i18n.t("trip.demo_drive") : i18n.t("trip.this_trip"), i18n.t("trip.this_trip"), showNew ? i18n.t("trip.this_trip") : i18n.t("trip.of_length", { length: DEFS.length })],
       top: topRegions(t.stamps || []), range: onRoad(t.startM) || onRoad(t.lastM) ? [t.startM, t.lastM].filter(x => typeof x === "number" && isFinite(x)) : null,
       ticks: (t.stamps || []).map(id => placeById(id)).filter(Boolean).map(p => p.m), at: onRoad(t.lastM) ? t.lastM : null, medals: showNew ? fresh : [] };
   }
   const s = stamps();
   const ids = PLACES.filter(p => s[p.id]).map(p => p.id);
-  return { kind: "all", kicker: "MY I-5 PASSPORT", title: [endToEnd()], date: now(), miles: milesDriven(), stamps: ids.length,
-    badges: earned.length, labels: ["MILES", "STAMPS", earned.length === 1 ? "BADGE" : "BADGES"], subs: ["driven", `of ${fmtInt(PLACES.length)}`, `of ${DEFS.length}`],
+  return { kind: "all", kicker: i18n.t("trip.my_i_5_passport"), title: [endToEnd()], date: now(), miles: milesDriven(), stamps: ids.length,
+    badges: earned.length, labels: [i18n.t("trip.miles"), i18n.t("trip.stamps_2"), earned.length === 1 ? i18n.t("trip.badge") : i18n.t("trip.badges_2")], subs: ["driven", i18n.t("trip.of_length", { length: fmtInt(PLACES.length) }), i18n.t("trip.of_length", { length: DEFS.length })],
     top: topRegions(ids), runs: runs(coverage), ticks: PLACES.filter(p => s[p.id]).map(p => p.m), at: posM(), medals: earned };
 }
 
@@ -1409,14 +1412,14 @@ function headline(c) {
 
 function summaryText(kind) {
   const c = cardData(kind || defaultKind());
-  const top = c.top.length ? ` Top regions: ${c.top.map(x => `${x.r.name} (${x.n})`).join(", ")}.` : "";
+  const top = c.top.length ? t("trip.top_regions_join", { join: c.top.map(x => `${x.r.name} (${x.n})`).join(", ") }) : "";
   const hl = headline(c);
   if (c.kind === "trip") {
-    const what = c.demo ? "My I-5 Buddy demo drive" : "My I-5 trip";
+    const what = c.demo ? t("trip.my_i_5_buddy_demo_drive") : t("trip.my_i_5_trip_2");
     const route = c.title.length > 1 ? `, ${c.title[0]} ${c.title[1]}` : c.title[0] !== "Interstate 5" ? `, ${c.title[0]}` : "";
-    return `${hl ? hl + " " : ""}${what} on ${fmtDay(c.date, true)}: ${fmtMi(c.miles)} miles${route}. ${plural(c.stamps, "landmark stamp")}${c.newBadges ? ` and ${plural(c.newBadges, "new badge")}` : ""}.${top} ${SHARE_URL}`;
+    return t("trip.x1_what_on_date_miles_miles_route", { x1: hl ? hl + " " : "", what, date: fmtDay(c.date, true), miles: fmtMi(c.miles), route, stamps: plural(c.stamps, t("trip.landmark_stamp"), t("trip.landmark_stamps")), x2: c.newBadges ? t("trip.and_newbadges", { newBadges: plural(c.newBadges, t("trip.new_badge_2"), t("trip.new_badges_2")) }) : "", top, SHARE_URL });
   }
-  return `${hl ? hl + " " : "My I-5 passport: "}${fmtInt(c.miles)} miles driven, ${fmtInt(c.stamps)} of ${fmtInt(PLACES.length)} landmark stamps and ${plural(c.badges, "badge")}.${top} ${SHARE_URL}`;
+  return t("trip.x1_miles_miles_driven_stamps_of_length", { x1: hl ? hl + " " : t("trip.my_i_5_passport_2"), miles: fmtInt(c.miles), stamps: fmtInt(c.stamps), length: fmtInt(PLACES.length), badges: plural(c.badges, i18n.t("trip.badge_word"), i18n.t("trip.badges_word")), top, SHARE_URL });
 }
 
 function tokens() {
@@ -1589,7 +1592,7 @@ function drawCard(kind) {
   const py = at.regions, ph = blocks.find(b => b[0] === "regions")[1];
   rr(g, rx, py, rw, ph, 32); g.fillStyle = T.surface; g.fill();
   g.textAlign = "left"; g.font = `800 26px ${F}`; g.fillStyle = T.muted;
-  spaced(g, rows ? (rows === 1 ? "TOP REGION" : "TOP REGIONS") : "THE ROAD", rx + 44, py + 58, 4);
+  spaced(g, rows ? (rows === 1 ? t("trip.top_region") : t("trip.top_regions")) : t("trip.the_road"), rx + 44, py + 58, 4);
   if (rows) {
     C.top.forEach((x, i) => {
       const yy = py + 124 + i * 74;
@@ -1598,14 +1601,14 @@ function drawCard(kind) {
       while (name.length > 4 && g.measureText(name).width > rw - 88 - 210) name = name.slice(0, -2).trimEnd() + "…";
       g.fillText(name, rx + 44, yy);
       g.textAlign = "right"; g.font = `700 32px ${MONO}`; g.fillStyle = T.muted;
-      g.fillText(x.of ? `${x.n} of ${x.of}` : String(x.n), rx + rw - 44, yy);
+      g.fillText(x.of ? t("trip.n_of_of", { n: x.n, of: x.of }) : String(x.n), rx + rw - 44, yy);
       const by = yy + 18, bw = rw - 88;
       rr(g, rx + 44, by, bw, 10, 5); g.fillStyle = T.surface2; g.fill();
       rr(g, rx + 44, by, Math.max(10, bw * clamp(x.of ? x.n / x.of : 1, 0, 1)), 10, 5); g.fillStyle = T.st[x.r.st] || T.accent; g.fill();
     });
   } else {
     g.fillStyle = T.fg; g.font = `800 42px ${F}`;
-    const msg = C.kind === "trip" ? "Every landmark you pass on I-5 earns a passport stamp." : `${fmtInt(PLACES.length)} landmarks and stories, ${endToEnd()}.`;
+    const msg = C.kind === "trip" ? t("trip.every_landmark_you_pass_on_i_5_earns_a") : t("trip.length_landmarks_and_stories_endtoend", { length: fmtInt(PLACES.length), endToEnd: endToEnd() });
     wrapLines(g, msg, rw - 88).slice(0, 2).forEach((l, i) => g.fillText(l, rx + 44, py + 124 + i * 54));
   }
 
@@ -1685,48 +1688,48 @@ function openShare(kind, opener) {
   renderShare();
 }
 function buildShareSheet() {
-  shareSheet = makeSheet("tripShareSheet", "Share my trip");
+  shareSheet = makeSheet("tripShareSheet", t("trip.share_my_trip"));
   shareSheet.classList.add("trip-ssheet");
   const seg = el("div", "seg wide trip-share-seg");
-  seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "What the card shows");
-  for (const [k, label] of [["trip", "Latest trip"], ["all", "All time"]]) {
+  seg.setAttribute("role", "group"); seg.setAttribute("aria-label", t("trip.what_the_card_shows"));
+  for (const [k, label] of [["trip", t("trip.latest_trip")], ["all", t("trip.all_time")]]) {
     const b = btn(null, label, () => { shareKind = k; for (const x of seg.querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b)); renderShare(); });
     b.dataset.kind = k;
     seg.append(b);
   }
   const fig = el("figure", "trip-card busy");
-  fig.append(el("figcaption", "trip-card-wait", "Drawing your card…"));
+  fig.append(el("figcaption", "trip-card-wait", t("trip.drawing_your_card")));
   const acts = el("div", "trip-share-acts");
   const go = btn("primary trip-share-go", null, doShare);
-  go.append(ICON.share(), el("span", null, "Share picture"));
+  go.append(ICON.share(), el("span", null, t("trip.share_picture")));
   go.disabled = true;
   const cp = btn("secondary", null, () => copySummary(shareKind));
-  cp.append(ICON.copy(), document.createTextNode("Copy summary"));
+  cp.append(ICON.copy(), document.createTextNode(t("trip.copy_summary")));
   acts.append(go, cp);
   const txt = el("p", "trip-share-txt");
-  shareSheet.append(seg, fig, acts, txt, el("p", "hint trip-share-hint", "The picture is made on your phone. Nothing is uploaded unless you share it."));
+  shareSheet.append(seg, fig, acts, txt, el("p", "hint trip-share-hint", t("trip.the_picture_is_made_on_your_phone")));
 }
 async function renderShare() {
   const seq = ++shareSeq;
   const fig = shareSheet.querySelector(".trip-card"), go = shareSheet.querySelector(".trip-share-go"), cap = fig.querySelector("figcaption");
   const text = summaryText(shareKind);
   fig.classList.add("busy"); go.disabled = true; shareBlob = null; shareFile = null;
-  cap.textContent = "Drawing your card…";
+  cap.textContent = t("trip.drawing_your_card");
   shareSheet.querySelector(".trip-share-txt").textContent = text;
   await fontsReady();
   if (seq !== shareSeq) return;
   let cv = null;
   try { cv = drawCard(shareKind); } catch (e) { warn("card", e); }
   if (cv) { await addRide(cv); if (seq !== shareSeq) return; }
-  if (!cv) { cap.textContent = A && A.native && A.native.NATIVE ? "Can't draw the card on this iPhone. Copy the summary instead." : "This browser can't draw the card. Copy the summary instead."; return; }
+  if (!cv) { cap.textContent = A && A.native && A.native.NATIVE ? t("trip.cant_draw_the_card_on_this_iphone_copy") : t("trip.this_browser_cant_draw_the_card_copy"); return; }
   cv.setAttribute("role", "img");
-  cv.setAttribute("aria-label", "Share card. " + text);
+  cv.setAttribute("aria-label", t("trip.share_card_text", { text }));
   const old = fig.querySelector("canvas");
   if (old) old.replaceWith(cv); else fig.prepend(cv);
   fig.classList.remove("busy");            // the preview shows now; the PNG for sharing is made in the background
   const blob = await new Promise(res => { try { cv.toBlob(res, "image/png"); } catch { res(null); } });
   if (seq !== shareSeq) return;
-  if (!blob) { go.lastChild.textContent = "Can't save picture"; return; }
+  if (!blob) { go.lastChild.textContent = t("trip.cant_save_picture"); return; }
   if (shareUrl) try { URL.revokeObjectURL(shareUrl); } catch {}
   shareBlob = blob; shareUrl = URL.createObjectURL(blob);
   const name = `i5-buddy-${shareKind === "trip" ? "trip" : "passport"}-${new Date(now()).toISOString().slice(0, 10)}.png`;
@@ -1736,7 +1739,7 @@ async function renderShare() {
   // The iPhone app's web view has no downloads, so there "Save picture" could only fail: share the picture through
   // the iOS share sheet, or leave the button out (Copy summary stays).
   if (!canFiles && A && A.native && A.native.NATIVE) { go.hidden = true; return; }
-  go.lastChild.textContent = canFiles ? "Share picture" : "Save picture";
+  go.lastChild.textContent = canFiles ? t("trip.share_picture") : t("trip.save_picture");
   go.dataset.mode = canFiles ? "share" : "save";
   go.disabled = false;
 }
@@ -1747,7 +1750,7 @@ function doShare() {
   if (shareSheet.querySelector(".trip-share-go").dataset.mode === "share") {
     try {
       const tok = sharing = ++shareTok;
-      Promise.resolve(navigator.share({ files: [shareFile], title: "My I-5 trip", text }))
+      Promise.resolve(navigator.share({ files: [shareFile], title: t("trip.my_i_5_trip_2"), text }))
         // AbortError: the person closed the share sheet. InvalidStateError: a share was already open.
         // Anything else means this browser could not share the file, so save it instead.
         .catch(e => { if (!e || (e.name !== "AbortError" && e.name !== "InvalidStateError")) download(); })
@@ -1759,7 +1762,7 @@ function doShare() {
 }
 function download() {
   if (!shareUrl) return;
-  if (A && A.native && A.native.NATIVE) { toast("Couldn't share the picture. Copy the summary instead."); return; } // no downloads in the iPhone app
+  if (A && A.native && A.native.NATIVE) { toast(t("trip.couldnt_share_the_picture_copy_the")); return; } // no downloads in the iPhone app
   const a = el("a");
   a.href = shareUrl;
   a.download = shareFile ? shareFile.name : "i5-buddy.png";
@@ -1768,7 +1771,7 @@ function download() {
   (shareSheet || document.body).append(a);
   a.click();
   setTimeout(() => a.remove(), 0);
-  toast("Picture saved");
+  toast(t("trip.picture_saved"));
 }
 async function copySummary(kind) {
   const text = summaryText(kind);
@@ -1784,7 +1787,7 @@ async function copySummary(kind) {
       ta.remove();
     } catch {}
   }
-  toast(ok ? "Summary copied" : "Couldn't copy. Long-press the text in Share my trip to copy it.", 3200);
+  toast(ok ? t("trip.summary_copied") : t("trip.couldnt_copy_long_press_the_text_in"), 3200);
   if (!ok && !(shareSheet && !shareSheet.hidden)) openShare(kind);
 }
 
@@ -1793,13 +1796,13 @@ function buildSettings() {
   const box = $id("settingsExtra");
   if (!box || box.querySelector(".trip-settings")) return;
   const wrap = el("div", "trip-settings");
-  wrap.append(el("h3", "sub", "Trips and badges"));
+  wrap.append(el("h3", "sub", t("trip.trips_and_badges")));
   const lab = el("label", "toggle");
   const cb = el("input");
   cb.type = "checkbox"; cb.id = "tripSayBadges"; cb.checked = prefs.sayBadges !== false;
   cb.addEventListener("change", safe("pref", () => { prefs.sayBadges = cb.checked; store.set("tripPrefs", prefs); }));
-  lab.append(cb, document.createTextNode(" Say new badges out loud (when narration is on)"));
-  wrap.append(lab, el("small", "hint", "Your last 30 trips, badges and the miles you've driven stay on this phone. Clear passport below erases them too."));
+  lab.append(cb, document.createTextNode(t("trip.say_new_badges_out_loud_when_narration")));
+  wrap.append(lab, el("small", "hint", t("trip.your_last_30_trips_badges_and_the")));
   box.append(wrap);
 }
 

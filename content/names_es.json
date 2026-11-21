@@ -1,0 +1,35 @@
+{
+ "_note": "Spanish names for tools/build.py (3.1.0): the two ends of the covered road (ENDS: short = the place past it, long = the line itself, as in data/i5.js) and the Where to? destinations (by their English label in tools/build.py DEST_LIST). An empty name keeps the English one.",
+ "ends": {
+  "S": {
+   "short": "",
+   "long": ""
+  },
+  "N": {
+   "short": "",
+   "long": ""
+  }
+ },
+ "dests": {
+  "Mexico border": "",
+  "San Diego": "",
+  "Oceanside": "",
+  "San Clemente": "",
+  "Anaheim": "",
+  "Downtown Los Angeles": "",
+  "Burbank": "",
+  "Santa Clarita": "",
+  "Grapevine": "",
+  "Kettleman City": "",
+  "Coalinga": "",
+  "Los Banos": "",
+  "Stockton": "",
+  "Sacramento": "",
+  "Williams": "",
+  "Red Bluff": "",
+  "Redding": "",
+  "Mount Shasta": "",
+  "Yreka": "",
+  "Oregon border": ""
+ }
+}

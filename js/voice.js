@@ -20,6 +20,14 @@
 // A caller may pass `units` (an array of fixed phrases whose concatenation is the text: navigation prompts) so a
 // sentence built from parts can still use clips.
 import { settings, bus } from "./store.js";
+import { t, IS_ES } from "./i18n.js";
+// Spanish (3.1.0): in Spanish the words are read by the device's own Spanish voice (es-MX and es-US first, never a
+// novelty voice) until Joseph picks a Spanish natural voice by ear and its clips exist: then ES_VOICE_ID names its folder
+// (voice/<id>/, made by tools/voice/ like Asteria's) and it is used exactly like Asteria is in English. English keeps
+// Asteria as before. The device voice picked in Settings is saved per language (settings.voice, settings.voiceEs).
+const ES_VOICE_ID = null;
+/** The settings field that holds the picked device voice for this language. */
+const VKEY = IS_ES ? "voiceEs" : "voice";
 
 const SILENT = (() => {
   try { if (/[?&]silent=1(&|$)/.test(location.search)) return true; } catch {}
@@ -65,7 +73,7 @@ function silentSynth(real) {
     get speaking() { return !!cur; },
     get pending() { return q.length > 0; },
     get paused() { return paused; },
-    speak(u) { if (!u) return; record(u.text); q.push(u); later(next); },
+    speak(u) { if (!u) return; record(u.text, u); q.push(u); later(next); },
     cancel() {
       const c = cur, waiting = q;
       q = []; cur = null; clearTimeout(timer);
@@ -91,13 +99,18 @@ function silentSynth(real) {
   try { Object.defineProperty(window, "speechSynthesis", { configurable: true, get: () => engine }); } catch {}
   return engine;
 }
-/** What a silent test hears: the text goes to window.__BUDDY_SPOKEN__ (and the top window's). */
-function record(text) {
+/** What a silent test hears: the text goes to window.__BUDDY_SPOKEN__ (and the top window's); with the utterance, its
+    language and voice go to __BUDDY_SPOKEN_META__ ({text, lang, voice}: tools/test-i18n.html checks Spanish is read in Spanish). */
+function record(text, u) {
   text = String(text == null ? "" : text);
   if (!text.trim()) return;
   const wins = [window];
   try { if (window.top !== window) wins.push(window.top); } catch {}
-  for (const w of wins) { try { (w.__BUDDY_SPOKEN__ = w.__BUDDY_SPOKEN__ || []).push(text); } catch {} }
+  const meta = { text, lang: u ? String(u.lang || "") : "", voice: u && u.voice ? String(u.voice.name || "") : "" };
+  for (const w of wins) {
+    try { (w.__BUDDY_SPOKEN__ = w.__BUDDY_SPOKEN__ || []).push(text); } catch {}
+    try { (w.__BUDDY_SPOKEN_META__ = w.__BUDDY_SPOKEN_META__ || []).push(meta); } catch {}
+  }
 }
 
 /* ---------- speech units and clip names (tools/voice/units.html lists every unit the app can say with these) ---------- */
@@ -149,12 +162,12 @@ export function unitKey(unit) { return cyrb53(norm(unit)).toString(16).padStart(
 
 /* ---------- the natural voice ---------- */
 
-const VOICE_ID = "asteria";
+const VOICE_ID = IS_ES ? ES_VOICE_ID : "asteria";
 const VOICE_CACHE = "i5b-voice-" + VOICE_ID;   // sw.js keeps this cache across versions
 export const NATURAL_URI = "buddy:" + VOICE_ID;
-const NATURAL = { name: "I-5 Buddy voice", voiceURI: NATURAL_URI, lang: "en-US", localService: true, default: true, natural: true };
+const NATURAL = { name: t("voice.i_5_buddy_voice"), voiceURI: NATURAL_URI, lang: IS_ES ? "es-US" : "en-US", localService: true, default: true, natural: true };
 let VBASE = null;
-try { VBASE = new URL("../voice/" + VOICE_ID + "/", import.meta.url); } catch {}
+try { if (VOICE_ID) VBASE = new URL("../voice/" + VOICE_ID + "/", import.meta.url); } catch {}
 const CLIPTEST = () => { try { return window.top.__BUDDY_CLIPTEST__ || null; } catch { return null; } };
 let manifest = null, manifestP = null, manifestTried = 0;
 const raw = new Map();   // clip key -> Promise<ArrayBuffer> (compressed; most recent last)
@@ -188,10 +201,10 @@ function loadManifest() {
     .finally(() => { manifestP = null; });
   return manifestP;
 }
-const naturalPicked = () => !settings.voice || settings.voice === NATURAL_URI;
+const naturalPicked = () => !!VBASE && (!settings[VKEY] || settings[VKEY] === NATURAL_URI);
 // The iPhone app carries the clips for everything except the long stories ("Tell me more"); those come from the website
 // the first time and are kept by the web view's cache, so they still play when the app's own copy is missing.
-const VREMOTE = (() => { try { return location.protocol === "capacitor:" ? new URL("https://i5.dominares.org/voice/" + VOICE_ID + "/") : null; } catch { return null; } })();
+const VREMOTE = (() => { try { return VOICE_ID && location.protocol === "capacitor:" ? new URL("https://i5.dominares.org/voice/" + VOICE_ID + "/") : null; } catch { return null; } })();
 function clipUrl(k, base = VBASE) { return new URL(k.slice(0, 2) + "/" + k + ".m4a", base).href; }
 function fetchClip(k) {
   let p = raw.get(k);
@@ -353,10 +366,19 @@ const UA = navigator.userAgent || "";
 const NEEDS_NUDGE = /Chrome\//.test(UA) && !/Android|Mobile|CriOS|Edg\//.test(UA);
 
 function rankVoice(v) {
+  if (IS_ES) return rankVoiceEs(v);
   if (/(premium|enhanced|natural|neural)/i.test(v.name)) return 0;
   if (/(samantha|ava|allison|evan|zoe|nicky|aaron|google us english|microsoft aria|microsoft jenny)/i.test(v.name)) return 1;
   if (/^en[-_]US/i.test(v.lang)) return 2;
   return 3;
+}
+/** Spanish voices: the voice's quality first (premium, enhanced, natural, neural), then Mexican and US Spanish, then
+    Latin American, then any Spanish, Spain last (the road is in California). */
+function rankVoiceEs(v) {
+  const lang = String(v.lang || "").replace("_", "-").toLowerCase();
+  const region = /^es-mx/.test(lang) ? 0 : /^es-us/.test(lang) ? 1 : /^es-419/.test(lang) ? 2 : /^es-es/.test(lang) ? 4 : 3;
+  const good = /(premium|enhanced|natural|neural)/i.test(v.name) ? 0 : /(paulina|juan|google español de estados unidos|microsoft dalia|microsoft jorge|microsoft sabina|microsoft raul)/i.test(v.name) ? 1 : 2;
+  return good * 10 + region;
 }
 /** An online voice: the browser sends the words to its maker's speech service (on a computer, Chrome's "Google …"
     voices and Edge's "… Online (Natural)" ones). The words can say where you are ("near mile 309, heading north"). */
@@ -372,7 +394,7 @@ function loadVoices() {
   if (!synth) return;
   // The device's own voices first: with the natural voice off and no voice picked, pickVoice() takes the first one, so
   // narration stays on the device unless the person picks an online voice or the browser has no other (privacy.html).
-  voices = synth.getVoices().filter(v => /^en/i.test(v.lang) && !isNovelty(v))
+  voices = synth.getVoices().filter(v => (IS_ES ? /^es/i : /^en/i).test(v.lang) && !isNovelty(v))
     .sort((a, b) => isOnline(a) - isOnline(b) || rankVoice(a) - rankVoice(b) || a.name.localeCompare(b.name))
     .slice(0, MAX_VOICES);
   bus.emit("voices", voices);
@@ -381,7 +403,7 @@ if (synth) { loadVoices(); synth.addEventListener?.("voiceschanged", loadVoices)
 
 /** The device voice for an item: the one picked in Settings, else the first (a device voice). */
 function pickVoice() {
-  return voices.find(v => v.voiceURI === settings.voice) || voices[0] || null;
+  return voices.find(v => v.voiceURI === settings[VKEY]) || voices[0] || null;
 }
 
 /** Split long text into chunks of whole sentences, at most about 220 characters each (Chrome cuts off long utterances;
@@ -461,7 +483,7 @@ function speakChunks(item) {
       const text = parts[i++];
       const u = new SpeechSynthesisUtterance(text);
       const v = pickVoice();
-      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = "en-US";
+      if (v) { u.voice = v; u.lang = v.lang; } else u.lang = IS_ES ? "es-MX" : "en-US";
       u.rate = settings.rate || 1;
       let over = false;
       const go = () => { if (over) return; over = true; clearTimeout(dog); next(); };
@@ -594,8 +616,11 @@ const offline = {
 
 export const voice = {
   get available() { return !!synth || !!manifest; },
-  /** English voices: I-5 Buddy's own voice first, then the device's own, then online ones. */
+  /** This language's voices (English, or Spanish in Spanish): I-5 Buddy's own voice first (English: Asteria; Spanish:
+      none yet), then the device's own, then online ones. */
   list: () => (VBASE && !(SILENT && !CLIPTEST()) ? [NATURAL, ...voices] : voices),
+  /** The settings field for the device voice picked in this language ("voice" in English, "voiceEs" in Spanish). */
+  settingKey: VKEY,
   online: isOnline,            // online(v): true when the browser sends this voice's words to its maker
   /** True when the natural voice is picked and its clip list has loaded. */
   natural: () => naturalPicked() && !!manifest,

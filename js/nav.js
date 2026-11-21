@@ -25,6 +25,8 @@
 // to voice.say with `units`, the short fixed phrases whose words, joined by spaces, are the spoken text (a recorded voice
 // plays one clip per unit; the browser's own voice just speaks `text`). phraseBank() lists every unit.
 
+import { t, loc } from "./i18n.js";
+import * as i18n from "./i18n.js";
 const FT = 1 / 5280;
 const warn = (...a) => { try { console.warn("[nav]", ...a.map(x => (x && x.message) || x)); } catch {} };
 const num = Number.isFinite;
@@ -40,24 +42,24 @@ let A = null, S = null, settings = null, bus = null, store = null, voice = null,
 /* ================================================================ the phrase grammar ================================================================ */
 // A prompt is: [distance] + maneuver [+ "onto" + highway] [+ "Take exit" + number [+ letter]] [+ "Then" + next maneuver].
 // Units keep their exact text (capitalization and punctuation) forever: a recorded voice is rendered from them.
-export const DIST = { "2mi": "In 2 miles,", "1mi": "In 1 mile,", "half": "In half a mile,", "quarter": "In a quarter mile,", "1000ft": "In 1,000 feet,", "500ft": "In 500 feet," };
+export const DIST = { "2mi": t("nav.in_2_miles"), "1mi": t("nav.in_1_mile"), "half": t("nav.in_half_a_mile"), "quarter": t("nav.in_a_quarter_mile"), "1000ft": t("nav.in_1_000_feet"), "500ft": t("nav.in_500_feet") };
 const DIST_MI = { "2mi": 2, "1mi": 1, "half": 0.5, "quarter": 0.25, "1000ft": 1000 * FT, "500ft": 500 * FT };
-const ORD = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
+const ORD = [t("nav.1st"), t("nav.2nd"), t("nav.3rd"), t("nav.4th"), t("nav.5th"), t("nav.6th")];
 const MAN = {
-  "turn-right": "turn right", "turn-left": "turn left",
-  "slight-right": "turn slightly right", "slight-left": "turn slightly left",
-  "sharp-right": "make a sharp right", "sharp-left": "make a sharp left",
-  "uturn": "make a U-turn", "keep-left": "keep left", "keep-right": "keep right",
-  "exit-right": "take the exit on the right", "exit-left": "take the exit on the left",
-  "merge": "merge", "straight": "continue straight",
+  "turn-right": t("nav.turn_right"), "turn-left": t("nav.turn_left"),
+  "slight-right": t("nav.turn_slightly_right"), "slight-left": t("nav.turn_slightly_left"),
+  "sharp-right": t("nav.make_a_sharp_right"), "sharp-left": t("nav.make_a_sharp_left"),
+  "uturn": t("nav.make_a_u_turn"), "keep-left": t("nav.keep_left"), "keep-right": t("nav.keep_right"),
+  "exit-right": t("nav.take_the_exit_on_the_right"), "exit-left": t("nav.take_the_exit_on_the_left"),
+  "merge": t("nav.merge"), "straight": t("nav.continue_straight"),
 };
-const MAN_ALL = [...Object.values(MAN), ...ORD.map(o => `at the roundabout, take the ${o} exit`)];
+const MAN_ALL = [...Object.values(MAN), ...ORD.map(o => t("nav.at_the_roundabout_take_the_o_exit", { o }))];
 /** The spoken maneuver (lowercase) for a step, or null when it has no fixed phrase (depart, arrive, a roundabout without a usable exit). */
 export function maneuverPhrase(step) {
   if (!step) return null;
   if (step.type === "roundabout") {
     const k = Math.round(Number(step.roundabout_exit));
-    return k >= 1 && k <= 6 ? `at the roundabout, take the ${ORD[k - 1]} exit` : null;
+    return k >= 1 && k <= 6 ? t("nav.at_the_roundabout_take_the_o_exit", { o: ORD[k - 1] }) : null;
   }
   return MAN[step.type] || null;
 }
@@ -71,7 +73,7 @@ export function highwayUnit(ref) {
   const k = m[1].toUpperCase(), n = +m[2];
   if (k === "I") return HWY_I.includes(n) ? `I-${n}.` : null;
   if (k === "US") return HWY_US.includes(n) ? `U.S. ${n}.` : null;
-  return n >= 1 && n <= HWY_CA_MAX ? `Highway ${n}.` : null;
+  return n >= 1 && n <= HWY_CA_MAX ? t("nav.highway_n", { n }) : null;
 }
 /** ["Take exit", "278."] or ["Take exit", "45", "B."] from a provider exit like "278" or "45B"; null otherwise. */
 export function exitUnits(exit) {
@@ -79,12 +81,12 @@ export function exitUnits(exit) {
   if (!m) return null;
   const n = +m[1];
   if (n < 1 || n > 999) return null;
-  return m[2] ? ["Take exit", String(n), m[2].toUpperCase() + "."] : ["Take exit", n + "."];
+  return m[2] ? [t("nav.take_exit"), String(n), m[2].toUpperCase() + "."] : [t("nav.take_exit"), n + "."];
 }
 const SENT = {
-  arrived: "You have arrived.", right: "Your destination is on the right.", left: "Your destination is on the left.",
-  reroute: "Rerouting.", ready: "Route ready.",
-  offline: "No connection. Keep going, and I'll reroute when the signal is back.", ended: "Navigation ended.",
+  arrived: t("nav.you_have_arrived"), right: t("nav.your_destination_is_on_the_right"), left: t("nav.your_destination_is_on_the_left"),
+  reroute: t("nav.rerouting"), ready: t("nav.route_ready"),
+  offline: t("nav.no_connection_keep_going_and_ill"), ended: t("nav.navigation_ended"),
 };
 /** {n: "45", letter: "B"} from a provider exit like "45B" (letter null for "278"); null otherwise. */
 function exitParts(exit) {
@@ -105,17 +107,17 @@ export function promptUnits(step, dist, then, prev) {
   const units = [];
   if (dist) units.push(DIST[dist]);
   if (ex) {
-    units.push(dist ? "take exit" : "Take exit");
+    units.push(dist ? t("nav.take_exit_2") : t("nav.take_exit"));
     const tail = ex.letter ? [ex.n, ex.letter] : [ex.n];
-    if (hwy) units.push(...tail, "onto", hwy);
+    if (hwy) units.push(...tail, t("nav.onto"), hwy);
     else { tail[tail.length - 1] += "."; units.push(...tail); }
   } else {
     const first = dist ? man : cap(man);
     units.push(hwy ? first : first + ".");           // a period unless "onto" follows
-    if (hwy) units.push("onto", hwy);
+    if (hwy) units.push(t("nav.onto"), hwy);
   }
   const thenMan = then ? maneuverPhrase(then) : null;
-  if (thenMan) units.push("Then", thenMan + ".");
+  if (thenMan) units.push(t("nav.then"), thenMan + ".");
   return units;
 }
 /** Every unit and every fixed sentence: the list a recorded voice is rendered from. */
@@ -123,10 +125,10 @@ export function phraseBank() {
   const set = new Set();
   Object.values(DIST).forEach(d => set.add(d));
   for (const m of MAN_ALL) { set.add(m); set.add(m + "."); set.add(cap(m)); set.add(cap(m) + "."); }
-  set.add("onto"); set.add("Take exit"); set.add("take exit"); set.add("Then");
+  set.add(t("nav.onto")); set.add(t("nav.take_exit")); set.add(t("nav.take_exit_2")); set.add(t("nav.then"));
   for (const n of HWY_I) set.add(`I-${n}.`);
   for (const n of HWY_US) set.add(`U.S. ${n}.`);
-  for (let n = 1; n <= HWY_CA_MAX; n++) set.add(`Highway ${n}.`);
+  for (let n = 1; n <= HWY_CA_MAX; n++) set.add(t("nav.highway_n", { n }));
   for (let n = 1; n <= 999; n++) { set.add(String(n)); set.add(n + "."); }
   for (const c of "ABCDEFGH") { set.add(c + "."); set.add(c); }
   const sentences = Object.values(SENT);
@@ -138,24 +140,24 @@ let BANK = null;
 const bank = () => BANK || (BANK = phraseBank());
 
 /* ================================================================ small formatting helpers ================================================================ */
-const fmtClock = ms => { try { return new Date(ms).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); } catch { return ""; } };
+const fmtClock = ms => { try { return new Date(ms).toLocaleTimeString(loc([]), { hour: "numeric", minute: "2-digit" }); } catch { return ""; } };
 function fmtDur(sec) {
   if (!num(sec) || sec < 0) return "";
   const min = Math.max(1, Math.round(sec / 60));
-  if (min < 60) return `${min} min`;
+  if (min < 60) return t("nav.min_min", { min });
   const h = Math.floor(min / 60), r = min % 60;
-  return r ? `${h} h ${r} min` : `${h} h`;
+  return r ? t("nav.h_h_r_min", { h, r }) : `${h} h`;
 }
 /** "Now", "300 ft", "0.4 mi", "12 mi". */
 function fmtDist(mi) {
   if (!num(mi)) return "";
-  if (mi < 0.012) return "Now";
-  if (mi < 0.1) return `${Math.max(50, Math.round(mi / FT / 50) * 50)} ft`;
-  if (mi < 0.19) return `${Math.round(mi / FT / 50) * 50} ft`;
-  if (mi < 10) return `${mi.toFixed(1)} mi`;
-  return `${Math.round(mi).toLocaleString()} mi`;
+  if (mi < 0.012) return t("nav.now");
+  if (mi < 0.1) return t("nav.x1_ft", { x1: Math.max(50, Math.round(mi / FT / 50) * 50) });
+  if (mi < 0.19) return t("nav.x1_ft", { x1: Math.round(mi / FT / 50) * 50 });
+  if (mi < 10) return t("nav.mi_mi", { mi: mi.toFixed(1) });
+  return t("nav.mi_mi", { mi: Math.round(mi).toLocaleString(loc(undefined)) });
 }
-const fmtMi = mi => (mi < 10 ? (Math.round(mi * 10) / 10).toString() : Math.round(mi).toLocaleString()) + " mi";
+const fmtMi = mi => (mi < 10 ? (Math.round(mi * 10) / 10).toString() : Math.round(mi).toLocaleString(loc(undefined))) + " mi";
 
 /* ================================================================ the route service ================================================================ */
 function apiBase() {
@@ -273,7 +275,7 @@ export function buildRoute(raw, miles) {
   if (useStepT) { let t = 0; for (let k = 0; k < steps.length; k++) { stepT[k] = t; t += steps[k].duration_s; } stepT.total = t; }
   return {
     id: "r" + (++routeSeq), geometry, cum, total, distance_mi, duration_s, k: total > 0 ? distance_mi / total : 1, steps,
-    stepT: useStepT ? stepT : null, stepTotal: useStepT ? stepT.total : null, attribution: str(raw.attribution, 200) || "© OpenStreetMap contributors · Geoapify",
+    stepT: useStepT ? stepT : null, stepTotal: useStepT ? stepT.total : null, attribution: str(raw.attribution, 200) || i18n.t("nav.openstreetmap_contributors_geoapify"),
     // speed limits along the line (the server's [geometry index, mph] where it changes), as miles along the route
     limits: Array.isArray(raw.limits) ? raw.limits.filter(x => Array.isArray(x) && num(Number(x[0])) && num(Number(x[1])) && Number(x[1]) > 0)
       .map(x => ({ at: cum[idx(x[0])], mph: Math.round(Number(x[1])) })).sort((a, b) => a.at - b.at) : null,
@@ -389,12 +391,12 @@ export function matchScore(nq, name) {
 const KIND_ICON = { city: "🏙️", place: "📍", mission: "⛪", rest: "🚻", exit: "🛣️", fuel: "⛽", ev: "⚡", food: "🍴", sleep: "🛏️", coffee: "☕", address: "🏠", street: "🛣️", poi: "📍", home: "🏠", work: "💼" };
 const COFFEE_RE = /coffee|cafe|café|starbucks|dunkin|peet|dutch bros|philz|tim hortons|caribou|scooter|espresso/i;
 const CATEGORIES = [
-  { id: "fuel", label: "Gas", icon: "⛽", q: "gas station", svc: "fuel" },
-  { id: "ev", label: "EV charging", icon: "⚡", q: "EV charging", svc: "ev" },
-  { id: "food", label: "Food", icon: "🍴", q: "restaurant", svc: "food" },
-  { id: "coffee", label: "Coffee", icon: "☕", q: "coffee", svc: "food", re: COFFEE_RE },
-  { id: "rest", label: "Rest areas", icon: "🚻", q: "rest area", rest: true },
-  { id: "sleep", label: "Hotels", icon: "🛏️", q: "hotel", svc: "sleep" },
+  { id: "fuel", label: t("nav.gas"), icon: "⛽", q: "gas station", svc: "fuel" },
+  { id: "ev", label: t("nav.ev_charging"), icon: "⚡", q: "EV charging", svc: "ev" },
+  { id: "food", label: t("nav.food"), icon: "🍴", q: "restaurant", svc: "food" },
+  { id: "coffee", label: t("nav.coffee"), icon: "☕", q: "coffee", svc: "food", re: COFFEE_RE },
+  { id: "rest", label: t("nav.rest_areas"), icon: "🚻", q: "rest area", rest: true },
+  { id: "sleep", label: t("nav.hotels"), icon: "🛏️", q: "hotel", svc: "sleep" },
 ];
 let brandIndex = null;
 function brands() {
@@ -422,14 +424,14 @@ function aheadWords(m) {
   // far the place is from where the phone is, or nothing.
   if (S && (S.offRoute || S.mode === "off")) {
     const c = coordOfM(m);
-    return S.lat != null && S.lon != null && c && S.mode !== "off" ? `${fmtMi(geo.miles(S.lat, S.lon, c[0], c[1]))} away` : "";
+    return S.lat != null && S.lon != null && c && S.mode !== "off" ? t("nav.fmtmi_away", { fmtMi: fmtMi(geo.miles(S.lat, S.lon, c[0], c[1])) }) : "";
   }
   const d = aheadMi(m);
   if (d == null) return "";
-  if (Math.abs(d) < 0.3) return "right here";
-  return `${fmtMi(Math.abs(d))} ${d >= 0 ? "ahead" : "behind"}`;
+  if (Math.abs(d) < 0.3) return t("nav.right_here");
+  return `${fmtMi(Math.abs(d))} ${d >= 0 ? t("nav.ahead") : t("nav.behind")}`;
 }
-const exitLine = (st, ref) => (data.exitName ? data.exitName(st || "CA", ref) : "Exit " + ref);
+const exitLine = (st, ref) => (data.exitName ? data.exitName(st || "CA", ref) : t("nav.exit_ref", { ref }));
 const toDest = r => ({ id: r.id, name: r.name, address: r.sub || r.address || "", lat: r.lat, lon: r.lon, m: r.m != null ? r.m : null, kind: r.kind, src: r.src || "local" });
 
 /** Instant results from the app's own data: [{id, name, sub, kind, icon, lat, lon, m, score}], best first (at most 10). Pure but for reading S. */
@@ -454,21 +456,21 @@ export function localSearch(q, max = 10) {
   }
   for (const d of data.DESTS || []) {
     const s = matchScore(nq, d.name);
-    if (s) { const c = coordOfM(d.m); if (c) push("city", "city:" + d.name, d.name, ["On I-5", aheadWords(d.m)].filter(Boolean).join(" · "), c[0], c[1], d.m, s + 6); }
+    if (s) { const c = coordOfM(d.m); if (c) push("city", "city:" + d.name, d.name, [t("nav.on_i_5"), aheadWords(d.m)].filter(Boolean).join(" · "), c[0], c[1], d.m, s + 6); }
   }
   for (const p of data.PLACES || []) {
     const s = matchScore(nq, p.name);
     if (!s) continue;
     const c = num(p.lat) && num(p.lon) ? [p.lat, p.lon] : coordOfM(p.m);
-    if (c) push("place", "place:" + p.id, p.name, [(data.CATS && data.CATS[p.cat]) || "Landmark", data.exitName ? data.exitName(p.st, p.ex) : "", aheadWords(p.m)].filter(Boolean).join(" · "), c[0], c[1], p.m, s);
+    if (c) push("place", "place:" + p.id, p.name, [(data.CATS && data.CATS[p.cat]) || t("nav.landmark"), data.exitName ? data.exitName(p.st, p.ex) : "", aheadWords(p.m)].filter(Boolean).join(" · "), c[0], c[1], p.m, s);
   }
   for (const x of data.MISSIONS || []) {
     const s = Math.max(matchScore(nq, x.name), matchScore(nq, x.name_es));
-    if (s && num(x.lat)) push("mission", "mission:" + x.id, x.name, "California mission", x.lat, x.lon, null, s);
+    if (s && num(x.lat)) push("mission", "mission:" + x.id, x.name, t("nav.california_mission"), x.lat, x.lon, null, s);
   }
   for (const r of data.REST || []) {
     const s = matchScore(nq, r.name);
-    if (s && num(r.lat)) push("rest", "rest:" + r.name, r.name, ["Rest area", aheadWords(r.m)].filter(Boolean).join(" · "), r.lat, r.lon, r.m, s - 4);
+    if (s && num(r.lat)) push("rest", "rest:" + r.name, r.name, [t("nav.rest_area"), aheadWords(r.m)].filter(Boolean).join(" · "), r.lat, r.lon, r.m, s - 4);
   }
   // exits by what their signs say ("Sand Canyon", "Kettleman")
   if (nq.length >= 4 && !wantExit) {
@@ -492,7 +494,7 @@ export function localSearch(q, max = 10) {
         if (shown.has(id) || n >= 6) continue;
         shown.add(id); n++;
         const c = coordOfM(x.m);
-        if (c) push("brand", id, b.name, [`Near ${exitLine(x.st, x.ref)}`, d != null ? `${fmtMi(d)} ahead` : ""].filter(Boolean).join(" · "), c[0], c[1], x.m, s - 8 - (d != null ? Math.min(10, d / 30) : 0), { icon: KIND_ICON[b.kind] || "📍" });
+        if (c) push("brand", id, b.name, [t("nav.near_st", { st: exitLine(x.st, x.ref) }), d != null ? t("nav.d_ahead", { d: fmtMi(d) }) : ""].filter(Boolean).join(" · "), c[0], c[1], x.m, s - 8 - (d != null ? Math.min(10, d / 30) : 0), { icon: KIND_ICON[b.kind] || "📍" });
       }
     }
   }
@@ -507,7 +509,7 @@ export function categoryAhead(cat, max = 6) {
   if (c.rest) {
     for (const r of data.restAhead(S.m, dir, max, 300)) {
       if (!num(r.lat)) continue;
-      out.push({ id: "rest:" + r.name, name: data.restName ? data.restName(r.name) : r.name.replace(/\s*\((north|south)bound\)/i, ""), sub: ["Rest area", r.status === "closed" ? "closed (Caltrans)" : "", `${fmtMi(r.d)} ahead`].filter(Boolean).join(" · "), kind: "rest", icon: KIND_ICON.rest, lat: r.lat, lon: r.lon, m: r.m, src: "local" });
+      out.push({ id: "rest:" + r.name, name: data.restName ? data.restName(r.name) : r.name.replace(/\s*\((north|south)bound\)/i, ""), sub: [t("nav.rest_area"), r.status === "closed" ? t("nav.closed_caltrans") : "", t("nav.d_ahead", { d: fmtMi(r.d) })].filter(Boolean).join(" · "), kind: "rest", icon: KIND_ICON.rest, lat: r.lat, lon: r.lon, m: r.m, src: "local" });
     }
     return out;
   }
@@ -516,7 +518,7 @@ export function categoryAhead(cat, max = 6) {
     if (!names.length) continue;
     const at = coordOfM(s.m);
     if (!at) continue;
-    out.push({ id: `svc:${c.id}:${s.ref}`, name: `${c.label} · ${exitLine(s.st, s.ref)}`, sub: [names.slice(0, 3).join(", "), `${fmtMi(s.d)} ahead`].join(" · "), kind: c.id === "coffee" ? "coffee" : c.svc, icon: c.icon, lat: at[0], lon: at[1], m: s.m, src: "local" });
+    out.push({ id: `svc:${c.id}:${s.ref}`, name: `${c.label} · ${exitLine(s.st, s.ref)}`, sub: [names.slice(0, 3).join(", "), t("nav.d_ahead", { d: fmtMi(s.d) })].join(" · "), kind: c.id === "coffee" ? "coffee" : c.svc, icon: c.icon, lat: at[0], lon: at[1], m: s.m, src: "local" });
     if (out.length >= max) break;
   }
   return out;
@@ -556,21 +558,21 @@ export function iconSvg(type) {
   return `<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" class="nav-ico">${body}</svg>`;
 }
 const STEP_WORD = {
-  depart: "Head out", straight: "Continue straight", "turn-left": "Turn left", "turn-right": "Turn right", "slight-left": "Bear left", "slight-right": "Bear right",
-  "sharp-left": "Sharp left", "sharp-right": "Sharp right", uturn: "Make a U-turn", "keep-left": "Keep left", "keep-right": "Keep right",
-  "exit-left": "Take the exit on the left", "exit-right": "Take the exit on the right", merge: "Merge", roundabout: "At the roundabout", arrive: "Arrive",
+  depart: t("nav.head_out"), straight: t("nav.continue_straight_2"), "turn-left": t("nav.turn_left_2"), "turn-right": t("nav.turn_right_2"), "slight-left": t("nav.bear_left"), "slight-right": t("nav.bear_right"),
+  "sharp-left": t("nav.sharp_left"), "sharp-right": t("nav.sharp_right"), uturn: t("nav.make_a_u_turn_2"), "keep-left": t("nav.keep_left_2"), "keep-right": t("nav.keep_right_2"),
+  "exit-left": t("nav.take_the_exit_on_the_left_2"), "exit-right": t("nav.take_the_exit_on_the_right_2"), merge: t("nav.merge_2"), roundabout: t("nav.at_the_roundabout"), arrive: t("nav.arrive"),
 };
 /** The words on screen for a step: "Turn right onto Oak Street", "Take exit 278 toward Kettleman City". */
 export function stepText(step, destName) {
   if (!step) return "";
-  if (step.type === "arrive") return destName ? `Arrive at ${destName}` : "Arrive";
+  if (step.type === "arrive") return destName ? t("nav.arrive_at_destname", { destName }) : t("nav.arrive");
   if (/^exit-/.test(step.type) && step.exit) {
-    const where = step.toward ? ` toward ${step.toward}` : step.street ? ` onto ${step.street}` : "";
-    return `Take exit ${step.exit}${where}`;
+    const where = step.toward ? t("nav.toward_toward", { toward: step.toward }) : step.street ? t("nav.onto_street", { street: step.street }) : "";
+    return t("nav.take_exit_exit_where", { exit: step.exit, where });
   }
   if (step.text) return step.text;
-  const base = step.type === "roundabout" && step.roundabout_exit ? `At the roundabout, take the ${ORD[clamp(step.roundabout_exit, 1, 6) - 1]} exit` : STEP_WORD[step.type] || "Continue";
-  const onto = step.ref ? ` onto ${step.ref}` : step.street ? ` onto ${step.street}` : "";
+  const base = step.type === "roundabout" && step.roundabout_exit ? t("nav.at_the_roundabout_take_the_o_exit_cap", { o: ORD[clamp(step.roundabout_exit, 1, 6) - 1] }) : STEP_WORD[step.type] || t("nav.continue");
+  const onto = step.ref ? t("nav.onto_ref", { ref: step.ref }) : step.street ? t("nav.onto_street", { street: step.street }) : "";
   return base + onto;
 }
 
@@ -598,7 +600,7 @@ const stored = (k, f) => { try { return store.get("nav:" + k, f); } catch { retu
 const keep = (k, v) => { try { store.set("nav:" + k, v); } catch {} };
 
 /* ---------- what the person has allowed (the one-time notice), recents, Home and Work ---------- */
-export const CONSENT_TEXT = "To search places and plan routes, I-5 Buddy sends what you type and your current location to Dominares' server, which asks our map data provider (Geoapify, built on OpenStreetMap). Neither keeps them.";
+export const CONSENT_TEXT = t("nav.to_search_places_and_plan_routes_i_5");
 const consent = () => stored("consent", null);
 const recents = () => { const r = stored("recent", []); return Array.isArray(r) ? r.filter(d => d && num(d.lat) && num(d.lon) && d.name).slice(0, 8) : []; };
 function addRecent(d) {
@@ -665,10 +667,10 @@ function statusText() {
   if (N.state === "navigating" && N.route && N.dest) {
     const g = guideInfo();
     if (!g) return "";
-    const move = g.show.type === "arrive" ? stepText(g.show, N.dest.name) : g.distTo < 0.012 ? `${stepText(g.show)} now` : `${stepText(g.show)} in ${fmtDist(g.distTo)}`;
-    return g.show.type === "arrive" ? move : `${move} · to ${N.dest.name}`;
+    const move = g.show.type === "arrive" ? stepText(g.show, N.dest.name) : g.distTo < 0.012 ? t("nav.show_now", { show: stepText(g.show) }) : t("nav.show_in_distto", { show: stepText(g.show), distTo: fmtDist(g.distTo) });
+    return g.show.type === "arrive" ? move : t("nav.move_to_name", { move, name: N.dest.name });
   }
-  if (N.state === "arrived" && N.dest) return `Arrived at ${N.dest.name}`;
+  if (N.state === "arrived" && N.dest) return t("nav.arrived_at_name", { name: N.dest.name });
   return "";
 }
 
@@ -734,7 +736,7 @@ function runPrompts(t) {
   if (settings.navStreets && step.text) {                        // the phone's own voice says the provider's words, street names and all
     const body = g.key ? `${DIST[g.key]} ${lowerFirst(step.text)}` : step.text;
     text = /[.!?]$/.test(body) ? body : body + ".";
-    if (then && then.text) text += ` Then ${lowerFirst(then.text)}${/[.!?]$/.test(then.text) ? "" : "."}`;
+    if (then && then.text) text += i18n.t("nav.then_text_x1", { text: lowerFirst(then.text), x1: /[.!?]$/.test(then.text) ? "" : "." });
     units = null;
   }
   N.lastPromptT = t;
@@ -961,13 +963,13 @@ function renderSearchPill() {
   if (live) {
     b.innerHTML = '<span class="nav-pill-ic">' + iconSvg("straight") + "</span>";
     const t = el("span", "nav-pill-tx");
-    t.append(el("b", null, N.state === "arrived" ? "You have arrived" : "Navigating"), el("small", null, `To ${N.dest.name}. Tap to open.`));
+    t.append(el("b", null, N.state === "arrived" ? i18n.t("nav.you_have_arrived_2") : i18n.t("nav.navigating")), el("small", null, i18n.t("nav.to_name_tap_to_open", { name: N.dest.name })));
     b.append(t);
     b.onclick = () => { if (N.state === "navigating") openGuide(); else showArrived(); };
   } else {
     b.innerHTML = '<span class="nav-pill-ic">' + SVG_SEARCH + "</span>";
     const t = el("span", "nav-pill-tx");
-    t.append(el("b", null, "Where to?"), el("small", null, "Search a place, or pick Home or Work"));
+    t.append(el("b", null, i18n.t("nav.where_to")), el("small", null, i18n.t("nav.search_a_place_or_pick_home_or_work")));
     b.append(t);
     b.onclick = () => { try { voice && voice.unlock && voice.unlock(); } catch {} openSearch(); };
   }
@@ -983,10 +985,10 @@ function askConsent() {
   root.hidden = false; root.textContent = "";
   root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-labelledby", "navConsentTitle");
   const card = el("div", "nav-consent-card");
-  const h = el("h2", null, "Before I look it up"); h.id = "navConsentTitle";
+  const h = el("h2", null, t("nav.before_i_look_it_up")); h.id = "navConsentTitle";
   const p = el("p", null, CONSENT_TEXT);
   const acts = el("div", "nav-consent-acts");
-  const yes = el("button", "primary", "Continue"), no = el("button", "secondary", "Not now");
+  const yes = el("button", "primary", t("nav.continue")), no = el("button", "secondary", t("nav.not_now"));
   yes.type = no.type = "button";
   acts.append(yes, no);
   card.append(h, p, acts);
@@ -1014,20 +1016,20 @@ function buildSheet() {
   if (SS.built) return;
   SS.built = true;
   const root = SH.root = slot("navSheet", "nav-sheet", "aside");
-  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Where to?");
+  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", t("nav.where_to"));
   root.textContent = "";
   const head = el("div", "nav-sh-head");
-  const back = el("button", "nav-iconbtn"); back.type = "button"; back.innerHTML = SVG_BACK; back.setAttribute("aria-label", "Close search");
+  const back = el("button", "nav-iconbtn"); back.type = "button"; back.innerHTML = SVG_BACK; back.setAttribute("aria-label", t("nav.close_search"));
   back.onclick = () => closeSearch();
   const wrap = el("div", "nav-inputwrap");
-  const lab = el("label", "nav-sr", "Where to?"); lab.htmlFor = "navQ";
-  const input = SH.input = el("input"); input.id = "navQ"; input.type = "search"; input.placeholder = "Where to?";
+  const lab = el("label", "nav-sr", t("nav.where_to")); lab.htmlFor = "navQ";
+  const input = SH.input = el("input"); input.id = "navQ"; input.type = "search"; input.placeholder = t("nav.where_to");
   input.setAttribute("enterkeyhint", "search"); input.setAttribute("autocomplete", "off"); input.setAttribute("autocapitalize", "off"); input.setAttribute("autocorrect", "off");
   input.setAttribute("spellcheck", "false"); input.setAttribute("inputmode", "search"); input.maxLength = 120;
-  const clear = SH.clear = el("button", "nav-iconbtn nav-clear"); clear.type = "button"; clear.innerHTML = SVG_CLOSE; clear.setAttribute("aria-label", "Clear"); clear.hidden = true;
+  const clear = SH.clear = el("button", "nav-iconbtn nav-clear"); clear.type = "button"; clear.innerHTML = SVG_CLOSE; clear.setAttribute("aria-label", t("nav.clear")); clear.hidden = true;
   wrap.append(lab, input, clear);
   head.append(back, wrap);
-  const chips = SH.chips = el("div", "nav-chips"); chips.setAttribute("role", "group"); chips.setAttribute("aria-label", "Find along the way");
+  const chips = SH.chips = el("div", "nav-chips"); chips.setAttribute("role", "group"); chips.setAttribute("aria-label", t("nav.find_along_the_way"));
   for (const c of CATEGORIES) {
     const b = el("button", "nav-chip"); b.type = "button"; b.dataset.cat = c.id; b.setAttribute("aria-pressed", "false");
     b.append(el("span", null, c.icon), document.createTextNode(c.label));
@@ -1050,8 +1052,8 @@ function openSearch(q, o = {}) {
   SS.opener = document.activeElement;
   SS.open = true; SS.pickFor = o.pickFor || null; SS.cat = o.cat || null; SS.saving = null;
   SH.root.hidden = false; document.body.classList.add("nav-open");
-  SH.root.setAttribute("aria-label", SS.pickFor ? `Set ${SS.pickFor === "home" ? "Home" : "Work"}` : "Where to?");
-  SH.input.placeholder = SS.pickFor ? `Search for ${SS.pickFor === "home" ? "Home" : "Work"}` : "Where to?";
+  SH.root.setAttribute("aria-label", SS.pickFor ? t("nav.set_x1", { x1: SS.pickFor === "home" ? t("nav.home") : t("nav.work") }) : t("nav.where_to"));
+  SH.input.placeholder = SS.pickFor ? t("nav.search_for_x1", { x1: SS.pickFor === "home" ? t("nav.home") : t("nav.work") }) : t("nav.where_to");
   SH.input.value = typeof q === "string" ? q : "";
   SS.q = SH.input.value; syncChips();
   onQuery();
@@ -1099,7 +1101,7 @@ async function runOnline(term) {
     const j = await P.search(term, searchPos(), ctrl.signal);
     if (my !== SS.seq) return;
     SS.online = cleanResults(j);
-    SS.attribution = j && typeof j.attribution === "string" ? str(j.attribution, 200) : "© OpenStreetMap contributors · Geoapify";
+    SS.attribution = j && typeof j.attribution === "string" ? str(j.attribution, 200) : t("nav.openstreetmap_contributors_geoapify");
     SS.ostate = SS.online.length ? "ok" : "none";
   } catch (e) {
     if (my !== SS.seq || (e && e.aborted)) return;
@@ -1125,15 +1127,15 @@ function rowFor(r, o = {}) {
   b.onclick = () => choose(r);
   li.append(b);
   if (!o.noStar) {
-    const st = el("button", "nav-iconbtn nav-star"); st.type = "button"; st.innerHTML = SVG_STAR; st.setAttribute("aria-label", `Save ${r.name} as Home or Work`);
+    const st = el("button", "nav-iconbtn nav-star"); st.type = "button"; st.innerHTML = SVG_STAR; st.setAttribute("aria-label", t("nav.save_name_as_home_or_work", { name: r.name }));
     st.setAttribute("aria-expanded", String(SS.saving === r));
     st.onclick = e => { e.stopPropagation(); SS.saving = SS.saving === r ? null : r; renderSheet(); };
     li.append(st);
     if (SS.saving === r) {
       const m = el("div", "nav-save");
-      for (const [k, label] of [["home", "Set as Home"], ["work", "Set as Work"]]) {
+      for (const [k, label, what] of [["home", t("nav.set_as_home"), t("nav.home")], ["work", t("nav.set_as_work"), t("nav.work")]]) {
         const sb = el("button", "secondary", label); sb.type = "button";
-        sb.onclick = () => { setFav(k, toDest(r)); SS.saving = null; toastMsg(`${label.slice(7)} saved: ${r.name}`); renderSheet(); };
+        sb.onclick = () => { setFav(k, toDest(r)); SS.saving = null; toastMsg(t("nav.label_saved_name", { label: what, name: r.name })); renderSheet(); };
         m.append(sb);
       }
       li.append(m);
@@ -1150,16 +1152,16 @@ function section(title, note) {
 }
 function favButtons() {
   const f = favs(), row = el("div", "nav-favs");
-  for (const [k, label] of [["home", "Home"], ["work", "Work"]]) {
+  for (const [k, label] of [["home", t("nav.home")], ["work", t("nav.work")]]) {
     const cell = el("div", "nav-fav");
     const b = el("button", "nav-favbtn"); b.type = "button";
-    b.append(el("span", null, KIND_ICON[k]), el("span", "nav-favtx", f[k] ? label : `Set ${label}`));
+    b.append(el("span", null, KIND_ICON[k]), el("span", "nav-favtx", f[k] ? label : t("nav.set_label", { label })));
     b.firstChild.setAttribute("aria-hidden", "true");
     if (f[k]) { b.append(el("small", null, f[k].name)); b.onclick = () => choose({ ...f[k], src: "fav" }); }
     else b.onclick = () => openSearch("", { pickFor: k });
     cell.append(b);
     if (f[k]) {
-      const m = el("button", "nav-iconbtn"); m.type = "button"; m.innerHTML = SVG_MORE; m.setAttribute("aria-label", `Change or remove ${label}`);
+      const m = el("button", "nav-iconbtn"); m.type = "button"; m.innerHTML = SVG_MORE; m.setAttribute("aria-label", t("nav.change_or_remove_label", { label }));
       m.onclick = () => { openSearch("", { pickFor: k }); };
       cell.append(m);
     }
@@ -1172,58 +1174,58 @@ function renderSheet() {
   const body = SH.body; body.textContent = "";
   const q = SS.q.trim(), cat = SS.cat ? CATEGORIES.find(c => c.id === SS.cat) : null;
   if (SS.pickFor) {
-    body.append(el("p", "nav-note", `Pick a place to save as ${SS.pickFor === "home" ? "Home" : "Work"}.`));
+    body.append(el("p", "nav-note", i18n.t("nav.pick_a_place_to_save_as_x1", { x1: SS.pickFor === "home" ? i18n.t("nav.home") : i18n.t("nav.work") })));
     if (favs()[SS.pickFor]) {
-      const rm = el("button", "secondary", `Remove ${SS.pickFor === "home" ? "Home" : "Work"}`); rm.type = "button";
-      rm.onclick = () => { const k = SS.pickFor; setFav(k, null); SS.pickFor = null; closeSearch(); toastMsg(`${k === "home" ? "Home" : "Work"} removed`); };
+      const rm = el("button", "secondary", i18n.t("nav.remove_x1", { x1: SS.pickFor === "home" ? i18n.t("nav.home") : i18n.t("nav.work") })); rm.type = "button";
+      rm.onclick = () => { const k = SS.pickFor; setFav(k, null); SS.pickFor = null; closeSearch(); toastMsg(i18n.t("nav.x1_removed", { x1: k === "home" ? i18n.t("nav.home") : i18n.t("nav.work") })); };
       body.append(rm);
     }
   }
   let any = false;
   if (!q && !cat) {
     if (!SS.pickFor) {
-      const s = section("Home and Work"); s.append(favButtons()); body.append(s);
+      const s = section(i18n.t("nav.home_and_work")); s.append(favButtons()); body.append(s);
       const rec = recents();
       if (rec.length) {
-        const sr = section("Recent"), ul = el("ul", "nav-list");
+        const sr = section(i18n.t("nav.recent")), ul = el("ul", "nav-list");
         for (const d of rec) ul.append(rowFor({ ...d, sub: d.address, icon: KIND_ICON[d.kind] || "🕘" }, { noStar: false }));
         sr.append(ul); body.append(sr);
-      } else body.append(el("p", "nav-note", "Try a city on I-5, a landmark, an exit number, or a name like In-N-Out."));
+      } else body.append(el("p", "nav-note", i18n.t("nav.try_a_city_on_i_5_a_landmark_an_exit")));
       if (consent() === "no") {
-        const t = section(null, "Online search is off, so you only see places along I-5 from the app.");
-        const on = el("button", "link", "Turn on online search"); on.type = "button";
+        const t = section(null, i18n.t("nav.online_search_is_off_so_you_only_see"));
+        const on = el("button", "link", i18n.t("nav.turn_on_online_search")); on.type = "button";
         on.onclick = async () => { const ok = await askConsent(); renderSheet(); if (ok && SS.q.trim().length >= 3) onQuery(); };
         t.append(on); body.append(t);
       }
     }
   } else {
     const local = cat ? categoryAhead(cat, 6) : localSearch(q);
-    if (cat && S.m == null) body.append(el("p", "nav-note", "Turn on GPS to see what is coming up on I-5."));
+    if (cat && S.m == null) body.append(el("p", "nav-note", i18n.t("nav.turn_on_gps_to_see_what_is_coming_up")));
     if (local.length) {
       any = true;
-      const s = section(cat ? `${cat.label} on I-5, ahead` : "From I-5 Buddy"), ul = el("ul", "nav-list");
+      const s = section(cat ? i18n.t("nav.label_on_i_5_ahead", { label: cat.label }) : i18n.t("nav.from_i_5_buddy")), ul = el("ul", "nav-list");
       for (const r of local) ul.append(rowFor(r, { noDist: true }));
       s.append(ul); body.append(s);
     }
     const st = SS.ostate;
-    const on = section(st === "ok" || st === "loading" || st === "wait" ? (cat ? `${cat.label} near you · online` : "Online results") : null);
-    if (st === "loading" || st === "wait") on.append(el("p", "nav-note nav-busy", "Looking…"));
+    const on = section(st === "ok" || st === "loading" || st === "wait" ? (cat ? i18n.t("nav.label_near_you_online", { label: cat.label }) : i18n.t("nav.online_results")) : null);
+    if (st === "loading" || st === "wait") on.append(el("p", "nav-note nav-busy", i18n.t("nav.looking")));
     else if (st === "ok") {
       const ul = el("ul", "nav-list");
       for (const r of SS.online) ul.append(rowFor(r));
       on.append(ul);
       SH.foot.textContent = SS.attribution;
-    } else if (st === "none") on.append(el("p", "nav-note", "Nothing found online for that."));
-    else if (st === "offline") on.append(el("p", "nav-note", "You're offline, so these are only places along I-5 from the app."));
-    else if (st === "error") on.append(el("p", "nav-note", "The place search isn't answering right now. Showing what the app knows."));
+    } else if (st === "none") on.append(el("p", "nav-note", i18n.t("nav.nothing_found_online_for_that")));
+    else if (st === "offline") on.append(el("p", "nav-note", i18n.t("nav.youre_offline_so_these_are_only_places")));
+    else if (st === "error") on.append(el("p", "nav-note", i18n.t("nav.the_place_search_isnt_answering_right")));
     else if (st === "declined") {
-      on.append(el("p", "nav-note", "Online search is off, so these are only places along I-5 from the app."));
-      const b = el("button", "link", "Turn on online search"); b.type = "button";
+      on.append(el("p", "nav-note", i18n.t("nav.online_search_is_off_so_these_are_only")));
+      const b = el("button", "link", i18n.t("nav.turn_on_online_search")); b.type = "button";
       b.onclick = async () => { const ok = await askConsent(); if (ok) onQuery(); else renderSheet(); };
       on.append(b);
-    } else if (st === "short" && !local.length) on.append(el("p", "nav-note", "Keep typing: three letters or more searches online too."));
+    } else if (st === "short" && !local.length) on.append(el("p", "nav-note", i18n.t("nav.keep_typing_three_letters_or_more")));
     if (on.childNodes.length) body.append(on);
-    if (!any && st !== "ok" && st !== "loading" && st !== "wait" && !on.childNodes.length) body.append(el("p", "nav-note", "No matches yet."));
+    if (!any && st !== "ok" && st !== "loading" && st !== "wait" && !on.childNodes.length) body.append(el("p", "nav-note", i18n.t("nav.no_matches_yet")));
   }
   if (!SS.online.length || (!q && !cat)) SH.foot.textContent = "";
   SH.clear.hidden = !SS.q;
@@ -1233,7 +1235,7 @@ function choose(r) {
   const d = toDest(r);
   if (SS.pickFor) {
     setFav(SS.pickFor, d);
-    toastMsg(`${SS.pickFor === "home" ? "Home" : "Work"} saved: ${d.name}`);
+    toastMsg(t("nav.x1_saved_name", { x1: SS.pickFor === "home" ? t("nav.home") : t("nav.work"), name: d.name }));
     const again = SS.pickFor; SS.pickFor = null;
     closeSearch();
     void again;
@@ -1246,7 +1248,7 @@ function choose(r) {
 
 /* ================================================================ the full-screen view: preview, guidance, arrival ================================================================ */
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
-export const ATTRIBUTION = "© OpenStreetMap contributors · OpenFreeMap · Routes: Geoapify";
+export const ATTRIBUTION = t("nav.openstreetmap_contributors_openfreemap");
 const PITCH = 55, LIB_MS = 12000;
 const V = { built: false, root: null, map: null, lib: null, mapState: "idle", sceneReady: false, markers: [], car: null, gradKey: "", sketch: null, minimized: false, theme: "", opener: null, stepsOpen: false, lastIcon: "", lastShow: "" };
 const viewShown = () => !!(V.root && !V.root.hidden);
@@ -1255,7 +1257,7 @@ function buildView() {
   if (V.built) return;
   V.built = true;
   const root = V.root = slot("navView", "nav-view", "div");
-  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Navigation"); root.tabIndex = -1;
+  root.hidden = true; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", t("nav.navigation")); root.tabIndex = -1;
   root.textContent = "";
   const stage = el("div", "nav-stage");
   V.mapEl = el("div", "nav-map");
@@ -1266,15 +1268,15 @@ function buildView() {
 
   // preview chrome
   const ph = V.pvHead = el("header", "nav-pv-head");
-  const close = el("button", "nav-iconbtn nav-pv-x"); close.type = "button"; close.innerHTML = SVG_CLOSE; close.setAttribute("aria-label", "Close route preview");
+  const close = el("button", "nav-iconbtn nav-pv-x"); close.type = "button"; close.innerHTML = SVG_CLOSE; close.setAttribute("aria-label", t("nav.close_route_preview"));
   close.onclick = () => end();
   const who = el("div", "nav-pv-who"); V.pvName = el("b"); V.pvAddr = el("small");
   who.append(V.pvName, V.pvAddr);
   ph.append(close, who);
-  const card = V.pvCard = el("section", "nav-pv-card"); card.setAttribute("aria-label", "Route summary");
+  const card = V.pvCard = el("section", "nav-pv-card"); card.setAttribute("aria-label", t("nav.route_summary"));
   V.pvBody = el("div", "nav-pv-body");
   const acts = el("div", "nav-pv-acts");
-  V.btnStart = el("button", "primary nav-start", "Start"); V.btnSteps = el("button", "secondary", "Steps"); V.btnClose = el("button", "secondary", "Close");
+  V.btnStart = el("button", "primary nav-start", t("nav.start")); V.btnSteps = el("button", "secondary", t("nav.steps")); V.btnClose = el("button", "secondary", t("nav.close"));
   for (const b of [V.btnStart, V.btnSteps, V.btnClose]) b.type = "button";
   V.btnSteps.setAttribute("aria-expanded", "false");
   V.btnStart.onclick = () => start();
@@ -1282,7 +1284,7 @@ function buildView() {
   V.btnClose.onclick = () => end();
   acts.append(V.btnStart, V.btnSteps, V.btnClose);
   card.append(V.pvBody, acts);
-  V.stepsEl = el("section", "nav-steps"); V.stepsEl.hidden = true; V.stepsEl.setAttribute("aria-label", "Steps");
+  V.stepsEl = el("section", "nav-steps"); V.stepsEl.hidden = true; V.stepsEl.setAttribute("aria-label", t("nav.steps"));
 
   // guidance chrome
   const bn = V.banner = el("div", "nav-banner");
@@ -1292,33 +1294,33 @@ function buildView() {
   bt.append(V.bnDist, V.bnText, V.bnThen);
   bn.append(V.bnIcon, bt);
   const gauges = V.gauges = el("div", "nav-gauges");
-  V.spd = el("div", "nav-speed"); V.spdN = el("b", null, "0"); V.spd.append(V.spdN, el("small", null, "mph"));
+  V.spd = el("div", "nav-speed"); V.spdN = el("b", null, "0"); V.spd.append(V.spdN, el("small", null, t("nav.mph")));
   V.lim = el("div", "nav-limit"); V.lim.hidden = true; V.limN = el("b");
-  V.lim.append(el("small", null, "SPEED"), el("small", null, "LIMIT"), V.limN);
+  V.lim.append(el("small", null, t("nav.speed")), el("small", null, t("nav.limit")), V.limN);
   // HUD: the next turn, huge and mirrored, for a phone lying flat under the windshield at night; a tap anywhere ends it
-  V.btnHud = el("button", "nav-hud-btn", "HUD"); V.btnHud.type = "button";
-  V.btnHud.setAttribute("aria-label", "Heads-up display: show the next turn mirrored, to read in the windshield");
+  V.btnHud = el("button", "nav-hud-btn", t("nav.hud")); V.btnHud.type = "button";
+  V.btnHud.setAttribute("aria-label", t("nav.heads_up_display_show_the_next_turn"));
   V.btnHud.onclick = () => setHud(true);
   gauges.append(V.lim, V.spd, V.btnHud);
-  V.recenter = el("button", "nav-recenter", "Recenter"); V.recenter.type = "button"; V.recenter.hidden = true;
+  V.recenter = el("button", "nav-recenter", t("nav.recenter")); V.recenter.type = "button"; V.recenter.hidden = true;
   V.recenter.onclick = () => recenter();
-  const bottom = V.bottom = el("section", "nav-bottom"); bottom.setAttribute("aria-label", "Trip");
+  const bottom = V.bottom = el("section", "nav-bottom"); bottom.setAttribute("aria-label", t("nav.trip"));
   const stats = el("div", "nav-stats");
   const stat = (cls, label) => { const d = el("div", "nav-stat " + cls); const b = el("b", null, "--"); d.append(b, el("small", null, label)); stats.append(d); return b; };
-  V.stArr = stat("arr", "arrive"); V.stMin = stat("min", "left"); V.stMi = stat("mi", "to go");
+  V.stArr = stat("arr", t("nav.arrive_2")); V.stMin = stat("min", t("nav.left")); V.stMi = stat("mi", t("nav.to_go"));
   const row = el("div", "nav-bottom-acts");
   const mk = (cls, label, icon, fn, text) => { const b = el("button", cls); b.type = "button"; b.setAttribute("aria-label", label); b.title = label; if (icon) b.innerHTML = icon; if (text) b.append(text); b.onclick = fn; return b; };
-  V.btnEnd = mk("nav-end", "End navigation", null, () => end(), "End");
-  V.btnMute = mk("nav-tool", "Mute voice prompts", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z" fill="currentColor"/></svg>', () => setMuted(!N.muted));
+  V.btnEnd = mk("nav-end", t("nav.end_navigation"), null, () => end(), t("nav.end"));
+  V.btnMute = mk("nav-tool", t("nav.mute_voice_prompts"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z" fill="currentColor"/></svg>', () => setMuted(!N.muted));
   V.btnMute.setAttribute("aria-pressed", "false");
-  V.btnOver = mk("nav-tool", "Route overview", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm14-10a2 2 0 1 1 0-4 2 2 0 0 1 0 4ZM6.5 15.5 9 11h4a2 2 0 0 0 0-4h-1V5h1a4 4 0 0 1 0 8H10l-1.7 3L6.5 15.5Z" fill="currentColor"/></svg>', () => toggleOverview());
+  V.btnOver = mk("nav-tool", t("nav.route_overview"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19a2 2 0 1 1 0-4 2 2 0 0 1 0 4Zm14-10a2 2 0 1 1 0-4 2 2 0 0 1 0 4ZM6.5 15.5 9 11h4a2 2 0 0 0 0-4h-1V5h1a4 4 0 0 1 0 8H10l-1.7 3L6.5 15.5Z" fill="currentColor"/></svg>', () => toggleOverview());
   V.btnOver.setAttribute("aria-pressed", "false");
-  V.btnSteps2 = mk("nav-tool", "Steps", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4V5Zm0 6h16v2H4v-2Zm0 6h10v2H4v-2Z" fill="currentColor"/></svg>', () => toggleSteps());
-  V.btnApp = mk("nav-tool", "Back to the app, keep guiding", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z" fill="currentColor"/></svg>', () => minimize());
+  V.btnSteps2 = mk("nav-tool", t("nav.steps"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v2H4V5Zm0 6h16v2H4v-2Zm0 6h10v2H4v-2Z" fill="currentColor"/></svg>', () => toggleSteps());
+  V.btnApp = mk("nav-tool", t("nav.back_to_the_app_keep_guiding"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z" fill="currentColor"/></svg>', () => minimize());
   row.append(V.btnEnd, V.btnMute, V.btnOver, V.btnSteps2, V.btnApp);
   bottom.append(stats, row);
   // arrival
-  V.arrived = el("section", "nav-arrived"); V.arrived.setAttribute("aria-label", "Arrived");
+  V.arrived = el("section", "nav-arrived"); V.arrived.setAttribute("aria-label", t("nav.arrived"));
   root.append(stage, ph, bn, gauges, V.recenter, card, V.stepsEl, bottom, V.arrived);
   root.addEventListener("keydown", e => { if (e.key === "Escape" && V.stepsOpen) toggleSteps(false); if (e.key === "Escape" && V.hud) setHud(false); });
   // in HUD mode the first tap anywhere only ends it (nothing under the finger is pressed)
@@ -1328,7 +1330,7 @@ function setHud(on) {
   V.hud = !!on && V.mode === "guide";
   if (!V.root) return;
   V.root.classList.toggle("nav-hud", V.hud);
-  if (V.hud) toastMsg("HUD on: lay the phone flat under the windshield. Tap anywhere to go back.");
+  if (V.hud) toastMsg(t("nav.hud_on_lay_the_phone_flat_under_the"));
 }
 function setMode(mode) {
   const was = V.mode;
@@ -1379,13 +1381,13 @@ function showArrived() {
   openView("arrived");
   const a = V.arrived; a.textContent = "";
   const secs = Math.max(0, (N.arrivedAt - N.startedAt) / 1000);
-  a.append(el("div", "nav-arr-ic", ""), el("h2", null, "You have arrived"), el("p", "nav-arr-dest", N.dest ? N.dest.name : ""));
+  a.append(el("div", "nav-arr-ic", ""), el("h2", null, t("nav.you_have_arrived_2")), el("p", "nav-arr-dest", N.dest ? N.dest.name : ""));
   if (N.dest && N.dest.address) a.append(el("p", "nav-arr-addr", N.dest.address));
   const side = N.route && N.route.steps[N.route.steps.length - 1].side;
-  if (side) a.append(el("p", "nav-arr-side", `Your destination is on the ${side}.`));
-  a.append(el("p", "nav-arr-stat", `${fmtDur(Math.max(secs, 60))} on the road${N.driven > 0.05 ? ` · ${fmtMi(N.driven)}` : ""}`));
+  if (side) a.append(el("p", "nav-arr-side", t("nav.your_destination_is_on_the_side", { side })));
+  a.append(el("p", "nav-arr-stat", t("nav.fmtdur_on_the_road_x1", { fmtDur: fmtDur(Math.max(secs, 60)), x1: N.driven > 0.05 ? ` · ${fmtMi(N.driven)}` : "" })));
   a.firstChild.innerHTML = iconSvg("arrive");
-  const done = el("button", "primary", "Done"); done.type = "button"; done.onclick = () => end();
+  const done = el("button", "primary", t("nav.done")); done.type = "button"; done.onclick = () => end();
   a.append(done);
   try { done.focus({ preventScroll: true }); } catch {}
   renderSlim(); renderSearchPill();
@@ -1401,13 +1403,13 @@ function renderSlim() {
   const hdr = document.querySelector("header.top");
   if (hdr) box.style.top = Math.round(hdr.getBoundingClientRect().height) + "px";
   let icon, dist, text;
-  if (N.state === "arrived") { icon = "arrive"; dist = "Arrived"; text = N.dest ? N.dest.name : ""; }
+  if (N.state === "arrived") { icon = "arrive"; dist = t("nav.arrived"); text = N.dest ? N.dest.name : ""; }
   else { const g = guideInfo(); icon = g.show.type; dist = fmtDist(g.distTo); text = stepText(g.show, N.dest && N.dest.name); }
   const key = icon + "|" + dist + "|" + text;
   if (box.dataset.key === key) return;
   box.dataset.key = key; box.textContent = "";
   const b = el("button", "nav-slim"); b.type = "button";
-  b.setAttribute("aria-label", `Navigation: ${dist}, ${text}. Open`);
+  b.setAttribute("aria-label", t("nav.navigation_dist_text_open", { dist, text }));
   const ic = el("span", "nav-slim-ic"); ic.innerHTML = iconSvg(icon);
   const tx = el("span", "nav-slim-tx"); tx.append(el("b", null, dist), el("span", null, text));
   b.append(ic, tx);
@@ -1422,10 +1424,10 @@ function renderPreview() {
   V.pvAddr.textContent = d && d.address ? d.address : "";
   const body = V.pvBody; body.textContent = "";
   V.btnStart.disabled = V.btnSteps.disabled = !r;
-  if (N.loading) { body.append(el("p", "nav-pv-wait", "Finding the best route…")); setMode("loading"); return; }
+  if (N.loading) { body.append(el("p", "nav-pv-wait", t("nav.finding_the_best_route"))); setMode("loading"); return; }
   if (N.error || !r) {
-    body.append(el("p", "nav-pv-err", N.error || "I couldn't plan that route."));
-    const again = el("button", "secondary", "Try again"); again.type = "button"; again.onclick = () => d && preview(d);
+    body.append(el("p", "nav-pv-err", N.error || t("nav.i_couldnt_plan_that_route")));
+    const again = el("button", "secondary", t("nav.try_again")); again.type = "button"; again.onclick = () => d && preview(d);
     body.append(again);
     setMode("error");
     return;
@@ -1433,9 +1435,9 @@ function renderPreview() {
   setMode("preview");
   const sum = el("div", "nav-sum");
   sum.append(el("b", "nav-sum-time", fmtDur(r.duration_s)), el("span", "nav-sum-mi", fmtMi(r.distance_mi)));
-  body.append(sum, el("p", "nav-sum-arr", `Arrive ${fmtClock(now() + r.duration_s * 1000)}`));
+  body.append(sum, el("p", "nav-sum-arr", t("nav.arrive_fmtclock", { fmtClock: fmtClock(now() + r.duration_s * 1000) })));
   const i5 = N.i5;
-  if (i5 && i5.mi >= 3) body.append(el("p", "nav-sum-i5", `${i5.mi >= r.total * 0.5 ? "Mostly on" : "Includes"} I-5 (${Math.round(i5.mi)} mi)`));
+  if (i5 && i5.mi >= 3) body.append(el("p", "nav-sum-i5", t("nav.x1_i_5_mi_mi", { x1: i5.mi >= r.total * 0.5 ? t("nav.mostly_on") : t("nav.includes"), mi: Math.round(i5.mi) })));
   renderSteps();
   drawSketch();
   mapRoute(true);
@@ -1445,15 +1447,15 @@ function renderSteps() {
   box.textContent = "";
   if (!r) return;
   const head = el("div", "nav-steps-head");
-  head.append(el("b", null, "Steps"));
-  const x = el("button", "nav-iconbtn"); x.type = "button"; x.innerHTML = SVG_CLOSE; x.setAttribute("aria-label", "Close the list of steps"); x.onclick = () => toggleSteps(false);
+  head.append(el("b", null, t("nav.steps")));
+  const x = el("button", "nav-iconbtn"); x.type = "button"; x.innerHTML = SVG_CLOSE; x.setAttribute("aria-label", t("nav.close_the_list_of_steps")); x.onclick = () => toggleSteps(false);
   head.append(x);
   const ol = el("ol", "nav-steplist");
   r.steps.forEach((s, i) => {
     const li = el("li", "nav-step"); li.dataset.i = i;
     const ic = el("span", "nav-step-ic"); ic.innerHTML = iconSvg(s.type === "depart" ? "straight" : s.type);
     const tx = el("span", "nav-step-tx"); tx.append(el("b", null, stepText(s, N.dest && N.dest.name)));
-    const sub = [s.street && !/\b(onto|on)\b/.test(s.text || "") ? s.street : "", s.toward && !/toward/.test(s.text || "") ? `toward ${s.toward}` : ""].filter(Boolean).join(" · ");
+    const sub = [s.street && !/\b(onto|on)\b/.test(s.text || "") ? s.street : "", s.toward && !/toward/.test(s.text || "") ? t("nav.toward_toward_2", { toward: s.toward }) : ""].filter(Boolean).join(" · ");
     if (sub) tx.append(el("small", null, sub));
     const len = s.distance_mi != null ? s.distance_mi : s.end - s.start;
     li.append(ic, tx, el("span", "nav-step-d", s.type === "arrive" ? "" : fmtDist(len)));
@@ -1477,12 +1479,12 @@ function toggleSteps(on) {
 function setMuted(on) {
   N.muted = !!on; keep("mute", N.muted);
   syncTools();
-  if (N.muted) toastMsg("Voice prompts are muted."); else toastMsg("Voice prompts are on.");
+  if (N.muted) toastMsg(t("nav.voice_prompts_are_muted")); else toastMsg(t("nav.voice_prompts_are_on"));
 }
 function syncTools() {
   if (!V.built) return;
   V.btnMute.setAttribute("aria-pressed", String(N.muted));
-  V.btnMute.setAttribute("aria-label", N.muted ? "Unmute voice prompts" : "Mute voice prompts");
+  V.btnMute.setAttribute("aria-label", N.muted ? t("nav.unmute_voice_prompts") : t("nav.mute_voice_prompts"));
   V.btnMute.classList.toggle("off", N.muted);
   V.btnOver.setAttribute("aria-pressed", String(N.overview));
   V.recenter.hidden = N.follow || N.overview || V.mode !== "guide";
@@ -1500,7 +1502,7 @@ function guideUpdate(force) {
   if (V.lastShow !== text) { V.lastShow = text; V.bnText.textContent = text; }
   const icon = g.show.type === "depart" ? "straight" : g.show.type;
   if (V.lastIcon !== icon) { V.lastIcon = icon; V.bnIcon.innerHTML = iconSvg(icon); V.banner.dataset.type = icon; }
-  V.bnThen.textContent = g.then ? `Then ${lowerFirst(stepText(g.then))}` : "";
+  V.bnThen.textContent = g.then ? t("nav.then_lowerfirst", { lowerFirst: lowerFirst(stepText(g.then)) }) : "";
   V.bnThen.hidden = !g.then;
   V.stArr.textContent = fmtClock(g.arriveAt);
   V.stMin.textContent = fmtDur(g.sec);
@@ -1578,7 +1580,7 @@ async function ensureMap() {
   if (V.map || V.mapState === "loading" || V.mapState === "failed" || !viewShown()) return;
   V.mapState = "loading";
   V.root.dataset.map = "loading";
-  mapNote("Loading the map…");
+  mapNote(t("nav.loading_the_map"));
   let settled = false, styleOk = false;
   try {
     if (typeof Object.hasOwn !== "function" || typeof [].at !== "function") throw new Error("this browser is too old for the map");
@@ -1613,7 +1615,7 @@ function mapFailed(why) {
   destroyMap();
   V.mapState = "failed";
   if (V.root) V.root.dataset.map = "failed";
-  mapNote("The map isn't available, so here is a sketch of your route.");
+  mapNote(t("nav.the_map_isnt_available_so_here_is_a"));
   if (V.sketchEl) V.sketchEl.hidden = false;
   drawSketch();
 }
@@ -1768,7 +1770,7 @@ function drawSketch() {
   const s = Math.min(260 / w, 300 / h), ox = 150 - (w * s) / 2, oy = 170 + (h * s) / 2;
   const xy = a => [ox + (a[1] - minLon) * kx * s, oy - (a[0] - minLat) * s];
   const path = polyline(pts.map(xy)), a = xy(g[0]), b = xy(g[g.length - 1]);
-  box.innerHTML = `<svg viewBox="0 0 300 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of the route from where you are to ${(N.dest && N.dest.name || "your destination").replace(/[<>&"]/g, "")}"><path class="sk-ahead" d="${path}"/><circle class="sk-start" cx="${a[0].toFixed(1)}" cy="${a[1].toFixed(1)}" r="7"/><path class="sk-dest" d="M${b[0].toFixed(1)} ${(b[1] + 2).toFixed(1)}c0 0-11-11-11-19a11 11 0 0 1 22 0c0 8-11 19-11 19Z"/><circle class="sk-hole" cx="${b[0].toFixed(1)}" cy="${(b[1] - 17).toFixed(1)}" r="4"/></svg>`;
+  box.innerHTML = `<svg viewBox="0 0 300 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sketch of the route from where you are to ${(N.dest && N.dest.name || t("nav.your_destination")).replace(/[<>&"]/g, "")}"><path class="sk-ahead" d="${path}"/><circle class="sk-start" cx="${a[0].toFixed(1)}" cy="${a[1].toFixed(1)}" r="7"/><path class="sk-dest" d="M${b[0].toFixed(1)} ${(b[1] + 2).toFixed(1)}c0 0-11-11-11-19a11 11 0 0 1 22 0c0 8-11 19-11 19Z"/><circle class="sk-hole" cx="${b[0].toFixed(1)}" cy="${(b[1] - 17).toFixed(1)}" r="4"/></svg>`;
 }
 
 /* ================================================================ preview: ask for a route and show it ================================================================ */
@@ -1799,19 +1801,19 @@ async function preview(dest) {
     if (my !== N.token) return null;
     if (asked) from = asked;
   }
-  if (!from) return fail("I need your location to plan a route. Tap Start GPS on the Drive screen, or allow location, then try again.");
+  if (!from) return fail(t("nav.i_need_your_location_to_plan_a_route"));
   N.from = from;
   if (consent() !== "yes") {
     const ok = await askConsent();
     if (my !== N.token) return null;
     if (!ok) {                                         // Not now: no route, but a place on I-5 still gets its countdown
       N.state = "idle"; N.dest = null; N.loading = false; closeView(); renderSearchPill();
-      if (d.m != null && A.trip && A.trip.setDest && A.trip.setDest({ name: d.name, m: d.m })) toastMsg(`Heading to ${d.name}. Turn-by-turn needs the route service.`);
-      else toastMsg("Turn-by-turn needs the route service. Nothing was sent.");
+      if (d.m != null && A.trip && A.trip.setDest && A.trip.setDest({ name: d.name, m: d.m })) toastMsg(t("nav.heading_to_name_turn_by_turn_needs_the", { name: d.name }));
+      else toastMsg(t("nav.turn_by_turn_needs_the_route_service"));
       return null;
     }
   }
-  if (!isOnline()) return fail("You're offline, so I can't plan a route. Places along I-5 still work in the app.");
+  if (!isOnline()) return fail(t("nav.youre_offline_so_i_cant_plan_a_route"));
   const ctrl = N.pctrl = new AbortController();
   try {
     // the heading of the last navigation only while it is fresh (a fix in the last 15 s): a stale one from a drive that
@@ -1821,7 +1823,7 @@ async function preview(dest) {
     const raw = await P.route({ lat: from.lat, lon: from.lon }, { lat: d.lat, lon: d.lon }, hd, ctrl.signal);
     if (my !== N.token) return null;
     const route = buildRoute(raw, geo.miles);
-    if (!route) return fail("I couldn't plan that route.");
+    if (!route) return fail(t("nav.i_couldnt_plan_that_route"));
     N.route = route; N.loading = false; N.error = null;
     const on = miles_on_i5(route, (la, lo) => geo.locate(la, lo));
     N.i5 = { mi: on, share: route.total > 0 ? on / route.total : 0 };
@@ -1831,7 +1833,7 @@ async function preview(dest) {
     return route;
   } catch (e) {
     if (my !== N.token || (e && e.aborted)) return null;
-    return fail(e && e.words ? e.words : e && e.offline ? "I couldn't reach the route service. Check the connection and try again." : "I couldn't plan that route.");
+    return fail(e && e.words ? e.words : e && e.offline ? t("nav.i_couldnt_reach_the_route_service") : t("nav.i_couldnt_plan_that_route"));
   }
 }
 
@@ -1902,10 +1904,10 @@ function buildSettings() {
   const host = $id("settingsExtra");
   if (!host || $id("navSettings")) return;
   const wrap = el("div", "nav-set"); wrap.id = "navSettings";
-  wrap.append(el("h3", "sub", "Navigation"));
-  const f = el("div", "field"); f.append("Voice directions");
-  const seg = el("div", "seg wide"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", "Voice directions");
-  for (const [k, label] of [["full", "Full"], ["alerts", "Alerts only"], ["off", "Off"]]) {
+  wrap.append(el("h3", "sub", t("nav.navigation")));
+  const f = el("div", "field"); f.append(t("nav.voice_directions"));
+  const seg = el("div", "seg wide"); seg.setAttribute("role", "group"); seg.setAttribute("aria-label", t("nav.voice_directions"));
+  for (const [k, label] of [["full", t("nav.full")], ["alerts", t("nav.alerts_only")], ["off", t("nav.off")]]) {
     const b = el("button", null, label); b.type = "button"; b.dataset.navVoice = k;
     b.onclick = () => { settings.navVoice = k; try { A.saveSettings(); } catch {} syncSettings(); };
     seg.append(b);
@@ -1913,9 +1915,9 @@ function buildSettings() {
   const hint = el("small", "hint"); hint.id = "navVoiceHint";
   f.append(seg, hint);
   const tg = el("label", "toggle"); const cb = el("input"); cb.type = "checkbox"; cb.id = "navStreets";
-  tg.append(cb, "Say street names (uses the phone's voice)");
+  tg.append(cb, t("nav.say_street_names_uses_the_phones_voice"));
   cb.onchange = () => { settings.navStreets = cb.checked; try { A.saveSettings(); } catch {} };
-  const h2 = el("small", "hint", "Off by default: the app's own voice says turns and exits, and street names show on screen. On, the phone's voice reads every instruction in full.");
+  const h2 = el("small", "hint", t("nav.off_by_default_the_apps_own_voice_says"));
   wrap.append(f, tg, h2);
   host.append(wrap);
   syncSettings();
@@ -1926,7 +1928,7 @@ function syncSettings() {
   const v = settings.navVoice || "full";
   for (const b of w.querySelectorAll("[data-nav-voice]")) b.setAttribute("aria-pressed", String(b.dataset.navVoice === v));
   const hint = $id("navVoiceHint");
-  if (hint) hint.textContent = { full: "Every heads-up, then the turn itself.", alerts: "Only the turn itself, and Rerouting and Arrived.", off: "No spoken directions. The screen still guides you." }[v];
+  if (hint) hint.textContent = { full: t("nav.every_heads_up_then_the_turn_itself"), alerts: t("nav.only_the_turn_itself_and_rerouting_and"), off: t("nav.no_spoken_directions_the_screen_still") }[v];
   const cb = $id("navStreets"); if (cb) cb.checked = !!settings.navStreets;
 }
 

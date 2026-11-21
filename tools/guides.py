@@ -229,7 +229,9 @@ def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=N
     alt_html = ""
     if alternates:  # {"en": path, "es": path, "x-default": path}: hreflang pairs (each page lists itself too)
         alt_html = "".join(f'<link rel="alternate" hreflang="{k}" href="{SITE}/{v}">\n' for k, v in alternates.items())
-    crumb_html = " › ".join(f'<a href="{up}{u}">{E(n)}</a>' for n, u in crumbs[:-1]) + f" › {E(crumbs[-1][0])}"
+    # the app itself: a Spanish page opens it in Spanish (3.1.0, js/i18n.js reads ?lang=es)
+    home = f"{up}?lang=es" if lang == "es" else up
+    crumb_html = " › ".join(f'<a href="{home if not u else up + u}">{E(n)}</a>' for n, u in crumbs[:-1]) + f" › {E(crumbs[-1][0])}"
     return f"""<!doctype html>
 <html lang="{L['html']}">
 <head>
@@ -257,13 +259,13 @@ def page(path, title, desc, body, crumbs, ld_extra=None, lang="en", alternates=N
 </head>
 <body>
 <main>
-  <div class="top"><img src="{up}icons/icon-180.png" alt="" width="34" height="34"><a href="{up}">I-5 Buddy</a></div>
+  <div class="top"><img src="{up}icons/icon-180.png" alt="" width="34" height="34"><a href="{home}">I-5 Buddy</a></div>
   <nav class="crumbs" aria-label="Breadcrumb">{crumb_html}</nav>
 {body}
   <section class="app">
     <b>{L['app_h']}</b>
     <p>{L['app_p']}</p>
-    <a href="{up}get/">{L['app_a']}</a><a class="alt" href="{up}">{L['app_b']}</a>
+    <a href="{up}get/">{L['app_a']}</a><a class="alt" href="{home}">{L['app_b']}</a>
   </section>
   <p class="fine">{fine or L['fine']}</p>
 </main>

@@ -2,7 +2,11 @@
 // "m" everywhere = corridor mile: miles from the Mexico border along I-5 (0 to MAX_M).
 // The app covers the states in D.scope (California only since 2026-11-11: MAX_M is about 797, the Oregon line);
 // the code still handles more states if tools/build.py is told to include them.
+import { t, localizeData } from "./i18n.js";
 export const D = window.I5DATA;
+// Spanish (3.1.0): the Spanish names and stories of data/i5.es.js laid over the road data, before anything reads it
+// (js/i18n.js; nothing changes in English). Each changed item keeps its English in `en`.
+localizeData(D);
 export const MAX_M = D.states[D.states.length - 1].to;
 export const SCOPE = D.scope || D.states.map(s => s.id);
 /** What lies past each end of the covered road: ENDS.N.short = "Oregon", ENDS.N.long = "the Oregon line". */
@@ -28,24 +32,24 @@ export const ROUTE = D.route;          // [[m, lat, lon], ...]
     one carry `mission: n`. */
 export const MISSIONS = Array.isArray(D.missions) ? D.missions : [];
 
-export const CATS = { farm: "Orchards & farms", hist: "History", nature: "Land & water", town: "Towns", stop: "Good stops", odd: "Oddities" };
+export const CATS = { farm: t("data.orchards_farms"), hist: t("data.history"), nature: t("data.land_water"), town: t("data.towns"), stop: t("data.good_stops"), odd: t("data.oddities") };
 export const CAT_ICON = { farm: "🌱", hist: "🏛", nature: "⛰", town: "🏘", stop: "☕", odd: "✨" };
 
 // Regions for the passport. They follow the road, not county lines. Miles count from the start of each
 // state's own exit numbers (null = to the end of that state); only states in the data are used.
 const REGION_LIST = [
-  ["sd", "San Diego & Orange County", "CA", 0, 130],
-  ["la", "Los Angeles & the Grapevine", "CA", 130, 215],
-  ["ws", "The Westside", "CA", 215, 460],
-  ["dc", "Delta & Capital", "CA", 460, 560],
-  ["sv", "Sacramento Valley", "CA", 560, 665],
-  ["sh", "Shasta Country", "CA", 665, null],
-  ["rv", "Siskiyous & Rogue Valley", "OR", 0, 100],
-  ["um", "Umpqua & the Calapooyas", "OR", 100, 200],
-  ["wv", "Willamette Valley", "OR", 200, null],
-  ["sw", "Southwest Washington", "WA", 0, 100],
-  ["ps", "Puget Sound", "WA", 100, 190],
-  ["ns", "North Sound & Skagit", "WA", 190, null],
+  ["sd", t("data.san_diego_orange_county"), "CA", 0, 130],
+  ["la", t("data.los_angeles_the_grapevine"), "CA", 130, 215],
+  ["ws", t("data.the_westside"), "CA", 215, 460],
+  ["dc", t("data.delta_capital"), "CA", 460, 560],
+  ["sv", t("data.sacramento_valley"), "CA", 560, 665],
+  ["sh", t("data.shasta_country"), "CA", 665, null],
+  ["rv", t("data.siskiyous_rogue_valley"), "OR", 0, 100],
+  ["um", t("data.umpqua_the_calapooyas"), "OR", 100, 200],
+  ["wv", t("data.willamette_valley"), "OR", 200, null],
+  ["sw", t("data.southwest_washington"), "WA", 0, 100],
+  ["ps", t("data.puget_sound"), "WA", 100, 190],
+  ["ns", t("data.north_sound_skagit"), "WA", 190, null],
 ];
 export const REGIONS = REGION_LIST.filter(r => STATES.some(s => s.id === r[2])).map(([id, name, st, a, b]) => {
   const s = STATES.find(x => x.id === st);
@@ -174,28 +178,35 @@ export function camsAhead(m, dir, n = 3, max = 60) {
 }
 /** "Exit 309" inside California, "OR exit 55" elsewhere (states restart numbering). */
 export function exitName(st, ref) {
-  return st === "CA" ? `Exit ${ref}` : `${st} exit ${ref}`;
+  return st === "CA" ? t("data.exit_ref", { ref }) : t("data.st_exit_ref", { st, ref });
 }
 export function fmtMiles(d) {
-  if (d < 0.3) return "now";
+  if (d < 0.3) return t("data.now");
   if (d < 10) return d.toFixed(1);
   return String(Math.round(d));
 }
 export function fmtDuration(hours) {
   if (!isFinite(hours) || hours <= 0) return "";
   const tot = Math.round(hours * 60), h = Math.floor(tot / 60), min = tot % 60;   // whole minutes first: never "1 h 60 min"
-  return h ? `${h} h ${String(min).padStart(2, "0")} min` : `${min} min`;
+  return h ? t("data.h_mm_min", { h, mm: String(min).padStart(2, "0") }) : t("data.min_min", { min });
 }
 /** The same time for the voice (3.0.7 road test: "9 h 30 min" was read as letters or clipped): "9 hours and 30 minutes",
     "1 hour", "45 minutes". The same whole-minute rounding as fmtDuration. */
 export function fmtDurationSpoken(hours) {
   if (!isFinite(hours) || hours <= 0) return "";
   const tot = Math.max(1, Math.round(hours * 60)), h = Math.floor(tot / 60), min = tot % 60;
-  const H = h ? `${h} ${h === 1 ? "hour" : "hours"}` : "", M = min ? `${min} ${min === 1 ? "minute" : "minutes"}` : "";
-  return H && M ? `${H} and ${M}` : H || M;
+  const H = h ? `${h} ${h === 1 ? t("data.hour") : t("data.hours")}` : "", M = min ? `${min} ${min === 1 ? t("data.minute") : t("data.minutes")}` : "";
+  return H && M ? t("data.h_and_m", { H, M }) : H || M;
 }
 
 const DIR_WORD = { n: "north", s: "south", e: "east", w: "west", ne: "northeast", nw: "northwest", se: "southeast", sw: "southwest" };
+/** The way a turn-off goes, as said and shown ("east"; in Spanish its own words). detourOf().dir stays the English word. */
+const DIR_SAID = { north: t("data.dir_north"), south: t("data.dir_south"), east: t("data.dir_east"), west: t("data.dir_west"),
+  northeast: t("data.dir_northeast"), northwest: t("data.dir_northwest"), southeast: t("data.dir_southeast"), southwest: t("data.dir_southwest") };
+const dirSaid = w => DIR_SAID[w] || w;
+/** "left" / "right" (sideWord's answer, which code compares) as said and shown: "left" in English, its own word in Spanish. */
+const SIDE_SAID = { left: t("data.left"), right: t("data.right") };
+export const sideSaid = w => SIDE_SAID[w] || w || "";
 /** A turn-off place's way there: {exit, road, dir ("east"), miles} or null. (Built from the place's `detour`.) */
 export function detourOf(p) {
   const d = p && p.detour;
@@ -209,16 +220,16 @@ const detourMi = mi => (mi < 10 ? Math.round(mi * 10) / 10 : Math.round(mi));
 export function detourShort(p) {
   const d = detourOf(p);
   if (!d) return "";
-  const far = d.miles != null && d.miles >= 0.1 ? `${detourMi(d.miles)} mi${d.dir ? " " + d.dir : ""}` : d.dir;
-  return `Detour: ${far ? far + " " : ""}at exit ${d.exit}`;
+  const far = d.miles != null && d.miles >= 0.1 ? t("data.miles_mi_x1", { miles: detourMi(d.miles), x1: d.dir ? " " + dirSaid(d.dir) : "" }) : dirSaid(d.dir);
+  return t("data.detour_x1_at_exit_exit", { x1: far ? far + " " : "", exit: d.exit });
 }
 /** "At exit 54, Highway 76 heads about 4 miles east to Mission San Luis Rey." */
 export function detourSentence(p) {
   const d = detourOf(p);
   if (!d) return "";
   const v = d.miles != null && d.miles >= 0.1 ? detourMi(d.miles) : null;
-  const far = v != null ? `about ${v} ${v === 1 ? "mile" : "miles"}${d.dir ? " " + d.dir : ""}` : d.dir;
+  const far = v != null ? t("data.about_v_x1_x2", { v, x1: v === 1 ? t("data.mile") : t("data.miles"), x2: d.dir ? " " + dirSaid(d.dir) : "" }) : dirSaid(d.dir);
   return d.road
-    ? `At exit ${d.exit}, ${d.road} heads ${far ? far + " " : ""}to ${p.name}.`
-    : `Take exit ${d.exit} for ${p.name}${far ? `, ${far}` : ""}.`;
+    ? t("data.at_exit_exit_road_heads_x1_to_name", { exit: d.exit, road: d.road, x1: far ? far + " " : "", name: p.name })
+    : t("data.take_exit_exit_for_name_x1", { exit: d.exit, name: p.name, x1: far ? `, ${far}` : "" });
 }

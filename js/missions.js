@@ -19,6 +19,8 @@
 //   (a tap stamp taken back) and "mission:visit" {place, n} (arrived within 300 m).
 // Public API: api.missions (bottom of this file).
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
 let api = null;
 
 const AT_M = 300;                 // meters: you are at the mission (GPS stamp, visit card, welcome)
@@ -131,7 +133,7 @@ function setup() {
     if (!Number.isInteger(n) || n < 1 || seen.has(n)) continue;
     seen.add(n);
     const road = P.find(q => q && (q.mission === n || (q.mission && typeof q.mission === "object" && Number(q.mission.n) === n))) || null;
-    const p = { id: str(m.id) || `mission-${n}`, name: str(m.name) || `Mission ${n}`, text: str(m.text), more: str(m.more), visit: str(m.visit),
+    const p = { id: str(m.id) || `mission-${n}`, name: str(m.name) || t("missions.mission_n", { n }), text: str(m.text), more: str(m.more), visit: str(m.visit),
       src: httpUrl(m.src), src2: httpUrl(m.src2), wiki: str(m.wiki), mission: { n } };
     if (typeof m.lat === "number" && typeof m.lon === "number") { p.lat = m.lat; p.lon = m.lon; }
     for (const k of MKEYS) if (m[k] != null && m[k] !== "") p.mission[k] = m[k];
@@ -159,7 +161,7 @@ function find(q) {
   return MISSIONS.find(x => x.p.id === q) || null;
 }
 const M = x => (x.p.mission && typeof x.p.mission === "object" ? x.p.mission : {});
-const nameOf = x => str(x.p.name) || `Mission ${x.n}`;
+const nameOf = x => str(x.p.name) || t("missions.mission_n", { n: x.n });
 /** "San Juan Capistrano" for the small passport stamps. */
 const shortName = x => nameOf(x).replace(/^(Mission|Misi[oó]n)\s+/i, "") || nameOf(x);
 function yearOf(f) {
@@ -167,7 +169,7 @@ function yearOf(f) {
   const m = /\b(1[5-9]\d\d)\b/.exec(str(f));
   return m ? Number(m[1]) : null;
 }
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const MONTHS = [t("missions.january"), t("missions.february"), t("missions.march"), t("missions.april"), t("missions.may"), t("missions.june"), t("missions.july"), t("missions.august"), t("missions.september"), t("missions.october"), t("missions.november"), t("missions.december")];
 /** "1776-11-01" -> "November 1, 1776" (built by hand: Date would read it as UTC midnight, the day before in California). */
 function foundedText(f) {
   const s = str(f);
@@ -178,14 +180,14 @@ function foundedText(f) {
   }
   return s;
 }
-const ORD = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh",
-  "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth", "eighteenth", "nineteenth", "twentieth",
-  "twenty-first", "twenty-second", "twenty-third", "twenty-fourth", "twenty-fifth"];
-const ordinal = n => ORD[n - 1] || `number ${n}`;
+const ORD = [t("missions.first"), t("missions.second"), t("missions.third"), t("missions.fourth"), t("missions.fifth"), t("missions.sixth"), t("missions.seventh"), t("missions.eighth"), t("missions.ninth"), t("missions.tenth"), t("missions.eleventh"),
+  t("missions.twelfth"), t("missions.thirteenth"), t("missions.fourteenth"), t("missions.fifteenth"), t("missions.sixteenth"), t("missions.seventeenth"), t("missions.eighteenth"), t("missions.nineteenth"), t("missions.twentieth"),
+  t("missions.twenty_first"), t("missions.twenty_second"), t("missions.twenty_third"), t("missions.twenty_fourth"), t("missions.twenty_fifth")];
+const ordinal = n => ORD[n - 1] || t("missions.number_n", { n });
 /** "the seventh of the 21 missions" (empty when the data has fewer missions than this number: a test or a partial pack). */
 function rankWords(x) {
   const T = TOTAL();
-  return T > 1 && x.n <= T ? `the ${ordinal(x.n)} of the ${T} missions` : "";
+  return T > 1 && x.n <= T ? t("missions.the_n_of_the_t_missions", { n: ordinal(x.n), T }) : "";
 }
 function hoursOf(x) {
   const v = M(x).hours;
@@ -212,14 +214,14 @@ function turnoffText(x) {
   if (!a) return "";
   let first = "";
   try { first = a.detour && D().detourSentence ? D().detourSentence({ ...a.road, name: nameOf(x) }) : ""; } catch { first = ""; }
-  if (!first && a.exit) first = `Take exit ${a.exit} for ${nameOf(x)}.`;
+  if (!first && a.exit) first = t("missions.take_exit_exit_for_x1", { exit: a.exit, x1: nameOf(x) });
   if (!first) return "";
   let ahead = null;
   try {
     const s = S();
     if (a.m != null && s.m != null && isFinite(s.m)) ahead = D().aheadOf ? D().aheadOf(s.m, s.dir, a.m) : s.dir === "S" ? s.m - a.m : a.m - s.m;
   } catch { ahead = null; }
-  return ahead != null && ahead >= 0.3 ? `${first} The exit is ${fmtMi(ahead, true)} ahead.` : first;
+  return ahead != null && ahead >= 0.3 ? t("missions.first_the_exit_is_ahead_ahead", { first, ahead: fmtMi(ahead, true) }) : first;
 }
 
 /* ---------- distance ---------- */
@@ -234,16 +236,16 @@ function bearing(lat1, lon1, lat2, lon2) {
   const x = Math.cos(lat1 * r) * Math.sin(lat2 * r) - Math.sin(lat1 * r) * Math.cos(lat2 * r) * Math.cos((lon2 - lon1) * r);
   return (Math.atan2(y, x) / r + 360) % 360;
 }
-const COMPASS = ["north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest"];
+const COMPASS = [t("missions.north"), t("missions.northeast"), t("missions.east"), t("missions.southeast"), t("missions.south"), t("missions.southwest"), t("missions.west"), t("missions.northwest")];
 function compassTo(pos, p) {
   if (!pos || !hasLL(p)) return "";
   return COMPASS[Math.round(bearing(pos.lat, pos.lon, p.lat, p.lon) / 45) % 8];
 }
 /** "3.2 mi" (or "3.2 miles" with words). */
 function fmtMi(mi, words) {
-  if (!(mi >= 0.1)) return words ? "less than a tenth of a mile" : "under 0.1 mi";
+  if (!(mi >= 0.1)) return words ? t("missions.less_than_a_tenth_of_a_mile") : t("missions.under_0_1_mi");
   const v = mi < 10 ? Math.round(mi * 10) / 10 : Math.round(mi);
-  return `${v.toLocaleString("en-US")}${words ? (v === 1 ? " mile" : " miles") : " mi"}`;
+  return `${v.toLocaleString(i18n.loc("en-US"))}${words ? (v === 1 ? t("missions.mile") : t("missions.miles")) : t("missions.mi")}`;
 }
 function nearestList(lat, lon, n = 2, skip = null) {
   if (!(isFinite(lat) && isFinite(lon))) return [];
@@ -316,7 +318,7 @@ function setStamp(x, how) {
   fresh = { n: x.n, t: now() };
   emit("mission:stamp", { place: x.p, n: x.n, how });
   afterStamps();
-  if (gotCount() === TOTAL() && TOTAL() > 1 && !old) toast(`All ${TOTAL()} missions are in your passport. What a journey!`, 5000);
+  if (gotCount() === TOTAL() && TOTAL() > 1 && !old) toast(t("missions.all_total_missions_are_in_your", { TOTAL: TOTAL() }), 5000);
   return true;
 }
 function removeSelfStamp(x) {
@@ -358,15 +360,15 @@ function checkVisit(pos, R) {
 function startVisit(x) {
   const stamped = setStamp(x, "gps");   // a new stamp, or a tap stamp confirmed
   const rk = rankWords(x), yr = yearOf(M(x).founded);
-  const about = [rk, yr ? `founded in ${yr}` : ""].filter(Boolean).join(", ");
-  const tail = stamped ? " Your passport has a new stamp." : "";
+  const about = [rk, yr ? t("missions.founded_in_yr", { yr }) : ""].filter(Boolean).join(", ");
+  const tail = stamped ? t("missions.your_passport_has_a_new_stamp") : "";
   visit = {
     n: x.n, since: now(),
-    text: `Welcome to ${nameOf(x)}${about ? `, ${about}` : ""}.${tail}`,
-    lede: `Welcome.${about ? ` ${about[0].toUpperCase()}${about.slice(1)}.` : ""}${tail}`,
+    text: t("missions.welcome_to_x1_x2_tail", { x1: nameOf(x), x2: about ? `, ${about}` : "", tail }),
+    lede: t("missions.welcome_x1_tail", { x1: about ? ` ${about[0].toUpperCase()}${about.slice(1)}.` : "", tail }),
   };
   emit("mission:visit", { place: x.p, n: x.n });
-  announce(`You are at ${nameOf(x)}.${tail}`);
+  announce(t("missions.you_are_at_x1_tail", { x1: nameOf(x), tail }));
   welcome(x);
 }
 /** The short welcome, once per visit: with narration on, and not again at the same mission for a few hours. */
@@ -388,15 +390,15 @@ function facts(x) {
   const m = M(x), name = nameOf(x), out = [];
   for (const f of [].concat(m.facts || [], m.kid || [])) if (typeof f === "string" && f.trim()) out.push(f.trim());
   const yr = yearOf(m.founded), age = yr ? new Date(now()).getFullYear() - yr : 0;
-  if (yr && age > 0) out.push(`${name} was founded in ${yr}. That was ${age} years ago.`);
+  if (yr && age > 0) out.push(t("missions.name_was_founded_in_yr_that_was_age", { name, yr, age }));
   const rk = rankWords(x);
-  if (rk) out.push(`${name} was ${rk} to be founded.`);
+  if (rk) out.push(t("missions.name_was_rk_to_be_founded", { name, rk }));
   const ppl = str(m.people).replace(/\s+people$/i, "");
-  if (ppl) out.push(`The ${ppl} people lived on this land long before the mission was built.`);
-  if (str(m.founder)) out.push(`${str(m.founder)} founded this mission.`);
+  if (ppl) out.push(t("missions.the_ppl_people_lived_on_this_land_long", { ppl }));
+  if (str(m.founder)) out.push(t("missions.founder_founded_this_mission", { founder: str(m.founder) }));
   const es = str(m.name_es);
-  if (es && es !== name) out.push(`In Spanish, its name is ${es}.`);
-  if (str(m.status)) out.push(`What is it today? ${str(m.status).replace(/[.\s]+$/, "")}.`);
+  if (es && es !== name) out.push(t("missions.in_spanish_its_name_is_es", { es }));
+  if (str(m.status)) out.push(t("missions.what_is_it_today_replace", { replace: str(m.status).replace(/[.\s]+$/, "") }));
   return out;
 }
 function tellFact(x) {
@@ -418,8 +420,8 @@ function phraseList() {
   const out = [];
   for (const x of MISSIONS) {
     const rk = rankWords(x), yr = yearOf(M(x).founded);
-    const about = [rk, yr ? `founded in ${yr}` : ""].filter(Boolean).join(", ");
-    for (const tail of ["", " Your passport has a new stamp."]) out.push(`Welcome to ${nameOf(x)}${about ? `, ${about}` : ""}.${tail}`);
+    const about = [rk, yr ? t("missions.founded_in_yr", { yr }) : ""].filter(Boolean).join(", ");
+    for (const tail of ["", t("missions.your_passport_has_a_new_stamp")]) out.push(t("missions.welcome_to_x1_x2_tail", { x1: nameOf(x), x2: about ? `, ${about}` : "", tail }));
     for (const f of facts(x)) out.push(f);
     const text = [str(x.p.visit) || str(x.p.text)].filter(Boolean).join(" ");
     if (text) out.push(`${nameOf(x)}. ${text}`);
@@ -446,8 +448,8 @@ function directionsUrl(lat, lon) {
 function dirLink(x, main) {
   if (!hasLL(x.p)) return null;
   return h("a", { class: `ms-btn${main ? " main" : ""}`, href: directionsUrl(x.p.lat, x.p.lon), target: "_blank", rel: "noopener",
-    "aria-label": `Directions to ${nameOf(x)} (opens ${onApple() ? "Apple Maps" : "Google Maps"})`, "data-k": `dir:${x.n}` },
-  icon("turn"), h("span", { class: "ms-btn-t" }, "Directions"));
+    "aria-label": t("missions.directions_to_x1_opens_x2", { x1: nameOf(x), x2: onApple() ? t("missions.apple_maps") : t("missions.google_maps") }), "data-k": `dir:${x.n}` },
+  icon("turn"), h("span", { class: "ms-btn-t" }, t("missions.directions")));
 }
 function extLink(cls, href, label, text, ic, k) {
   return h("a", { class: cls, href, target: "_blank", rel: "noopener", "aria-label": label, "data-k": k }, ic ? icon(ic) : null, text);
@@ -456,36 +458,36 @@ function extLink(cls, href, label, text, ic, k) {
 /* ---------- dates ---------- */
 function dayShort(t) {
   if (!(t > 1e12)) return "";
-  try { return new Date(t).toLocaleDateString("en-US", { month: "short", day: "numeric" }); } catch { return ""; }
+  try { return new Date(t).toLocaleDateString(i18n.loc("en-US"), { month: "short", day: "numeric" }); } catch { return ""; }
 }
 function dayLong(t) {
   if (!(t > 1e12)) return "";
   try {
     const d = new Date(t), other = d.getFullYear() !== new Date(now()).getFullYear();
-    return "on " + d.toLocaleDateString("en-US", { month: "long", day: "numeric", ...(other ? { year: "numeric" } : {}) });
+    return i18n.t("missions.on_date", { date: d.toLocaleDateString(i18n.loc("en-US"), { month: "long", day: "numeric", ...(other ? { year: "numeric" } : {}) }) });
   } catch { return ""; }
 }
 function stampWords(st) {
-  if (!st) return "Not visited yet";
-  return st.how === "gps" ? `Stamped by GPS${dayLong(st.t) ? " " + dayLong(st.t) : ""}` : `You marked it visited${dayLong(st.t) ? " " + dayLong(st.t) : ""}`;
+  if (!st) return t("missions.not_visited_yet");
+  return st.how === "gps" ? t("missions.stamped_by_gps_x1", { x1: dayLong(st.t) ? " " + dayLong(st.t) : "" }) : t("missions.you_marked_it_visited_x1", { x1: dayLong(st.t) ? " " + dayLong(st.t) : "" });
 }
 
 /* ---------- shared bits of the card and the sheet ---------- */
 function kicker(x, extra) {
   const st = stampOf(x.n), T = TOTAL();
   return h("div", { class: "ms-k" }, icon("bell", "ms-ic ms-bell"),
-    h("span", null, x.n <= T && T > 1 ? `Mission ${x.n} of ${T}` : `Mission ${x.n}`),
+    h("span", null, x.n <= T && T > 1 ? t("missions.mission_n_of_t", { n: x.n, T }) : t("missions.mission_n", { n: x.n })),
     extra ? [h("span", { class: "ms-sr" }, ", "), h("span", { class: "ms-k-x" }, extra)] : null,
-    st ? [h("span", { class: "ms-sr" }, ", "), h("span", { class: `ms-chip ${st.how}` }, st.how === "gps" ? icon("check", "ms-ic ms-ic-s") : null, st.how === "gps" ? "Stamped" : "Visited")] : null);
+    st ? [h("span", { class: "ms-sr" }, ", "), h("span", { class: `ms-chip ${st.how}` }, st.how === "gps" ? icon("check", "ms-ic ms-ic-s") : null, st.how === "gps" ? t("missions.stamped") : t("missions.visited"))] : null);
 }
 function factsDl(x) {
   const m = M(x), rows = [];
   const hrs = hoursOf(x);
-  if (str(m.founded)) rows.push(["Founded", foundedText(m.founded)]);
-  if (str(m.founder)) rows.push(["Founded by", str(m.founder)]);
-  if (str(m.people)) rows.push(["Native people", str(m.people)]);
-  if (str(m.status)) rows.push(["Today", str(m.status)]);
-  if (hrs && hrs.text) rows.push(["Hours", hrs.text]);
+  if (str(m.founded)) rows.push([t("missions.founded"), foundedText(m.founded)]);
+  if (str(m.founder)) rows.push([t("missions.founded_by"), str(m.founder)]);
+  if (str(m.people)) rows.push([t("missions.native_people"), str(m.people)]);
+  if (str(m.status)) rows.push([t("missions.today"), str(m.status)]);
+  if (hrs && hrs.text) rows.push([t("missions.hours"), hrs.text]);
   if (!rows.length) return null;
   return h("dl", { class: "ms-facts" }, rows.map(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
 }
@@ -493,17 +495,17 @@ function kidBox(x) {
   if (!settings().kid || !x || !facts(x).length) return null;
   const f = shownFact && shownFact.n === x.n ? shownFact.text : "";
   return h("div", { class: "ms-kid" },
-    h("button", { class: "ms-btn ms-factbtn", type: "button", "data-k": `fact:${x.n}`, "aria-label": `Mission fact about ${nameOf(x)}`, onclick: () => tellFact(x) },
-      icon("bulb"), "Mission fact"),
+    h("button", { class: "ms-btn ms-factbtn", type: "button", "data-k": `fact:${x.n}`, "aria-label": t("missions.mission_fact_about_x1", { x1: nameOf(x) }), onclick: () => tellFact(x) },
+      icon("bulb"), t("missions.mission_fact")),
     h("p", { class: "ms-fact", "data-n": x.n, "aria-live": "polite", hidden: !f }, f));
 }
 function linksRow(x, withPage) {
   const m = M(x), hrs = hoursOf(x), site = httpUrl(m.site);
   return h("div", { class: "ms-acts" },
-    withPage ? h("button", { class: "ms-btn main", type: "button", "data-k": `page:${x.n}`, onclick: e => openMission(x, e.currentTarget) }, icon("page"), "Mission page") : null,
-    hrs && hrs.url ? extLink("ms-btn", hrs.url, `Visiting hours for ${nameOf(x)} (opens the mission's website)`, "Hours", "clock", `hours:${x.n}`) : null,
-    site ? extLink("ms-btn", site, `${nameOf(x)} official website`, "Official site", "globe", `site:${x.n}`) : null,
-    str(x.p.visit) || str(x.p.text) ? h("button", { class: "ms-btn", type: "button", "data-k": `hear:${x.n}`, "aria-label": `Hear about ${nameOf(x)}`, onclick: () => hear(x) }, icon("speaker"), "Hear it") : null);
+    withPage ? h("button", { class: "ms-btn main", type: "button", "data-k": `page:${x.n}`, onclick: e => openMission(x, e.currentTarget) }, icon("page"), t("missions.mission_page")) : null,
+    hrs && hrs.url ? extLink("ms-btn", hrs.url, t("missions.visiting_hours_for_x1_opens_the", { x1: nameOf(x) }), t("missions.hours"), "clock", `hours:${x.n}`) : null,
+    site ? extLink("ms-btn", site, t("missions.x1_official_website", { x1: nameOf(x) }), t("missions.official_site"), "globe", `site:${x.n}`) : null,
+    str(x.p.visit) || str(x.p.text) ? h("button", { class: "ms-btn", type: "button", "data-k": `hear:${x.n}`, "aria-label": t("missions.hear_about_x1", { x1: nameOf(x) }), onclick: () => hear(x) }, icon("speaker"), t("missions.hear_it")) : null);
 }
 
 /* ---------- the card on Drive (#missionCard) ---------- */
@@ -597,39 +599,39 @@ function cardAt(x) {
   const next = (hasLL(p) ? nearestList(p.lat, p.lon, 1, x) : lastR.filter(r => r.x !== x).slice(0, 1).map(r => ({ place: r.x.p, miles: r.d / MI })))[0];
   const nx = next ? find(next.place) : null;
   return h("article", { class: "ms-card ms-at", "aria-labelledby": "msCardTitle", "data-n": x.n },
-    kicker(x, "You are here"),
-    h("h2", { id: "msCardTitle" }, `You are at ${nameOf(x)}`),
+    kicker(x, t("missions.you_are_here")),
+    h("h2", { id: "msCardTitle" }, t("missions.you_are_at_x1", { x1: nameOf(x) })),
     str(m.name_es) && str(m.name_es) !== nameOf(x) ? h("p", { class: "ms-es", lang: "es" }, str(m.name_es)) : null,
-    h("p", { class: "ms-lede" }, visit ? visit.lede : "Welcome."),
+    h("p", { class: "ms-lede" }, visit ? visit.lede : t("missions.welcome")),
     str(p.visit) ? h("p", { class: "ms-visit" }, str(p.visit)) : null,
     factsDl(x),
     linksRow(x, true),
     kidBox(x),
     nx ? h("div", { class: "ms-next" },
-      h("p", { class: "ms-next-k" }, "Next nearest mission"),
+      h("p", { class: "ms-next-k" }, t("missions.next_nearest_mission")),
       h("div", { class: "ms-next-row" },
         h("div", { class: "ms-next-tt" },
           h("button", { class: "ms-name", type: "button", "data-k": `next:${nx.n}`, onclick: e => openMission(nx, e.currentTarget) }, nameOf(nx)),
-          h("span", { class: "ms-meta" }, [fmtMi(next.miles), compassTo(p, nx.p)].filter(Boolean).join(" "), stampOf(nx.n) ? " · in your passport" : "")),
+          h("span", { class: "ms-meta" }, [fmtMi(next.miles), compassTo(p, nx.p)].filter(Boolean).join(" "), stampOf(nx.n) ? t("missions.in_your_passport") : "")),
         dirLink(nx))) : null);
 }
 /** Driving by: a mission within 2 miles. */
 function cardNear(x) {
   const t = turnoffText(x);
   return h("article", { class: "ms-card ms-near", "aria-labelledby": "msCardTitle", "data-n": x.n },
-    kicker(x, "Nearby"),
-    h("h2", { id: "msCardTitle" }, `${nameOf(x)} is `, h("span", { "data-dist": x.n, "data-words": "" }, distText(x, true)), " away"),
+    kicker(x, i18n.t("missions.nearby")),
+    h("h2", { id: "msCardTitle" }, i18n.t("missions.x1_is", { x1: nameOf(x) }), h("span", { "data-dist": x.n, "data-words": "" }, distText(x, true)), i18n.t("missions.away")),
     t ? h("p", { class: "ms-turn" }, t) : null,
     h("div", { class: "ms-acts" }, dirLink(x, true),
-      h("button", { class: "ms-btn", type: "button", "data-k": `page:${x.n}`, onclick: e => openMission(x, e.currentTarget) }, icon("page"), "Mission page")),
+      h("button", { class: "ms-btn", type: "button", "data-k": `page:${x.n}`, onclick: e => openMission(x, e.currentTarget) }, icon("page"), i18n.t("missions.mission_page"))),
     kidBox(x));
 }
 /** Parked or off the road: the nearest two missions. */
 function cardList(top) {
   const T = TOTAL(), got = gotCount();
   return h("article", { class: "ms-card ms-list", "aria-labelledby": "msCardTitle" },
-    h("div", { class: "ms-k" }, icon("bell", "ms-ic ms-bell"), h("span", { id: "msCardTitle" }, top.length > 1 ? "Nearest missions" : "Nearest mission"),
-      h("span", { class: "ms-sr" }, ", "), h("span", { class: "ms-k-r" }, `${got} of ${T} stamped`)),
+    h("div", { class: "ms-k" }, icon("bell", "ms-ic ms-bell"), h("span", { id: "msCardTitle" }, top.length > 1 ? t("missions.nearest_missions") : t("missions.nearest_mission")),
+      h("span", { class: "ms-sr" }, ", "), h("span", { class: "ms-k-r" }, t("missions.got_of_t_stamped", { got, T }))),
     h("ol", { class: "ms-rows" }, top.map(r => {
       const x = r.x, st = stampOf(x.n), yr = yearOf(M(x).founded);
       return h("li", { class: `ms-row${st ? " got " + st.how : ""}` },
@@ -637,7 +639,7 @@ function cardList(top) {
         h("div", { class: "ms-row-tt" },
           h("button", { class: "ms-name", type: "button", "data-k": `row:${x.n}`, onclick: e => openMission(x, e.currentTarget) }, nameOf(x)),
           h("span", { class: "ms-meta" }, h("span", { "data-dist": x.n }, distText(x)),
-            yr ? ` · founded ${yr}` : "", st ? ` · ${st.how === "gps" ? "stamped" : "visited"}` : "")),
+            yr ? t("missions.founded_yr", { yr }) : "", st ? ` · ${st.how === "gps" ? t("missions.stamped_2") : t("missions.visited_2")}` : "")),
         dirLink(x));
     })),
     kidBox(top[0] && top[0].x));
@@ -656,33 +658,33 @@ function renderPassport() {
   const fk = a && box.contains(a) && a.dataset ? a.dataset.k : null;
   const T = TOTAL(), got = gotCount(), pct = Math.round(got / T * 100);
   const bar = h("div", { class: "ms-bar", role: "progressbar", "aria-valuemin": 0, "aria-valuemax": T, "aria-valuenow": got,
-    "aria-valuetext": `${got} of ${T}`, "aria-label": "Missions visited" }, h("i", { style: `width:${pct}%` }));
+    "aria-valuetext": t("missions.got_of_t", { got, T }), "aria-label": t("missions.missions_visited") }, h("i", { style: `width:${pct}%` }));
   const list = h("ol", { class: "ms-stamps" }, MISSIONS.map(x => {
     const st = stampOf(x.n), yr = yearOf(M(x).founded);
     const b = h("button", {
       class: `ms-stamp${st ? " got " + st.how : ""}${st && fresh.n === x.n && now() - fresh.t < 20e3 ? " fresh" : ""}`, type: "button", "data-k": `ms:${x.n}`,
-      "aria-label": `${x.n}. ${nameOf(x)}${yr ? `, founded ${yr}` : ""}. ${stampWords(st)}.`,
+      "aria-label": `${x.n}. ${nameOf(x)}${yr ? t("missions.founded_yr_2", { yr }) : ""}. ${stampWords(st)}.`,
       style: st && st.how === "gps" ? `--rot:${stampRot(x.n)}deg` : null,
       onclick: e => openMission(x, e.currentTarget),
     },
-    h("span", { class: "ms-ring", "aria-hidden": "true" }, h("small", null, "No."), h("b", null, String(x.n)), h("small", { class: "ms-yr" }, yr ? String(yr) : "")),
+    h("span", { class: "ms-ring", "aria-hidden": "true" }, h("small", null, t("missions.no")), h("b", null, String(x.n)), h("small", { class: "ms-yr" }, yr ? String(yr) : "")),
     h("span", { class: "ms-nm", "aria-hidden": "true" }, shortName(x)),
-    h("span", { class: "ms-when", "aria-hidden": "true" }, st ? (st.how === "gps" ? dayShort(st.t) || "Stamped" : "Visited") : ""));
+    h("span", { class: "ms-when", "aria-hidden": "true" }, st ? (st.how === "gps" ? dayShort(st.t) || t("missions.stamped") : t("missions.visited")) : ""));
     return h("li", null, b);
   }));
   const line = shareLine(got, T);
   const y0 = yearOf(M(MISSIONS[0]).founded);
   ppRoot = h("section", { class: "ms-pp", "aria-labelledby": "msPpTitle" },
     h("div", { class: "ms-pp-head" },
-      h("div", { class: "ms-pp-tt" }, h("h2", { class: "ms-pp-title", id: "msPpTitle" }, "Mission passport"),
-        h("p", { class: "ms-pp-sub" }, y0 ? `In founding order, starting in ${y0}.` : "In founding order.")),
-      h("p", { class: "ms-pp-count" }, h("b", null, String(got)), ` of ${T}`)),
+      h("div", { class: "ms-pp-tt" }, h("h2", { class: "ms-pp-title", id: "msPpTitle" }, t("missions.mission_passport")),
+        h("p", { class: "ms-pp-sub" }, y0 ? t("missions.in_founding_order_starting_in_y0", { y0 }) : t("missions.in_founding_order"))),
+      h("p", { class: "ms-pp-count" }, h("b", null, String(got)), t("missions.of_t", { T }))),
     bar, list,
     h("p", { class: "ms-legend" }, got
-      ? "A solid stamp means your phone was there. A dashed one is a visit you marked yourself."
-      : "Visit a mission and your phone stamps it here. Been to one before? Open it and tap I visited."),
+      ? t("missions.a_solid_stamp_means_your_phone_was")
+      : t("missions.visit_a_mission_and_your_phone_stamps")),
     got ? h("div", { class: "ms-share" }, h("p", null, line),
-      h("button", { class: "ms-btn", type: "button", "data-k": "share", "aria-label": "Share your mission passport", onclick: sharePassport }, icon("share"), "Share")) : null);
+      h("button", { class: "ms-btn", type: "button", "data-k": "share", "aria-label": t("missions.share_your_mission_passport"), onclick: sharePassport }, icon("share"), t("missions.share"))) : null);
   box.textContent = "";
   box.append(ppRoot);
   if (fk) {
@@ -691,13 +693,13 @@ function renderPassport() {
   }
 }
 function shareLine(got, T) {
-  if (got >= T && T > 1) return `I've visited all ${T} California missions.`;
-  return `I've visited ${got} of the ${T} California missions.`;
+  if (got >= T && T > 1) return t("missions.ive_visited_all_t_california_missions", { T });
+  return t("missions.ive_visited_got_of_the_t_california", { got, T });
 }
 let sharing = false;
 async function sharePassport() {
-  const text = `${shareLine(gotCount(), TOTAL())} My passport is in ${appName()}.`;
-  const data = { title: `My mission passport`, text, url: appUrl() };
+  const text = t("missions.shareline_my_passport_is_in_appname", { shareLine: shareLine(gotCount(), TOTAL()), appName: appName() });
+  const data = { title: t("missions.my_mission_passport"), text, url: appUrl() };
   const sh = api?.share;
   try {
     if (sh && typeof sh.shareText === "function") return await sh.shareText(data);
@@ -712,7 +714,7 @@ async function sharePassport() {
   const all = `${text} ${data.url}`;
   let ok = false;
   try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(all); ok = true; } } catch { ok = false; }
-  toast(ok ? "Copied. Paste it in a message to share." : all, ok ? 2600 : 6000);
+  toast(ok ? t("missions.copied_paste_it_in_a_message_to_share") : all, ok ? 2600 : 6000);
   return ok ? "copied" : "shown";
 }
 
@@ -784,7 +786,7 @@ function fillSheet(sh, x) {
   const pos = lastPos || here();
   const away = pos && hasLL(p) ? meters(pos.lat, pos.lon, p.lat, p.lon) / MI : null;
   const where = away != null && away >= 0.2 && !(visit && visit.n === x.n)
-    ? `${fmtMi(away)} ${compassTo(pos, p)} of ${pos.fix ? "you" : "your spot on the road"}` : "";
+    ? t("missions.away_pos_of_x1", { away: fmtMi(away), pos: compassTo(pos, p), x1: pos.fix ? t("missions.you") : t("missions.your_spot_on_the_road") }) : "";
   const turn = turnoffText(x);
   const hrs = hoursOf(x);
   const sh2 = api?.share && typeof api.share.sharePlace === "function" ? api.share : null;
@@ -792,28 +794,28 @@ function fillSheet(sh, x) {
     ? h("p", { class: "ms-gpsnote" }, icon("check", "ms-ic"), stampWords(st) + ".")
     : h("div", { class: "ms-visited-row" },
       h("button", { class: `ms-btn${st ? "" : " main"} ms-visited`, type: "button", "aria-pressed": String(!!st), "data-k": "visited",
-        onclick: () => toggleVisited(x) }, icon("check"), st ? "Visited" : "I visited"),
-      h("span", { class: "ms-hint" }, st ? `${stampWords(st)}. Tap again to take it back.` : "Been here? Stamp it yourself."));
+        onclick: () => toggleVisited(x) }, icon("check"), st ? t("missions.visited") : t("missions.i_visited")),
+      h("span", { class: "ms-hint" }, st ? t("missions.st_tap_again_to_take_it_back", { st: stampWords(st) }) : t("missions.been_here_stamp_it_yourself")));
   sh.textContent = "";
   add(sh, [
     h("div", { class: "sheet-head" }, h("b", { id: "msSheetTitle" }, nameOf(x)),
-      h("button", { class: "link", type: "button", onclick: closeSheet }, "Close")),
+      h("button", { class: "link", type: "button", onclick: closeSheet }, t("missions.close"))),
     ph,
-    kicker(x, yr ? `Founded ${yr}` : ""),
+    kicker(x, yr ? t("missions.founded_yr_3", { yr }) : ""),
     str(m.name_es) && str(m.name_es) !== nameOf(x) ? h("p", { class: "ms-es", lang: "es" }, str(m.name_es)) : null,
     where ? h("p", { class: "ms-where" }, where) : null,
     str(p.text) ? h("p", { class: "ms-lead" }, str(p.text)) : null,
-    str(p.visit) ? h("section", { class: "ms-sec", "aria-label": "Visiting" }, h("h3", { class: "sub" }, "Visiting"), h("p", null, str(p.visit))) : null,
+    str(p.visit) ? h("section", { class: "ms-sec", "aria-label": t("missions.visiting") }, h("h3", { class: "sub" }, t("missions.visiting")), h("p", null, str(p.visit))) : null,
     factsDl(x),
-    hrs && hrs.text ? h("p", { class: "ms-hint" }, "Hours change. Check the mission's own site before you go.") : null,
+    hrs && hrs.text ? h("p", { class: "ms-hint" }, t("missions.hours_change_check_the_missions_own")) : null,
     turn ? h("p", { class: "ms-turn" }, turn) : null,
     visitedRow,
     h("div", { class: "ms-acts" },
       dirLink(x, false),
-      hrs && hrs.url ? extLink("ms-btn", hrs.url, `Visiting hours for ${nameOf(x)} (opens the mission's website)`, "Hours", "clock", `hours:${x.n}`) : null,
-      httpUrl(m.site) ? extLink("ms-btn", httpUrl(m.site), `${nameOf(x)} official website`, "Official site", "globe", `site:${x.n}`) : null,
-      str(p.visit) || str(p.text) ? h("button", { class: "ms-btn", type: "button", "data-k": `hear:${x.n}`, "aria-label": `Hear about ${nameOf(x)}`, onclick: () => hear(x) }, icon("speaker"), "Hear it") : null,
-      sh2 && x.road ? h("button", { class: "ms-btn", type: "button", "data-k": `share:${x.n}`, "aria-label": `Share ${nameOf(x)}`, onclick: () => sh2.sharePlace(x.road) }, icon("share"), "Share") : null),
+      hrs && hrs.url ? extLink("ms-btn", hrs.url, t("missions.visiting_hours_for_x1_opens_the", { x1: nameOf(x) }), t("missions.hours"), "clock", `hours:${x.n}`) : null,
+      httpUrl(m.site) ? extLink("ms-btn", httpUrl(m.site), t("missions.x1_official_website", { x1: nameOf(x) }), t("missions.official_site"), "globe", `site:${x.n}`) : null,
+      str(p.visit) || str(p.text) ? h("button", { class: "ms-btn", type: "button", "data-k": `hear:${x.n}`, "aria-label": t("missions.hear_about_x1", { x1: nameOf(x) }), onclick: () => hear(x) }, icon("speaker"), t("missions.hear_it")) : null,
+      sh2 && x.road ? h("button", { class: "ms-btn", type: "button", "data-k": `share:${x.n}`, "aria-label": t("missions.share_x1", { x1: nameOf(x) }), onclick: () => sh2.sharePlace(x.road) }, icon("share"), t("missions.share")) : null),
     kidBox(x),
   ]);
 }
@@ -821,10 +823,10 @@ function toggleVisited(x) {
   const st = stampOf(x.n);
   if (st && st.how === "self") {
     removeSelfStamp(x);
-    toast(`Took the stamp for ${nameOf(x)} back out.`);
+    toast(t("missions.took_the_stamp_for_x1_back_out", { x1: nameOf(x) }));
   } else if (!st) {
     setStamp(x, "self");
-    toast(`${nameOf(x)} is in your passport. ${gotCount()} of ${TOTAL()}.`);
+    toast(t("missions.x1_is_in_your_passport_gotcount_of", { x1: nameOf(x), gotCount: gotCount(), TOTAL: TOTAL() }));
   }
   evaluate();
   // the page was drawn again: keep the person (and VoiceOver, and Safari, which doesn't focus a tapped button) on it
@@ -856,7 +858,7 @@ function onPlaceStamp(e) {
 function onPlaceSheet(e) {
   const x = e && e.place ? find(e.place) : null;
   if (!x || !e.acts || typeof e.acts.append !== "function") return;
-  e.acts.append(h("button", { class: "secondary", type: "button", onclick: ev => openMission(x, ev.currentTarget) }, "Mission page"));
+  e.acts.append(h("button", { class: "secondary", type: "button", onclick: ev => openMission(x, ev.currentTarget) }, t("missions.mission_page")));
 }
 function addStyles() {
   if (document.querySelector('link[href*="missions.css"]')) return;

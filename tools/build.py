@@ -17,8 +17,21 @@ Inputs
                              "detour": {exit, road, dir, miles} and "mission": n), shipped like the other stretches
   content/missions.json      the 21 California missions (data key MISSIONS). Both mission files are copied in from
                              MISSIONS_SRC (the content agent's folder) when they exist there
+  Spanish (3.1.0): the same files' *_es fields, all optional (an empty one falls back to English in the app):
+    content/v2/*.json        places: name_es, text_es, more_es, spot_es, kids_es; zones: label_es, text_es, seasons_es
+                             ({winter, spring, summer, fall}); trivia: q_es, choices_es (as many as choices), why_es
+    content/missions.json    name_es (the mission's Spanish name), text_es, more_es, visit_es, status_es, people_es, founder_es
+    content/names_es.json    the Spanish names of the two ends of the road and of the "Where to?" destinations
+    tools/images.json        alt_es (what each photo shows, in Spanish)
+    tools/postcards.json     lines_es (per place id, at most 60 characters) and templates_es (same placeholders)
+  Kids text (3.1.0, Settings > Stories for kids): places' kids (English) and kids_es (Spanish), a story told to children
+  in place of the place's text, where there is one.
 Output
   data/i5.js                 window.I5DATA = {...}
+  data/i5.es.js              window.I5DATA_ES = {version, lang: "es", ends, places: {id: {...}}, zones: {index: {...}},
+                             trivia: {index: {...}}, missions: {n: {...}}, dests: {index: {name}}, postcards}: the Spanish
+                             names and stories, laid over data/i5.js by js/i18n.js in Spanish mode (loaded only then,
+                             not in sw.js SHELL). Same version as data/i5.js: the app ignores one from another build.
   tools/build-report.txt     warnings worth a human look
 
 Run: python3 tools/build.py
@@ -170,6 +183,82 @@ def detour_of(p):
         warn.append(f"detour without an exit ({p.get('name')}): left as a plain place")
         return None
     return {k: v for k, v in q.items() if v not in ("", None)}
+
+
+def spanish(src, fields):
+    """{app key: text} from a content entry's Spanish fields ({"text": "text_es", ...}); only filled ones."""
+    out = {}
+    for k, f in fields.items():
+        v = src.get(f)
+        if isinstance(v, str) and v.strip():
+            out[k] = v.strip()
+    return out
+
+
+def spanish_overlay(version, places, zones, trivia, dests, images, postcards):
+    """data/i5.es.js: the Spanish names and stories, keyed so js/i18n.js can lay them over data/i5.js of this same build
+    (places by id, zones and trivia by their index here, missions by number, destinations by index). Takes the _es
+    fields off places, zones and trivia (data/i5.js never carries them)."""
+    names = load_content_json("names_es.json")
+    out = {"version": version, "lang": "es", "ends": None, "places": {}, "zones": {}, "trivia": {}, "missions": {}, "dests": {},
+           "postcards": {}}
+    ends = names.get("ends") if isinstance(names.get("ends"), dict) else {}
+    e = {side: spanish(v, {"short": "short", "long": "long"}) for side, v in ends.items() if side in ("S", "N") and isinstance(v, dict)}
+    out["ends"] = {k: v for k, v in e.items() if v} or None
+    pc_es = postcards.get("lines_es", {}) if isinstance(postcards.get("lines_es"), dict) else {}
+    for p in places:
+        es = p.pop("_es", {})
+        im = images.get(p["id"]) if p["id"] in images else images.get(p.get("wiki") or "")
+        if im and isinstance(im.get("alt_es"), str) and im["alt_es"].strip() and p.get("img"):
+            es["alt"] = im["alt_es"].strip()
+        pc = pc_es.get(p["id"])
+        if isinstance(pc, str) and 0 < len(pc.strip()) <= 60:
+            es["pc"] = pc.strip()
+        if es.get("kids") and not p.get("kids"):
+            warn.append(f"kids_es without an English kids text: {p['id']}")
+        if es:
+            out["places"][p["id"]] = es
+    for i, z in enumerate(zones):
+        es = z.pop("_es", None)
+        if es:
+            out["zones"][str(i)] = es
+    for i, t in enumerate(trivia):
+        es = t.pop("_es", None)
+        if es:
+            out["trivia"][str(i)] = es
+    mf = os.path.join(ROOT, "content", "missions.json")
+    if os.path.exists(mf):
+        try:
+            d = json.load(open(mf))
+            rows = d.get("missions", []) if isinstance(d, dict) else d
+        except ValueError:
+            rows = []
+        for m in rows if isinstance(rows, list) else []:
+            if not isinstance(m, dict) or m.get("n") is None:
+                continue
+            es = spanish(m, {"name": "name_es", "text": "text_es", "more": "more_es", "visit": "visit_es", "status": "status_es",
+                             "people": "people_es", "founder": "founder_es"})
+            if es:
+                out["missions"][str(int(m["n"]))] = es
+    dn = names.get("dests") if isinstance(names.get("dests"), dict) else {}
+    for i, dd in enumerate(dests):
+        v = dn.get(dd["name"])
+        if isinstance(v, str) and v.strip():
+            out["dests"][str(i)] = {"name": v.strip()}
+    tm = postcards.get("templates_es") if isinstance(postcards.get("templates_es"), dict) else {}
+    for k, v in tm.items():
+        if isinstance(v, list) and v and all(isinstance(x, str) and x.strip() for x in v):
+            out["postcards"][k] = [x.strip() for x in v]
+    return out
+
+
+def load_content_json(name):
+    path = os.path.join(ROOT, "content", name)
+    try:
+        return json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+    except ValueError as e:
+        warn.append(f"BAD JSON content/{name}: {e}")
+        return {}
 
 
 def write_safely(path, text):
@@ -365,9 +454,13 @@ def main():
         }
         if dist is not None:
             q["off"] = round(dist, 1)
-        for k_in, k_out in (("more", "more"), ("spot", "spot"), ("months", "months"), ("src", "src"), ("src2", "src2"), ("wiki", "wiki")):
+        for k_in, k_out in (("more", "more"), ("spot", "spot"), ("months", "months"), ("src", "src"), ("src2", "src2"), ("wiki", "wiki"),
+                            ("kids", "kids")):
             if p.get(k_in):
                 q[k_out] = p[k_in]
+        es = spanish(p, {"name": "name_es", "text": "text_es", "more": "more_es", "spot": "spot_es", "kids": "kids_es"})
+        if es:
+            q["_es"] = es
         if isinstance(lat, (int, float)):
             q["lat"], q["lon"] = round(lat, 5), round(lon, 5)
         if det:
@@ -394,6 +487,21 @@ def main():
             for key in ("text", "more", "src", "src2", "wiki", "ex", "m", "side", "vis", "off", "lat", "lon", "detour", "mission"):
                 if key in p:
                     hit[key] = p[key]
+            # 3.1.0: the stories that come with the turn-off's narration (its kids text, and the Spanish of its text, long
+            # story and kids text) replace the old place's; the name and the I-spy line stay the old place's, with their Spanish
+            if "text" in p:
+                hit.pop("kids", None)
+                if p.get("kids"):
+                    hit["kids"] = p["kids"]
+                es_hit, es_p = dict(hit.get("_es") or {}), p.get("_es") or {}
+                for k in ("text", "more", "kids"):
+                    es_hit.pop(k, None)
+                    if k in es_p:
+                        es_hit[k] = es_p[k]
+                if es_hit:
+                    hit["_es"] = es_hit
+                else:
+                    hit.pop("_es", None)
             places.remove(p)
             warn.append(f"mission turn-off merged into the existing place '{hit['name']}' ({hit['_file']})")
     for p in places:
@@ -452,6 +560,13 @@ def main():
         zz = {"from": round(a, 1), "to": round(b, 1), "label": z.get("label", "").strip(), "text": z.get("text", "").strip()}
         if z.get("seasons"):
             zz["seasons"] = {k: v for k, v in z["seasons"].items() if v}
+        es = spanish(z, {"label": "label_es", "text": "text_es"})
+        if isinstance(z.get("seasons_es"), dict):
+            se = {k: v.strip() for k, v in z["seasons_es"].items() if k in ("winter", "spring", "summer", "fall") and isinstance(v, str) and v.strip()}
+            if se:
+                es["seasons"] = se
+        if es:
+            zz["_es"] = es
         zones.append(zz)
     zones.sort(key=lambda z: z["from"])
     # close small gaps and trim overlaps
@@ -476,7 +591,16 @@ def main():
         m = exit_m(st, t.get("exit"))
         if m is None:
             continue
-        trivia.append({"m": round(m, 1), "q": t["q"], "choices": t["choices"], "answer": t["answer"], "why": t.get("why", ""), "src": t.get("src")})
+        tq = {"m": round(m, 1), "q": t["q"], "choices": t["choices"], "answer": t["answer"], "why": t.get("why", ""), "src": t.get("src")}
+        es = spanish(t, {"q": "q_es", "why": "why_es"})
+        ch = t.get("choices_es")
+        if isinstance(ch, list) and len(ch) == len(t["choices"]) and all(isinstance(c, str) and c.strip() for c in ch):
+            es["choices"] = [c.strip() for c in ch]
+        elif ch:
+            warn.append(f"trivia choices_es left out (not one per choice): {t.get('q')}")
+        if es:
+            tq["_es"] = es
+        trivia.append(tq)
 
     nums = {q["n"] for q in missions}
     for p in places:
@@ -500,8 +624,10 @@ def main():
     in_road = lambda m: m is not None and -0.5 <= m <= end + 0.5  # noqa: E731
     keep_outline = set(SCOPE).union(*(NEIGHBORS[s] for s in SCOPE))
     elev = (X.get("elev") or [])[: int(math.ceil(end)) + 1]
+    version = __import__("datetime").date.today().isoformat()
+    es_out = spanish_overlay(version, places, zones, trivia, dests, images, postcards)
     out = {
-        "version": __import__("datetime").date.today().isoformat(),
+        "version": version,
         "scope": SCOPE,
         "ends": {"S": {"short": "Mexico", "long": "the Mexico border"}, "N": END_NAMES[SCOPE[-1]]},
         "states": states, "route": route, "places": places, "zones": zones, "trivia": trivia, "dests": dests,
@@ -520,11 +646,17 @@ def main():
     js = json.dumps(out, ensure_ascii=False, separators=(",", ":"))
     dest = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else os.path.join(ROOT, "data", "i5.js")
     write_safely(dest, "// Generated by tools/build.py. Do not edit by hand.\nwindow.I5DATA=" + js + ";\n")
+    es_js = json.dumps(es_out, ensure_ascii=False, separators=(",", ":"))
+    es_dest = sys.argv[sys.argv.index("--out-es") + 1] if "--out-es" in sys.argv else os.path.join(ROOT, "data", "i5.es.js")
+    write_safely(es_dest, "// Generated by tools/build.py from the content's *_es fields. Do not edit by hand.\nwindow.I5DATA_ES=" + es_js + ";\n")
     write_safely(os.path.join(HERE, "build-report.txt"), "\n".join(warn) + "\n")
     per_state = {s["id"]: sum(1 for p in places if p["st"] == s["id"]) for s in states}
     print(f"{'v2' if v2 else 'v1'} content, scope {'+'.join(SCOPE)} (0-{end:.1f} mi): {len(places)} places {per_state}, {len(zones)} zones, {len(trivia)} trivia; "
           f"route {len(route)} pts; {len(out['cams'])} cams; {len(out['services'])} exits with services; {len(out['rest'])} rest areas; "
           f"{len(js) // 1024} KB; {len(warn)} warnings -> tools/build-report.txt")
+    print(f"Spanish: {len(es_out['places'])} places, {len(es_out['zones'])} zones, {len(es_out['trivia'])} trivia, {len(es_out['missions'])} missions, "
+          f"{len(es_out['dests'])} destinations; kids text {sum(1 for p in places if p.get('kids'))} (English), "
+          f"{sum(1 for p in es_out['places'].values() if p.get('kids'))} (Spanish); {len(es_js) // 1024} KB -> data/i5.es.js")
 
 
 if __name__ == "__main__":

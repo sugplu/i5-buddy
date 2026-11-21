@@ -13,6 +13,51 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
+## 3.1.0: the language layer (Spanish) and Stories for kids
+
+Everything the app shows or says now comes from a dictionary, so I-5 Buddy can run in Spanish (Joseph's yes, 2026-11-21).
+This release is the plumbing: the English app shows and says exactly what 3.0.9 did, and the Spanish words and stories
+are filled in by a later content step. Nothing changes for an English user except two new Settings rows.
+
+- **`js/i18n.js`** picks the language once per start: `?lang=es` / `?lang=en` in the address (saved), else the saved
+  choice (store `lang`), else on the first run the phone's language (`es*` = Spanish, only once the Spanish dictionary is
+  90% filled; until then a Spanish phone gets English and is asked again next start). `<html lang>` follows it.
+  Settings > Language (English / Español, each in its own language) saves it and restarts the app in it (a drive that was
+  running is picked back up by the resume logic). The Spanish site pages (`es/`, `tools/guides.py`) open the app with
+  `?lang=es`.
+- **Words.** Every user-facing string in `js/*.js` and `js/games/*.js` is `t("ns.key")` or `t("ns.key", {name: value})`
+  (`i18n.t(...)` in functions that have a local named `t`); `i18n/en.json` is the source (2,554 keys), `i18n/es.json`
+  has the same keys and empty values for now, and an empty Spanish value shows its English, one key at a time.
+  `index.html` marks its words with `data-i18n="key"` (text), `data-i18n-html` (markup) and `data-i18n-attr="aria-label:key"`;
+  `applyDom()` swaps them in Spanish only, so the English page is the page as written. Plurals are two keys (one/many),
+  never English "+ s". Numbers, dates and times go through `loc(orig)`: the old locale argument in English, `es-US` /
+  `es-MX` in Spanish. Miles stay miles. To add a string: write `t("ns.new_key")`, add the key to `en.json` and the same
+  key with `""` to `es.json`; `tools/test-i18n.html?s=keys` fails until both are there. `python3 tools/i18n_context.py`
+  lists where each key is used and which ones are spoken, for whoever writes `es.json` (notes in `i18n/README.md`).
+- **Stories in Spanish.** `tools/build.py` also writes `data/i5.es.js` (`window.I5DATA_ES`) from the content's `*_es`
+  fields (places `name_es`, `text_es`, `more_es`, `spot_es`, `kids_es`; zones `label_es`, `text_es`, `seasons_es`; trivia
+  `q_es`, `choices_es`, `why_es`; `content/missions.json` `name_es`, `text_es`, `more_es`, `visit_es`, `status_es`,
+  `people_es`, `founder_es`; `content/names_es.json` for the ends of the road and the Where to? names; `tools/images.json`
+  `alt_es`; `tools/postcards.json` `lines_es`, `templates_es`). Spanish mode loads it (at most 5 s, then the English
+  stories; not in sw.js SHELL, the service worker keeps it once fetched) and `localizeData()` lays it over the road data,
+  keeping the English in each item's `en`. A file from another build (another `version`) is ignored.
+  Today it holds the 263 Spanish photo descriptions and the 21 missions' Spanish names.
+- **Spanish narration** speaks the Spanish text with the device's own Spanish voice (es-MX and es-US first, never a
+  novelty voice; Settings > Voice lists Spanish voices and saves the pick as `settings.voiceEs`). No English recording is
+  ever played in Spanish. When Joseph picks the Spanish voice (samples: `~/Dominares/ship/i5-es-voices/`) and its clips are
+  recorded like Asteria's, `ES_VOICE_ID` in `js/voice.js` names its folder. English keeps Asteria exactly as before.
+- **Ask Buddy stays English** in this build: the recognizer listens for English, the answers are data/ask.js's, names are
+  matched in English (`p.en.name`); in Spanish the mic button and the listening panel say it answers in English.
+- **Stories for kids** (Settings, off by default, `settings.kidStories`): a place's `kids` text (Spanish: `kids_es`)
+  replaces its story where it has one: the spoken heads-up, Hear it, Drive's card, Ahead, the place sheet and the map
+  cards (`narrator.storyOf`); the long story is not played after it (`narrator.moreOf`); Tell me more still tells it. A
+  place without kids text keeps its story; Spanish never reads an English kids text.
+- Tests: `tools/test-i18n.html?s=keys|es|kids` (64 pages in the suite now). The privacy notice names the language setting
+  and the Spanish voices (2026-11-21.1).
+- Follow-ups: the Spanish words and stories (content step), the Spanish voice and its clips, Asteria clips for English
+  kids text, Spanish voice commands and Ask Buddy answers, Spanish privacy and support pages, Apple's Spanish App Store
+  badge, Geoapify turn-by-turn text in Spanish (Say street names), `get/` passing `?lang=es` on.
+
 ## 3.0.1: the strength-audit fixes, chain controls from the Worker, the Grapevine page
 
 The fixes from the 2026-11-15 strength audit (`/Volumes/sugsair/dominares/i5-buddy-quality/2026-11-15-strength-audit/`),
@@ -152,6 +197,9 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `support.html` | The support page (the App Store listing's Support URL): help, contact, and "Get the app". Cached with the app shell. |
 | `privacy.html` | The privacy notice (a standalone page on `app.css`, cached with the app shell), linked from Settings > About, the feedback form, the welcome card and the last line of Drive. When a change makes the app send or store something new, update it with a new effective date and version. |
 | `data/i5.js` | Generated data (route, places, zones, trivia, exits, services, cameras, elevation, map outline). Don't edit; run the build. |
+| `data/i5.es.js` | Generated Spanish names and stories (3.1.0), laid over `data/i5.js` in Spanish mode; loaded only then. Don't edit; run the build. |
+| `i18n/en.json`, `i18n/es.json`, `js/i18n.js` | The words: English (the source) and Spanish (same keys; empty = English shows), and the module that picks the language and fills the blanks. Notes for translators: `i18n/README.md`. |
+| `content/names_es.json` | Spanish names of the two ends of the road and of the Where to? destinations (3.1.0; empty = English). |
 | `content/v2/*.json` | Researched and fact-checked content, one file per stretch of road (+ `*-gaps.json`). Edit these. |
 | `content/v2/logs/` | Fact-check change logs. |
 | `content/missions.json`, `content/v2/ca-missions.json` | The 21 missions (data key `MISSIONS`) and the I-5 turn-offs to the ones near I-5 (places with `detour` and `mission`). `tools/build.py` copies both in from the content agent's folder (`I5_MISSIONS_SRC`, default `/Volumes/sugsair/dominares/road-buddies/i5-missions`) when they exist there. |
@@ -223,6 +271,7 @@ python3 tools/run_tests.py -j 4            # four pages at a time
 #                      tools/qa-tmp/transcript-<dir>-<mode>.jsonl, for claude-power/jobs/i5_drive_eval.py to read (silent)
 #   /tools/test-missions.html   the missions module on synthetic data (passport, visit, nearest, kid, sheet, layout)
 #   /tools/test-getapp.html?s=app|get|site   "Get the iPhone app" by browser, i5.dominares.org/get, store tags, sw.js offline pages
+#   /tools/test-i18n.html?s=keys|es|kids   the language layer: key coverage, Spanish end to end (fixture words), Stories for kids
 ```
 
 When you change any app file, bump `VERSION` in `sw.js` so installed phones pick up the update.

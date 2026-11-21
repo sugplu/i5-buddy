@@ -15,9 +15,13 @@
 // Every failure is quiet: the caller shows a friendly note and goes back to the 2D map. Tests run with the network blocked,
 // so there this always ends in that fallback.
 
+import { t } from "./i18n.js";
+import * as i18n from "./i18n.js";
+/** A place's story as narrated (3.1.0: its kids text with Stories for kids on, narrator.storyOf), else its text. */
+const storyOf = (api, p) => (api && api.narrator && typeof api.narrator.storyOf === "function" ? api.narrator.storyOf(p) : p.text);
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DEM_TILES = ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"];
-export const ATTRIBUTION = "© OpenStreetMap contributors, OpenFreeMap · Terrain: Mapzen/AWS Terrain Tiles";
+export const ATTRIBUTION = t("map3d.openstreetmap_contributors_openfreemap");
 const FIRST_TILE_MS = 12000;     // no picture by then: give up
 const LIB_MS = 12000;            // the MapLibre script itself
 const PITCH = 60, ZOOM = 11.8, EXAGGERATION = 1.4;
@@ -25,7 +29,7 @@ const FLY_MILES = 30, FLY_MS = 26000;
 const MOVING_MPH = 3;
 // 3.0: more to do in 3D
 const CHASE = { pitch: 74, zoom: 15.6 };          // the chase camera: low behind the car, 3D buildings in view
-const EXAG = [[1, "Real"], [1.4, "Bold"], [2.3, "Dramatic"]];   // the Mountains button cycles these
+const EXAG = [[1, t("map3d.real")], [1.4, t("map3d.bold")], [2.3, t("map3d.dramatic")]];   // the Mountains button cycles these
 const PHOTO_MIN_ZOOM = 10.2, PHOTO_MAX = 12;       // photo pins near the middle of the view, from this zoom
 const TOUR_STOPS = 8, ORBIT_DEG_S = 9;
 
@@ -122,7 +126,7 @@ export async function open(api, host, opts = {}) {
   try {
     if (!webglOK()) return giveUp(ses);
     host.classList.add("mp3d");
-    ses.status = el("p", "mp3d-status", "Loading the 3D map…");
+    ses.status = el("p", "mp3d-status", t("map3d.loading_the_3d_map"));
     ses.status.setAttribute("role", "status");
     host.append(ses.status);
     const lib = await loadLib();
@@ -281,7 +285,7 @@ function start(ses, lib) {
     ses.exag = (ses.exag + 1) % EXAG.length;
     try { map.setTerrain({ source: "dem", exaggeration: EXAG[ses.exag][0] }); } catch (e) { warn(e); }
     ui.sync();
-    try { api.ui.toast(["Mountains at their real height.", "Mountains a little taller, so they read on a phone.", "Dramatic mountains: more than twice their height."][ses.exag], 2500); } catch {}
+    try { api.ui.toast([t("map3d.mountains_at_their_real_height"), t("map3d.mountains_a_little_taller_so_they_read"), t("map3d.dramatic_mountains_more_than_twice")][ses.exag], 2500); } catch {}
   };
   // a compass that also shows the tilt; tap it to face north
   try { map.addControl(new lib.NavigationControl({ showZoom: false, visualizePitch: true }), "top-left"); } catch (e) { warn(e); }
@@ -412,7 +416,7 @@ function buildRide(ses, lib, map, T, coordAt, heading) {
   const draw = (ra, face) => {
     spriteEl.textContent = "";
     if (ra) {
-      try { spriteEl.append(ra.svg({ size: 82, facing: face, label: "Your ride" })); } catch (e) { warn(e); }
+      try { spriteEl.append(ra.svg({ size: 82, facing: face, label: t("map3d.your_ride") })); } catch (e) { warn(e); }
     }
     if (!spriteEl.firstChild) spriteEl.append(el("span", "mp3d-dot"));
     ses.rideState();
@@ -445,31 +449,31 @@ function buildUi(ses, map, T) {
     b.append(label);
     return b;
   };
-  const tour = mk("tour", "Landmark tour", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z" fill="currentColor"/></svg>');
-  const fly = mk("fly", "Fly the road", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12 21 4l-5 16-4.2-6.3L3 12Z" fill="currentColor"/></svg>');
-  const chase = mk("chase", "Chase cam", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-6.5A2 2 0 0 0 15.1 9H8.9A2 2 0 0 0 7 10.5L5 17Zm1 1.5a1.5 1.5 0 1 0 3 0Zm9 0a1.5 1.5 0 1 0 3 0ZM12 2l3 4H9l3-4Z" fill="currentColor"/></svg>');
-  const peaks = mk("peaks", "Mountains", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20 9 7l4 7 2.5-4L22 20H2Z" fill="currentColor"/></svg>');
-  const stop = mk("stop", "Stop", '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>');
-  const follow = mk("follow", "Follow me", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4.8 20.5 12 16.8l7.2 3.7L12 2.5Z" fill="currentColor"/></svg>');
+  const tour = mk("tour", t("map3d.landmark_tour"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z" fill="currentColor"/></svg>');
+  const fly = mk("fly", t("map3d.fly_the_road"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12 21 4l-5 16-4.2-6.3L3 12Z" fill="currentColor"/></svg>');
+  const chase = mk("chase", t("map3d.chase_cam"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l-2-6.5A2 2 0 0 0 15.1 9H8.9A2 2 0 0 0 7 10.5L5 17Zm1 1.5a1.5 1.5 0 1 0 3 0Zm9 0a1.5 1.5 0 1 0 3 0ZM12 2l3 4H9l3-4Z" fill="currentColor"/></svg>');
+  const peaks = mk("peaks", t("map3d.mountains"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20 9 7l4 7 2.5-4L22 20H2Z" fill="currentColor"/></svg>');
+  const stop = mk("stop", t("map3d.stop"), '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>');
+  const follow = mk("follow", t("map3d.follow_me"), '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 4.8 20.5 12 16.8l7.2 3.7L12 2.5Z" fill="currentColor"/></svg>');
   stop.hidden = true; follow.hidden = true;
   const label = (b, text) => { const last = b.lastChild; if (last && last.nodeType === 3) last.textContent = text; };
   box.append(follow, tour, fly, chase, peaks, stop);
   const at = el("p", "mp3d-attrib");
-  const a1 = el("a", null, "OpenStreetMap"); a1.href = "https://www.openstreetmap.org/copyright";
-  const a2 = el("a", null, "OpenFreeMap"); a2.href = "https://openfreemap.org";
-  const a3 = el("a", null, "Mapzen/AWS Terrain Tiles"); a3.href = "https://registry.opendata.aws/terrain-tiles/";
+  const a1 = el("a", null, t("map3d.openstreetmap")); a1.href = "https://www.openstreetmap.org/copyright";
+  const a2 = el("a", null, t("map3d.openfreemap")); a2.href = "https://openfreemap.org";
+  const a3 = el("a", null, t("map3d.mapzen_aws_terrain_tiles")); a3.href = "https://registry.opendata.aws/terrain-tiles/";
   for (const a of [a1, a2, a3]) { a.target = "_blank"; a.rel = "noopener"; }
-  at.append("© ", a1, " contributors, ", a2, " · Terrain: ", a3);
+  at.append("© ", a1, t("map3d.contributors"), a2, t("map3d.terrain"), a3);
   host.append(box, at);
   const ui = {
     onFollow() {}, onFly() {}, onStop() {}, onTour() {}, onChase() {}, onMountains() {},
     sync() {
       const busy = !!ses.flying || !!ses.tour;
       follow.hidden = ses.follow || busy; fly.hidden = busy; tour.hidden = busy; stop.hidden = !busy;
-      label(stop, ses.tour ? "End tour" : "Stop");
-      label(chase, ses.chase ? "Overview" : "Chase cam");
+      label(stop, ses.tour ? t("map3d.end_tour") : t("map3d.stop"));
+      label(chase, ses.chase ? t("map3d.overview") : t("map3d.chase_cam"));
       chase.setAttribute("aria-pressed", String(!!ses.chase));
-      label(peaks, "Mountains: " + EXAG[ses.exag][1]);
+      label(peaks, t("map3d.mountains_x1", { x1: EXAG[ses.exag][1] }));
       box.classList.toggle("carded", !!ses.cardPlace && !ses.tour);
     },
   };
@@ -491,7 +495,7 @@ function flyRoad(ses, map, ui, coordAt, roadBearing, curM, MAXM) {
   const dir = st.dir === "S" ? -1 : 1, d = dir < 0 ? "S" : "N";
   const m0 = curM() ?? 0;
   const m1 = clamp(m0 + dir * FLY_MILES, 0, MAXM);
-  if (Math.abs(m1 - m0) < 1 || !coordAt(m1)) { try { api.ui.toast("That is the end of the road."); } catch {} return; }
+  if (Math.abs(m1 - m0) < 1 || !coordAt(m1)) { try { api.ui.toast(t("map3d.that_is_the_end_of_the_road")); } catch {} return; }
   ses.follow = false;
   if (reduced()) {
     // no animation: jump to the stretch ahead and let the user look around
@@ -602,7 +606,7 @@ function addBells(map, api, ses) {
     const b = el("button", "mp3d-bell" + (got ? " got" : ""));
     b.type = "button";
     b.innerHTML = BELL;
-    b.setAttribute("aria-label", `${m.name}${got ? ", stamped in your passport" : ""}`);
+    b.setAttribute("aria-label", `${m.name}${got ? t("map3d.stamped_in_your_passport") : ""}`);
     b.addEventListener("click", e => { e.stopPropagation(); try { if (api.missions && api.missions.open) api.missions.open(m.n); } catch (er) { warn(er); } });
     try { const mk = new ses.lib.Marker({ element: b, anchor: "bottom" }).setLngLat([m.lon, m.lat]).addTo(map); mk._i5 = [m.lat, m.lon]; ses.bells.push(mk); } catch (e) { warn(e); }
   }
@@ -740,36 +744,36 @@ function showCard(ses, p, opts = {}) {
   const head = el("div", "mp3d-card-head");
   head.append(el("h3", null, p.name));
   const meta = [];
-  try { if (api.data.exitName && p.ex) meta.push(api.data.exitName(p.st, p.ex)); else if (num(p.m)) meta.push(`Mile ${Math.round(p.m)}`); } catch { if (num(p.m)) meta.push(`Mile ${Math.round(p.m)}`); }
+  try { if (api.data.exitName && p.ex) meta.push(api.data.exitName(p.st, p.ex)); else if (num(p.m)) meta.push(i18n.t("map3d.mile_m", { m: Math.round(p.m) })); } catch { if (num(p.m)) meta.push(i18n.t("map3d.mile_m", { m: Math.round(p.m) })); }
   const side = p.detour && api.data.detourShort ? api.data.detourShort(p) : sideText(api, p);
   if (side) meta.push(side);
   if (api.data.CATS && api.data.CATS[p.cat]) meta.push(api.data.CATS[p.cat]);
   head.append(el("p", "mp3d-card-meta", meta.join(" · ")));
   const x = el("button", "mp3d-card-x");
-  x.type = "button"; x.setAttribute("aria-label", "Close"); x.textContent = "×";
+  x.type = "button"; x.setAttribute("aria-label", i18n.t("map3d.close")); x.textContent = "×";
   x.addEventListener("click", () => { endTour(ses, false); hideCard(ses); });
   top.append(head, x);
-  card.append(top, el("p", "mp3d-card-text", firstWords(api, p.text, 170)));
-  if (p.img && p.img.by) card.append(el("p", "mp3d-card-credit", `Photo: ${p.img.by}${p.img.lic ? ", " + p.img.lic : ""}`));
+  card.append(top, el("p", "mp3d-card-text", firstWords(api, storyOf(api, p), 170)));
+  if (p.img && p.img.by) card.append(el("p", "mp3d-card-credit", i18n.t("map3d.photo_by_x1", { by: p.img.by, x1: p.img.lic ? ", " + p.img.lic : "" })));
   const acts = el("div", "mp3d-card-acts");
   const b = (cls, text, fn) => { const bt = el("button", "mp3d-cbtn " + cls, text); bt.type = "button"; bt.addEventListener("click", fn); acts.append(bt); return bt; };
   if (opts.tour) {
     const t = ses.tour;
-    b("pause", t && t.paused ? "Resume" : "Pause", () => toggleTourPause(ses));
-    b("next", t && t.i >= t.list.length - 1 ? "Finish" : "Next stop", () => { if (ses.tour) { stopTourVoice(ses); tourStep(ses, 1); } });
-    card.append(el("p", "mp3d-card-step", t ? `Stop ${t.i + 1} of ${t.list.length}` : ""));
+    b("pause", t && t.paused ? i18n.t("map3d.resume") : i18n.t("map3d.pause"), () => toggleTourPause(ses));
+    b("next", t && t.i >= t.list.length - 1 ? i18n.t("map3d.finish") : i18n.t("map3d.next_stop"), () => { if (ses.tour) { stopTourVoice(ses); tourStep(ses, 1); } });
+    card.append(el("p", "mp3d-card-step", t ? i18n.t("map3d.stop_x1_of_length", { x1: t.i + 1, length: t.list.length }) : ""));
   } else {
-    b("hear", "Hear it", () => { try { api.voice.unlock(); api.narrator.hear(p); } catch (e) { warn(e); } });
-    b("orbit", "Orbit", () => { const c = placeCoord(api, p); if (c) startOrbit(ses, [c[1], c[0]]); });
-    b("more", "Details", () => { try { api.ui.placeSheet(p); } catch (e) { warn(e); } });
+    b("hear", i18n.t("map3d.hear_it"), () => { try { api.voice.unlock(); api.narrator.hear(p); } catch (e) { warn(e); } });
+    b("orbit", i18n.t("map3d.orbit"), () => { const c = placeCoord(api, p); if (c) startOrbit(ses, [c[1], c[0]]); });
+    b("more", i18n.t("map3d.details"), () => { try { api.ui.placeSheet(p); } catch (e) { warn(e); } });
     if (api.nav && typeof api.nav.preview === "function") {
-      b("go", "Navigate here", () => { const c = placeCoord(api, p); if (c) { try { api.nav.preview({ id: p.id, name: p.name, lat: c[0], lon: c[1], m: p.m, kind: "place" }); } catch (e) { warn(e); } } });
+      b("go", i18n.t("map3d.navigate_here"), () => { const c = placeCoord(api, p); if (c) { try { api.nav.preview({ id: p.id, name: p.name, lat: c[0], lon: c[1], m: p.m, kind: "place" }); } catch (e) { warn(e); } } });
     }
     // Before and Next ride in the card's top row, beside the close button
     const prev = neighbour(api, p, -1), next = neighbour(api, p, 1);
     const arrow = (cls, text, label, q) => { const bt = el("button", "mp3d-card-arrow " + cls, text); bt.type = "button"; bt.setAttribute("aria-label", label); bt.addEventListener("click", () => selectPlace(ses, q)); return bt; };
-    if (prev) top.insertBefore(arrow("prev", "‹", "The landmark before: " + prev.name, prev), x);
-    if (next) top.insertBefore(arrow("next", "›", "The next landmark: " + next.name, next), x);
+    if (prev) top.insertBefore(arrow("prev", "‹", i18n.t("map3d.the_landmark_before_name", { name: prev.name }), prev), x);
+    if (next) top.insertBefore(arrow("next", "›", i18n.t("map3d.the_next_landmark_name", { name: next.name }), next), x);
   }
   card.append(acts);
   ses.host.append(card);
@@ -804,7 +808,7 @@ function startTour(ses) {
   if (ses.tour || !ses.map) return;
   stopFly(ses, ses.ui, false);
   const list = tourList(ses);
-  if (!list.length) { try { ses.api.ui.toast("There are no landmarks ahead for a tour."); } catch {} return; }
+  if (!list.length) { try { ses.api.ui.toast(t("map3d.there_are_no_landmarks_ahead_for_a")); } catch {} return; }
   try { ses.api.voice.unlock(); } catch {}
   ses.tour = { list, i: -1, paused: false, run: 0 };
   ses.follow = false;
@@ -825,7 +829,7 @@ function tourStep(ses, delta) {
   const t = ses.tour;
   if (!t || !ses.alive) return;
   t.i += delta;
-  if (t.i >= t.list.length) { endTour(ses, false); try { ses.api.ui.toast("That's the end of the tour."); } catch {} return; }
+  if (t.i >= t.list.length) { endTour(ses, false); try { ses.api.ui.toast(i18n.t("map3d.thats_the_end_of_the_tour")); } catch {} return; }
   if (t.i < 0) t.i = 0;
   t.paused = false;
   const run = ++t.run, p = t.list[t.i], api = ses.api;
@@ -840,7 +844,7 @@ function tourStep(ses, delta) {
     if (c) startOrbit(ses, [c[1], c[0]], ORBIT_DEG_S * 0.6);
     const t0 = Date.now();
     let said = null;
-    try { said = api.voice.say(`${p.name}. ${p.text}`, { id: "tour:" + p.id, now: true, prio: 2 }); } catch {}
+    try { said = api.voice.say(`${p.name}. ${storyOf(api, p)}`, { id: "tour:" + p.id, now: true, prio: 2 }); } catch {}
     const onDone = () => later(() => tourStep(ses, 1), Date.now() - t0 < 1500 ? 7000 : 1400);   // no voice: give the eyes 7 s
     if (said && typeof said.then === "function") said.then(onDone, onDone); else onDone();
   };
