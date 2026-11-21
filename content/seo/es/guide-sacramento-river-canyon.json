@@ -1,7 +1,7 @@
 {
  "title": "Cañón del río Sacramento en la I-5: de Shasta Lake a Dunsmuir",
  "meta": "Recorra la I-5 de Shasta Lake a Dunsmuir por el cañón del río Sacramento, con gas, carga EV, comida y hospedaje listados en las salidas 690 a 738.",
- "intro": "Desde cerca de la salida 688 hasta la 740, la I-5 cruza Shasta Lake, sigue el empinado cañón boscoso del río Sacramento, pasa junto a las agujas de granito de Castle Crags y Dunsmuir, y se abre al pie del Mount Shasta. I-5 Buddy, una guía GPS parlante de la Interestatal 5 en California, le cuenta la historia de este tramo mientras usted maneja. El gas, la carga EV, la comida y el hospedaje son los que aparecen en OpenStreetMap, no en tiempo real.",
+ "intro": "Desde cerca de la salida 688 hasta la 740, la I-5 cruza Shasta Lake, sigue el empinado cañón boscoso del río Sacramento, pasa junto a las agujas de granito de Castle Crags y Dunsmuir, y se abre al pie del Mount Shasta. I-5 Buddy, una guía GPS parlante y gratuita de la Interestatal 5 en California, le cuenta la historia de este tramo mientras usted maneja. El gas, la carga EV, la comida y el hospedaje son los que aparecen en OpenStreetMap, no en tiempo real.",
  "faq": [
   {
    "q": "¿En qué salida de la I-5 está Shasta Lake?",
@@ -27,7 +27,7 @@
  "h1": "El cañón del río Sacramento en la I-5",
  "src": {
   "packet": "6db26ff62942",
-  "en": "8fde52e31711",
+  "en": "e83863325c5e",
   "draft": "p-guide-sacramento-river-canyon.4.json"
  },
  "status": "ok",

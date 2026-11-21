@@ -1,7 +1,7 @@
 {
  "title": "Pacoima en la I-5: salida 155, tierra de Ritchie Valens",
  "meta": "Pacoima está en la salida 155 de la I-5, tierra natal de Ritchie Valens, con gasolina, comida y carga para autos eléctricos en salidas cercanas.",
- "intro": "Pacoima está en la salida 155 de la I-5, en el norte del valle de San Fernando, junto con Mission Hills y Sylmar. Su nombre viene de Pakoinga, el nombre de un pueblo nativo que significa entrada, y es la tierra natal de Ritchie Valens, nacido aquí como Richard Valenzuela en 1941. La guía hablada de I-5 Buddy cubre las salidas y paradas alrededor del pueblo, según los datos de OpenStreetMap y no en tiempo real.",
+ "intro": "Pacoima está en la salida 155 de la I-5, en el norte del valle de San Fernando, junto con Mission Hills y Sylmar. Su nombre viene de Pakoinga, el nombre de un pueblo nativo que significa entrada, y es la tierra natal de Ritchie Valens, nacido aquí como Richard Valenzuela en 1941. La guía hablada y gratuita de I-5 Buddy cubre las salidas y paradas alrededor del pueblo, según los datos de OpenStreetMap y no en tiempo real.",
  "faq": [
   {
    "q": "¿En qué salida de la I-5 está Pacoima?",
@@ -26,7 +26,7 @@
  ],
  "src": {
   "packet": "dfb18082e2cb",
-  "en": "36e8f44437dc",
+  "en": "c4e723c81275",
   "draft": "p-town-pacoima.2.json"
  },
  "status": "ok",

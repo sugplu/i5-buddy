@@ -1,7 +1,7 @@
 {
  "title": "Anaheim en la I-5: salidas, gasolina, comida y hospedaje",
  "meta": "Anaheim está cerca de la salida 111 de la I-5 en California (milla 111). Salidas cercanas con gasolina, comida y hospedaje según el mapa, no en vivo.",
- "intro": "Anaheim está en la I-5 cerca de la salida 111, donde la autopista cruza lo que antes fueron tierras de cultivo: familias alemanas fundaron el pueblo en 1857 para sembrar uvas. Las salidas 109 a 110B dan a Katella Avenue, Harbor Boulevard y Disneyland Drive, con Disneyland justo al suroeste de la autopista, cerca de la salida 110. Esta guía enumera las salidas, los puntos de interés y los servicios mapeados de I-5 Buddy, una guía GPS parlante de la I-5 en California.",
+ "intro": "Anaheim está en la I-5 cerca de la salida 111, donde la autopista cruza lo que antes fueron tierras de cultivo: familias alemanas fundaron el pueblo en 1857 para sembrar uvas. Las salidas 109 a 110B dan a Katella Avenue, Harbor Boulevard y Disneyland Drive, con Disneyland justo al suroeste de la autopista, cerca de la salida 110. Esta guía enumera las salidas, los puntos de interés y los servicios mapeados de I-5 Buddy, una guía GPS parlante y gratuita de la I-5 en California.",
  "faq": [
   {
    "q": "¿En qué salida de la I-5 está Disneyland?",
@@ -22,7 +22,7 @@
  ],
  "src": {
   "packet": "aea664c6b748",
-  "en": "fbb1aa3f86d6",
+  "en": "eb2d98a58f9f",
   "draft": "p-town-anaheim.2.json"
  },
  "status": "ok",

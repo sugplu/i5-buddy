@@ -81,10 +81,10 @@ SEASONAL = [
 LANG = {
     "en": {"html": "en", "ld": "en-US", "locale": "en_US", "home": "I-5 Buddy", "guides": "Drive guides",
            "app_h": "Hear it as you drive",
-           "app_p": "I-5 Buddy is a talking guide to I-5 in California. It follows you by GPS and tells you about each of these "
+           "app_p": "I-5 Buddy is a free talking guide to I-5 in California. It follows you by GPS and tells you about each of these "
                     "places a mile or two before you reach them, which side to look, and the story behind it. No account, no ads. "
                     "Set it up before you drive. Narration is hands-free; leave the screen to passengers.",
-           "app_a": "Get the iPhone app", "app_b": "Open it in your browser",
+           "app_a": "Get the free iPhone app", "app_b": "Open it in your browser",
            "fine": 'Mileposts are California\'s exit numbers, which count up from the Mexico border. Every landmark lists the '
                    'source it was checked against. Made by <a href="https://dominares.org/">Dominares</a> in San Diego. Not affiliated with Caltrans or the CHP. Questions or corrections: <a href="mailto:support@dominares.org">support@dominares.org</a>.',
            "fine_s": 'Mileposts are California\'s exit numbers, which count up from the Mexico border. Stops come from I-5 Buddy\'s own '
@@ -93,10 +93,10 @@ LANG = {
            "sources": "Sources", "other": "Leer en español", "more": "More I-5 guides"},
     "es": {"html": "es", "ld": "es-US", "locale": "es_US", "home": "I-5 Buddy", "guides": "Guías de viaje",
            "app_h": "Escúchela mientras conduce",
-           "app_p": "I-5 Buddy es una guía parlante de la I-5 en California. Lo sigue por GPS y le cuenta cada uno de estos "
+           "app_p": "I-5 Buddy es una guía parlante y gratuita de la I-5 en California. Lo sigue por GPS y le cuenta cada uno de estos "
                     "lugares una o dos millas antes de llegar, de qué lado mirar y la historia detrás. Sin cuenta y sin anuncios. "
                     "Configúrela antes de conducir. La narración es manos libres; deje la pantalla a los pasajeros.",
-           "app_a": "Obtener la app para iPhone", "app_b": "Abrir en el navegador",
+           "app_a": "Obtener la app gratis para iPhone", "app_b": "Abrir en el navegador",
            "fine": 'Los marcadores de milla son los números de salida de California, que aumentan desde la frontera con México. Cada lugar de interés '
                    'indica la fuente con la que se verificó. Hecho por <a href="https://dominares.org/">Dominares</a> '
                    'en San Diego. Sin relación con Caltrans ni con la CHP. Preguntas o correcciones: <a href="mailto:support@dominares.org">support@dominares.org</a>.',

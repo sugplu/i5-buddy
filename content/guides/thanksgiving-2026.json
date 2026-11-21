@@ -322,7 +322,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "I-5 Buddy is a talking GPS guide to I-5 in California, made by Dominares, with no account and no ads. It is not affiliated with Caltrans or the CHP, and you can get [the iPhone app and web guide](../../get/).",
+      "text": "I-5 Buddy is a free talking GPS guide to I-5 in California, made by Dominares, with no account and no ads. It is not affiliated with Caltrans or the CHP, and you can get [the free iPhone app and web guide](../../get/).",
       "items": [],
       "rows": []
      }
@@ -686,7 +686,7 @@
     "blocks": [
      {
       "type": "p",
-      "text": "I-5 Buddy es una guía GPS parlante de la I-5 en California, creada por Dominares, sin cuenta y sin anuncios. No está afiliada a Caltrans ni a la CHP, y puede obtener [la app para iPhone y la guía web](../../get/).",
+      "text": "I-5 Buddy es una guía GPS parlante y gratuita de la I-5 en California, creada por Dominares, sin cuenta y sin anuncios. No está afiliada a Caltrans ni a la CHP, y puede obtener [la app gratuita para iPhone y la guía web](../../get/).",
       "items": [],
       "rows": []
      }

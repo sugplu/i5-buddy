@@ -1,7 +1,7 @@
 {
  "title": "Coalinga en la I-5: salida 337, gasolina, comida y paradas",
  "meta": "Coalinga está en la salida 337 de la I-5 en California. Vea salidas cercanas, gasolina, carga EV y comida en la salida 334, y los descansos más cercanos.",
- "intro": "Coalinga está en la salida 337 de la Interestatal 5, donde la CA 33 South y la CA 145 North se unen con la autopista. El pueblo nació en 1888 como una parada de carbón de Southern Pacific, que el ferrocarril llamó Coaling Station A. I-5 Buddy es una guía GPS que habla, y esta página reúne lo que los datos listan alrededor de Coalinga, con los servicios tal como aparecen en el mapa, no en vivo.",
+ "intro": "Coalinga está en la salida 337 de la Interestatal 5, donde la CA 33 South y la CA 145 North se unen con la autopista. El pueblo nació en 1888 como una parada de carbón de Southern Pacific, que el ferrocarril llamó Coaling Station A. I-5 Buddy es una guía GPS gratuita que habla, y esta página reúne lo que los datos listan alrededor de Coalinga, con los servicios tal como aparecen en el mapa, no en vivo.",
  "faq": [
   {
    "q": "¿En qué salida de la I-5 está Coalinga?",
@@ -22,7 +22,7 @@
  ],
  "src": {
   "packet": "b14a2e274a0d",
-  "en": "4c60f0dcfbdc",
+  "en": "d524118d1521",
   "draft": "p-town-coalinga.2.json"
  },
  "status": "ok",

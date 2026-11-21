@@ -17,11 +17,10 @@ const SITE = "https://i5.dominares.org/";
 // from the message), and shows anyone else the web app. Place links stay on the web app (#place=<id>).
 const GET = "https://i5.dominares.org/get";
 const TITLE = "I-5 Buddy";
-// No "free" and no price in what we share (the owner's rule for public app text; nightly review 2026-11-20)
-const TEXT = "I-5 Buddy: a narrated guide to I-5 in California.";
-const INVITE = `I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. Try it: ${GET}`;
+const TEXT = "I-5 Buddy: a free narrated guide to I-5 in California.";
+const INVITE = `I'm using I-5 Buddy on my drive. It tells you about the places you pass on I-5. It's free: ${GET}`;
 // the iPhone app talks to passengers: "on our road trip", not "on my drive"
-const INVITE_APP = `I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. Try it: ${GET}`;
+const INVITE_APP = `I'm using I-5 Buddy on our road trip. It tells you about the places you pass on I-5. It's free: ${GET}`;
 const inviteText = () => (api && api.native && api.native.NATIVE ? INVITE_APP : INVITE);
 const ICON = "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 1 0 15 5c0 .24.04.47.09.7L8.04 9.81A3 3 0 1 0 6 15c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65A2.92 2.92 0 1 0 18 16.08Z";
 
@@ -145,7 +144,7 @@ async function copyWithToast(text, done) {
 
 /* ---------- the fallback sheet ---------- */
 function appSheet() {
-  return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: GET, linkShown: "i5.dominares.org/get", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a guide for your drive on I-5" };
+  return { heading: "Share I-5 Buddy", linkLabel: "Link to I-5 Buddy", link: GET, linkShown: "i5.dominares.org/get", invite: "Invite a friend", message: inviteText(), subject: "I-5 Buddy, a free guide for your drive on I-5" };
 }
 function placeSheet(p) {
   const line = shareLine(p), url = placeLink(p);

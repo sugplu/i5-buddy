@@ -3,10 +3,10 @@
 
 Every town and topic page exists with one canonical, one h1 and valid JSON-LD; generated text respects its limits; every
 relative link resolves to a file; thin towns are noindex and out of the sitemap; sw.js precaches none of them; no page says
-"our AI"; no page written by tools/guides.py calls the app free (the owner's rule for public app text, 3.0.7); a content
+"our AI"; a content
 link with "&" in it is escaped once. 3.0.8: every town page and drive guide has a Spanish twin under es/ (or its Spanish was
 dropped on purpose), written from today's English, with hreflang pairs and links both ways, the English twin's noindex rule,
-no number the English page lacks, and no free/gratis/gratuita, tú or price."""
+no number the English page lacks, and no tú or price ("free"/"gratuita" are fine since 3.0.9, Joseph's call)."""
 import json
 import os
 import re
@@ -87,10 +87,6 @@ for path, e, thin in paths:
             fail(f"{path}: broken link {href}")
     for href in set(re.findall(r'href="([^"]+)#([^"]+)"', h)):
         pass
-# The owner's rule (nightly review 2026-11-20): public app text never calls the app free or states a price. The landmark
-# stories may say "free-flowing" or "a free lunch"; what is checked is the app's own wording, in English and Spanish.
-APP_FREE = re.compile(r"(?i)\bfree\s+(?:talking|narrated|road|guide|gps|iphone|app|download)\b|\b(?:it'?s|is)\s+free\b|"
-                      r"\bfree\s+on\s+the\s+app\s+store|\bgratuit\w*|\bgratis\b")
 every = [p for p, _, _ in paths] + [f'drive/{g["slug"]}/' for g in guides.GUIDES] + ["drive/", "rest-areas/"]
 every += [guides.seasonal_path(g, lang) for g in guides.SEASONAL for lang in ("en", "es")]
 for path in every:
@@ -99,9 +95,6 @@ for path in every:
     except OSError:
         fail(f"missing {path}")
         continue
-    hit = APP_FREE.search(h)
-    if hit:
-        fail(f"{path}: app text says {hit.group(0)!r} (no 'free' or price in public app text)")
 link = guides.inline("[the sign](https://dot.ca.gov/x?a=1&b=2)", "en")
 if 'href="https://dot.ca.gov/x?a=1&amp;b=2"' not in link or "&amp;amp;" in link:
     fail(f"a content link with & is escaped twice: {link}")
@@ -119,7 +112,7 @@ if "<!-- guides" not in sitemap or sitemap.count("<loc>") < 70:
 # Each town page and drive guide has a Spanish twin (or its Spanish was dropped on purpose, status "dropped"); the twin is
 # written from today's English and packet (the hashes in content/seo/es), has the same structure, hreflang pairs on both
 # sides, the links both ways, the English twin's noindex rule and sitemap membership, no number the English page does not
-# have, every exit the English page names, and none of the banned words (no "free"/"gratis"/"gratuita", no tú, no price).
+# have, every exit the English page names, and none of the banned words (no "our AI", no tú, no price).
 import html as _html  # noqa: E402
 from html.parser import HTMLParser  # noqa: E402
 
@@ -152,7 +145,7 @@ def visible(h):
 
 NUM = re.compile(r"\d+(?:[.,]\d+)*")
 TU = re.compile(r"(?i)\b(tú|puedes|tienes|quieres|necesitas|estás|tu|tus|contigo)\b")
-ES_BANNED = re.compile(r"(?i)\bgratuit\w*|\bgratis\b|\bfree\b|nuestra (?:propia )?IA|our (?:own )?AI")
+ES_BANNED = re.compile(r"(?i)nuestra (?:propia )?IA|our (?:own )?AI")
 ALT = re.compile(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">')
 ES_DIR = os.path.join(ROOT, "content", "seo", "es")
 guides.NEW_GUIDES_DATA, guides.TOWNS = r["guides"], r["towns"]
@@ -236,7 +229,7 @@ for kind, slug, en_path, thin in expected:
     ves, ven = visible(h) + " " + title + " " + meta, visible(he) + " " + _html.unescape(re.search(r"<title>(.*?)</title>", he).group(1))
     hit = ES_BANNED.search(ves) or TU.search(ves)
     if hit:
-        fail(f"{es_path}: says {hit.group(0)!r} (no free/gratis/gratuita, no 'our AI', usted not tú)")
+        fail(f"{es_path}: says {hit.group(0)!r} (no 'our AI', usted not tú)")
     extra = sorted(set(NUM.findall(ves)) - set(NUM.findall(ven + " " + _html.unescape(re.search(r'<meta name="description" content="(.*?)">', he).group(1)))))
     if extra:
         fail(f"{es_path}: numbers not on the English page: {extra[:8]}")

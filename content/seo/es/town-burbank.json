@@ -1,6 +1,6 @@
 {
  "title": "Burbank en la I-5: salidas, gasolina, comida y paradas",
- "meta": "Burbank en la I-5 va de la salida 144 a la 148, con gasolina, carga para autos eléctricos, comida y hospedaje en el mapa. Guía hablada, no datos en vivo.",
+ "meta": "Burbank en la I-5 va de la salida 144 a la 148, con gasolina, carga eléctrica, comida y hospedaje en el mapa. Guía hablada gratuita, no datos en vivo.",
  "intro": "La I-5 pasa por Burbank, conocida comúnmente como la Capital Mundial de los Medios, con Warner Bros. y la Walt Disney Company en el Media District, a un par de millas al oeste de la autopista. El pueblo está en el extremo este, plano, del valle de San Fernando, bajo las rocosas montañas Verdugo. I-5 Buddy le indica aquí las salidas, los servicios del mapa y los sitios de interés para planear una parada; no ofrece tráfico ni información de negocios en vivo.",
  "faq": [
   {
@@ -22,7 +22,7 @@
  ],
  "src": {
   "packet": "83f618551a85",
-  "en": "cba83672c73b",
+  "en": "f25ae51556a8",
   "draft": "p-town-burbank.2.json"
  },
  "status": "ok",
