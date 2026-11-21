@@ -162,6 +162,15 @@ if (IS_ES) {
   // offline rule); the request carries on and the service worker keeps the file for the next start.
   if (!(TEST && TEST.skipData)) await loadScript("data/i5.es.js" + v, 5000);
   try { ESDATA = window.I5DATA_ES && typeof window.I5DATA_ES === "object" ? window.I5DATA_ES : null; } catch { ESDATA = null; }
+  // Offline after one visit (verify fix 2026-11-21): on the very first visit the service worker is not in control yet when
+  // the file above loads, so it never reached sw.js's cache, and the next start without a signal had English stories under
+  // Spanish words. Once the worker takes control, ask for the file again through it (sw.js keeps it in this version's cache).
+  try {
+    const sw = navigator.serviceWorker;
+    if (sw && !sw.controller && !(TEST && TEST.skipData)) {
+      sw.addEventListener("controllerchange", () => { try { fetch(new URL("data/i5.es.js" + v, BASE).href).catch(() => {}); } catch {} }, { once: true });
+    }
+  } catch {}
   if (TEST && TEST.data && typeof TEST.data === "object") ESDATA = merge(ESDATA || {}, TEST.data);
 }
 function merge(a, b) {
@@ -174,7 +183,13 @@ const str = v => (typeof v === "string" && v.trim() ? v : null);
     Each changed item keeps its English in `en`. Returns what it did: {places, zones, trivia, missions} counts. */
 export function localizeData(D) {
   const done = { places: 0, zones: 0, trivia: 0, missions: 0, dests: 0 };
-  if (!IS_ES || !D || !ESDATA) return done;
+  if (!IS_ES || !D) return done;
+  if (!ESDATA) {
+    // no Spanish stories this time (a stalled first start): the English stories stand in, but never the English kids text
+    // (verify fix 2026-11-21: Stories for kids read the English kids text in Spanish mode)
+    for (const p of D.places || []) if (p.kids) { if (!p.en) Object.defineProperty(p, "en", { value: {}, enumerable: false, configurable: true }); p.en.kids = p.kids; delete p.kids; }
+    return done;
+  }
   const X = ESDATA;
   // an overlay from another build (an old cached copy) is not used: its stories may belong to other places
   if (X.version && D.version && X.version !== D.version && !(TEST && TEST.data)) return done;

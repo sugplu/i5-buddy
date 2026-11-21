@@ -725,7 +725,7 @@ function signSpeech(s) {
     "As of 40 minutes ago, the freeway sign ahead said: ..." (what: the words after "the"). */
 function signLine(s, what) {
   if (s.t && now() - s.t > STALE) return t("live.as_of_t_ago_the_what_said_s", { t: agoSaid(s.t), what, s: signSpeech(s) });
-  return `The ${what} says: ${signSpeech(s)}`;
+  return t("live.the_what_says_s", { what, s: signSpeech(s) });
 }
 /** "right here", "about a mile ahead", "about 12 miles ahead" */
 function aheadSaid(d) { return d < 0.3 ? t("live.right_here") : d < 1.5 ? t("live.about_a_mile_ahead") : t("live.about_d_miles_ahead", { d: Math.round(d) }); }

@@ -511,7 +511,7 @@ function render(force) {
   const topSub = p.pre ? (an.top.name || i18n.t("roadahead.mile_m", { m: Math.round(an.top.m) })) : an.top.d < 0.5 ? i18n.t("roadahead.right_here") : i18n.t("roadahead.in_d_x1", { d: mi(an.top.d), x1: named && an.top.name && an.top.d >= 1.5 ? " · " + shortName(an.top.name) : "" });
   stats.append(
     an.up < 60 ? tile(i18n.t("roadahead.climb"), i18n.t("roadahead.flat"), scope) : tile(i18n.t("roadahead.climb"), num(an.up), an.down >= 60 ? i18n.t("roadahead.down_down", { down: ft(an.down) }) : scope, "", i18n.t("roadahead.ft")),
-    tile("TOP", num(an.top.ft), topSub, "", i18n.t("roadahead.ft")),
+    tile(i18n.t("roadahead.top"), num(an.top.ft), topSub, "", i18n.t("roadahead.ft")),
     an.steep ? tile(i18n.t("roadahead.steepest"), `${Math.round(an.steep.pct)}%`, p.pre ? i18n.t("roadahead.x1_len_mi", { x1: an.steep.kind === "climb" ? i18n.t("roadahead.climb_2") : i18n.t("roadahead.descent"), len: Math.round(an.steep.len) }) : steepWhere(an.steep), an.steep.kind) : tile(i18n.t("roadahead.steepest"), i18n.t("roadahead.gentle"), i18n.t("roadahead.no_hard_hills")),
   );
   // legend
