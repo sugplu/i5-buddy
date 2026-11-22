@@ -173,7 +173,7 @@ async function scenePicker(api, R, w, doc, events) {
   const slot = doc.getElementById("rideSlot"), row = doc.getElementById("rideRow"), sheet = doc.getElementById("rideSheet");
   check("the first drive opens with a road story", !doc.getElementById("storyPreview").hidden);
   api.setPosition(300, { dir: "N", speed: 0, jumped: true });
-  await new Promise(resolve => w.requestAnimationFrame(resolve));
+  await sleep(300); // the sign comes back on the app's next render: a frame, or its 250 ms fallback when frames are throttled (headless)
   check("#rideSlot is shown on the Drive sign", slot && !slot.hidden && !!slot.querySelector("svg.ride-svg"));
   const sb = slot.querySelector("button");
   check("the slot is a labelled button of at least 44 px", sb && /Your ride/.test(sb.getAttribute("aria-label")) && sb.getBoundingClientRect().height >= 43.5 && sb.getBoundingClientRect().width >= 43.5,
