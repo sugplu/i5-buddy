@@ -19,8 +19,19 @@
   ?s=kids   Stories for kids: off by default; on, a place's kids text replaces its story (Drive card, Ahead, the place
             sheet, the spoken heads-up, Hear it) and the long story is not played after it; a place without kids text
             keeps its story; Tell me more still tells the long story; in Spanish the Spanish kids text, never the English
+  ?s=default&phone=es|en   the 3.1.0 ship rule (Joseph, 2026-11-21), in a browser set to Spanish (run_tests.py starts
+            Chrome with --accept-lang=es-MX,es) or English: a new install follows the phone (Spanish phone: Spanish,
+            saved); a phone with state from before 3.1.0 (the whole 3.0.9 profile, or any one of its keys alone) keeps
+            English and Asteria, saved, on every start; Settings > Language and ?lang= win both ways; an open first-run
+            question ("langAsk") is a new install, not someone from before
+  ?s=voice  the Spanish natural voice (Estrella) through window.__BUDDY_CLIPTEST__ (fake clip list and clips, nothing
+            fetched or heard): Spanish lists and plays voice/estrella/ clips, never Asteria's; a line with a missing clip
+            is read by the device's Spanish voice; Stories for kids plays the kids clips, and Save for offline leaves the
+            kids-only clips out until it is on; the Spanish turn-by-turn grammar ("tome la salida 309 hacia la Highway
+            41.", "Incorpórese a la I-5.", "Luego,", the roundabouts, no lone "a" or "hacia" clip) and the phrase bank
   The Spanish words here are test fixtures (window.__BUDDY_I18N__), laid over i18n/es.json: the test does not depend
-  on what the content step wrote. Nothing is heard: speech goes to the silent engine (js/voice.js).
+  on what the content step wrote (except ?s=default and ?s=voice, which use the real Spanish words). Nothing is heard:
+  speech goes to the silent engine (js/voice.js).
 -->
 <style>
   html,body{margin:0;background:#2b2f2d;color:#e8ece9;font:12px/1.35 ui-monospace,Menlo,monospace}
@@ -78,6 +89,43 @@ function pickPlace(minM, maxM, needMore) {
   return PL.find(p => p.m > minM && p.m < maxM && p.vis && p.side && !p.detour && (!needMore || p.more)
     && !PL.some(q => q !== p && q.m > p.m - 3 && q.m <= p.m + 0.05));
 }
+
+/** Start the app on a profile: exactly these "i5b:" keys (nothing else), the address's extra query (?lang=...). */
+async function startWith(keys, query = "") {
+  localStorage.clear();
+  for (const [k, v] of Object.entries(keys || {})) localStorage.setItem("i5b:" + k, JSON.stringify(v));
+  return load(query);
+}
+/** Load (or start again) the app in the iframe, keeping what the profile has saved. */
+// (an iframe's contentWindow is the same object after it navigates: the page that is leaving is marked, and the new one is
+// the one without the mark)
+const mark = () => { try { f.contentWindow.__leaving = true; } catch {} };
+const fresh = () => { try { return !f.contentWindow.__leaving; } catch { return false; } };
+async function load(query = "") {
+  mark();
+  f.src = "../index.html?silent=1" + query + "&t=" + Math.random();
+  const ok = await until(() => fresh() && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api && f.contentWindow.I5BUDDY.api.missions, 30000);
+  await wait(200);
+  return ok ? state() : null;
+}
+/** What the app in the iframe runs in (an app without I5BUDDY.i18n, before this release's ship fixes: its <html lang>). */
+function state() {
+  const w = f.contentWindow, I = w.I5BUDDY.i18n;
+  return { win: w, doc: f.contentDocument, api: w.I5BUDDY.api, lang: I ? I.LANG : f.contentDocument.documentElement.lang, html: f.contentDocument.documentElement.lang,
+    saved: localStorage.getItem("i5b:lang"), voice: w.I5BUDDY.api.voice.id };
+}
+/** Settings > Language > l, and wait for the app to start again in it. */
+async function pickLang(B, l) {
+  B.doc.getElementById("openSettings").click();
+  await wait(150);
+  mark();
+  B.doc.querySelector(`[data-lang-set="${l}"]`).click();
+  const ok = await until(() => fresh() && f.contentWindow.I5BUDDY && f.contentWindow.I5BUDDY.api && f.contentWindow.I5BUDDY.api.missions
+    && f.contentDocument.documentElement.lang === l, 30000);
+  await wait(200);
+  return ok ? state() : null;
+}
+const said = B => (B ? `${B.lang}/${B.html}/saved ${B.saved}/${B.voice}` : "the app did not start");
 
 const SCENARIOS = {
   /* ---------------------------------------------------------------- keys */
@@ -211,7 +259,7 @@ const SCENARIOS = {
     check("a key Spanish leaves empty shows its English (Done)", txt(doc.getElementById("closeSettings")) === "Done", txt(doc.getElementById("closeSettings")));
     check("Stories for kids in Spanish", txt(doc.getElementById("kidStories").parentElement) === "Historias para niños");
     const vl = api.voice.list();
-    check("Spanish voices only, no English recording voice (the device's Spanish voice reads)", api.voice.settingKey === "voiceEs" && !vl.some(v => v.natural) && vl.every(v => /^es/i.test(v.lang)) && !api.voice.natural(),
+    check("Spanish voices only, never Asteria (in a silent test without clips the device's Spanish voice reads; Estrella's clips: ?s=voice)", api.voice.settingKey === "voiceEs" && api.voice.id === "estrella" && !vl.some(v => v.natural) && vl.every(v => /^es/i.test(v.lang)) && !api.voice.natural(),
       vl.map(v => v.name + " " + v.lang).join(", "));
     doc.getElementById("closeSettings").click();
     // the Spanish data is laid over the road data, the English kept in en
@@ -268,6 +316,162 @@ const SCENARIOS = {
     const tabsEn = [...f.contentDocument.querySelectorAll(".tabs button")].map(txt).join(",");
     check("English again: saved, tabs in English, the English story back", !!enBack && localStorage.getItem("i5b:lang") === '"en"' && tabsEn === "Drive,Ahead,Map,Passport,Play"
       && f.contentWindow.I5BUDDY.api.data.placeById(P.id).text === P.text, tabsEn);
+  },
+
+  /* ---------------------------------------------------------------- default (the 3.1.0 ship rule) */
+  async default() {
+    const want = (Q.get("phone") || "en").slice(0, 2), ES = want === "es";
+    const phone = String((navigator.languages && navigator.languages[0]) || navigator.language || "");
+    check(`the browser reports ${ES ? "Spanish" : "English"} as its language (navigator.languages)`, phone.toLowerCase().startsWith(want), phone);
+    // what a phone that used I-5 Buddy 3.0.9 has saved (3.0.9 had no language setting, so no "lang")
+    const OLD = {
+      settings: { narr: true, autoStories: true, zoneNarr: true, chat: "normal", lead: 2, rate: 1, voice: "buddy:asteria",
+        cats: ["farm", "hist", "nature", "town", "stop", "odd"], kid: false, chime: false, live: false, theme: "dark" },
+      whatsNew: "3.0.7-ask-buddy", voice3: true, m: 204.5, dir: "N", stamps: { "ca204-tejon-pass-summit": 1763600000000 },
+      trips: [{ id: "t1", from: 0, to: 204, start: 1763600000000, end: 1763610000000, miles: 204 }], badges: { first: 1763600000000 },
+      tripStats: { miles: 204 }, ride: { kind: "van", color: "teal", badge: "", name: "" }, missionStamps: { 1: { t: 1763600000000, how: "self" } },
+    };
+    const NEW = ES ? "es" : "en", NV = ES ? "estrella" : "asteria";
+    // a new install: the phone's language, saved, and its voice
+    let B = await startWith({});
+    check(`a new install on ${ES ? "a Spanish" : "an English"} phone starts in ${ES ? "Spanish" : "English"}, saved`,
+      B && B.lang === NEW && B.html === NEW && B.saved === JSON.stringify(NEW), said(B));
+    check(`voice: ${NV} (3.1.0)`, B && B.voice === NV, said(B));
+    B = await load();
+    check("and starts in it again", B && B.lang === NEW && B.saved === JSON.stringify(NEW), said(B));
+    // a phone with 3.0.9 state: English and Asteria, saved, start after start
+    B = await startWith(OLD);
+    check("a phone that used 3.0.9 (its settings, trip, passport...) starts in English, saved", B && B.lang === "en" && B.html === "en"
+      && B.saved === '"en"' && B.api.voice.settingKey === "voice", said(B));
+    check("voice: Asteria for it (3.1.0)", B && B.voice === "asteria", said(B));
+    B = await load();
+    check("and stays English on the next start", B && B.lang === "en" && B.saved === '"en"', said(B));
+    check("its own state is untouched (settings, stamps, trip)", B && B.api.settings.voice === "buddy:asteria" && !!B.api.S.stamps["ca204-tejon-pass-summit"]
+      && JSON.parse(localStorage.getItem("i5b:trips") || "[]").length === 1);
+    for (const k of ["settings", "whatsNew", "stamps", "trips", "m", "ride"]) {
+      B = await startWith({ [k]: OLD[k] });
+      check(`a phone with only "${k}" from before 3.1.0 counts as someone who used the app: English`, B && B.lang === "en" && B.saved === '"en"', said(B));
+    }
+    // an explicit choice wins both ways
+    B = await startWith(OLD);
+    B = B && await pickLang(B, "es");
+    check("someone from before picks Español in Settings: Spanish, saved", B && B.lang === "es" && B.saved === '"es"', said(B));
+    check("voice: Estrella once Spanish is picked (3.1.0)", B && B.voice === "estrella", said(B));
+    B = await load();
+    check("and Spanish stays on the next start", B && B.lang === "es" && B.saved === '"es"', said(B));
+    B = await startWith({});
+    B = B && await pickLang(B, ES ? "en" : "es");
+    const other = ES ? "en" : "es";
+    check(`a new install picks ${ES ? "English" : "Español"} in Settings: it stays, saved`, B && B.lang === other && B.saved === JSON.stringify(other), said(B));
+    B = await load();
+    check("and on the next start", B && B.lang === other && B.saved === JSON.stringify(other), said(B));
+    B = await startWith({ ...OLD, lang: "es" });
+    check("a saved Spanish choice wins over everything else", B && B.lang === "es", said(B));
+    B = await startWith({ lang: "en" });
+    check("a saved English choice wins over the phone", B && B.lang === "en", said(B));
+    // ?lang= in the address wins, and is saved
+    B = await startWith(OLD, "&lang=es");
+    check("?lang=es on a phone from before 3.1.0: Spanish, saved", B && B.lang === "es" && B.saved === '"es"', said(B));
+    B = await startWith({}, "&lang=en");
+    check("?lang=en on a new install: English, saved", B && B.lang === "en" && B.saved === '"en"', said(B));
+    B = await load();
+    check("and English stays without it", B && B.lang === "en", said(B));
+    B = await startWith({}, "&lang=es");
+    check("?lang=es on a new install: Spanish, saved", B && B.lang === "es" && B.saved === '"es"', said(B));
+    // a 3.1.0 first run whose question stayed open (Spanish words not loaded then) is a new install, not someone from before
+    B = await startWith({ langAsk: true, whatsNew: "3.0.7-ask-buddy", settings: { chime: false, live: false } });
+    check(`an open first-run question ("langAsk") follows the phone: ${ES ? "Spanish" : "English"}, and the question is closed`,
+      B && B.lang === NEW && B.saved === JSON.stringify(NEW) && localStorage.getItem("i5b:langAsk") === null, said(B));
+  },
+
+  /* ---------------------------------------------------------------- voice (Estrella, kids clips, the Spanish prompts) */
+  async voice() {
+    // 1. the app in Spanish, without clip hooks: its own lines, cut and named by its own voice module
+    let B = await startWith({ settings: { narr: true, autoStories: false, chime: false, live: false, theme: "dark" } }, "&lang=es");
+    check("the app starts in Spanish", B && B.lang === "es", said(B));
+    if (!B) return;
+    const P = B.api.data.PLACES.find(p => p.vis && p.side && !p.detour && p.kids && p.en && p.en.text && p.text !== p.en.text && p.kids !== p.text);
+    check("a place with a Spanish story and a Spanish kids story", !!P, P && P.id);
+    if (!P) return;
+    const V = B.api.voice, N = B.api.narrator;
+    const line = N.announceText(P, 2, "N");
+    B.api.settings.kidStories = true;
+    const kidsLine = N.announceText(P, 2, "N");
+    B.api.settings.kidStories = false;
+    const MISSING = "Una línea sin grabación todavía.";
+    const units = new Set([...V.speechUnits(line), ...V.speechUnits(kidsLine)]);
+    const kidsOnly = V.speechUnits(kidsLine).filter(u => !V.speechUnits(line).includes(u));
+    const keyOf = new Map([...units].map(u => [V.unitKey(u), u]));
+    check("the kids line has clips of its own", kidsOnly.length >= 1 && kidsLine.includes(P.kids), kidsOnly.length);
+    // 2. the same app with a fake Estrella clip list: what it would fetch and play (nothing is fetched, decoded or heard)
+    const fetched = [], played = [];
+    window.__BUDDY_CLIPTEST__ = {
+      manifest: { v: 1, voice: "estrella", n: keyOf.size, bytes: 50 * 1048576, kidsBytes: 20 * 1048576,
+        keys: [...keyOf.keys()].join(""), kids: kidsOnly.map(u => V.unitKey(u)).join("") },
+      fetch(k, url) { fetched.push(url || k); return new ArrayBuffer(8); },
+      decode() { return { sampleRate: 24000, getChannelData: () => new Float32Array(24000) }; },
+      played(info) { played.push(info); },
+    };
+    B = await load();
+    const v = B && B.api.voice;
+    check("Spanish: the natural voice is Estrella, listed first, in Spanish", !!v && v.id === "estrella" && v.list()[0] && v.list()[0].natural === true
+      && v.list()[0].voiceURI === "buddy:estrella" && /^es/.test(v.list()[0].lang) && v.natural() === true, v ? v.list().slice(0, 2).map(x => x.voiceURI + " " + x.lang) : "");
+    if (!B) return;
+    played.length = 0; fetched.length = 0;
+    let ok = await v.say(line, { id: "t1" });
+    check("a Spanish heads-up with every clip plays as one Estrella recording", ok === true && played.length === 1 && played[0].text === line, played.map(p => p.text.slice(0, 60)));
+    check("its clips come from voice/estrella/, never Asteria's", fetched.length >= 3 && fetched.every(u => /\/voice\/estrella\/[0-9a-f]{2}\/[0-9a-f]{14}\.m4a$/.test(u)), fetched.slice(0, 3).join(" "));
+    const m0 = (window.__BUDDY_SPOKEN_META__ || []).length;
+    played.length = 0;
+    ok = await v.say(MISSING, { id: "t2" });
+    const dev = spokenSince(m0).find(x => x.text === MISSING);
+    check("a line without its clip is read by the device's Spanish voice", ok === true && played.length === 0 && dev && /^es/i.test(dev.lang), dev ? dev.lang : "not spoken");
+    // Stories for kids: the kids clips, and Save for offline leaves the kids-only clips out until it is on
+    const off = v.offline.info();
+    check("Save for offline: the kids-only clips are left out while Stories for kids is off", off.clips === keyOf.size - kidsOnly.length && off.mb === 30, off);
+    B.api.settings.kidStories = true;
+    const on = v.offline.info();
+    check("and counted once it is on", on.clips === keyOf.size && on.mb === 50, on);
+    played.length = 0; fetched.length = 0;
+    ok = await v.say(B.api.narrator.announceText(B.api.data.placeById(P.id), 2, "N"), { id: "t3" });
+    check("with Stories for kids on, the Spanish kids heads-up plays its Estrella clips", ok === true && played.length === 1 && played[0].text === kidsLine
+      && kidsOnly.every(u => fetched.some(x => x.includes(V.unitKey(u)))), played.map(p => p.text.slice(-60)));
+    B.api.settings.kidStories = false;
+    // 3. the Spanish turn-by-turn grammar
+    const T = B.api.nav && B.api.nav._test;
+    check("the navigation module is there", !!T);
+    if (!T) return;
+    const st = (type, o = {}) => ({ type, text: "", street: null, ref: null, exit: null, toward: null, roundabout_exit: null, ...o });
+    const U = (...a) => (T.promptUnits(...a) || []).join("|");
+    const cases = [
+      [U(st("turn-right"), "500ft"), "En 500 pies,|gire a la derecha."],
+      [U(st("turn-left"), null), "Gire a la izquierda."],
+      [U(st("merge", { ref: "I-405" }), "1mi"), "En 1 milla,|incorpórese|a la I-405."],
+      [U(st("exit-right", { exit: "309", ref: "CA-41" }), "2mi"), "En 2 millas,|tome la salida|309|hacia la Highway 41."],
+      [U(st("exit-right", { exit: "45B" }), "half"), "En media milla,|tome la salida|45|B."],
+      [U(st("exit-left", { exit: "278" }), null), "Tome la salida|278."],
+      [U(st("exit-right", { exit: "45B", ref: "US-101" }), null), "Tome la salida|45|B|hacia la U.S. 101."],
+      [U(st("exit-right", { ref: "CA-134" }), "1mi"), "En 1 milla,|tome la salida a la derecha|hacia la Highway 134."],
+      [U(st("keep-left", { ref: "I-5", stay: true }), "1mi"), "En 1 milla,|manténgase a la izquierda."],
+      [U(st("turn-right"), null, st("turn-left")), "Gire a la derecha.|Luego,|gire a la izquierda."],
+      [U(st("roundabout", { roundabout_exit: 2 }), "quarter"), "En un cuarto de milla,|en la glorieta, tome la 2.ª salida."],
+      [U(st("uturn"), "1000ft"), "En 1,000 pies,|dé vuelta en U."],
+      [U(st("straight", { ref: "I-5" }), null), "Siga derecho|hacia la I-5."],
+    ];
+    const bad = cases.filter(([got, w]) => got !== w);
+    check("the Spanish prompts: exits, highways with their article, merge, Luego, roundabouts, U-turn", !bad.length, bad.map(([g, w]) => `${g} (want ${w})`).join(" ; "));
+    const bank = B.api.nav.phraseBank();
+    const all = cases.flatMap(([, w]) => w.split("|"));
+    check("every unit of those prompts is in the Spanish phrase bank, and no lone \"a\" or \"hacia\" clip", all.every(u => bank.units.includes(u))
+      && !bank.units.includes("a") && !bank.units.includes("hacia") && bank.units.includes("a la Highway 99.") && bank.units.includes("hacia la I-5."),
+      all.filter(u => !bank.units.includes(u)).join(" | "));
+    check("say street names, in Spanish: the Spanish prompt with the street, for the phone's voice (never the provider's English)",
+      U(st("turn-right", { street: "Oak Street", text: "Turn right onto Oak Street" }), "2mi", null, null, true) === "En 2 millas,|gire a la derecha|hacia|Oak Street."
+      && U(st("exit-right", { exit: "215", toward: "Grapevine" }), null, null, null, true) === "Tome la salida|215|hacia|Grapevine.");
+    // 4. a turn-off said in Spanish: "al este", the road with its article
+    const turn = B.api.data.PLACES.find(p => p.detour && p.detour.road === "Highway 76");
+    const ts = turn ? B.api.data.detourSentence(turn) : "";
+    check("a turn-off in Spanish: \"la Highway 76 va cerca de 4.5 millas al este hacia la Misión ...\"", /^En la salida 54, la Highway 76 va cerca de 4\.5 millas al este hacia la Misión /.test(ts), ts);
   },
 
   /* ---------------------------------------------------------------- kids */

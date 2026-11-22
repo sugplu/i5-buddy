@@ -7,9 +7,12 @@
 // exactly as written. The language is picked once per page load: switching it in Settings saves it and reloads.
 //
 //   Which language: ?lang=es or ?lang=en in the address (the Spanish pages on i5.dominares.org/es/ link to the app
-//   with it), else the saved choice (store "lang"), else, on the first run only, the phone's language (es* = Spanish)
+//   with it), else the saved choice (store "lang"), else, on a NEW install only, the phone's language (es* = Spanish)
 //   when the Spanish words are ready (READY_SHARE of the keys filled); the first run saves what it picked (a Spanish phone
-//   that got English because the Spanish words were not there yet is asked again on its next start).
+//   that got English because the Spanish words were not there yet is asked again on its next start: store "langAsk").
+//   A phone that used I-5 Buddy before 3.1.0 (any saved setting, stamp, trip, drive or other "i5b:" key from before this
+//   launch, store.RETURNING, and no "langAsk") keeps English and Asteria, saved, until Spanish is picked in Settings
+//   (Joseph, 2026-11-21: only new installs follow a Spanish phone).
 //
 // Spanish mode also loads data/i5.es.js (window.I5DATA_ES, written by tools/build.py next to data/i5.js from the
 // *_es fields of the content files; not in sw.js SHELL, the service worker keeps it once fetched) and lays its
@@ -21,7 +24,7 @@
 //
 // Tests: a page that sets window.__BUDDY_I18N__ = {es: {key: "..."}, data: {places: {...}}} around the app has those
 // Spanish words and stories laid over es.json and data/i5.es.js (tools/test-i18n.html); nothing else changes.
-import { store } from "./store.js";
+import { store, RETURNING } from "./store.js";
 
 export const LANGS = ["en", "es"];
 /** The locales Intl uses for Spanish: Spanish as written in the United States, then Mexico, then any Spanish. */
@@ -67,27 +70,38 @@ const phoneSpanish = () => {
   try { return /^es\b/i.test((navigator.languages && navigator.languages[0]) || navigator.language || ""); } catch { return false; }
 };
 
+/** Save a language picked for this phone (the first-run question is then answered). */
+function keep(l) { store.set("lang", l); store.del("langAsk"); }
 let lang = asked();
-if (lang) store.set("lang", lang);
+if (lang) keep(lang);
 else {
   const saved = store.get("lang", null);
   if (LANGS.includes(saved)) lang = saved;
 }
+/** No language saved, but this phone used I-5 Buddy before 3.1.0: an "i5b:" key from before this launch (RETURNING is read
+    before anything is saved) that is not this release's own unanswered first run ("langAsk"). */
+const EARLIER = !lang && RETURNING && !store.get("langAsk", false);
 // both dictionaries at once (they are in sw.js SHELL, so an installed app reads them from its own copy)
-const [EN, ES0] = await Promise.all([loadJSON("i18n/en.json"), lang === "es" || (!lang && phoneSpanish()) ? loadJSON("i18n/es.json") : {}]);
+const [EN, ES0] = await Promise.all([loadJSON("i18n/en.json"), lang === "es" || (!lang && !EARLIER && phoneSpanish()) ? loadJSON("i18n/es.json") : {}]);
 let ES = ES0;
 if (TEST && TEST.es && typeof TEST.es === "object") ES = { ...ES, ...TEST.es };
 /** How much of the Spanish dictionary is filled (0 to 1). */
 export const ES_SHARE = Object.keys(EN).length ? Math.min(1, filled(ES) / Object.keys(EN).length) : 0;
 if (!lang) {
-  // the first run: the phone's language, saved. A phone set to Spanish starts in Spanish once the Spanish words are there;
-  // until then it gets English without saving it, so the first start after they arrive still picks Spanish by itself.
-  if (phoneSpanish()) {
+  if (EARLIER) {
+    // someone who already uses the app: English (and Asteria) stays, saved, until Spanish is picked in Settings
+    lang = "en";
+    keep(lang);
+  } else if (phoneSpanish()) {
+    // a new install: the phone's language, saved. A phone set to Spanish starts in Spanish once the Spanish words are
+    // there; until then it gets English without saving it ("langAsk" marks the question as still open, so the first start
+    // after the words arrive still picks Spanish by itself and is not taken for someone from before 3.1.0)
     lang = ES_SHARE >= READY_SHARE ? "es" : "en";
-    if (lang === "es") store.set("lang", lang);
+    if (lang === "es") keep(lang);
+    else store.set("langAsk", true);
   } else {
     lang = "en";
-    store.set("lang", lang);
+    keep(lang);
   }
 }
 /** The language of this page load: "en" or "es". */
@@ -124,7 +138,7 @@ export const cap = s => (s ? String(s).charAt(0).toLocaleUpperCase(IS_ES ? ES_LO
 /** Switch the language: saved, then the app starts again in it (a drive is offered back after the restart). */
 export function setLang(l) {
   if (!LANGS.includes(l)) return false;
-  store.set("lang", l);
+  keep(l);
   if (l === LANG) return false;
   try {
     // ?lang= in the address would win over the choice just made

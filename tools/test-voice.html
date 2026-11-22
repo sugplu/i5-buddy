@@ -64,15 +64,29 @@ const keyOf = new Map([...units].map(u => [V.unitKey(u), u]));
 const played = [];
 // ?real=1: the REAL clip list and clips (voice/asteria/), fetched and decoded by the browser and joined into one recording,
 // which is then not played (the clip test reports it instead). Checks that the recordings exist for real app lines.
+//   &lang=es  the Spanish set (voice/estrella/, 3.1.0) with the app in Spanish; &kids=1 with Stories for kids on (the kids
+//   stories' clips: Asteria's in English, Estrella's in Spanish). &all=1 plays every place's heads-up, not four.
 if (new URLSearchParams(location.search).get("real") === "1") {
+  const Q = new URLSearchParams(location.search), LANG = Q.get("lang") === "es" ? "es" : "en", KIDS = Q.get("kids") === "1", ALL = Q.get("all") === "1";
+  const fetched = [];
   window.__BUDDY_CLIPTEST__ = { played(info) { played.push(info); } };
   const fr = document.getElementById("app");
-  fr.src = "../index.html?silent=1";
+  fr.src = `../index.html?silent=1&lang=${LANG}`;
   const api = await (async () => { for (let i = 0; i < 300; i++) { await sleep(100); const a = fr.contentWindow?.I5BUDDY?.api; if (a && a.voice && a.narrator) return a; } return null; })();
   for (let i = 0; i < 100 && api && !api.voice.natural(); i++) await sleep(100);
-  row(!!api && api.voice.natural(), "the real clip list loads", api ? api.voice.offline.info() : null);
+  const VID = LANG === "es" ? "estrella" : "asteria";
+  row(!!api && api.voice.natural() && api.voice.id === VID, `the real ${VID} clip list loads`, api ? { id: api.voice.id, ...api.voice.offline.info() } : null);
+  // every clip the app fetches comes from this language's folder
+  try {
+    const W = fr.contentWindow, real = W.fetch.bind(W);
+    W.fetch = (u, o) => { try { const s = String(u && u.url || u); if (/\/voice\//.test(s)) fetched.push(s); } catch {} return real(u, o); };
+  } catch {}
+  if (KIDS) api.settings.kidStories = true;
+  const T = fr.contentWindow.I5BUDDY.i18n.t;
   const P = api.data.PLACES;
-  const picks = [P[10], P[150], P[300], P.find(p => p.detour)].filter(Boolean);
+  const pool = KIDS ? P.filter(p => p.kids) : P;
+  const picks = ALL ? pool : [pool[10], pool[150], pool[300], pool.find(p => p.detour)].filter(Boolean);
+  let bad = 0, n = 0, secs = 0;
   for (const p of picks) {
     played.length = 0;
     const text = api.narrator.announceText(p, 2, "N");
@@ -81,12 +95,26 @@ if (new URLSearchParams(location.search).get("real") === "1") {
     const words = text.split(/\s+/).length;
     const sec = played[0]?.seconds || 0;
     // natural speech runs about 2 to 3.5 words a second
-    row(ok && played.length === 1 && sec > words / 4 && sec < words / 1.5, `real clips: ${p.name}`, `${words} words, ${sec.toFixed(1)} s of speech, ready in ${Math.round(performance.now() - t0)} ms`);
+    const good = ok && played.length === 1 && sec > words / 4 && sec < words / 1.5;
+    n++; secs += sec; if (!good) bad++;
+    if (!ALL || !good) row(good, `real clips${KIDS ? " (kids)" : ""}: ${p.name}`, `${words} words, ${sec.toFixed(1)} s of speech, ready in ${Math.round(performance.now() - t0)} ms`);
   }
-  played.length = 0;
-  const story = P.find(p => p.more && p.more.length > 900);
-  const ok = await api.voice.say(`Here's a story while we drive, about ${story.name}. ${story.more}`, { id: "story" });
-  row(ok && played.length === 1 && played[0].seconds > 40, `real clips: a long story (${story.name})`, `${(played[0]?.seconds || 0).toFixed(1)} s`);
+  if (ALL) row(!bad, `real clips${KIDS ? " (kids)" : ""}: every place's heads-up (${n})`, `${bad} without a recording, ${(secs / 60).toFixed(1)} min of speech`);
+  if (!KIDS) {
+    played.length = 0;
+    const story = P.find(p => p.more && p.more.length > 900);
+    const ok = await api.voice.say(T("nar.story_time", { name: story.name, more: story.more }), { id: "story" });
+    row(ok && played.length === 1 && played[0].seconds > 40, `real clips: a long story (${story.name})`, `${(played[0]?.seconds || 0).toFixed(1)} s`);
+    // a turn-by-turn prompt from its units
+    const nav = api.nav && api.nav._test;
+    if (nav) {
+      played.length = 0;
+      const units = nav.promptUnits({ type: "exit-right", exit: "309", ref: "CA-41" }, "2mi", null, null);
+      const ok2 = await api.voice.say(units.join(" "), { id: "nav", units, prio: 3 });
+      row(ok2 && played.length === 1 && played[0].seconds > 2 && played[0].seconds < 9, `real clips: ${units.join(" ")}`, `${(played[0]?.seconds || 0).toFixed(1)} s`);
+    }
+  }
+  row(fetched.length > 0 && fetched.every(u => u.includes(`/voice/${VID}/`)), `every clip came from voice/${VID}/`, `${fetched.length} requests; ${fetched.filter(u => !u.includes(`/voice/${VID}/`)).slice(0, 2).join(" ")}`);
   finish();
   // tools/voice/collect.py --page "tools/test-voice.html?real=1" saves this (real time: the decoder runs on its own thread)
   try { await fetch("/__units", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ title: document.title, rows: [...document.querySelectorAll("#t tr")].map(tr => tr.innerText.replace(/\s+/g, " ").trim()) }) }); } catch {}

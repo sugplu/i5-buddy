@@ -1341,7 +1341,7 @@ export const api = {
   ui: { $, el, toast, go, openSheet, closeSheet, photo, placeSheet, queueRender },
   setPosition, setMode, startDemo, startGps, stopAll,
 };
-window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt }; // for tools/test.html and the E2E harness
+window.I5BUDDY = { api, locate: geo.locate, coordAt: geo.coordAt, i18n }; // for tools/test.html, the E2E harness and tools/voice/units.html (i18n: t() in this page's language)
 
 /* ---------- a drive cut off by a restart (3.0.1) ---------- */
 // The page reloading (a discarded tab, iOS restarting the app's web view, Reload for an update) used to end the drive

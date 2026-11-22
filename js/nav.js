@@ -42,6 +42,11 @@ let A = null, S = null, settings = null, bus = null, store = null, voice = null,
 /* ================================================================ the phrase grammar ================================================================ */
 // A prompt is: [distance] + maneuver [+ "onto" + highway] [+ "Take exit" + number [+ letter]] [+ "Then" + next maneuver].
 // Units keep their exact text (capitalization and punctuation) forever: a recorded voice is rendered from them.
+// Spanish (3.1.0, recorded in the voice Estrella): the same order with Spanish units, a highway with its article as the
+// stories say it ("la I-5.", "la U.S. 101.", "la Highway 99."), "hacia" before it ("a" after "incorpórese") and "Luego,"
+// before the next maneuver: "En 2 millas, tome la salida 309 hacia la Highway 41."  "Incorpórese a la I-5."
+// "Gire a la derecha. Luego, gire a la izquierda."  "En la glorieta, tome la 1.ª salida." tools/voice/make.py --lang es
+// says the numbers, the ordinals and the exit letters in Spanish words ("doscientos quince", "primera", "be").
 export const DIST = { "2mi": t("nav.in_2_miles"), "1mi": t("nav.in_1_mile"), "half": t("nav.in_half_a_mile"), "quarter": t("nav.in_a_quarter_mile"), "1000ft": t("nav.in_1_000_feet"), "500ft": t("nav.in_500_feet") };
 const DIST_MI = { "2mi": 2, "1mi": 1, "half": 0.5, "quarter": 0.25, "1000ft": 1000 * FT, "500ft": 500 * FT };
 const ORD = [t("nav.1st"), t("nav.2nd"), t("nav.3rd"), t("nav.4th"), t("nav.5th"), t("nav.6th")];
@@ -66,15 +71,21 @@ export function maneuverPhrase(step) {
 const HWY_I = [5, 8, 10, 15, 40, 80, 105, 110, 205, 210, 215, 238, 280, 380, 405, 505, 580, 605, 680, 710, 780, 805, 880, 980];
 const HWY_US = [6, 40, 50, 60, 66, 70, 89, 95, 97, 101, 199, 395];
 const HWY_CA_MAX = 330;
-/** "I-5." / "U.S. 101." / "Highway 99." from a provider ref like "I-5", "US-101", "CA-99"; null for anything else (so no wrong name is ever spoken). */
+/** "I-5." / "U.S. 101." / "Highway 99." from a provider ref like "I-5", "US-101", "CA-99" (Spanish: "la I-5.", "la U.S. 101.",
+    "la Highway 99."); null for anything else (so no wrong name is ever spoken). */
 export function highwayUnit(ref) {
   const m = /^\s*(I|US|CA|SR)[\s-]*(\d{1,3})\b/i.exec(String(ref == null ? "" : ref));
   if (!m) return null;
   const k = m[1].toUpperCase(), n = +m[2];
-  if (k === "I") return HWY_I.includes(n) ? `I-${n}.` : null;
-  if (k === "US") return HWY_US.includes(n) ? `U.S. ${n}.` : null;
+  if (k === "I") return HWY_I.includes(n) ? t("nav.interstate_n", { n }) : null;
+  if (k === "US") return HWY_US.includes(n) ? t("nav.us_route_n", { n }) : null;
   return n >= 1 && n <= HWY_CA_MAX ? t("nav.highway_n", { n }) : null;
 }
+/** The word before a highway: "onto" (Spanish: "hacia", and "a" after "incorpórese"). */
+const ontoWord = step => (step && step.type === "merge" ? t("nav.onto_merge") : t("nav.onto"));
+/** The units for "onto" + a highway: two in English ("onto", "I-5."); one in Spanish ("hacia la I-5.", "a la I-5."), so no
+    clip is a lone "a" or "hacia" (the 2026-11-21 pilot: a one-word take came back as silence or with a word too many). */
+const ontoUnits = (step, hwy) => (i18n.IS_ES ? [`${ontoWord(step)} ${hwy}`] : [ontoWord(step), hwy]);
 /** ["Take exit", "278."] or ["Take exit", "45", "B."] from a provider exit like "278" or "45B"; null otherwise. */
 export function exitUnits(exit) {
   const m = /^\s*(\d{1,3})\s*([A-Ha-h])?(?![A-Za-z0-9])/.exec(String(exit == null ? "" : exit));
@@ -97,27 +108,36 @@ function exitParts(exit) {
 }
 /** The units of one maneuver prompt, the way a GPS says it. `dist`: a DIST key or null (the final prompt); `then`: the next
     maneuver step to add, or null; `prev`: the step before (a "keep" on the highway you are already on gets no "onto").
-      "In 2 miles, take exit 309 onto Highway 41."   "Take exit 45 B."   "In 1 mile, keep left."   "Turn right onto I-5." */
-export function promptUnits(step, dist, then, prev) {
+      "In 2 miles, take exit 309 onto Highway 41."   "Take exit 45 B."   "In 1 mile, keep left."   "Turn right onto I-5."
+    `named` (Spanish with Say street names on): the step's street or sign words after a maneuver that has no highway, for
+    the phone's own voice ("Gire a la derecha hacia Oak Street."); the result is then text for that voice, not clip units. */
+export function promptUnits(step, dist, then, prev, named = false) {
   const man = maneuverPhrase(step);
   if (!man) return null;
   const stay = !!step.stay || (!!prev && !!prev.ref && prev.ref === step.ref && /^keep/.test(step.type));
   const hwy = stay ? null : highwayUnit(step.ref);
   const ex = /^exit/.test(step.type) ? exitParts(step.exit) : null;
+  // the street (a turn) or the sign's words (an exit), as the provider gives them
+  const name = s => (named && s && !highwayUnit(s.ref) ? String((/^exit/.test(s.type) ? s.toward || s.street : s.street || s.toward) || "").replace(/\s+/g, " ").trim().slice(0, 80) : "");
   const units = [];
   if (dist) units.push(DIST[dist]);
   if (ex) {
     units.push(dist ? t("nav.take_exit_2") : t("nav.take_exit"));
     const tail = ex.letter ? [ex.n, ex.letter] : [ex.n];
-    if (hwy) units.push(...tail, t("nav.onto"), hwy);
+    if (hwy) units.push(...tail, ...ontoUnits(step, hwy));
+    else if (name(step)) units.push(...tail, ontoWord(step), name(step) + ".");
     else { tail[tail.length - 1] += "."; units.push(...tail); }
   } else {
     const first = dist ? man : cap(man);
-    units.push(hwy ? first : first + ".");           // a period unless "onto" follows
-    if (hwy) units.push(t("nav.onto"), hwy);
+    if (hwy) units.push(first, ...ontoUnits(step, hwy));   // a period unless "onto" follows
+    else if (!stay && name(step)) units.push(first, ontoWord(step), name(step) + ".");
+    else units.push(first + ".");
   }
   const thenMan = then ? maneuverPhrase(then) : null;
-  if (thenMan) units.push(t("nav.then"), thenMan + ".");
+  if (thenMan) {
+    const thenHwy = named ? highwayUnit(then.ref) : null;
+    units.push(t("nav.then"), thenHwy ? `${thenMan} ${ontoWord(then)} ${thenHwy}` : name(then) ? `${thenMan} ${ontoWord(then)} ${name(then)}.` : thenMan + ".");
+  }
   return units;
 }
 /** Every unit and every fixed sentence: the list a recorded voice is rendered from. */
@@ -125,10 +145,11 @@ export function phraseBank() {
   const set = new Set();
   Object.values(DIST).forEach(d => set.add(d));
   for (const m of MAN_ALL) { set.add(m); set.add(m + "."); set.add(cap(m)); set.add(cap(m) + "."); }
-  set.add(t("nav.onto")); set.add(t("nav.take_exit")); set.add(t("nav.take_exit_2")); set.add(t("nav.then"));
-  for (const n of HWY_I) set.add(`I-${n}.`);
-  for (const n of HWY_US) set.add(`U.S. ${n}.`);
-  for (let n = 1; n <= HWY_CA_MAX; n++) set.add(t("nav.highway_n", { n }));
+  set.add(t("nav.take_exit")); set.add(t("nav.take_exit_2")); set.add(t("nav.then"));
+  const hwys = [...HWY_I.map(n => t("nav.interstate_n", { n })), ...HWY_US.map(n => t("nav.us_route_n", { n }))];
+  for (let n = 1; n <= HWY_CA_MAX; n++) hwys.push(t("nav.highway_n", { n }));
+  if (i18n.IS_ES) for (const h of hwys) { set.add(`${t("nav.onto")} ${h}`); set.add(`${t("nav.onto_merge")} ${h}`); }
+  else { set.add(t("nav.onto")); set.add(t("nav.onto_merge")); for (const h of hwys) set.add(h); }
   for (let n = 1; n <= 999; n++) { set.add(String(n)); set.add(n + "."); }
   for (const c of "ABCDEFGH") { set.add(c + "."); set.add(c); }
   const sentences = Object.values(SENT);
@@ -733,7 +754,12 @@ function runPrompts(t) {
   let text, units = promptUnits(step, g.key, then, steps[n - 1]);
   if (!units) return;
   text = units.join(" ");
-  if (settings.navStreets && step.text) {                        // the phone's own voice says the provider's words, street names and all
+  if (settings.navStreets && i18n.IS_ES) {
+    // Spanish: the provider's words are English, so the phone's own Spanish voice says the Spanish prompt with the street
+    // or sign name in it ("En 2 millas, gire a la derecha hacia Oak Street."), never "En 2 millas, turn right onto ..."
+    const named = promptUnits(step, g.key, then, steps[n - 1], true);
+    if (named && named.join(" ") !== text) { text = named.join(" "); units = null; }
+  } else if (settings.navStreets && step.text) {                 // the phone's own voice says the provider's words, street names and all
     const body = g.key ? `${DIST[g.key]} ${lowerFirst(step.text)}` : step.text;
     text = /[.!?]$/.test(body) ? body : body + ".";
     if (then && then.text) text += i18n.t("nav.then_text_x1", { text: lowerFirst(then.text), x1: /[.!?]$/.test(then.text) ? "" : "." });

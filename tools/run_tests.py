@@ -62,7 +62,7 @@ def serve():
     return f"http://127.0.0.1:{srv.server_address[1]}/tools/"
 
 
-# (name, page+query, virtual time budget ms, window size, quick?)
+# (name, page+query, virtual time budget ms, window size, quick? [, extra Chrome flags])
 SUITE = [
     ("geometry", "test.html", 15000, "500,800", True),
     # the natural voice (3.0): speech units, clip names, the clip player with fake clips (nothing fetched or heard)
@@ -125,6 +125,13 @@ SUITE = [
     ("i18n keys", "test-i18n.html?s=keys", 90000, "500,900", True),
     ("i18n spanish", "test-i18n.html?s=es", 180000, "500,900", True),
     ("i18n kids", "test-i18n.html?s=kids", 120000, "500,900", True),
+    # 3.1.0 ship rule (Joseph, 2026-11-21): only a NEW install follows a Spanish phone; a phone with state from before 3.1.0
+    # keeps English until Spanish is picked in Settings; an explicit choice or ?lang= always wins. The browser's language
+    # is set with --accept-lang (navigator.languages), the way a phone set to Spanish reports it.
+    ("i18n default es", "test-i18n.html?s=default&phone=es", 240000, "500,900", True, ["--accept-lang=es-MX,es"]),
+    ("i18n default en", "test-i18n.html?s=default&phone=en", 240000, "500,900", True),
+    # 3.1.0: the Spanish natural voice (Estrella) and the kids clips: which recording each line plays, never Asteria in Spanish
+    ("i18n voice", "test-i18n.html?s=voice", 180000, "500,900", True),
     ("live unit", "test-live.html?s=unit", 30000, "900,960", True),
     ("live mock", "test-live.html?s=mock", 60000, "900,960", True),
     ("live traffic", "test-live.html?s=traffic", 800000, "900,960", False),
@@ -219,10 +226,11 @@ PASS_RE = re.compile(r"\bALL PASS\b|\bPASS\b")
 
 
 def run(test):
-    name, page, budget, size, _ = test
+    name, page, budget, size, _quick, *more = test
+    extra = list(more[0]) if more else []
     prof = tempfile.mkdtemp(prefix="i5test-")
     cmd = [CHROME, "--headless=new", "--mute-audio", "--disable-audio-output", "--disable-gpu", f"--user-data-dir={prof}",
-           "--enable-logging=stderr", "--v=0",
+           "--enable-logging=stderr", "--v=0", *extra,
            "--autoplay-policy=no-user-gesture-required", f"--window-size={size}", f"--virtual-time-budget={budget}",
            # Hermetic: every outside host fails at once. Camera <img>s point at real Caltrans servers, and headless
            # Chrome's virtual clock stops while a download is pending, so a slow connection used to time tests out.

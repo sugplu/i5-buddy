@@ -1,0 +1,13 @@
+{
+ "voice": "asteria",
+ "lang": "en",
+ "when": "2026-11-21 17:44",
+ "how": "every clip decoded (afconvert) and heard by Whisper large v3 turbo on Workers AI, never played; short clips in batches of 12 with 0.8 s between them; a clip heard differently (word error over 0.3 and similarity under 0.85; short ones 0.5 / 0.7), far too long or short for its words, or with a pause over 1 s inside was recorded again up to twice and the better-heard take kept",
+ "clips": 1749,
+ "seconds": 7256,
+ "retaken": 25,
+ "fixed_by_retake": 25,
+ "still_differ": 0,
+ "word_error_mean": 0.0321,
+ "differ": []
+}

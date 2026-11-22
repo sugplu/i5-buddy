@@ -223,13 +223,24 @@ export function detourShort(p) {
   const far = d.miles != null && d.miles >= 0.1 ? t("data.miles_mi_x1", { miles: detourMi(d.miles), x1: d.dir ? " " + dirSaid(d.dir) : "" }) : dirSaid(d.dir);
   return t("data.detour_x1_at_exit_exit", { x1: far ? far + " " : "", exit: d.exit });
 }
-/** "At exit 54, Highway 76 heads about 4 miles east to Mission San Luis Rey." */
+/** The way a turn-off goes after its distance: "east" (Spanish: "al este", 3.1.0: "cerca de 8 millas al este"). */
+const towardSaid = w => (w ? t("data.toward_dir", { dir: dirSaid(w) }) : "");
+/** A turn-off's road as a sentence says it: "Highway 76" (Spanish, 3.1.0: "la Highway 76", "la Interestatal 8", "el San
+    Fernando Mission Boulevard", the way the Spanish stories name roads). */
+function roadSaid(road) {
+  const i = /^Interstate (\d+)$/.exec(road);
+  if (i) return t("data.road_interstate_n", { n: i[1] });
+  return /\b(?:Boulevard|Blvd\.?)$/i.test(road) ? t("data.road_the_m", { road }) : t("data.road_the", { road });
+}
+/** "At exit 54, Highway 76 heads about 4 miles east to Mission San Luis Rey." (Spanish, 3.1.0: "... va cerca de 4.5 millas
+    al este hacia la Misión San Luis Rey de Francia.": the mission with its article, and no "unas" before a decimal) */
 export function detourSentence(p) {
   const d = detourOf(p);
   if (!d) return "";
   const v = d.miles != null && d.miles >= 0.1 ? detourMi(d.miles) : null;
-  const far = v != null ? t("data.about_v_x1_x2", { v, x1: v === 1 ? t("data.mile") : t("data.miles"), x2: d.dir ? " " + dirSaid(d.dir) : "" }) : dirSaid(d.dir);
+  const far = v != null ? t("data.about_v_x1_x2", { v, x1: v === 1 ? t("data.mile") : t("data.miles"), x2: d.dir ? " " + towardSaid(d.dir) : "" }) : towardSaid(d.dir);
+  const name = p.mission ? t("data.the_mission_name", { name: p.name }) : p.name;
   return d.road
-    ? t("data.at_exit_exit_road_heads_x1_to_name", { exit: d.exit, road: d.road, x1: far ? far + " " : "", name: p.name })
-    : t("data.take_exit_exit_for_name_x1", { exit: d.exit, name: p.name, x1: far ? `, ${far}` : "" });
+    ? t("data.at_exit_exit_road_heads_x1_to_name", { exit: d.exit, road: roadSaid(d.road), x1: far ? far + " " : "", name })
+    : t("data.take_exit_exit_for_name_x1", { exit: d.exit, name, x1: far ? `, ${far}` : "" });
 }

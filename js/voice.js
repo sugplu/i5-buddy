@@ -21,11 +21,15 @@
 // sentence built from parts can still use clips.
 import { settings, bus } from "./store.js";
 import { t, IS_ES } from "./i18n.js";
-// Spanish (3.1.0): in Spanish the words are read by the device's own Spanish voice (es-MX and es-US first, never a
-// novelty voice) until Joseph picks a Spanish natural voice by ear and its clips exist: then ES_VOICE_ID names its folder
-// (voice/<id>/, made by tools/voice/ like Asteria's) and it is used exactly like Asteria is in English. English keeps
-// Asteria as before. The device voice picked in Settings is saved per language (settings.voice, settings.voiceEs).
-const ES_VOICE_ID = null;
+// Spanish (3.1.0): the Spanish natural voice is "Estrella" (Deepgram Aura-2 Spanish, a Mexican voice, picked by ear by
+// Joseph on 2026-11-21), recorded like Asteria into voice/estrella/ (tools/voice/make.py --lang es) and used exactly like
+// Asteria is in English; a line without clips is read by the device's own Spanish voice (es-MX and es-US first, never a
+// novelty voice). No English recording is ever played in Spanish, and no Spanish one in English. The device voice picked
+// in Settings is saved per language (settings.voice, settings.voiceEs).
+// Stories for kids (3.1.0): the kids stories are recorded into the same sets (Asteria in English, Estrella in Spanish) and
+// played only when Settings > Stories for kids is on (narrator.storyOf is the only way their words are said); index.json
+// "kids" lists the clips only those stories use, which Save for offline leaves out while Stories for kids is off.
+const ES_VOICE_ID = "estrella";
 /** The settings field that holds the picked device voice for this language. */
 const VKEY = IS_ES ? "voiceEs" : "voice";
 
@@ -178,12 +182,14 @@ function fetchT(url, ms) {
   const t = setTimeout(() => { try { ac && ac.abort(); } catch {} }, ms);
   return fetch(url, ac ? { signal: ac.signal } : undefined).finally(() => clearTimeout(t));
 }
-/** voice/<id>/index.json: {v, voice, n, bytes, keys: "<14 hex digits per clip, back to back>"} */
+/** voice/<id>/index.json: {v, voice, n, bytes, keys: "<14 hex digits per clip, back to back>", kids?: "<the clips only
+    Stories for kids uses, the same way>", kidsBytes?} */
 function useManifest(j) {
   if (!j || typeof j.keys !== "string" || j.keys.length % 14 !== 0) return null;
-  const set = new Set();
+  const set = new Set(), kids = new Set();
   for (let i = 0; i < j.keys.length; i += 14) set.add(j.keys.slice(i, i + 14));
-  manifest = { n: set.size, bytes: +j.bytes || 0, has: set };
+  if (typeof j.kids === "string" && j.kids.length % 14 === 0) for (let i = 0; i < j.kids.length; i += 14) { const k = j.kids.slice(i, i + 14); if (set.has(k)) kids.add(k); }
+  manifest = { n: set.size, bytes: +j.bytes || 0, has: set, kids, kidsBytes: kids.size ? +j.kidsBytes || 0 : 0 };
   bus.emit("voices", voices);
   return manifest;
 }
@@ -211,7 +217,7 @@ function fetchClip(k) {
   if (p) { raw.delete(k); raw.set(k, p); return p; }
   const test = CLIPTEST();
   const get = base => fetchT(clipUrl(k, base), 15000).then(r => { if (!r.ok) throw new Error("clip " + r.status); return r.arrayBuffer(); });
-  p = test && test.fetch ? new Promise(res => res(test.fetch(k)))
+  p = test && test.fetch ? new Promise(res => res(test.fetch(k, clipUrl(k))))
     : new Promise(res => res(get(VBASE))).catch(e => { if (VREMOTE) return get(VREMOTE); throw e; });
   p.catch(() => raw.delete(k));
   raw.set(k, p);
@@ -570,12 +576,18 @@ async function pump() {
 /* ---------- saving the voice for offline (the website; the iPhone app carries every clip) ---------- */
 
 let saving = null;
-function clipKeysAll() { return manifest ? [...manifest.has] : []; }
+/** The clips Save for offline downloads: every clip, less the kids stories' own while Stories for kids is off. */
+function clipKeysAll() {
+  if (!manifest) return [];
+  const all = [...manifest.has];
+  return settings.kidStories || !manifest.kids.size ? all : all.filter(k => !manifest.kids.has(k));
+}
 const offline = {
   /** {ready, clips, mb, saving, done} */
   info() {
     const n = clipKeysAll().length;
-    return { ready: !!manifest, clips: n, mb: manifest && manifest.bytes ? Math.round(manifest.bytes / 1048576) : null,
+    const bytes = manifest ? manifest.bytes - (settings.kidStories ? 0 : manifest.kidsBytes) : 0;
+    return { ready: !!manifest, clips: n, mb: manifest && bytes > 0 ? Math.round(bytes / 1048576) : null,
       saving: !!saving, done: saving ? saving.done : 0 };
   },
   /** Download every clip into the voice's offline cache (sw.js serves clips from it first). onProgress(done, total).
@@ -616,8 +628,10 @@ const offline = {
 
 export const voice = {
   get available() { return !!synth || !!manifest; },
+  /** The natural voice of this language: "asteria" (English) or "estrella" (Spanish); its clips are in voice/<id>/. */
+  id: VOICE_ID,
   /** This language's voices (English, or Spanish in Spanish): I-5 Buddy's own voice first (English: Asteria; Spanish:
-      none yet), then the device's own, then online ones. */
+      Estrella), then the device's own, then online ones. */
   list: () => (VBASE && !(SILENT && !CLIPTEST()) ? [NATURAL, ...voices] : voices),
   /** The settings field for the device voice picked in this language ("voice" in English, "voiceEs" in Spanish). */
   settingKey: VKEY,

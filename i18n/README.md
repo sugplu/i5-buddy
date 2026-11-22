@@ -7,8 +7,11 @@ yet" and the app shows the English for that key. `js/i18n.js` reads both (see th
 For whoever writes `es.json`:
 
 - **Context.** `python3 tools/i18n_context.py --out /tmp/i18n-context.json` lists, for every key, its English, whether
-  the app speaks it (`spoken`) and each line of code that uses it. Spoken lines are read aloud by a Spanish device voice
-  for now (and recorded later): write them to be heard, with numbers and units as words around them.
+  the app speaks it (`spoken`) and each line of code that uses it. Spoken lines are recorded in the voice Estrella
+  (3.1.0): write them to be heard, with numbers and units as words around them (digits are fine: the recording says
+  them in words, see below).
+- **Changing a spoken Spanish value** (or a Spanish story) changes the clip it needs: the line falls back to the device's
+  Spanish voice until it is recorded again (below).
 - **Blanks.** Keep every `{name}` of the English, spelled the same, each exactly once or as often as the English has it;
   you may move them. `nar.lead_name_text` is `"{lead}: {name}. {text}"`: keep the punctuation that separates them.
   The test fails on a missing or extra blank.
@@ -57,3 +60,25 @@ for a place that can be seen) or one question, nothing scary (a sad story says o
 ago), no ads, no left or right. The Spanish one is written from the Spanish story and speaks to the kids as `ustedes`.
 Claude Sonnet 5.5 checked each against its source story; a flagged one was written again once. `kids_src` (the hash of
 the story they came from) makes `tools/build.py` leave both out when the story changes.
+
+## The Spanish voice (Estrella, 3.1.0 ship step)
+
+Every Spanish line the app speaks with fixed words (the same lines Asteria has in English) is a clip in `voice/estrella/`,
+named by the hash of the line's unit as shown (`js/voice.js` `speechUnits` and `unitKey`, exactly like Asteria's).
+
+1. `python3 tools/voice/collect.py --page "tools/voice/units.html?lang=es" --out tools/voice/units-es.json` lists the units
+   with the app's own Spanish words (headless, muted, silent).
+2. `~/Dominares/tts/.venv/bin/python tools/voice/make.py --lang es --ledger LEDGER --budget USD` records the missing ones
+   through the local sampler (`~/Dominares/ship/i5-es-voices/make/tts-sampler-es`, `wrangler dev`, never deployed).
+   What the voice is sent comes from `tools/voice/spoken_es.py`: numbers in Mexican Spanish words with the gender of what
+   they count ("veintiuna millas", "doscientos pies", "mil ochocientos seis"), "la I-5" as "la interestatal cinco", "la
+   U.S. 101" as "la u ese ciento uno", ordinals ("1.ª" primera), times, amounts, Roman numerals and a few English
+   abbreviations; place names stay as written. `python3 tools/voice/spoken_es.py --test` checks it.
+3. `~/Dominares/tts/.venv/bin/python tools/voice/check.py --lang es --ledger LEDGER --report REPORT` sends every clip to
+   Whisper (Workers AI) and records again, up to twice, a clip heard differently or far too long or short for its words;
+   the better take is kept. Nothing is ever played on the Mac. The clips that still differ are in
+   `tools/voice/whisper-estrella.json` (mostly English names the Spanish recognizer writes its own way).
+4. `python3 tools/voice/collect.py --page "tools/test-voice.html?real=1&lang=es" --out /tmp/v.json` decodes real clips in
+   the browser and joins them into the app's lines (`&kids=1` for the kids stories, `&all=1` for every place).
+
+Turn-by-turn has its own Spanish grammar in `js/nav.js` (see ARCHITECTURE.md, Words and languages).

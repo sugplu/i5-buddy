@@ -1,0 +1,255 @@
+{
+ "voice": "estrella",
+ "lang": "es",
+ "when": "2026-11-21 18:53",
+ "how": "every clip decoded (afconvert) and heard by Whisper large v3 turbo on Workers AI, never played; short clips in batches of 12 with 0.8 s between them; a clip heard differently (word error over 0.3 and similarity under 0.85; short ones 0.5 / 0.7), far too long or short for its words, or with a pause over 1 s inside was recorded again up to twice and the better-heard take kept",
+ "clips": 10280,
+ "seconds": 55255,
+ "retaken": 144,
+ "fixed_by_retake": 120,
+ "still_differ": 24,
+ "word_error_mean": 0.0738,
+ "differ": [
+  {
+   "key": "0314950bd89b70",
+   "text": "South Bay Salt Works.",
+   "heard": "South Bay, South Park.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "15e4f5616fb8b0",
+   "text": "Beale's Cut.",
+   "heard": "b s kut",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0d075e50a906d6",
+   "text": "La antigua Ridge Route.",
+   "heard": "La antigua wedge root.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "07f86205f2db95",
+   "text": "Elk Hills y Teapot Dome.",
+   "heard": "Elquils y te apotó.",
+   "wer": 0.8,
+   "why": [
+    "heard differently (word error 0.80)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "1db1972f32617e",
+   "text": "Kern National Wildlife Refuge.",
+   "heard": "GERD National Whitley Refuge",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "05ddf8a500ef74",
+   "text": "Newman y Orestimba Creek.",
+   "heard": "Newman y Orestín Bacri.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "10caeb1c82a66a",
+   "text": "California State Railroad Museum.",
+   "heard": "State Railroad Museo",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "195ce60ecd32e5",
+   "text": "Lassen Peak.",
+   "heard": "la sentike",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0046902da35311",
+   "text": "Los winnemem siguen aquí.",
+   "heard": "Los güinema, sigan aquí.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "1d4002d7f89ceb",
+   "text": "Lakehead, la cabecera del lago.",
+   "heard": "Y hay que, la cabecela del lago.",
+   "wer": 0.8,
+   "why": [
+    "heard differently (word error 0.80)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0bd0c5bb7dbb80",
+   "text": "Babe Ruth en Dunsmuir.",
+   "heard": "Baked fruit en dulce muir.",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "116eb08b68df58",
+   "text": "Irvine Ranch y Tustin.",
+   "heard": "Irvin Raj y Tuftin.",
+   "wer": 0.75,
+   "why": [
+    "heard differently (word error 0.75)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0dcb4855b0c2aa",
+   "text": "El río Kern y Elk Hills.",
+   "heard": "El río Kerr y Oak Hill.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "15b6a351892fd0",
+   "text": "Woodland y Cache Creek.",
+   "heard": "Waterland y Cash Creek.",
+   "wer": 0.5,
+   "why": [
+    "heard differently (word error 0.50)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0595401da1d10c",
+   "text": "Castle Crags y Dunsmuir.",
+   "heard": "Castro, Gags y Donzmur.",
+   "wer": 0.75,
+   "why": [
+    "heard differently (word error 0.75)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "133203da96c53d",
+   "text": "Uva.",
+   "heard": "uga",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0261166bebe6a5",
+   "text": "Speedee.",
+   "heard": "ege",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "0d4ae6d0ef74d1",
+   "text": "Eagle.",
+   "heard": "egge",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "0bdc4a98241f2b",
+   "text": "Cloro.",
+   "heard": "",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)",
+    "nothing heard"
+   ],
+   "takes": 2
+  },
+  {
+   "key": "0a462f1d334228",
+   "text": "A&W Root Beer.",
+   "heard": "A y doble o root pie.",
+   "wer": 0.333,
+   "why": [
+    "heard differently (word error 0.33)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "055cc00b3573d5",
+   "text": "Frenchtown.",
+   "heard": "town",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "1803b63da8d582",
+   "text": "Eagle Bend.",
+   "heard": "ben",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "1c0b2420e4287d",
+   "text": "Sun Valley.",
+   "heard": "sumba ley",
+   "wer": 1.0,
+   "why": [
+    "heard differently (word error 1.00)"
+   ],
+   "takes": 3
+  },
+  {
+   "key": "17d14907d8152d",
+   "text": "Lodi también es la cuna de A&W Root Beer.",
+   "heard": "Lodi también es la cuna de A y W B A.",
+   "wer": 0.333,
+   "why": [
+    "heard differently (word error 0.33)"
+   ],
+   "takes": 2
+  }
+ ]
+}

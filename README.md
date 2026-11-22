@@ -20,14 +20,17 @@ This release is the plumbing: the English app shows and says exactly what 3.0.9 
 are filled in by a later content step. Nothing changes for an English user except two new Settings rows.
 
 - **`js/i18n.js`** picks the language once per start: `?lang=es` / `?lang=en` in the address (saved), else the saved
-  choice (store `lang`), else on the first run the phone's language (`es*` = Spanish, only once the Spanish dictionary is
-  90% filled; until then a Spanish phone gets English and is asked again next start). `<html lang>` follows it.
+  choice (store `lang`), else on a **new install** the phone's language (`es*` = Spanish, only once the Spanish dictionary
+  is 90% filled; until then a Spanish phone gets English and is asked again next start, store `langAsk`). A phone that
+  used I-5 Buddy before 3.1.0 (any `i5b:` key saved before this launch: settings, stamps, a trip, the "New in" card...,
+  `store.RETURNING`) keeps English and Asteria, saved, until Spanish is picked in Settings (Joseph, 2026-11-21: only new
+  installs follow a Spanish phone). `<html lang>` follows it.
   Settings > Language (English / Español, each in its own language) saves it and restarts the app in it (a drive that was
   running is picked back up by the resume logic). The Spanish site pages (`es/`, `tools/guides.py`) open the app with
   `?lang=es`.
 - **Words.** Every user-facing string in `js/*.js` and `js/games/*.js` is `t("ns.key")` or `t("ns.key", {name: value})`
-  (`i18n.t(...)` in functions that have a local named `t`); `i18n/en.json` is the source (2,554 keys), `i18n/es.json`
-  has the same keys and empty values for now, and an empty Spanish value shows its English, one key at a time.
+  (`i18n.t(...)` in functions that have a local named `t`); `i18n/en.json` is the source (2,554 keys; 2,562 since the
+  ship step), `i18n/es.json` has the same keys, and an empty Spanish value shows its English, one key at a time.
   `index.html` marks its words with `data-i18n="key"` (text), `data-i18n-html` (markup) and `data-i18n-attr="aria-label:key"`;
   `applyDom()` swaps them in Spanish only, so the English page is the page as written. Plurals are two keys (one/many),
   never English "+ s". Numbers, dates and times go through `loc(orig)`: the old locale argument in English, `es-US` /
@@ -42,36 +45,82 @@ are filled in by a later content step. Nothing changes for an English user excep
   stories; not in sw.js SHELL, the service worker keeps it once fetched) and `localizeData()` lays it over the road data,
   keeping the English in each item's `en`. A file from another build (another `version`) is ignored.
   Today it holds the 263 Spanish photo descriptions and the 21 missions' Spanish names.
-- **Spanish narration** speaks the Spanish text with the device's own Spanish voice (es-MX and es-US first, never a
-  novelty voice; Settings > Voice lists Spanish voices and saves the pick as `settings.voiceEs`). No English recording is
-  ever played in Spanish. When Joseph picks the Spanish voice (samples: `~/Dominares/ship/i5-es-voices/`) and its clips are
-  recorded like Asteria's, `ES_VOICE_ID` in `js/voice.js` names its folder. English keeps Asteria exactly as before.
+- **Spanish narration** is the natural voice **Estrella** (Deepgram Aura-2 Spanish, a Mexican voice, Joseph's pick by ear
+  on 2026-11-21 from `~/Dominares/ship/i5-es-voices/`), recorded like Asteria into `voice/estrella/` (see "The ship step"
+  below); a line without clips is read by the device's own Spanish voice (es-MX and es-US first, never a novelty voice;
+  Settings > Voice lists Estrella and the Spanish voices and saves the pick as `settings.voiceEs`). No English recording is
+  ever played in Spanish, and no Spanish one in English. English keeps Asteria exactly as before.
 - **Ask Buddy stays English** in this build: the recognizer listens for English, the answers are data/ask.js's, names are
   matched in English (`p.en.name`); in Spanish the mic button and the listening panel say it answers in English.
 - **Stories for kids** (Settings, off by default, `settings.kidStories`): a place's `kids` text (Spanish: `kids_es`)
   replaces its story where it has one: the spoken heads-up, Hear it, Drive's card, Ahead, the place sheet and the map
   cards (`narrator.storyOf`); the long story is not played after it (`narrator.moreOf`); Tell me more still tells it. A
   place without kids text keeps its story; Spanish never reads an English kids text.
-- Tests: `tools/test-i18n.html?s=keys|es|kids` (64 pages in the suite now). The privacy notice names the language setting
-  and the Spanish voices (2026-11-21.1).
+- Tests: `tools/test-i18n.html?s=keys|es|kids|default|voice` (67 pages in the suite now). The privacy notice names the
+  language setting, the Spanish recordings and the kids stories' recordings (2026-11-21.2).
 - **The content step (2026-11-21, same release):** every app word in Spanish (`i18n/es.json`, 2,552 keys, so a Spanish
-  phone now starts in Spanish by itself), and in the content files the Spanish of all 380 landmarks (name, story, long
-  story and the 93 I-spy lines), 68 stretches with their seasonal notes, 101 trivia questions, the 21 missions' passport
-  texts, the ends of the road and the Where to? names (`content/names_es.json`) and the 272 postcard lines and 5 share
-  headline lists (`tools/postcards.json`); `data/i5.es.js` now carries 377 places, 68 zones, 101 trivia, 21 missions and
-  20 destinations (698 KB, loaded in Spanish only). **Stories for kids:** a `kids` and a `kids_es` story for every
-  landmark (377 in the app). Written by Claude Opus 5.5 after a glossary step, checked by back-translation (Claude Sonnet
-  5.5; Claude Haiku 5.5 for the rest when the Sonnet budget ran out) and the kids stories by a fidelity check against
-  their own story; flagged items were written again once or fixed by hand. How, and the rules: `i18n/README.md`.
-  `es_src` / `kids_src` hashes make `tools/build.py` leave out any Spanish or kids text whose English changed since
-  (`tools/build-report.txt` says which); `tools/lint_content.py` checks the Spanish and kids fields too. The English
-  `data/i5.js` is byte-identical to before apart from the new `kids` fields (data/ask.js unchanged).
-- Follow-ups: the Spanish voice clips (Estrella, Joseph's pick: about 8,700 clips, 560,000 characters, about $19 on
-  Cloudflare with a Whisper check and re-takes), Asteria clips for the English kids stories (about 1,900 clips, $3.70) and
-  Estrella clips for the Spanish ones (about 1,800 clips, $4), Spanish voice commands and Ask Buddy answers, Spanish
-  privacy and support pages, Apple's Spanish App Store badge, Geoapify turn-by-turn text in Spanish (Say street names),
-  `get/` passing `?lang=es` on, a turn-off's spoken heads-up still uses its grown-up text with Stories for kids on
-  (`narrator.turnBody`), and turn-off road names (`detour.road`, "Interstate 8") stay English in Spanish sentences.
+  phone now starts in Spanish by itself: since the ship step, only on a new install), and in the content files the
+  Spanish of all 380 landmarks (name, story, long story and the 93 I-spy lines), 68 stretches with their seasonal notes,
+  101 trivia questions, the 21 missions' passport texts, the ends of the road and the Where to? names
+  (`content/names_es.json`) and the 272 postcard lines and 5 share headline lists (`tools/postcards.json`);
+  `data/i5.es.js` now carries 377 places, 68 zones, 101 trivia, 21 missions and 20 destinations (698 KB, loaded in
+  Spanish only). **Stories for kids:** a `kids` and a `kids_es` story for every landmark (377 in the app). Written by
+  Claude Opus 5.5 after a glossary step, checked by back-translation (Claude Sonnet 5.5; Claude Haiku 5.5 for the rest
+  when the Sonnet budget ran out) and the kids stories by a fidelity check against their own story; flagged items were
+  written again once or fixed by hand. How, and the rules: `i18n/README.md`. `es_src` / `kids_src` hashes make
+  `tools/build.py` leave out any Spanish or kids text whose English changed since (`tools/build-report.txt` says which);
+  `tools/lint_content.py` checks the Spanish and kids fields too. The English `data/i5.js` is byte-identical to before
+  apart from the new `kids` fields (data/ask.js unchanged).
+- **The ship step (2026-11-21, same release; Joseph's go at about 16:15 PT: record Estrella and the kids stories, about
+  $27 on Cloudflare, and people who already use the app keep English):**
+  - **Only a new install follows a Spanish phone** (`js/i18n.js`, above). `tools/test-i18n.html?s=default&phone=es|en`
+    (run_tests.py starts the Spanish one with `--accept-lang=es-MX,es`): a new install, the whole 3.0.9 profile and each of
+    six of its keys alone, Settings > Language and `?lang=` both ways, a saved choice, an open first-run question. Against
+    e3721d4's app the Spanish-phone run fails 13 of its 26 checks (every phone from before 3.1.0 opened in Spanish there),
+    the English-phone run only the 4 new ones (the voice ids, `langAsk`).
+  - **Estrella, the Spanish set:** `voice/estrella/`, 10,280 clips (15.3 hours of speech, 316 MiB): every
+    line the app speaks with fixed words in Spanish, listed the way Asteria's are (`tools/voice/units.html?lang=es`, the
+    app's own Spanish words, into `tools/voice/units-es.json`) and recorded by `tools/voice/make.py --lang es`. The voice is
+    sent `tools/voice/spoken_es.py`'s words: numbers in Mexican Spanish with the gender of what they count ("veintiuna
+    millas", "doscientos pies", "doscientas personas"), years, decimals, times, amounts, ordinals ("1.ª" primera), Roman
+    numerals, "la I-5" as "la interestatal cinco", "la U.S. 101" as "la u ese ciento uno", a few English abbreviations;
+    place names as written (`--test`: 92 checks). Aura-2 Spanish starts many takes with a click and up to 0.9 s of
+    near-silence, so Estrella is trimmed by energy (`_trim_es`), then levelled to Asteria's -19 dBFS with a 5 ms limiter.
+  - **Spanish turn-by-turn grammar** (`js/nav.js`): Spanish word order, the highway with its article and joined to its
+    "hacia" or "a" in one clip ("hacia la Highway 41.", "a la I-5.": a lone one-syllable take came back as silence in
+    the pilot), "Luego," before the next turn, exit numbers 1-999 and letters in Spanish words, the roundabouts' "primera"
+    to "sexta salida". With Say street names on, the phone's Spanish voice says the Spanish prompt with the street (the
+    provider's words are English). The turn-offs: "la Highway 76 va cerca de 4.5 millas al este hacia la Misión ..."
+    (`data.js`), the missions with their article ("La Misión ... fue fundada en"), "A más o menos 1 milla, a su derecha"
+    (was "A cerca de", heard as "acerca de"): found by one Claude Opus 5.5 read of the prompts and sample lines ($0.13).
+  - **Stories for kids, recorded:** English with Asteria (1,749 clips, the 3.0 set's speaker and settings) and Spanish
+    with Estrella (1,659 clips, in the set above). They play only with Stories for kids on (narrator.storyOf);
+    `index.json` `kids` lists the clips only they use, which Save for offline leaves out while the setting is off, and
+    `stream.txt` now lists them too, so the iPhone app downloads them instead of carrying them.
+  - **Checked by Whisper, never played:** every new clip decoded and heard by Whisper large v3 turbo (Workers AI),
+    `tools/voice/check.py`. Estrella: 148 flagged (heard differently, too long, or silence), 121 fixed by a new take in two
+    rounds, 3 by a better spoken form (the U-turn's "u" quoted: a lone letter at the end grew a syllable; the trivia
+    letter "A:" doubled: a lone vowel came back silent), and 24 still heard differently: short titles with English names
+    ("Kern National Wildlife Refuge.", "Babe Ruth en Dunsmuir.") and one-word game lines ("Uva.", "Cloro.") the Spanish
+    recognizer writes its own way (`tools/voice/whisper-estrella.json`); every exit letter and number is a clip that
+    passed. Mean word error over all 10,280: 0.074 (English names count against it).
+    Asteria's kids clips: 25 re-taken; 16 fixed by a new take, 3 more by a take with the numbers written out (short
+    sentences with a year came back digit by digit, "one nine three seven"), 6 were the length check counting digits as
+    one letter; none differs now (`tools/voice/whisper-asteria-kids.json`). The real clips decode and join in the browser
+    (`tools/test-voice.html?real=1&lang=es`, `&kids=1&all=1`).
+  - **Wiring:** `js/voice.js` `ES_VOICE_ID = "estrella"` and `voice.id`; sw.js one offline cache per voice
+    (`i5b-voice-asteria`, `i5b-voice-estrella`), clips fetched as they are needed, never in SHELL. Privacy 2026-11-21.2
+    (the Spanish and kids recordings).
+  - **Cost:** Cloudflare Workers AI $28.78 (940,875 characters of Aura-2, 1,085 minutes of Whisper, the pilots and
+    re-takes included; ledger `~/Dominares/ship/i5-es-voices/make/ledger-ship.jsonl`); Claude credit $0.13. The repo grows
+    by about 363 MiB (12,035 files; the published site is about 679 MiB, and GitHub Pages allows 1 GB); every file is
+    under 2 MB.
+- Follow-ups: Spanish voice commands and Ask Buddy answers (their replies are English, read by the device's Spanish
+  voice), Spanish privacy and support pages, Apple's Spanish App Store badge, `get/` passing `?lang=es` on, a turn-off's
+  spoken heads-up still uses its grown-up text with Stories for kids on (`narrator.turnBody`), the iPhone build's choice
+  for Estrella (bundling it as Asteria is would add about 156 MiB; `stream.txt` already leaves out the long and the
+  kids stories), a "New in 3.1" card telling people who use the app that Spanish is in Settings, and a Whisper pass over
+  the 3.0 Asteria clips (some short year sentences may be read digit by digit there too).
 
 ## 3.0.1: the strength-audit fixes, chain controls from the Worker, the Grapevine page
 
@@ -122,7 +171,9 @@ each checked by `tools/test-audit.html` (50 checks) or the module test named:
   `python3 tools/voice/collect.py` (lists every unit with the app's own functions, silently in headless Chrome), then
   `~/Dominares/tts/.venv/bin/python tools/voice/make.py` on the Pro with the local sampler running
   (`npx wrangler@4.160.0 dev --port 8790` in a folder with tools/voice/make.py's sampler; records only the missing clips).
-  `voice/asteria/stream.txt` lists the clips only the long stories use: the iPhone app leaves them out and downloads them.
+  `voice/asteria/stream.txt` lists the clips only the long stories use (3.1.0: and the kids stories): the iPhone app leaves
+  them out and downloads them. Spanish (3.1.0): the same steps with `collect.py --page "tools/voice/units.html?lang=es"
+  --out tools/voice/units-es.json`, `make.py --lang es` and `tools/voice/check.py --lang es` (i18n/README.md).
 - **Where to? (js/nav.js).** Place search (the app's own places first, then `/api/geo/search` on the Worker, Geoapify),
   route preview, turn-by-turn guidance with a fixed phrase grammar in the natural voice, rerouting, arrival. One-time
   notice before anything is sent (privacy.html, Directions). Tests: `tools/test-nav.html` (search, route, drive).
@@ -214,6 +265,7 @@ See [ARCHITECTURE.md](ARCHITECTURE.md) for the module contract, data shapes and 
 | `data/i5.js` | Generated data (route, places, zones, trivia, exits, services, cameras, elevation, map outline). Don't edit; run the build. |
 | `data/i5.es.js` | Generated Spanish names and stories (3.1.0), laid over `data/i5.js` in Spanish mode; loaded only then. Don't edit; run the build. |
 | `i18n/en.json`, `i18n/es.json`, `js/i18n.js` | The words: English (the source) and Spanish (same keys; empty = English shows), and the module that picks the language and fills the blanks. Notes for translators: `i18n/README.md`. |
+| `voice/asteria/`, `voice/estrella/` | The natural voices' clips (3.0 Asteria, English; 3.1.0 Estrella, Spanish), each with `index.json` (the clip list, `kids` for the kids stories' own) and `stream.txt` (what the iPhone app downloads instead of carrying). Made by `tools/voice/` (collect.py, make.py, check.py, spoken_es.py). |
 | `content/names_es.json` | Spanish names of the two ends of the road and of the Where to? destinations (3.1.0; empty = English). |
 | `content/v2/*.json` | Researched and fact-checked content, one file per stretch of road (+ `*-gaps.json`). Edit these. |
 | `content/v2/logs/` | Fact-check change logs. |
