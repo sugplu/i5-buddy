@@ -69,6 +69,16 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <main id="main">
 <!-- DRIVE -->
 <section class="view" id="view-drive" data-view="drive">
+  <article class="story-preview" id="storyPreview" aria-labelledby="previewTitle" hidden>
+    <div class="preview-copy">
+      <p data-i18n="html.preview_redding">Road story · Redding, California</p>
+      <h2 id="previewTitle" data-i18n="html.preview_bridge">A bridge that tells time</h2>
+      <button type="button" id="previewStory">
+        <span aria-hidden="true">▶</span> <span data-i18n="html.preview_listen">Hear the story</span>
+      </button>
+    </div>
+    <p class="preview-transcript" id="previewTranscript" hidden></p>
+  </article>
   <div class="sign-board" id="signBoard">
     <div class="sign-row">
       <div class="dir-badge" id="dirBadge" data-i18n="html.north">NORTH</div>

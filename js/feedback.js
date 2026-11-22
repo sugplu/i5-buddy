@@ -1,6 +1,6 @@
 // I-5 Buddy feedback (module). Owns #feedbackRow (Settings > About: a "Send feedback" button) and #feedbackSheet.
 //
-//   The form    Name (optional), Email (required), Message (required, up to 2000 characters, with a counter) and a hidden
+//   The form    Message (required, up to 2000 characters), optional name and reply email, and a hidden
 //               "website" field that people never see or fill (a honeypot for bots). Plain words on top: what we do with it,
 //               and beside "We use your email only to reply to you." a Privacy link to the notice (privacy.html, new tab).
 //   Sending     Only on Send: POST /api/feedback {name, email, message, version, website} (i5.dominares.org, or the same
@@ -11,7 +11,7 @@
 // The app version comes from the service worker's VERSION line (read from sw.js, normally from its cache), else a constant.
 
 import { t, loc } from "./i18n.js";
-const FALLBACK_VERSION = "3.1.0";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
+const FALLBACK_VERSION = "3.1.1";   // keep next to sw.js's VERSION; used only if sw.js cannot be read
 const PRIVACY_URL = "privacy.html"; // the privacy notice, beside index.html (cached with the app shell)
 const MAX_NAME = 80, MAX_EMAIL = 120, MAX_MSG = 2000;
 const SEND_TIMEOUT = 15e3;
@@ -121,7 +121,7 @@ function field(id, label, note) {
   err.id = id + "Err"; err.hidden = true;
   return { wrap, l, err };
 }
-function openSheet(from) {
+function openSheet(from, question) {
   const sh = ensureSheet();
   opener = from || document.activeElement;
   readVersion();
@@ -137,7 +137,7 @@ function openSheet(from) {
   const f = el("form", "fb-form");
   f.noValidate = true;
   f.setAttribute("aria-label", t("feedback.send_feedback"));
-  f.append(el("p", "fb-lead", t("feedback.tell_us_what_you_think_we_read_every")));
+  if (!question) f.append(el("p", "fb-lead", t("feedback.tell_us_what_you_think_we_read_every")));
 
   const n = field("fbName", t("feedback.name"), t("feedback.optional"));
   const name = el("input"); name.id = "fbName"; name.name = "name"; name.type = "text"; name.maxLength = MAX_NAME; name.autocomplete = "name";
@@ -158,7 +158,7 @@ function openSheet(from) {
   ehRow.append(eh, pv);
   e.wrap.append(e.l, email, ehRow, e.err);
 
-  const m = field("fbMsg", t("feedback.message"));
+  const m = field("fbMsg", question || t("feedback.message"));
   const msg = el("textarea"); msg.id = "fbMsg"; msg.name = "message"; msg.required = true; msg.rows = 6; msg.maxLength = MAX_MSG;
   msg.setAttribute("aria-describedby", "fbCount fbMsgErr");
   msg.value = str(draft.message).slice(0, MAX_MSG);
@@ -178,7 +178,7 @@ function openSheet(from) {
   status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
   const send = el("button", "primary fb-send", t("feedback.send"));
   send.type = "submit";
-  f.append(n.wrap, e.wrap, m.wrap, hp, status, send, el("p", "fine fb-ver", api && api.native && api.native.NATIVE
+  f.append(m.wrap, n.wrap, e.wrap, hp, status, send, el("p", "fine fb-ver", api && api.native && api.native.NATIVE
     ? t("feedback.your_message_includes_the_app_version")
     : t("feedback.your_message_includes_the_app_version_2")));
   sh.append(f);
@@ -304,7 +304,7 @@ export function init(a) {
     buildRow();
     window.addEventListener("online", paint);
     window.addEventListener("offline", paint);
-    api.feedback = { open: () => openSheet(document.querySelector(".fb-open")), version: () => version };
+    api.feedback = { open: openSheet, version: () => version };
   } catch (e) { warn(e); }
 }
 

@@ -379,15 +379,19 @@ function onFix(pos) {
   setPosition(hit.m, { speed: coarse ? null : speed, dir, offRoute: false, jumped });
 }
 
-/** End trip of a real drive (10+ miles, 3+ stamps): what it came to, and a quiet way to share it (3.0.1). */
-function tripSaved() {
-  try {
-    const t = api.trip && api.trip.trips && api.trip.trips()[0];
-    if (!t || t.demo || !(Date.now() - (t.end || 0) < 10e3) || !(t.miles >= 10) || !((t.stamps || []).length >= 3)) return;
-    const acts = [[i18n.t("main.share_my_trip"), () => api.trip.share("trip")]];
-    if (api.share && api.share.shareApp) acts.push([i18n.t("main.tell_a_friend"), () => api.share.shareApp()]);
-    showNotice("trip-saved", { title: i18n.t("main.trip_saved"), text: i18n.t("main.miles_miles_and_length_landmark_stamps", { miles: Math.round(t.miles), length: t.stamps.length }), acts });
-  } catch {}
+/** Only the GPS drive just saved gets a summary. Even a short drive can tell us what was missing. */
+function tripSaved(id) {
+  const trip = api.trip.trips()[0];
+  if (trip?.id !== id || trip.demo) return;
+  const acts = [];
+  let text = t("main.drive_in_passport");
+  if (trip.miles >= 10 && trip.stamps.length >= 3) {
+    text = t("main.miles_miles_and_length_landmark_stamps", { miles: Math.round(trip.miles), length: trip.stamps.length });
+    acts.push([t("main.share_my_trip"), () => api.trip.share("trip")]);
+    if (api.share?.shareApp) acts.push([t("main.tell_a_friend"), () => api.share.shareApp()]);
+  }
+  if (api.feedback) acts.push([t("main.how_was_the_drive"), e => api.feedback.open(e.currentTarget, t("feedback.drive_question"))]);
+  showNotice("trip-saved", { title: t("main.trip_saved"), text, acts });
 }
 /** Precise Location is off (fixes of several kilometres): what to do about it, until a good fix arrives. */
 function showPrecise(accuracy) {
@@ -466,8 +470,9 @@ function stopAll(silent = false) {
   hideNotice("precise");
   if (!silent) {
     const was = S.mode;
+    const tripId = was === "gps" && api.trip?.current()?.id;
     if (S.mode !== "off") bus.emit("trip:end", { mode: S.mode, speed: S.speed });
-    if (was === "gps") tripSaved();
+    if (tripId) tripSaved(tripId);
     voice.stop();
     S.speed = null;
     store.del("drive"); // ended on purpose: nothing to resume
@@ -512,8 +517,45 @@ setInterval(() => {
 function setPill(s, text) { const p = $("statusPill"); p.dataset.s = s; p.textContent = text; }
 let tab = "drive";
 
+// A sample uses the same story, recordings and captions as the road guide, without starting a trip.
+const previewPlace = placeById("ca678-sundial-bridge");
+const previewButton = $("previewStory");
+const previewId = "welcome-story";
+if (previewPlace) {
+  previewButton.onclick = async () => {
+    if (voice.currentId() === previewId || voice.queued().includes(previewId)) { voice.stop(); return; }
+    voice.unlock();
+    const words = storyOf(previewPlace);
+    const transcript = $("previewTranscript");
+    transcript.hidden = true;
+    let started = false;
+    const spoken = await voice.say(words, { id: previewId, now: true, onstart: () => { started = true; } });
+    if (!spoken && !started && S.mode === "off" && !$("storyPreview").hidden) {
+      transcript.textContent = words;
+      transcript.hidden = false;
+    }
+  };
+  bus.on("mode", mode => {
+    if (mode !== "off" && (voice.currentId() === previewId || voice.queued().includes(previewId))) voice.stop();
+  });
+  bus.on("speaking", s => {
+    const playing = s?.id === previewId;
+    previewButton.firstElementChild.textContent = playing ? "■" : "▶";
+    previewButton.lastElementChild.textContent = playing ? t("main.stop_talking") : t("html.preview_listen");
+  });
+}
+
 function render() {
   const has = S.m != null;
+  const showPreview = !!previewPlace && !has && S.mode === "off" && !S.resumable;
+  const preview = $("storyPreview");
+  if (showPreview && preview.hidden && !preview.dataset.loaded) {
+    const ph = photo(previewPlace, "preview-photo");
+    if (ph) preview.prepend(ph);
+    preview.dataset.loaded = "true";
+  }
+  preview.hidden = !showPreview;
+  $("signBoard").hidden = showPreview;
   const st = has ? stateAt(S.m) : null;
   $("dirBadge").textContent = S.dir === "N" ? t("main.north") : t("main.south");
   $("stateBadge").hidden = !has;
@@ -668,16 +710,13 @@ function renderNext() {
     if (shownNext === "welcome") return;
     shownNext = "welcome";
     card.className = "next welcome"; card.innerHTML = "";
-    const names = STATES.map(s => s.name);
-    const states = names.length > 1 ? t("main.join_and_x1", { join: names.slice(0, -1).join(", "), x1: names[names.length - 1] }) : names[0];
     const h2 = el("h2", null, t("main.your_guide_to_all_max_m_miles_of_i_5", { MAX_M: Math.round(MAX_M).toLocaleString(loc(undefined)), x1: SCOPE.length === 1 ? t("main.in_name", { name: STATES[0].name }) : "" }));
     h2.tabIndex = -1; // takes the focus when the Install app button under it goes away (updateInstall)
     // Install app, or on an iPhone or iPad "Get the iPhone app" (updateInstall), right under the headline: in a phone's
     // browser tab, which is shorter than the screen, that keeps it above the tab bar.
     const inst = el("div", "welcome-install"); inst.hidden = true;
     card.append(el("div", "meta", t("main.short_to_short2", { short: ENDS.S.short, short2: ENDS.N.short }).toLocaleUpperCase(loc(undefined))), h2, inst,
-      el("p", null, t("main.length_landmarks_orchards_and_stories", { length: PLACES.length, states, x1: native.NATIVE ? t("main.tap_start_gps_before_you_pull_out") : t("main.tap_start_gps_on_the_road") })));
-    // (3.0.2: the three number boxes under the text are gone; the line above already says how many landmarks)
+      el("p", null, t("main.welcome_drive_tip")));
     // the byline, and beside it a link that says Privacy on the first screen (privacy.html in a new tab, as in About);
     // short enough that both stay on one line on a 360 px phone
     // in the iPhone app the byline is plain words: dominares.org sells developer tools, nothing to do with the app
@@ -1041,7 +1080,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = t("main.data_version_version", { version: data.D.version });
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.1.0";
+export const APP_VERSION = "3.1.1";
 $("appVersion").textContent = t("main.i_5_buddy_app_version_x1", { APP_VERSION, x1: native.NATIVE ? t("main.for_iphone") : "" });
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", t("main.rate_i_5_buddy"));
