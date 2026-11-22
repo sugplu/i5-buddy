@@ -104,6 +104,10 @@ are filled in by a later content step. Nothing changes for an English user excep
     ("Kern National Wildlife Refuge.", "Babe Ruth en Dunsmuir.") and one-word game lines ("Uva.", "Cloro.") the Spanish
     recognizer writes its own way (`tools/voice/whisper-estrella.json`); every exit letter and number is a clip that
     passed. Mean word error over all 10,280: 0.074 (English names count against it).
+    The independent verify then heard every exit number, highway and distance clip in three turn-by-turn contexts with a
+    strict number check: 57 were heard as another number in at least one ("495" as 895, "486." as 386, "a la Highway
+    199." as 190) while fresh takes of the same words were heard right, so those 57 were recorded again and kept only when
+    heard right in all three (`tools/voice/verify-retakes-estrella.json`; about $0.08 of Aura-2).
     Asteria's kids clips: 25 re-taken; 16 fixed by a new take, 3 more by a take with the numbers written out (short
     sentences with a year came back digit by digit, "one nine three seven"), 6 were the length check counting digits as
     one letter; none differs now (`tools/voice/whisper-asteria-kids.json`). The real clips decode and join in the browser

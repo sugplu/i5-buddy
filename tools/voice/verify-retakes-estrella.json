@@ -1,0 +1,634 @@
+{
+ "voice": "estrella",
+ "when": "2026-11-21",
+ "why": "independent verify: exit-number, highway and distance clips Whisper heard as another number in 2 or more of 3 nav contexts (strict number parse; fresh takes of the same words were heard right, so the takes, not the recognizer, were at fault); each re-taken through make.render_clip and kept only when heard right in all 3 contexts",
+ "replaced": [
+  {
+   "key": "12d8b1753992d0",
+   "text": "hacia la I-210.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, gire a la izquierda hacia la interestatal 200 días.",
+    "Guiere a la derecha hacia la interestatal 200 días.",
+    "Hacia la interestatal, 200 días."
+   ]
+  },
+  {
+   "key": "15586d80e48e6a",
+   "text": "hacia la I-980.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, gire a la izquierda hacia la interestatal lo de 180.",
+    "Guiere a la derecha hacia la interestatal, lo de 180.",
+    "Hacia la interestatal, lo de 180."
+   ]
+  },
+  {
+   "key": "043ac2a5b76fb9",
+   "text": "hacia la Highway 14.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, gire a la izquierda hacia la Higua y Tatorce.",
+    "Guiere a la derecha hacia la jígua y tatorce.",
+    "Hacia la Jigua y Tatorce."
+   ]
+  },
+  {
+   "key": "0f15a16bbe0d78",
+   "text": "a la Highway 131.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 130 Yola.",
+    "Incorpórese a la Highway 130 Yola.",
+    "A la Highway 130 Yola."
+   ]
+  },
+  {
+   "key": "0210c5c0b52639",
+   "text": "a la Highway 199.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highwall 190 al mar.",
+    "Incorpórese a la HALBOL 190 al mar.",
+    "A la Halvol 190 en mar."
+   ]
+  },
+  {
+   "key": "0a79d51c816bee",
+   "text": "a la Highway 209.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 209.",
+    "Incorpórese a la Highway 200 LoR.",
+    "a la Highway 201."
+   ]
+  },
+  {
+   "key": "1217aa8823266f",
+   "text": "hacia la Highway 239.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, gire a la izquierda hacia la Highway 230 y Vare.",
+    "Guiere a la derecha hacia la Highway 230 Bar.",
+    "Hacia la Highway 230 Yvare."
+   ]
+  },
+  {
+   "key": "16864ca6872eaa",
+   "text": "a la Highway 299.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 290 en mare.",
+    "Incorpórese a la Highway 290 en mare.",
+    "A la Highway 299."
+   ]
+  },
+  {
+   "key": "03fd56f3cc50cc",
+   "text": "a la Highway 329.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 320.",
+    "Incorpórese a la Highway 320.",
+    "A la Highway 321."
+   ]
+  },
+  {
+   "key": "156e1dcd8043d8",
+   "text": "14.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, atorza.",
+    "Toma la salida. Atorce.",
+    "Justo por aquí, 14."
+   ]
+  },
+  {
+   "key": "07e94ae618ada2",
+   "text": "15.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, quise.",
+    "Tome la salida. Quince.",
+    "Justo por aquí, quise."
+   ]
+  },
+  {
+   "key": "134a52e3b48cc7",
+   "text": "20",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 20B.",
+    "Tome la salida. Maintain B.",
+    "Justo por aquí, mente, bi."
+   ]
+  },
+  {
+   "key": "0cf885e1a197e2",
+   "text": "30.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, trae el tap.",
+    "Tome la salida, ta y ta.",
+    "Justo por aquí, da y da."
+   ]
+  },
+  {
+   "key": "0d43c188e46e19",
+   "text": "40.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida cuarenta.",
+    "Tome la salida, cuarelta.",
+    "Justo por aquí, cuarenta."
+   ]
+  },
+  {
+   "key": "05a5f4443c4e77",
+   "text": "113",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, ciento tres señal B.",
+    "Tome la salida. 103 señal B.",
+    "Justo por aquí, 103 señales B."
+   ]
+  },
+  {
+   "key": "036576b7c1efc6",
+   "text": "172.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, ciento setenta helos.",
+    "Tome la salida, ciento setenta y los.",
+    "Justo por aquí, ciento setenta y los."
+   ]
+  },
+  {
+   "key": "1f16df4a37e981",
+   "text": "200",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 270B.",
+    "Tome la salida, 270B.",
+    "Justo por aquí, 270B."
+   ]
+  },
+  {
+   "key": "09eb8953bbb145",
+   "text": "272.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, no 172.",
+    "Tome la salida, 972.",
+    "Justo por aquí, 272."
+   ]
+  },
+  {
+   "key": "080366c0f5608e",
+   "text": "309.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida, trescientos loare.",
+    "Tome la salida. 300 lo haré.",
+    "Justo por aquí, 309."
+   ]
+  },
+  {
+   "key": "074e03b00f8742",
+   "text": "347",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 347 mil B.",
+    "Tome la salida. 347.000 B.",
+    "Justo por aquí, 347.000 B."
+   ]
+  },
+  {
+   "key": "12229c8ebaf962",
+   "text": "351",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 351B.",
+    "Tome la salida. Reciento cincuenta y uno. Bi.",
+    "Justo por aquí, reciento cincuenta y uno, bi."
+   ]
+  },
+  {
+   "key": "09ad01b4e805bf",
+   "text": "370",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 375B.",
+    "Tome la salida. 375B",
+    "Justo por aquí, 375 B."
+   ]
+  },
+  {
+   "key": "0456e693fa1998",
+   "text": "378",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida. Cresciento, setenta y ocho. B.",
+    "Tome la salida. Crescento secenta y ocho. B.",
+    "Justo por aquí, Crescento Sequenta y Ocho, Vi."
+   ]
+  },
+  {
+   "key": "0a4039c30cbb79",
+   "text": "481",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 481B.",
+    "Tome la salida, 480 yola, B.",
+    "Justo por aquí, 480 yola, bi."
+   ]
+  },
+  {
+   "key": "19b95a7845c7ce",
+   "text": "486.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida a 386.",
+    "Tome la salida a 386.",
+    "Justo por aquí, a 386."
+   ]
+  },
+  {
+   "key": "151116fcc1b4f5",
+   "text": "495",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 895B.",
+    "Tome la salida. 895-B",
+    "Justo por aquí, 895B."
+   ]
+  },
+  {
+   "key": "0dc16caff02e5c",
+   "text": "519.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida quinientos y sinuada.",
+    "Toma la salida, quinientos y siluada.",
+    "Justo por aquí, 519."
+   ]
+  },
+  {
+   "key": "0d378f33505731",
+   "text": "553.",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas toma la salida y niento cincuenta y tres.",
+    "Tome la salida, y niento cincuenta y tres.",
+    "Justo por aquí, y 153."
+   ]
+  },
+  {
+   "key": "16d0e154d52463",
+   "text": "709",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 709B.",
+    "Tome la salida. Seca 109. B.",
+    "Justo por aquí, 709, B."
+   ]
+  },
+  {
+   "key": "1c1c11d00ab25f",
+   "text": "740.",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida F340.",
+    "Tome la salida. Fequecientos cuarenta.",
+    "Justo por aquí, 740."
+   ]
+  },
+  {
+   "key": "0d126735f54593",
+   "text": "741",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida C341B.",
+    "Tome la salida, C-341, B.",
+    "Justo por aquí, 741, B."
+   ]
+  },
+  {
+   "key": "104be5f8c951ff",
+   "text": "861",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 461B.",
+    "Tome la salida 461B.",
+    "Justo por aquí, 861, B."
+   ]
+  },
+  {
+   "key": "1b3ab132e30897",
+   "text": "865",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En 2 millas, toma la salida 465B.",
+    "Tome la salida. Cuatrocientos a salta y cinco. B.",
+    "Justo por aquí, 865B."
+   ]
+  },
+  {
+   "key": "1a0c0cc08d819a",
+   "text": "907",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 907B.",
+    "Tome la salida, no de 107, B.",
+    "Justo por aquí, no de 107, B."
+   ]
+  },
+  {
+   "key": "1dc2ed907b25bd",
+   "text": "911",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 911B.",
+    "Tome la salida. 900 solce. B.",
+    "Justo por aquí, 900 solce, B."
+   ]
+  },
+  {
+   "key": "0f533bc304408d",
+   "text": "26",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida. En tiséis, ta B.",
+    "Tome la salida. 26. B.",
+    "Justo por aquí, 26 de B."
+   ]
+  },
+  {
+   "key": "09328abce137d8",
+   "text": "713",
+   "shipped_heard_right": "1/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 703ZB.",
+    "Tome la salida, 713 tab B.",
+    "Justo por aquí, 703 ZB."
+   ]
+  },
+  {
+   "key": "19595bec0b2384",
+   "text": "En aproximadamente 12 millas:",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "en aproximadamente dos enillas, puerto de entrada de San Isidro.",
+    "en aproximadamente dos cenillas, refugio del río San Joaquín.",
+    "en aproximadamente dos anillas, justo por aquí."
+   ]
+  },
+  {
+   "key": "1d7a5a3b972f61",
+   "text": "En aproximadamente 13 millas, a lo lejos, a su izquierda:",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En aproximadamente tres enillas, a lo lejos, a su izquierda, puerto de",
+    "En aproximadamente tres enillas, a lo lejos, a su izquierda, refugio d",
+    "En aproximadamente tres enillas, a lo lejos, a su izquierda, justo por"
+   ]
+  },
+  {
+   "key": "148252c136666d",
+   "text": "En aproximadamente 13 millas, a su derecha:",
+   "shipped_heard_right": "0/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En aproximadamente tres anillas a su derecha, puerto de entrada de San",
+    "En aproximadamente tres anillas a su derecha, refugio del río San Joaq",
+    "En aproximadamente tres anillas a su derecha, justo por aquí."
+   ]
+  },
+  {
+   "key": "05d592ed502b02",
+   "text": "En aproximadamente 23 millas, a su izquierda:",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En aproximadamente la equicres millas a su izquierda. Puerto de entrad",
+    "en aproximadamente 23 millas a su izquierda. Refugio del río San Joaqu",
+    "en aproximadamente 23 millas a su izquierda, justo por aquí."
+   ]
+  },
+  {
+   "key": "0b965e347abf3d",
+   "text": "hacia la Highway 8.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, gire a la izquierda hacia la Highway 8.",
+    "Guiere a la derecha hacia la Highway Watch.",
+    "Hacia la Highway 8"
+   ]
+  },
+  {
+   "key": "1a3e3388a841ba",
+   "text": "a la Highway 26.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 26.",
+    "Incorpórese a la Hardway de X6.",
+    "a la Highway 26."
+   ]
+  },
+  {
+   "key": "0f51808edfdb8a",
+   "text": "a la Highway 27.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, incorpórese a la Highway 27.",
+    "Incorpórese a la Highway 97.",
+    "a la Highway 27."
+   ]
+  },
+  {
+   "key": "1a0a58b5b66af5",
+   "text": "20.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 20.",
+    "Tome la salida. Ve el té.",
+    "Justo por aquí, veinte."
+   ]
+  },
+  {
+   "key": "1bfde73e1e9f9b",
+   "text": "29.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida veintinueve.",
+    "Tome la salida. Veintilueve.",
+    "Justo por aquí, 29."
+   ]
+  },
+  {
+   "key": "07908f13ce57f2",
+   "text": "31.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida treinta y uno.",
+    "Toma la salida, 30 y 1.",
+    "Justo por aquí, treinta y uno."
+   ]
+  },
+  {
+   "key": "14c1bb55eaabce",
+   "text": "33.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 33.",
+    "Tome la salida. Treinta y tres.",
+    "Justo por aquí, delta y 3."
+   ]
+  },
+  {
+   "key": "0f96eed6df3956",
+   "text": "161",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 161B.",
+    "Tome la salida, 160 y una, B.",
+    "Justo por aquí, 161B."
+   ]
+  },
+  {
+   "key": "1f6e2af0a719e4",
+   "text": "179",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 179B.",
+    "Tome la salida, ciento setenta y nar, bi.",
+    "Justo por aquí, 179, B."
+   ]
+  },
+  {
+   "key": "058bd9537c2dfd",
+   "text": "345.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 345.",
+    "Tome la salida.",
+    "Justo por aquí, 345."
+   ]
+  },
+  {
+   "key": "049433c7f4d464",
+   "text": "360.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 360.",
+    "Tome la salida. Crescientos sesenta.",
+    "Justo por aquí, 360."
+   ]
+  },
+  {
+   "key": "148020bacf3380",
+   "text": "377",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 377B.",
+    "Tome la salida. Crescientos setenta y siete. B.",
+    "Justo por aquí, 377B."
+   ]
+  },
+  {
+   "key": "179560bcedec02",
+   "text": "409",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 409B.",
+    "Tome la salida. Cuatrocientos nueves o bi.",
+    "Justo por aquí, 409 sub B."
+   ]
+  },
+  {
+   "key": "1da652622ce338",
+   "text": "791",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 791B.",
+    "Tome la salida. 790 y una. B.",
+    "Justo por aquí, 791, B."
+   ]
+  },
+  {
+   "key": "11e20c987aba63",
+   "text": "841.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 841.",
+    "Tome la salida.",
+    "Justo por aquí, 841."
+   ]
+  },
+  {
+   "key": "0c967abb236af9",
+   "text": "873.",
+   "shipped_heard_right": "2/3",
+   "new_take_heard_right": "3/3",
+   "shipped_heard": [
+    "En dos millas, toma la salida 873.",
+    "Tome la salida.",
+    "Justo por aquí, 873."
+   ]
+  }
+ ]
+}
