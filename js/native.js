@@ -353,6 +353,52 @@ export function fromPluginPosition(p) {
   };
 }
 
+/* ---------- the drive with the screen locked (3.1) ---------- */
+// While GPS runs in the iPhone app, the app's own location service (I5Native.driveStart, ios/App/App/I5Native.swift)
+// keeps sending positions while the screen is locked or another app is in front ("bgfix" events, only while the app
+// is not active), and speech goes to the phone (I5Native.playClips), because the web view's own audio stops there.
+// A build without these methods (3.0.x) does neither, and the app stays quiet in the background as before.
+const BG = () => { const D = plugin("I5Native"); return D && typeof D.driveStart === "function" ? D : null; };
+/** True in an iPhone app build that keeps narrating with the screen locked. */
+export function backgroundDrive() { return !!BG(); }
+/** A native background fix -> what navigator.geolocation hands out. Pure. */
+export function fromNativeFix(f) {
+  const num = v => (typeof v === "number" && isFinite(v) ? v : null);
+  if (!f) return null;
+  const lat = num(f.lat), lon = num(f.lon), acc = num(f.accuracy);
+  if (lat == null || lon == null || (acc != null && acc < 0)) return null;
+  const speed = num(f.speed), course = num(f.course), t = num(f.t);
+  return { timestamp: t != null ? t : Date.now(), coords: { latitude: lat, longitude: lon, accuracy: acc, altitude: null, altitudeAccuracy: null,
+    speed: speed != null && speed >= 0 ? speed : null, heading: course != null && course >= 0 ? course : null } };
+}
+let bgHandle = null, bgOn = false;
+function bgStart(onFix) {
+  const D = BG();
+  if (!D || bgOn) return;
+  bgOn = true;
+  call(D, "driveStart").catch(() => {});
+  if (typeof D.addListener === "function") {
+    Promise.resolve(D.addListener("bgfix", f => { const p = fromNativeFix(f); if (p && bgOn) onFix(p); }))
+      .then(h => { if (bgOn) bgHandle = h; else try { h && h.remove(); } catch {} }, () => {});
+  }
+}
+function bgStop() {
+  const D = BG();
+  if (!D || !bgOn) return;
+  bgOn = false;
+  call(D, "driveStop").catch(() => {});
+  try { bgHandle && bgHandle.remove(); } catch {}
+  bgHandle = null;
+}
+/** Speak with the screen off: the natural voice's clips (keys) played by the phone, or text read by the best device
+    voice when a clip isn't in the app. Resolves true once spoken; false when this build can't. */
+export function playInBackground(keys, text, voiceId = "asteria") {
+  const D = BG();
+  if (!D || typeof D.playClips !== "function") return Promise.resolve(false);
+  return call(D, "playClips", { keys: keys || [], text: text || "", voice: voiceId }).then(r => !!(r && r.spoken), () => false);
+}
+export function stopBackgroundSpeech() { const D = BG(); if (D && typeof D.stopClips === "function") call(D, "stopClips").catch(() => {}); }
+
 let geoApi = null;
 export function geolocation() {
   if (geoApi) return geoApi;
@@ -403,7 +449,7 @@ export function geolocation() {
     watchPosition(ok, fail, o) {
       const w = { id: ++nextId, alive: true, cb: null, run: 0, timer: 0, ok, fail, o: o || {} };
       watches.set(w.id, w);
-      permitted().then(() => arm(w), e => report(w, fromPluginError(e)));
+      permitted().then(() => { arm(w); bgStart(p => { if (w.alive) { tick(w); try { w.ok(p); } catch (e2) { console.error(e2); } } }); }, e => report(w, fromPluginError(e)));
       return w.id;
     },
     clearWatch(id) {
@@ -414,6 +460,7 @@ export function geolocation() {
       clearTimeout(w.timer);
       if (w.cb != null) call(G, "clearWatch", { id: w.cb }).catch(() => {});
       w.cb = null;
+      if (!watches.size) bgStop();
     },
     getCurrentPosition(ok, fail, o) {
       const t = +((o && o.timeout) || 0);

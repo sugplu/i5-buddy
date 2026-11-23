@@ -85,6 +85,8 @@ $("sheetBack").addEventListener("click", closeSheet);
 // The iPhone app: its own styles, its pages (privacy.html) in a sheet inside the app, About without links to other
 // products. Nothing happens in a browser.
 native.init({ store, toast, openSheet, closeSheet });
+// 3.1: the iPhone app keeps talking with the screen locked (a build with background drive; no-op elsewhere)
+if (native.backgroundDrive()) voice.setBackground((keys, text) => native.playInBackground(keys, text), () => native.stopBackgroundSpeech());
 
 // a Caltrans rest-area status from tools/rest-status.json (data.REST[].status)
 const REST_NOTE = { closed: t("main.closed_caltrans_says"), partial: t("main.partly_closed_caltrans_says"), truck_only: t("main.trucks_only_caltrans_says") };
@@ -505,7 +507,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") { hiddenAt = Date.now(); return; }
   if (wakeWanted && (S.mode === "gps" || S.mode === "demo")) requestWake();
   // back after a minute or more away during a drive: say why it went quiet (it can't talk in the background)
-  if (S.mode === "gps" && hiddenAt && Date.now() - hiddenAt > 60e3) toast(t("main.i_was_quiet_while_i_5_buddy_wasnt_on"), 6000);
+  if (S.mode === "gps" && hiddenAt && Date.now() - hiddenAt > 60e3 && !native.backgroundDrive()) toast(t("main.i_was_quiet_while_i_5_buddy_wasnt_on"), 6000);
   hiddenAt = 0;
 });
 // GPS on, but no usable fix for 15 s: the sign stops showing a speed and an ETA that look live (3.0.1)
