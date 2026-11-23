@@ -86,7 +86,7 @@ $("sheetBack").addEventListener("click", closeSheet);
 // products. Nothing happens in a browser.
 native.init({ store, toast, openSheet, closeSheet });
 // 3.1: the iPhone app keeps talking with the screen locked (a build with background drive; no-op elsewhere)
-if (native.backgroundDrive()) voice.setBackground((keys, text) => native.playInBackground(keys, text), () => native.stopBackgroundSpeech());
+if (native.backgroundDrive()) { voice.setBackground((keys, text) => native.playInBackground(keys, text), () => native.stopBackgroundSpeech()); native.lockedScreenWording(); }
 
 // a Caltrans rest-area status from tools/rest-status.json (data.REST[].status)
 const REST_NOTE = { closed: t("main.closed_caltrans_says"), partial: t("main.partly_closed_caltrans_says"), truck_only: t("main.trucks_only_caltrans_says") };
@@ -468,6 +468,7 @@ function stopAll(silent = false) {
   // would keep "off route" and never notice going off again).
   drove = false; offEnd = null; S.offRoute = false; S.nearMission = null; S.gpsStale = false; S.dirSure = undefined;
   S.cruise = null; cruiseN = 0;
+  if (liveKey) { native.liveCard(null); liveKey = ""; liveT = 0; }
   fuzzyN = 0; stillSince = 0;
   hideNotice("precise");
   if (!silent) {
@@ -599,7 +600,7 @@ function render() {
   $("toggleNarr").setAttribute("aria-pressed", settings.narr);
   $("toggleNarr").setAttribute("aria-label", t("main.narration")); // one name; aria-pressed carries on and off
   $("toggleNarr").textContent = settings.narr ? t("main.narration_on") : t("main.narration_off");
-  renderRibbon(); renderNext(); renderUpNext(); renderServices();
+  renderRibbon(); renderNext(); renderUpNext(); renderServices(); liveCardTick();
   // 3.0.2: with no position yet, "What's on my left/right?" has nothing to answer, so Drive leaves it out; the link to
   // the Ahead tab (hills, gas and food, what's next) shows once there is a road ahead to show
   document.querySelector("#view-drive .look").hidden = S.m == null;
@@ -685,6 +686,25 @@ function notOnI5Card(card) {
   acts.append(demo, stop);
   body.append(acts);
   card.append(body);
+}
+/** 3.1: the Lock Screen card (iPhone app) follows the drive: the next landmark, how far, which side. It changes at most
+    every 8 seconds and only when what it says changes (Live Activities have an update budget). */
+let liveKey = "", liveT = 0;
+function liveCardTick() {
+  if (!native.backgroundDrive() || S.mode !== "gps" || S.m == null) return;
+  const mile = Math.round(localMile(S.m).mi);
+  let st;
+  if (S.offRoute) st = { next: S.nearMission ? `Near ${S.nearMission.place.name}` : "Off I-5 for now", distance: "", side: "", mile, dir: S.dir };
+  else {
+    const n = upcoming(S.m, S.dir, settings.cats)[0];
+    const sw = n ? sideWord(n.p, S.dir) : "";
+    st = n ? { next: n.p.name, distance: n.d < 0.4 ? "Now" : `${Math.max(1, Math.round(n.d))} mi`, side: sw ? `on your ${sw}` : "", mile, dir: S.dir }
+      : { next: regionAt(S.m).name, distance: "", side: "", mile, dir: S.dir };
+  }
+  const key = JSON.stringify(st);
+  if (key === liveKey || Date.now() - liveT < 8000) return;
+  liveKey = key; liveT = Date.now();
+  native.liveCard(st);
 }
 /** Off I-5 on a short detour (a gas stop, a meal): narration waits at the mile where you left the road. */
 function offI5Card(card) {
