@@ -694,11 +694,11 @@ function liveCardTick() {
   if (!native.backgroundDrive() || S.mode !== "gps" || S.m == null) return;
   const mile = Math.round(localMile(S.m).mi);
   let st;
-  if (S.offRoute) st = { next: S.nearMission ? `Near ${S.nearMission.place.name}` : "Off I-5 for now", distance: "", side: "", mile, dir: S.dir };
+  if (S.offRoute) st = { next: S.nearMission ? t("main.live_near_x", { name: S.nearMission.place.name }) : t("main.live_off_i_5_for_now"), distance: "", side: "", mile, dir: S.dir };
   else {
     const n = upcoming(S.m, S.dir, settings.cats)[0];
     const sw = n ? sideWord(n.p, S.dir) : "";
-    st = n ? { next: n.p.name, distance: n.d < 0.4 ? "Now" : `${Math.max(1, Math.round(n.d))} mi`, side: sw ? `on your ${sw}` : "", mile, dir: S.dir }
+    st = n ? { next: n.p.name, distance: n.d < 0.4 ? t("main.live_now") : `${Math.max(1, Math.round(n.d))} mi`, side: sw ? t("nar.on_your_side", { side: sw }) : "", mile, dir: S.dir }
       : { next: regionAt(S.m).name, distance: "", side: "", mile, dir: S.dir };
   }
   const key = JSON.stringify(st);

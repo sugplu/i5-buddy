@@ -375,11 +375,11 @@ let bgHandle = null, bgOn = false;
 /** The Drive screen's safety line says the app goes quiet with the screen locked; a build that keeps talking says so. */
 export function lockedScreenWording() {
   if (!backgroundDrive()) return false;
-  const s = document.querySelector("#view-drive .safety");
-  const t = s && s.firstChild;
-  if (!t || t.nodeType !== 3) return false;
-  t.textContent = t.textContent.replace("Keep I-5 Buddy open on screen while you drive: it goes quiet when you switch apps or lock the phone.",
-    "It keeps talking with the screen locked while GPS runs (the blue location pill shows it). Tap End trip when you get there.");
+  // (3.1.1: the line is a translated span; its key changes, so a language switch keeps the right sentence)
+  const s = document.querySelector('#view-drive .safety [data-i18n="html.set_it_up_before_you_drive"], #view-drive .safety [data-i18n="native.set_it_up_locked"]');
+  if (!s) return false;
+  s.dataset.i18n = "native.set_it_up_locked";
+  s.textContent = t("native.set_it_up_locked");
   return true;
 }
 function bgStart(onFix) {

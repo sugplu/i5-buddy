@@ -2563,5 +2563,9 @@
  "play.sq_mossy_trees": "Árboles con musgo",
  "play.sq_puget_sound_view": "Vista de Puget Sound",
  "play.sq_mount_baker": "Mount Baker",
- "play.delta_capital": "El Delta y la Capital"
+ "play.delta_capital": "El Delta y la Capital",
+ "main.live_near_x": "Cerca de {name}",
+ "main.live_off_i_5_for_now": "Fuera de la I-5 por ahora",
+ "main.live_now": "Ahora",
+ "native.set_it_up_locked": "Configúrelo antes de manejar. La narración es manos libres; deje la pantalla a los pasajeros. Sigue hablando con la pantalla bloqueada mientras el GPS está activo (lo indica la píldora azul de ubicación). Toque Terminar viaje cuando llegue."
 }

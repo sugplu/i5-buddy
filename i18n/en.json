@@ -2563,5 +2563,9 @@
  "play.sq_mossy_trees": "Mossy trees",
  "play.sq_puget_sound_view": "Puget Sound view",
  "play.sq_mount_baker": "Mount Baker",
- "play.delta_capital": "Delta & Capital"
+ "play.delta_capital": "Delta & Capital",
+ "main.live_near_x": "Near {name}",
+ "main.live_off_i_5_for_now": "Off I-5 for now",
+ "main.live_now": "Now",
+ "native.set_it_up_locked": "Set it up before you drive. Narration is hands-free; leave the screen to passengers. It keeps talking with the screen locked while GPS runs (the blue location pill shows it). Tap End trip when you get there."
 }
