@@ -72,6 +72,7 @@ $("captionRepeat").onclick = () => { voice.unlock(); voice.repeat(); };
 let openSheetEl = null;
 function openSheet(sheet) {
   closeSheet();
+  sheet.style.transform = sheet.style.transition = ""; // whatever a swipe left on it (3.1.3)
   sheet.hidden = false; $("sheetBack").hidden = false; openSheetEl = sheet;
   const f = sheet.querySelector("button, select, input, a");
   f && f.focus({ preventScroll: true });
@@ -82,6 +83,48 @@ function closeSheet() {
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
 $("sheetBack").addEventListener("click", closeSheet);
+/* Swipe a sheet down to close it (3.1.3), the same as tapping the dim behind it. The finger takes the sheet only when
+   the sheet is scrolled to its top, the move is clearly downward, and it did not start on something that uses drags
+   itself (a slider, a text box, a map). Let go past 110 px, or with a quick flick, and it closes; otherwise it springs
+   back. Mouse and keyboard are untouched. */
+{
+  const OWN = "input,textarea,select,canvas,[data-noswipe],.map3d,.lv-map";
+  let drag = null;
+  document.addEventListener("touchstart", e => {
+    drag = null;
+    const sh = openSheetEl, f = e.touches && e.touches[0];
+    if (!sh || !f || e.touches.length !== 1 || !sh.contains(e.target) || sh.scrollTop > 0) return;
+    if (e.target.closest && e.target.closest(OWN)) return;
+    for (let n = e.target; n && n !== sh; n = n.parentElement) if (n.scrollTop > 0) return; // an inner list mid-scroll keeps the finger
+    drag = { sh, x: f.clientX, y: f.clientY, dy: 0, on: false, t: performance.now() };
+  }, { passive: true });
+  document.addEventListener("touchmove", e => {
+    const f = e.touches && e.touches[0];
+    if (!drag || !f) return;
+    const dx = f.clientX - drag.x, dy = f.clientY - drag.y;
+    if (!drag.on) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (dy <= 0 || Math.abs(dx) > dy || drag.sh.scrollTop > 0 || drag.sh !== openSheetEl) { drag = null; return; }
+      drag.on = true; drag.sh.style.transition = "none";
+    }
+    drag.dy = Math.max(0, dy);
+    drag.sh.style.transform = `translateY(${drag.dy}px)`;
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+  const end = cancelled => {
+    const d = drag; drag = null;
+    if (!d || !d.on) return;
+    d.sh.style.transition = "";
+    const flick = d.dy > 40 && d.dy / Math.max(1, performance.now() - d.t) > 0.5;
+    if (!cancelled && d.sh === openSheetEl && (d.dy > 110 || flick)) {
+      d.sh.style.transform = `translateY(${d.dy + 60}px)`; // it keeps going down from where the finger left it
+      closeSheet();
+      setTimeout(() => { if (d.sh.hidden) d.sh.style.transform = ""; }, 260);
+    } else d.sh.style.transform = "";
+  };
+  document.addEventListener("touchend", () => end(false));
+  document.addEventListener("touchcancel", () => end(true));
+}
 // The iPhone app: its own styles, its pages (privacy.html) in a sheet inside the app, About without links to other
 // products. Nothing happens in a browser.
 native.init({ store, toast, openSheet, closeSheet });
@@ -90,6 +133,7 @@ native.init({ store, toast, openSheet, closeSheet });
 const REST_NOTE = { closed: t("main.closed_caltrans_says"), partial: t("main.partly_closed_caltrans_says"), truck_only: t("main.trucks_only_caltrans_says") };
 
 /** A place photo with its credit. size: "hero" | "thumb" | "full". */
+const photoSeen = new Set();
 function photo(p, size = "hero") {
   if (!p.img) return null;
   const fig = el("figure", "photo " + size);
@@ -99,6 +143,11 @@ function photo(p, size = "hero") {
   img.src = p.img.f; img.alt = p.img.alt_local || p.img.alt_en || ""; img.loading = "lazy"; img.decoding = "async";
   if (p.img.w && p.img.h) { img.width = p.img.w; img.height = p.img.h; }
   img.onerror = () => fig.remove();
+  // 3.1.3: a picture not seen yet fades in over a shimmering box; one already shown this visit appears at once
+  if (!photoSeen.has(p.img.f)) {
+    fig.classList.add("loading");
+    img.addEventListener("load", () => { photoSeen.add(p.img.f); fig.classList.remove("loading"); }, { once: true });
+  }
   fig.append(img);
   if (size !== "thumb") {
     const cap = el("figcaption");
@@ -990,21 +1039,32 @@ $("aheadModeStops").onclick = () => { aheadMode = "stops"; $("aheadModePlaces").
 chipRow($("chips"), listCats, () => { aheadLimit = 60; renderAhead(); });
 
 /* ---------- tabs ---------- */
-function go(name) {
+/* 3.1.3: a tab-bar tap keeps each tab's scroll place (go(name) from anywhere else still lands at the top), the new tab
+   slides in from the side it sits on in the bar (html[data-nav]; go(name) from code keeps the plain fade-up), and the iPhone app gives a light tap. */
+const TAB_ORDER = [...document.querySelectorAll(".tabs button")].map(b => b.dataset.go);
+const tabScroll = {};
+function go(name, opt = {}) {
+  const from = tab, a = TAB_ORDER.indexOf(from), b = TAB_ORDER.indexOf(name);
+  if (opt.tap) tabScroll[from] = window.scrollY;
+  document.documentElement.dataset.nav = !opt.tap || a < 0 || b < 0 || a === b ? "" : b > a ? "fwd" : "back";
   tab = name;
   document.querySelectorAll(".view").forEach(v => { v.hidden = v.dataset.view !== name; });
   document.querySelectorAll(".tabs button").forEach(b => b.dataset.go === name ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
   if (name === "ahead") { $("aheadList").dataset.key = ""; renderAhead(); }
   bus.emit("tab", name);
-  window.scrollTo(0, 0);
+  window.scrollTo(0, opt.tap && name !== from ? tabScroll[name] || 0 : 0);
 }
-document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => go(b.dataset.go)));
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => { if (b.dataset.go !== tab) native.haptic("light"); go(b.dataset.go, { tap: true }); }));
+{ // a stamp earned: one firm tap in the iPhone app, at most one a second (a demo drive earns them quickly)
+  let last = 0;
+  bus.on("place:stamp", () => { const n = Date.now(); if (n - last > 1000) { last = n; native.haptic("success"); } });
+}
 
 /* ---------- controls ---------- */
 $("glanceBtn").onclick = () => setGlance(!document.body.classList.contains("glance"));
 $("driveFeedback").onclick = () => { bus.emit("trouble", { why: "feedback" }); if (api.feedback && api.feedback.open) api.feedback.open(); };
 setGlance(store.get("glance", false));
-$("startGps").onclick = startGps;
+$("startGps").onclick = () => { native.haptic("medium"); startGps(); };
 $("startDemo").onclick = startDemo;
 $("stopTrip").onclick = () => stopAll(false);
 $("aheadLink").onclick = () => go("ahead");
@@ -1081,7 +1141,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = t("main.data_version_version", { version: data.D.version });
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.1.2";
+export const APP_VERSION = "3.1.3";
 $("appVersion").textContent = t("main.i_5_buddy_app_version_x1", { APP_VERSION, x1: native.NATIVE ? t("main.for_iphone") : "" });
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", t("main.rate_i_5_buddy"));

@@ -101,6 +101,8 @@ SUITE = [
     ("get app", "test-getapp.html?s=app", 150000, "500,900", True),
     ("get page", "test-getapp.html?s=get", 60000, "500,900", True),
     ("get site", "test-getapp.html?s=site", 40000, "500,900", True),
+    # 3.1.3 app feel: swipe a sheet closed, tabs keep their place and slide by side, photo shimmer, haptics hook
+    ("feel", "test-feel.html", 60000, "500,900", True),
     ("feedback", "test-feedback.html", 60000, "500,900", True),
     ("feedback light", "test-feedback.html?theme=light", 60000, "500,900", False),
     ("roadahead", "test-roadahead.html", 90000, "500,900", True),

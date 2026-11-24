@@ -1701,7 +1701,7 @@ function makeCam(c) {
   img.alt = t("live.live_camera_c", { c: camName(c) });
   img.loading = "lazy"; img.decoding = "async"; img.width = 320; img.height = 240;
   img.onerror = () => b.classList.add("off");
-  img.onload = () => { b.classList.remove("off"); li._t = now(); };
+  img.onload = () => { b.classList.remove("off"); box.classList.add("got"); li._t = now(); };
   img.src = camSrc(c.img);
   box.append(img, el("span", "lv-cam-off", t("live.camera_offline")));
   const tx = el("span", "lv-cam-tx");

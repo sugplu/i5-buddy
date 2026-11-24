@@ -424,3 +424,26 @@ button,.top img,.tabs{-webkit-touch-callout:none}
   }
 }
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+
+/* ---- 3.1.3 app feel, part 2 ---- */
+/* A grab handle on every sheet: it can be swiped down to close (main.js). */
+.sheet::before{content:"";justify-self:center;width:38px;height:5px;border-radius:3px;background:var(--line);margin:-6px 0 -8px}
+/* Installed to the Home Screen or inside the iPhone app, the whole page no longer rubber-bands like a web page. In a
+   browser tab it still does, so pull-to-refresh keeps working there. */
+@media (display-mode:standalone),(display-mode:fullscreen){html,body{overscroll-behavior-y:none}}
+html.ios-app,html.ios-app body{overscroll-behavior-y:none}
+/* A sideways tab slide must never give the page a sideways scroll. */
+main{overflow-x:clip}
+/* A photo still on its way: the box shimmers, then the picture fades in. Live cameras the same. */
+.photo.loading img{opacity:0}
+.photo.loading,.lv-cam-img:not(.got){background-image:linear-gradient(100deg,transparent 30%,color-mix(in srgb,var(--fg) 9%,transparent) 50%,transparent 70%);background-size:220% 100%;background-repeat:no-repeat}
+.lv-cam.off .lv-cam-img{background-image:none;animation:none}
+@media (prefers-reduced-motion:no-preference){
+  .photo img{transition:opacity .28s ease}
+  .photo.loading,.lv-cam-img:not(.got){animation:shimmer 1.3s linear infinite}
+  html[data-nav="fwd"] .view:not([hidden]){animation-name:viewInR}
+  html[data-nav="back"] .view:not([hidden]){animation-name:viewInL}
+}
+@keyframes shimmer{from{background-position:130% 0}to{background-position:-90% 0}}
+@keyframes viewInR{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+@keyframes viewInL{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}

@@ -468,6 +468,18 @@ export function duck(on) {
   call(D, on ? "duckBegin" : "duckEnd").catch(() => {});
 }
 
+/* ---------- haptics (3.1.3) ---------- */
+/** A small tap under the finger in the iPhone app: haptic("light" | "medium" | "success"). It uses @capacitor/haptics
+ *  (window.Capacitor.Plugins.Haptics: impact({style}) and notification({type})) when the build includes that plugin.
+ *  In a browser, or in a build without the plugin, it does nothing and returns false. */
+export function haptic(kind = "light") {
+  const H = plugin("Haptics");
+  if (!H) return false;
+  if (kind === "success") call(H, "notification", { type: "SUCCESS" }).catch(() => {});
+  else call(H, "impact", { style: kind === "medium" ? "MEDIUM" : "LIGHT" }).catch(() => {});
+  return true;
+}
+
 /* ---------- screen and status bar ---------- */
 export async function keepAwake(on) {
   const K = plugin("KeepAwake");

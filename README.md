@@ -13,7 +13,31 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
-## 3.1.2: app feel (branch `polish/app-feel`, not released)
+## 3.1.3: app feel, part 2
+
+More of what a store app does and a web page does not. Nothing in driving, GPS, voice or data:
+
+- **Swipe a sheet down to close it.** Every sheet has a grab handle (`.sheet::before`). `main.js` takes the sheet only
+  when it is scrolled to its top, the move is clearly downward and it did not start on a slider, text box or map. Past
+  110 px or with a quick flick it closes (the same `closeSheet()` as a tap on the dim); otherwise it springs back.
+- **Tabs keep their place.** A tab-bar tap remembers where each tab was scrolled; tapping the current tab goes to its
+  top. `go(name)` from code still lands at the top, as before.
+- **Tabs slide in from their side.** A tab-bar tap sets `html[data-nav="fwd"|"back"]` by the tabs' order in the bar and
+  the new view slides in from that side. `go(name)` from code keeps the plain fade-up (the layout tests measure right
+  after it).
+- **Photos fade in.** A photo not seen yet this visit starts as a shimmering box (`.photo.loading`) and fades in when it
+  arrives; one already seen appears at once, so a redraw never blinks. Live camera pictures shimmer until they load.
+- **No rubber band when installed.** `overscroll-behavior-y:none` on the page only in standalone display mode and in
+  the iPhone app (`html.ios-app`). In a browser tab pull-to-refresh still works.
+- **Haptics hook.** `native.haptic("light" | "medium" | "success")` calls `@capacitor/haptics`
+  (`window.Capacitor.Plugins.Haptics`: `impact({style:"LIGHT"|"MEDIUM"})`, `notification({type:"SUCCESS"})`) when the
+  iPhone build includes that plugin, and does nothing otherwise. Called on a tab change (light), Start GPS (medium) and
+  a stamp earned (success, at most one a second). The iPhone build needs the plugin added to feel it.
+- Not done: a large title that shrinks on scroll. The top bar is shared with the driving screen (sign, glance mode,
+  landscape dash layout), so it needs a design and its own tests.
+- Test: `tools/test-feel.html` ("feel" in `tools/run_tests.py`). All of it is off with Reduce Motion.
+
+## 3.1.2: app feel
 
 Small things that made the app read as a web page, nothing in driving, GPS, voice or data:
 

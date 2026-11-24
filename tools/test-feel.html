@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>window.__BUDDY_SILENT__ = true; // silent tests: the app under test is never heard (js/voice.js)</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>App feel test</title>
+<!--
+  Test bench for the 3.1.3 app-feel parts in js/main.js, js/native.js and app.css:
+    sheets   the grab handle; a short swipe down springs back; a long one closes the sheet and the dim; a swipe that
+             starts on a slider, sideways, or with the sheet scrolled does not move it
+    tabs     a tab-bar tap keeps each tab's scroll place; go(name) from code lands at the top; html[data-nav] says
+             which side the new tab came from
+    photos   a new photo starts as a shimmering box and loses it when the picture arrives; a seen one never gets it
+    haptics  native.haptic exists and does nothing in a browser
+  Loads the app in a phone-sized iframe. Results go to the console as "[test-feel] PASS/FAIL ..." and end with
+  "ALL PASS (n)" or "FAILED n". Query: &log shows the log.
+-->
+<style>
+  html,body{margin:0;background:#3a3f3c;font:12px/1.35 ui-monospace,Menlo,monospace;color:#dfe8e2}
+  #f{display:block;border:0;background:#000}
+  #out{position:fixed;left:0;right:0;bottom:0;max-height:45%;overflow:auto;margin:0;padding:4px 8px;background:rgba(0,0,0,.85);white-space:pre-wrap;display:none;z-index:9}
+  body.log #out{display:block}
+</style>
+</head>
+<body>
+<pre id="out"></pre>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const W = 390, H = 844;
+const out = document.getElementById("out");
+if (q.has("log")) document.body.classList.add("log");
+let fails = 0, passes = 0;
+const log = s => { console.log("[test-feel] " + s); out.textContent += s + "\n"; };
+const check = (name, ok, info = "") => { ok ? passes++ : fails++; log(`${ok ? "PASS" : "FAIL"} ${name}${info ? " (" + info + ")" : ""}`); };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const done = () => { log(fails ? `FAILED ${fails} (passed ${passes})` : `ALL PASS (${passes})`); document.title = fails ? `FAILED ${fails}` : `ALL PASS (${passes})`; };
+
+boot();
+
+function boot() {
+  const f = document.createElement("iframe");
+  f.id = "f"; f.title = "I-5 Buddy"; f.src = "../index.html?silent=1";
+  f.style.width = W + "px"; f.style.height = H + "px";
+  // a fresh profile: the first-run invitation must be able to show
+  document.body.prepend(f);
+  let started = false;
+  const start = () => { if (started) return; started = true; run(f).catch(e => { check("scene ran", false, e && (e.stack || e.message)); done(); }); };
+  f.addEventListener("load", async () => {
+    if (started) return;
+    const w = f.contentWindow, sw = w.navigator.serviceWorker;
+    if (sw && !sw.controller) {
+      let changed = false;
+      sw.addEventListener("controllerchange", () => { changed = true; });
+      const t0 = performance.now();
+      for (let i = 0; !changed && !started && i < 4e6 && (i < 4e5 || performance.now() - t0 < 6000); i++) await yieldTask();
+      await new Promise(r => setTimeout(r, 0));
+    }
+    if (w.I5BUDDY) start();
+  });
+}
+const chan = new MessageChannel(), yields = [];
+chan.port1.onmessage = () => { const r = yields.shift(); r && r(); };
+function yieldTask() { return new Promise(r => { yields.push(r); chan.port2.postMessage(0); }); }
+
+
+async function run(f) {
+  const w = f.contentWindow, doc = f.contentDocument;
+  w.addEventListener("error", e => check("no uncaught error in the app", false, e.message));
+  const api = w.I5BUDDY && w.I5BUDDY.api;
+  if (!api) throw new Error("I5BUDDY.api missing");
+  try { api.voice.say = () => Promise.resolve(false); api.voice.unlock = () => {}; } catch {}
+  const $ = id => doc.getElementById(id);
+  const touch = (type, target, x, y) => {
+    const e = new w.Event(type, { bubbles: true, cancelable: true });
+    Object.defineProperty(e, "touches", { value: type === "touchend" || type === "touchcancel" ? [] : [{ clientX: x, clientY: y }] });
+    target.dispatchEvent(e);
+    return e;
+  };
+  const swipe = (target, dx, dy, end = "touchend") => {
+    touch("touchstart", target, 200, 300);
+    touch("touchmove", target, 200 + dx / 2, 300 + dy / 2);
+    touch("touchmove", target, 200 + dx, 300 + dy);
+    const mid = sheet.style.transform;
+    touch(end, target, 0, 0);
+    return mid;
+  };
+
+  /* ---- sheets ---- */
+  const sheet = $("settings"), back = $("sheetBack"), head = sheet.querySelector(".sheet-head b");
+  api.ui.openSheet(sheet);
+  check("a sheet has a grab handle", w.getComputedStyle(sheet, "::before").width === "38px", w.getComputedStyle(sheet, "::before").width);
+  sheet.scrollTop = 0;
+  let mid = swipe(head, 0, 30); // under the flick distance: a made-up swipe takes no time at all
+  check("the sheet follows a finger moving down", mid === "translateY(30px)", mid);
+  check("a short swipe springs back and the sheet stays open", !sheet.hidden && !back.hidden && sheet.style.transform === "", sheet.style.transform);
+  mid = swipe(head, 80, 30);
+  check("a sideways move does not take the sheet", mid === "" && !sheet.hidden, mid);
+  mid = swipe(head, 0, -60);
+  check("an upward move does not take the sheet", mid === "" && !sheet.hidden, mid);
+  mid = swipe($("rate"), 0, 160);
+  check("a swipe that starts on a slider does not take the sheet", mid === "" && !sheet.hidden, mid);
+  sheet.scrollTop = 60;
+  if (sheet.scrollTop > 0) {
+    mid = swipe(head, 0, 160);
+    check("a scrolled sheet scrolls instead of closing", mid === "" && !sheet.hidden, mid);
+    sheet.scrollTop = 0;
+  } else log("SKIPPED scrolled sheet (the settings sheet fits this screen)");
+  mid = swipe(head, 0, 160, "touchcancel");
+  check("a cancelled touch springs back", !sheet.hidden && sheet.style.transform === "", sheet.style.transform);
+  mid = swipe(head, 0, 160);
+  check("a long swipe down closes the sheet and the dim", sheet.hidden && back.hidden, mid);
+  await sleep(400);
+  check("nothing is left on the closed sheet", sheet.style.transform === "", sheet.style.transform);
+  api.ui.openSheet(sheet);
+  check("the sheet opens again in its place", !sheet.hidden && sheet.style.transform === "" && sheet.style.transition === "");
+  swipe(doc.querySelector(".top"), 0, 200);
+  check("a swipe outside the sheet does nothing", !sheet.hidden && sheet.style.transform === "");
+  api.ui.closeSheet();
+  touch("touchstart", doc.body, 200, 300); touch("touchmove", doc.body, 200, 500); touch("touchend", doc.body, 0, 0);
+  check("with no sheet open a swipe is left alone", sheet.hidden && sheet.style.transform === "");
+
+  /* ---- tabs ---- */
+  const tabBtn = n => doc.querySelector(`.tabs button[data-go="${n}"]`);
+  const view = n => doc.querySelector(`.view[data-view="${n}"]`);
+  view("ahead").style.minHeight = "3000px"; view("drive").style.minHeight = "3000px";
+  api.ui.go("drive");
+  tabBtn("ahead").click();
+  check("Drive to Ahead comes in from the right", doc.documentElement.dataset.nav === "fwd" && !view("ahead").hidden, doc.documentElement.dataset.nav);
+  check("a tab opened for the first time starts at the top", w.scrollY === 0, String(w.scrollY));
+  w.scrollTo(0, 420);
+  tabBtn("drive").click();
+  check("Ahead to Drive comes in from the left", doc.documentElement.dataset.nav === "back" && !view("drive").hidden, doc.documentElement.dataset.nav);
+  w.scrollTo(0, 150);
+  tabBtn("ahead").click();
+  check("a tab keeps its scroll place", Math.abs(w.scrollY - 420) < 2, String(w.scrollY));
+  tabBtn("drive").click();
+  check("and so does the one before it", Math.abs(w.scrollY - 150) < 2, String(w.scrollY));
+  tabBtn("drive").click();
+  check("tapping the current tab goes to its top", w.scrollY === 0 && doc.documentElement.dataset.nav === "", String(w.scrollY));
+  tabBtn("ahead").click(); w.scrollTo(0, 300);
+  api.ui.go("drive"); api.ui.go("ahead");
+  check("go() from code lands at the top", w.scrollY === 0, String(w.scrollY));
+  check("go() from code does not slide sideways", doc.documentElement.dataset.nav === "", doc.documentElement.dataset.nav);
+  check("the current tab is marked", tabBtn("ahead").getAttribute("aria-current") === "page" && !tabBtn("drive").hasAttribute("aria-current"));
+  api.ui.go("drive");
+
+  /* ---- photos ---- */
+  const src = new URL("../icons/icon-192.png", location.href).href;
+  const fig = api.ui.photo({ img: { f: src, alt_en: "test" } }, "full");
+  check("a new photo starts as a loading box", !!fig && fig.classList.contains("loading"));
+  $("main").append(fig);
+  for (let i = 0; i < 100 && fig.classList.contains("loading"); i++) await sleep(50);
+  check("the box clears when the picture arrives", !fig.classList.contains("loading"));
+  const again = api.ui.photo({ img: { f: src, alt_en: "test" } }, "thumb");
+  check("a photo already seen never shows the loading box", !!again && !again.classList.contains("loading"));
+  fig.remove();
+
+  /* ---- haptics and styles ---- */
+  check("native.haptic exists and does nothing in a browser", typeof api.native.haptic === "function" && api.native.haptic("light") === false && api.native.haptic("success") === false);
+  const css = await (await fetch("../app.css")).text();
+  check("the side slides and the shimmer are inside the motion-allowed block", /prefers-reduced-motion:no-preference\)\{[^}]*\}[^@]*html\[data-nav="fwd"\]/.test(css.slice(css.indexOf("3.1.3 app feel"))) && css.includes("@keyframes viewInR") && css.includes("@keyframes shimmer"));
+  check("Reduce Motion still turns every animation off", css.includes("@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}"));
+  check("the page stops rubber-banding only when installed or in the iPhone app", css.includes("@media (display-mode:standalone),(display-mode:fullscreen){html,body{overscroll-behavior-y:none}}") && css.includes("html.ios-app,html.ios-app body{overscroll-behavior-y:none}"));
+  done();
+}
+</script>
+</body>
+</html>
