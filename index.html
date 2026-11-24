@@ -33,6 +33,24 @@
 <script>/* Chrome and Edge (Android and desktop) offer to install the app with this event, sometimes before main.js runs.
    Keep it for the Install app buttons (main.js shows them) instead of the browser's own banner. Nothing is sent anywhere. */
 addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i5Install=e;dispatchEvent(new Event("i5:install"))});</script>
+<script>/* App feel (3.1.2): put the theme this phone showed last time on before the first paint, so a daytime start
+   is not a dark flash. Its own key (not "i5b:..."), so it never makes a new install look like a returning one. */
+try{var th=localStorage.getItem("i5theme");if(th==="light"||th==="dark")document.documentElement.dataset.theme=th}catch(e){}</script>
+<style>/* The launch screen (3.1.2). Inline so it paints before app.css arrives. It never takes a tap (pointer-events:none)
+   and the script under it takes it away after 1.5 s at the latest, whatever happens. */
+html{background:#101412}html[data-theme="light"]{background:#f4f3ef}
+#launch{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#101412;color:#f2f5f1;pointer-events:none;font:800 1.5rem/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:opacity .26s ease,visibility 0s linear .26s}
+html[data-theme="light"] #launch{background:#f4f3ef;color:#14201a}
+#launch.gone{opacity:0;visibility:hidden}
+#launch img{width:104px;height:104px;border-radius:24px;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:launchIn .45s cubic-bezier(.2,.8,.3,1) both}
+#launch b{letter-spacing:-.01em;animation:launchIn .45s .06s cubic-bezier(.2,.8,.3,1) both}
+#launch i{width:72px;height:4px;border-radius:4px;overflow:hidden;background:rgba(127,140,133,.28);position:relative}
+#launch i::after{content:"";position:absolute;inset:0;width:40%;border-radius:4px;background:#2fae6b;animation:launchBar .9s ease-in-out infinite alternate}
+#launch small{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom,0px));font-size:.72rem;font-weight:700;letter-spacing:.18em;opacity:.55}
+@keyframes launchIn{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes launchBar{from{transform:translateX(0)}to{transform:translateX(150%)}}
+@media (prefers-reduced-motion:reduce){#launch,#launch *,#launch i::after{animation:none!important;transition:none!important}}
+</style>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -50,6 +68,12 @@ addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__i
 <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
+<div id="launch" aria-hidden="true"><img src="icons/icon-180.png" alt="" width="104" height="104"><b>I-5 Buddy</b><i></i><small>DOMINARES</small></div>
+<script>/* Take the launch screen away when main.js says the first screen is drawn (window.__i5Ready), after 1.5 s at the
+   latest, or at once if a script fails. Shown at least 350 ms so it is a screen, not a flicker. */
+(function(){var l=document.getElementById("launch"),t0=Date.now(),done=0;
+function hide(){if(done)return;done=1;setTimeout(function(){l.className="gone";setTimeout(function(){l.parentNode&&l.parentNode.removeChild(l)},450)},Math.max(0,350-(Date.now()-t0)))}
+window.__i5Ready=hide;setTimeout(hide,1500);addEventListener("error",hide)})();</script>
 <div class="app">
 
 <header class="top">

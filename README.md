@@ -13,6 +13,22 @@ settings stay on the phone. What does leave it (the ordinary requests to load th
 map pictures, the browser's own speech services, and feedback you choose to send) is listed in the privacy notice,
 [`privacy.html`](privacy.html) (https://i5.dominares.org/privacy.html).
 
+## 3.1.2: app feel (branch `polish/app-feel`, not released)
+
+Small things that made the app read as a web page, nothing in driving, GPS, voice or data:
+
+- **Launch screen.** `index.html` paints the logo, the name and a small moving bar before `app.css` arrives (inline
+  style, `#launch`). `main.js` calls `window.__i5Ready()` after the first `render()`; the screen then fades out. It is
+  shown at least 350 ms, leaves by itself after 1.5 s whatever happens (a script that never arrives, an error), and has
+  `pointer-events:none`, so it can never take a tap.
+- **No dark flash by day.** `applyTheme()` saves the theme it put on under `i5theme` (deliberately not an `i5b:` key:
+  `store.RETURNING` must not see it), and a one-line script in the head puts it back on before the first paint.
+- **Sheets slide away.** `hidden` is still set at once; with `transition-behavior: allow-discrete` (Safari 17.4+,
+  Chrome 117+) the picture fades and drops for 0.18 s and takes no taps while it goes. Older browsers cut as before.
+- **Tab bar and presses.** A small bar marks the current tab and slides in; tabs, icon buttons, chips and links answer
+  a finger; a long press no longer selects a button's label; photo boxes show their place before the picture arrives;
+  the toast rises in. All of it is off with Reduce Motion.
+
 ## 3.1.0: the language layer (Spanish) and Stories for kids
 
 Everything the app shows or says now comes from a dictionary, so I-5 Buddy can run in Spanish (Joseph's yes, 2026-11-21).

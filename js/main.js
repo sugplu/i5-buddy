@@ -117,6 +117,7 @@ function applyTheme() {
     t = geo.sunAltitude(lat, lon) > -4 ? "light" : "dark";
   }
   document.documentElement.dataset.theme = t;
+  try { localStorage.setItem("i5theme", t); } catch {} // index.html puts it on before the first paint next time (3.1.2)
   document.querySelector('meta[name="theme-color"]').content = t === "light" ? "#0b6e3f" : "#111513";
   native.statusBar(t); // the iPhone app: status bar text that stays readable on this theme (no-op in a browser)
 }
@@ -1080,7 +1081,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = t("main.data_version_version", { version: data.D.version });
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.1.1";
+export const APP_VERSION = "3.1.2";
 $("appVersion").textContent = t("main.i_5_buddy_app_version_x1", { APP_VERSION, x1: native.NATIVE ? t("main.for_iphone") : "" });
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", t("main.rate_i_5_buddy"));
@@ -1409,6 +1410,8 @@ async function autoResume() {
 
 applyTheme();
 render();
+// The first screen is drawn: the launch screen (index.html) fades away. It also leaves by itself after 1.5 s.
+requestAnimationFrame(() => { try { window.__i5Ready && window.__i5Ready(); } catch {} });
 for (const name of ["live", "map", "play", "trip", "listen", "roadahead", "feedback", "share", "ride", "missions", "nav", "review"]) {
   import(`./${name}.js`).then(mod => {
     try { mod.init(api); } catch (e) { console.error(`[${name}] init failed`, e); }

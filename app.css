@@ -395,3 +395,32 @@ main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px
   #view-drive>.nv-safety-top{grid-column:1 / -1}
   .caption{max-width:none;width:calc(100% - 40px)}
 }
+
+/* ---- 3.1.2 app feel: the parts that still felt like a web page ---- */
+/* Bars and buttons are not text: a long press must not select a label or pop the browser's callout. Stories, share
+   text and anything typed stay selectable. */
+.top,.tabs,button,.pill,summary{-webkit-user-select:none;user-select:none}
+button,.top img,.tabs{-webkit-touch-callout:none}
+/* A photo's box shows its place before the picture arrives, so nothing pops in from blank. */
+.photo{background:var(--surface-2)}
+/* The current tab gets a small bar that slides in, like a tab bar. */
+.tabs button{position:relative}
+.tabs button::before{content:"";position:absolute;top:-6px;left:50%;width:26px;height:3px;margin-left:-13px;border-radius:0 0 3px 3px;background:var(--link);transform:scaleX(0);opacity:0}
+.tabs button[aria-current="page"]::before{transform:none;opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  .tabs button::before{transition:transform .22s cubic-bezier(.2,.8,.3,1),opacity .18s ease}
+  .tabs button{transition:color .15s ease}
+  .tabs button:active svg{transform:scale(.88)}
+  .icon-btn,.chip,.link{transition:opacity .12s ease,transform .12s ease,background-color .15s ease}
+  .icon-btn:active,.chip:active{transform:scale(.92)}
+  .link:active{opacity:.6}
+  .toast:not([hidden]){animation:toastIn .2s cubic-bezier(.2,.8,.3,1)}
+  /* Sheets slide away and the dim fades instead of vanishing. `hidden` is still set at once (the code and the tests
+     see a closed sheet right away); only the picture lingers 0.18 s, and it takes no taps while it goes. */
+  @supports (transition-behavior:allow-discrete){
+    .sheet,.sheet-back{transition:opacity .18s ease,transform .18s ease,display .18s allow-discrete}
+    .sheet[hidden]{opacity:0;transform:translateY(28px);pointer-events:none}
+    .sheet-back[hidden]{opacity:0;pointer-events:none}
+  }
+}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}

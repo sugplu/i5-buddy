@@ -4,7 +4,7 @@
 // this version's cache, like data/ask.js.
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v3.1.1"; // First-drive story preview and feedback after a saved drive.
+const VERSION = "i5b-v3.1.2"; // App feel: launch screen, no dark flash by day, sheets slide away, pressed states.
 const SHELL = [
   "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/i18n.js", "i18n/en.json", "i18n/es.json", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js", "js/native.js",
