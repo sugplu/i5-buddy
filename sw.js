@@ -4,7 +4,7 @@
 // this version's cache, like data/ask.js.
 // Live data (weather.gov, Caltrans road data and camera images) is never cached here; the live module keeps its own
 // last-good copy.
-const VERSION = "i5b-v3.1.4"; // Rest-area closures read again from Caltrans (Nov 24); Thanksgiving page has the CHP dates.
+const VERSION = "i5b-v3.1.5"; // Road guides links in About and on the help and privacy pages, so search engines can find the guide pages.
 const SHELL = [
   "./", "index.html", "privacy.html", "app.css", "manifest.webmanifest", "data/i5.js",
   "js/main.js", "js/store.js", "js/i18n.js", "i18n/en.json", "i18n/es.json", "js/data.js", "js/geo.js", "js/voice.js", "js/narrator.js", "js/native.js",
