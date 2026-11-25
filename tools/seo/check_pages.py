@@ -82,7 +82,7 @@ for path, e, thin in paths:
     for href in re.findall(r'href="([^"#]+)(?:#[^"]*)?"', h):
         if re.match(r"(https?:|mailto:|tel:)", href):
             continue
-        tgt = os.path.normpath(os.path.join(base, href))
+        tgt = os.path.normpath(os.path.join(base, href.split("?")[0]))
         if not (os.path.isfile(tgt) or os.path.isfile(os.path.join(tgt, "index.html"))):
             fail(f"{path}: broken link {href}")
     for href in set(re.findall(r'href="([^"]+)#([^"]+)"', h)):
@@ -223,7 +223,7 @@ for kind, slug, en_path, thin in expected:
     base = os.path.join(ROOT, es_path)
     for href in re.findall(r'href="([^"#]+)(?:#[^"]*)?"', h):
         if not re.match(r"(https?:|mailto:|tel:)", href):
-            tgt = os.path.normpath(os.path.join(base, href))
+            tgt = os.path.normpath(os.path.join(base, href.split("?")[0]))
             if not (os.path.isfile(tgt) or os.path.isfile(os.path.join(tgt, "index.html"))):
                 fail(f"{es_path}: broken link {href}")
     ves, ven = visible(h) + " " + title + " " + meta, visible(he) + " " + _html.unescape(re.search(r"<title>(.*?)</title>", he).group(1))
@@ -253,7 +253,7 @@ for hub_es, hub_en in (("es/town/", "town/"), ("es/drive/", "drive/")):
     base = os.path.join(ROOT, hub_es)
     for href in re.findall(r'href="([^"#]+)(?:#[^"]*)?"', h):
         if not re.match(r"(https?:|mailto:|tel:)", href):
-            tgt = os.path.normpath(os.path.join(base, href))
+            tgt = os.path.normpath(os.path.join(base, href.split("?")[0]))
             if not (os.path.isfile(tgt) or os.path.isfile(os.path.join(tgt, "index.html"))):
                 fail(f"{hub_es}: broken link {href}")
 print(f"Spanish: {n_es} twins checked, {n_dropped} dropped on purpose, {len(expected)} expected")

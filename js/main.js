@@ -1141,7 +1141,7 @@ $("resetYes").onclick = () => {
 $("dataVersion").textContent = t("main.data_version_version", { version: data.D.version });
 // Settings > About: the app's own version (3.0.1), and in the iPhone app a Rate row that opens the App Store's review
 // page when tapped (Apple's way for a button; the automatic ask is review.js, through Apple's own prompt).
-export const APP_VERSION = "3.1.3";
+export const APP_VERSION = "3.1.4";
 $("appVersion").textContent = t("main.i_5_buddy_app_version_x1", { APP_VERSION, x1: native.NATIVE ? t("main.for_iphone") : "" });
 if (native.NATIVE) {
   const a = el("a", "secondary rate-open", t("main.rate_i_5_buddy"));

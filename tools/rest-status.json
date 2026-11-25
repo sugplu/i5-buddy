@@ -1,6 +1,6 @@
 {
  "_note": "Rest-area status overrides read by tools/build.py (REST[].status, .src, .until). Written by tools/rest_status.py from Caltrans QuickMap's rest area file; only rest areas that are not open are listed. build.py ignores an entry older than REST_STATUS_DAYS or past its reopening date: run tools/rest_status.py right before a release.",
- "checked": "2026-11-20",
+ "checked": "2026-11-24",
  "source": "https://quickmap.dot.ca.gov/data/srra.kml",
  "i5_rest_areas_in_feed": 28,
  "overrides": [
@@ -12,30 +12,8 @@
    "since": "",
    "until": "",
    "src": "https://quickmap.dot.ca.gov/data/srra.kml",
-   "checked": "2026-11-20",
+   "checked": "2026-11-24",
    "note": "Caltrans QuickMap: TEJON PASS REST AREA - Northbound: Closed due to Rest Area Maintenance No estimate for when facility will re-open."
-  },
-  {
-   "m": 444.94,
-   "side": -1,
-   "name": "Westley Rest Area",
-   "status": "closed",
-   "since": "",
-   "until": "2026-11-23",
-   "src": "https://quickmap.dot.ca.gov/data/srra.kml",
-   "checked": "2026-11-20",
-   "note": "Caltrans QuickMap: WESTLEY REST AREA - Southbound: Closed due to Rest Area Work Expected to re-open 11/23/2026 11:59 PM"
-  },
-  {
-   "m": 445.04,
-   "side": 1,
-   "name": "Westley Rest Area",
-   "status": "closed",
-   "since": "",
-   "until": "2026-11-23",
-   "src": "https://quickmap.dot.ca.gov/data/srra.kml",
-   "checked": "2026-11-20",
-   "note": "Caltrans QuickMap: WESTLEY REST AREA - Northbound: Closed due to Rest Area Work Expected to re-open 11/23/2026 11:59 PM"
   },
   {
    "m": 692.93,
@@ -45,7 +23,7 @@
    "since": "",
    "until": "",
    "src": "https://quickmap.dot.ca.gov/data/srra.kml",
-   "checked": "2026-11-20",
+   "checked": "2026-11-24",
    "note": "Caltrans QuickMap: O'BRIEN REST AREA - Northbound: Closed due to Rest Area Closure No estimate for when facility will re-open."
   },
   {
@@ -56,7 +34,7 @@
    "since": "",
    "until": "",
    "src": "https://quickmap.dot.ca.gov/data/srra.kml",
-   "checked": "2026-11-20",
+   "checked": "2026-11-24",
    "note": "Caltrans QuickMap: WEED AIRPORT REST AREA - Northbound: Closed due to Maintenance Operation No estimate for when facility will re-open."
   }
  ]
